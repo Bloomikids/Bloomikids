@@ -1324,7 +1324,7 @@ function switchChild() { showScreen('children'); loadChildren(); }
 async function loadChildren() {
   const grid = document.getElementById('childrenGrid');
   grid.innerHTML = '<div class="spinner"></div>';
- const {data,error} = await Promise.race([sb.from('children').select('*').eq('parent_id',currentUser.id), new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),5000))]).catch(e=>({data:[],error:e}));  if (error) { toast('⚠ Error loading profiles'); return; }
+ const {data,error} = await Promise.race([sb.from('children').select('*').eq('parent_id',currentUser.id), new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),5000))]).catch(e=>({data:[],error:e}));  if (error && !error.message?.includes("timeout")) { toast("⚠️ Error loading profiles"); return; }
   // First time user -- show welcome screen instead of empty picker
   if (!data || data.length === 0) { showScreen('welcome'); return; }
   showScreen('children');
