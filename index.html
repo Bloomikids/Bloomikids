@@ -1352,7 +1352,7 @@ async function addChild() {
   const avatars = ['🌟','🦁','🐬','🦋','🐸','🐼','🦊','🐙','🦄','🐧'];
   const avatar  = avatars[Math.floor(Math.random()*avatars.length)];
   const age     = { PreK:4, K:5, 1:6, 2:7, 3:8, 4:9, 5:10 }[gradeKey] || 5;
-  const {data,error} = await sb.from('children').insert({parent_id:currentUser.id,name,age,avatar,grade:gradeKey}).select().single();
+  const {data,error} = await sb.from('children').insert({parent_id:currentUser.id,name,age,avatar,grade:gradeKey});
   if (error) { toast('❌ Could not add child'); return; }
   await sb.from('stars').insert({child_id:data.id,total_stars:0});
   await sb.from('streaks').insert({child_id:data.id});
