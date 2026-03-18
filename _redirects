@@ -1,6 +1,5 @@
-# bloomikids.co → founders page
-/   /founders-story.html   200
-
-# Keep /app as a direct shortcut to the app
-/app   /index.html   200
+# Founders page IS the homepage (index.html)
+# App lives at /app.html
+/app   /app.html   200
+/founders-story.html   /index.html   301
 

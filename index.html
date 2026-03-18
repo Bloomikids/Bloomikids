@@ -3,2472 +3,294 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BloomiKids -- Learn. Breathe. Read.</title>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#5ECDA0">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="BloomiKids">
-<link rel="apple-touch-icon" href="favicon.png">
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+<title>Our Story — BloomiKids</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@300;400;600;700;800&family=Lora:ital,wght@0,400;1,400;1,600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --mint:     #5ECDA0;
-  --sky:      #4ECDC4;
-  --sunshine: #FFD166;
-  --coral:    #FF6B6B;
-  --lavender: #C9B8FF;
-  --bg:       #FFF8F0;
-  --text:     #2D2D4E;
-  --muted:    #8888AA;
-  --shadow:   0 8px 32px rgba(45,45,78,0.10);
-  --font-body: 1rem;
-  --font-heading: 1.5rem;
-  --font-big: 2.4rem;
+  --mint:#5ECDA0;--sky:#4ECDC4;--coral:#FF6B6B;--sun:#FFD166;--lav:#C9B8FF;
+  --dark:#2D2D4E;--body:#4A4A6A;--muted:#8888AA;--bg:#FFFFFF;--white:#FFFFFF;
+  --shadow:0 8px 36px rgba(45,45,78,0.09);
 }
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--body);line-height:1.8;}
+.blob{position:fixed;border-radius:50%;pointer-events:none;z-index:0;}
+.blob-1{width:500px;height:500px;top:-180px;left:-180px;background:radial-gradient(circle,#FFD16635 0%,transparent 65%);}
+.blob-2{width:420px;height:420px;bottom:-140px;right:-140px;background:radial-gradient(circle,#5ECDA035 0%,transparent 65%);}
+.blob-3{width:280px;height:280px;top:40%;right:-80px;background:radial-gradient(circle,#FF6B6B22 0%,transparent 65%);}
 
-/* PreK-2 mode: bigger everything */
-body.grade-prek { --font-body:1.3rem; --font-heading:2rem; --font-big:3rem; }
-body.grade-k    { --font-body:1.2rem; --font-heading:1.8rem; --font-big:2.8rem; }
-body.grade-1    { --font-body:1.15rem; --font-heading:1.75rem; --font-big:2.6rem; }
-body.grade-2    { --font-body:1.1rem; --font-heading:1.65rem; --font-big:2.5rem; }
-body.grade-3    { --font-body:1.05rem; --font-heading:1.55rem; --font-big:2.4rem; }
-body.grade-4    { --font-body:1rem; --font-heading:1.5rem; --font-big:2.4rem; }
-body.grade-5    { --font-body:1rem; --font-heading:1.5rem; --font-big:2.4rem; }
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 32px;background:rgba(255,251,245,0.92);backdrop-filter:blur(12px);border-bottom:1.5px solid #F0EEFF;box-shadow:0 2px 16px rgba(45,45,78,0.06);}
+.nav-logo{font-family:'Baloo 2',cursive;font-size:1.35rem;font-weight:800;color:var(--dark);text-decoration:none;display:flex;align-items:center;gap:10px;}
+.nav-logo img{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid rgba(94,205,160,.3);box-shadow:0 2px 10px rgba(94,205,160,.2);}
+.nav-logo-text{background:linear-gradient(135deg,var(--coral),var(--sun));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.nav-logo-text span{-webkit-text-fill-color:var(--mint);}
+.nav-buttons{display:flex;align-items:center;gap:10px;}
+.btn-login{padding:9px 22px;border-radius:50px;border:2px solid #E0DAFF;background:white;font-family:'Nunito',sans-serif;font-weight:800;font-size:.9rem;color:var(--dark);cursor:pointer;text-decoration:none;transition:all .2s;}
+.btn-login:hover{border-color:var(--coral);color:var(--coral);}
+.btn-signup{padding:9px 22px;border-radius:50px;border:none;background:linear-gradient(135deg,#FF6B6B,#FF8E53);font-family:'Nunito',sans-serif;font-weight:800;font-size:.9rem;color:white;cursor:pointer;text-decoration:none;box-shadow:0 4px 14px rgba(255,107,107,.35);transition:all .2s;}
+.btn-signup:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,107,107,.45);}
 
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Nunito',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; font-size:var(--font-body); }
+.page{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:100px 28px 100px;}
 
-body::before { content:''; position:fixed; width:600px; height:600px; background:radial-gradient(circle,#FFD16633 0%,transparent 70%); top:-200px; right:-200px; pointer-events:none; z-index:0; }
-body::after  { content:''; position:fixed; width:500px; height:500px; background:radial-gradient(circle,#5ECDA033 0%,transparent 70%); bottom:-150px; left:-150px; pointer-events:none; z-index:0; }
+/* HERO */
+.hero{text-align:center;margin-bottom:56px;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:white;border:2.5px solid #EDE9FF;border-radius:40px;padding:8px 22px;font-size:.75rem;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:24px;box-shadow:0 4px 16px rgba(201,184,255,.2);}
+.hero-badge .dot{width:8px;height:8px;background:linear-gradient(135deg,var(--coral),var(--sun));border-radius:50%;display:inline-block;}
+.hero-headline{font-family:'Baloo 2',cursive;font-size:clamp(2.2rem,6vw,3.6rem);font-weight:800;line-height:1.12;color:var(--dark);margin-bottom:18px;}
+.c-coral{color:var(--coral);}.c-mint{color:var(--mint);}
+.hero-intro{font-family:'Lora',serif;font-style:italic;font-size:1.15rem;color:var(--muted);max-width:560px;margin:0 auto;line-height:1.75;}
 
-/* -- OFFLINE / TOAST ----------------------------------- */
-#offlineBanner { position:fixed; top:0; left:0; right:0; z-index:500; background:linear-gradient(90deg,var(--coral),var(--sunshine)); color:white; text-align:center; padding:10px; font-weight:700; font-size:.9rem; display:none; }
-#toast { position:fixed; bottom:100px; left:50%; transform:translateX(-50%) translateY(20px); background:#2D2D4E; color:white; border-radius:40px; padding:12px 24px; font-weight:700; font-size:.9rem; opacity:0; transition:all .3s; z-index:9999; pointer-events:none; white-space:nowrap; max-width:90vw; text-align:center; }
-#toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
-.spinner { width:40px; height:40px; border:4px solid #F0F0F8; border-top-color:var(--mint); border-radius:50%; animation:spin .8s linear infinite; margin:40px auto; }
-@keyframes spin { to{transform:rotate(360deg)} }
+/* HERO PHOTO */
+.hero-photo-wrap{text-align:center;margin:-20px 0 48px;position:relative;}
+.hero-photo-wrap img{max-width:480px;width:100%;border-radius:28px;box-shadow:0 16px 56px rgba(45,45,78,0.14);display:block;margin:0 auto;}
+.hero-photo-badge{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);background:white;border-radius:40px;padding:8px 22px;font-size:.78rem;font-weight:800;color:var(--dark);box-shadow:0 6px 20px rgba(45,45,78,.12);white-space:nowrap;border:2px solid #F0EEFF;}
 
-/* -- AUTH ---------------------------------------------- */
-#authScreen { position:fixed; inset:0; z-index:1000; background:var(--bg); display:flex; align-items:center; justify-content:center; flex-direction:column; padding:24px; }
-#authScreen.hidden { display:none; }
-.auth-card { background:white; border-radius:28px; padding:36px; box-shadow:var(--shadow); width:100%; max-width:420px; animation:fadeUp .5s ease; }
-@keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
-.auth-logo { font-family:'Baloo 2',cursive; font-size:2.2rem; font-weight:800; text-align:center; margin-bottom:6px; background:linear-gradient(135deg,var(--coral),var(--sunshine)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-.auth-logo span { -webkit-text-fill-color:var(--mint); }
-.auth-tagline { text-align:center; color:var(--muted); font-size:.95rem; font-weight:600; margin-bottom:28px; }
-.auth-tabs { display:flex; gap:8px; margin-bottom:24px; }
-.auth-tab { flex:1; padding:10px; border-radius:40px; border:none; cursor:pointer; font-family:'Nunito',sans-serif; font-size:.9rem; font-weight:700; background:#F0F0F8; color:var(--muted); transition:all .2s; }
-.auth-tab.active { background:var(--mint); color:white; }
-.form-group { margin-bottom:16px; }
-.form-group label { display:block; font-weight:700; font-size:.88rem; color:var(--muted); margin-bottom:6px; text-transform:uppercase; letter-spacing:.5px; }
-.form-group input { width:100%; padding:13px 16px; border-radius:14px; border:2px solid #F0F0F8; font-size:1rem; font-family:'Nunito',sans-serif; outline:none; transition:border-color .2s; background:#FAFAFA; }
-.form-group input:focus { border-color:var(--mint); background:white; }
-.auth-btn { width:100%; padding:14px; border-radius:40px; border:none; cursor:pointer; font-family:'Nunito',sans-serif; font-size:1rem; font-weight:800; background:linear-gradient(135deg,var(--mint),var(--sky)); color:white; margin-top:8px; transition:all .2s; box-shadow:0 8px 20px rgba(94,205,160,.35); }
-.auth-btn:hover { transform:translateY(-2px); }
-.auth-btn:disabled { opacity:.6; cursor:not-allowed; transform:none; }
-.auth-error { background:#FFF0F0; border-radius:12px; padding:10px 14px; color:var(--coral); font-size:.88rem; font-weight:700; margin-top:12px; display:none; }
-.auth-error.show { display:block; }
+/* DIVIDER */
+.wave-divider{display:flex;align-items:center;gap:14px;margin:48px 0;}
+.wave-line{flex:1;height:2px;background:linear-gradient(90deg,transparent,#EDE9FF 40%,#C9B8FF 60%,transparent);}
+.wave-emoji{font-size:1.4rem;}
 
-/* -- CHILD PICKER -------------------------------------- */
-#childPicker { position:fixed; inset:0; z-index:900; background:var(--bg); display:flex; align-items:center; justify-content:center; flex-direction:column; padding:24px; }
-#childPicker.hidden { display:none; }
-.picker-title { font-family:'Baloo 2',cursive; font-size:2rem; font-weight:800; margin-bottom:8px; text-align:center; }
+/* CRED PILLS */
+.cred-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:60px;}
+.cred-pill{display:flex;align-items:center;gap:8px;background:white;border-radius:40px;padding:9px 18px;font-size:.82rem;font-weight:700;color:var(--dark);box-shadow:0 4px 18px rgba(45,45,78,.08);border:2px solid #F0EEFF;transition:transform .2s,box-shadow .2s;}
+.cred-pill:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(45,45,78,.12);}
+.pip{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.pip-mint{background:var(--mint);}.pip-coral{background:var(--coral);}.pip-sun{background:var(--sun);}.pip-lav{background:var(--lav);}.pip-sky{background:var(--sky);}
 
-/* -- WELCOME SCREEN -- */
-#welcomeScreen{
-  min-height:100vh;
-  display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(145deg,var(--bg),#E8F8F2);
-  padding:24px;
-}
-.welcome-wrap{
-  text-align:center;
-  max-width:420px;
-  animation:welcomePop .6s cubic-bezier(.34,1.56,.64,1) both;
-}
-@keyframes welcomePop{from{opacity:0;transform:scale(.8) translateY(30px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.welcome-logo-ring{
-  width:120px;height:120px;
-  border-radius:50%;
-  overflow:hidden;
-  margin:0 auto 16px;
-  border:4px solid rgba(94,205,160,.3);
-  box-shadow:0 0 0 8px rgba(94,205,160,.1), 0 20px 60px rgba(94,205,160,.2);
-  animation:float 4s ease-in-out infinite;
-}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.welcome-logo-ring img{width:100%;height:100%;object-fit:contain;}
-.welcome-confetti{font-size:1.8rem;margin-bottom:12px;letter-spacing:4px;animation:confettiBounce 1s ease both .3s;}
-@keyframes confettiBounce{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
-.welcome-h1{
-  font-family:'Baloo 2',cursive;
-  font-weight:900;font-size:2.4rem;
-  color:var(--text);line-height:1.1;
-  margin-bottom:16px;
-  animation:fadeUp .6s ease both .2s;
-}
-.welcome-sub{
-  font-size:1rem;line-height:1.65;
-  color:#7A6A8A;font-weight:600;
-  margin-bottom:32px;
-  animation:fadeUp .6s ease both .3s;
-}
-.welcome-btn{
-  width:100%;
-  background:linear-gradient(135deg,var(--mint),var(--sky));
-  color:white;font-family:'Baloo 2',cursive;
-  font-weight:900;font-size:1.2rem;
-  padding:20px 32px;border-radius:28px;
-  border:none;cursor:pointer;
-  box-shadow:0 12px 40px rgba(94,205,160,.4);
-  display:flex;align-items:center;justify-content:space-between;
-  transition:transform .2s,box-shadow .2s;
-  margin-bottom:16px;
-  animation:fadeUp .6s ease both .4s;
-}
-.welcome-btn:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(94,205,160,.5);}
-.welcome-btn:active{transform:translateY(0);}
-.welcome-btn-arrow{
-  background:rgba(255,255,255,.25);
-  border-radius:50%;width:36px;height:36px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.1rem;
-}
-.welcome-note{
-  font-size:.8rem;font-weight:700;
-  color:#AAA;margin-bottom:4px;
-  animation:fadeUp .6s ease both .5s;
-}
-.picker-sub { color:var(--muted); font-weight:600; margin-bottom:32px; text-align:center; }
-.children-grid { display:flex; flex-wrap:wrap; gap:16px; justify-content:center; max-width:520px; }
-.child-btn { background:white; border-radius:24px; padding:20px 24px; border:none; cursor:pointer; box-shadow:var(--shadow); transition:all .25s; text-align:center; min-width:120px; }
-.child-btn:hover { transform:translateY(-4px); box-shadow:0 16px 36px rgba(45,45,78,.15); }
-.child-avatar { font-size:3rem; margin-bottom:8px; display:block; }
-.child-name { font-family:'Baloo 2',cursive; font-weight:800; font-size:1rem; }
-.child-grade-tag { font-size:.75rem; font-weight:700; color:var(--muted); margin-top:4px; background:#F0F0F8; border-radius:20px; padding:2px 10px; display:inline-block; }
-.add-child-btn { background:linear-gradient(135deg,var(--lavender),var(--coral)); border-radius:24px; padding:20px 24px; border:none; cursor:pointer; box-shadow:0 8px 24px rgba(201,184,255,.35); color:white; font-family:'Baloo 2',cursive; font-size:1rem; font-weight:800; transition:all .25s; min-width:120px; }
-.add-child-btn:hover { transform:translateY(-4px); }
-.logout-link { margin-top:24px; background:none; border:none; cursor:pointer; color:var(--muted); font-family:'Nunito',sans-serif; font-weight:700; font-size:.9rem; }
+/* CHAPTERS */
+.chapters{display:flex;flex-direction:column;gap:24px;margin-bottom:56px;}
+.chapter{background:white;border-radius:28px;overflow:hidden;box-shadow:var(--shadow);display:grid;grid-template-columns:10px 1fr;transition:transform .25s,box-shadow .25s;}
+.chapter:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(45,45,78,.13);}
+.ch-mint   .chapter-stripe{background:linear-gradient(180deg,var(--mint),var(--sky));}
+.ch-coral  .chapter-stripe{background:linear-gradient(180deg,var(--coral),var(--sun));}
+.ch-lav    .chapter-stripe{background:linear-gradient(180deg,var(--lav),var(--coral));}
+.ch-sun    .chapter-stripe{background:linear-gradient(180deg,var(--sun),var(--mint));}
+.chapter-body{padding:32px 36px;}
+.chapter-top{display:flex;align-items:flex-start;gap:18px;margin-bottom:18px;}
+.chapter-icon{width:54px;height:54px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;box-shadow:0 4px 16px rgba(45,45,78,.10);}
+.ch-mint  .chapter-icon{background:linear-gradient(135deg,#D0F5E8,#B8ECD8);}
+.ch-coral .chapter-icon{background:linear-gradient(135deg,#FFE5E5,#FFD0CC);}
+.ch-lav   .chapter-icon{background:linear-gradient(135deg,#EDE5FF,#E0D4FF);}
+.ch-sun   .chapter-icon{background:linear-gradient(135deg,#FFF5D0,#FFEBAA);}
+.chapter-meta{flex:1;}
+.chapter-num{font-size:.68rem;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.chapter-title{font-family:'Baloo 2',cursive;font-size:1.35rem;font-weight:800;color:var(--dark);line-height:1.2;}
+.chapter-text{font-size:.98rem;line-height:1.85;color:var(--body);}
+.chapter-text+.chapter-text{margin-top:14px;}
+.chapter-text strong{font-weight:800;color:var(--dark);}
+.chapter-text em{font-family:'Lora',serif;font-style:italic;color:var(--dark);}
+.inline-quote{background:linear-gradient(135deg,#F0FBF6,#E8F8FF);border-radius:16px;padding:18px 22px;margin:18px 0 0;border-left:4px solid var(--mint);}
+.ch-coral .inline-quote{background:linear-gradient(135deg,#FFF5F5,#FFF0E8);border-left-color:var(--coral);}
+.ch-lav   .inline-quote{background:linear-gradient(135deg,#F5F0FF,#F9F5FF);border-left-color:var(--lav);}
+.inline-quote p{font-family:'Lora',serif;font-style:italic;font-size:1rem;line-height:1.7;color:var(--dark);margin-bottom:8px;}
+.inline-quote cite{font-family:'Nunito',sans-serif;font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;font-style:normal;color:var(--mint);}
+.ch-coral .inline-quote cite{color:var(--coral);}
+.ch-lav   .inline-quote cite{color:#9B6FE8;}
 
-/* -- GRADE BANNER -------------------------------------- */
-.grade-banner { display:flex; align-items:center; gap:10px; background:white; border-radius:40px; padding:8px 18px; box-shadow:var(--shadow); font-weight:700; font-size:.85rem; color:var(--muted); margin-bottom:20px; width:fit-content; }
-.grade-pill { background:linear-gradient(135deg,var(--mint),var(--sky)); color:white; border-radius:40px; padding:4px 14px; font-family:'Baloo 2',cursive; font-size:.9rem; font-weight:800; }
+/* MISSION BANNER */
+.mission-banner{border-radius:28px;padding:48px 44px;margin-bottom:56px;position:relative;overflow:hidden;background:linear-gradient(135deg,#E8FBF3 0%,#D4F5FF 50%,#EDE9FF 100%);border:2.5px solid rgba(94,205,160,.25);box-shadow:0 12px 40px rgba(94,205,160,.12);}
+.mission-banner::before{content:'🌸';position:absolute;bottom:-10px;right:28px;font-size:7rem;opacity:.12;line-height:1;}
+.mission-banner::after{content:'✨';position:absolute;top:16px;left:24px;font-size:3rem;opacity:.18;}
+.mission-tag{font-size:.72rem;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--mint);display:flex;align-items:center;gap:8px;margin-bottom:18px;}
+.mission-tag::before{content:'';width:28px;height:3px;border-radius:4px;background:var(--mint);display:inline-block;}
+.mission-text{font-family:'Lora',serif;font-style:italic;font-size:clamp(1.1rem,2.8vw,1.45rem);line-height:1.75;color:var(--dark);position:relative;z-index:1;}
+.mission-text strong{font-style:normal;color:var(--coral);font-weight:700;}
 
-/* -- MAIN APP ------------------------------------------- */
-.app { position:relative; z-index:1; max-width:1100px; margin:0 auto; padding:20px; padding-bottom:90px; }
-header { display:flex; align-items:center; justify-content:space-between; padding:20px 0 20px; flex-wrap:wrap; gap:10px; }
-.logo { font-family:'Baloo 2',cursive; font-size:2rem; font-weight:800; background:linear-gradient(135deg,var(--coral),var(--sunshine)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-.logo svg { width:44px; height:44px; flex-shrink:0; }
-.auth-logo svg { width:140px; height:140px; }
-.logo span { -webkit-text-fill-color:var(--mint); }
-.header-right { display:flex; align-items:center; gap:10px; }
-.date-badge { background:white; border-radius:20px; padding:8px 18px; font-weight:700; color:var(--muted); font-size:.9rem; box-shadow:var(--shadow); }
-.user-chip { background:white; border-radius:20px; padding:8px 16px; display:flex; align-items:center; gap:8px; box-shadow:var(--shadow); cursor:pointer; border:none; font-family:'Nunito',sans-serif; font-weight:700; color:var(--muted); font-size:.85rem; }
-.user-chip:hover { color:var(--coral); }
-.sync-dot { width:8px; height:8px; border-radius:50%; background:var(--mint); display:inline-block; margin-left:4px; }
-.sync-dot.syncing { background:var(--sunshine); animation:pulse .8s infinite; }
-.sync-dot.error { background:var(--coral); }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+/* SIGNATURE */
+.signature-card{background:white;border-radius:28px;padding:44px;text-align:center;box-shadow:var(--shadow);border:2px solid #F0EEFF;}
+.sig-hearts{font-size:1.4rem;margin-bottom:16px;letter-spacing:4px;}
+.sig-with-love{font-family:'Lora',serif;font-style:italic;font-size:1rem;color:var(--muted);margin-bottom:6px;}
+.sig-name{font-family:'Baloo 2',cursive;font-size:1.9rem;font-weight:800;color:var(--dark);margin-bottom:4px;}
+.sig-role{font-size:.82rem;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:28px;}
+.sig-logo{font-family:'Baloo 2',cursive;font-size:1.5rem;font-weight:800;background:linear-gradient(135deg,var(--coral),var(--sun));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:inline-block;margin-bottom:6px;}
+.sig-logo span{-webkit-text-fill-color:var(--mint);}
+.sig-tagline{font-size:.83rem;color:var(--muted);font-weight:700;letter-spacing:1.5px;}
 
-.greeting { font-family:'Baloo 2',cursive; font-size:var(--font-big); font-weight:800; margin-bottom:6px; animation:slideDown .6s ease; line-height:1.2; }
-.greeting span { color:var(--coral); }
-@keyframes slideDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
-.subtitle { color:var(--muted); font-size:var(--font-body); margin-bottom:24px; font-weight:600; }
+/* SECOND PHOTO */
+.closing-photo{text-align:center;margin:48px 0 40px;}
+.closing-photo img{max-width:420px;width:100%;border-radius:28px;box-shadow:0 12px 48px rgba(45,45,78,.12);display:block;margin:0 auto;}
 
-.streak-banner { background:linear-gradient(135deg,#FF6B6B,#FFD166); border-radius:20px; padding:18px 28px; display:flex; align-items:center; gap:16px; margin-bottom:30px; color:white; box-shadow:0 8px 24px rgba(255,107,107,.3); }
-.streak-icon { font-size:2.5rem; animation:bounce 1.5s infinite; }
-@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-.streak-text h3 { font-family:'Baloo 2',cursive; font-size:1.4rem; font-weight:800; }
-.streak-text p { font-size:.9rem; opacity:.9; }
-.streak-count { margin-left:auto; font-family:'Baloo 2',cursive; font-size:3rem; font-weight:800; }
+/* CTA SECTION */
+.cta-section{text-align:center;padding-bottom:40px;}
+.cta-sub{font-family:'Lora',serif;font-style:italic;font-size:1.1rem;color:#8888AA;margin-bottom:28px;line-height:1.7;}
+.cta-buttons{display:flex;flex-direction:column;align-items:center;gap:14px;}
+.cta-btn-primary{display:inline-flex;align-items:center;justify-content:space-between;gap:20px;background:linear-gradient(135deg,#FF6B6B,#FF8E53);color:white;font-family:'Baloo 2',cursive;font-weight:900;font-size:1.2rem;padding:20px 36px;border-radius:50px;text-decoration:none;box-shadow:0 8px 28px rgba(255,107,107,.4);transition:transform .2s,box-shadow .2s;min-width:320px;}
+.cta-btn-primary:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(255,107,107,.5);}
+.cta-btn-arrow{background:rgba(255,255,255,.25);border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;}
+.cta-btn-secondary{display:inline-block;padding:13px 32px;border-radius:50px;border:2.5px solid #E0DAFF;background:white;font-family:'Nunito',sans-serif;font-weight:800;font-size:.95rem;color:var(--dark);text-decoration:none;transition:all .2s;}
+.cta-btn-secondary:hover{border-color:var(--mint);color:var(--mint);}
+.cta-fine{margin-top:14px;font-size:.82rem;font-weight:700;color:#AAAACC;}
 
-.tabs { display:flex; gap:10px; margin-bottom:28px; overflow-x:auto; padding-bottom:4px; }
-.tab-btn { padding:10px 22px; border-radius:40px; border:none; cursor:pointer; font-family:'Nunito',sans-serif; font-size:var(--font-body); font-weight:700; background:white; color:var(--muted); box-shadow:0 4px 12px rgba(0,0,0,.08); transition:all .25s; white-space:nowrap; display:flex; align-items:center; gap:8px; }
-.tab-btn.active { color:white; transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,.18); }
-.tab-btn[data-tab="academics"].active { background:linear-gradient(135deg,#5ECDA0,#4ECDC4); }
-.tab-btn[data-tab="yoga"].active      { background:linear-gradient(135deg,#C9B8FF,#FF6B6B); }
-.tab-btn[data-tab="reading"].active   { background:linear-gradient(135deg,#FFD166,#FF6B6B); }
-
-.panel { display:none; animation:fadeIn .4s ease; }
-.panel.active { display:block; }
-@keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-
-.section-title { font-family:'Baloo 2',cursive; font-size:var(--font-heading); font-weight:800; margin-bottom:18px; display:flex; align-items:center; gap:10px; }
-
-.cards-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-bottom:28px; }
-.card { background:white; border-radius:28px; padding:20px 12px; box-shadow:0 4px 20px rgba(45,45,78,.10); cursor:pointer; transition:all .3s; position:relative; overflow:hidden; min-height:150px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
-.card:hover { transform:translateY(-6px) scale(1.02); box-shadow:0 16px 40px rgba(45,45,78,.18); }
-.card::before { display:none; }
-.card.mint     { background:linear-gradient(145deg,#E8FFF6,#C5F0E0); }
-.card.coral    { background:linear-gradient(145deg,#FFF0ED,#FFD5CC); }
-.card.lavender { background:linear-gradient(145deg,#F3EFFF,#E0D5FF); }
-.card.sun      { background:linear-gradient(145deg,#FFFAE8,#FFE9A0); }
-.card-icon  { font-size:3.8rem; margin-bottom:10px; filter:drop-shadow(0 4px 8px rgba(0,0,0,.10)); }
-.card-title { font-family:'Baloo 2',cursive; font-size:1rem; font-weight:800; margin-bottom:0; text-align:center; color:#2D2D4E; padding:0 8px; line-height:1.3; }
-.card-desc  { display:none; }
-.card-badge { display:none; }
-.badge-mint    { background:#E8FBF3; color:var(--mint); }
-.badge-coral   { background:#FFF0F0; color:var(--coral); }
-.badge-lavender{ background:#F3EFFF; color:#8B6FE8; }
-.badge-sun     { background:#FFF9E8; color:#D4A017; }
-
-/* K-2 larger card icons */
-body.grade-prek .card-icon, body.grade-k .card-icon, body.grade-1 .card-icon { font-size:4.2rem; }
-
-.stats-row { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:28px; }
-.stat-chip { background:white; border-radius:16px; padding:14px 20px; box-shadow:var(--shadow); flex:1; min-width:90px; text-align:center; }
-.stat-num { font-family:'Baloo 2',cursive; font-size:2rem; font-weight:800; }
-.stat-lbl { color:var(--muted); font-size:.78rem; font-weight:700; text-transform:uppercase; letter-spacing:.5px; }
-.num-mint{ color:var(--mint); } .num-coral{ color:var(--coral); } .num-sun{ color:#D4A017; } .num-lav{ color:#8B6FE8; }
-
-/* K-2: bigger stat numbers */
-body.grade-prek .stat-num, body.grade-k .stat-num, body.grade-1 .stat-num { font-size:2.5rem; }
-
-/* -- QUIZ ---------------------------------------------- */
-.quiz-box { background:white; border-radius:24px; padding:28px; box-shadow:var(--shadow); margin-bottom:28px; }
-.quiz-question { font-family:'Baloo 2',cursive; font-size:var(--font-heading); font-weight:800; margin-bottom:20px; line-height:1.4; }
-.quiz-options { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-.quiz-opt { padding:16px 18px; border-radius:20px; border:3px solid #F0F0F8; background:#FAF9FF; cursor:pointer; font-weight:700; font-size:var(--font-body); transition:all .2s; text-align:center; line-height:1.3; }
-.quiz-opt:hover { border-color:var(--lavender); background:#F3EFFF; transform:scale(1.03); }
-.quiz-opt.correct { border-color:var(--mint); background:#E8FBF3; color:var(--mint); }
-.quiz-opt.wrong   { border-color:var(--coral); background:#FFF0F0; color:var(--coral); }
-
-/* K-2: single column quiz options, extra big */
-body.grade-prek .quiz-options, body.grade-k .quiz-options, body.grade-1 .quiz-options { grid-template-columns:1fr; }
-body.grade-prek .quiz-opt { padding:22px; font-size:1.3rem; }
-body.grade-k .quiz-opt { padding:20px; font-size:1.2rem; }
-body.grade-1 .quiz-opt { padding:18px; font-size:1.1rem; }
-
-.quiz-feedback { margin-top:16px; padding:16px 20px; border-radius:16px; font-weight:700; display:none; font-size:var(--font-body); }
-.quiz-feedback.show { display:block; }
-.quiz-feedback.correct { background:#E8FBF3; color:var(--mint); }
-.quiz-feedback.wrong   { background:#FFF0F0; color:var(--coral); }
-.next-btn { margin-top:16px; padding:14px 32px; border-radius:40px; border:none; background:linear-gradient(135deg,var(--mint),var(--sky)); color:white; font-weight:800; font-size:var(--font-body); cursor:pointer; display:none; font-family:'Nunito',sans-serif; transition:all .2s; }
-.next-btn.show { display:inline-block; }
-
-/* -- PROGRESS ------------------------------------------ */
-.progress-section { background:white; border-radius:24px; padding:24px; box-shadow:var(--shadow); margin-bottom:28px; }
-.progress-item { margin-bottom:18px; }
-.progress-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
-.progress-label { font-weight:700; font-size:var(--font-body); }
-.progress-val { color:var(--muted); font-size:.85rem; font-weight:700; }
-.progress-bar { height:14px; background:#F0F0F8; border-radius:20px; overflow:hidden; }
-.progress-fill { height:100%; border-radius:20px; transition:width 1.5s cubic-bezier(.34,1.56,.64,1); }
-.fill-mint    { background:linear-gradient(90deg,var(--mint),var(--sky)); }
-.fill-coral   { background:linear-gradient(90deg,var(--coral),var(--sunshine)); }
-.fill-lavender{ background:linear-gradient(90deg,var(--lavender),#8B6FE8); }
-
-/* -- YOGA ---------------------------------------------- */
-.yoga-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:16px; margin-bottom:28px; }
-.pose-card { background:white; border-radius:24px; padding:16px 16px 18px; text-align:center; box-shadow:var(--shadow); cursor:pointer; transition:all .3s; position:relative; overflow:hidden; }
-.pose-card:hover { transform:translateY(-4px) scale(1.02); box-shadow:0 16px 40px rgba(45,45,78,0.15); }
-.pose-card.active-pose { border:3px solid var(--lavender); background:linear-gradient(135deg,#FAF8FF,#F0EEFF); }
-.pose-card::before { content:''; position:absolute; top:0; left:0; right:0; height:90px; border-radius:20px 20px 60% 60%; opacity:.08; z-index:0; }
-.pose-card[data-color="mint"]::before    { background:var(--mint); }
-.pose-card[data-color="coral"]::before   { background:var(--coral); }
-.pose-card[data-color="lavender"]::before{ background:var(--lavender); }
-.pose-card[data-color="sun"]::before     { background:var(--sunshine); }
-.pose-card[data-color="sky"]::before     { background:var(--sky); }
-.pose-illustration { width:110px; height:110px; margin:0 auto 10px; display:block; position:relative; z-index:1; }
-img.pose-illustration { width:100% !important; height:130px !important; margin:0 0 10px !important; border-radius:16px; object-fit:cover; display:block; }
-.pose-name   { font-family:'Baloo 2',cursive; font-weight:800; font-size:1rem; color:var(--text); position:relative; z-index:1; }
-.pose-tip    { color:var(--muted); font-size:.78rem; margin-top:4px; font-weight:600; line-height:1.4; position:relative; z-index:1; }
-.pose-level  { position:absolute; top:10px; right:10px; padding:3px 10px; border-radius:20px; font-size:.7rem; font-weight:700; z-index:2; }
-.lvl-easy    { background:#E8FBF3; color:var(--mint); }
-.lvl-medium  { background:#FFF9E8; color:#D4A017; }
-
-body.grade-prek .pose-illustration, body.grade-k .pose-illustration, body.grade-1 .pose-illustration { width:130px; height:130px; }
-body.grade-prek .pose-name, body.grade-k .pose-name, body.grade-1 .pose-name { font-size:1.15rem; }
-
-.timer-box { background:linear-gradient(135deg,#C9B8FF,#8B6FE8); border-radius:24px; padding:30px; text-align:center; color:white; margin-bottom:28px; box-shadow:0 8px 32px rgba(139,111,232,.3); }
-.timer-display { font-family:'Baloo 2',cursive; font-size:5rem; font-weight:800; letter-spacing:4px; margin:10px 0; }
-.timer-label { font-size:1rem; opacity:.85; font-weight:600; }
-.timer-controls { display:flex; justify-content:center; gap:14px; margin-top:18px; }
-.timer-btn { padding:12px 28px; border-radius:40px; border:none; cursor:pointer; font-family:'Nunito',sans-serif; font-weight:800; font-size:1rem; transition:all .2s; }
-.timer-btn.start { background:white; color:#8B6FE8; }
-.timer-btn.reset { background:rgba(255,255,255,.2); color:white; }
-.timer-btn:hover { transform:scale(1.06); }
-
-/* -- YOGA MUSIC PLAYER --------------------------------- */
-.music-player {
-  background: linear-gradient(135deg, #1E1E2E, #2D2D4E);
-  border-radius: 20px; padding: 18px 22px;
-  margin-bottom: 24px; position: relative; overflow: hidden;
-}
-.music-player::before {
-  content:''; position:absolute; inset:0;
-  background-image: radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px);
-  background-size: 18px 18px;
-}
-.music-header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 14px; position: relative; z-index:1;
-}
-.music-title {
-  font-family: 'Baloo 2', cursive; font-weight: 800;
-  font-size: .95rem; color: white;
-  display: flex; align-items: center; gap: 8px;
-}
-.music-title .note { font-size: 1.1rem; animation: floatNote 2s ease-in-out infinite; }
-@keyframes floatNote { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
-.music-now-playing {
-  font-size: .72rem; color: rgba(255,255,255,.55);
-  font-weight: 600; margin-bottom: 14px; position: relative; z-index:1;
-}
-.music-now-playing span { color: var(--sunshine); font-weight: 700; }
-.music-controls {
-  display: flex; align-items: center; gap: 10px;
-  position: relative; z-index:1;
-}
-.music-btn {
-  border: none; cursor: pointer; border-radius: 12px;
-  font-family: 'Nunito', sans-serif; font-weight: 800;
-  transition: all .2s; display: flex; align-items: center; gap: 6px;
-}
-.music-btn.play-pause {
-  background: linear-gradient(135deg, var(--mint), var(--sky));
-  color: white; padding: 10px 20px; font-size: .88rem;
-  box-shadow: 0 4px 16px rgba(94,205,160,.4);
-}
-.music-btn.play-pause:hover { transform: scale(1.05); }
-.music-btn.skip {
-  background: rgba(255,255,255,.1); color: rgba(255,255,255,.7);
-  padding: 10px 14px; font-size: .82rem; border: 1px solid rgba(255,255,255,.15);
-}
-.music-btn.skip:hover { background: rgba(255,255,255,.18); color: white; }
-.music-track-name {
-  flex: 1; font-size: .78rem; font-weight: 700;
-  color: rgba(255,255,255,.65); white-space: nowrap;
-  overflow: hidden; text-overflow: ellipsis;
-}
-.music-volume {
-  display: flex; align-items: center; gap: 8px; margin-top: 12px;
-  position: relative; z-index:1;
-}
-.music-volume label { font-size: .72rem; font-weight: 700; color: rgba(255,255,255,.5); }
-.volume-slider {
-  flex: 1; -webkit-appearance: none; appearance: none;
-  height: 4px; border-radius: 4px;
-  background: rgba(255,255,255,.2); outline: none; cursor: pointer;
-}
-.volume-slider::-webkit-slider-thumb {
-  -webkit-appearance: none; width: 14px; height: 14px;
-  border-radius: 50%; background: var(--mint); cursor: pointer;
-  box-shadow: 0 2px 8px rgba(94,205,160,.5);
-}
-/* hidden YouTube iframe */
-#ytPlayer { position: absolute; width:1px; height:1px; opacity:0; pointer-events:none; }
-
-
-.breathing-area { text-align:center; padding:30px; background:white; border-radius:24px; box-shadow:var(--shadow); margin-bottom:28px; }
-.breath-circle { width:160px; height:160px; border-radius:50%; background:radial-gradient(circle,#E8D4FF,#C9B8FF); margin:0 auto 24px; display:flex; align-items:center; justify-content:center; font-size:3.5rem; animation:breathe 8s ease-in-out infinite; }
-@keyframes breathe { 0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(201,184,255,.4)} 50%{transform:scale(1.4);box-shadow:0 0 0 30px rgba(201,184,255,0)} }
-.breath-instruction { font-family:'Baloo 2',cursive; font-size:var(--font-heading); font-weight:800; margin-bottom:8px; }
-.breath-sub { color:var(--muted); font-size:var(--font-body); font-weight:600; }
-
-body.grade-prek .breath-circle, body.grade-k .breath-circle, body.grade-1 .breath-circle { width:200px; height:200px; font-size:5rem; }
-
-/* -- BOOKS --------------------------------------------- */
-.book-shelf { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:18px; margin-bottom:28px; }
-.book-card { border-radius:20px; padding:22px; cursor:pointer; transition:all .3s; position:relative; overflow:hidden; min-height:180px; display:flex; flex-direction:column; justify-content:flex-end; box-shadow:var(--shadow); }
-.book-card:hover { transform:translateY(-6px) rotate(1deg); }
-.book-card:nth-child(1){background:linear-gradient(160deg,#FFD166,#FF6B6B)}
-.book-card:nth-child(2){background:linear-gradient(160deg,#5ECDA0,#4ECDC4)}
-.book-card:nth-child(3){background:linear-gradient(160deg,#C9B8FF,#8B6FE8)}
-.book-card:nth-child(4){background:linear-gradient(160deg,#FF6B6B,#C9B8FF)}
-.book-card:nth-child(5){background:linear-gradient(160deg,#4ECDC4,#5ECDA0)}
-.book-card:nth-child(6){background:linear-gradient(160deg,#FFD166,#5ECDA0)}
-.book-cover-emoji { font-size:3.2rem; position:absolute; top:14px; right:14px; }
-.book-card-soon { border-radius:20px; padding:22px; position:relative; overflow:hidden; min-height:180px; display:flex; flex-direction:column; justify-content:flex-end; box-shadow:var(--shadow); background:linear-gradient(160deg,#E8E0F0,#D8D0E8); filter:grayscale(30%); }
-.book-card-soon::after { content:''; position:absolute; inset:0; background:rgba(255,255,255,.45); backdrop-filter:blur(1px); border-radius:20px; }
-.book-card-soon .lock-badge { position:absolute; top:12px; left:12px; background:rgba(80,60,120,.7); color:white; font-size:.65rem; font-weight:900; letter-spacing:1.5px; text-transform:uppercase; padding:4px 10px; border-radius:12px; z-index:2; }
-.book-card-soon .book-cover-emoji { opacity:.5; z-index:1; }
-.book-card-soon .book-title { color:#6A5A8A; opacity:.8; position:relative; z-index:2; }
-.book-card-soon .book-author { color:#9A88B8; position:relative; z-index:2; }
-.book-card-soon .coming-tag { font-size:.72rem; font-weight:800; color:#8B6FE8; margin-top:8px; position:relative; z-index:2; }
-.book-title  { font-family:'Baloo 2',cursive; font-weight:800; font-size:1rem; color:white; text-shadow:0 2px 8px rgba(0,0,0,.2); margin-bottom:4px; }
-.book-author { font-size:.8rem; color:rgba(255,255,255,.85); font-weight:600; }
-.book-progress { margin-top:10px; height:7px; background:rgba(255,255,255,.3); border-radius:10px; }
-.book-progress-fill { height:100%; background:white; border-radius:10px; }
-.book-pages  { font-size:.75rem; color:rgba(255,255,255,.9); font-weight:700; margin-top:4px; }
-
-body.grade-prek .book-cover-emoji, body.grade-k .book-cover-emoji, body.grade-1 .book-cover-emoji { font-size:4rem; }
-body.grade-prek .book-title, body.grade-k .book-title, body.grade-1 .book-title { font-size:1.15rem; }
-
-
-/* -- ART TAB ------------------------------------------- */
-.tab-btn[data-tab="art"].active { background:linear-gradient(135deg,#FF6B6B,#FFD166); }
-
-.art-hero { border-radius:24px; padding:28px; margin-bottom:24px; position:relative; overflow:hidden; text-align:center; }
-.art-hero.prek-art { background:linear-gradient(135deg,#FFD166,#FF6B6B); }
-.art-hero.k-art    { background:linear-gradient(135deg,#FF6B6B,#C9B8FF); }
-.art-hero.g1-art   { background:linear-gradient(135deg,#5ECDA0,#FFD166); }
-.art-hero.g2-art   { background:linear-gradient(135deg,#4ECDC4,#C9B8FF); }
-.art-hero.g3-art   { background:linear-gradient(135deg,#C9B8FF,#FF6B6B); }
-.art-hero.g4-art   { background:linear-gradient(135deg,#FFD166,#5ECDA0); }
-.art-hero.g5-art   { background:linear-gradient(135deg,#2D2D4E,#8B6FE8); }
-.art-hero-emoji { font-size:3.5rem; display:block; margin-bottom:8px; }
-.art-hero-title { font-family:'Baloo 2',cursive; font-size:1.6rem; font-weight:800; color:white; margin-bottom:6px; text-shadow:0 2px 8px rgba(0,0,0,.15); }
-.art-hero-sub   { font-size:.9rem; color:rgba(255,255,255,.88); font-weight:600; }
-
-/* Activity cards */
-.art-activities { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; margin-bottom:28px; }
-.art-card {
-  background:white; border-radius:22px; padding:22px;
-  box-shadow:var(--shadow); cursor:pointer; transition:all .25s;
-  border:2.5px solid transparent; position:relative; overflow:hidden;
-}
-.art-card::before { content:''; position:absolute; top:0; left:0; right:0; height:5px; border-radius:22px 22px 0 0; }
-.art-card.ac-coral::before  { background:linear-gradient(90deg,var(--coral),var(--sun)); }
-.art-card.ac-mint::before   { background:linear-gradient(90deg,var(--mint),var(--sky)); }
-.art-card.ac-lav::before    { background:linear-gradient(90deg,var(--lav),var(--coral)); }
-.art-card.ac-sun::before    { background:linear-gradient(90deg,var(--sun),var(--coral)); }
-.art-card.ac-sky::before    { background:linear-gradient(90deg,var(--sky),var(--mint)); }
-.art-card:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(45,45,78,.15); }
-.art-card.ac-coral:hover { border-color:#FFD0CC; }
-.art-card.ac-mint:hover  { border-color:#B8EDD8; }
-.art-card.ac-lav:hover   { border-color:#E0D4FF; }
-.art-card.ac-sun:hover   { border-color:#FFEBAA; }
-.art-card.ac-sky:hover   { border-color:#B8EDFF; }
-.art-card-icon  { font-size:2.4rem; margin-bottom:10px; display:block; }
-.art-card-title { font-family:'Baloo 2',cursive; font-size:1.1rem; font-weight:800; color:var(--dark); margin-bottom:6px; }
-.art-card-desc  { font-size:.84rem; color:var(--muted); line-height:1.6; font-weight:600; margin-bottom:12px; }
-.art-card-badge { display:inline-block; border-radius:20px; padding:4px 12px; font-size:.72rem; font-weight:800; }
-.badge-coral { background:#FFF0EE; color:var(--coral); }
-.badge-mint  { background:#E8FBF3; color:#3AAA7A; }
-.badge-lav   { background:#F0ECFF; color:#7B5FCC; }
-.badge-sun   { background:#FFF8E0; color:#B8860B; }
-.badge-sky   { background:#E0F8FF; color:#1A8FA0; }
-.art-card-steps { margin-top:14px; padding-top:14px; border-top:1.5px dashed #F0EEFF; display:none; }
-.art-card.expanded .art-card-steps { display:block; }
-.art-step { display:flex; gap:10px; align-items:flex-start; margin-bottom:8px; font-size:.83rem; color:var(--body); font-weight:600; line-height:1.5; }
-.art-step-num { width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.7rem; font-weight:800; color:white; flex-shrink:0; margin-top:1px; }
-.ac-coral .art-step-num { background:var(--coral); }
-.ac-mint  .art-step-num { background:var(--mint); }
-.ac-lav   .art-step-num { background:var(--lav); }
-.ac-sun   .art-step-num { background:#E8A020; }
-.ac-sky   .art-step-num { background:var(--sky); }
-.art-card-done-btn {
-  width:100%; margin-top:14px; padding:12px; border:none; border-radius:14px;
-  font-family:'Nunito',sans-serif; font-weight:800; font-size:.88rem;
-  cursor:pointer; transition:all .2s; display:none;
-  background:linear-gradient(135deg,var(--mint),var(--sky)); color:white;
-  box-shadow:0 4px 14px rgba(94,205,160,.35);
-}
-.art-card.expanded .art-card-done-btn { display:block; }
-.art-card-done-btn:hover { transform:scale(1.02); }
-.art-card.completed { opacity:.75; }
-.art-card.completed::after { content:'✅ Done!'; position:absolute; top:14px; right:14px; background:var(--mint); color:white; border-radius:20px; padding:3px 10px; font-size:.72rem; font-weight:800; }
-
-/* Color mixer canvas */
-.color-mixer-box { background:white; border-radius:22px; padding:24px; margin-bottom:24px; box-shadow:var(--shadow); }
-.color-mixer-title { font-family:'Baloo 2',cursive; font-weight:800; font-size:1.1rem; color:var(--dark); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
-.color-swatches { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; }
-.swatch {
-  width:44px; height:44px; border-radius:14px; cursor:pointer; border:3px solid transparent;
-  transition:all .2s; box-shadow:0 3px 10px rgba(0,0,0,.12);
-}
-.swatch:hover { transform:scale(1.15); }
-.swatch.selected { border-color:var(--dark); transform:scale(1.15); box-shadow:0 4px 14px rgba(0,0,0,.25); }
-.color-mix-preview {
-  display:flex; align-items:center; gap:14px; margin-bottom:16px; flex-wrap:wrap;
-}
-.mix-swatch { width:56px; height:56px; border-radius:16px; box-shadow:0 4px 14px rgba(0,0,0,.12); flex-shrink:0; border:3px solid #F0EEFF; }
-.mix-plus { font-size:1.5rem; color:var(--muted); font-weight:800; }
-.mix-equals { font-size:1.5rem; color:var(--muted); font-weight:800; }
-.mix-result { width:70px; height:70px; border-radius:18px; box-shadow:0 6px 20px rgba(0,0,0,.15); flex-shrink:0; transition:background .4s; }
-.mix-label { font-size:.85rem; font-weight:800; color:var(--dark); }
-.color-mix-btn {
-  background:linear-gradient(135deg,var(--coral),var(--sun)); color:white;
-  border:none; border-radius:14px; padding:11px 22px;
-  font-family:'Nunito',sans-serif; font-weight:800; font-size:.88rem;
-  cursor:pointer; box-shadow:0 4px 14px rgba(255,107,107,.3); transition:all .2s;
-}
-.color-mix-btn:hover { transform:translateY(-2px); }
-
-/* Drawing prompt */
-.draw-prompt-box { background:linear-gradient(135deg,#FFF5D0,#FFF0F8); border-radius:22px; padding:24px; margin-bottom:24px; border:2px solid #FFE8AA; }
-.draw-prompt-title { font-family:'Baloo 2',cursive; font-weight:800; color:var(--dark); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
-.draw-prompt-text { font-size:1.05rem; font-weight:700; color:var(--dark); margin-bottom:14px; line-height:1.5; }
-.draw-prompt-tip  { font-size:.82rem; color:var(--muted); font-weight:600; font-style:italic; margin-bottom:14px; }
-.draw-new-btn {
-  background:linear-gradient(135deg,var(--sun),var(--coral)); color:white;
-  border:none; border-radius:14px; padding:10px 20px;
-  font-family:'Nunito',sans-serif; font-weight:800; font-size:.85rem;
-  cursor:pointer; box-shadow:0 4px 12px rgba(255,209,102,.4); transition:all .2s;
-}
-.draw-new-btn:hover { transform:translateY(-2px); }
-
-/* Art progress */
-.art-progress-row { display:flex; gap:14px; margin-bottom:24px; flex-wrap:wrap; }
-.art-stat { background:white; border-radius:18px; padding:16px 20px; flex:1; min-width:100px; text-align:center; box-shadow:var(--shadow); }
-.art-stat-num { font-family:'Baloo 2',cursive; font-size:2rem; font-weight:800; color:var(--coral); display:block; }
-.art-stat-lbl  { font-size:.75rem; color:var(--muted); font-weight:700; margin-top:2px; }
-
-body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
-
-/* -- BOTTOM NAV ---------------------------------------- */
-.bottom-nav { position:fixed; bottom:0; left:0; right:0; background:white; padding:10px 20px; display:flex; justify-content:center; gap:6px; box-shadow:0 -8px 32px rgba(45,45,78,.08); z-index:100; }
-.bottom-nav .tab-btn { font-size:.88rem; padding:10px 20px; }
-
-/* -- MODAL OVERLAY (grade + avatar pickers) ------------ */
-.modal-overlay {
-  position:fixed; inset:0; z-index:9000;
-  background:rgba(45,45,78,.7); backdrop-filter:blur(4px);
-  display:flex; align-items:center; justify-content:center; padding:24px;
-}
-.modal-card {
-  background:white; border-radius:28px; padding:32px;
-  max-width:420px; width:100%;
-  box-shadow:0 24px 80px rgba(45,45,78,.3);
-  animation:fadeUp .3s ease;
-}
-.modal-title {
-  font-family:'Baloo 2',cursive; font-size:1.5rem; font-weight:800;
-  text-align:center; margin-bottom:6px;
-}
-.modal-sub {
-  color:#8888AA; font-size:.9rem; font-weight:600;
-  text-align:center; margin-bottom:22px;
-}
-.grade-grid {
-  display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:20px;
-}
-.grade-opt {
-  padding:14px 8px; border-radius:18px; border:2.5px solid #F0F0F8;
-  background:#FAFAFA; cursor:pointer; font-family:'Baloo 2',cursive;
-  font-weight:800; font-size:.95rem; color:#2D2D4E; transition:all .2s;
-  text-align:center;
-}
-.grade-opt:hover { background:#E8FFF6; border-color:#5ECDA0; transform:scale(1.05); }
-.grade-opt-icon { font-size:1.4rem; display:block; margin-bottom:4px; }
-.grade-opt-label { font-size:.65rem; color:#8888AA; font-weight:600; display:block; }
-.avatar-grid {
-  display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:20px;
-}
-.avatar-opt {
-  aspect-ratio:1; border-radius:18px; border:2.5px solid #F0F0F8;
-  background:#FAFAFA; cursor:pointer; font-size:2rem;
-  transition:all .2s; display:flex; align-items:center; justify-content:center;
-}
-.avatar-opt:hover { background:#F3EFFF; border-color:#C9B8FF; transform:scale(1.12); }
-.modal-cancel {
-  width:100%; padding:12px; border-radius:40px; border:none;
-  background:#F0F0F8; color:#8888AA; font-family:'Nunito',sans-serif;
-  font-weight:700; cursor:pointer; font-size:.9rem; transition:all .2s;
-}
-.modal-cancel:hover { background:#E8E0F8; }
-
-@media(max-width:600px) {
-  .greeting { font-size:calc(var(--font-big) * 0.85); }
-  .timer-display { font-size:3.5rem; }
-  .quiz-options { grid-template-columns:1fr !important; }
-  .streak-count { display:none; }
-  .header-right .date-badge { display:none; }
+@media(max-width:600px){
+  .nav{padding:12px 16px;}
+  .page{padding:80px 16px 80px;}
+  .chapter-body{padding:24px 20px;}
+  .mission-banner{padding:32px 24px;}
+  .signature-card{padding:32px 20px;}
+  .chapter-icon{width:44px;height:44px;font-size:1.2rem;}
+  .cta-btn-primary{min-width:unset;width:100%;}
+  .nav-buttons .btn-login{display:none;}
 }
 </style>
-  <link rel="icon" href="favicon.ico" sizes="32x32">
-  <link rel="icon" href="favicon.png" type="image/png">
 </head>
 <body>
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
 
-<div id="offlineBanner">📡 You're offline -- progress saves when you reconnect!</div>
-<div id="toast"></div>
-
-<!-- ══ AUTH ═════════════════════════════════════════════════ -->
-<div id="authScreen">
-  <div class="auth-card">
-    <div class="auth-logo" style="text-align:center;"><img src="logo.png" alt="BloomiKids" style="width:150px;height:150px;object-fit:cover;border-radius:50%;display:block;margin:0 auto 8px;"></div>
-    <div class="auth-tagline">Learn 📚 &nbsp;·&nbsp; Breathe 🧘 &nbsp;·&nbsp; Read 📖</div>
-    <div class="auth-tabs">
-      <button class="auth-tab active" onclick="showAuthTab('login')">Sign In</button>
-      <button class="auth-tab" onclick="showAuthTab('signup')">Sign Up</button>
-    </div>
-    <div id="loginForm">
-      <div class="form-group"><label>Email</label><input type="email" id="loginEmail" placeholder="parent@email.com"></div>
-      <div class="form-group"><label>Password</label><input type="password" id="loginPassword" placeholder="••••••••"></div>
-      <button class="auth-btn" onclick="handleLogin()">Sign In →</button>
-    </div>
-    <div id="signupForm" style="display:none">
-      <div class="form-group"><label>Your Name</label><input type="text" id="signupName" placeholder="Jane Smith"></div>
-      <div class="form-group"><label>Email</label><input type="email" id="signupEmail" placeholder="parent@email.com"></div>
-      <div class="form-group"><label>Password (min 6 characters)</label><input type="password" id="signupPassword" placeholder="••••••••"></div>
-      <button class="auth-btn" onclick="handleSignup()">Create Free Account →</button>
-    </div>
-    <div class="auth-error" id="authError"></div>
+<nav class="nav">
+  <a href="founders-story.html" class="nav-logo">
+    <img src="logo.png" alt="BloomiKids logo">
+    <span class="nav-logo-text">Bloomi<span>Kids</span></span>
+  </a>
+  <div class="nav-buttons">
+    <a href="app.html" class="btn-login">Log In</a>
+    <a href="app.html" class="btn-signup">Sign Up Free</a>
   </div>
-</div>
+</nav>
 
-<!-- ══ WELCOME SCREEN (first time, no children yet) ══════════ -->
-<div id="welcomeScreen" class="hidden">
-  <div class="welcome-wrap">
-    <div class="welcome-logo-ring">
-      <img src="logo.png" alt="BloomiKids">
-    </div>
-    <div class="welcome-confetti">🌟✨🌱🎉💫</div>
-    <h1 class="welcome-h1">Welcome to<br>BloomiKids! 🎉</h1>
-    <p class="welcome-sub">You're all set! Lets create your child's profile so they can start learning, moving, and reading today.</p>
-    <button class="welcome-btn" onclick="addChild()">
-      <span>➕ Set Up My Child's Profile</span>
-      <span class="welcome-btn-arrow">→</span>
-    </button>
-    <p class="welcome-note">Takes less than 30 seconds · Free for 14 days</p>
-    <button class="logout-link" style="margin-top:24px" onclick="handleLogout()">← Sign out</button>
-  </div>
-</div>
+<div class="page">
 
-<!-- ══ CHILD PICKER ══════════════════════════════════════════ -->
-<div id="childPicker" class="hidden">
-  <div class="picker-title">👋 Who's learning today?</div>
-  <div class="picker-sub">Pick a profile or add a new child</div>
-  <div class="children-grid" id="childrenGrid"><div class="spinner"></div></div>
-  <button class="logout-link" onclick="handleLogout()">← Switch account</button>
-</div>
-
-<!-- ══ MAIN APP ══════════════════════════════════════════════ -->
-<div class="app" id="mainApp" style="display:none">
-  <header>
-    <div class="logo" style="display:flex;align-items:center;gap:10px;"><img src="logo.png" alt="BloomiKids" style="width:44px;height:44px;object-fit:cover;border-radius:50%;flex-shrink:0;">Bloomi<span>Kids</span></div>
-    <div class="header-right">
-      <div class="date-badge" id="dateBadge">📅 ...</div>
-      <button class="user-chip" onclick="switchChild()">
-        <span id="activeChildAvatar">🌟</span>
-        <span id="activeChildName">--</span>
-        <span class="sync-dot" id="syncDot"></span>
-      </button>
-    </div>
-  </header>
-
-  <!-- Grade banner -->
-  <div class="grade-banner">
-    <span>Learning level:</span>
-    <span class="grade-pill" id="gradePill">K</span>
-    <span id="gradeLabel">Kindergarten</span>
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge"><span class="dot"></span> Our Founder's Story</div>
+    <h1 class="hero-headline">
+      Built by an Educator.<br>
+      <span class="c-coral">Inspired</span> by a Little Boy.<br>
+      Made for <span class="c-mint">Every Child.</span>
+    </h1>
+    <p class="hero-intro">
+      BloomiKids didn't start in a boardroom. It started in a living room — with a curious toddler, a pandemic, and a mom who knew exactly what was missing.
+    </p>
   </div>
 
-  <div class="greeting">Good <span id="timeOfDay">Morning</span>, <span id="greetingName">Friend</span>! ⭐</div>
-  <div class="subtitle" id="appSubtitle">Ready for a fun day of learning?</div>
-
-  <div class="streak-banner">
-    <div class="streak-icon">🔥</div>
-    <div class="streak-text">
-      <h3 id="streakTitle">Amazing Streak!</h3>
-      <p id="streakSubtitle">You've been learning every day!</p>
-    </div>
-    <div class="streak-count" id="streakCount">0</div>
+  <!-- Hero photo -->
+  <div class="hero-photo-wrap">
+    <img src="IMG_0949.jpeg" alt="The BloomiKids Experience">
+    <div class="hero-photo-badge">🌸 Where Every Child Blooms</div>
   </div>
 
-  <div class="tabs">
-    <button class="tab-btn active" data-tab="academics" onclick="switchTab('academics')">📚 <span id="tabLearn">Learn</span></button>
-    <button class="tab-btn" data-tab="yoga" onclick="switchTab('yoga')">🧘 <span id="tabMove">Move</span></button>
-    <button class="tab-btn" data-tab="reading" onclick="switchTab('reading')">📖 <span id="tabRead">Read</span></button>
-    <button class="tab-btn" data-tab="art" onclick="switchTab('art')">🎨 <span id="tabArt">Art</span></button>
+  <div class="wave-divider" style="margin-top:56px;">
+    <div class="wave-line"></div>
+    <div class="wave-emoji">🌸</div>
+    <div class="wave-line"></div>
   </div>
 
-  <!-- -- ACADEMICS -- -->
-  <div class="panel active" id="panel-academics">
-    <div class="stats-row">
-      <div class="stat-chip"><div class="stat-num num-mint" id="statTasks">0</div><div class="stat-lbl" id="labelTasks">Done!</div></div>
-      <div class="stat-chip"><div class="stat-num num-coral" id="statAccuracy">--</div><div class="stat-lbl">Right Answers</div></div>
-      <div class="stat-chip"><div class="stat-num num-sun"  id="statMinutes">0</div><div class="stat-lbl">Minutes</div></div>
-      <div class="stat-chip"><div class="stat-num num-lav"  id="statStars">0</div><div class="stat-lbl">⭐ Stars</div></div>
-    </div>
-
-    <div class="section-title" id="subjectsTitle">📖 Today's Subjects</div>
-    <div class="cards-grid" id="subjectCards"></div>
-
-    <div class="section-title" id="quizTitle">🧠 Quiz Time!</div>
-    <div class="quiz-box">
-      <div class="quiz-question" id="quizQuestion">Loading...</div>
-      <div class="quiz-options" id="quizOptions"></div>
-      <div class="quiz-feedback" id="quizFeedback"></div>
-      <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next Question →</button>
-    </div>
-
-    <div class="section-title">📈 My Progress</div>
-    <div class="progress-section" id="progressSection"></div>
+  <!-- Credentials -->
+  <div class="cred-row">
+    <div class="cred-pill"><span class="pip pip-mint"></span> B.S. Human Development &amp; Education</div>
+    <div class="cred-pill"><span class="pip pip-lav"></span> Minor in Psychology</div>
+    <div class="cred-pill"><span class="pip pip-coral"></span> Kindergarten &amp; PreK Teacher</div>
+    <div class="cred-pill"><span class="pip pip-sun"></span> Daycare Director</div>
+    <div class="cred-pill"><span class="pip pip-sky"></span> Mom &amp; Founder</div>
   </div>
 
-  <!-- -- YOGA -- -->
-  <div class="panel" id="panel-yoga">
-    <!-- -- MUSIC PLAYER -- -->
-    <div class="music-player" id="musicPlayer">
-      <iframe id="ytPlayer" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-      <div class="music-header">
-        <div class="music-title"><span class="note">🎵</span> Yoga Music</div>
-      </div>
-      <div class="music-now-playing" id="musicNowPlaying">🎼 Now playing: <span id="trackName">Select a track to begin</span></div>
-      <div class="music-controls">
-        <button class="music-btn play-pause" id="playPauseBtn" onclick="toggleMusic()">> Play</button>
-        <button class="music-btn skip" onclick="nextTrack()">⏭ Next</button>
-        <div class="music-track-name" id="trackList">Tap Play for calming yoga music 🎶</div>
-      </div>
-      <div class="music-volume">
-        <label>🔊 Vol</label>
-        <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="60" oninput="setVolume(this.value)">
-      </div>
-    </div>
+  <!-- Story chapters -->
+  <div class="chapters">
 
-    <div class="section-title">🌬 Breathing Time</div>
-    <div class="breathing-area">
-      <div class="breath-circle" id="breathCircle">🌸</div>
-      <div class="breath-instruction" id="breathInstruction">Breathe In...</div>
-      <div class="breath-sub" id="breathSub">Watch the circle! Breathe in when it gets big, out when it gets small.</div>
-    </div>
-
-    <div class="section-title">⏱ Pose Timer</div>
-    <div class="timer-box">
-      <div class="timer-label" id="timerTopLabel">Pick a pose below!</div>
-      <div class="timer-display" id="timerDisplay">01:00</div>
-      <div class="timer-label" id="timerPose">🧘 Ready to move?</div>
-      <div class="timer-controls">
-        <button class="timer-btn start" id="timerBtn" onclick="toggleTimer()">> Go!</button>
-        <button class="timer-btn reset" onclick="resetTimer()">↺ Again</button>
-      </div>
-    </div>
-
-    <div class="section-title" id="posesTitle">🌟 Fun Poses</div>
-    <div class="yoga-grid" id="yogaGrid"></div>
-
-    <div class="section-title">🌙 Today's Goals</div>
-    <div class="progress-section">
-      <div class="progress-item">
-        <div class="progress-header"><span class="progress-label" id="poseGoalLabel">🧘 Poses Done</span><span class="progress-val" id="yogaPosePct">0/3</span></div>
-        <div class="progress-bar"><div class="progress-fill fill-lavender" id="yogaPoseBar" style="width:0%"></div></div>
-      </div>
-      <div class="progress-item">
-        <div class="progress-header"><span class="progress-label">🌬 Breathing</span><span class="progress-val" id="yogaBreathPct">0/2</span></div>
-        <div class="progress-bar"><div class="progress-fill fill-mint" id="yogaBreathBar" style="width:0%"></div></div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- -- ART -- -->
-  <div class="panel" id="panel-art">
-    <div class="art-hero" id="artHero">
-      <span class="art-hero-emoji" id="artHeroEmoji">🎨</span>
-      <div class="art-hero-title" id="artHeroTitle">Art Studio!</div>
-      <div class="art-hero-sub"  id="artHeroSub">Let's make something beautiful today!</div>
-    </div>
-
-    <div class="art-progress-row">
-      <div class="art-stat"><span class="art-stat-num" id="artDoneCount">0</span><div class="art-stat-lbl">Activities Done</div></div>
-      <div class="art-stat"><span class="art-stat-num" id="artStarCount">0</span><div class="art-stat-lbl">⭐ Stars Earned</div></div>
-      <div class="art-stat"><span class="art-stat-num" id="artStreakCount">🔥</span><div class="art-stat-lbl">Creating Today</div></div>
-    </div>
-
-    <div class="section-title" id="artActivitiesTitle">🖌 Today's Art Activities</div>
-    <div class="art-activities" id="artActivities"></div>
-
-    <div class="section-title">🎨 Color Mixer Lab</div>
-    <div class="color-mixer-box">
-      <div class="color-mixer-title">🔬 Mix two colors -- what do you get?</div>
-      <div class="color-swatches" id="colorSwatches"></div>
-      <div class="color-mix-preview">
-        <div class="mix-swatch" id="mixColor1" style="background:#ccc"></div>
-        <div class="mix-plus">+</div>
-        <div class="mix-swatch" id="mixColor2" style="background:#ccc"></div>
-        <div class="mix-equals">=</div>
-        <div class="mix-result" id="mixResult" style="background:#ccc"></div>
-        <div class="mix-label" id="mixLabel">Pick 2 colors!</div>
-      </div>
-      <button class="color-mix-btn" onclick="mixColors()">Mix Colors! 🎨</button>
-    </div>
-
-    <div class="section-title">✏ Drawing Prompt</div>
-    <div class="draw-prompt-box">
-      <div class="draw-prompt-title">🎯 Today's Drawing Challenge</div>
-      <div class="draw-prompt-text" id="drawPromptText">Tap the button to get your drawing prompt!</div>
-      <div class="draw-prompt-tip"  id="drawPromptTip"></div>
-      <button class="draw-new-btn" onclick="newDrawPrompt()">🎲 New Prompt!</button>
-    </div>
-
-    <div class="section-title">📈 Art Goals</div>
-    <div class="progress-section">
-      <div class="progress-item">
-        <div class="progress-header"><span class="progress-label">🖌 Activities Today</span><span class="progress-val" id="artProgressPct">0/3</span></div>
-        <div class="progress-bar"><div class="progress-fill fill-coral" id="artProgressBar" style="width:0%"></div></div>
-      </div>
-      <div class="progress-item">
-        <div class="progress-header"><span class="progress-label">🌈 Colors Mixed</span><span class="progress-val" id="colorMixPct">0/5</span></div>
-        <div class="progress-bar"><div class="progress-fill fill-sun" id="colorMixBar" style="width:0%"></div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- -- READING -- -->
-  <div class="panel" id="panel-reading">
-    <div class="stats-row">
-      <div class="stat-chip"><div class="stat-num num-mint" id="booksRead">0</div><div class="stat-lbl">Books!</div></div>
-      <div class="stat-chip"><div class="stat-num num-coral" id="totalPages">0</div><div class="stat-lbl">Pages</div></div>
-      <div class="stat-chip"><div class="stat-num num-sun"  id="readingStreak">0</div><div class="stat-lbl">Day Streak</div></div>
-    </div>
-
-    <div class="section-title" id="bookshelfTitle">📚 My Bookshelf</div>
-    <div style="font-size:.82rem;font-weight:700;color:#A89880;margin:-16px 0 18px;display:flex;align-items:center;gap:7px;">
-      <span style="background:linear-gradient(135deg,#5ECDA0,#4ECDC4);color:white;font-size:.65rem;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:20px;">Educator Curated</span>
-      A handpicked library -- new books added every month 🌱
-    </div>
-    <div class="book-shelf" id="bookShelf"><div class="spinner"></div></div>
-
-    <!-- -- Coming Soon -- -->
-    <div class="section-title" style="margin-top:8px;">🔒 Coming Soon</div>
-    <div style="font-size:.82rem;font-weight:700;color:#A89880;margin:-16px 0 18px;">Fresh titles added every month -- stay tuned! ✨</div>
-    <div class="book-shelf" id="comingSoonShelf"></div>
-
-    <div class="section-title">💡 Word of the Day</div>
-    <div class="card mint" id="wordCard" style="cursor:pointer;margin-bottom:28px">
-      <div class="card-icon">💬</div>
-      <div class="card-title" id="wordOfDay">Happy</div>
-      <div class="card-desc"  id="wordDef">Feeling good and joyful inside!</div>
-      <div class="card-badge badge-mint">Tap for a new word ✨</div>
-    </div>
-
-    <div class="section-title">📈 Reading Goals</div>
-    <div class="progress-section">
-      <div class="progress-item">
-        <div class="progress-header"><span class="progress-label">📅 This Week</span><span class="progress-val" id="weeklyReadPct">0/7 days</span></div>
-        <div class="progress-bar"><div class="progress-fill fill-coral" id="weeklyReadBar" style="width:0%"></div></div>
-      </div>
-      <div class="progress-item">
-        <div class="progress-header"><span class="progress-label">📚 Monthly Goal</span><span class="progress-val" id="monthlyReadPct">0/4 books</span></div>
-        <div class="progress-bar"><div class="progress-fill fill-mint" id="monthlyReadBar" style="width:0%"></div></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="bottom-nav">
-  <button class="tab-btn active" data-tab="academics" onclick="switchTab('academics')">📚 <span id="tabLearn2">Learn</span></button>
-  <button class="tab-btn" data-tab="yoga" onclick="switchTab('yoga')">🧘 <span id="tabMove2">Move</span></button>
-  <button class="tab-btn" data-tab="reading" onclick="switchTab('reading')">📖 <span id="tabRead2">Read</span></button>
-  <button class="tab-btn" data-tab="art" onclick="switchTab('art')">🎨 <span id="tabArt2">Art</span></button>
-</div>
-
-<script>
-// ══════════════════════════════════════════════════════
-//  SUPABASE
-// ══════════════════════════════════════════════════════
-const SUPABASE_URL  = 'https://gzpkzbugumnkzoltlpch.supabase.co';
-const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6cGt6YnVndW1ua3pvbHRscGNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxOTI3NDUsImV4cCI6MjA4ODc2ODc0NX0.YQVMl1qwu7X9B_6CJqEC2-zevEeBHVROuWeuPvlp6w0';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-
-// ══════════════════════════════════════════════════════
-//  GRADE-ADAPTIVE CONTENT DATABASE
-// ══════════════════════════════════════════════════════
-const GRADE_DATA = {
-
-  PreK: {
-    label: 'Pre-Kindergarten', gradeNum: -1,
-    ui: {
-      subtitle:    "Time to play and learn! 🎉",
-      streakTitle: 'YAY! You\'re Here!', streakSub: 'You showed up! That\'s amazing! 🌟',
-      tabLearn:'Play!', tabMove:'Dance!', tabRead:'Stories!', tabArt:'Create!',
-      subjectsTitle:'🎨 Fun Things Today!',
-      quizTitle:'🌟 Fun Questions!',
-      posesTitle:'🌟 Let\'s Move!', breathSub:'Watch the big circle! Breathe in big, breathe out slow!',
-      bookshelfTitle:'📚 Story Time!', timerTopLabel:'Hold and breathe!'
-    },
-    subjects:[
-      { icon:'🔢', title:'Numbers Fun', desc:'Count 1 to 10 with friends!', badge:'Count with me!', color:'mint' },
-      { icon:'🔤', title:'ABC Time', desc:'Learn letters A B C D E!', badge:'ABCs!', color:'coral' },
-      { icon:'🎨', title:'Colors & Art', desc:'Paint, draw, and make things!', badge:'Create!', color:'lavender' },
-      { icon:'🐾', title:'Animals & Nature', desc:'Bugs, birds, dogs, and trees!', badge:'Explore!', color:'sun' },
-    ],
-    questions:[
-      { q:'🐶🐶 How many dogs? 🐶', opts:['1','2','3','4'], answer:2, subject:'Numbers' },
-      { q:'🍎 What color is an apple?', opts:['Blue','Red','Green','Purple'], answer:1, subject:'Colors' },
-      { q:'Which letter is this? 🅰', opts:['B','C','A','D'], answer:2, subject:'Letters' },
-      { q:'🐱 What does a cat say?', opts:['Moo','Woof','Meow','Quack'], answer:2, subject:'Animals' },
-      { q:'⭕ Which shape is a circle?', opts:['⬛','⭕','🔺','📄'], answer:1, subject:'Shapes' },
-      { q:'🌈 What comes after Red in a rainbow?', opts:['Blue','Orange','Green','Yellow'], answer:1, subject:'Colors' },
-      { q:'✋ How many fingers on one hand?', opts:['3','4','5','6'], answer:2, subject:'Numbers' },
-      { q:'🌞 When does the sun shine?', opts:['At night','In the morning','Never','Underground'], answer:1, subject:'Nature' },
-    ],
-    subjects_progress:['Numbers Fun','ABC Time','Colors & Art'],
-    poses:[
-      { emoji:'🌳', name:'Tree', tip:'Stand like a big tall tree!', secs:20, level:'Easy' },
-      { emoji:'🐍', name:'Snake', tip:'Lie flat and look up like a snake!', secs:20, level:'Easy' },
-      { emoji:'🦋', name:'Butterfly', tip:'Sit and flap your wings!', secs:30, level:'Easy' },
-      { emoji:'⭐', name:'Star', tip:'Spread your arms and legs wide!', secs:20, level:'Easy' },
-      { emoji:'🐱', name:'Cat Stretch', tip:'Get on your hands and knees and arch!', secs:25, level:'Easy' },
-      { emoji:'🌙', name:'Moon', tip:'Stretch side to side like the moon!', secs:20, level:'Easy' },
-      { emoji:'🏔', name:'Mountain', tip:'Stand up super tall like a big mountain!', secs:15, level:'Easy' },
-      { emoji:'🙏', name:"Child's Pose", tip:'Curl up tiny like a little seed!', secs:20, level:'Easy' },
-      { emoji:'⭐', name:'Star', tip:'Jump wide and be a shining star!', secs:15, level:'Easy' },
-    ],
-    books:[
-      { title:'Pat the Bunny',                  author:'Dorothy Kunhardt', pages:14, read:14, emoji:'🐰', readAloud:'https://www.youtube.com/watch?v=2NpfpkqMbOI' },
-      { title:'The Very Hungry Caterpillar',     author:'Eric Carle',       pages:22, read:10, emoji:'🐛', readAloud:'https://www.youtube.com/watch?v=75NQK-Sm1YY' },
-      { title:'Goodnight Moon',                  author:'M.W. Brown',       pages:32, read:32, emoji:'🌙', readAloud:'https://www.youtube.com/watch?v=1ZTnwYOvo3Q' },
-      { title:'Brown Bear, Brown Bear',          author:'B. Martin Jr',     pages:32, read:0,  emoji:'🐻', readAloud:'https://www.youtube.com/watch?v=WSE5GsRo3GY' },
-      { title:'Duck & Goose',                    author:'Tad Hills',        pages:32, read:0,  emoji:'🦆', readAloud:'https://www.youtube.com/watch?v=7HrCBigwTps' },
-      { title:'Llama Llama Red Pajama',          author:'Anna Dewdney',     pages:40, read:20, emoji:'🦙', readAloud:'https://www.youtube.com/watch?v=JFMBHSdFOSI' },
-      { title:'The Snowy Day',                   author:'E.J. Keats',       pages:40, read:0,  emoji:'❄', readAloud:'https://www.youtube.com/watch?v=d-L3UMJaQbU' },
-      { title:'Chicka Chicka Boom Boom',         author:'B. Martin Jr',     pages:40, read:0,  emoji:'🌴', readAloud:'https://www.youtube.com/watch?v=o_3tP7Pnz3A' },
-      { title:'Corduroy',                        author:'Don Freeman',      pages:32, read:32, emoji:'🐻', readAloud:'https://www.youtube.com/watch?v=AZCdiMH1wEg' },
-    ],
-    words:[
-      { w:'Big',    d:'Very very large! Bigger than you! 🐘' },
-      { w:'Soft',   d:'Nice and fluffy to touch! 🐑' },
-      { w:'Happy',  d:'Feeling smiley and joyful! 😄' },
-      { w:'Fast',   d:'Moving super quickly! 💨' },
-      { w:'Bright', d:'Really shiny and full of light! ☀' },
-    ],
-  },
-
-  K: {
-    label: 'Kindergarten', gradeNum: 0,
-    ui: {
-      subtitle:    "Let's have fun learning today! 🌈",
-      streakTitle: 'Great Job!', streakSub: 'You came back! 🎉',
-      tabLearn:'Learn!', tabMove:'Move!', tabRead:'Read!', tabArt:'Art!',
-      subjectsTitle:'📖 Fun Activities Today!',
-      quizTitle:'🧠 Can You Answer?',
-      posesTitle:'🌟 Fun Moves!', breathSub:'Watch the flower! Big breaths in and out.',
-      bookshelfTitle:'📚 My Books!', timerTopLabel:'Hold this move!'
-    },
-    subjects:[
-      { icon:'🔢', title:'Counting', desc:'Count bears, apples, and toys!', badge:'Let\'s count!', color:'mint' },
-      { icon:'🔤', title:'Letters', desc:'Learn the ABCs and letter sounds!', badge:'ABC time!', color:'coral' },
-      { icon:'🎨', title:'Colors & Shapes', desc:'Circles, squares, and all the colors!', badge:'So colorful!', color:'lavender' },
-      { icon:'🌤', title:'My World', desc:'Weather, animals, and nature!', badge:'Explore!', color:'sun' },
-    ],
-    questions:[
-      { q:'🍎 How many apples? 🍎🍎🍎', opts:['1','2','3','4'], answer:2, subject:'Counting', emoji:true },
-      { q:'Which one is a circle? 🔵', opts:['⬛ Square','🔵 Circle','🔺 Triangle','⬜ Rectangle'], answer:1, subject:'Shapes' },
-      { q:'What letter makes the "Sss" sound?', opts:['B','D','S','T'], answer:2, subject:'Letters' },
-      { q:'🐶 What sound does a dog make?', opts:['Moo!','Woof!','Baa!','Meow!'], answer:1, subject:'Animals' },
-      { q:'🌈 How many colors are in a rainbow?', opts:['3','5','7','9'], answer:2, subject:'My World' },
-      { q:'Which animal can fly? 🐦', opts:['🐟 Fish','🐘 Elephant','🦅 Eagle','🐢 Turtle'], answer:2, subject:'Animals' },
-      { q:'🍌 What color is a banana?', opts:['Red','Blue','Yellow','Green'], answer:2, subject:'Colors' },
-      { q:'How do you spell CAT?', opts:['KAT','CAT','KET','CAD'], answer:1, subject:'Letters' },
-    ],
-    subjects_progress:['Counting','Letters','Colors & Shapes'],
-    poses:[
-      { emoji:'🌳', name:'Tree', tip:'Stand tall like a tree!', secs:30, level:'Easy' },
-      { emoji:'🐍', name:'Snake', tip:'Lie flat and look up!', secs:30, level:'Easy' },
-      { emoji:'🦋', name:'Butterfly', tip:'Flap your wings!', secs:45, level:'Easy' },
-      { emoji:'🌙', name:'Moon', tip:'Stretch like the moon!', secs:30, level:'Easy' },
-      { emoji:'⭐', name:'Star', tip:'Make a big star shape!', secs:30, level:'Easy' },
-      { emoji:'🐱', name:'Cat Stretch', tip:'Arch your back like a cat!', secs:45, level:'Easy' },
-      { emoji:'🏔', name:'Mountain', tip:'Stand tall and still like a mountain!', secs:30, level:'Easy' },
-      { emoji:'🙏', name:"Child's Pose", tip:'Fold down and rest like a sleeping seed!', secs:40, level:'Easy' },
-      { emoji:'⚔', name:'Warrior I', tip:'Step forward and reach your arms up high!', secs:30, level:'Easy' },
-    ],
-    books:[
-      { title:'The Very Hungry Caterpillar', author:'Eric Carle',   pages:22, read:22, emoji:'🐛', readAloud:'https://www.youtube.com/watch?v=75NQK-Sm1YY' },
-      { title:'Where the Wild Things Are',   author:'M. Sendak',    pages:40, read:20, emoji:'🦁', readAloud:'https://www.youtube.com/watch?v=I8mdj5JkaUo' },
-      { title:'Goodnight Moon',              author:'M.W. Brown',   pages:32, read:32, emoji:'🌙', readAloud:'https://www.youtube.com/watch?v=1ZTnwYOvo3Q' },
-      { title:'The Snowy Day',               author:'E.J. Keats',   pages:40, read:10, emoji:'❄', readAloud:'https://www.youtube.com/watch?v=d-L3UMJaQbU' },
-      { title:'Brown Bear, Brown Bear',      author:'B. Martin Jr', pages:32, read:0,  emoji:'🐻', readAloud:'https://www.youtube.com/watch?v=WSE5GsRo3GY' },
-      { title:'If You Give a Mouse a Cookie',author:'L. Numeroff',  pages:40, read:40, emoji:'🍪', readAloud:'https://www.youtube.com/watch?v=HXSHIBIdGYU' },
-      { title:'Pete the Cat: I Love My White Shoes', author:'E. Litwin', pages:40, read:0, emoji:'👟', readAloud:'https://www.youtube.com/watch?v=fj7ylRCCnTI' },
-      { title:'Dragons Love Tacos',           author:'A. Rubin',      pages:40, read:40, emoji:'🐉', readAloud:'https://www.youtube.com/watch?v=8GtMDQoFpvg' },
-      { title:'Dont Let the Pigeon Drive the Bus', author:'M. Willems', pages:40, read:0, emoji:'🐦', readAloud:'https://www.youtube.com/watch?v=P6UoGPbPzCM' },
-    ],
-    words:[
-      { w:'Happy',   d:'Feeling really good and smiley! 😊' },
-      { w:'Big',     d:'Very large in size! 🐘' },
-      { w:'Soft',    d:'Gentle and fluffy to touch! 🐑' },
-      { w:'Friend',  d:'Someone you like to play with! 🤝' },
-      { w:'Bright',  d:'Full of light and color! ☀' },
-    ],
-  },
-
-  1: {
-    label: 'Grade 1', gradeNum: 1,
-    ui: {
-      subtitle:    "You're going to learn awesome things today! 🌟",
-      streakTitle: 'Super Streak!', streakSub: 'Keep it going every day!',
-      tabLearn:'Learn', tabMove:'Move', tabRead:'Read', tabArt:'Art',
-      subjectsTitle:'📖 Today\'s Learning',
-      quizTitle:'🧠 Quiz Time!',
-      posesTitle:'🌟 Yoga Moves', breathSub:'Follow the flower. In when it grows, out when it shrinks!',
-      bookshelfTitle:'📚 My Books', timerTopLabel:'Hold this yoga pose!'
-    },
-    subjects:[
-      { icon:'🔢', title:'Numbers & Adding', desc:'Add numbers up to 20 and count on!', badge:'Let\'s add!', color:'mint' },
-      { icon:'📝', title:'Reading & Writing', desc:'Sound out words and write sentences!', badge:'Sound it out!', color:'coral' },
-      { icon:'🔬', title:'Science Fun', desc:'Plants, animals, and how things work!', badge:'Explore!', color:'lavender' },
-      { icon:'🌍', title:'Our Community', desc:'Families, helpers, and our neighborhood!', badge:'Learn more!', color:'sun' },
-    ],
-    questions:[
-      { q:'🍎🍎🍎 + 🍎🍎 = ?', opts:['4','5','6','7'], answer:1, subject:'Numbers' },
-      { q:'What comes after the letter G?', opts:['F','H','I','J'], answer:1, subject:'Reading' },
-      { q:'Which word rhymes with CAT?', opts:['Dog','Bat','Cup','Hen'], answer:1, subject:'Reading' },
-      { q:'🌱 What do plants need to grow?', opts:['Ice cream','Sunlight & water','Pizza','TV'], answer:1, subject:'Science' },
-      { q:'How many sides does a triangle have?', opts:['2','3','4','5'], answer:1, subject:'Math' },
-      { q:'10 + 5 = ?', opts:['14','15','16','20'], answer:1, subject:'Numbers' },
-      { q:'Who helps us if we get hurt?', opts:['A chef','A doctor','A pilot','A builder'], answer:1, subject:'Community' },
-      { q:'Which word is a color?', opts:['Jump','Soft','Blue','Fast'], answer:2, subject:'Reading' },
-    ],
-    subjects_progress:['Numbers & Adding','Reading & Writing','Science Fun'],
-    poses:[
-      { emoji:'🌳', name:'Tree Pose', tip:'Balance on one foot!', secs:45, level:'Easy' },
-      { emoji:'🦋', name:'Butterfly', tip:'Sit and flap your legs!', secs:60, level:'Easy' },
-      { emoji:'🐍', name:'Cobra', tip:'Lie down and look up!', secs:45, level:'Easy' },
-      { emoji:'🏔', name:'Mountain', tip:'Stand very straight and tall!', secs:60, level:'Easy' },
-      { emoji:'🐱', name:'Cat-Cow', tip:'Arch and dip your back slowly!', secs:60, level:'Easy' },
-      { emoji:'🌙', name:"Child's Pose", tip:'Curl up small and rest!', secs:60, level:'Easy' },
-      { emoji:'⭐', name:'Star', tip:'Stand wide with arms out -- make a big star!', secs:45, level:'Easy' },
-      { emoji:'⚔', name:'Warrior I', tip:'Lunge forward and reach arms to sky!', secs:60, level:'Easy' },
-      { emoji:'🌉', name:'Bridge Pose', tip:'Lie down and push hips up high!', secs:45, level:'Easy' },
-    ],
-    books:[
-      { title:'Green Eggs and Ham',    author:'Dr. Seuss',     pages:62,  read:62,  emoji:'🥚', readAloud:'https://www.youtube.com/watch?v=NRLkiGH5LpU' },
-      { title:'Elephant & Piggie',     author:'Mo Willems',    pages:64,  read:40,  emoji:'🐘', readAloud:'https://www.youtube.com/watch?v=v5ACFiRxGBM' },
-      { title:'Frog and Toad Together',author:'A. Lobel',      pages:64,  read:64,  emoji:'🐸', readAloud:'https://www.youtube.com/watch?v=YLVRl9NW_gI' },
-      { title:'Fly Guy Presents: Bugs',author:'T. Arnold',     pages:48,  read:20,  emoji:'🐛', readAloud:'https://www.youtube.com/watch?v=mTLFjZEPFOY' },
-      { title:'Magic Tree House #1',   author:'M.P. Osborne',  pages:96,  read:0,   emoji:'🌳', readAloud:'https://www.youtube.com/watch?v=EYgdPJtDXCM' },
-      { title:'Junie B. Jones',        author:'B. Park',       pages:72,  read:72,  emoji:'🎒', readAloud:'https://www.youtube.com/watch?v=eBbwMaJDnV4' },
-      { title:'Amelia Bedelia',         author:'P. Parish',     pages:64,  read:0,   emoji:'👒', readAloud:'https://www.youtube.com/watch?v=GR3L3D3FcLk' },
-      { title:'Owl at Home',            author:'A. Lobel',      pages:64,  read:30,  emoji:'🦉', readAloud:'https://www.youtube.com/watch?v=_u7CzLg2yMk' },
-      { title:'The Boxcar Children #1', author:'G.C. Warner',   pages:160, read:0,   emoji:'🚂', readAloud:'https://www.youtube.com/watch?v=CWxoBzz_cEg' },
-    ],
-    words:[
-      { w:'Brave',   d:'Not scared to try new things! 🦁' },
-      { w:'Enormous',d:'Really, really huge and big! 🐘' },
-      { w:'Curious', d:'Wanting to find out and explore! 🔍' },
-      { w:'Gentle',  d:'Being soft and kind with something! 🌸' },
-      { w:'Sparkling',d:'Shining and glittery like stars! ✨' },
-    ],
-  },
-
-  2: {
-    label: 'Grade 2', gradeNum: 2,
-    ui: {
-      subtitle:    "Let's tackle something new and exciting today! 🚀",
-      streakTitle: 'Learning Streak!', streakSub: 'You showed up again -- keep going!',
-      tabLearn:'Academics', tabMove:'Yoga', tabRead:'Reading', tabArt:'Art',
-      subjectsTitle:'📖 Today\'s Subjects',
-      quizTitle:'🧠 Quiz Challenge!',
-      posesTitle:'🌟 Yoga Poses', breathSub:'Follow the circle -- breathe in as it grows, out as it shrinks.',
-      bookshelfTitle:'📚 My Bookshelf', timerTopLabel:'Hold this pose'
-    },
-    subjects:[
-      { icon:'🔢', title:'Math', desc:'Addition, subtraction, and number patterns!', badge:'3 activities', color:'mint' },
-      { icon:'📖', title:'Reading', desc:'Sound out harder words and read stories!', badge:'2 stories', color:'coral' },
-      { icon:'✏', title:'Writing', desc:'Write sentences with describing words!', badge:'1 assignment', color:'lavender' },
-      { icon:'🌍', title:'Social Studies', desc:'Maps, communities, and our world!', badge:'Explore!', color:'sun' },
-    ],
-    questions:[
-      { q:'What is 14 + 8?', opts:['20','21','22','23'], answer:2, subject:'Math' },
-      { q:'What is 20 − 7?', opts:['11','12','13','14'], answer:2, subject:'Math' },
-      { q:'Which word has a silent "e"?', opts:['Cat','Hop','Cake','Fit'], answer:2, subject:'Reading' },
-      { q:'What is the opposite of "hot"?', opts:['Warm','Cold','Wet','Big'], answer:1, subject:'Reading' },
-      { q:'How many days are in a week?', opts:['5','6','7','8'], answer:2, subject:'Social Studies' },
-      { q:'🌊 What covers most of Earth?', opts:['Land','Ice','Water','Desert'], answer:2, subject:'Science' },
-      { q:'Which of these is an adjective?', opts:['Run','Fluffy','Under','Ate'], answer:1, subject:'Writing' },
-      { q:'2 × 3 = ?', opts:['4','5','6','7'], answer:2, subject:'Math' },
-    ],
-    subjects_progress:['Math','Reading','Writing'],
-    poses:[
-      { emoji:'🌳', name:'Tree Pose', tip:'Balance & breathe for 1 minute!', secs:60, level:'Easy' },
-      { emoji:'🏔', name:'Mountain Pose', tip:'Feet together, arms up tall!', secs:90, level:'Easy' },
-      { emoji:'🦋', name:'Butterfly', tip:'Sit tall, hold feet, flap knees!', secs:90, level:'Easy' },
-      { emoji:'🐍', name:'Cobra Pose', tip:'Lie down, press up, open chest!', secs:60, level:'Easy' },
-      { emoji:'⚔', name:'Warrior I', tip:'Lunge forward, reach arms high!', secs:90, level:'Medium' },
-      { emoji:'🐱', name:'Cat-Cow', tip:'On all fours -- arch and release!', secs:90, level:'Easy' },
-      { emoji:'⭐', name:'Star', tip:'Wide stance, arms spread -- feel the stretch!', secs:60, level:'Easy' },
-      { emoji:'⚔', name:'Warrior II', tip:'Arms out wide, gaze forward, hold strong!', secs:90, level:'Medium' },
-      { emoji:'🌉', name:'Bridge Pose', tip:'Lift your hips and breathe!', secs:60, level:'Easy' },
-    ],
-    books:[
-      { title:'Charlotte\'s Web',      author:'E.B. White',    pages:184, read:80,  emoji:'🕷' },
-      { title:'Flat Stanley',          author:'J. Brown',      pages:90,  read:90,  emoji:'📄' },
-      { title:'Nate the Great',        author:'M. Sharmat',    pages:80,  read:50,  emoji:'🔍' },
-      { title:'Magic Tree House #5',   author:'M.P. Osborne',  pages:88,  read:0,   emoji:'🌳' },
-      { title:'Horrible Harry in Room 2B', author:'S. Kline',  pages:72,  read:72,  emoji:'😄' },
-      { title:'Ivy + Bean',            author:'A. Barrows',    pages:115, read:40,  emoji:'🌿' },
-      { title:'The Mouse and the Motorcycle', author:'B. Cleary',  pages:158, read:0,   emoji:'🏍' },
-      { title:'Pippi Longstocking',     author:'A. Lindgren',   pages:160, read:80,  emoji:'🧧' },
-      { title:'Cam Jansen Mystery #1',  author:'D.A. Adler',    pages:80,  read:0,   emoji:'📷' },
-    ],
-    words:[
-      { w:'Curious',    d:'Wanting to know or learn something.' },
-      { w:'Enormous',   d:'Really very large in size.' },
-      { w:'Patient',    d:'Waiting calmly without getting upset.' },
-      { w:'Clever',     d:'Quick to understand or learn things.' },
-      { w:'Determined', d:'Decided firmly to do something.' },
-    ],
-  },
-
-  3: {
-    label: 'Grade 3', gradeNum: 3,
-    ui: {
-      subtitle:    "Ready to challenge yourself today? Let's go! 💪",
-      streakTitle: 'Learning Streak!', streakSub: 'You\'re building great habits!',
-      tabLearn:'Academics', tabMove:'Yoga', tabRead:'Reading', tabArt:'Art',
-      subjectsTitle:'📖 Today\'s Subjects',
-      quizTitle:'🧠 Quick Quiz',
-      posesTitle:'🌟 Yoga Poses', breathSub:'Follow the circle. Breathe in when it grows, out when it shrinks.',
-      bookshelfTitle:'📚 My Bookshelf', timerTopLabel:'Current Pose'
-    },
-    subjects:[
-      { icon:'🔢', title:'Mathematics', desc:'Multiplication, division, and fractions!', badge:'3 lessons left', color:'mint' },
-      { icon:'🔬', title:'Science', desc:'States of matter, ecosystems, and experiments!', badge:'✅ Completed!', color:'coral' },
-      { icon:'✍', title:'Language Arts', desc:'Paragraphs, punctuation, and vocabulary!', badge:'2 exercises left', color:'lavender' },
-      { icon:'🌍', title:'Social Studies', desc:'U.S. regions, maps, and communities!', badge:'New lesson!', color:'sun' },
-    ],
-    questions:[
-      { q:'What is 6 × 7?', opts:['36','40','42','48'], answer:2, subject:'Math' },
-      { q:'What is 45 ÷ 9?', opts:['4','5','6','7'], answer:1, subject:'Math' },
-      { q:'Which sentence has correct punctuation?', opts:['I like cats','I like cats.','i like cats.','I Like cats'], answer:1, subject:'Language Arts' },
-      { q:'What state of matter is water usually?', opts:['Solid','Liquid','Gas','Plasma'], answer:1, subject:'Science' },
-      { q:'What is the capital of the United States?', opts:['New York','Los Angeles','Washington D.C.','Chicago'], answer:2, subject:'Social Studies' },
-      { q:'What is 1/2 of 20?', opts:['5','8','10','12'], answer:2, subject:'Math' },
-      { q:'Which word means the same as "happy"?', opts:['Angry','Joyful','Tired','Scared'], answer:1, subject:'Language Arts' },
-      { q:'What do plants make during photosynthesis?', opts:['Water','Carbon dioxide','Oxygen','Nitrogen'], answer:2, subject:'Science' },
-    ],
-    subjects_progress:['Mathematics','Science','Language Arts'],
-    poses:[
-      { emoji:'🌳', name:'Tree Pose',     tip:'Balance & breathe for 2 minutes!', secs:120, level:'Easy' },
-      { emoji:'🦋', name:'Butterfly',     tip:'Gentle hip stretch -- sit tall!', secs:120, level:'Easy' },
-      { emoji:'🏔', name:'Mountain Pose', tip:'Ground your feet, reach tall!', secs:150, level:'Easy' },
-      { emoji:'🐍', name:'Cobra Pose',    tip:'Strengthen your back muscles!', secs:90,  level:'Easy' },
-      { emoji:'⚔', name:'Warrior I',     tip:'Build leg strength and focus!', secs:120, level:'Medium' },
-      { emoji:'⚔', name:'Warrior II',    tip:'Arms out wide, hold steady!', secs:120, level:'Medium' },
-      { emoji:'🦅', name:'Eagle Pose', tip:'Wrap arms and legs -- find your center!', secs:90, level:'Medium' },
-      { emoji:'🌉', name:'Bridge Pose', tip:'Strong hips lifted -- breathe deeply!', secs:90, level:'Easy' },
-      { emoji:'🙏', name:"Child's Pose", tip:'Rest and reset between poses.', secs:60, level:'Easy' },
-    ],
-    books:[
-      { title:'Charlotte\'s Web',    author:'E.B. White',      pages:184, read:120, emoji:'🕷' },
-      { title:'Matilda',             author:'Roald Dahl',       pages:240, read:60,  emoji:'📖' },
-      { title:'The BFG',             author:'Roald Dahl',       pages:195, read:195, emoji:'👣' },
-      { title:'Magic Tree House #1', author:'M.P. Osborne',     pages:96,  read:96,  emoji:'🌳' },
-      { title:'My Father\'s Dragon', author:'R.S. Gannett',     pages:86,  read:0,   emoji:'🐉' },
-      { title:'Judy Moody',          author:'M. McDonald',      pages:172, read:100, emoji:'😄' },
-      { title:'Encyclopedia Brown',   author:'D.J. Sobol',       pages:96,  read:0,   emoji:'🔎' },
-      { title:'Diary of a Wimpy Kid', author:'J. Kinney',        pages:217, read:100, emoji:'📓' },
-      { title:'The One and Only Ivan', author:'K. Applegate',    pages:305, read:0,   emoji:'🦍' },
-    ],
-    words:[
-      { w:'Perseverance', d:'Continuing to work hard even when things are difficult.' },
-      { w:'Curiosity',    d:'A strong desire to learn and understand new things.' },
-      { w:'Resilience',   d:'The ability to bounce back after something hard.' },
-      { w:'Magnificent',  d:'Extremely beautiful or impressive.' },
-      { w:'Empathy',      d:'Understanding and sharing the feelings of others.' },
-    ],
-  },
-
-  4: {
-    label: 'Grade 4', gradeNum: 4,
-    ui: {
-      subtitle:    "Let's push your learning further today! 🚀",
-      streakTitle: 'Great Streak!', streakSub: 'Consistency is a superpower!',
-      tabLearn:'Academics', tabMove:'Yoga', tabRead:'Reading', tabArt:'Art',
-      subjectsTitle:'📖 Today\'s Subjects',
-      quizTitle:'🧠 Quick Quiz',
-      posesTitle:'🌟 Yoga Poses', breathSub:'Follow the circle. In when it grows, out when it shrinks.',
-      bookshelfTitle:'📚 My Bookshelf', timerTopLabel:'Current Pose'
-    },
-    subjects:[
-      { icon:'🔢', title:'Mathematics', desc:'Multi-digit multiplication, fractions, and decimals!', badge:'3 lessons left', color:'mint' },
-      { icon:'🔬', title:'Science', desc:'Energy, ecosystems, and the scientific method!', badge:'2 lessons left', color:'coral' },
-      { icon:'✍', title:'Language Arts', desc:'Essay writing, figurative language, and grammar!', badge:'1 assignment', color:'lavender' },
-      { icon:'🌍', title:'Social Studies', desc:'U.S. history, regions, and government basics!', badge:'New topic!', color:'sun' },
-    ],
-    questions:[
-      { q:'What is 24 × 7?', opts:['148','168','158','178'], answer:1, subject:'Math' },
-      { q:'What fraction equals 0.5?', opts:['1/3','1/4','1/2','2/3'], answer:2, subject:'Math' },
-      { q:'What is a metaphor?', opts:['A comparison using like or as','Saying something IS something else','A funny exaggeration','A word that sounds like a noise'], answer:1, subject:'Language Arts' },
-      { q:'Which of these is a renewable energy source?', opts:['Coal','Oil','Solar','Natural Gas'], answer:2, subject:'Science' },
-      { q:'What year did the U.S. declare independence?', opts:['1492','1776','1812','1865'], answer:1, subject:'Social Studies' },
-      { q:'What is 360 ÷ 12?', opts:['28','30','32','36'], answer:1, subject:'Math' },
-      { q:'What is the largest planet in our solar system?', opts:['Saturn','Mars','Jupiter','Neptune'], answer:2, subject:'Science' },
-      { q:'In the food chain, what are organisms that make their own food called?', opts:['Consumers','Decomposers','Producers','Predators'], answer:2, subject:'Science' },
-    ],
-    subjects_progress:['Mathematics','Science','Language Arts'],
-    poses:[
-      { emoji:'🌳', name:'Tree Pose',     tip:'2.5 min balance -- switch sides!', secs:150, level:'Easy' },
-      { emoji:'⚔', name:'Warrior I',     tip:'Lunge deep, reach high, breathe!', secs:150, level:'Medium' },
-      { emoji:'⚔', name:'Warrior II',    tip:'Open hips, gaze forward, hold!', secs:150, level:'Medium' },
-      { emoji:'🦅', name:'Eagle Pose',    tip:'Wrap arms and legs, find balance!', secs:120, level:'Medium' },
-      { emoji:'🐍', name:'Cobra Pose',    tip:'Strengthen spine, open chest!', secs:120, level:'Easy' },
-      { emoji:'🌉', name:'Bridge Pose',   tip:'Lift hips, press feet, breathe!', secs:90,  level:'Medium' },
-      { emoji:'🐱', name:'Cat-Cow', tip:'Alternate arch and release -- slow and mindful!', secs:120, level:'Easy' },
-      { emoji:'⭐', name:'Star', tip:'Wide powerful stance, reach through fingertips!', secs:90, level:'Easy' },
-      { emoji:'🙏', name:"Child's Pose", tip:'Surrender into rest -- breathe into your back.', secs:90, level:'Easy' },
-    ],
-    books:[
-      { title:'Harry Potter & the Sorcerer\'s Stone', author:'J.K. Rowling',    pages:309, read:200, emoji:'🧙' },
-      { title:'A Wrinkle in Time',                    author:'M. L\'Engle',      pages:218, read:100, emoji:'⭐' },
-      { title:'Hatchet',                              author:'G. Paulsen',       pages:195, read:195, emoji:'🪓' },
-      { title:'Island of the Blue Dolphins',          author:'S. O\'Dell',       pages:181, read:0,   emoji:'🐬' },
-      { title:'Stuart Little',                        author:'E.B. White',       pages:131, read:131, emoji:'🐭' },
-      { title:'The Phantom Tollbooth',                author:'N. Juster',        pages:256, read:80,  emoji:'🚗' },
-      { title:'Wonder',                               author:'R.J. Palacio',     pages:320, read:150, emoji:'⭐' },
-      { title:'Number the Stars',                     author:'L. Lowry',         pages:160, read:0,   emoji:'⭐' },
-      { title:'Holes',                                author:'L. Sachar',        pages:233, read:233, emoji:'🕳' },
-    ],
-    words:[
-      { w:'Perseverance', d:'Continuing to work hard even when things are difficult.' },
-      { w:'Serendipity',  d:'Finding something good by happy accident.' },
-      { w:'Resilience',   d:'The ability to bounce back after something hard.' },
-      { w:'Diligent',     d:'Working carefully and with effort over time.' },
-      { w:'Ambitious',    d:'Having a strong desire to achieve great things.' },
-    ],
-  },
-
-  5: {
-    label: 'Grade 5', gradeNum: 5,
-    ui: {
-      subtitle:    "Time to challenge yourself and grow! 💡",
-      streakTitle: 'Amazing Streak!', streakSub: 'You\'ve been learning every day!',
-      tabLearn:'Academics', tabMove:'Yoga', tabRead:'Reading', tabArt:'Art',
-      subjectsTitle:'📖 Today\'s Subjects',
-      quizTitle:'🧠 Quick Quiz',
-      posesTitle:'🌟 Yoga Poses', breathSub:'Follow the circle. Breathe in when it grows, out when it shrinks.',
-      bookshelfTitle:'📚 My Bookshelf', timerTopLabel:'Current Pose Duration'
-    },
-    subjects:[
-      { icon:'🔢', title:'Mathematics', desc:'Fractions, decimals, percentages, and geometry!', badge:'3 lessons left', color:'mint' },
-      { icon:'🔬', title:'Science', desc:'Earth systems, matter, and the scientific method!', badge:'✅ Completed!', color:'coral' },
-      { icon:'✍', title:'Language Arts', desc:'Research writing, literary analysis, and debate!', badge:'2 exercises left', color:'lavender' },
-      { icon:'🌍', title:'Social Studies', desc:'U.S. history, economics, and civics!', badge:'New lesson!', color:'sun' },
-    ],
-    questions:[
-      { q:'What is 7 × 8?', opts:['54','56','48','63'], answer:1, subject:'Math' },
-      { q:'What is the capital of France?', opts:['London','Rome','Paris','Berlin'], answer:2, subject:'Social Studies' },
-      { q:'What do plants produce during photosynthesis?', opts:['Carbon dioxide','Water','Oxygen','Nitrogen'], answer:2, subject:'Science' },
-      { q:'Which word is a noun?', opts:['Run','Quickly','Happy','Apple'], answer:3, subject:'Language Arts' },
-      { q:'What is 144 ÷ 12?', opts:['10','11','12','13'], answer:2, subject:'Math' },
-      { q:'What is 3/4 as a decimal?', opts:['0.34','0.70','0.75','0.80'], answer:2, subject:'Math' },
-      { q:'In which layer of Earth do tectonic plates move?', opts:['Crust','Mantle','Outer core','Inner core'], answer:1, subject:'Science' },
-      { q:'What is the main idea of a paragraph called?', opts:['The conclusion','The topic sentence','The transition','The evidence'], answer:1, subject:'Language Arts' },
-    ],
-    subjects_progress:['Mathematics','Science','Language Arts'],
-    poses:[
-      { emoji:'🏔', name:'Mountain Pose', tip:'Stand grounded for 3 min. Focus on breath.', secs:180, level:'Easy' },
-      { emoji:'🌳', name:'Tree Pose',     tip:'Balance on each side for 2 min. Find stillness.', secs:120, level:'Easy' },
-      { emoji:'🦋', name:'Butterfly Pose',tip:'Gentle hip opener. Hold and breathe deeply.', secs:150, level:'Easy' },
-      { emoji:'🐍', name:'Cobra Pose',    tip:'Open your chest, strengthen your back.', secs:90, level:'Easy' },
-      { emoji:'⚔', name:'Warrior Pose',  tip:'Build strength and focus simultaneously.', secs:180, level:'Medium' },
-      { emoji:'🦅', name:'Eagle Pose',    tip:'Full body balance challenge. Hold 2 min each side.', secs:120, level:'Medium' },
-      { emoji:'⚔', name:'Warrior I', tip:'Deepen the lunge, square the hips, reach tall.', secs:150, level:'Medium' },
-      { emoji:'⚔', name:'Warrior II', tip:'Extended hold -- cultivate stillness and power.', secs:150, level:'Medium' },
-      { emoji:'🌉', name:'Bridge Pose', tip:'Three-breath hold, release, repeat twice.', secs:120, level:'Medium' },
-    ],
-    books:[
-      { title:'Charlotte\'s Web',            author:'E.B. White',      pages:184, read:184, emoji:'🕷' },
-      { title:'A Wrinkle in Time',           author:'M. L\'Engle',      pages:218, read:100, emoji:'⭐' },
-      { title:'Harry Potter & Sorcerer\'s Stone', author:'J.K. Rowling',pages:309, read:200, emoji:'🧙' },
-      { title:'Matilda',                     author:'Roald Dahl',       pages:240, read:60,  emoji:'📖' },
-      { title:'Hatchet',                     author:'G. Paulsen',       pages:195, read:0,   emoji:'🪓' },
-      { title:'The Giver',                   author:'L. Lowry',         pages:179, read:50,  emoji:'🌈' },
-      { title:'Bridge to Terabithia',        author:'K. Paterson',      pages:163, read:0,   emoji:'🌉' },
-      { title:'From the Mixed-Up Files of Mrs. Basil E. Frankweiler', author:'E.L. Konigsburg', pages:162, read:162, emoji:'🏛' },
-      { title:'Roll of Thunder, Hear My Cry', author:'M.D. Taylor',     pages:276, read:0,   emoji:'⛈' },
-    ],
-    words:[
-      { w:'Perseverance', d:'Continuing to work hard even when things are difficult.' },
-      { w:'Serendipity',  d:'Finding something good by happy accident.' },
-      { w:'Resilience',   d:'The ability to bounce back after something hard.' },
-      { w:'Magnificent',  d:'Extremely beautiful or impressive.' },
-      { w:'Diligent',     d:'Working carefully and with sustained effort.' },
-    ],
-  },
-};
-
-// ══════════════════════════════════════════════════════
-//  APP STATE
-// ══════════════════════════════════════════════════════
-let currentUser = null, activeChild = null, activeGrade = null, gradeContent = null;
-let sessionData = { streak:0, stars:0, tasks:0, minutes:0 };
-let yogaPoseDone = 0, timerSecs = 60, timerRunning = false, timerInterval;
-let currentPoseName = '', qIdx = 0, answered = false, wIdx = 0;
-
-// Art state
-let artActivitiesDone = 0;
-let artStarsEarned = 0;
-let colorMixCount = 0;
-let colorPick1 = null, colorPick2 = null;
-let drawPromptIdx = 0;
-let artContent = null;
-let artTabBuilt = false;  // ✅ FIX 4: only build art tab once per child session
-
-// -- PWA -----------------------------------------------
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js').catch(()=>{});
-}
-
-// -- Offline -------------------------------------------
-window.addEventListener('offline', () => document.getElementById('offlineBanner').style.display='block');
-window.addEventListener('online',  () => { document.getElementById('offlineBanner').style.display='none'; syncData(); });
-
-// -- Toast ---------------------------------------------
-function toast(msg, dur=2500) {
-  const el = document.getElementById('toast');
-  el.textContent = msg; el.classList.add('show');
-  setTimeout(()=>el.classList.remove('show'), dur);
-}
-function setSyncState(s) {
-  const d = document.getElementById('syncDot');
-  d.className = 'sync-dot' + (s==='syncing'?' syncing':s==='error'?' error':'');
-}
-
-// ══════════════════════════════════════════════════════
-//  AUTH
-// ══════════════════════════════════════════════════════
-function showAuthTab(tab) {
-  document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',(i===0)===(tab==='login')));
-  document.getElementById('loginForm').style.display  = tab==='login'?'block':'none';
-  document.getElementById('signupForm').style.display = tab==='signup'?'block':'none';
-  document.getElementById('authError').classList.remove('show');
-}
-function showAuthError(msg) {
-  const el = document.getElementById('authError');
-  el.textContent = msg; el.classList.add('show');
-}
-async function handleLogin() {
-  const email = document.getElementById('loginEmail').value.trim();
-  const pass  = document.getElementById('loginPassword').value;
-  if (!email||!pass) { showAuthError('Please fill in all fields.'); return; }
-  const btn = document.querySelector('#loginForm .auth-btn');
-  btn.disabled=true; btn.textContent='Signing in...';
-  const {error} = await sb.auth.signInWithPassword({email,password:pass});
-  btn.disabled=false; btn.textContent='Sign In →';
-  if (error) showAuthError(error.message);
-}
-async function handleSignup() {
-  const name = document.getElementById('signupName').value.trim();
-  const email= document.getElementById('signupEmail').value.trim();
-  const pass = document.getElementById('signupPassword').value;
-  if (!name||!email||!pass) { showAuthError('Please fill in all fields.'); return; }
-  if (pass.length<6) { showAuthError('Password must be at least 6 characters.'); return; }
-  const btn = document.querySelector('#signupForm .auth-btn');
-  btn.disabled=true; btn.textContent='Creating account...';
-  const {error} = await sb.auth.signUp({email,password:pass,options:{data:{full_name:name}}});
-  btn.disabled=false; btn.textContent='Create Free Account →';
-  if (error) { showAuthError(error.message); return; }
-  toast('✅ Account created! Check your email, then sign in.'); showAuthTab('login');
-}
-async function handleLogout() {
-  await sb.auth.signOut(); currentUser=null; activeChild=null; showScreen('auth');
-}
-sb.auth.onAuthStateChange(async(event,session)=>{
-  if (session?.user) { currentUser=session.user; showScreen('children'); await loadChildren(); }
-  else {
-    showScreen('auth');
-    const hash = window.location.hash;
-    if (hash === '#signup') showAuthTab('signup');
-    else showAuthTab('login');
-  }
-});
-
-// ══════════════════════════════════════════════════════
-//  SCREEN MANAGEMENT
-// ══════════════════════════════════════════════════════
-function showScreen(s) {
-  document.getElementById('authScreen').classList.toggle('hidden', s!=='auth');
-  document.getElementById('welcomeScreen').classList.toggle('hidden', s!=='welcome');
-  document.getElementById('childPicker').classList.toggle('hidden',s!=='children');
-  document.getElementById('mainApp').style.display = s==='app'?'block':'none';
-}
-function switchChild() { showScreen('children'); loadChildren(); }
-
-// ══════════════════════════════════════════════════════
-//  CHILDREN  ✅ FIX 1: spinner bug — insert().select().single() + error handling
-// ══════════════════════════════════════════════════════
-async function loadChildren() {
-  const grid = document.getElementById('childrenGrid');
-  grid.innerHTML = '<div class="spinner"></div>';
-  showScreen('children');
-
-  let data, error;
-  try {
-    const result = await Promise.race([
-      sb.from('children').select('*').eq('parent_id', currentUser.id),
-      new Promise((_, r) => setTimeout(() => r(new Error('timeout')), 8000))
-    ]);
-    data = result.data;
-    error = result.error;
-  } catch(e) {
-    data = [];
-    error = e;
-  }
-
-  if (error && !error.message?.includes('timeout')) {
-    toast('⚠️ Error loading profiles');
-    grid.innerHTML = '';
-    grid.appendChild(makeAddBtn());
-    return;
-  }
-
-  // First time user — show welcome screen
-  if (!data || data.length === 0) { showScreen('welcome'); return; }
-
-  grid.innerHTML = '';
-  data.forEach(child => {
-    const gradeKey = child.grade || 'K';
-    const gradeLabel = GRADE_DATA[gradeKey]?.label || gradeKey;
-    const btn = document.createElement('button');
-    btn.className = 'child-btn';
-    btn.innerHTML = `<span class="child-avatar">${child.avatar||'🌟'}</span><div class="child-name">${child.name}</div><div class="child-grade-tag">${gradeLabel}</div>`;
-    btn.onclick = () => selectChild(child);
-    grid.appendChild(btn);
-  });
-  grid.appendChild(makeAddBtn());
-}
-
-function makeAddBtn() {
-  const btn = document.createElement('button');
-  btn.className = 'add-child-btn';
-  btn.innerHTML = '➕<br>Add Child';
-  btn.onclick = addChild;
-  return btn;
-}
-
-// ✅ FIX 1 + FIX 2: addChild now uses modal pickers + proper .select().single()
-async function addChild() {
-  const name = prompt("Child's first name?");
-  if (!name || !name.trim()) return;
-
-  const gradeKey = await pickGrade();
-  if (!gradeKey) return;
-
-  const avatar = await pickAvatar();
-  if (!avatar) return;
-
-  const age = { PreK:4, K:5, 1:6, 2:7, 3:8, 4:9, 5:10 }[gradeKey] || 5;
-
-  // Show spinner immediately — user sees feedback
-  const grid = document.getElementById('childrenGrid');
-  grid.innerHTML = '<div class="spinner"></div>';
-  showScreen('children');
-
-  // ✅ KEY FIX: chain .select().single() so Supabase returns the inserted row
-  const { data, error } = await sb
-    .from('children')
-    .insert({ parent_id: currentUser.id, name: name.trim(), age, avatar, grade: gradeKey })
-    .select()
-    .single();
-
-  if (error || !data) {
-    toast('❌ Could not add child. Please try again.');
-    await loadChildren();
-    return;
-  }
-
-  // Supporting rows — non-blocking, fire and forget
-  sb.from('stars').insert({ child_id: data.id, total_stars: 0 }).then(() => {});
-  sb.from('streaks').insert({ child_id: data.id }).then(() => {});
-
-  toast(`🎉 ${name.trim()} added as ${GRADE_DATA[gradeKey].label}!`);
-  await loadChildren();
-}
-
-// ✅ FIX 2: Grade picker — beautiful modal instead of prompt()
-function pickGrade() {
-  return new Promise(resolve => {
-    const overlay = document.createElement('div');
-    overlay.className = 'modal-overlay';
-    const GRADE_ICONS = { PreK:'🌱', K:'🌟', 1:'✏️', 2:'📐', 3:'🔬', 4:'🚀', 5:'🏆' };
-    overlay.innerHTML = `
-      <div class="modal-card">
-        <div class="modal-title">What grade? 🎒</div>
-        <div class="modal-sub">Choose your child's grade level</div>
-        <div class="grade-grid" id="gradeGrid">
-          ${Object.entries(GRADE_DATA).map(([k, v]) => `
-            <button class="grade-opt" data-key="${k}">
-              <span class="grade-opt-icon">${GRADE_ICONS[k] || '📚'}</span>
-              ${k}
-              <span class="grade-opt-label">${v.label.replace('Grade ', 'Gr.')}</span>
-            </button>`).join('')}
+    <div class="chapter ch-mint">
+      <div class="chapter-stripe"></div>
+      <div class="chapter-body">
+        <div class="chapter-top">
+          <div class="chapter-icon">🎓</div>
+          <div class="chapter-meta">
+            <div class="chapter-num">Chapter 01 · The Foundation</div>
+            <div class="chapter-title">I've spent my whole career studying how children learn.</div>
+          </div>
         </div>
-        <button class="modal-cancel">Cancel</button>
-      </div>`;
-    document.body.appendChild(overlay);
-    overlay.querySelector('#gradeGrid').addEventListener('click', e => {
-      const btn = e.target.closest('[data-key]');
-      if (!btn) return;
-      document.body.removeChild(overlay);
-      resolve(btn.dataset.key);
-    });
-    overlay.querySelector('.modal-cancel').addEventListener('click', () => {
-      document.body.removeChild(overlay);
-      resolve(null);
-    });
-  });
-}
-
-// ✅ FIX 2: Avatar picker modal with your emoji set
-function pickAvatar() {
-  return new Promise(resolve => {
-    const AVATARS = ['🦕','🦄','🚀','🦁','🐉','🦋','🐱','🐶','🐼','⭐'];
-    const overlay = document.createElement('div');
-    overlay.className = 'modal-overlay';
-    overlay.style.zIndex = '9001';
-    overlay.innerHTML = `
-      <div class="modal-card">
-        <div class="modal-title">Pick a buddy! 🎨</div>
-        <div class="modal-sub">Choose your child's avatar</div>
-        <div class="avatar-grid" id="avatarGrid">
-          ${AVATARS.map(a => `<button class="avatar-opt" data-avatar="${a}">${a}</button>`).join('')}
+        <p class="chapter-text">With a degree in <strong>Human Development and Education</strong> and a minor in Psychology, I entered the classroom with a deep understanding of how young minds grow — not just academically, but emotionally and physically too. I began my career as a <strong>Kindergarten teacher</strong>, and it was there that I noticed something that stayed with me: by the time many children reached Kindergarten, some were already behind on the foundational skills they needed to thrive.</p>
+        <div class="inline-quote">
+          <p>"By Kindergarten, some children were already missing out on the basics — and I knew the earlier we reached them, the better."</p>
+          <cite>— Founder, BloomiKids</cite>
         </div>
-        <button class="modal-cancel">Cancel</button>
-      </div>`;
-    document.body.appendChild(overlay);
-    overlay.querySelector('#avatarGrid').addEventListener('click', e => {
-      const btn = e.target.closest('[data-avatar]');
-      if (!btn) return;
-      document.body.removeChild(overlay);
-      resolve(btn.dataset.avatar);
-    });
-    overlay.querySelector('.modal-cancel').addEventListener('click', () => {
-      document.body.removeChild(overlay);
-      resolve(null);
-    });
-  });
-}
-
-// ══════════════════════════════════════════════════════
-//  SELECT CHILD & APPLY GRADE
-// ══════════════════════════════════════════════════════
-async function selectChild(child) {
-  activeChild  = child;
-  activeGrade  = child.grade || 'K';
-  gradeContent = GRADE_DATA[activeGrade] || GRADE_DATA['K'];
-  artTabBuilt  = false;  // ✅ Reset so art tab rebuilds for this child
-
-  // Apply grade CSS class to body
-  document.body.className = `grade-${activeGrade.toLowerCase()}`;
-
-  showScreen('app');
-  applyGradeUI();
-  buildSubjectCards();
-  buildYogaGrid();
-  buildProgressSection();
-  initMusicPlayer();
-
-  // Header
-  document.getElementById('activeChildAvatar').textContent = child.avatar||'🌟';
-  document.getElementById('activeChildName').textContent   = child.name;
-  document.getElementById('greetingName').textContent      = child.name;
-  const h = new Date().getHours();
-  document.getElementById('timeOfDay').textContent = h<12?'Morning':h<17?'Afternoon':'Evening';
-  document.getElementById('dateBadge').textContent = '📅 '+new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
-
-  // Grade banner
-  document.getElementById('gradePill').textContent  = activeGrade;
-  document.getElementById('gradeLabel').textContent = gradeContent.label;
-
-  // Word of day
-  wIdx = 0;
-  document.getElementById('wordOfDay').textContent = gradeContent.words[0].w;
-  document.getElementById('wordDef').textContent   = gradeContent.words[0].d;
-
-  // Set default timer from first pose
-  if (gradeContent.poses.length) {
-    timerSecs = gradeContent.poses[0].secs;
-    updateTimerDisplay();
-    currentPoseName = gradeContent.poses[0].name;
-  }
-
-  await Promise.all([updateStreak(), loadDashboardStats()]);
-  renderQuestion();
-  initBreathing();
-  renderBookShelf(gradeContent.books.map((b,i)=>({...b,id:`default_${i}`,book_title:b.title,author:b.author,total_pages:b.pages,pages_read:b.read,completed:b.read>=b.pages})));
-  renderComingSoon();
-}
-
-function applyGradeUI() {
-  const ui = gradeContent.ui;
-  document.getElementById('appSubtitle').textContent    = ui.subtitle;
-  document.getElementById('streakTitle').textContent    = ui.streakTitle;
-  document.getElementById('streakSubtitle').textContent = ui.streakSub;
-  document.getElementById('subjectsTitle').textContent  = ui.subjectsTitle;
-  document.getElementById('quizTitle').textContent      = ui.quizTitle;
-  document.getElementById('posesTitle').textContent     = ui.posesTitle;
-  document.getElementById('breathSub').textContent      = ui.breathSub;
-  document.getElementById('bookshelfTitle').textContent = ui.bookshelfTitle;
-  document.getElementById('timerTopLabel').textContent  = ui.timerTopLabel;
-  ['tabLearn','tabLearn2'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=ui.tabLearn; });
-  ['tabMove', 'tabMove2' ].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=ui.tabMove; });
-  ['tabRead', 'tabRead2' ].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=ui.tabRead; });
-  ['tabArt',  'tabArt2'  ].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=ui.tabArt||'Art'; });
-}
-
-function buildSubjectCards() {
-  const container = document.getElementById('subjectCards');
-  container.innerHTML = gradeContent.subjects.map(s=>`
-    <div class="card ${s.color}" onclick="startSubject('${s.title}')">
-      <div class="card-icon">${s.icon}</div>
-      <div class="card-title">${s.title}</div>
-      <div class="card-desc">${s.desc}</div>
-      <div class="card-badge badge-${s.color==='mint'?'mint':s.color==='coral'?'coral':s.color==='lavender'?'lavender':'sun'}">${s.badge}</div>
-    </div>`).join('');
-}
-
-function buildProgressSection() {
-  const container = document.getElementById('progressSection');
-  const subjects  = gradeContent.subjects_progress;
-  const fills     = ['fill-mint','fill-coral','fill-lavender'];
-  container.innerHTML = subjects.map((subj,i)=>`
-    <div class="progress-item">
-      <div class="progress-header">
-        <span class="progress-label">${['🔢','🔬','✍'][i]||'📖'} ${subj}</span>
-        <span class="progress-val" id="pct_${i}">0%</span>
       </div>
-      <div class="progress-bar"><div class="progress-fill ${fills[i]}" id="pbar_${i}" style="width:0%"></div></div>
-    </div>`).join('');
-  setTimeout(()=>{
-    const vals = [72,88,55];
-    subjects.forEach((_,i)=>{
-      const v = vals[i]||50;
-      const bar = document.getElementById(`pbar_${i}`);
-      const pct = document.getElementById(`pct_${i}`);
-      if (bar) bar.style.width=v+'%';
-      if (pct) pct.textContent=v+'%';
-    });
-  }, 400);
-}
+    </div>
 
-// ══════════════════════════════════════════════════════
-//  YOGA POSES  ✅ FIX 3: photo onerror → SVG fallback
-// ══════════════════════════════════════════════════════
-
-const POSE_SVG = {
-  'Tree': `<svg viewBox="0 0 110 130" xmlns="http://www.w3.org/2000/svg"><ellipse cx="55" cy="127" rx="24" ry="4" fill="#D0C8E8" opacity=".6"/><rect x="50" y="88" width="11" height="32" rx="5" fill="#4488CC"/><ellipse cx="55" cy="121" rx="9" ry="4" fill="#A06830"/><path d="M54 95 Q38 104 36 114" stroke="#4488CC" stroke-width="9" stroke-linecap="round" fill="none"/><ellipse cx="36" cy="115" rx="7" ry="5" fill="#A06830" transform="rotate(-15 36 115)"/><rect x="44" y="52" width="22" height="40" rx="11" fill="#FF6B6B"/><path d="M44 62 Q22 44 27 22" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M66 62 Q88 44 83 22" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/><circle cx="27" cy="20" r="7" fill="#C68642"/><circle cx="83" cy="20" r="7" fill="#C68642"/><rect x="51" y="42" width="10" height="12" rx="5" fill="#C68642"/><circle cx="55" cy="34" r="18" fill="#C68642"/><path d="M37 32 Q38 14 55 13 Q72 14 73 32 Q68 22 55 21 Q42 22 37 32Z" fill="#2C1810"/><circle cx="40" cy="27" r="4" fill="#2C1810"/><circle cx="47" cy="19" r="4.5" fill="#2C1810"/><circle cx="55" cy="16" r="5" fill="#2C1810"/><circle cx="63" cy="19" r="4.5" fill="#2C1810"/><circle cx="70" cy="27" r="4" fill="#2C1810"/><ellipse cx="37" cy="35" rx="4" ry="5" fill="#A06830"/><ellipse cx="73" cy="35" rx="4" ry="5" fill="#A06830"/><ellipse cx="49" cy="34" rx="3" ry="3.5" fill="white"/><ellipse cx="61" cy="34" rx="3" ry="3.5" fill="white"/><circle cx="50" cy="35" r="2" fill="#1A0800"/><circle cx="62" cy="35" r="2" fill="#1A0800"/><ellipse cx="55" cy="40" rx="2.5" ry="1.5" fill="#A06830"/><path d="M49 44 Q55 49 61 44" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>`,
-
-  'Butterfly': `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><ellipse cx="60" cy="116" rx="44" ry="4" fill="#D0C8E8" opacity=".6"/><ellipse cx="24" cy="88" rx="22" ry="13" fill="#5ECDA0" transform="rotate(-18 24 88)"/><ellipse cx="96" cy="88" rx="22" ry="13" fill="#5ECDA0" transform="rotate(18 96 88)"/><ellipse cx="60" cy="94" rx="24" ry="11" fill="#C89060"/><rect x="46" y="56" width="28" height="40" rx="14" fill="#8B6FE8"/><path d="M46 70 Q28 78 22 92" stroke="#E8B88A" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M74 70 Q92 78 98 92" stroke="#E8B88A" stroke-width="8" stroke-linecap="round" fill="none"/><circle cx="21" cy="94" r="7" fill="#E8B88A"/><circle cx="99" cy="94" r="7" fill="#E8B88A"/><rect x="56" y="46" width="9" height="12" rx="4" fill="#E8B88A"/><circle cx="60" cy="38" r="18" fill="#E8B88A"/><circle cx="44" cy="32" r="10" fill="#3D2314"/><circle cx="52" cy="22" r="10" fill="#3D2314"/><circle cx="61" cy="19" r="11" fill="#3D2314"/><circle cx="70" cy="22" r="10" fill="#3D2314"/><circle cx="77" cy="32" r="9" fill="#3D2314"/><ellipse cx="42" cy="39" rx="4" ry="5" fill="#C89060"/><ellipse cx="78" cy="39" rx="4" ry="5" fill="#C89060"/><ellipse cx="54" cy="38" rx="3" ry="3.5" fill="white"/><ellipse cx="66" cy="38" rx="3" ry="3.5" fill="white"/><circle cx="55" cy="39" r="2" fill="#1A0800"/><circle cx="67" cy="39" r="2" fill="#1A0800"/><ellipse cx="60" cy="44" rx="2.5" ry="1.5" fill="#C89060"/><path d="M53 49 Q60 55 67 49" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>`,
-
-  'Mountain': `<svg viewBox="0 0 90 135" xmlns="http://www.w3.org/2000/svg"><ellipse cx="45" cy="131" rx="20" ry="4" fill="#D0C8E8" opacity=".6"/><rect x="36" y="86" width="11" height="38" rx="5" fill="#4488CC"/><rect x="47" y="86" width="11" height="38" rx="5" fill="#4488CC"/><ellipse cx="41" cy="125" rx="9" ry="4" fill="#A06830"/><ellipse cx="53" cy="125" rx="9" ry="4" fill="#A06830"/><rect x="33" y="50" width="28" height="38" rx="13" fill="#FF6B6B"/><path d="M33 62 Q20 66 19 80" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M61 62 Q74 66 75 80" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/><circle cx="19" cy="82" r="7" fill="#C68642"/><circle cx="75" cy="82" r="7" fill="#C68642"/><rect x="41" y="40" width="10" height="12" rx="5" fill="#C68642"/><circle cx="46" cy="31" r="18" fill="#C68642"/><path d="M28 29 Q30 13 46 12 Q62 13 64 29 Q58 20 46 19 Q34 20 28 29Z" fill="#2C1810"/><ellipse cx="28" cy="32" rx="4" ry="5" fill="#A06830"/><ellipse cx="64" cy="32" rx="4" ry="5" fill="#A06830"/><ellipse cx="40" cy="31" rx="3" ry="3.5" fill="white"/><ellipse cx="52" cy="31" rx="3" ry="3.5" fill="white"/><circle cx="41" cy="32" r="2" fill="#1A0800"/><circle cx="53" cy="32" r="2" fill="#1A0800"/><ellipse cx="46" cy="37" rx="2.5" ry="1.5" fill="#A06830"/><path d="M40 42 Q46 46 52 42" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>`,
-
-  'Star': `<svg viewBox="0 0 140 130" xmlns="http://www.w3.org/2000/svg"><ellipse cx="70" cy="126" rx="52" ry="4" fill="#D0C8E8" opacity=".6"/><path d="M62 96 L28 120" stroke="#5ECDA0" stroke-width="12" stroke-linecap="round"/><ellipse cx="24" cy="122" rx="10" ry="5" fill="#C89060" transform="rotate(-20 24 122)"/><path d="M78 96 L112 120" stroke="#5ECDA0" stroke-width="12" stroke-linecap="round"/><ellipse cx="116" cy="122" rx="10" ry="5" fill="#C89060" transform="rotate(20 116 122)"/><rect x="56" y="56" width="28" height="42" rx="14" fill="#8B6FE8"/><path d="M56 70 L14 60" stroke="#E8B88A" stroke-width="9" stroke-linecap="round"/><path d="M84 70 L126 60" stroke="#E8B88A" stroke-width="9" stroke-linecap="round"/><circle cx="12" cy="59" r="8" fill="#E8B88A"/><circle cx="128" cy="59" r="8" fill="#E8B88A"/><rect x="66" y="46" width="10" height="12" rx="5" fill="#E8B88A"/><circle cx="71" cy="37" r="18" fill="#E8B88A"/><circle cx="54" cy="31" r="10" fill="#3D2314"/><circle cx="58" cy="20" r="10" fill="#3D2314"/><circle cx="68" cy="16" r="11" fill="#3D2314"/><circle cx="78" cy="19" r="10" fill="#3D2314"/><circle cx="86" cy="29" r="9" fill="#3D2314"/><ellipse cx="53" cy="38" rx="4" ry="5" fill="#C89060"/><ellipse cx="89" cy="38" rx="4" ry="5" fill="#C89060"/><ellipse cx="65" cy="36" rx="3.5" ry="4" fill="white"/><ellipse cx="77" cy="36" rx="3.5" ry="4" fill="white"/><circle cx="66" cy="37" r="2.2" fill="#1A0800"/><circle cx="78" cy="37" r="2.2" fill="#1A0800"/><ellipse cx="71" cy="42" rx="2.5" ry="1.5" fill="#C89060"/><path d="M63 47 Q71 54 79 47" stroke="#8B4020" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`,
-
-  "Child's Pose": `<svg viewBox="0 0 140 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="70" cy="76" rx="62" ry="4" fill="#D0C8E8" opacity=".6"/><ellipse cx="84" cy="66" rx="28" ry="11" fill="#4488CC"/><ellipse cx="100" cy="70" rx="10" ry="6" fill="#A06830"/><ellipse cx="68" cy="70" rx="10" ry="6" fill="#A06830"/><path d="M80 62 Q60 46 28 44" stroke="#FF6B6B" stroke-width="18" stroke-linecap="round" fill="none"/><path d="M54 54 Q34 46 14 46" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M54 58 Q34 56 14 58" stroke="#C68642" stroke-width="7" stroke-linecap="round" fill="none"/><circle cx="12" cy="47" r="7" fill="#C68642"/><circle cx="12" cy="58" r="7" fill="#C68642"/><circle cx="26" cy="38" r="15" fill="#C68642"/><path d="M14 36 Q16 24 26 23 Q36 24 38 36 Q34 28 26 27 Q18 28 14 36Z" fill="#2C1810"/><ellipse cx="37" cy="38" rx="4" ry="5" fill="#A06830"/></svg>`,
-
-  'Warrior I': `<svg viewBox="0 0 140 130" xmlns="http://www.w3.org/2000/svg"><ellipse cx="70" cy="126" rx="58" ry="4" fill="#D0C8E8" opacity=".6"/><path d="M82 96 L122 118" stroke="#4488CC" stroke-width="13" stroke-linecap="round"/><ellipse cx="124" cy="120" rx="11" ry="5" fill="#A06830" transform="rotate(25 124 120)"/><path d="M62 96 L40 96 L38 120" stroke="#4488CC" stroke-width="13" stroke-linecap="round" fill="none"/><ellipse cx="37" cy="122" rx="11" ry="5" fill="#A06830"/><rect x="58" y="54" width="26" height="44" rx="13" fill="#FF6B6B"/><path d="M60 62 Q48 40 52 18" stroke="#C68642" stroke-width="9" stroke-linecap="round" fill="none"/><path d="M82 62 Q94 40 90 18" stroke="#C68642" stroke-width="9" stroke-linecap="round" fill="none"/><circle cx="52" cy="16" r="8" fill="#C68642"/><circle cx="90" cy="16" r="8" fill="#C68642"/><rect x="67" y="44" width="10" height="12" rx="5" fill="#C68642"/><circle cx="72" cy="34" r="18" fill="#C68642"/><path d="M54 32 Q56 16 72 15 Q88 16 90 32 Q84 23 72 22 Q60 23 54 32Z" fill="#2C1810"/><ellipse cx="54" cy="35" rx="4" ry="5" fill="#A06830"/><ellipse cx="90" cy="35" rx="4" ry="5" fill="#A06830"/><ellipse cx="66" cy="34" rx="3" ry="3.5" fill="white"/><ellipse cx="78" cy="34" rx="3" ry="3.5" fill="white"/><circle cx="67" cy="35" r="2" fill="#1A0800"/><circle cx="79" cy="35" r="2" fill="#1A0800"/><ellipse cx="72" cy="40" rx="2.5" ry="1.5" fill="#A06830"/><path d="M66 45 Q72 49 78 45" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>`,
-
-  'Warrior II': `<svg viewBox="0 0 160 125" xmlns="http://www.w3.org/2000/svg"><ellipse cx="80" cy="121" rx="68" ry="4" fill="#D0C8E8" opacity=".6"/><path d="M92 96 L136 116" stroke="#5ECDA0" stroke-width="13" stroke-linecap="round"/><ellipse cx="138" cy="118" rx="11" ry="5" fill="#C89060" transform="rotate(22 138 118)"/><path d="M68 96 L40 96 L38 118" stroke="#5ECDA0" stroke-width="13" stroke-linecap="round" fill="none"/><ellipse cx="37" cy="120" rx="11" ry="5" fill="#C89060"/><rect x="68" y="54" width="24" height="44" rx="12" fill="#8B6FE8"/><path d="M68 66 L16 66" stroke="#E8B88A" stroke-width="9" stroke-linecap="round"/><path d="M92 66 L144 66" stroke="#E8B88A" stroke-width="9" stroke-linecap="round"/><circle cx="13" cy="66" r="8" fill="#E8B88A"/><circle cx="147" cy="66" r="8" fill="#E8B88A"/><rect x="76" y="44" width="9" height="12" rx="4" fill="#E8B88A"/><circle cx="80" cy="34" r="18" fill="#E8B88A"/><circle cx="63" cy="28" r="10" fill="#3D2314"/><circle cx="68" cy="18" r="10" fill="#3D2314"/><circle cx="78" cy="14" r="11" fill="#3D2314"/><circle cx="88" cy="18" r="10" fill="#3D2314"/><circle cx="96" cy="28" r="9" fill="#3D2314"/><ellipse cx="62" cy="35" rx="4" ry="5" fill="#C89060"/><ellipse cx="98" cy="35" rx="4" ry="5" fill="#C89060"/><ellipse cx="74" cy="33" rx="3" ry="3.5" fill="white"/><ellipse cx="86" cy="33" rx="3" ry="3.5" fill="white"/><circle cx="74" cy="34" r="2" fill="#1A0800"/><circle cx="86" cy="34" r="2" fill="#1A0800"/><ellipse cx="80" cy="39" rx="2.5" ry="1.5" fill="#C89060"/><path d="M74 44 Q80 48 86 44" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>`,
-
-  'Bridge Pose': `<svg viewBox="0 0 150 95" xmlns="http://www.w3.org/2000/svg"><ellipse cx="75" cy="91" rx="66" ry="4" fill="#D0C8E8" opacity=".6"/><rect x="8" y="64" width="40" height="13" rx="6" fill="#E8B88A"/><path d="M18 68 L22 82" stroke="#E8B88A" stroke-width="8" stroke-linecap="round"/><path d="M38 68 L44 82" stroke="#E8B88A" stroke-width="8" stroke-linecap="round"/><circle cx="22" cy="84" r="7" fill="#E8B88A"/><circle cx="45" cy="84" r="7" fill="#E8B88A"/><path d="M48 70 Q75 28 104 70" stroke="#8B6FE8" stroke-width="17" stroke-linecap="round" fill="none"/><path d="M104 70 L118 70 L118 84" stroke="#5ECDA0" stroke-width="12" stroke-linecap="round" fill="none"/><ellipse cx="120" cy="84" rx="11" ry="5" fill="#C89060"/><circle cx="22" cy="57" r="15" fill="#E8B88A"/><circle cx="8" cy="52" r="8" fill="#3D2314"/><circle cx="14" cy="44" r="8" fill="#3D2314"/><circle cx="22" cy="41" r="9" fill="#3D2314"/><circle cx="30" cy="44" r="8" fill="#3D2314"/><circle cx="36" cy="52" r="7" fill="#3D2314"/></svg>`,
-
-  'Eagle Pose': `<svg viewBox="0 0 110 135" xmlns="http://www.w3.org/2000/svg"><ellipse cx="55" cy="131" rx="22" ry="4" fill="#D0C8E8" opacity=".6"/><path d="M55 96 L55 122" stroke="#4488CC" stroke-width="12" stroke-linecap="round"/><ellipse cx="55" cy="123" rx="10" ry="5" fill="#A06830"/><path d="M54 94 Q36 96 34 108 Q34 118 44 120" stroke="#4488CC" stroke-width="10" stroke-linecap="round" fill="none"/><rect x="42" y="54" width="26" height="44" rx="13" fill="#FF6B6B"/><path d="M44 64 Q32 56 34 44 Q38 36 48 40" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M68 64 Q80 56 78 44 Q74 36 64 40" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M40 42 Q55 28 70 42" stroke="#C68642" stroke-width="9" stroke-linecap="round" fill="none"/><rect x="51" y="44" width="10" height="12" rx="5" fill="#C68642"/><circle cx="56" cy="34" r="18" fill="#C68642"/><path d="M38 32 Q40 16 56 15 Q72 16 74 32 Q68 23 56 22 Q44 23 38 32Z" fill="#2C1810"/><ellipse cx="38" cy="35" rx="4" ry="5" fill="#A06830"/><ellipse cx="74" cy="35" rx="4" ry="5" fill="#A06830"/><ellipse cx="50" cy="34" rx="3" ry="3.5" fill="white"/><ellipse cx="62" cy="34" rx="3" ry="3.5" fill="white"/><circle cx="51" cy="35" r="2" fill="#1A0800"/><circle cx="63" cy="35" r="2" fill="#1A0800"/><ellipse cx="56" cy="40" rx="2.5" ry="1.5" fill="#A06830"/><path d="M50 45 Q56 49 62 45" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>`,
-
-  '_default': `<svg viewBox="0 0 90 130" xmlns="http://www.w3.org/2000/svg"><ellipse cx="45" cy="126" rx="22" ry="4" fill="#D0C8E8" opacity=".6"/><rect x="34" y="84" width="11" height="36" rx="5" fill="#4488CC"/><rect x="45" y="84" width="11" height="36" rx="5" fill="#4488CC"/><ellipse cx="39" cy="121" rx="9" ry="4" fill="#A06830"/><ellipse cx="51" cy="121" rx="9" ry="4" fill="#A06830"/><rect x="30" y="48" width="30" height="38" rx="15" fill="#FF6B6B"/><path d="M30 58 Q16 54 14 70" stroke="#C68642" stroke-width="8" stroke-linecap="round"/><path d="M60 58 Q74 54 76 70" stroke="#C68642" stroke-width="8" stroke-linecap="round"/><circle cx="13" cy="72" r="7" fill="#C68642"/><circle cx="77" cy="72" r="7" fill="#C68642"/><rect x="41" y="38" width="10" height="12" rx="5" fill="#C68642"/><circle cx="46" cy="28" r="18" fill="#C68642"/><path d="M28 26 Q30 10 46 9 Q62 10 64 26 Q58 17 46 16 Q34 17 28 26Z" fill="#2C1810"/><ellipse cx="28" cy="29" rx="4" ry="5" fill="#A06830"/><ellipse cx="64" cy="29" rx="4" ry="5" fill="#A06830"/><ellipse cx="40" cy="28" rx="3" ry="3.5" fill="white"/><ellipse cx="52" cy="28" rx="3" ry="3.5" fill="white"/><circle cx="41" cy="29" r="2" fill="#1A0800"/><circle cx="53" cy="29" r="2" fill="#1A0800"/><ellipse cx="46" cy="34" rx="2.5" ry="1.5" fill="#A06830"/><path d="M40 39 Q46 44 52 39" stroke="#8B4020" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`,
-};
-
-// Aliases
-const SVG_ALIASES = {
-  'Tree Pose':'Tree', 'Mountain Pose':'Mountain', 'Butterfly Pose':'Butterfly',
-  'Cobra':'_default', 'Cobra Pose':'_default', 'Snake':'_default',
-  'Cat Stretch':'_default', 'Cat-Cow':'_default', 'Moon':'_default',
-  'Warrior Pose':'Warrior I', 'Butterfly Pose':'Butterfly',
-};
-
-function getPoseSVG(name) {
-  const key = SVG_ALIASES[name] || name;
-  return POSE_SVG[key] || POSE_SVG['_default'];
-}
-
-const POSE_COLORS = {
-  'Tree':'mint','Tree Pose':'mint','Mountain':'sky','Mountain Pose':'sky',
-  'Butterfly':'sun','Butterfly Pose':'sun','Snake':'coral','Cobra':'coral',
-  'Cobra Pose':'coral','Cat Stretch':'mint','Cat-Cow':'mint','Moon':'lavender',
-  'Star':'sun',"Child's Pose":'lavender','Warrior I':'coral','Warrior II':'coral',
-  'Warrior Pose':'coral','Eagle Pose':'sky','Bridge Pose':'mint',
-};
-
-// Photo map — falls back to SVG via onerror if files not in repo
-const POSE_PHOTOS = {
-  'Tree':          { src:'IMG_0857.png', pos:'center 15%' },
-  'Tree Pose':     { src:'IMG_0857.png', pos:'center 15%' },
-  'Snake':         { src:'IMG_0855.png', pos:'center 55%' },
-  'Cobra':         { src:'IMG_0855.png', pos:'center 55%' },
-  'Cobra Pose':    { src:'IMG_0855.png', pos:'center 55%' },
-  'Butterfly':     { src:'IMG_0856.png', pos:'center 40%' },
-  'Butterfly Pose':{ src:'IMG_0856.png', pos:'center 40%' },
-  'Star':          { src:'IMG_0858.png', pos:'center center'},
-  'Warrior I':     { src:'IMG_0859.png', pos:'center center'},
-  'Warrior II':    { src:'IMG_0862.png', pos:'center center'},
-  'Warrior Pose':  { src:'IMG_0861.png', pos:'center center'},
-  'Eagle Pose':    { src:'IMG_0863.png', pos:'center center'},
-  'Bridge Pose':   { src:'IMG_0864.png', pos:'center 60%' },
-  'Cat Stretch':   { src:'IMG_0865.png', pos:'center 50%' },
-  'Cat-Cow':       { src:'IMG_0866.png', pos:'center 50%' },
-  "Child's Pose":  { src:'IMG_0860.png', pos:'center 60%' },
-  'Mountain':      { src:'IMG_0861.png', pos:'center center'},
-  'Mountain Pose': { src:'IMG_0861.png', pos:'center center'},
-  'Moon':          { src:'IMG_0860.png', pos:'center 60%' },
-};
-
-function buildYogaGrid() {
-  const grid = document.getElementById('yogaGrid');
-  grid.innerHTML = gradeContent.poses.map(p => {
-    const color = POSE_COLORS[p.name] || 'mint';
-    const photo = POSE_PHOTOS[p.name];
-
-    // ✅ FIX 3: img has onerror that hides it and shows SVG fallback
-    const illustration = photo
-      ? `<img src="${photo.src}" alt="${p.name}" class="pose-illustration"
-           style="object-fit:cover;border-radius:16px;object-position:${photo.pos};width:100%;height:130px;"
-           onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-         <div class="pose-illustration" style="display:none;">${getPoseSVG(p.name)}</div>`
-      : `<div class="pose-illustration">${getPoseSVG(p.name)}</div>`;
-
-    return `
-    <div class="pose-card" data-color="${color}" onclick="selectPose(this,'${p.name.replace(/'/g,"\\'")}',${p.secs})">
-      <span class="pose-level lvl-${p.level==='Easy'?'easy':'medium'}">${p.level}</span>
-      ${illustration}
-      <div class="pose-name">${p.name}</div>
-      <div class="pose-tip">${p.tip}</div>
-    </div>`;
-  }).join('');
-}
-
-// ══════════════════════════════════════════════════════
-//  STREAK
-// ══════════════════════════════════════════════════════
-async function updateStreak() {
-  const today = new Date().toISOString().split('T')[0];
-  const {data} = await sb.from('streaks').select('*').eq('child_id',activeChild.id).single();
-  if (!data) return;
-  let streak = data.current_streak||0;
-  if (data.last_active !== today) {
-    const yesterday = new Date(Date.now()-86400000).toISOString().split('T')[0];
-    streak = (data.last_active===yesterday) ? streak+1 : 1;
-    await sb.from('streaks').update({current_streak:streak,longest_streak:Math.max(streak,data.longest_streak||0),last_active:today,updated_at:new Date().toISOString()}).eq('child_id',activeChild.id);
-  }
-  document.getElementById('streakCount').textContent = streak;
-  sessionData.streak = streak;
-}
-
-// ══════════════════════════════════════════════════════
-//  DASHBOARD STATS
-// ══════════════════════════════════════════════════════
-async function loadDashboardStats() {
-  const today = new Date().toISOString().split('T')[0];
-  const {data:star} = await sb.from('stars').select('total_stars').eq('child_id',activeChild.id).single();
-  if (star) { document.getElementById('statStars').textContent=star.total_stars; sessionData.stars=star.total_stars; }
-  const {data:act} = await sb.from('daily_activity').select('*').eq('child_id',activeChild.id).eq('activity_date',today).single();
-  if (act) {
-    document.getElementById('statTasks').textContent   = act.tasks_done;
-    document.getElementById('statMinutes').textContent = act.minutes_academic+act.minutes_yoga+act.minutes_reading;
-    sessionData.tasks=act.tasks_done; sessionData.minutes=act.minutes_academic+act.minutes_yoga+act.minutes_reading;
-  }
-  const {data:quiz} = await sb.from('quiz_results').select('correct').eq('child_id',activeChild.id).gte('answered_at',new Date(Date.now()-7*86400000).toISOString());
-  if (quiz?.length) {
-    const acc = Math.round(100*quiz.filter(q=>q.correct).length/quiz.length);
-    document.getElementById('statAccuracy').textContent = acc+'%';
-  }
-  const completed = gradeContent.books.filter(b=>b.read>=b.pages).length;
-  const totalPgs  = gradeContent.books.reduce((s,b)=>s+(b.read||0),0);
-  document.getElementById('booksRead').textContent   = completed;
-  document.getElementById('totalPages').textContent  = totalPgs;
-  document.getElementById('readingStreak').textContent=sessionData.streak;
-}
-
-// ══════════════════════════════════════════════════════
-//  QUIZ
-// ══════════════════════════════════════════════════════
-function renderQuestion() {
-  answered=false;
-  const questions = gradeContent.questions;
-  const q = questions[qIdx % questions.length];
-  document.getElementById('quizQuestion').textContent = q.q;
-  const opts = document.getElementById('quizOptions');
-  opts.innerHTML = q.opts.map((o,i)=>
-    `<button class="quiz-opt" onclick="checkAnswer(this,${i===q.answer})">${o}</button>`
-  ).join('');
-  document.getElementById('quizFeedback').className='quiz-feedback';
-  document.getElementById('nextBtn').className='next-btn';
-}
-
-const feedbackMessages = {
-  PreK: { correct:['🎉 YAY YAY YAY! So smart!','⭐ WOW! You did it!','🌈 AMAZING! You\'re wonderful!','🎊 That\'s RIGHT! You\'re a star!'], wrong:['💛 Oops! Let\'s try again!','🤗 Almost! You\'re so close!','💪 Keep trying -- you\'ve got this!'] },
-  K:    { correct:['🎉 YAY! You got it!','⭐ AMAZING! You\'re so smart!','🌈 WOW! Brilliant!'],  wrong:['💛 Good try! Let\'s try again!','💪 Almost! You can do it!'] },
-  1:    { correct:['🎉 Fantastic! You got it!','⭐ Awesome work!','🌟 Super job!'],                wrong:['💛 Good try! Keep going!','💪 Almost there! Try again!'] },
-  2:    { correct:['🎉 Great job! That\'s right!','⭐ Well done!','✅ Correct! Nice work!'],       wrong:['💛 Not quite -- but keep trying!','💪 Good effort! Try again!'] },
-  3:    { correct:['🎉 Correct! Great work!','⭐ Excellent! +10 stars!','✅ Right answer!'],        wrong:['💪 Not quite! Review and try again!','📚 Good effort -- keep going!'] },
-  4:    { correct:['🎉 Correct! Well done!','⭐ Excellent reasoning! +10 stars!'],                wrong:['💪 Not quite! Think it through and try again.'] },
-  5:    { correct:['🎉 Correct! Excellent thinking!','⭐ Strong answer! +10 stars!'],             wrong:['💪 Not this time -- review your notes and try again.'] },
-};
-
-async function checkAnswer(btn, correct) {
-  if (answered) return;
-  answered=true;
-  btn.classList.add(correct?'correct':'wrong');
-  const msgs = feedbackMessages[activeGrade]||feedbackMessages[5];
-  const pool = correct?msgs.correct:msgs.wrong;
-  const msg  = pool[Math.floor(Math.random()*pool.length)];
-  const fb   = document.getElementById('quizFeedback');
-  fb.textContent = msg;
-  fb.className   = `quiz-feedback show ${correct?'correct':'wrong'}`;
-  document.getElementById('nextBtn').className='next-btn show';
-  const stars = correct?10:2;
-  setSyncState('syncing');
-  try {
-    const q = gradeContent.questions[qIdx%gradeContent.questions.length];
-    await sb.from('quiz_results').insert({child_id:activeChild.id,subject:q.subject,question:q.q,correct,stars_earned:stars});
-    await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:stars});
-    await upsertDailyActivity({tasks_done:sessionData.tasks+1});
-    sessionData.tasks++; sessionData.stars+=stars;
-    document.getElementById('statTasks').textContent=sessionData.tasks;
-    document.getElementById('statStars').textContent=sessionData.stars;
-    setSyncState('');
-    if (correct) toast(`⭐ +${stars} stars!`);
-  } catch(e) { setSyncState('error'); }
-}
-function nextQuestion() { qIdx++; renderQuestion(); }
-
-// ══════════════════════════════════════════════════════
-//  YOGA TIMER
-// ══════════════════════════════════════════════════════
-function toggleTimer() {
-  if (!timerRunning) {
-    timerRunning=true;
-    document.getElementById('timerBtn').textContent='⏸ Pause';
-    timerInterval=setInterval(async()=>{
-      if (timerSecs>0) { timerSecs--; updateTimerDisplay(); }
-      else { clearInterval(timerInterval); timerRunning=false; document.getElementById('timerBtn').textContent='✅ Done!'; await saveYogaSession(); }
-    },1000);
-  } else {
-    timerRunning=false; clearInterval(timerInterval);
-    document.getElementById('timerBtn').textContent='> Resume';
-  }
-}
-function resetTimer() {
-  clearInterval(timerInterval); timerRunning=false;
-  if (gradeContent?.poses?.length) timerSecs=gradeContent.poses[0].secs; else timerSecs=60;
-  updateTimerDisplay(); document.getElementById('timerBtn').textContent=activeGrade==='PreK'||activeGrade==='K'||activeGrade==='1'?'> Go!':'> Start';
-}
-function updateTimerDisplay() {
-  const m=Math.floor(timerSecs/60).toString().padStart(2,'0');
-  const s=(timerSecs%60).toString().padStart(2,'0');
-  document.getElementById('timerDisplay').textContent=`${m}:${s}`;
-}
-function selectPose(el,name,secs) {
-  document.querySelectorAll('.pose-card').forEach(p=>p.classList.remove('active-pose'));
-  el.classList.add('active-pose');
-  timerSecs=secs; currentPoseName=name; updateTimerDisplay();
-  document.getElementById('timerPose').textContent='🧘 '+name;
-  document.getElementById('timerBtn').textContent=activeGrade==='K'||activeGrade==='1'?'> Go!':'> Start';
-  clearInterval(timerInterval); timerRunning=false;
-}
-async function saveYogaSession() {
-  setSyncState('syncing');
-  try {
-    const pose = gradeContent.poses.find(p=>p.name===currentPoseName)||gradeContent.poses[0];
-    await sb.from('yoga_sessions').insert({child_id:activeChild.id,pose_name:currentPoseName,duration_secs:pose.secs,completed:true});
-    yogaPoseDone++;
-    const goal = activeGrade==='PreK'||activeGrade==='K'||activeGrade==='1'?3:5;
-    const pct  = Math.min(100,Math.round(yogaPoseDone/goal*100));
-    document.getElementById('yogaPoseBar').style.width=pct+'%';
-    document.getElementById('yogaPosePct').textContent=`${yogaPoseDone}/${goal}`;
-    await upsertDailyActivity({minutes_yoga:Math.round(pose.secs/60)});
-    await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:15});
-    sessionData.stars+=15; document.getElementById('statStars').textContent=sessionData.stars;
-    setSyncState('');
-    toast(activeGrade==='PreK'||activeGrade==='K'||activeGrade==='1'?'🎉 Great move! +15 stars!':'🧘 Pose complete! +15 stars');
-  } catch(e) { setSyncState('error'); }
-}
-
-function initBreathing() {
-  const isYoung = activeGrade==='PreK'||activeGrade==='K'||activeGrade==='1';
-  const phrases = isYoung
-    ? ['Breathe In BIG! 🌬','Hold it... ✨','Let it out... 🍃','Relax! 💫']
-    : ['Breathe In... 🌬','Hold... ✨','Breathe Out... 🍃','Relax... 💫'];
-  let bIdx=0;
-  const el=document.getElementById('breathInstruction');
-  if (el._breathInterval) clearInterval(el._breathInterval);
-  el._breathInterval=setInterval(()=>{ bIdx=(bIdx+1)%phrases.length; el.textContent=phrases[bIdx]; },2000);
-}
-
-// ══════════════════════════════════════════════════════
-//  READING
-// ══════════════════════════════════════════════════════
-function renderBookShelf(books) {
-  const shelf=document.getElementById('bookShelf');
-  shelf.innerHTML=books.map((b,i)=>{
-    const pct=b.total_pages>0?Math.round(100*b.pages_read/b.total_pages):0;
-    const done=b.completed||pct>=100;
-    const ra = b.readAloud || '';
-    return `
-      <div class="book-card" onclick="openBook('${(b.book_title||b.title).replace(/'/g,"\\'")}','${b.id||i}')">
-        <div class="book-cover-emoji">${b.emoji||'📖'}</div>
-        ${ra ? '<div style="position:absolute;top:12px;left:12px;background:rgba(255,255,255,.9);border-radius:12px;padding:3px 8px;font-size:.65rem;font-weight:800;color:#8B6FE8;z-index:2;">👨‍👧 Read Together</div>' : ''}
-        <div class="book-title">${b.book_title||b.title}</div>
-        <div class="book-author">by ${b.author}</div>
-        <div class="book-progress"><div class="book-progress-fill" style="width:${pct}%"></div></div>
-        <div class="book-pages">${done?'✅ Finished! 🎉':`📄 ${b.pages_read}/${b.total_pages} pages · ${pct}%`}</div>
-      </div>`;
-  }).join('');
-  const completed=books.filter(b=>b.completed||(b.pages_read>=b.total_pages)).length;
-  const totalPages=books.reduce((s,b)=>s+(b.pages_read||b.read||0),0);
-  document.getElementById('booksRead').textContent =completed;
-  document.getElementById('totalPages').textContent=totalPages;
-  const mPct=Math.min(100,Math.round(completed/4*100));
-  document.getElementById('monthlyReadBar').style.width=mPct+'%';
-  document.getElementById('monthlyReadPct').textContent=`${completed}/4 books`;
-}
-
-function renderComingSoon() {
-  const comingSoon = [
-    { emoji:'🦁', title:'The Lion, the Witch and the Wardrobe', author:'C.S. Lewis', grade:'Grades 4-5' },
-    { emoji:'🕷', title:'James and the Giant Peach', author:'Roald Dahl', grade:'Grades 3-4' },
-    { emoji:'🌊', title:'Island of the Blue Dolphins', author:'Scott O\'Dell', grade:'Grade 5' },
-    { emoji:'🐉', title:'My Father\'s Dragon', author:'Ruth Stiles Gannett', grade:'Grades 2-3' },
-    { emoji:'🌟', title:'Ramona the Pest', author:'Beverly Cleary', grade:'Grades 2-3' },
-    { emoji:'🚀', title:'George\'s Secret Key to the Universe', author:'Lucy & Stephen Hawking', grade:'Grades 3-5' },
-  ];
-  const shelf = document.getElementById('comingSoonShelf');
-  if (!shelf) return;
-  shelf.innerHTML = comingSoon.map(b => `
-    <div class="book-card-soon">
-      <div class="lock-badge">🔒 Coming Soon</div>
-      <div class="book-cover-emoji">${b.emoji}</div>
-      <div class="book-title">${b.title}</div>
-      <div class="book-author">by ${b.author}</div>
-      <div class="coming-tag">✨ ${b.grade} · Added Monthly</div>
-    </div>`).join('');
-}
-
-async function openBook(title,bookId) {
-  const pagesStr=prompt(`📖 "${title}" -- How many pages did you read today?`);
-  const pages=parseInt(pagesStr,10);
-  if (!pages||pages<=0) return;
-  setSyncState('syncing');
-  try {
-    await upsertDailyActivity({minutes_reading:pages*2});
-    await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:pages});
-    sessionData.stars+=pages; document.getElementById('statStars').textContent=sessionData.stars;
-    setSyncState('');
-    toast(activeGrade==='PreK'||activeGrade==='K'||activeGrade==='1' ? `📖 ${pages} pages! You're a reader! ⭐` : `📖 +${pages} pages logged! +${pages} stars`);
-  } catch(e) { setSyncState('error'); }
-}
-
-// ══════════════════════════════════════════════════════
-//  ART CONTENT DATABASE (per grade)
-// ══════════════════════════════════════════════════════
-const ART_DATA = {
-  PreK: {
-    heroClass:'prek-art', heroEmoji:'🌈', heroTitle:'Color & Play!', heroSub:"Let's paint, draw and make things today!",
-    activitiesTitle:'🎨 Fun Art Today!',
-    activities:[
-      { icon:'🖐', title:'Handprint Rainbow', desc:'Use your hands to make a colorful rainbow painting!', color:'coral', badge:'Super fun!', badge_style:'badge-coral',
-        steps:['Put paint on your palm -- try red, orange, yellow!','Press your hand on paper to make a rainbow arc.','Do it with each color. Let them dry.','Add clouds and sunshine around your rainbow! ☁'] },
-      { icon:'🔵', title:'Shape Collage', desc:'Cut or tear colored paper into circles, squares and triangles and glue them to make a picture!', color:'mint', badge:'Shapes!', badge_style:'badge-mint',
-        steps:['Tear colored paper into different shapes.','Arrange them on white paper to make a picture.','Glue everything down.','Add details with crayons! ✏'] },
-      { icon:'🍂', title:'Leaf Rubbing', desc:'Place a leaf under paper and rub a crayon over it to see the leaf appear like magic!', color:'sun', badge:'Magic!', badge_style:'badge-sun',
-        steps:['Find a leaf outside or use a fake one.','Place it under a piece of white paper.','Rub the side of a crayon gently over the paper.','Watch the leaf appear! Try different colors! 🍃'] },
-    ],
-    drawPrompts:[
-      { text:'🐱 Draw your favorite animal wearing a hat!', tip:'Use circles for the head and oval shapes for the body.' },
-      { text:'🌈 Draw a rainbow with something at each end!', tip:'Try a pot of gold, a unicorn, or your house!' },
-      { text:'🏠 Draw your home with your family outside!', tip:'Start with a big rectangle for the house, then add a triangle roof.' },
-      { text:'🌸 Draw a giant flower as big as the whole page!', tip:'Start with a circle in the middle, then add petals all around.' },
-      { text:'🐠 Draw an underwater world with fish and sea creatures!', tip:'Draw wavy lines for water, then add your sea creatures.' },
-      { text:'🚀 Draw yourself going to the moon!', tip:'Draw yourself in a spacesuit, then add a rocket ship!' },
-    ],
-  },
-  K: {
-    heroClass:'k-art', heroEmoji:'🎨', heroTitle:'Art Time!', heroSub:'Paint, draw and create something amazing!',
-    activitiesTitle:'🖌 Art Activities Today!',
-    activities:[
-      { icon:'🌀', title:'Spiral Art', desc:'Draw a big spiral and fill each section with a different color!', color:'coral', badge:'Colorful!', badge_style:'badge-coral',
-        steps:['Draw a big spiral starting from the center going outward.','Divide the spiral into sections with lines.','Color each section a different color -- no two touching sections the same!','Outline everything in black crayon to make it pop! ⭐'] },
-      { icon:'👁', title:'Symmetry Butterfly', desc:'Fold paper, paint half a butterfly, then unfold to see both wings!', color:'lav', badge:'Wow!', badge_style:'badge-lav',
-        steps:['Fold a piece of paper in half.','On one half, paint half of a butterfly with lots of colors.','Quickly fold the paper while the paint is still wet.','Press down and unfold -- both wings match like magic! 🦋'] },
-      { icon:'🏡', title:'My Dream House', desc:'Design and draw your perfect dream house -- it can have anything you want!', color:'mint', badge:'Dream big!', badge_style:'badge-mint',
-        steps:['Think about what your dream house would have -- a pool? A treehouse? A slide?','Draw the outside of the house first -- any shape you like!','Add windows, doors, and all the special features.','Color it in and add a background -- yard, sky, trees! 🌳'] },
-    ],
-    drawPrompts:[
-      { text:'🦁 Draw a lion with the biggest, fluffiest mane!', tip:'Use curved lines around the face for the mane.' },
-      { text:'🍕 Draw your favorite food as big as the whole page!', tip:'Add lots of details -- toppings, steam, a plate!' },
-      { text:'🌙 Draw what you think happens while you sleep at night!', tip:'Think about dreams, stars, the moon...' },
-      { text:'🦸 Draw yourself as a superhero!', tip:'What power do you have? What does your costume look like?' },
-      { text:'🌊 Draw the ocean with a secret treasure chest!', tip:'Add fish, coral, seaweed and a mermaid!' },
-      { text:'🎪 Draw a circus with performers and animals!', tip:'Start with the big tent, then add the performers inside.' },
-    ],
-  },
-  1: {
-    heroClass:'g1-art', heroEmoji:'🖌', heroTitle:'Art Studio!', heroSub:'Explore drawing, painting and creating!',
-    activitiesTitle:'🎨 Art Activities',
-    activities:[
-      { icon:'🌄', title:'Sunset Silhouette', desc:'Paint a glowing sunset sky then add black silhouettes of trees and animals!', color:'coral', badge:'Beautiful!', badge_style:'badge-coral',
-        steps:['Paint horizontal stripes of orange, yellow, pink and purple for the sunset sky.','Let it dry completely.','Draw trees, animals, or buildings on black paper and cut them out.','Glue the silhouettes along the bottom of your sunset. 🌅'] },
-      { icon:'🐠', title:'Warm & Cool Colors', desc:'Draw a fish underwater -- color it in warm colors on one side and cool colors on the other!', color:'sky', badge:'Color theory!', badge_style:'badge-sky',
-        steps:['Draw a big fish in the center of your paper.','Color the top half with warm colors -- red, orange, yellow.','Color the bottom with cool colors -- blue, green, purple.','Add waves and ocean details around the fish! 🌊'] },
-      { icon:'🏺', title:'Texture Rubbings', desc:'Go on a texture hunt around the house and create a texture collage!', color:'sun', badge:'Explore!', badge_style:'badge-sun',
-        steps:['Collect leaves, coins, textured fabric.','Put each object under paper and rub with the flat side of a crayon.','Cut out your rubbings and arrange them on a new sheet.','Label each texture -- bumpy, rough, smooth! ✏'] },
-    ],
-    drawPrompts:[
-      { text:'🌋 Draw an erupting volcano with a village nearby!', tip:'Draw the triangle volcano first, then add lava flowing down the sides.' },
-      { text:'🐉 Design your own dragon -- what color is it? What special powers does it have?', tip:'Think about the wings, scales, and fire breath!' },
-      { text:'🏙 Draw a city skyline at night with lit-up windows!', tip:'Use black paper and light-colored crayons or chalk.' },
-      { text:'🌿 Draw a jungle with 5 different animals hiding!', tip:'Animals can peek out from behind leaves and trees.' },
-      { text:'🧁 Design the most creative cupcake ever!', tip:'Think about wild toppings, colors, and decorations.' },
-      { text:'🚢 Draw a pirate ship on a stormy sea!', tip:'Big waves, a skull flag, and treasure chest optional!' },
-    ],
-  },
-  2: {
-    heroClass:'g2-art', heroEmoji:'🎭', heroTitle:'Art Studio', heroSub:'Express yourself through color, line and design!',
-    activitiesTitle:'🖌 Art Projects',
-    activities:[
-      { icon:'🎭', title:'Emotion Self-Portrait', desc:'Draw yourself showing a big emotion and use color to match the feeling!', color:'lav', badge:'Expressive!', badge_style:'badge-lav',
-        steps:['Pick an emotion: joyful, amazed, scared, proud, or silly!','Lightly sketch your face -- oval head, eyes, nose, mouth.','Make your facial expression show the emotion strongly.','Choose colors that match the feeling -- warm for happy, cool for calm. 🎨'] },
-      { icon:'🏛', title:'Architecture Drawing', desc:'Draw a building from your imagination -- a castle, a futuristic tower, a cozy cottage!', color:'mint', badge:'Architect!', badge_style:'badge-mint',
-        steps:['Decide what kind of building -- castle, skyscraper, treehouse?','Use a ruler or draw straight lines for the main structure.','Add details -- windows, doors, towers, balconies.','Add the environment around it -- sky, trees, people! 🌇'] },
-      { icon:'🌀', title:'Zentangle Patterns', desc:'Fill a shape with beautiful repeating patterns!', color:'coral', badge:'Zen!', badge_style:'badge-coral',
-        steps:['Draw a large simple shape -- a circle, leaf, or animal outline.','Divide the shape into sections with curved or straight lines.','Fill each section with a repeating pattern -- dots, lines, waves, spirals.','You can color it in or keep it black and white! 🖊'] },
-    ],
-    drawPrompts:[
-      { text:'🌏 Draw an imaginary planet with its own plants and creatures!', tip:'What is the sky color? What do the animals eat?' },
-      { text:'🎠 Draw an old-fashioned carousel with decorated horses!', tip:'Start with a big circle for the roof, then add the horses below.' },
-      { text:'🦚 Draw a peacock with its feathers fully spread!', tip:'Each feather has an "eye" at the tip -- add lots of color!' },
-      { text:'🏔 Draw a mountain landscape with a winding path to the top!', tip:'Layer the mountains -- closest is darkest, farthest is lightest.' },
-      { text:'🎪 Design a poster for an imaginary circus act!', tip:'Big bold letters, bright colors, and a performer in action.' },
-      { text:'🌺 Draw a still life of 3 objects on a table!', tip:'Look at real objects and draw exactly what you see.' },
-    ],
-  },
-  3: {
-    heroClass:'g3-art', heroEmoji:'🖼', heroTitle:'Art Studio', heroSub:'Develop your technique and artistic eye!',
-    activitiesTitle:'🎨 Art Projects',
-    activities:[
-      { icon:'🌊', title:'Value Shading', desc:'Draw a simple sphere and practice shading from light to dark to make it look 3D!', color:'sky', badge:'3D Art!', badge_style:'badge-sky',
-        steps:['Draw a circle in the center of your paper.','Decide where your light source is coming from -- top left?','On the opposite side from the light, begin shading with a pencil -- light pressure first.','Build up darker values away from the light. Add a cast shadow below! 💡'] },
-      { icon:'🗺', title:'Aerial Map Art', desc:'Create an imaginary top-down map of a town, island, or fantasy world!', color:'mint', badge:'Cartography!', badge_style:'badge-mint',
-        steps:['Think about what your place has -- mountains, rivers, forests, towns?','Draw the outline of the landmass or town.','Add symbols for different features.','Label everything and add a compass rose! 🧭'] },
-      { icon:'✂', title:'Cut Paper Portrait', desc:'Create a portrait using only cut or torn colored paper -- no drawing!', color:'coral', badge:'Collage!', badge_style:'badge-coral',
-        steps:['Choose your colors for skin, hair, background, and clothing.','Tear or cut the main head shape from skin-tone colored paper.','Add features -- eyes, nose, mouth, hair -- from other colored paper.','Layer everything onto a background and glue in place. ✂'] },
-    ],
-    drawPrompts:[
-      { text:'🦅 Draw an eagle soaring over a mountain range at sunrise!', tip:'Show the eagle wingspan -- draw it from below looking up.' },
-      { text:'🏯 Draw a Japanese castle surrounded by cherry blossom trees!', tip:'Research what a pagoda looks like -- many layered roofs!' },
-      { text:'🌌 Draw the Milky Way galaxy as seen from a hilltop!', tip:'Use black paper with chalk or white pencil for the stars.' },
-      { text:'🎸 Draw a musician performing on stage!', tip:'Show motion -- flying hair, a dramatic pose, stage lighting.' },
-      { text:'🌿 Draw a cross-section of a tree showing its rings!', tip:'Each ring represents one year of growth.' },
-      { text:'🕌 Draw an exotic marketplace full of colorful stalls!', tip:'Show depth -- stalls in the front bigger, background stalls smaller.' },
-    ],
-  },
-  4: {
-    heroClass:'g4-art', heroEmoji:'🖌', heroTitle:'Art Studio', heroSub:'Explore advanced techniques and art history!',
-    activitiesTitle:'🎨 Art Projects',
-    activities:[
-      { icon:'👁', title:'One-Point Perspective', desc:'Draw a hallway, road, or room using one-point perspective to create depth!', color:'lav', badge:'Perspective!', badge_style:'badge-lav',
-        steps:['Mark a vanishing point in the center of your paper.','Draw two horizontal lines for the floor and ceiling meeting at the vanishing point.','Add vertical lines for walls -- they stay vertical!','Add windows, doors, and details -- all lines go to the vanishing point. 📐'] },
-      { icon:'🎭', title:'Artist Study -- Van Gogh', desc:'Inspired by Van Gogh\'s swirling style -- create your own landscape!', color:'sun', badge:'Art history!', badge_style:'badge-sun',
-        steps:['Look at Van Gogh "Starry Night" -- notice the swirling, wavy brushstrokes.','Choose a landscape scene -- a night sky, field, or village.','Use short, curved brushstrokes or crayon strokes to fill your scene with movement.','Use bold, unmixed colors side by side like Van Gogh did! 🌻'] },
-      { icon:'🏺', title:'Contour Drawing', desc:'Draw an object without lifting your pencil and without looking at the paper!', color:'coral', badge:'Observation!', badge_style:'badge-coral',
-        steps:['Place an interesting object in front of you -- a shoe, your hand, a plant.','Put your pencil on the paper and do not lift it.','Slowly move your eyes along the edge of the object, letting your hand follow.','Don\'t look at the paper! Embrace the quirky result. 👀'] },
-    ],
-    drawPrompts:[
-      { text:'🌃 Draw a cityscape at night using only 3 colors plus black and white!', tip:'Think about how light reflects on wet streets.' },
-      { text:'🦋 Create a detailed scientific illustration of a butterfly with labeled parts!', tip:'Scientists draw with precision -- add measurements and names.' },
-      { text:'🎭 Design a theatrical mask that represents a character you invented!', tip:'Think about what the character feels and how the mask shows that.' },
-      { text:'🌊 Draw the ocean as seen from underwater looking up to the surface!', tip:'Light bends and refracts underwater -- show dappled light rays.' },
-      { text:'🏛 Sketch the inside of a grand library or museum!', tip:'Show high ceilings, archways, and tiny people for scale.' },
-      { text:'🦕 Draw a prehistoric scene with multiple dinosaur species!', tip:'Research what the plants and landscape looked like 65 million years ago.' },
-    ],
-  },
-  5: {
-    heroClass:'g5-art', heroEmoji:'🎨', heroTitle:'Art Studio', heroSub:'Develop your personal artistic voice and vision!',
-    activitiesTitle:'🖼 Art Projects',
-    activities:[
-      { icon:'📐', title:'Two-Point Perspective', desc:'Draw a building exterior using two vanishing points for a dramatic architectural view!', color:'sky', badge:'Advanced!', badge_style:'badge-sky',
-        steps:['Draw a horizon line and place two vanishing points near the edges.','Draw a vertical line for the nearest corner of your building.','Connect the top and bottom of that line to both vanishing points.','Add windows, doors, and details -- all lines go to one of the two vanishing points. 🏢'] },
-      { icon:'🎭', title:'Surrealism Collage', desc:'Inspired by Salvador Dalí -- combine unexpected images to create a dreamlike surreal artwork!', color:'lav', badge:'Surrealism!', badge_style:'badge-lav',
-        steps:['Think about combinations that are unexpected -- melting clocks, floating elephants, staircases to nowhere.','Choose a landscape scene with impossible situations.','Draw and paint your surreal composition with confident mark-making.','Add small symbolic details that have meaning to you. 🌙'] },
-      { icon:'🎨', title:'Color Theory: Analogous & Complementary', desc:'Create two small paintings using analogous and complementary color schemes!', color:'coral', badge:'Color theory!', badge_style:'badge-coral',
-        steps:['Draw two identical simple shapes -- a vase, a landscape, or an abstract form.','For the first: use analogous colors (neighbors on the color wheel).','For the second: use complementary colors (opposites on the wheel).','Notice how different the mood feels! Write a sentence about each one. 🎨'] },
-    ],
-    drawPrompts:[
-      { text:'🌏 Create a detailed map of an imaginary world with geography, cities, and a legend!', tip:'Include mountains, rivers, deserts, and invent names for everything.' },
-      { text:'🤖 Design a robot that does something helpful -- show its controls and features!', tip:'Label all the parts and write a short description of what it does.' },
-      { text:'🎭 Draw a scene from your favorite book as if you were the illustrator!', tip:'Think about the mood, lighting, and composition the author intended.' },
-      { text:'🌺 Create a botanical illustration of a real plant with roots, stem, leaves, and flower!', tip:'Use very light pencil lines first, then carefully add color.' },
-      { text:'🏛 Design the facade of your ideal school building!', tip:'Think about sustainable materials, natural light, and welcoming spaces.' },
-      { text:'🎪 Create a detailed scene showing two different cultures celebrating together!', tip:'Research traditional clothing, food, and decorations from both cultures.' },
-    ],
-  },
-};
-
-// Color mixer data
-const COLORS = [
-  { name:'Red',    hex:'#FF4444' },
-  { name:'Yellow', hex:'#FFD166' },
-  { name:'Blue',   hex:'#4488FF' },
-  { name:'Orange', hex:'#FF8C42' },
-  { name:'Green',  hex:'#5ECDA0' },
-  { name:'Purple', hex:'#9B59B6' },
-  { name:'Pink',   hex:'#FF6B9D' },
-  { name:'Brown',  hex:'#A0522D' },
-  { name:'White',  hex:'#F5F5F5' },
-  { name:'Black',  hex:'#333333' },
-];
-const COLOR_MIXES = {
-  'Red+Yellow':'Orange','Yellow+Red':'Orange','Red+Blue':'Purple','Blue+Red':'Purple',
-  'Yellow+Blue':'Green','Blue+Yellow':'Green','Red+White':'Pink','White+Red':'Pink',
-  'Red+Black':'Dark Red','Black+Red':'Dark Red','Blue+White':'Light Blue','White+Blue':'Light Blue',
-  'Yellow+White':'Cream','White+Yellow':'Cream','Red+Orange':'Red-Orange','Orange+Red':'Red-Orange',
-  'Yellow+Orange':'Yellow-Orange','Orange+Yellow':'Yellow-Orange','Blue+Green':'Teal','Green+Blue':'Teal',
-  'Red+Green':'Brown','Green+Red':'Brown','Blue+Purple':'Indigo','Purple+Blue':'Indigo',
-  'Red+Purple':'Magenta','Purple+Red':'Magenta','Yellow+Green':'Lime Green','Green+Yellow':'Lime Green',
-};
-const MIX_RESULTS = {
-  'Orange':'#FF8C42','Purple':'#9B59B6','Green':'#5ECDA0','Pink':'#FF6B9D',
-  'Dark Red':'#8B0000','Light Blue':'#87CEEB','Cream':'#FFFDD0','Red-Orange':'#FF5733',
-  'Yellow-Orange':'#FFA500','Teal':'#008080','Brown':'#A0522D','Indigo':'#4B0082',
-  'Magenta':'#FF00FF','Lime Green':'#32CD32',
-};
-
-// ══════════════════════════════════════════════════════
-//  ART TAB  ✅ FIX 4: artTabBuilt flag prevents rebuild on every switch
-// ══════════════════════════════════════════════════════
-function buildArtTab() {
-  artContent = ART_DATA[activeGrade] || ART_DATA['K'];
-  artActivitiesDone = 0; artStarsEarned = 0; colorMixCount = 0;
-
-  const hero = document.getElementById('artHero');
-  hero.className = 'art-hero ' + artContent.heroClass;
-  document.getElementById('artHeroEmoji').textContent  = artContent.heroEmoji;
-  document.getElementById('artHeroTitle').textContent  = artContent.heroTitle;
-  document.getElementById('artHeroSub').textContent    = artContent.heroSub;
-  document.getElementById('artActivitiesTitle').textContent = artContent.activitiesTitle;
-
-  const grid = document.getElementById('artActivities');
-  grid.innerHTML = artContent.activities.map((a, i) => `
-    <div class="art-card ac-${a.color}" id="artCard_${i}" onclick="toggleArtCard(${i})">
-      <span class="art-card-icon">${a.icon}</span>
-      <div class="art-card-title">${a.title}</div>
-      <div class="art-card-desc">${a.desc}</div>
-      <span class="art-card-badge ${a.badge_style}">${a.badge}</span>
-      <div class="art-card-steps">
-        ${a.steps.map((s, si) => `<div class="art-step"><div class="art-step-num">${si+1}</div><span>${s}</span></div>`).join('')}
-        <button class="art-card-done-btn" onclick="markArtDone(event, ${i})">✅ I Made This! +20 Stars</button>
+    <div class="chapter ch-coral">
+      <div class="chapter-stripe"></div>
+      <div class="chapter-body">
+        <div class="chapter-top">
+          <div class="chapter-icon">🍎</div>
+          <div class="chapter-meta">
+            <div class="chapter-num">Chapter 02 · Going Earlier</div>
+            <div class="chapter-title">So I went back to the very beginning — PreK.</div>
+          </div>
+        </div>
+        <p class="chapter-text">That realization led me to move to <strong>Pre-Kindergarten</strong>, where I could meet children at the very start of their learning journey. Teaching little ones aged 3 and 4 reinforced everything I believed: the earlier you nurture curiosity, movement, and confidence, the stronger every foundation becomes.</p>
+        <p class="chapter-text">From there, my career grew. I worked my way up to becoming a <strong>Director at several daycares</strong> — where I saw the full picture. What children needed, what parents struggled to find, and what the existing tools were missing.</p>
       </div>
-    </div>`).join('');
+    </div>
 
-  buildColorSwatches();
+    <div class="chapter ch-lav">
+      <div class="chapter-stripe"></div>
+      <div class="chapter-body">
+        <div class="chapter-top">
+          <div class="chapter-icon">💛</div>
+          <div class="chapter-meta">
+            <div class="chapter-num">Chapter 03 · The Turning Point — 2021</div>
+            <div class="chapter-title">Then the world stopped. And a new one began.</div>
+          </div>
+        </div>
+        <p class="chapter-text">In 2021, at the height of the COVID-19 pandemic, I gave birth to my son. Daycares were closing everywhere. Parents were scrambling. And I found myself at home with my newborn, drawing on every year of training and experience I had — because <em>this time, the child I was educating was my own.</em></p>
+        <p class="chapter-text">I searched for apps and tools that could help me structure his learning. Something that would build foundational skills, help my very active little boy <strong>slow down and be more intentional</strong>, and incorporate the mindful movement I knew made a real difference — yoga poses, breathing, focus, fun. I could not find a single thing that brought it all together.</p>
+        <div class="inline-quote">
+          <p>"I searched everywhere. I couldn't find anything that incorporated all these things — so I set out to create something my child and his friends would love to use every single day."</p>
+          <cite>— Founder, BloomiKids</cite>
+        </div>
+      </div>
+    </div>
 
-  drawPromptIdx = Math.floor(Math.random() * artContent.drawPrompts.length);
-  showDrawPrompt();
-  updateArtStats();
-}
+    <div class="chapter ch-sun">
+      <div class="chapter-stripe"></div>
+      <div class="chapter-body">
+        <div class="chapter-top">
+          <div class="chapter-icon">🌸</div>
+          <div class="chapter-meta">
+            <div class="chapter-num">Chapter 04 · The Birth of BloomiKids</div>
+            <div class="chapter-title">Not just screen time. Intentional time.</div>
+          </div>
+        </div>
+        <p class="chapter-text">As an educator, I knew the difference between <em>passive</em> screen time that numbs a developing mind and <em>purposeful</em> screen time that actively builds one. I wanted something children would genuinely love coming back to — day after day — without parents ever having to worry about what they were being exposed to.</p>
+        <p class="chapter-text">That is how <strong>BloomiKids was born.</strong> Out of years in classrooms, boardrooms, and my own living room floor. Out of a mother's love and an educator's knowledge. It's built for the children who deserve the very best start — and for the parents who want to give it to them.</p>
+      </div>
+    </div>
 
-function toggleArtCard(idx) {
-  const card = document.getElementById('artCard_' + idx);
-  if (card.classList.contains('completed')) return;
-  document.querySelectorAll('.art-card').forEach(c => { if (c !== card) c.classList.remove('expanded'); });
-  card.classList.toggle('expanded');
-}
+  </div>
 
-async function markArtDone(e, idx) {
-  e.stopPropagation();
-  const card = document.getElementById('artCard_' + idx);
-  if (card.classList.contains('completed')) return;
-  card.classList.remove('expanded');
-  card.classList.add('completed');
-  artActivitiesDone++;
-  artStarsEarned += 20;
-  updateArtStats();
-  toast('🎨 Amazing artwork! +20 stars! ⭐');
-  try {
-    await sb.rpc('add_stars', { p_child_id: activeChild.id, p_amount: 20 });
-    sessionData.stars += 20;
-    document.getElementById('statStars').textContent = sessionData.stars;
-  } catch(e) {}
-}
+  <!-- Mission -->
+  <div class="mission-banner">
+    <div class="mission-tag">Our Mission</div>
+    <p class="mission-text">BloomiKids exists to give every child — from PreK through 5th grade — a place where <strong>learning, movement, and mindfulness</strong> live together. Where screen time becomes grow time. Where every child has the chance to bloom.</p>
+  </div>
 
-function buildColorSwatches() {
-  const wrap = document.getElementById('colorSwatches');
-  colorPick1 = null; colorPick2 = null;
-  wrap.innerHTML = COLORS.map((c, i) => `
-    <div class="swatch" id="swatch_${i}" style="background:${c.hex}" title="${c.name}" onclick="pickSwatch(${i}, '${c.name}', '${c.hex}')"></div>`).join('');
-  document.getElementById('mixColor1').style.background = '#E0E0E0';
-  document.getElementById('mixColor2').style.background = '#E0E0E0';
-  document.getElementById('mixResult').style.background = '#E0E0E0';
-  document.getElementById('mixLabel').textContent = 'Pick 2 colors!';
-}
+  <!-- Signature -->
+  <div class="signature-card">
+    <div class="sig-hearts">🌸 💛 🌿</div>
+    <p class="sig-with-love">With love &amp; purpose,</p>
+    <div class="sig-name">Founder &amp; CEO</div>
+    <div class="sig-role">BloomiKids · Learn · Breathe · Read</div>
+    <div class="sig-logo">Bloomi<span>Kids</span></div>
+    <div class="sig-tagline">🌸 Where Every Child Blooms 🌸</div>
+  </div>
 
-function pickSwatch(idx, name, hex) {
-  const swatch = document.getElementById('swatch_' + idx);
-  if (!colorPick1) {
-    colorPick1 = { name, hex };
-    swatch.classList.add('selected');
-    document.getElementById('mixColor1').style.background = hex;
-  } else if (!colorPick2 && name !== colorPick1.name) {
-    colorPick2 = { name, hex };
-    swatch.classList.add('selected');
-    document.getElementById('mixColor2').style.background = hex;
-  } else {
-    document.querySelectorAll('.swatch').forEach(s => s.classList.remove('selected'));
-    colorPick1 = { name, hex };
-    colorPick2 = null;
-    swatch.classList.add('selected');
-    document.getElementById('mixColor1').style.background = hex;
-    document.getElementById('mixColor2').style.background = '#E0E0E0';
-    document.getElementById('mixResult').style.background = '#E0E0E0';
-    document.getElementById('mixLabel').textContent = 'Pick a second color!';
-  }
-}
+  <!-- Closing photo -->
+  <div class="closing-photo">
+    <img src="IMG_0950_1.jpeg" alt="BloomiKids — Uncompromised Learning. Balanced Screens.">
+  </div>
 
-function mixColors() {
-  if (!colorPick1 || !colorPick2) { toast('🎨 Pick 2 colors first!'); return; }
-  const key = colorPick1.name + '+' + colorPick2.name;
-  const resultName = COLOR_MIXES[key] || 'A new color!';
-  const resultHex  = MIX_RESULTS[resultName] || blendHex(colorPick1.hex, colorPick2.hex);
-  document.getElementById('mixResult').style.background = resultHex;
-  document.getElementById('mixLabel').textContent = '= ' + resultName + '!';
-  colorMixCount++;
-  updateArtStats();
-  toast(`🎨 ${colorPick1.name} + ${colorPick2.name} = ${resultName}! 🌈`);
-}
+  <!-- CTA -->
+  <div class="cta-section">
+    <p class="cta-sub">Ready to give your child a place where learning, movement,<br>and mindfulness come together?</p>
+    <div class="cta-buttons">
+      <a href="app.html" class="cta-btn-primary">
+        <span>Start Your Free Trial 🌱</span>
+        <span class="cta-btn-arrow">→</span>
+      </a>
+      <a href="app.html" class="cta-btn-secondary">Already have an account? Log In →</a>
+    </div>
+    <p class="cta-fine">🔒 14 days free · No credit card needed · Cancel anytime</p>
+  </div>
 
-function blendHex(hex1, hex2) {
-  const r1=parseInt(hex1.slice(1,3),16), g1=parseInt(hex1.slice(3,5),16), b1=parseInt(hex1.slice(5,7),16);
-  const r2=parseInt(hex2.slice(1,3),16), g2=parseInt(hex2.slice(3,5),16), b2=parseInt(hex2.slice(5,7),16);
-  const r=Math.round((r1+r2)/2), g=Math.round((g1+g2)/2), b=Math.round((b1+b2)/2);
-  return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
-}
-
-function showDrawPrompt() {
-  if (!artContent) return;
-  const p = artContent.drawPrompts[drawPromptIdx % artContent.drawPrompts.length];
-  document.getElementById('drawPromptText').textContent = p.text;
-  document.getElementById('drawPromptTip').textContent  = '💡 Tip: ' + p.tip;
-}
-
-function newDrawPrompt() {
-  drawPromptIdx = (drawPromptIdx + 1) % artContent.drawPrompts.length;
-  showDrawPrompt();
-  toast('🎨 New drawing prompt!');
-}
-
-function updateArtStats() {
-  document.getElementById('artDoneCount').textContent  = artActivitiesDone;
-  document.getElementById('artStarCount').textContent  = artStarsEarned;
-  document.getElementById('artStreakCount').textContent = artActivitiesDone > 0 ? '🔥' : '--';
-  const total = artContent?.activities?.length || 3;
-  const pct = Math.min(100, Math.round(artActivitiesDone / total * 100));
-  document.getElementById('artProgressBar').style.width = pct + '%';
-  document.getElementById('artProgressPct').textContent = artActivitiesDone + '/' + total;
-  const mixPct = Math.min(100, Math.round(colorMixCount / 5 * 100));
-  document.getElementById('colorMixBar').style.width = mixPct + '%';
-  document.getElementById('colorMixPct').textContent = colorMixCount + '/5';
-}
-
-// ══════════════════════════════════════════════════════
-//  YOGA MUSIC PLAYER
-// ══════════════════════════════════════════════════════
-const YOGA_PLAYLISTS = {
-  PreK:[
-    { title:'Twinkle Twinkle -- Soft Piano 🌟', id:'yCjJyiqpAuU' },
-    { title:'Lullaby for Little Ones 🌙', id:'SvKzSouZHB4' },
-    { title:'Gentle Kids Yoga Music 🦋', id:'YBQ_oLMCMng' },
-    { title:'Soft Nursery Piano 🎹', id:'7maJOI3QMu0' },
-    { title:'Baby Animals & Calm Music 🐰', id:'TpH4XBOsWFg' },
-    { title:'Happy Clouds Instrumental ☁', id:'1ZYbU82GVz4' },
-  ],
-  K:[
-    { title:'Kids Yoga Happy Music 🌈', id:'YBQ_oLMCMng' },
-    { title:'Magical Forest Sounds 🌳', id:'eKFTSSKCzWA' },
-    { title:'Gentle Piano for Little Learners 🎹', id:'7maJOI3QMu0' },
-    { title:'Soft Sunny Meadow Music 🌸', id:'1ZYbU82GVz4' },
-    { title:'Peaceful Flute & Birds 🐦', id:'OFSMvFuJQKE' },
-    { title:'Calm Rainbow Instrumental 🌈', id:'WHPEKLQID4U' },
-  ],
-  1:[
-    { title:'Kids Yoga Calm Vibes 🧘', id:'YBQ_oLMCMng' },
-    { title:'Peaceful Piano & Birdsong 🐦', id:'1ZYbU82GVz4' },
-    { title:'Soft Forest Ambient 🌲', id:'eKFTSSKCzWA' },
-    { title:'Gentle Guitar Focus Music 🎸', id:'OFSMvFuJQKE' },
-    { title:'Calming Ocean Waves 🌊', id:'WHPEKLQID4U' },
-    { title:'Relaxing Rain & Piano 🌧', id:'77ZozI0rw7w' },
-  ],
-  2:[
-    { title:'Yoga Flow -- Soft Piano 🌿', id:'lFcSrYw2zXY' },
-    { title:'Nature Sounds & Gentle Guitar 🎸', id:'1ZYbU82GVz4' },
-    { title:'Calm Meditation Bells 🔔', id:'OFSMvFuJQKE' },
-    { title:'Focus Music for Kids 🎵', id:'7maJOI3QMu0' },
-    { title:'Soft Rain on Leaves 🍃', id:'WHPEKLQID4U' },
-    { title:'Peaceful Strings Instrumental 🎻', id:'77ZozI0rw7w' },
-  ],
-  3:[
-    { title:'Kids Meditation Instrumental 🧘', id:'lFcSrYw2zXY' },
-    { title:'Calming Piano & Soft Pads 🎹', id:'77ZozI0rw7w' },
-    { title:'Forest Stream Ambience 🌊', id:'eKFTSSKCzWA' },
-    { title:'Peaceful Flute & Strings 🎻', id:'OFSMvFuJQKE' },
-    { title:'Tibetan Singing Bowls 🪘', id:'7maJOI3QMu0' },
-    { title:'Gentle Breeze & Piano 🍃', id:'1ZYbU82GVz4' },
-  ],
-  4:[
-    { title:'Deep Focus Yoga Music 🌌', id:'77ZozI0rw7w' },
-    { title:'Calm Piano Meditation 🎹', id:'lFcSrYw2zXY' },
-    { title:'Nature Soundscape -- Forest 🌿', id:'eKFTSSKCzWA' },
-    { title:'Relaxing Ambient Guitar 🎸', id:'OFSMvFuJQKE' },
-    { title:'Mindfulness Bowls & Bells 🔔', id:'WHPEKLQID4U' },
-    { title:'Rain & Soft Piano 🌧', id:'1ZYbU82GVz4' },
-  ],
-  5:[
-    { title:'Focus & Flow Instrumental 🎵', id:'77ZozI0rw7w' },
-    { title:'Deep Calm Piano 🎹', id:'lFcSrYw2zXY' },
-    { title:'Zen Meditation Ambient 🧘', id:'OFSMvFuJQKE' },
-    { title:'Peaceful Forest Rain 🌧', id:'eKFTSSKCzWA' },
-    { title:'Study & Yoga -- Soft Pads 🌌', id:'WHPEKLQID4U' },
-    { title:'Sunrise Instrumental Piano 🌅', id:'1ZYbU82GVz4' },
-  ],
-};
-
-let musicPlaying = false;
-let currentTrackIdx = 0;
-let ytReady = false;
-let ytPlayer = null;
-let currentPlaylist = [];
-
-function loadYouTubeAPI() {
-  if (window.YT && window.YT.Player) { onYouTubeIframeAPIReady(); return; }
-  if (document.querySelector('script[src*="youtube.com/iframe_api"]')) return;
-  const tag = document.createElement('script');
-  tag.src = 'https://www.youtube.com/iframe_api';
-  document.head.appendChild(tag);
-}
-
-window.onYouTubeIframeAPIReady = function() {
-  ytReady = true;
-  ytPlayer = new YT.Player('ytPlayer', {
-    height: '1', width: '1',
-    playerVars: { autoplay: 0, controls: 0, disablekb: 1, loop: 0, modestbranding: 1, rel: 0 },
-    events: {
-      onStateChange: function(e) {
-        if (e.data === YT.PlayerState.ENDED) nextTrack();
-        if (e.data === YT.PlayerState.PLAYING) {
-          musicPlaying = true;
-          document.getElementById('playPauseBtn').textContent = '⏸ Pause';
-        }
-        if (e.data === YT.PlayerState.PAUSED) {
-          musicPlaying = false;
-          document.getElementById('playPauseBtn').textContent = '> Play';
-        }
-      }
-    }
-  });
-};
-
-function initMusicPlayer() {
-  const grade = activeGrade || 'K';
-  currentPlaylist = YOGA_PLAYLISTS[grade] || YOGA_PLAYLISTS['K'];
-  currentTrackIdx = 0;
-  updateTrackDisplay();
-  if (!ytReady) loadYouTubeAPI();
-}
-
-function toggleMusic() {
-  if (!ytReady || !ytPlayer) {
-    loadYouTubeAPI();
-    setTimeout(() => loadTrack(currentTrackIdx), 1500);
-    return;
-  }
-  if (musicPlaying) {
-    ytPlayer.pauseVideo();
-    musicPlaying = false;
-    document.getElementById('playPauseBtn').textContent = '> Play';
-  } else {
-    const state = ytPlayer.getPlayerState ? ytPlayer.getPlayerState() : -1;
-    if (state === -1 || state === 5) {
-      loadTrack(currentTrackIdx);
-    } else {
-      ytPlayer.playVideo();
-    }
-    musicPlaying = true;
-    document.getElementById('playPauseBtn').textContent = '⏸ Pause';
-  }
-}
-
-function loadTrack(idx) {
-  if (!currentPlaylist.length) return;
-  const track = currentPlaylist[idx];
-  if (ytPlayer && ytReady && ytPlayer.loadVideoById) {
-    ytPlayer.loadVideoById({ videoId: track.id, startSeconds: 0 });
-    ytPlayer.setVolume(parseInt(document.getElementById('volumeSlider').value));
-    musicPlaying = true;
-    document.getElementById('playPauseBtn').textContent = '⏸ Pause';
-  }
-  updateTrackDisplay();
-}
-
-function nextTrack() {
-  currentTrackIdx = (currentTrackIdx + 1) % currentPlaylist.length;
-  loadTrack(currentTrackIdx);
-}
-
-function setVolume(val) {
-  if (ytPlayer && ytReady && ytPlayer.setVolume) ytPlayer.setVolume(parseInt(val));
-}
-
-function updateTrackDisplay() {
-  if (!currentPlaylist.length) return;
-  const track = currentPlaylist[currentTrackIdx];
-  document.getElementById('trackName').textContent = track.title;
-  document.getElementById('trackList').textContent =
-    `Track ${currentTrackIdx + 1} of ${currentPlaylist.length} · ${activeGrade === 'PreK' || activeGrade === 'K' ? 'Calming kids music 🎶' : 'Instrumental yoga music 🎵'}`;
-}
-
-// -- Word of the Day -----------------------------------
-document.getElementById('wordCard').addEventListener('click',()=>{
-  if (!gradeContent) return;
-  wIdx=(wIdx+1)%gradeContent.words.length;
-  document.getElementById('wordOfDay').textContent=gradeContent.words[wIdx].w;
-  document.getElementById('wordDef').textContent  =gradeContent.words[wIdx].d;
-});
-
-// ══════════════════════════════════════════════════════
-//  UTILITIES
-// ══════════════════════════════════════════════════════
-function switchTab(tab) {
-  // Pause music when leaving yoga tab
-  if (tab !== 'yoga' && musicPlaying && ytPlayer && ytReady) {
-    ytPlayer.pauseVideo();
-    musicPlaying = false;
-    document.getElementById('playPauseBtn').textContent = '> Play';
-  }
-  if (tab === 'yoga') {
-    setTimeout(() => { if (!currentPlaylist.length) initMusicPlayer(); }, 100);
-  }
-  // ✅ FIX 4: Only build art tab once per child session
-  if (tab === 'art' && !artTabBuilt) {
-    setTimeout(() => { buildArtTab(); artTabBuilt = true; }, 50);
-  }
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b=>{
-    b.classList.remove('active');
-    if (b.dataset.tab===tab) b.classList.add('active');
-  });
-  document.getElementById('panel-'+tab).classList.add('active');
-}
-
-async function upsertDailyActivity(updates) {
-  const today=new Date().toISOString().split('T')[0];
-  const {data:ex}=await sb.from('daily_activity').select('*').eq('child_id',activeChild.id).eq('activity_date',today).single();
-  if (ex) {
-    const merged={};
-    Object.keys(updates).forEach(k=>{ merged[k]=(ex[k]||0)+(updates[k]||0); });
-    await sb.from('daily_activity').update(merged).eq('id',ex.id);
-  } else {
-    await sb.from('daily_activity').insert({child_id:activeChild.id,activity_date:today,minutes_academic:updates.minutes_academic||0,minutes_yoga:updates.minutes_yoga||0,minutes_reading:updates.minutes_reading||0,tasks_done:updates.tasks_done||0});
-  }
-}
-
-async function syncData() {
-  if (!activeChild) return;
-  setSyncState('syncing'); await loadDashboardStats(); setSyncState(''); toast('✅ Synced!');
-}
-
-async function startSubject(name) {
-  toast(`📚 Opening ${name}! +5 min logged ⭐`);
-  await upsertDailyActivity({minutes_academic:5,tasks_done:1});
-  sessionData.tasks++; document.getElementById('statTasks').textContent=sessionData.tasks;
-}
-
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); deferredPrompt=e; setTimeout(()=>{ if(deferredPrompt) toast('📲 Add BloomiKids to your home screen!',5000); },10000); });
-</script>
+</div>
 </body>
 </html>

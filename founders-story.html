@@ -20,8 +20,10 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--body);line
 
 /* NAV */
 .nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 32px;background:rgba(255,251,245,0.92);backdrop-filter:blur(12px);border-bottom:1.5px solid #F0EEFF;box-shadow:0 2px 16px rgba(45,45,78,0.06);}
-.nav-logo{font-family:'Baloo 2',cursive;font-size:1.35rem;font-weight:800;color:var(--dark);text-decoration:none;}
-.nav-logo span{color:var(--coral);}
+.nav-logo{font-family:'Baloo 2',cursive;font-size:1.35rem;font-weight:800;color:var(--dark);text-decoration:none;display:flex;align-items:center;gap:10px;}
+.nav-logo img{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid rgba(94,205,160,.3);box-shadow:0 2px 10px rgba(94,205,160,.2);}
+.nav-logo-text{background:linear-gradient(135deg,var(--coral),var(--sun));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.nav-logo-text span{-webkit-text-fill-color:var(--mint);}
 .nav-buttons{display:flex;align-items:center;gap:10px;}
 .btn-login{padding:9px 22px;border-radius:50px;border:2px solid #E0DAFF;background:white;font-family:'Nunito',sans-serif;font-weight:800;font-size:.9rem;color:var(--dark);cursor:pointer;text-decoration:none;transition:all .2s;}
 .btn-login:hover{border-color:var(--coral);color:var(--coral);}
@@ -37,6 +39,11 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--body);line
 .hero-headline{font-family:'Baloo 2',cursive;font-size:clamp(2.2rem,6vw,3.6rem);font-weight:800;line-height:1.12;color:var(--dark);margin-bottom:18px;}
 .c-coral{color:var(--coral);}.c-mint{color:var(--mint);}
 .hero-intro{font-family:'Lora',serif;font-style:italic;font-size:1.15rem;color:var(--muted);max-width:560px;margin:0 auto;line-height:1.75;}
+
+/* HERO PHOTO */
+.hero-photo-wrap{text-align:center;margin:-20px 0 48px;position:relative;}
+.hero-photo-wrap img{max-width:480px;width:100%;border-radius:28px;box-shadow:0 16px 56px rgba(45,45,78,0.14);display:block;margin:0 auto;}
+.hero-photo-badge{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);background:white;border-radius:40px;padding:8px 22px;font-size:.78rem;font-weight:800;color:var(--dark);box-shadow:0 6px 20px rgba(45,45,78,.12);white-space:nowrap;border:2px solid #F0EEFF;}
 
 /* DIVIDER */
 .wave-divider{display:flex;align-items:center;gap:14px;margin:48px 0;}
@@ -80,7 +87,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--body);line
 .ch-coral .inline-quote cite{color:var(--coral);}
 .ch-lav   .inline-quote cite{color:#9B6FE8;}
 
-/* MISSION BANNER — bright & light */
+/* MISSION BANNER */
 .mission-banner{border-radius:28px;padding:48px 44px;margin-bottom:56px;position:relative;overflow:hidden;background:linear-gradient(135deg,#E8FBF3 0%,#D4F5FF 50%,#EDE9FF 100%);border:2.5px solid rgba(94,205,160,.25);box-shadow:0 12px 40px rgba(94,205,160,.12);}
 .mission-banner::before{content:'🌸';position:absolute;bottom:-10px;right:28px;font-size:7rem;opacity:.12;line-height:1;}
 .mission-banner::after{content:'✨';position:absolute;top:16px;left:24px;font-size:3rem;opacity:.18;}
@@ -99,12 +106,30 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--body);line
 .sig-logo span{-webkit-text-fill-color:var(--mint);}
 .sig-tagline{font-size:.83rem;color:var(--muted);font-weight:700;letter-spacing:1.5px;}
 
+/* SECOND PHOTO */
+.closing-photo{text-align:center;margin:48px 0 40px;}
+.closing-photo img{max-width:420px;width:100%;border-radius:28px;box-shadow:0 12px 48px rgba(45,45,78,.12);display:block;margin:0 auto;}
+
+/* CTA SECTION */
+.cta-section{text-align:center;padding-bottom:40px;}
+.cta-sub{font-family:'Lora',serif;font-style:italic;font-size:1.1rem;color:#8888AA;margin-bottom:28px;line-height:1.7;}
+.cta-buttons{display:flex;flex-direction:column;align-items:center;gap:14px;}
+.cta-btn-primary{display:inline-flex;align-items:center;justify-content:space-between;gap:20px;background:linear-gradient(135deg,#FF6B6B,#FF8E53);color:white;font-family:'Baloo 2',cursive;font-weight:900;font-size:1.2rem;padding:20px 36px;border-radius:50px;text-decoration:none;box-shadow:0 8px 28px rgba(255,107,107,.4);transition:transform .2s,box-shadow .2s;min-width:320px;}
+.cta-btn-primary:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(255,107,107,.5);}
+.cta-btn-arrow{background:rgba(255,255,255,.25);border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;}
+.cta-btn-secondary{display:inline-block;padding:13px 32px;border-radius:50px;border:2.5px solid #E0DAFF;background:white;font-family:'Nunito',sans-serif;font-weight:800;font-size:.95rem;color:var(--dark);text-decoration:none;transition:all .2s;}
+.cta-btn-secondary:hover{border-color:var(--mint);color:var(--mint);}
+.cta-fine{margin-top:14px;font-size:.82rem;font-weight:700;color:#AAAACC;}
+
 @media(max-width:600px){
-  .page{padding:48px 16px 80px;}
+  .nav{padding:12px 16px;}
+  .page{padding:80px 16px 80px;}
   .chapter-body{padding:24px 20px;}
   .mission-banner{padding:32px 24px;}
   .signature-card{padding:32px 20px;}
   .chapter-icon{width:44px;height:44px;font-size:1.2rem;}
+  .cta-btn-primary{min-width:unset;width:100%;}
+  .nav-buttons .btn-login{display:none;}
 }
 </style>
 </head>
@@ -114,15 +139,19 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--body);line
 <div class="blob blob-3"></div>
 
 <nav class="nav">
-  <a href="founders-story.html" class="nav-logo" style="display:flex;align-items:center;gap:10px;"><img src="logo.png" alt="" style="height:42px;width:42px;border-radius:50%;object-fit:cover;">Bloomi<span>Kids</span></a>
+  <a href="founders-story.html" class="nav-logo">
+    <img src="logo.png" alt="BloomiKids logo">
+    <span class="nav-logo-text">Bloomi<span>Kids</span></span>
+  </a>
   <div class="nav-buttons">
-    <a href="index.html#login" class="btn-login">Log In</a>
-    <a href="index.html#signup" class="btn-signup">Sign Up Free</a>
+    <a href="index.html" class="btn-login">Log In</a>
+    <a href="index.html" class="btn-signup">Sign Up Free</a>
   </div>
 </nav>
 
 <div class="page">
 
+  <!-- HERO -->
   <div class="hero">
     <div class="hero-badge"><span class="dot"></span> Our Founder's Story</div>
     <h1 class="hero-headline">
@@ -135,17 +164,19 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--body);line
     </p>
   </div>
 
-  <!-- Hero illustration -->
-  <div style="text-align:center;margin:-20px 0 48px;">
-    <img src="IMG_0949.jpeg" alt="The BloomiKids Experience" style="max-width:480px;width:100%;border-radius:28px;box-shadow:0 12px 48px rgba(45,45,78,0.12);">
+  <!-- Hero photo -->
+  <div class="hero-photo-wrap">
+    <img src="IMG_0949.jpeg" alt="The BloomiKids Experience">
+    <div class="hero-photo-badge">🌸 Where Every Child Blooms</div>
   </div>
 
-  <div class="wave-divider">
+  <div class="wave-divider" style="margin-top:56px;">
     <div class="wave-line"></div>
     <div class="wave-emoji">🌸</div>
     <div class="wave-line"></div>
   </div>
 
+  <!-- Credentials -->
   <div class="cred-row">
     <div class="cred-pill"><span class="pip pip-mint"></span> B.S. Human Development &amp; Education</div>
     <div class="cred-pill"><span class="pip pip-lav"></span> Minor in Psychology</div>
@@ -154,6 +185,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--body);line
     <div class="cred-pill"><span class="pip pip-sky"></span> Mom &amp; Founder</div>
   </div>
 
+  <!-- Story chapters -->
   <div class="chapters">
 
     <div class="chapter ch-mint">
@@ -225,11 +257,13 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--body);line
 
   </div>
 
+  <!-- Mission -->
   <div class="mission-banner">
     <div class="mission-tag">Our Mission</div>
     <p class="mission-text">BloomiKids exists to give every child — from PreK through 5th grade — a place where <strong>learning, movement, and mindfulness</strong> live together. Where screen time becomes grow time. Where every child has the chance to bloom.</p>
   </div>
 
+  <!-- Signature -->
   <div class="signature-card">
     <div class="sig-hearts">🌸 💛 🌿</div>
     <p class="sig-with-love">With love &amp; purpose,</p>
@@ -239,18 +273,22 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--body);line
     <div class="sig-tagline">🌸 Where Every Child Blooms 🌸</div>
   </div>
 
-  <!-- Second illustration -->
-  <div style="text-align:center;margin:48px 0;">
-    <img src="IMG_0950.jpeg" alt="Uncompromised Learning. Balanced Screens. BloomiKids." style="max-width:420px;width:100%;border-radius:28px;box-shadow:0 12px 48px rgba(45,45,78,0.12);">
+  <!-- Closing photo -->
+  <div class="closing-photo">
+    <img src="IMG_0950_1.jpeg" alt="BloomiKids — Uncompromised Learning. Balanced Screens.">
   </div>
 
   <!-- CTA -->
-  <div style="text-align:center;margin-top:16px;padding-bottom:40px;">
-    <p style="font-family:'Lora',serif;font-style:italic;font-size:1.1rem;color:#8888AA;margin-bottom:28px;line-height:1.7;">Ready to give your child a place where learning, movement,<br>and mindfulness come together?</p>
-    <a href="index.html#signup" style="display:inline-block;background:linear-gradient(135deg,#FF6B6B,#FF8E53);color:white;font-family:'Baloo 2',cursive;font-weight:900;font-size:1.15rem;padding:18px 48px;border-radius:50px;text-decoration:none;box-shadow:0 8px 28px rgba(255,107,107,.4);transition:transform .2s,box-shadow .2s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 36px rgba(255,107,107,.5)'" onmouseout="this.style.transform='';this.style.boxShadow='0 8px 28px rgba(255,107,107,.4)'">
-      Start Your Free Trial →
-    </a>
-    <p style="margin-top:16px;font-size:.82rem;font-weight:700;color:#AAAACC;">🔒 14 days free · No credit card needed · Cancel anytime</p>
+  <div class="cta-section">
+    <p class="cta-sub">Ready to give your child a place where learning, movement,<br>and mindfulness come together?</p>
+    <div class="cta-buttons">
+      <a href="index.html" class="cta-btn-primary">
+        <span>Start Your Free Trial 🌱</span>
+        <span class="cta-btn-arrow">→</span>
+      </a>
+      <a href="index.html" class="cta-btn-secondary">Already have an account? Log In →</a>
+    </div>
+    <p class="cta-fine">🔒 14 days free · No credit card needed · Cancel anytime</p>
   </div>
 
 </div>
