@@ -513,6 +513,54 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
 .bottom-nav { position:fixed; bottom:0; left:0; right:0; background:white; padding:10px 20px; display:flex; justify-content:center; gap:6px; box-shadow:0 -8px 32px rgba(45,45,78,.08); z-index:100; }
 .bottom-nav .tab-btn { font-size:.88rem; padding:10px 20px; }
 
+/* -- MODAL OVERLAY (grade + avatar pickers) ------------ */
+.modal-overlay {
+  position:fixed; inset:0; z-index:9000;
+  background:rgba(45,45,78,.7); backdrop-filter:blur(4px);
+  display:flex; align-items:center; justify-content:center; padding:24px;
+}
+.modal-card {
+  background:white; border-radius:28px; padding:32px;
+  max-width:420px; width:100%;
+  box-shadow:0 24px 80px rgba(45,45,78,.3);
+  animation:fadeUp .3s ease;
+}
+.modal-title {
+  font-family:'Baloo 2',cursive; font-size:1.5rem; font-weight:800;
+  text-align:center; margin-bottom:6px;
+}
+.modal-sub {
+  color:#8888AA; font-size:.9rem; font-weight:600;
+  text-align:center; margin-bottom:22px;
+}
+.grade-grid {
+  display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:20px;
+}
+.grade-opt {
+  padding:14px 8px; border-radius:18px; border:2.5px solid #F0F0F8;
+  background:#FAFAFA; cursor:pointer; font-family:'Baloo 2',cursive;
+  font-weight:800; font-size:.95rem; color:#2D2D4E; transition:all .2s;
+  text-align:center;
+}
+.grade-opt:hover { background:#E8FFF6; border-color:#5ECDA0; transform:scale(1.05); }
+.grade-opt-icon { font-size:1.4rem; display:block; margin-bottom:4px; }
+.grade-opt-label { font-size:.65rem; color:#8888AA; font-weight:600; display:block; }
+.avatar-grid {
+  display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:20px;
+}
+.avatar-opt {
+  aspect-ratio:1; border-radius:18px; border:2.5px solid #F0F0F8;
+  background:#FAFAFA; cursor:pointer; font-size:2rem;
+  transition:all .2s; display:flex; align-items:center; justify-content:center;
+}
+.avatar-opt:hover { background:#F3EFFF; border-color:#C9B8FF; transform:scale(1.12); }
+.modal-cancel {
+  width:100%; padding:12px; border-radius:40px; border:none;
+  background:#F0F0F8; color:#8888AA; font-family:'Nunito',sans-serif;
+  font-weight:700; cursor:pointer; font-size:.9rem; transition:all .2s;
+}
+.modal-cancel:hover { background:#E8E0F8; }
+
 @media(max-width:600px) {
   .greeting { font-size:calc(var(--font-big) * 0.85); }
   .timer-display { font-size:3.5rem; }
@@ -802,11 +850,9 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
 
 <script>
 // ══════════════════════════════════════════════════════
-//  SUPABASE -- paste your credentials here
+//  SUPABASE
 // ══════════════════════════════════════════════════════
-// ⬇ STEP 1: PASTE YOUR SUPABASE PROJECT URL HERE ⬇
 const SUPABASE_URL  = 'https://gzpkzbugumnkzoltlpch.supabase.co';
-// ⬇ STEP 2: PASTE YOUR SUPABASE ANON PUBLIC KEY HERE ⬇
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6cGt6YnVndW1ua3pvbHRscGNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxOTI3NDUsImV4cCI6MjA4ODc2ODc0NX0.YQVMl1qwu7X9B_6CJqEC2-zevEeBHVROuWeuPvlp6w0';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
@@ -967,7 +1013,7 @@ const GRADE_DATA = {
       { emoji:'🐍', name:'Cobra', tip:'Lie down and look up!', secs:45, level:'Easy' },
       { emoji:'🏔', name:'Mountain', tip:'Stand very straight and tall!', secs:60, level:'Easy' },
       { emoji:'🐱', name:'Cat-Cow', tip:'Arch and dip your back slowly!', secs:60, level:'Easy' },
-      { emoji:'🌙', name:'Child\'s Pose', tip:'Curl up small and rest!', secs:60, level:'Easy' },
+      { emoji:'🌙', name:"Child's Pose", tip:'Curl up small and rest!', secs:60, level:'Easy' },
       { emoji:'⭐', name:'Star', tip:'Stand wide with arms out -- make a big star!', secs:45, level:'Easy' },
       { emoji:'⚔', name:'Warrior I', tip:'Lunge forward and reach arms to sky!', secs:60, level:'Easy' },
       { emoji:'🌉', name:'Bridge Pose', tip:'Lie down and push hips up high!', secs:45, level:'Easy' },
@@ -997,7 +1043,7 @@ const GRADE_DATA = {
     ui: {
       subtitle:    "Let's tackle something new and exciting today! 🚀",
       streakTitle: 'Learning Streak!', streakSub: 'You showed up again -- keep going!',
-      tabLearn:'Academics', tabMove:'Yoga', tabRead:'Reading', tabArt:'Art', tabArt:'Art', tabArt:'Art', tabArt:'Art',
+      tabLearn:'Academics', tabMove:'Yoga', tabRead:'Reading', tabArt:'Art',
       subjectsTitle:'📖 Today\'s Subjects',
       quizTitle:'🧠 Quiz Challenge!',
       posesTitle:'🌟 Yoga Poses', breathSub:'Follow the circle -- breathe in as it grows, out as it shrinks.',
@@ -1056,7 +1102,7 @@ const GRADE_DATA = {
     ui: {
       subtitle:    "Ready to challenge yourself today? Let's go! 💪",
       streakTitle: 'Learning Streak!', streakSub: 'You\'re building great habits!',
-      tabLearn:'Academics', tabMove:'Yoga', tabRead:'Reading', tabArt:'Art', tabArt:'Art', tabArt:'Art', tabArt:'Art',
+      tabLearn:'Academics', tabMove:'Yoga', tabRead:'Reading', tabArt:'Art',
       subjectsTitle:'📖 Today\'s Subjects',
       quizTitle:'🧠 Quick Quiz',
       posesTitle:'🌟 Yoga Poses', breathSub:'Follow the circle. Breathe in when it grows, out when it shrinks.',
@@ -1115,7 +1161,7 @@ const GRADE_DATA = {
     ui: {
       subtitle:    "Let's push your learning further today! 🚀",
       streakTitle: 'Great Streak!', streakSub: 'Consistency is a superpower!',
-      tabLearn:'Academics', tabMove:'Yoga', tabRead:'Reading', tabArt:'Art', tabArt:'Art', tabArt:'Art', tabArt:'Art',
+      tabLearn:'Academics', tabMove:'Yoga', tabRead:'Reading', tabArt:'Art',
       subjectsTitle:'📖 Today\'s Subjects',
       quizTitle:'🧠 Quick Quiz',
       posesTitle:'🌟 Yoga Poses', breathSub:'Follow the circle. In when it grows, out when it shrinks.',
@@ -1174,7 +1220,7 @@ const GRADE_DATA = {
     ui: {
       subtitle:    "Time to challenge yourself and grow! 💡",
       streakTitle: 'Amazing Streak!', streakSub: 'You\'ve been learning every day!',
-      tabLearn:'Academics', tabMove:'Yoga', tabRead:'Reading', tabArt:'Art', tabArt:'Art', tabArt:'Art', tabArt:'Art',
+      tabLearn:'Academics', tabMove:'Yoga', tabRead:'Reading', tabArt:'Art',
       subjectsTitle:'📖 Today\'s Subjects',
       quizTitle:'🧠 Quick Quiz',
       posesTitle:'🌟 Yoga Poses', breathSub:'Follow the circle. Breathe in when it grows, out when it shrinks.',
@@ -1236,6 +1282,15 @@ let currentUser = null, activeChild = null, activeGrade = null, gradeContent = n
 let sessionData = { streak:0, stars:0, tasks:0, minutes:0 };
 let yogaPoseDone = 0, timerSecs = 60, timerRunning = false, timerInterval;
 let currentPoseName = '', qIdx = 0, answered = false, wIdx = 0;
+
+// Art state
+let artActivitiesDone = 0;
+let artStarsEarned = 0;
+let colorMixCount = 0;
+let colorPick1 = null, colorPick2 = null;
+let drawPromptIdx = 0;
+let artContent = null;
+let artTabBuilt = false;  // ✅ FIX 4: only build art tab once per child session
 
 // -- PWA -----------------------------------------------
 if ('serviceWorker' in navigator) {
@@ -1300,7 +1355,6 @@ sb.auth.onAuthStateChange(async(event,session)=>{
   if (session?.user) { currentUser=session.user; showScreen('children'); await loadChildren(); }
   else {
     showScreen('auth');
-    // Check if coming from founders page with #login or #signup
     const hash = window.location.hash;
     if (hash === '#signup') showAuthTab('signup');
     else showAuthTab('login');
@@ -1319,54 +1373,157 @@ function showScreen(s) {
 function switchChild() { showScreen('children'); loadChildren(); }
 
 // ══════════════════════════════════════════════════════
-//  CHILDREN
+//  CHILDREN  ✅ FIX 1: spinner bug — insert().select().single() + error handling
 // ══════════════════════════════════════════════════════
 async function loadChildren() {
   const grid = document.getElementById('childrenGrid');
   grid.innerHTML = '<div class="spinner"></div>';
- const {data,error} = await Promise.race([sb.from('children').select('*').eq('parent_id',currentUser.id), new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),5000))]).catch(e=>({data:[],error:e}));  if (error && !error.message?.includes("timeout")) { toast("⚠️ Error loading profiles"); return; }
-  // First time user -- show welcome screen instead of empty picker
-  if (!data || data.length === 0) { showScreen('welcome'); return; }
   showScreen('children');
-  grid.innerHTML='';
-  (data||[]).forEach(child=>{
+
+  let data, error;
+  try {
+    const result = await Promise.race([
+      sb.from('children').select('*').eq('parent_id', currentUser.id),
+      new Promise((_, r) => setTimeout(() => r(new Error('timeout')), 8000))
+    ]);
+    data = result.data;
+    error = result.error;
+  } catch(e) {
+    data = [];
+    error = e;
+  }
+
+  if (error && !error.message?.includes('timeout')) {
+    toast('⚠️ Error loading profiles');
+    grid.innerHTML = '';
+    grid.appendChild(makeAddBtn());
+    return;
+  }
+
+  // First time user — show welcome screen
+  if (!data || data.length === 0) { showScreen('welcome'); return; }
+
+  grid.innerHTML = '';
+  data.forEach(child => {
     const gradeKey = child.grade || 'K';
     const gradeLabel = GRADE_DATA[gradeKey]?.label || gradeKey;
     const btn = document.createElement('button');
-    btn.className='child-btn';
-    btn.innerHTML=`<span class="child-avatar">${child.avatar||'🌟'}</span><div class="child-name">${child.name}</div><div class="child-grade-tag">${gradeLabel}</div>`;
-    btn.onclick=()=>selectChild(child);
+    btn.className = 'child-btn';
+    btn.innerHTML = `<span class="child-avatar">${child.avatar||'🌟'}</span><div class="child-name">${child.name}</div><div class="child-grade-tag">${gradeLabel}</div>`;
+    btn.onclick = () => selectChild(child);
     grid.appendChild(btn);
   });
   grid.appendChild(makeAddBtn());
 }
+
 function makeAddBtn() {
   const btn = document.createElement('button');
-  btn.className='add-child-btn';
-  btn.innerHTML='➕<br>Add Child';
-  btn.onclick=addChild; return btn;
+  btn.className = 'add-child-btn';
+  btn.innerHTML = '➕<br>Add Child';
+  btn.onclick = addChild;
+  return btn;
 }
+
+// ✅ FIX 1 + FIX 2: addChild now uses modal pickers + proper .select().single()
 async function addChild() {
-  const name = prompt("Child's first name?"); if (!name) return;
-  const gradeKey = await pickGrade();        if (!gradeKey) return;
-  const avatars = ['🌟','🦁','🐬','🦋','🐸','🐼','🦊','🐙','🦄','🐧'];
-  const avatar  = avatars[Math.floor(Math.random()*avatars.length)];
-  const age     = { PreK:4, K:5, 1:6, 2:7, 3:8, 4:9, 5:10 }[gradeKey] || 5;
-  const {data,error} = await sb.from('children').insert({parent_id:currentUser.id,name,age,avatar,grade:gradeKey});
-  if (error) { toast('❌ Could not add child'); return; }
-  await sb.from('stars').insert({child_id:data.id,total_stars:0});
-  await sb.from('streaks').insert({child_id:data.id});
-  toast(`🎉 ${name} added as ${GRADE_DATA[gradeKey].label}!`);
+  const name = prompt("Child's first name?");
+  if (!name || !name.trim()) return;
+
+  const gradeKey = await pickGrade();
+  if (!gradeKey) return;
+
+  const avatar = await pickAvatar();
+  if (!avatar) return;
+
+  const age = { PreK:4, K:5, 1:6, 2:7, 3:8, 4:9, 5:10 }[gradeKey] || 5;
+
+  // Show spinner immediately — user sees feedback
+  const grid = document.getElementById('childrenGrid');
+  grid.innerHTML = '<div class="spinner"></div>';
   showScreen('children');
-  loadChildren();
+
+  // ✅ KEY FIX: chain .select().single() so Supabase returns the inserted row
+  const { data, error } = await sb
+    .from('children')
+    .insert({ parent_id: currentUser.id, name: name.trim(), age, avatar, grade: gradeKey })
+    .select()
+    .single();
+
+  if (error || !data) {
+    toast('❌ Could not add child. Please try again.');
+    await loadChildren();
+    return;
+  }
+
+  // Supporting rows — non-blocking, fire and forget
+  sb.from('stars').insert({ child_id: data.id, total_stars: 0 }).then(() => {});
+  sb.from('streaks').insert({ child_id: data.id }).then(() => {});
+
+  toast(`🎉 ${name.trim()} added as ${GRADE_DATA[gradeKey].label}!`);
+  await loadChildren();
 }
+
+// ✅ FIX 2: Grade picker — beautiful modal instead of prompt()
 function pickGrade() {
-  return new Promise(resolve=>{
-    const opts = Object.entries(GRADE_DATA).map(([k,v])=>`${k === 'PreK' ? 'PreK' : k} = ${v.label}`).join('\n');
-    const val  = prompt(`What grade is this child in?\n\n${opts}\n\nType: PreK, K, 1, 2, 3, 4, or 5`);
-    if (!val) { resolve(null); return; }
-    const key = val.trim().toUpperCase() === 'PREK' ? 'PreK' : val.trim().toUpperCase();
-    resolve(GRADE_DATA[key] ? key : null);
+  return new Promise(resolve => {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    const GRADE_ICONS = { PreK:'🌱', K:'🌟', 1:'✏️', 2:'📐', 3:'🔬', 4:'🚀', 5:'🏆' };
+    overlay.innerHTML = `
+      <div class="modal-card">
+        <div class="modal-title">What grade? 🎒</div>
+        <div class="modal-sub">Choose your child's grade level</div>
+        <div class="grade-grid" id="gradeGrid">
+          ${Object.entries(GRADE_DATA).map(([k, v]) => `
+            <button class="grade-opt" data-key="${k}">
+              <span class="grade-opt-icon">${GRADE_ICONS[k] || '📚'}</span>
+              ${k}
+              <span class="grade-opt-label">${v.label.replace('Grade ', 'Gr.')}</span>
+            </button>`).join('')}
+        </div>
+        <button class="modal-cancel">Cancel</button>
+      </div>`;
+    document.body.appendChild(overlay);
+    overlay.querySelector('#gradeGrid').addEventListener('click', e => {
+      const btn = e.target.closest('[data-key]');
+      if (!btn) return;
+      document.body.removeChild(overlay);
+      resolve(btn.dataset.key);
+    });
+    overlay.querySelector('.modal-cancel').addEventListener('click', () => {
+      document.body.removeChild(overlay);
+      resolve(null);
+    });
+  });
+}
+
+// ✅ FIX 2: Avatar picker modal with your emoji set
+function pickAvatar() {
+  return new Promise(resolve => {
+    const AVATARS = ['🦕','🦄','🚀','🦁','🐉','🦋','🐱','🐶','🐼','⭐'];
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.style.zIndex = '9001';
+    overlay.innerHTML = `
+      <div class="modal-card">
+        <div class="modal-title">Pick a buddy! 🎨</div>
+        <div class="modal-sub">Choose your child's avatar</div>
+        <div class="avatar-grid" id="avatarGrid">
+          ${AVATARS.map(a => `<button class="avatar-opt" data-avatar="${a}">${a}</button>`).join('')}
+        </div>
+        <button class="modal-cancel">Cancel</button>
+      </div>`;
+    document.body.appendChild(overlay);
+    overlay.querySelector('#avatarGrid').addEventListener('click', e => {
+      const btn = e.target.closest('[data-avatar]');
+      if (!btn) return;
+      document.body.removeChild(overlay);
+      resolve(btn.dataset.avatar);
+    });
+    overlay.querySelector('.modal-cancel').addEventListener('click', () => {
+      document.body.removeChild(overlay);
+      resolve(null);
+    });
   });
 }
 
@@ -1377,9 +1534,10 @@ async function selectChild(child) {
   activeChild  = child;
   activeGrade  = child.grade || 'K';
   gradeContent = GRADE_DATA[activeGrade] || GRADE_DATA['K'];
+  artTabBuilt  = false;  // ✅ Reset so art tab rebuilds for this child
 
   // Apply grade CSS class to body
-  document.body.className = `grade-${activeGrade.toLowerCase().replace('prek','prek')}`;
+  document.body.className = `grade-${activeGrade.toLowerCase()}`;
 
   showScreen('app');
   applyGradeUI();
@@ -1387,7 +1545,6 @@ async function selectChild(child) {
   buildYogaGrid();
   buildProgressSection();
   initMusicPlayer();
-  buildArtTab();
 
   // Header
   document.getElementById('activeChildAvatar').textContent = child.avatar||'🌟';
@@ -1402,7 +1559,7 @@ async function selectChild(child) {
   document.getElementById('gradeLabel').textContent = gradeContent.label;
 
   // Word of day
-  wIdx=0;
+  wIdx = 0;
   document.getElementById('wordOfDay').textContent = gradeContent.words[0].w;
   document.getElementById('wordDef').textContent   = gradeContent.words[0].d;
 
@@ -1431,7 +1588,6 @@ function applyGradeUI() {
   document.getElementById('breathSub').textContent      = ui.breathSub;
   document.getElementById('bookshelfTitle').textContent = ui.bookshelfTitle;
   document.getElementById('timerTopLabel').textContent  = ui.timerTopLabel;
-  // Tab labels
   ['tabLearn','tabLearn2'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=ui.tabLearn; });
   ['tabMove', 'tabMove2' ].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=ui.tabMove; });
   ['tabRead', 'tabRead2' ].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=ui.tabRead; });
@@ -1461,7 +1617,6 @@ function buildProgressSection() {
       </div>
       <div class="progress-bar"><div class="progress-fill ${fills[i]}" id="pbar_${i}" style="width:0%"></div></div>
     </div>`).join('');
-  // Animate with fake progress
   setTimeout(()=>{
     const vals = [72,88,55];
     subjects.forEach((_,i)=>{
@@ -1474,101 +1629,90 @@ function buildProgressSection() {
   }, 400);
 }
 
-// -- SVG pose illustrations of a child -------------------------------------
+// ══════════════════════════════════════════════════════
+//  YOGA POSES  ✅ FIX 3: photo onerror → SVG fallback
+// ══════════════════════════════════════════════════════
+
 const POSE_SVG = {
-  'Tree': `<svg viewBox="0 0 110 130" xmlns="http://www.w3.org/2000/svg"> <ellipse cx="55" cy="127" rx="24" ry="4" fill="#D0C8E8" opacity=".6"/> <!-- standing leg --> <rect x="50" y="88" width="11" height="32" rx="5" fill="#4488CC"/> <!-- foot flat --> <ellipse cx="55" cy="121" rx="9" ry="4" fill="#A06830"/> <!-- bent leg pressed to calf --> <path d="M54 95 Q38 104 36 114" stroke="#4488CC" stroke-width="9" stroke-linecap="round" fill="none"/> <ellipse cx="36" cy="115" rx="7" ry="5" fill="#A06830" transform="rotate(-15 36 115)"/> <!-- torso --> <rect x="44" y="52" width="22" height="40" rx="11" fill="#FF6B6B"/> <!-- left arm arc up --> <path d="M44 62 Q22 44 27 22" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/> <!-- right arm arc up --> <path d="M66 62 Q88 44 83 22" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/> <!-- hands with fingers hint --> <circle cx="27" cy="20" r="7" fill="#C68642"/> <circle cx="83" cy="20" r="7" fill="#C68642"/> <!-- neck --> <rect x="51" y="42" width="10" height="12" rx="5" fill="#C68642"/> <!-- head --> <circle cx="55" cy="34" r="18" fill="#C68642"/> <!-- boy short curly hair -- cap shape with bumps --> <path d="M37 32 Q38 14 55 13 Q72 14 73 32 Q68 22 55 21 Q42 22 37 32Z" fill="#2C1810"/> <circle cx="40" cy="27" r="4" fill="#2C1810"/> <circle cx="47" cy="19" r="4.5" fill="#2C1810"/> <circle cx="55" cy="16" r="5" fill="#2C1810"/> <circle cx="63" cy="19" r="4.5" fill="#2C1810"/> <circle cx="70" cy="27" r="4" fill="#2C1810"/> <!-- ear --> <ellipse cx="37" cy="35" rx="4" ry="5" fill="#A06830"/> <ellipse cx="73" cy="35" rx="4" ry="5" fill="#A06830"/> <!-- eyes --> <ellipse cx="49" cy="34" rx="3" ry="3.5" fill="white"/> <ellipse cx="61" cy="34" rx="3" ry="3.5" fill="white"/> <circle cx="50" cy="35" r="2" fill="#1A0800"/> <circle cx="62" cy="35" r="2" fill="#1A0800"/> <circle cx="50.8" cy="34.2" r=".7" fill="white"/> <circle cx="62.8" cy="34.2" r=".7" fill="white"/> <!-- nose --> <ellipse cx="55" cy="40" rx="2.5" ry="1.5" fill="#A06830"/> <!-- smile --> <path d="M49 44 Q55 49 61 44" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/> </svg>`,
+  'Tree': `<svg viewBox="0 0 110 130" xmlns="http://www.w3.org/2000/svg"><ellipse cx="55" cy="127" rx="24" ry="4" fill="#D0C8E8" opacity=".6"/><rect x="50" y="88" width="11" height="32" rx="5" fill="#4488CC"/><ellipse cx="55" cy="121" rx="9" ry="4" fill="#A06830"/><path d="M54 95 Q38 104 36 114" stroke="#4488CC" stroke-width="9" stroke-linecap="round" fill="none"/><ellipse cx="36" cy="115" rx="7" ry="5" fill="#A06830" transform="rotate(-15 36 115)"/><rect x="44" y="52" width="22" height="40" rx="11" fill="#FF6B6B"/><path d="M44 62 Q22 44 27 22" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M66 62 Q88 44 83 22" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/><circle cx="27" cy="20" r="7" fill="#C68642"/><circle cx="83" cy="20" r="7" fill="#C68642"/><rect x="51" y="42" width="10" height="12" rx="5" fill="#C68642"/><circle cx="55" cy="34" r="18" fill="#C68642"/><path d="M37 32 Q38 14 55 13 Q72 14 73 32 Q68 22 55 21 Q42 22 37 32Z" fill="#2C1810"/><circle cx="40" cy="27" r="4" fill="#2C1810"/><circle cx="47" cy="19" r="4.5" fill="#2C1810"/><circle cx="55" cy="16" r="5" fill="#2C1810"/><circle cx="63" cy="19" r="4.5" fill="#2C1810"/><circle cx="70" cy="27" r="4" fill="#2C1810"/><ellipse cx="37" cy="35" rx="4" ry="5" fill="#A06830"/><ellipse cx="73" cy="35" rx="4" ry="5" fill="#A06830"/><ellipse cx="49" cy="34" rx="3" ry="3.5" fill="white"/><ellipse cx="61" cy="34" rx="3" ry="3.5" fill="white"/><circle cx="50" cy="35" r="2" fill="#1A0800"/><circle cx="62" cy="35" r="2" fill="#1A0800"/><ellipse cx="55" cy="40" rx="2.5" ry="1.5" fill="#A06830"/><path d="M49 44 Q55 49 61 44" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>`,
 
-  'Snake': `<svg viewBox="0 0 140 90" xmlns="http://www.w3.org/2000/svg"> <ellipse cx="70" cy="86" rx="62" ry="4" fill="#D0C8E8" opacity=".6"/> <!-- legs flat on ground --> <rect x="16" y="64" width="72" height="13" rx="6" fill="#5ECDA0"/> <!-- feet --> <ellipse cx="14" cy="70" rx="9" ry="6" fill="#C89060" transform="rotate(10 14 70)"/> <ellipse cx="90" cy="70" rx="9" ry="6" fill="#C89060" transform="rotate(-10 90 70)"/> <!-- torso arched up --> <path d="M26 70 Q60 34 88 48" stroke="#8B6FE8" stroke-width="17" stroke-linecap="round" fill="none"/> <!-- left arm pressing --> <path d="M42 61 Q28 46 26 30" stroke="#E8B88A" stroke-width="8" stroke-linecap="round" fill="none"/> <!-- right arm pressing --> <path d="M68 52 Q82 46 88 30" stroke="#E8B88A" stroke-width="8" stroke-linecap="round" fill="none"/> <!-- hands --> <circle cx="26" cy="28" r="7" fill="#E8B88A"/> <circle cx="89" cy="28" r="7" fill="#E8B88A"/> <!-- neck --> <rect x="92" y="28" width="9" height="12" rx="4" fill="#E8B88A"/> <!-- head lifted and looking up --> <circle cx="104" cy="22" r="16" fill="#E8B88A"/> <!-- girl curly voluminous hair --> <circle cx="90" cy="16" r="8" fill="#3D2314"/> <circle cx="96" cy="8" r="8" fill="#3D2314"/> <circle cx="104" cy="6" r="9" fill="#3D2314"/> <circle cx="112" cy="9" r="7" fill="#3D2314"/> <circle cx="118" cy="17" r="6" fill="#3D2314"/> <!-- hair wisps falling forward --> <circle cx="92" cy="22" r="5" fill="#5C3520"/> <circle cx="98" cy="26" r="4" fill="#5C3520"/> <!-- ear --> <ellipse cx="89" cy="23" rx="4" ry="5" fill="#C89060"/> <ellipse cx="119" cy="23" rx="4" ry="5" fill="#C89060"/> <!-- eyes looking up/forward --> <ellipse cx="100" cy="21" rx="3" ry="3.5" fill="white"/> <ellipse cx="110" cy="21" rx="3" ry="3.5" fill="white"/> <circle cx="101" cy="22" r="2" fill="#1A0800"/> <circle cx="111" cy="22" r="2" fill="#1A0800"/> <circle cx="101.7" cy="21.3" r=".7" fill="white"/> <circle cx="111.7" cy="21.3" r=".7" fill="white"/> <!-- nose --> <ellipse cx="105" cy="27" rx="2.5" ry="1.5" fill="#C89060"/> <!-- smile --> <path d="M100 31 Q105 35 110 31" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/> </svg>`,
+  'Butterfly': `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><ellipse cx="60" cy="116" rx="44" ry="4" fill="#D0C8E8" opacity=".6"/><ellipse cx="24" cy="88" rx="22" ry="13" fill="#5ECDA0" transform="rotate(-18 24 88)"/><ellipse cx="96" cy="88" rx="22" ry="13" fill="#5ECDA0" transform="rotate(18 96 88)"/><ellipse cx="60" cy="94" rx="24" ry="11" fill="#C89060"/><rect x="46" y="56" width="28" height="40" rx="14" fill="#8B6FE8"/><path d="M46 70 Q28 78 22 92" stroke="#E8B88A" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M74 70 Q92 78 98 92" stroke="#E8B88A" stroke-width="8" stroke-linecap="round" fill="none"/><circle cx="21" cy="94" r="7" fill="#E8B88A"/><circle cx="99" cy="94" r="7" fill="#E8B88A"/><rect x="56" y="46" width="9" height="12" rx="4" fill="#E8B88A"/><circle cx="60" cy="38" r="18" fill="#E8B88A"/><circle cx="44" cy="32" r="10" fill="#3D2314"/><circle cx="52" cy="22" r="10" fill="#3D2314"/><circle cx="61" cy="19" r="11" fill="#3D2314"/><circle cx="70" cy="22" r="10" fill="#3D2314"/><circle cx="77" cy="32" r="9" fill="#3D2314"/><ellipse cx="42" cy="39" rx="4" ry="5" fill="#C89060"/><ellipse cx="78" cy="39" rx="4" ry="5" fill="#C89060"/><ellipse cx="54" cy="38" rx="3" ry="3.5" fill="white"/><ellipse cx="66" cy="38" rx="3" ry="3.5" fill="white"/><circle cx="55" cy="39" r="2" fill="#1A0800"/><circle cx="67" cy="39" r="2" fill="#1A0800"/><ellipse cx="60" cy="44" rx="2.5" ry="1.5" fill="#C89060"/><path d="M53 49 Q60 55 67 49" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>`,
 
-  'Butterfly': `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"> <ellipse cx="60" cy="116" rx="44" ry="4" fill="#D0C8E8" opacity=".6"/> <!-- left knee wing --> <ellipse cx="24" cy="88" rx="22" ry="13" fill="#5ECDA0" transform="rotate(-18 24 88)"/> <!-- right knee wing --> <ellipse cx="96" cy="88" rx="22" ry="13" fill="#5ECDA0" transform="rotate(18 96 88)"/> <!-- seated hips --> <ellipse cx="60" cy="94" rx="24" ry="11" fill="#C89060"/> <!-- torso --> <rect x="46" y="56" width="28" height="40" rx="14" fill="#8B6FE8"/> <!-- arms reaching down to feet --> <path d="M46 70 Q28 78 22 92" stroke="#E8B88A" stroke-width="8" stroke-linecap="round" fill="none"/> <path d="M74 70 Q92 78 98 92" stroke="#E8B88A" stroke-width="8" stroke-linecap="round" fill="none"/> <!-- hands/feet touch --> <circle cx="21" cy="94" r="7" fill="#E8B88A"/> <circle cx="99" cy="94" r="7" fill="#E8B88A"/> <!-- neck --> <rect x="56" y="46" width="9" height="12" rx="4" fill="#E8B88A"/> <!-- head --> <circle cx="60" cy="38" r="18" fill="#E8B88A"/> <!-- girl big curly hair - bun style with loose curls --> <circle cx="44" cy="32" r="10" fill="#3D2314"/> <circle cx="52" cy="22" r="10" fill="#3D2314"/> <circle cx="61" cy="19" r="11" fill="#3D2314"/> <circle cx="70" cy="22" r="10" fill="#3D2314"/> <circle cx="77" cy="32" r="9" fill="#3D2314"/> <!-- hair detail --> <circle cx="46" cy="24" r="6" fill="#5C3520"/> <circle cx="64" cy="20" r="5" fill="#5C3520"/> <!-- ears --> <ellipse cx="42" cy="39" rx="4" ry="5" fill="#C89060"/> <ellipse cx="78" cy="39" rx="4" ry="5" fill="#C89060"/> <!-- eyes --> <ellipse cx="54" cy="38" rx="3" ry="3.5" fill="white"/> <ellipse cx="66" cy="38" rx="3" ry="3.5" fill="white"/> <circle cx="55" cy="39" r="2" fill="#1A0800"/> <circle cx="67" cy="39" r="2" fill="#1A0800"/> <circle cx="55.7" cy="38.3" r=".7" fill="white"/> <circle cx="67.7" cy="38.3" r=".7" fill="white"/> <!-- nose --> <ellipse cx="60" cy="44" rx="2.5" ry="1.5" fill="#C89060"/> <!-- happy smile --> <path d="M53 49 Q60 55 67 49" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/> <!-- cheek blush --> <ellipse cx="50" cy="45" rx="5" ry="3" fill="#FF9999" opacity=".3"/> <ellipse cx="70" cy="45" rx="5" ry="3" fill="#FF9999" opacity=".3"/> </svg>`,
+  'Mountain': `<svg viewBox="0 0 90 135" xmlns="http://www.w3.org/2000/svg"><ellipse cx="45" cy="131" rx="20" ry="4" fill="#D0C8E8" opacity=".6"/><rect x="36" y="86" width="11" height="38" rx="5" fill="#4488CC"/><rect x="47" y="86" width="11" height="38" rx="5" fill="#4488CC"/><ellipse cx="41" cy="125" rx="9" ry="4" fill="#A06830"/><ellipse cx="53" cy="125" rx="9" ry="4" fill="#A06830"/><rect x="33" y="50" width="28" height="38" rx="13" fill="#FF6B6B"/><path d="M33 62 Q20 66 19 80" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M61 62 Q74 66 75 80" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/><circle cx="19" cy="82" r="7" fill="#C68642"/><circle cx="75" cy="82" r="7" fill="#C68642"/><rect x="41" y="40" width="10" height="12" rx="5" fill="#C68642"/><circle cx="46" cy="31" r="18" fill="#C68642"/><path d="M28 29 Q30 13 46 12 Q62 13 64 29 Q58 20 46 19 Q34 20 28 29Z" fill="#2C1810"/><ellipse cx="28" cy="32" rx="4" ry="5" fill="#A06830"/><ellipse cx="64" cy="32" rx="4" ry="5" fill="#A06830"/><ellipse cx="40" cy="31" rx="3" ry="3.5" fill="white"/><ellipse cx="52" cy="31" rx="3" ry="3.5" fill="white"/><circle cx="41" cy="32" r="2" fill="#1A0800"/><circle cx="53" cy="32" r="2" fill="#1A0800"/><ellipse cx="46" cy="37" rx="2.5" ry="1.5" fill="#A06830"/><path d="M40 42 Q46 46 52 42" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>`,
 
-  'Mountain': `<svg viewBox="0 0 90 135" xmlns="http://www.w3.org/2000/svg"> <ellipse cx="45" cy="131" rx="20" ry="4" fill="#D0C8E8" opacity=".6"/> <!-- legs together straight --> <rect x="36" y="86" width="11" height="38" rx="5" fill="#4488CC"/> <rect x="47" y="86" width="11" height="38" rx="5" fill="#4488CC"/> <!-- feet --> <ellipse cx="41" cy="125" rx="9" ry="4" fill="#A06830"/> <ellipse cx="53" cy="125" rx="9" ry="4" fill="#A06830"/> <!-- torso straight --> <rect x="33" y="50" width="28" height="38" rx="13" fill="#FF6B6B"/> <!-- arms at sides relaxed --> <path d="M33 62 Q20 66 19 80" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/> <path d="M61 62 Q74 66 75 80" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/> <!-- hands --> <circle cx="19" cy="82" r="7" fill="#C68642"/> <circle cx="75" cy="82" r="7" fill="#C68642"/> <!-- neck --> <rect x="41" y="40" width="10" height="12" rx="5" fill="#C68642"/> <!-- head --> <circle cx="46" cy="31" r="18" fill="#C68642"/> <!-- boy curly hair tight cap --> <path d="M28 29 Q30 13 46 12 Q62 13 64 29 Q58 20 46 19 Q34 20 28 29Z" fill="#2C1810"/> <circle cx="31" cy="24" r="4" fill="#2C1810"/> <circle cx="38" cy="16" r="4.5" fill="#2C1810"/> <circle cx="46" cy="13" r="5" fill="#2C1810"/> <circle cx="54" cy="16" r="4.5" fill="#2C1810"/> <circle cx="61" cy="24" r="4" fill="#2C1810"/> <!-- ears --> <ellipse cx="28" cy="32" rx="4" ry="5" fill="#A06830"/> <ellipse cx="64" cy="32" rx="4" ry="5" fill="#A06830"/> <!-- calm eyes --> <ellipse cx="40" cy="31" rx="3" ry="3.5" fill="white"/> <ellipse cx="52" cy="31" rx="3" ry="3.5" fill="white"/> <circle cx="41" cy="32" r="2" fill="#1A0800"/> <circle cx="53" cy="32" r="2" fill="#1A0800"/> <circle cx="41.7" cy="31.3" r=".7" fill="white"/> <circle cx="53.7" cy="31.3" r=".7" fill="white"/> <!-- nose --> <ellipse cx="46" cy="37" rx="2.5" ry="1.5" fill="#A06830"/> <!-- calm closed-mouth smile --> <path d="M40 42 Q46 46 52 42" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/> </svg>`,
+  'Star': `<svg viewBox="0 0 140 130" xmlns="http://www.w3.org/2000/svg"><ellipse cx="70" cy="126" rx="52" ry="4" fill="#D0C8E8" opacity=".6"/><path d="M62 96 L28 120" stroke="#5ECDA0" stroke-width="12" stroke-linecap="round"/><ellipse cx="24" cy="122" rx="10" ry="5" fill="#C89060" transform="rotate(-20 24 122)"/><path d="M78 96 L112 120" stroke="#5ECDA0" stroke-width="12" stroke-linecap="round"/><ellipse cx="116" cy="122" rx="10" ry="5" fill="#C89060" transform="rotate(20 116 122)"/><rect x="56" y="56" width="28" height="42" rx="14" fill="#8B6FE8"/><path d="M56 70 L14 60" stroke="#E8B88A" stroke-width="9" stroke-linecap="round"/><path d="M84 70 L126 60" stroke="#E8B88A" stroke-width="9" stroke-linecap="round"/><circle cx="12" cy="59" r="8" fill="#E8B88A"/><circle cx="128" cy="59" r="8" fill="#E8B88A"/><rect x="66" y="46" width="10" height="12" rx="5" fill="#E8B88A"/><circle cx="71" cy="37" r="18" fill="#E8B88A"/><circle cx="54" cy="31" r="10" fill="#3D2314"/><circle cx="58" cy="20" r="10" fill="#3D2314"/><circle cx="68" cy="16" r="11" fill="#3D2314"/><circle cx="78" cy="19" r="10" fill="#3D2314"/><circle cx="86" cy="29" r="9" fill="#3D2314"/><ellipse cx="53" cy="38" rx="4" ry="5" fill="#C89060"/><ellipse cx="89" cy="38" rx="4" ry="5" fill="#C89060"/><ellipse cx="65" cy="36" rx="3.5" ry="4" fill="white"/><ellipse cx="77" cy="36" rx="3.5" ry="4" fill="white"/><circle cx="66" cy="37" r="2.2" fill="#1A0800"/><circle cx="78" cy="37" r="2.2" fill="#1A0800"/><ellipse cx="71" cy="42" rx="2.5" ry="1.5" fill="#C89060"/><path d="M63 47 Q71 54 79 47" stroke="#8B4020" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`,
 
-  'Cat Stretch': `<svg viewBox="0 0 130 100" xmlns="http://www.w3.org/2000/svg"> <ellipse cx="65" cy="96" rx="56" ry="4" fill="#D0C8E8" opacity=".6"/> <!-- left arm straight down to floor --> <rect x="18" y="52" width="10" height="36" rx="5" fill="#E8B88A"/> <circle cx="23" cy="90" r="7" fill="#E8B88A"/> <!-- right arm --> <rect x="92" y="52" width="10" height="36" rx="5" fill="#E8B88A"/> <circle cx="97" cy="90" r="7" fill="#E8B88A"/> <!-- left knee on floor --> <ellipse cx="38" cy="88" rx="10" ry="7" fill="#5ECDA0"/> <!-- right knee --> <ellipse cx="90" cy="88" rx="10" ry="7" fill="#5ECDA0"/> <!-- torso arched UP (cat) --> <path d="M28 72 Q65 30 102 72" stroke="#8B6FE8" stroke-width="18" stroke-linecap="round" fill="none"/> <!-- head hangs down --> <circle cx="22" cy="42" r="16" fill="#E8B88A"/> <!-- girl curly hair hanging/falling --> <circle cx="10" cy="34" r="8" fill="#3D2314"/> <circle cx="16" cy="26" r="8" fill="#3D2314"/> <circle cx="24" cy="23" r="9" fill="#3D2314"/> <circle cx="32" cy="26" r="7" fill="#3D2314"/> <circle cx="36" cy="34" r="6" fill="#3D2314"/> <!-- hair highlight --> <circle cx="18" cy="28" r="5" fill="#5C3520"/> <!-- ears --> <ellipse cx="9" cy="42" rx="4" ry="5" fill="#C89060"/> <ellipse cx="35" cy="42" rx="4" ry="5" fill="#C89060"/> <!-- eyes looking down --> <ellipse cx="17" cy="42" rx="3" ry="2.5" fill="white"/> <ellipse cx="27" cy="42" rx="3" ry="2.5" fill="white"/> <circle cx="18" cy="43" r="2" fill="#1A0800"/> <circle cx="28" cy="43" r="2" fill="#1A0800"/> <!-- nose --> <ellipse cx="22" cy="47" rx="2.5" ry="1.5" fill="#C89060"/> <!-- slight smile --> <path d="M17 51 Q22 55 27 51" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/> </svg>`,
+  "Child's Pose": `<svg viewBox="0 0 140 80" xmlns="http://www.w3.org/2000/svg"><ellipse cx="70" cy="76" rx="62" ry="4" fill="#D0C8E8" opacity=".6"/><ellipse cx="84" cy="66" rx="28" ry="11" fill="#4488CC"/><ellipse cx="100" cy="70" rx="10" ry="6" fill="#A06830"/><ellipse cx="68" cy="70" rx="10" ry="6" fill="#A06830"/><path d="M80 62 Q60 46 28 44" stroke="#FF6B6B" stroke-width="18" stroke-linecap="round" fill="none"/><path d="M54 54 Q34 46 14 46" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M54 58 Q34 56 14 58" stroke="#C68642" stroke-width="7" stroke-linecap="round" fill="none"/><circle cx="12" cy="47" r="7" fill="#C68642"/><circle cx="12" cy="58" r="7" fill="#C68642"/><circle cx="26" cy="38" r="15" fill="#C68642"/><path d="M14 36 Q16 24 26 23 Q36 24 38 36 Q34 28 26 27 Q18 28 14 36Z" fill="#2C1810"/><ellipse cx="37" cy="38" rx="4" ry="5" fill="#A06830"/></svg>`,
 
-  'Cat-Cow': `<svg viewBox="0 0 130 100" xmlns="http://www.w3.org/2000/svg"> <ellipse cx="65" cy="96" rx="56" ry="4" fill="#D0C8E8" opacity=".6"/> <rect x="18" y="52" width="10" height="36" rx="5" fill="#E8B88A"/> <circle cx="23" cy="90" r="7" fill="#E8B88A"/> <rect x="92" y="52" width="10" height="36" rx="5" fill="#E8B88A"/> <circle cx="97" cy="90" r="7" fill="#E8B88A"/> <ellipse cx="38" cy="88" rx="10" ry="7" fill="#5ECDA0"/> <ellipse cx="90" cy="88" rx="10" ry="7" fill="#5ECDA0"/> <path d="M28 72 Q65 30 102 72" stroke="#8B6FE8" stroke-width="18" stroke-linecap="round" fill="none"/> <circle cx="22" cy="42" r="16" fill="#E8B88A"/> <circle cx="10" cy="34" r="8" fill="#3D2314"/> <circle cx="16" cy="26" r="8" fill="#3D2314"/> <circle cx="24" cy="23" r="9" fill="#3D2314"/> <circle cx="32" cy="26" r="7" fill="#3D2314"/> <circle cx="36" cy="34" r="6" fill="#3D2314"/> <circle cx="18" cy="28" r="5" fill="#5C3520"/> <ellipse cx="9" cy="42" rx="4" ry="5" fill="#C89060"/> <ellipse cx="35" cy="42" rx="4" ry="5" fill="#C89060"/> <ellipse cx="17" cy="42" rx="3" ry="2.5" fill="white"/> <ellipse cx="27" cy="42" rx="3" ry="2.5" fill="white"/> <circle cx="18" cy="43" r="2" fill="#1A0800"/> <circle cx="28" cy="43" r="2" fill="#1A0800"/> <ellipse cx="22" cy="47" rx="2.5" ry="1.5" fill="#C89060"/> <path d="M17 51 Q22 55 27 51" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/> </svg>`,
+  'Warrior I': `<svg viewBox="0 0 140 130" xmlns="http://www.w3.org/2000/svg"><ellipse cx="70" cy="126" rx="58" ry="4" fill="#D0C8E8" opacity=".6"/><path d="M82 96 L122 118" stroke="#4488CC" stroke-width="13" stroke-linecap="round"/><ellipse cx="124" cy="120" rx="11" ry="5" fill="#A06830" transform="rotate(25 124 120)"/><path d="M62 96 L40 96 L38 120" stroke="#4488CC" stroke-width="13" stroke-linecap="round" fill="none"/><ellipse cx="37" cy="122" rx="11" ry="5" fill="#A06830"/><rect x="58" y="54" width="26" height="44" rx="13" fill="#FF6B6B"/><path d="M60 62 Q48 40 52 18" stroke="#C68642" stroke-width="9" stroke-linecap="round" fill="none"/><path d="M82 62 Q94 40 90 18" stroke="#C68642" stroke-width="9" stroke-linecap="round" fill="none"/><circle cx="52" cy="16" r="8" fill="#C68642"/><circle cx="90" cy="16" r="8" fill="#C68642"/><rect x="67" y="44" width="10" height="12" rx="5" fill="#C68642"/><circle cx="72" cy="34" r="18" fill="#C68642"/><path d="M54 32 Q56 16 72 15 Q88 16 90 32 Q84 23 72 22 Q60 23 54 32Z" fill="#2C1810"/><ellipse cx="54" cy="35" rx="4" ry="5" fill="#A06830"/><ellipse cx="90" cy="35" rx="4" ry="5" fill="#A06830"/><ellipse cx="66" cy="34" rx="3" ry="3.5" fill="white"/><ellipse cx="78" cy="34" rx="3" ry="3.5" fill="white"/><circle cx="67" cy="35" r="2" fill="#1A0800"/><circle cx="79" cy="35" r="2" fill="#1A0800"/><ellipse cx="72" cy="40" rx="2.5" ry="1.5" fill="#A06830"/><path d="M66 45 Q72 49 78 45" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>`,
 
-  'Moon': `<svg viewBox="0 0 110 135" xmlns="http://www.w3.org/2000/svg"> <ellipse cx="52" cy="131" rx="22" ry="4" fill="#D0C8E8" opacity=".6"/> <!-- legs --> <rect x="42" y="88" width="11" height="36" rx="5" fill="#4488CC"/> <rect x="54" y="88" width="11" height="36" rx="5" fill="#4488CC"/> <!-- feet --> <ellipse cx="47" cy="125" rx="9" ry="4" fill="#A06830"/> <ellipse cx="60" cy="125" rx="9" ry="4" fill="#A06830"/> <!-- torso curved sideways right --> <path d="M52 90 Q46 72 50 54" stroke="#FF6B6B" stroke-width="18" stroke-linecap="round" fill="none"/> <!-- left arm arcing all the way over --> <path d="M42 68 Q20 52 30 22" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/> <!-- right arm tucked down side --> <path d="M60 70 Q74 74 76 88" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/> <!-- hands --> <circle cx="30" cy="20" r="7" fill="#C68642"/> <circle cx="77" cy="90" r="7" fill="#C68642"/> <!-- neck --> <rect x="47" y="44" width="10" height="12" rx="5" fill="#C68642"/> <!-- head tilted with stretch --> <circle cx="52" cy="35" r="18" fill="#C68642"/> <!-- boy curly hair --> <path d="M34 33 Q36 17 52 16 Q68 17 70 33 Q64 24 52 23 Q40 24 34 33Z" fill="#2C1810"/> <circle cx="37" cy="28" r="4" fill="#2C1810"/> <circle cx="44" cy="20" r="4.5" fill="#2C1810"/> <circle cx="52" cy="17" r="5" fill="#2C1810"/> <circle cx="60" cy="20" r="4.5" fill="#2C1810"/> <circle cx="67" cy="28" r="4" fill="#2C1810"/> <!-- ears --> <ellipse cx="34" cy="36" rx="4" ry="5" fill="#A06830"/> <ellipse cx="70" cy="36" rx="4" ry="5" fill="#A06830"/> <!-- eyes --> <ellipse cx="46" cy="35" rx="3" ry="3.5" fill="white"/> <ellipse cx="58" cy="35" rx="3" ry="3.5" fill="white"/> <circle cx="47" cy="36" r="2" fill="#1A0800"/> <circle cx="59" cy="36" r="2" fill="#1A0800"/> <circle cx="47.7" cy="35.3" r=".7" fill="white"/> <circle cx="59.7" cy="35.3" r=".7" fill="white"/> <!-- nose --> <ellipse cx="52" cy="41" rx="2.5" ry="1.5" fill="#A06830"/> <!-- smile --> <path d="M46 46 Q52 50 58 46" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/> </svg>`,
+  'Warrior II': `<svg viewBox="0 0 160 125" xmlns="http://www.w3.org/2000/svg"><ellipse cx="80" cy="121" rx="68" ry="4" fill="#D0C8E8" opacity=".6"/><path d="M92 96 L136 116" stroke="#5ECDA0" stroke-width="13" stroke-linecap="round"/><ellipse cx="138" cy="118" rx="11" ry="5" fill="#C89060" transform="rotate(22 138 118)"/><path d="M68 96 L40 96 L38 118" stroke="#5ECDA0" stroke-width="13" stroke-linecap="round" fill="none"/><ellipse cx="37" cy="120" rx="11" ry="5" fill="#C89060"/><rect x="68" y="54" width="24" height="44" rx="12" fill="#8B6FE8"/><path d="M68 66 L16 66" stroke="#E8B88A" stroke-width="9" stroke-linecap="round"/><path d="M92 66 L144 66" stroke="#E8B88A" stroke-width="9" stroke-linecap="round"/><circle cx="13" cy="66" r="8" fill="#E8B88A"/><circle cx="147" cy="66" r="8" fill="#E8B88A"/><rect x="76" y="44" width="9" height="12" rx="4" fill="#E8B88A"/><circle cx="80" cy="34" r="18" fill="#E8B88A"/><circle cx="63" cy="28" r="10" fill="#3D2314"/><circle cx="68" cy="18" r="10" fill="#3D2314"/><circle cx="78" cy="14" r="11" fill="#3D2314"/><circle cx="88" cy="18" r="10" fill="#3D2314"/><circle cx="96" cy="28" r="9" fill="#3D2314"/><ellipse cx="62" cy="35" rx="4" ry="5" fill="#C89060"/><ellipse cx="98" cy="35" rx="4" ry="5" fill="#C89060"/><ellipse cx="74" cy="33" rx="3" ry="3.5" fill="white"/><ellipse cx="86" cy="33" rx="3" ry="3.5" fill="white"/><circle cx="74" cy="34" r="2" fill="#1A0800"/><circle cx="86" cy="34" r="2" fill="#1A0800"/><ellipse cx="80" cy="39" rx="2.5" ry="1.5" fill="#C89060"/><path d="M74 44 Q80 48 86 44" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>`,
 
-  'Star': `<svg viewBox="0 0 140 130" xmlns="http://www.w3.org/2000/svg"> <ellipse cx="70" cy="126" rx="52" ry="4" fill="#D0C8E8" opacity=".6"/> <!-- left leg out --> <path d="M62 96 L28 120" stroke="#5ECDA0" stroke-width="12" stroke-linecap="round"/> <ellipse cx="24" cy="122" rx="10" ry="5" fill="#C89060" transform="rotate(-20 24 122)"/> <!-- right leg out --> <path d="M78 96 L112 120" stroke="#5ECDA0" stroke-width="12" stroke-linecap="round"/> <ellipse cx="116" cy="122" rx="10" ry="5" fill="#C89060" transform="rotate(20 116 122)"/> <!-- torso --> <rect x="56" y="56" width="28" height="42" rx="14" fill="#8B6FE8"/> <!-- left arm out wide --> <path d="M56 70 L14 60" stroke="#E8B88A" stroke-width="9" stroke-linecap="round"/> <!-- right arm out wide --> <path d="M84 70 L126 60" stroke="#E8B88A" stroke-width="9" stroke-linecap="round"/> <!-- hands --> <circle cx="12" cy="59" r="8" fill="#E8B88A"/> <circle cx="128" cy="59" r="8" fill="#E8B88A"/> <!-- neck --> <rect x="66" y="46" width="10" height="12" rx="5" fill="#E8B88A"/> <!-- head --> <circle cx="71" cy="37" r="18" fill="#E8B88A"/> <!-- girl big curly hair halo --> <circle cx="54" cy="31" r="10" fill="#3D2314"/> <circle cx="58" cy="20" r="10" fill="#3D2314"/> <circle cx="68" cy="16" r="11" fill="#3D2314"/> <circle cx="78" cy="19" r="10" fill="#3D2314"/> <circle cx="86" cy="29" r="9" fill="#3D2314"/> <circle cx="56" cy="23" r="6" fill="#5C3520"/> <circle cx="72" cy="17" r="5" fill="#5C3520"/> <!-- ears --> <ellipse cx="53" cy="38" rx="4" ry="5" fill="#C89060"/> <ellipse cx="89" cy="38" rx="4" ry="5" fill="#C89060"/> <!-- excited eyes wide --> <ellipse cx="65" cy="36" rx="3.5" ry="4" fill="white"/> <ellipse cx="77" cy="36" rx="3.5" ry="4" fill="white"/> <circle cx="66" cy="37" r="2.2" fill="#1A0800"/> <circle cx="78" cy="37" r="2.2" fill="#1A0800"/> <circle cx="66.8" cy="36.2" r=".8" fill="white"/> <circle cx="78.8" cy="36.2" r=".8" fill="white"/> <!-- nose --> <ellipse cx="71" cy="42" rx="2.5" ry="1.5" fill="#C89060"/> <!-- big happy smile --> <path d="M63 47 Q71 54 79 47" stroke="#8B4020" stroke-width="2" fill="none" stroke-linecap="round"/> <ellipse cx="61" cy="44" rx="5" ry="3" fill="#FF9999" opacity=".3"/> <ellipse cx="81" cy="44" rx="5" ry="3" fill="#FF9999" opacity=".3"/> </svg>`,
+  'Bridge Pose': `<svg viewBox="0 0 150 95" xmlns="http://www.w3.org/2000/svg"><ellipse cx="75" cy="91" rx="66" ry="4" fill="#D0C8E8" opacity=".6"/><rect x="8" y="64" width="40" height="13" rx="6" fill="#E8B88A"/><path d="M18 68 L22 82" stroke="#E8B88A" stroke-width="8" stroke-linecap="round"/><path d="M38 68 L44 82" stroke="#E8B88A" stroke-width="8" stroke-linecap="round"/><circle cx="22" cy="84" r="7" fill="#E8B88A"/><circle cx="45" cy="84" r="7" fill="#E8B88A"/><path d="M48 70 Q75 28 104 70" stroke="#8B6FE8" stroke-width="17" stroke-linecap="round" fill="none"/><path d="M104 70 L118 70 L118 84" stroke="#5ECDA0" stroke-width="12" stroke-linecap="round" fill="none"/><ellipse cx="120" cy="84" rx="11" ry="5" fill="#C89060"/><circle cx="22" cy="57" r="15" fill="#E8B88A"/><circle cx="8" cy="52" r="8" fill="#3D2314"/><circle cx="14" cy="44" r="8" fill="#3D2314"/><circle cx="22" cy="41" r="9" fill="#3D2314"/><circle cx="30" cy="44" r="8" fill="#3D2314"/><circle cx="36" cy="52" r="7" fill="#3D2314"/></svg>`,
 
-  "Child's Pose": `<svg viewBox="0 0 140 80" xmlns="http://www.w3.org/2000/svg"> <ellipse cx="70" cy="76" rx="62" ry="4" fill="#D0C8E8" opacity=".6"/> <!-- legs/shins folded under --> <ellipse cx="84" cy="66" rx="28" ry="11" fill="#4488CC"/> <!-- feet peeking out --> <ellipse cx="100" cy="70" rx="10" ry="6" fill="#A06830"/> <ellipse cx="68" cy="70" rx="10" ry="6" fill="#A06830"/> <!-- torso folded over knees --> <path d="M80 62 Q60 46 28 44" stroke="#FF6B6B" stroke-width="18" stroke-linecap="round" fill="none"/> <!-- arms stretched forward along mat --> <path d="M54 54 Q34 46 14 46" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/> <path d="M54 58 Q34 56 14 58" stroke="#C68642" stroke-width="7" stroke-linecap="round" fill="none"/> <!-- hands flat --> <circle cx="12" cy="47" r="7" fill="#C68642"/> <circle cx="12" cy="58" r="7" fill="#C68642"/> <!-- head resting forehead down --> <circle cx="26" cy="38" r="15" fill="#C68642"/> <!-- boy curly hair visible from above/side --> <path d="M14 36 Q16 24 26 23 Q36 24 38 36 Q34 28 26 27 Q18 28 14 36Z" fill="#2C1810"/> <circle cx="16" cy="31" r="3.5" fill="#2C1810"/> <circle cx="22" cy="25" r="4" fill="#2C1810"/> <circle cx="26" cy="23" r="4.5" fill="#2C1810"/> <circle cx="30" cy="25" r="4" fill="#2C1810"/> <circle cx="36" cy="31" r="3.5" fill="#2C1810"/> <!-- ear visible --> <ellipse cx="37" cy="38" rx="4" ry="5" fill="#A06830"/> <!-- eye visible from side --> <ellipse cx="22" cy="38" rx="2.5" ry="3" fill="white"/> <circle cx="23" cy="39" r="1.8" fill="#1A0800"/> <!-- peaceful closed eye line --> <path d="M30 38 Q34 40 38 38" stroke="#1A0800" stroke-width="1.5" fill="none" stroke-linecap="round"/> <!-- nose --> <ellipse cx="28" cy="43" rx="2" ry="1.2" fill="#A06830"/> </svg>`,
+  'Eagle Pose': `<svg viewBox="0 0 110 135" xmlns="http://www.w3.org/2000/svg"><ellipse cx="55" cy="131" rx="22" ry="4" fill="#D0C8E8" opacity=".6"/><path d="M55 96 L55 122" stroke="#4488CC" stroke-width="12" stroke-linecap="round"/><ellipse cx="55" cy="123" rx="10" ry="5" fill="#A06830"/><path d="M54 94 Q36 96 34 108 Q34 118 44 120" stroke="#4488CC" stroke-width="10" stroke-linecap="round" fill="none"/><rect x="42" y="54" width="26" height="44" rx="13" fill="#FF6B6B"/><path d="M44 64 Q32 56 34 44 Q38 36 48 40" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M68 64 Q80 56 78 44 Q74 36 64 40" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M40 42 Q55 28 70 42" stroke="#C68642" stroke-width="9" stroke-linecap="round" fill="none"/><rect x="51" y="44" width="10" height="12" rx="5" fill="#C68642"/><circle cx="56" cy="34" r="18" fill="#C68642"/><path d="M38 32 Q40 16 56 15 Q72 16 74 32 Q68 23 56 22 Q44 23 38 32Z" fill="#2C1810"/><ellipse cx="38" cy="35" rx="4" ry="5" fill="#A06830"/><ellipse cx="74" cy="35" rx="4" ry="5" fill="#A06830"/><ellipse cx="50" cy="34" rx="3" ry="3.5" fill="white"/><ellipse cx="62" cy="34" rx="3" ry="3.5" fill="white"/><circle cx="51" cy="35" r="2" fill="#1A0800"/><circle cx="63" cy="35" r="2" fill="#1A0800"/><ellipse cx="56" cy="40" rx="2.5" ry="1.5" fill="#A06830"/><path d="M50 45 Q56 49 62 45" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>`,
 
-  'Warrior I': `<svg viewBox="0 0 140 130" xmlns="http://www.w3.org/2000/svg"> <ellipse cx="70" cy="126" rx="58" ry="4" fill="#D0C8E8" opacity=".6"/> <!-- back straight leg --> <path d="M82 96 L122 118" stroke="#4488CC" stroke-width="13" stroke-linecap="round"/> <ellipse cx="124" cy="120" rx="11" ry="5" fill="#A06830" transform="rotate(25 124 120)"/> <!-- front bent knee leg --> <path d="M62 96 L40 96 L38 120" stroke="#4488CC" stroke-width="13" stroke-linecap="round" fill="none"/> <ellipse cx="37" cy="122" rx="11" ry="5" fill="#A06830"/> <!-- torso upright --> <rect x="58" y="54" width="26" height="44" rx="13" fill="#FF6B6B"/> <!-- left arm reaching up --> <path d="M60 62 Q48 40 52 18" stroke="#C68642" stroke-width="9" stroke-linecap="round" fill="none"/> <!-- right arm reaching up --> <path d="M82 62 Q94 40 90 18" stroke="#C68642" stroke-width="9" stroke-linecap="round" fill="none"/> <!-- hands clasped/raised --> <circle cx="52" cy="16" r="8" fill="#C68642"/> <circle cx="90" cy="16" r="8" fill="#C68642"/> <!-- neck --> <rect x="67" y="44" width="10" height="12" rx="5" fill="#C68642"/> <!-- head looking forward --> <circle cx="72" cy="34" r="18" fill="#C68642"/> <!-- boy curly hair --> <path d="M54 32 Q56 16 72 15 Q88 16 90 32 Q84 23 72 22 Q60 23 54 32Z" fill="#2C1810"/> <circle cx="57" cy="27" r="4" fill="#2C1810"/> <circle cx="64" cy="19" r="4.5" fill="#2C1810"/> <circle cx="72" cy="16" r="5" fill="#2C1810"/> <circle cx="80" cy="19" r="4.5" fill="#2C1810"/> <circle cx="87" cy="27" r="4" fill="#2C1810"/> <!-- ears --> <ellipse cx="54" cy="35" rx="4" ry="5" fill="#A06830"/> <ellipse cx="90" cy="35" rx="4" ry="5" fill="#A06830"/> <!-- focused eyes --> <ellipse cx="66" cy="34" rx="3" ry="3.5" fill="white"/> <ellipse cx="78" cy="34" rx="3" ry="3.5" fill="white"/> <circle cx="67" cy="35" r="2" fill="#1A0800"/> <circle cx="79" cy="35" r="2" fill="#1A0800"/> <circle cx="67.7" cy="34.3" r=".7" fill="white"/> <circle cx="79.7" cy="34.3" r=".7" fill="white"/> <!-- nose --> <ellipse cx="72" cy="40" rx="2.5" ry="1.5" fill="#A06830"/> <!-- determined expression --> <path d="M66 45 Q72 49 78 45" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/> </svg>`,
-
-  'Warrior II': `<svg viewBox="0 0 160 125" xmlns="http://www.w3.org/2000/svg"> <ellipse cx="80" cy="121" rx="68" ry="4" fill="#D0C8E8" opacity=".6"/> <!-- back straight leg --> <path d="M92 96 L136 116" stroke="#5ECDA0" stroke-width="13" stroke-linecap="round"/> <ellipse cx="138" cy="118" rx="11" ry="5" fill="#C89060" transform="rotate(22 138 118)"/> <!-- front bent knee --> <path d="M68 96 L40 96 L38 118" stroke="#5ECDA0" stroke-width="13" stroke-linecap="round" fill="none"/> <ellipse cx="37" cy="120" rx="11" ry="5" fill="#C89060"/> <!-- torso upright --> <rect x="68" y="54" width="24" height="44" rx="12" fill="#8B6FE8"/> <!-- left arm reaching out sideways --> <path d="M68 66 L16 66" stroke="#E8B88A" stroke-width="9" stroke-linecap="round"/> <!-- right arm reaching out --> <path d="M92 66 L144 66" stroke="#E8B88A" stroke-width="9" stroke-linecap="round"/> <!-- hands --> <circle cx="13" cy="66" r="8" fill="#E8B88A"/> <circle cx="147" cy="66" r="8" fill="#E8B88A"/> <!-- neck --> <rect x="76" y="44" width="9" height="12" rx="4" fill="#E8B88A"/> <!-- head turned forward/left --> <circle cx="80" cy="34" r="18" fill="#E8B88A"/> <!-- girl curly hair big halo --> <circle cx="63" cy="28" r="10" fill="#3D2314"/> <circle cx="68" cy="18" r="10" fill="#3D2314"/> <circle cx="78" cy="14" r="11" fill="#3D2314"/> <circle cx="88" cy="18" r="10" fill="#3D2314"/> <circle cx="96" cy="28" r="9" fill="#3D2314"/> <circle cx="65" cy="20" r="6" fill="#5C3520"/> <circle cx="80" cy="15" r="5" fill="#5C3520"/> <!-- ears --> <ellipse cx="62" cy="35" rx="4" ry="5" fill="#C89060"/> <ellipse cx="98" cy="35" rx="4" ry="5" fill="#C89060"/> <!-- gazing eyes --> <ellipse cx="74" cy="33" rx="3" ry="3.5" fill="white"/> <ellipse cx="86" cy="33" rx="3" ry="3.5" fill="white"/> <circle cx="74" cy="34" r="2" fill="#1A0800"/> <circle cx="86" cy="34" r="2" fill="#1A0800"/> <circle cx="74.7" cy="33.3" r=".7" fill="white"/> <circle cx="86.7" cy="33.3" r=".7" fill="white"/> <!-- nose --> <ellipse cx="80" cy="39" rx="2.5" ry="1.5" fill="#C89060"/> <path d="M74 44 Q80 48 86 44" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/> </svg>`,
-
-  'Cobra': `<svg viewBox="0 0 140 90" xmlns="http://www.w3.org/2000/svg"> <ellipse cx="70" cy="86" rx="62" ry="4" fill="#D0C8E8" opacity=".6"/> <rect x="14" y="64" width="72" height="13" rx="6" fill="#4488CC"/> <ellipse cx="12" cy="70" rx="9" ry="6" fill="#A06830" transform="rotate(10 12 70)"/> <ellipse cx="88" cy="70" rx="9" ry="6" fill="#A06830" transform="rotate(-10 88 70)"/> <path d="M24 70 Q58 34 88 48" stroke="#FF6B6B" stroke-width="17" stroke-linecap="round" fill="none"/> <path d="M40 61 Q26 46 24 30" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/> <path d="M66 52 Q80 46 86 30" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/> <circle cx="24" cy="28" r="7" fill="#C68642"/> <circle cx="87" cy="28" r="7" fill="#C68642"/> <rect x="92" y="28" width="9" height="12" rx="4" fill="#C68642"/> <circle cx="104" cy="22" r="16" fill="#C68642"/> <!-- boy curly hair --> <path d="M89 20 Q91 8 104 7 Q117 8 119 20 Q114 12 104 11 Q94 12 89 20Z" fill="#2C1810"/> <circle cx="91" cy="15" r="3.5" fill="#2C1810"/> <circle cx="97" cy="9" r="4" fill="#2C1810"/> <circle cx="104" cy="7" r="4.5" fill="#2C1810"/> <circle cx="111" cy="9" r="4" fill="#2C1810"/> <circle cx="117" cy="15" r="3.5" fill="#2C1810"/> <ellipse cx="89" cy="23" rx="4" ry="5" fill="#A06830"/> <ellipse cx="119" cy="23" rx="4" ry="5" fill="#A06830"/> <ellipse cx="99" cy="21" rx="3" ry="3.5" fill="white"/> <ellipse cx="109" cy="21" rx="3" ry="3.5" fill="white"/> <circle cx="100" cy="22" r="2" fill="#1A0800"/> <circle cx="110" cy="22" r="2" fill="#1A0800"/> <circle cx="100.7" cy="21.3" r=".7" fill="white"/> <circle cx="110.7" cy="21.3" r=".7" fill="white"/> <ellipse cx="104" cy="27" rx="2.5" ry="1.5" fill="#A06830"/> <path d="M99 31 Q104 35 109 31" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/> </svg>`,
-
-  'Cobra Pose': `<svg viewBox="0 0 140 90" xmlns="http://www.w3.org/2000/svg"> <ellipse cx="70" cy="86" rx="62" ry="4" fill="#D0C8E8" opacity=".6"/> <rect x="14" y="64" width="72" height="13" rx="6" fill="#4488CC"/> <ellipse cx="12" cy="70" rx="9" ry="6" fill="#A06830" transform="rotate(10 12 70)"/> <ellipse cx="88" cy="70" rx="9" ry="6" fill="#A06830" transform="rotate(-10 88 70)"/> <path d="M24 70 Q58 34 88 48" stroke="#FF6B6B" stroke-width="17" stroke-linecap="round" fill="none"/> <path d="M40 61 Q26 46 24 30" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/> <path d="M66 52 Q80 46 86 30" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/> <circle cx="24" cy="28" r="7" fill="#C68642"/> <circle cx="87" cy="28" r="7" fill="#C68642"/> <rect x="92" y="28" width="9" height="12" rx="4" fill="#C68642"/> <circle cx="104" cy="22" r="16" fill="#C68642"/> <path d="M89 20 Q91 8 104 7 Q117 8 119 20 Q114 12 104 11 Q94 12 89 20Z" fill="#2C1810"/> <circle cx="91" cy="15" r="3.5" fill="#2C1810"/> <circle cx="97" cy="9" r="4" fill="#2C1810"/> <circle cx="104" cy="7" r="4.5" fill="#2C1810"/> <circle cx="111" cy="9" r="4" fill="#2C1810"/> <circle cx="117" cy="15" r="3.5" fill="#2C1810"/> <ellipse cx="89" cy="23" rx="4" ry="5" fill="#A06830"/> <ellipse cx="119" cy="23" rx="4" ry="5" fill="#A06830"/> <ellipse cx="99" cy="21" rx="3" ry="3.5" fill="white"/> <ellipse cx="109" cy="21" rx="3" ry="3.5" fill="white"/> <circle cx="100" cy="22" r="2" fill="#1A0800"/> <circle cx="110" cy="22" r="2" fill="#1A0800"/> <circle cx="100.7" cy="21.3" r=".7" fill="white"/> <circle cx="110.7" cy="21.3" r=".7" fill="white"/> <ellipse cx="104" cy="27" rx="2.5" ry="1.5" fill="#A06830"/> <path d="M99 31 Q104 35 109 31" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/> </svg>`,
-
-  'Bridge Pose': `<svg viewBox="0 0 150 95" xmlns="http://www.w3.org/2000/svg"> <ellipse cx="75" cy="91" rx="66" ry="4" fill="#D0C8E8" opacity=".6"/> <!-- upper back/shoulders flat --> <rect x="8" y="64" width="40" height="13" rx="6" fill="#E8B88A"/> <ellipse cx="6" cy="70" rx="9" ry="6" fill="#C89060"/> <!-- arms flat beside body --> <path d="M18 68 L22 82" stroke="#E8B88A" stroke-width="8" stroke-linecap="round"/> <path d="M38 68 L44 82" stroke="#E8B88A" stroke-width="8" stroke-linecap="round"/> <circle cx="22" cy="84" r="7" fill="#E8B88A"/> <circle cx="45" cy="84" r="7" fill="#E8B88A"/> <!-- lifted torso arch --> <path d="M48 70 Q75 28 104 70" stroke="#8B6FE8" stroke-width="17" stroke-linecap="round" fill="none"/> <!-- bent knees, feet flat --> <path d="M104 70 L118 70 L118 84" stroke="#5ECDA0" stroke-width="12" stroke-linecap="round" fill="none"/> <ellipse cx="120" cy="84" rx="11" ry="5" fill="#C89060"/> <path d="M92 67 L96 70 L104 70" stroke="#5ECDA0" stroke-width="10" stroke-linecap="round" fill="none"/> <!-- head resting back --> <circle cx="22" cy="57" r="15" fill="#E8B88A"/> <!-- girl curly hair spread on ground --> <circle cx="8" cy="52" r="8" fill="#3D2314"/> <circle cx="14" cy="44" r="8" fill="#3D2314"/> <circle cx="22" cy="41" r="9" fill="#3D2314"/> <circle cx="30" cy="44" r="8" fill="#3D2314"/> <circle cx="36" cy="52" r="7" fill="#3D2314"/> <circle cx="14" cy="46" r="5" fill="#5C3520"/> <ellipse cx="38" cy="58" rx="4" ry="5" fill="#C89060"/> <ellipse cx="8" cy="58" rx="4" ry="5" fill="#C89060"/> <ellipse cx="17" cy="57" rx="3" ry="2.5" fill="white"/> <ellipse cx="27" cy="57" rx="3" ry="2.5" fill="white"/> <circle cx="18" cy="58" r="2" fill="#1A0800"/> <circle cx="28" cy="58" r="2" fill="#1A0800"/> <ellipse cx="22" cy="62" rx="2.5" ry="1.5" fill="#C89060"/> <path d="M17 66 Q22 70 27 66" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/> </svg>`,
-
-  'Eagle Pose': `<svg viewBox="0 0 110 135" xmlns="http://www.w3.org/2000/svg"> <ellipse cx="55" cy="131" rx="22" ry="4" fill="#D0C8E8" opacity=".6"/> <!-- standing leg bent --> <path d="M55 96 L55 122" stroke="#4488CC" stroke-width="12" stroke-linecap="round"/> <ellipse cx="55" cy="123" rx="10" ry="5" fill="#A06830"/> <!-- wrapped leg crossing over --> <path d="M54 94 Q36 96 34 108 Q34 118 44 120" stroke="#4488CC" stroke-width="10" stroke-linecap="round" fill="none"/> <!-- torso slightly forward lean --> <rect x="42" y="54" width="26" height="44" rx="13" fill="#FF6B6B"/> <!-- arms wrapped in front --> <path d="M44 64 Q32 56 34 44 Q38 36 48 40" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/> <path d="M68 64 Q80 56 78 44 Q74 36 64 40" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/> <!-- forearms crossed upward --> <path d="M40 42 Q55 28 70 42" stroke="#C68642" stroke-width="9" stroke-linecap="round" fill="none"/> <!-- neck --> <rect x="51" y="44" width="10" height="12" rx="5" fill="#C68642"/> <!-- head --> <circle cx="56" cy="34" r="18" fill="#C68642"/> <!-- boy curly hair --> <path d="M38 32 Q40 16 56 15 Q72 16 74 32 Q68 23 56 22 Q44 23 38 32Z" fill="#2C1810"/> <circle cx="41" cy="27" r="4" fill="#2C1810"/> <circle cx="48" cy="19" r="4.5" fill="#2C1810"/> <circle cx="56" cy="16" r="5" fill="#2C1810"/> <circle cx="64" cy="19" r="4.5" fill="#2C1810"/> <circle cx="71" cy="27" r="4" fill="#2C1810"/> <ellipse cx="38" cy="35" rx="4" ry="5" fill="#A06830"/> <ellipse cx="74" cy="35" rx="4" ry="5" fill="#A06830"/> <ellipse cx="50" cy="34" rx="3" ry="3.5" fill="white"/> <ellipse cx="62" cy="34" rx="3" ry="3.5" fill="white"/> <circle cx="51" cy="35" r="2" fill="#1A0800"/> <circle cx="63" cy="35" r="2" fill="#1A0800"/> <circle cx="51.7" cy="34.3" r=".7" fill="white"/> <circle cx="63.7" cy="34.3" r=".7" fill="white"/> <ellipse cx="56" cy="40" rx="2.5" ry="1.5" fill="#A06830"/> <path d="M50 45 Q56 49 62 45" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/> </svg>`,
-
-  'Warrior Pose': `<svg viewBox="0 0 140 130" xmlns="http://www.w3.org/2000/svg"> <ellipse cx="70" cy="126" rx="58" ry="4" fill="#D0C8E8" opacity=".6"/> <path d="M82 96 L122 118" stroke="#5ECDA0" stroke-width="13" stroke-linecap="round"/> <ellipse cx="124" cy="120" rx="11" ry="5" fill="#C89060" transform="rotate(25 124 120)"/> <path d="M62 96 L40 96 L38 120" stroke="#5ECDA0" stroke-width="13" stroke-linecap="round" fill="none"/> <ellipse cx="37" cy="122" rx="11" ry="5" fill="#C89060"/> <rect x="58" y="54" width="26" height="44" rx="13" fill="#8B6FE8"/> <path d="M60 62 Q48 40 52 18" stroke="#E8B88A" stroke-width="9" stroke-linecap="round" fill="none"/> <path d="M82 62 Q94 40 90 18" stroke="#E8B88A" stroke-width="9" stroke-linecap="round" fill="none"/> <circle cx="52" cy="16" r="8" fill="#E8B88A"/> <circle cx="90" cy="16" r="8" fill="#E8B88A"/> <rect x="67" y="44" width="10" height="12" rx="5" fill="#E8B88A"/> <circle cx="72" cy="34" r="18" fill="#E8B88A"/> <circle cx="55" cy="28" r="10" fill="#3D2314"/> <circle cx="60" cy="18" r="10" fill="#3D2314"/> <circle cx="70" cy="14" r="11" fill="#3D2314"/> <circle cx="80" cy="18" r="10" fill="#3D2314"/> <circle cx="88" cy="28" r="9" fill="#3D2314"/> <circle cx="57" cy="20" r="6" fill="#5C3520"/> <ellipse cx="54" cy="35" rx="4" ry="5" fill="#C89060"/> <ellipse cx="90" cy="35" rx="4" ry="5" fill="#C89060"/> <ellipse cx="66" cy="34" rx="3" ry="3.5" fill="white"/> <ellipse cx="78" cy="34" rx="3" ry="3.5" fill="white"/> <circle cx="67" cy="35" r="2" fill="#1A0800"/> <circle cx="79" cy="35" r="2" fill="#1A0800"/> <circle cx="67.7" cy="34.3" r=".7" fill="white"/> <circle cx="79.7" cy="34.3" r=".7" fill="white"/> <ellipse cx="72" cy="40" rx="2.5" ry="1.5" fill="#C89060"/> <path d="M66 45 Q72 49 78 45" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/> </svg>`,
-
-  'Tree Pose': `<svg viewBox="0 0 110 135" xmlns="http://www.w3.org/2000/svg"> <ellipse cx="55" cy="131" rx="24" ry="4" fill="#D0C8E8" opacity=".6"/> <rect x="50" y="90" width="11" height="34" rx="5" fill="#5ECDA0"/> <ellipse cx="55" cy="125" rx="9" ry="4" fill="#C89060"/> <path d="M54 97 Q38 106 36 116" stroke="#5ECDA0" stroke-width="9" stroke-linecap="round" fill="none"/> <ellipse cx="36" cy="117" rx="7" ry="5" fill="#C89060" transform="rotate(-15 36 117)"/> <rect x="44" y="54" width="22" height="40" rx="11" fill="#8B6FE8"/> <path d="M44 64 Q22 46 27 24" stroke="#E8B88A" stroke-width="8" stroke-linecap="round" fill="none"/> <path d="M66 64 Q88 46 83 24" stroke="#E8B88A" stroke-width="8" stroke-linecap="round" fill="none"/> <circle cx="27" cy="22" r="7" fill="#E8B88A"/> <circle cx="83" cy="22" r="7" fill="#E8B88A"/> <rect x="51" y="44" width="10" height="12" rx="5" fill="#E8B88A"/> <circle cx="56" cy="35" r="18" fill="#E8B88A"/> <circle cx="40" cy="29" r="10" fill="#3D2314"/> <circle cx="45" cy="19" r="10" fill="#3D2314"/> <circle cx="55" cy="15" r="11" fill="#3D2314"/> <circle cx="65" cy="19" r="10" fill="#3D2314"/> <circle cx="72" cy="29" r="9" fill="#3D2314"/> <circle cx="43" cy="21" r="6" fill="#5C3520"/> <ellipse cx="38" cy="36" rx="4" ry="5" fill="#C89060"/> <ellipse cx="74" cy="36" rx="4" ry="5" fill="#C89060"/> <ellipse cx="50" cy="35" rx="3" ry="3.5" fill="white"/> <ellipse cx="62" cy="35" rx="3" ry="3.5" fill="white"/> <circle cx="51" cy="36" r="2" fill="#1A0800"/> <circle cx="63" cy="36" r="2" fill="#1A0800"/> <circle cx="51.7" cy="35.3" r=".7" fill="white"/> <circle cx="63.7" cy="35.3" r=".7" fill="white"/> <ellipse cx="56" cy="41" rx="2.5" ry="1.5" fill="#C89060"/> <path d="M50 46 Q56 50 62 46" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/> <ellipse cx="46" cy="42" rx="5" ry="3" fill="#FF9999" opacity=".25"/> <ellipse cx="66" cy="42" rx="5" ry="3" fill="#FF9999" opacity=".25"/> </svg>`,
-
-  'Mountain Pose': `<svg viewBox="0 0 90 135" xmlns="http://www.w3.org/2000/svg"> <ellipse cx="45" cy="131" rx="20" ry="4" fill="#D0C8E8" opacity=".6"/> <rect x="36" y="88" width="11" height="38" rx="5" fill="#4488CC"/> <rect x="47" y="88" width="11" height="38" rx="5" fill="#4488CC"/> <ellipse cx="41" cy="127" rx="9" ry="4" fill="#A06830"/> <ellipse cx="53" cy="127" rx="9" ry="4" fill="#A06830"/> <rect x="33" y="50" width="28" height="40" rx="14" fill="#FF6B6B"/> <path d="M33 62 Q20 66 19 80" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/> <path d="M61 62 Q74 66 75 80" stroke="#C68642" stroke-width="8" stroke-linecap="round" fill="none"/> <circle cx="19" cy="82" r="7" fill="#C68642"/> <circle cx="75" cy="82" r="7" fill="#C68642"/> <rect x="41" y="40" width="10" height="12" rx="5" fill="#C68642"/> <circle cx="46" cy="31" r="18" fill="#C68642"/> <path d="M28 29 Q30 13 46 12 Q62 13 64 29 Q58 20 46 19 Q34 20 28 29Z" fill="#2C1810"/> <circle cx="31" cy="24" r="4" fill="#2C1810"/> <circle cx="38" cy="16" r="4.5" fill="#2C1810"/> <circle cx="46" cy="13" r="5" fill="#2C1810"/> <circle cx="54" cy="16" r="4.5" fill="#2C1810"/> <circle cx="61" cy="24" r="4" fill="#2C1810"/> <ellipse cx="28" cy="32" rx="4" ry="5" fill="#A06830"/> <ellipse cx="64" cy="32" rx="4" ry="5" fill="#A06830"/> <ellipse cx="40" cy="31" rx="3" ry="3.5" fill="white"/> <ellipse cx="52" cy="31" rx="3" ry="3.5" fill="white"/> <circle cx="41" cy="32" r="2" fill="#1A0800"/> <circle cx="53" cy="32" r="2" fill="#1A0800"/> <circle cx="41.7" cy="31.3" r=".7" fill="white"/> <circle cx="53.7" cy="31.3" r=".7" fill="white"/> <ellipse cx="46" cy="37" rx="2.5" ry="1.5" fill="#A06830"/> <path d="M40 42 Q46 46 52 42" stroke="#8B4020" stroke-width="1.8" fill="none" stroke-linecap="round"/> </svg>`,
-
-  '_default': `<svg viewBox="0 0 90 130" xmlns="http://www.w3.org/2000/svg"> <ellipse cx="45" cy="126" rx="22" ry="4" fill="#D0C8E8" opacity=".6"/> <rect x="34" y="84" width="11" height="36" rx="5" fill="#4488CC"/> <rect x="45" y="84" width="11" height="36" rx="5" fill="#4488CC"/> <ellipse cx="39" cy="121" rx="9" ry="4" fill="#A06830"/> <ellipse cx="51" cy="121" rx="9" ry="4" fill="#A06830"/> <rect x="30" y="48" width="30" height="38" rx="15" fill="#FF6B6B"/> <path d="M30 58 Q16 54 14 70" stroke="#C68642" stroke-width="8" stroke-linecap="round"/> <path d="M60 58 Q74 54 76 70" stroke="#C68642" stroke-width="8" stroke-linecap="round"/> <circle cx="13" cy="72" r="7" fill="#C68642"/> <circle cx="77" cy="72" r="7" fill="#C68642"/> <rect x="41" y="38" width="10" height="12" rx="5" fill="#C68642"/> <circle cx="46" cy="28" r="18" fill="#C68642"/> <path d="M28 26 Q30 10 46 9 Q62 10 64 26 Q58 17 46 16 Q34 17 28 26Z" fill="#2C1810"/> <circle cx="31" cy="21" r="4" fill="#2C1810"/> <circle cx="38" cy="13" r="4.5" fill="#2C1810"/> <circle cx="46" cy="10" r="5" fill="#2C1810"/> <circle cx="54" cy="13" r="4.5" fill="#2C1810"/> <circle cx="61" cy="21" r="4" fill="#2C1810"/> <ellipse cx="28" cy="29" rx="4" ry="5" fill="#A06830"/> <ellipse cx="64" cy="29" rx="4" ry="5" fill="#A06830"/> <ellipse cx="40" cy="28" rx="3" ry="3.5" fill="white"/> <ellipse cx="52" cy="28" rx="3" ry="3.5" fill="white"/> <circle cx="41" cy="29" r="2" fill="#1A0800"/> <circle cx="53" cy="29" r="2" fill="#1A0800"/> <circle cx="41.7" cy="28.3" r=".7" fill="white"/> <circle cx="53.7" cy="28.3" r=".7" fill="white"/> <ellipse cx="46" cy="34" rx="2.5" ry="1.5" fill="#A06830"/> <path d="M40 39 Q46 44 52 39" stroke="#8B4020" stroke-width="2" fill="none" stroke-linecap="round"/> <ellipse cx="36" cy="35" rx="5" ry="3" fill="#FF9999" opacity=".3"/> <ellipse cx="56" cy="35" rx="5" ry="3" fill="#FF9999" opacity=".3"/> </svg>`,
-
+  '_default': `<svg viewBox="0 0 90 130" xmlns="http://www.w3.org/2000/svg"><ellipse cx="45" cy="126" rx="22" ry="4" fill="#D0C8E8" opacity=".6"/><rect x="34" y="84" width="11" height="36" rx="5" fill="#4488CC"/><rect x="45" y="84" width="11" height="36" rx="5" fill="#4488CC"/><ellipse cx="39" cy="121" rx="9" ry="4" fill="#A06830"/><ellipse cx="51" cy="121" rx="9" ry="4" fill="#A06830"/><rect x="30" y="48" width="30" height="38" rx="15" fill="#FF6B6B"/><path d="M30 58 Q16 54 14 70" stroke="#C68642" stroke-width="8" stroke-linecap="round"/><path d="M60 58 Q74 54 76 70" stroke="#C68642" stroke-width="8" stroke-linecap="round"/><circle cx="13" cy="72" r="7" fill="#C68642"/><circle cx="77" cy="72" r="7" fill="#C68642"/><rect x="41" y="38" width="10" height="12" rx="5" fill="#C68642"/><circle cx="46" cy="28" r="18" fill="#C68642"/><path d="M28 26 Q30 10 46 9 Q62 10 64 26 Q58 17 46 16 Q34 17 28 26Z" fill="#2C1810"/><ellipse cx="28" cy="29" rx="4" ry="5" fill="#A06830"/><ellipse cx="64" cy="29" rx="4" ry="5" fill="#A06830"/><ellipse cx="40" cy="28" rx="3" ry="3.5" fill="white"/><ellipse cx="52" cy="28" rx="3" ry="3.5" fill="white"/><circle cx="41" cy="29" r="2" fill="#1A0800"/><circle cx="53" cy="29" r="2" fill="#1A0800"/><ellipse cx="46" cy="34" rx="2.5" ry="1.5" fill="#A06830"/><path d="M40 39 Q46 44 52 39" stroke="#8B4020" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`,
 };
 
-// Pose → card accent color map
+// Aliases
+const SVG_ALIASES = {
+  'Tree Pose':'Tree', 'Mountain Pose':'Mountain', 'Butterfly Pose':'Butterfly',
+  'Cobra':'_default', 'Cobra Pose':'_default', 'Snake':'_default',
+  'Cat Stretch':'_default', 'Cat-Cow':'_default', 'Moon':'_default',
+  'Warrior Pose':'Warrior I', 'Butterfly Pose':'Butterfly',
+};
+
+function getPoseSVG(name) {
+  const key = SVG_ALIASES[name] || name;
+  return POSE_SVG[key] || POSE_SVG['_default'];
+}
+
 const POSE_COLORS = {
   'Tree':'mint','Tree Pose':'mint','Mountain':'sky','Mountain Pose':'sky',
   'Butterfly':'sun','Butterfly Pose':'sun','Snake':'coral','Cobra':'coral',
   'Cobra Pose':'coral','Cat Stretch':'mint','Cat-Cow':'mint','Moon':'lavender',
   'Star':'sun',"Child's Pose":'lavender','Warrior I':'coral','Warrior II':'coral',
   'Warrior Pose':'coral','Eagle Pose':'sky','Bridge Pose':'mint',
-  'Star Pose':'sun','_default':'mint'
 };
 
-function getPoseSVG(name) {
-  return POSE_SVG[name] || POSE_SVG['_default'];
-}
-
-// -- Real photo map: pose name → { src, pos } -------------------------------
-// Girl (Maya) = big curly hair, grey crop top
-// Boy (Miles) = short coily hair, grey t-shirt
+// Photo map — falls back to SVG via onerror if files not in repo
 const POSE_PHOTOS = {
-  'Tree':          { src:'IMG_0857.png', pos:'center 15%' },  // Girl · Tree
-  'Tree Pose':     { src:'IMG_0857.png', pos:'center 15%' },  // Girl · Tree
-  'Snake':         { src:'IMG_0855.png', pos:'center 55%' },  // Girl · Cobra
-  'Cobra':         { src:'IMG_0855.png', pos:'center 55%' },  // Girl · Cobra
-  'Cobra Pose':    { src:'IMG_0855.png', pos:'center 55%' },  // Girl · Cobra
-  'Butterfly':     { src:'IMG_0856.png', pos:'center 40%' },  // Girl · Butterfly seated
-  'Butterfly Pose':{ src:'IMG_0856.png', pos:'center 40%' },  // Girl · Butterfly seated
-  'Star':          { src:'IMG_0858.png', pos:'center center'},// Girl · Star arms wide
-  'Star Pose':     { src:'IMG_0858.png', pos:'center center'},// Girl · Star arms wide
-  'Warrior I':     { src:'IMG_0859.png', pos:'center center'},// Girl · Warrior I (0859) -- used first; Boy 0861 used in previews
-  'Warrior II':    { src:'IMG_0862.png', pos:'center center'},// Boy  · Warrior II arms wide
-  'Warrior Pose':  { src:'IMG_0861.png', pos:'center center'},// Boy  · Warrior I
-  'Eagle Pose':    { src:'IMG_0863.png', pos:'center center'},// Boy  · Eagle wrapped arms
-  'Bridge Pose':   { src:'IMG_0864.png', pos:'center 60%' },  // Boy  · Bridge hips up
-  'Cat Stretch':   { src:'IMG_0865.png', pos:'center 50%' },  // Girl · Cat back arched down
-  'Cat-Cow':       { src:'IMG_0866.png', pos:'center 50%' },  // Boy  · Cow back arched up
-  "Child's Pose":  { src:'IMG_0860.png', pos:'center 60%' },  // Girl · Child's pose
-  'Mountain':      { src:'IMG_0861.png', pos:'center center'},// Boy  · Warrior I standing tall (closest match)
-  'Mountain Pose': { src:'IMG_0861.png', pos:'center center'},// Boy  · standing tall
-  'Moon':          { src:'IMG_0860.png', pos:'center 60%' },  // Girl · resting/curled
-  "Child's Pose":  { src:'IMG_0860.png', pos:'center 60%' },  // Girl · resting (same)
+  'Tree':          { src:'IMG_0857.png', pos:'center 15%' },
+  'Tree Pose':     { src:'IMG_0857.png', pos:'center 15%' },
+  'Snake':         { src:'IMG_0855.png', pos:'center 55%' },
+  'Cobra':         { src:'IMG_0855.png', pos:'center 55%' },
+  'Cobra Pose':    { src:'IMG_0855.png', pos:'center 55%' },
+  'Butterfly':     { src:'IMG_0856.png', pos:'center 40%' },
+  'Butterfly Pose':{ src:'IMG_0856.png', pos:'center 40%' },
+  'Star':          { src:'IMG_0858.png', pos:'center center'},
+  'Warrior I':     { src:'IMG_0859.png', pos:'center center'},
+  'Warrior II':    { src:'IMG_0862.png', pos:'center center'},
+  'Warrior Pose':  { src:'IMG_0861.png', pos:'center center'},
+  'Eagle Pose':    { src:'IMG_0863.png', pos:'center center'},
+  'Bridge Pose':   { src:'IMG_0864.png', pos:'center 60%' },
+  'Cat Stretch':   { src:'IMG_0865.png', pos:'center 50%' },
+  'Cat-Cow':       { src:'IMG_0866.png', pos:'center 50%' },
+  "Child's Pose":  { src:'IMG_0860.png', pos:'center 60%' },
+  'Mountain':      { src:'IMG_0861.png', pos:'center center'},
+  'Mountain Pose': { src:'IMG_0861.png', pos:'center center'},
+  'Moon':          { src:'IMG_0860.png', pos:'center 60%' },
 };
-
-function getPosePhoto(name) {
-  return POSE_PHOTOS[name] || null;
-}
 
 function buildYogaGrid() {
   const grid = document.getElementById('yogaGrid');
   grid.innerHTML = gradeContent.poses.map(p => {
     const color = POSE_COLORS[p.name] || 'mint';
-    const photo = getPosePhoto(p.name);
+    const photo = POSE_PHOTOS[p.name];
+
+    // ✅ FIX 3: img has onerror that hides it and shows SVG fallback
     const illustration = photo
-      ? `<img src="${photo.src}" alt="${p.name}" class="pose-illustration" style="object-fit:cover;border-radius:16px;object-position:${photo.pos};width:100%;height:130px;">`
+      ? `<img src="${photo.src}" alt="${p.name}" class="pose-illustration"
+           style="object-fit:cover;border-radius:16px;object-position:${photo.pos};width:100%;height:130px;"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+         <div class="pose-illustration" style="display:none;">${getPoseSVG(p.name)}</div>`
       : `<div class="pose-illustration">${getPoseSVG(p.name)}</div>`;
+
     return `
     <div class="pose-card" data-color="${color}" onclick="selectPose(this,'${p.name.replace(/'/g,"\\'")}',${p.secs})">
       <span class="pose-level lvl-${p.level==='Easy'?'easy':'medium'}">${p.level}</span>
@@ -1622,7 +1766,7 @@ async function loadDashboardStats() {
 }
 
 // ══════════════════════════════════════════════════════
-//  QUIZ -- grade-adaptive
+//  QUIZ
 // ══════════════════════════════════════════════════════
 function renderQuestion() {
   answered=false;
@@ -1675,7 +1819,7 @@ async function checkAnswer(btn, correct) {
 function nextQuestion() { qIdx++; renderQuestion(); }
 
 // ══════════════════════════════════════════════════════
-//  YOGA
+//  YOGA TIMER
 // ══════════════════════════════════════════════════════
 function toggleTimer() {
   if (!timerRunning) {
@@ -1749,7 +1893,7 @@ function renderBookShelf(books) {
     return `
       <div class="book-card" onclick="openBook('${(b.book_title||b.title).replace(/'/g,"\\'")}','${b.id||i}')">
         <div class="book-cover-emoji">${b.emoji||'📖'}</div>
-        ${ra ? '<div class=\"read-together-badge\">👨&#x200D;👧 Read Together</div>' : ''}
+        ${ra ? '<div style="position:absolute;top:12px;left:12px;background:rgba(255,255,255,.9);border-radius:12px;padding:3px 8px;font-size:.65rem;font-weight:800;color:#8B6FE8;z-index:2;">👨‍👧 Read Together</div>' : ''}
         <div class="book-title">${b.book_title||b.title}</div>
         <div class="book-author">by ${b.author}</div>
         <div class="book-progress"><div class="book-progress-fill" style="width:${pct}%"></div></div>
@@ -1787,10 +1931,7 @@ function renderComingSoon() {
 }
 
 async function openBook(title,bookId) {
-  const prompt_msg = activeGrade==='K'||activeGrade==='1'
-    ? `📖 "${title}" -- How many pages did you read today?`
-    : `📖 "${title}" -- How many pages did you read today?`;
-  const pagesStr=prompt(prompt_msg);
+  const pagesStr=prompt(`📖 "${title}" -- How many pages did you read today?`);
   const pages=parseInt(pagesStr,10);
   if (!pages||pages<=0) return;
   setSyncState('syncing');
@@ -1807,7 +1948,6 @@ async function openBook(title,bookId) {
 //  ART CONTENT DATABASE (per grade)
 // ══════════════════════════════════════════════════════
 const ART_DATA = {
-
   PreK: {
     heroClass:'prek-art', heroEmoji:'🌈', heroTitle:'Color & Play!', heroSub:"Let's paint, draw and make things today!",
     activitiesTitle:'🎨 Fun Art Today!',
@@ -1815,7 +1955,7 @@ const ART_DATA = {
       { icon:'🖐', title:'Handprint Rainbow', desc:'Use your hands to make a colorful rainbow painting!', color:'coral', badge:'Super fun!', badge_style:'badge-coral',
         steps:['Put paint on your palm -- try red, orange, yellow!','Press your hand on paper to make a rainbow arc.','Do it with each color. Let them dry.','Add clouds and sunshine around your rainbow! ☁'] },
       { icon:'🔵', title:'Shape Collage', desc:'Cut or tear colored paper into circles, squares and triangles and glue them to make a picture!', color:'mint', badge:'Shapes!', badge_style:'badge-mint',
-        steps:['Tear colored paper into different shapes.','Arrange them on white paper to make a picture -- a house, a face, an animal!','Glue everything down.','Add details with crayons! ✏'] },
+        steps:['Tear colored paper into different shapes.','Arrange them on white paper to make a picture.','Glue everything down.','Add details with crayons! ✏'] },
       { icon:'🍂', title:'Leaf Rubbing', desc:'Place a leaf under paper and rub a crayon over it to see the leaf appear like magic!', color:'sun', badge:'Magic!', badge_style:'badge-sun',
         steps:['Find a leaf outside or use a fake one.','Place it under a piece of white paper.','Rub the side of a crayon gently over the paper.','Watch the leaf appear! Try different colors! 🍃'] },
     ],
@@ -1828,7 +1968,6 @@ const ART_DATA = {
       { text:'🚀 Draw yourself going to the moon!', tip:'Draw yourself in a spacesuit, then add a rocket ship!' },
     ],
   },
-
   K: {
     heroClass:'k-art', heroEmoji:'🎨', heroTitle:'Art Time!', heroSub:'Paint, draw and create something amazing!',
     activitiesTitle:'🖌 Art Activities Today!',
@@ -1849,7 +1988,6 @@ const ART_DATA = {
       { text:'🎪 Draw a circus with performers and animals!', tip:'Start with the big tent, then add the performers inside.' },
     ],
   },
-
   1: {
     heroClass:'g1-art', heroEmoji:'🖌', heroTitle:'Art Studio!', heroSub:'Explore drawing, painting and creating!',
     activitiesTitle:'🎨 Art Activities',
@@ -1859,7 +1997,7 @@ const ART_DATA = {
       { icon:'🐠', title:'Warm & Cool Colors', desc:'Draw a fish underwater -- color it in warm colors on one side and cool colors on the other!', color:'sky', badge:'Color theory!', badge_style:'badge-sky',
         steps:['Draw a big fish in the center of your paper.','Color the top half with warm colors -- red, orange, yellow.','Color the bottom with cool colors -- blue, green, purple.','Add waves and ocean details around the fish! 🌊'] },
       { icon:'🏺', title:'Texture Rubbings', desc:'Go on a texture hunt around the house and create a texture collage!', color:'sun', badge:'Explore!', badge_style:'badge-sun',
-        steps:['Collect leaves, coins, textured fabric -- anything with an interesting surface!','Put each object under paper and rub with the flat side of a crayon.','Cut out your rubbings and arrange them on a new sheet.','Label each texture -- bumpy, rough, smooth! ✏'] },
+        steps:['Collect leaves, coins, textured fabric.','Put each object under paper and rub with the flat side of a crayon.','Cut out your rubbings and arrange them on a new sheet.','Label each texture -- bumpy, rough, smooth! ✏'] },
     ],
     drawPrompts:[
       { text:'🌋 Draw an erupting volcano with a village nearby!', tip:'Draw the triangle volcano first, then add lava flowing down the sides.' },
@@ -1870,16 +2008,15 @@ const ART_DATA = {
       { text:'🚢 Draw a pirate ship on a stormy sea!', tip:'Big waves, a skull flag, and treasure chest optional!' },
     ],
   },
-
   2: {
     heroClass:'g2-art', heroEmoji:'🎭', heroTitle:'Art Studio', heroSub:'Express yourself through color, line and design!',
     activitiesTitle:'🖌 Art Projects',
     activities:[
-      { icon:'🎭', title:'Emotion Self-Portrait', desc:'Draw yourself showing a big emotion -- happy, surprised, excited, or curious -- and use color to match the feeling!', color:'lav', badge:'Expressive!', badge_style:'badge-lav',
+      { icon:'🎭', title:'Emotion Self-Portrait', desc:'Draw yourself showing a big emotion and use color to match the feeling!', color:'lav', badge:'Expressive!', badge_style:'badge-lav',
         steps:['Pick an emotion: joyful, amazed, scared, proud, or silly!','Lightly sketch your face -- oval head, eyes, nose, mouth.','Make your facial expression show the emotion strongly.','Choose colors that match the feeling -- warm for happy, cool for calm. 🎨'] },
       { icon:'🏛', title:'Architecture Drawing', desc:'Draw a building from your imagination -- a castle, a futuristic tower, a cozy cottage!', color:'mint', badge:'Architect!', badge_style:'badge-mint',
         steps:['Decide what kind of building -- castle, skyscraper, treehouse?','Use a ruler or draw straight lines for the main structure.','Add details -- windows, doors, towers, balconies.','Add the environment around it -- sky, trees, people! 🌇'] },
-      { icon:'🌀', title:'Zentangle Patterns', desc:'Fill a shape with beautiful repeating patterns -- no art experience needed, just focus and creativity!', color:'coral', badge:'Zen!', badge_style:'badge-coral',
+      { icon:'🌀', title:'Zentangle Patterns', desc:'Fill a shape with beautiful repeating patterns!', color:'coral', badge:'Zen!', badge_style:'badge-coral',
         steps:['Draw a large simple shape -- a circle, leaf, or animal outline.','Divide the shape into sections with curved or straight lines.','Fill each section with a repeating pattern -- dots, lines, waves, spirals.','You can color it in or keep it black and white! 🖊'] },
     ],
     drawPrompts:[
@@ -1891,7 +2028,6 @@ const ART_DATA = {
       { text:'🌺 Draw a still life of 3 objects on a table!', tip:'Look at real objects and draw exactly what you see.' },
     ],
   },
-
   3: {
     heroClass:'g3-art', heroEmoji:'🖼', heroTitle:'Art Studio', heroSub:'Develop your technique and artistic eye!',
     activitiesTitle:'🎨 Art Projects',
@@ -1899,7 +2035,7 @@ const ART_DATA = {
       { icon:'🌊', title:'Value Shading', desc:'Draw a simple sphere and practice shading from light to dark to make it look 3D!', color:'sky', badge:'3D Art!', badge_style:'badge-sky',
         steps:['Draw a circle in the center of your paper.','Decide where your light source is coming from -- top left?','On the opposite side from the light, begin shading with a pencil -- light pressure first.','Build up darker values away from the light. Add a cast shadow below! 💡'] },
       { icon:'🗺', title:'Aerial Map Art', desc:'Create an imaginary top-down map of a town, island, or fantasy world!', color:'mint', badge:'Cartography!', badge_style:'badge-mint',
-        steps:['Think about what your place has -- mountains, rivers, forests, towns?','Draw the outline of the landmass or town.','Add symbols for different features -- wavy lines for water, triangles for mountains.','Label everything with a fun name and add a compass rose! 🧭'] },
+        steps:['Think about what your place has -- mountains, rivers, forests, towns?','Draw the outline of the landmass or town.','Add symbols for different features.','Label everything and add a compass rose! 🧭'] },
       { icon:'✂', title:'Cut Paper Portrait', desc:'Create a portrait using only cut or torn colored paper -- no drawing!', color:'coral', badge:'Collage!', badge_style:'badge-coral',
         steps:['Choose your colors for skin, hair, background, and clothing.','Tear or cut the main head shape from skin-tone colored paper.','Add features -- eyes, nose, mouth, hair -- from other colored paper.','Layer everything onto a background and glue in place. ✂'] },
     ],
@@ -1912,28 +2048,26 @@ const ART_DATA = {
       { text:'🕌 Draw an exotic marketplace full of colorful stalls!', tip:'Show depth -- stalls in the front bigger, background stalls smaller.' },
     ],
   },
-
   4: {
     heroClass:'g4-art', heroEmoji:'🖌', heroTitle:'Art Studio', heroSub:'Explore advanced techniques and art history!',
     activitiesTitle:'🎨 Art Projects',
     activities:[
       { icon:'👁', title:'One-Point Perspective', desc:'Draw a hallway, road, or room using one-point perspective to create depth!', color:'lav', badge:'Perspective!', badge_style:'badge-lav',
-        steps:['Mark a vanishing point in the center of your paper.','Draw two horizontal lines for the floor and ceiling meeting at the vanishing point.','Add vertical lines for walls -- they stay vertical!','Add details like doors, windows, tiles that follow the perspective lines. 📐'] },
-      { icon:'🎭', title:'Artist Study -- Van Gogh', desc:'Study Vincent van Gogh swirling style -- create your own landscape inspired by his style!', color:'sun', badge:'Art history!', badge_style:'badge-sun',
+        steps:['Mark a vanishing point in the center of your paper.','Draw two horizontal lines for the floor and ceiling meeting at the vanishing point.','Add vertical lines for walls -- they stay vertical!','Add windows, doors, and details -- all lines go to the vanishing point. 📐'] },
+      { icon:'🎭', title:'Artist Study -- Van Gogh', desc:'Inspired by Van Gogh\'s swirling style -- create your own landscape!', color:'sun', badge:'Art history!', badge_style:'badge-sun',
         steps:['Look at Van Gogh "Starry Night" -- notice the swirling, wavy brushstrokes.','Choose a landscape scene -- a night sky, field, or village.','Use short, curved brushstrokes or crayon strokes to fill your scene with movement.','Use bold, unmixed colors side by side like Van Gogh did! 🌻'] },
-      { icon:'🏺', title:'Contour Drawing', desc:'Draw an object without lifting your pencil and without looking at the paper -- pure observation!', color:'coral', badge:'Observation!', badge_style:'badge-coral',
-        steps:['Place an interesting object in front of you -- a shoe, your hand, a plant.','Put your pencil on the paper and do not lift it.','Slowly move your eyes along the edge of the object, letting your hand follow.','Don\'t look at the paper! Embrace the quirky result -- its about observation, not perfection. 👀'] },
+      { icon:'🏺', title:'Contour Drawing', desc:'Draw an object without lifting your pencil and without looking at the paper!', color:'coral', badge:'Observation!', badge_style:'badge-coral',
+        steps:['Place an interesting object in front of you -- a shoe, your hand, a plant.','Put your pencil on the paper and do not lift it.','Slowly move your eyes along the edge of the object, letting your hand follow.','Don\'t look at the paper! Embrace the quirky result. 👀'] },
     ],
     drawPrompts:[
       { text:'🌃 Draw a cityscape at night using only 3 colors plus black and white!', tip:'Think about how light reflects on wet streets.' },
-      { text:'🦋 Create a detailed scientific illustration of a butterfly with labeled parts!', tip:'Scientists draw with precision -- add measurements and Latin names.' },
+      { text:'🦋 Create a detailed scientific illustration of a butterfly with labeled parts!', tip:'Scientists draw with precision -- add measurements and names.' },
       { text:'🎭 Design a theatrical mask that represents a character you invented!', tip:'Think about what the character feels and how the mask shows that.' },
       { text:'🌊 Draw the ocean as seen from underwater looking up to the surface!', tip:'Light bends and refracts underwater -- show dappled light rays.' },
       { text:'🏛 Sketch the inside of a grand library or museum!', tip:'Show high ceilings, archways, and tiny people for scale.' },
       { text:'🦕 Draw a prehistoric scene with multiple dinosaur species!', tip:'Research what the plants and landscape looked like 65 million years ago.' },
     ],
   },
-
   5: {
     heroClass:'g5-art', heroEmoji:'🎨', heroTitle:'Art Studio', heroSub:'Develop your personal artistic voice and vision!',
     activitiesTitle:'🖼 Art Projects',
@@ -1941,9 +2075,9 @@ const ART_DATA = {
       { icon:'📐', title:'Two-Point Perspective', desc:'Draw a building exterior using two vanishing points for a dramatic architectural view!', color:'sky', badge:'Advanced!', badge_style:'badge-sky',
         steps:['Draw a horizon line and place two vanishing points near the edges.','Draw a vertical line for the nearest corner of your building.','Connect the top and bottom of that line to both vanishing points.','Add windows, doors, and details -- all lines go to one of the two vanishing points. 🏢'] },
       { icon:'🎭', title:'Surrealism Collage', desc:'Inspired by Salvador Dalí -- combine unexpected images to create a dreamlike surreal artwork!', color:'lav', badge:'Surrealism!', badge_style:'badge-lav',
-        steps:['Think about combinations that are unexpected -- melting clocks, floating elephants, staircases to nowhere.','Sketch your surreal scene -- what everyday objects are in impossible situations?','Draw and paint your surreal composition with confident mark-making.','Add small symbolic details that have meaning to you. 🌙'] },
-      { icon:'🎨', title:'Color Theory: Analogous & Complementary', desc:'Create two small paintings -- one using analogous colors and one using complementary colors!', color:'coral', badge:'Color theory!', badge_style:'badge-coral',
-        steps:['Draw two identical simple shapes -- a vase, a landscape, or an abstract form.','For the first: use analogous colors (neighbors on the color wheel -- eg. yellow, yellow-green, green).','For the second: use complementary colors (opposites on the wheel -- eg. blue and orange).','Notice how different the mood feels! Write a sentence about each one. 🎨'] },
+        steps:['Think about combinations that are unexpected -- melting clocks, floating elephants, staircases to nowhere.','Choose a landscape scene with impossible situations.','Draw and paint your surreal composition with confident mark-making.','Add small symbolic details that have meaning to you. 🌙'] },
+      { icon:'🎨', title:'Color Theory: Analogous & Complementary', desc:'Create two small paintings using analogous and complementary color schemes!', color:'coral', badge:'Color theory!', badge_style:'badge-coral',
+        steps:['Draw two identical simple shapes -- a vase, a landscape, or an abstract form.','For the first: use analogous colors (neighbors on the color wheel).','For the second: use complementary colors (opposites on the wheel).','Notice how different the mood feels! Write a sentence about each one. 🎨'] },
     ],
     drawPrompts:[
       { text:'🌏 Create a detailed map of an imaginary world with geography, cities, and a legend!', tip:'Include mountains, rivers, deserts, and invent names for everything.' },
@@ -1955,14 +2089,6 @@ const ART_DATA = {
     ],
   },
 };
-
-// Art state
-let artActivitiesDone = 0;
-let artStarsEarned = 0;
-let colorMixCount = 0;
-let colorPick1 = null, colorPick2 = null;
-let drawPromptIdx = 0;
-let artContent = null;
 
 // Color mixer data
 const COLORS = [
@@ -1977,36 +2103,29 @@ const COLORS = [
   { name:'White',  hex:'#F5F5F5' },
   { name:'Black',  hex:'#333333' },
 ];
-
 const COLOR_MIXES = {
-  'Red+Yellow':'Orange', 'Yellow+Red':'Orange',
-  'Red+Blue':'Purple', 'Blue+Red':'Purple',
-  'Yellow+Blue':'Green', 'Blue+Yellow':'Green',
-  'Red+White':'Pink', 'White+Red':'Pink',
-  'Red+Black':'Dark Red', 'Black+Red':'Dark Red',
-  'Blue+White':'Light Blue', 'White+Blue':'Light Blue',
-  'Yellow+White':'Cream', 'White+Yellow':'Cream',
-  'Red+Orange':'Red-Orange', 'Orange+Red':'Red-Orange',
-  'Yellow+Orange':'Yellow-Orange', 'Orange+Yellow':'Yellow-Orange',
-  'Blue+Green':'Teal', 'Green+Blue':'Teal',
-  'Red+Green':'Brown', 'Green+Red':'Brown',
-  'Blue+Purple':'Indigo', 'Purple+Blue':'Indigo',
-  'Red+Purple':'Magenta', 'Purple+Red':'Magenta',
-  'Yellow+Green':'Lime Green', 'Green+Yellow':'Lime Green',
+  'Red+Yellow':'Orange','Yellow+Red':'Orange','Red+Blue':'Purple','Blue+Red':'Purple',
+  'Yellow+Blue':'Green','Blue+Yellow':'Green','Red+White':'Pink','White+Red':'Pink',
+  'Red+Black':'Dark Red','Black+Red':'Dark Red','Blue+White':'Light Blue','White+Blue':'Light Blue',
+  'Yellow+White':'Cream','White+Yellow':'Cream','Red+Orange':'Red-Orange','Orange+Red':'Red-Orange',
+  'Yellow+Orange':'Yellow-Orange','Orange+Yellow':'Yellow-Orange','Blue+Green':'Teal','Green+Blue':'Teal',
+  'Red+Green':'Brown','Green+Red':'Brown','Blue+Purple':'Indigo','Purple+Blue':'Indigo',
+  'Red+Purple':'Magenta','Purple+Red':'Magenta','Yellow+Green':'Lime Green','Green+Yellow':'Lime Green',
 };
 const MIX_RESULTS = {
-  'Orange':       '#FF8C42', 'Purple':    '#9B59B6', 'Green':      '#5ECDA0',
-  'Pink':         '#FF6B9D', 'Dark Red':  '#8B0000', 'Light Blue': '#87CEEB',
-  'Cream':        '#FFFDD0', 'Red-Orange':'#FF5733', 'Yellow-Orange':'#FFA500',
-  'Teal':         '#008080', 'Brown':     '#A0522D', 'Indigo':     '#4B0082',
-  'Magenta':      '#FF00FF', 'Lime Green':'#32CD32',
+  'Orange':'#FF8C42','Purple':'#9B59B6','Green':'#5ECDA0','Pink':'#FF6B9D',
+  'Dark Red':'#8B0000','Light Blue':'#87CEEB','Cream':'#FFFDD0','Red-Orange':'#FF5733',
+  'Yellow-Orange':'#FFA500','Teal':'#008080','Brown':'#A0522D','Indigo':'#4B0082',
+  'Magenta':'#FF00FF','Lime Green':'#32CD32',
 };
 
+// ══════════════════════════════════════════════════════
+//  ART TAB  ✅ FIX 4: artTabBuilt flag prevents rebuild on every switch
+// ══════════════════════════════════════════════════════
 function buildArtTab() {
   artContent = ART_DATA[activeGrade] || ART_DATA['K'];
   artActivitiesDone = 0; artStarsEarned = 0; colorMixCount = 0;
 
-  // Hero
   const hero = document.getElementById('artHero');
   hero.className = 'art-hero ' + artContent.heroClass;
   document.getElementById('artHeroEmoji').textContent  = artContent.heroEmoji;
@@ -2014,7 +2133,6 @@ function buildArtTab() {
   document.getElementById('artHeroSub').textContent    = artContent.heroSub;
   document.getElementById('artActivitiesTitle').textContent = artContent.activitiesTitle;
 
-  // Activities
   const grid = document.getElementById('artActivities');
   grid.innerHTML = artContent.activities.map((a, i) => `
     <div class="art-card ac-${a.color}" id="artCard_${i}" onclick="toggleArtCard(${i})">
@@ -2026,23 +2144,13 @@ function buildArtTab() {
         ${a.steps.map((s, si) => `<div class="art-step"><div class="art-step-num">${si+1}</div><span>${s}</span></div>`).join('')}
         <button class="art-card-done-btn" onclick="markArtDone(event, ${i})">✅ I Made This! +20 Stars</button>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 
-  // Color swatches
   buildColorSwatches();
 
-  // First draw prompt
   drawPromptIdx = Math.floor(Math.random() * artContent.drawPrompts.length);
   showDrawPrompt();
-
   updateArtStats();
-
-  // Tab label
-  ['tabArt','tabArt2'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = artContent.heroTitle.split(' ')[0] === 'Art' ? 'Art' : 'Art';
-  });
 }
 
 function toggleArtCard(idx) {
@@ -2073,8 +2181,7 @@ function buildColorSwatches() {
   const wrap = document.getElementById('colorSwatches');
   colorPick1 = null; colorPick2 = null;
   wrap.innerHTML = COLORS.map((c, i) => `
-    <div class="swatch" id="swatch_${i}" style="background:${c.hex}" title="${c.name}" onclick="pickSwatch(${i}, '${c.name}', '${c.hex}')"></div>
-  `).join('');
+    <div class="swatch" id="swatch_${i}" style="background:${c.hex}" title="${c.name}" onclick="pickSwatch(${i}, '${c.name}', '${c.hex}')"></div>`).join('');
   document.getElementById('mixColor1').style.background = '#E0E0E0';
   document.getElementById('mixColor2').style.background = '#E0E0E0';
   document.getElementById('mixResult').style.background = '#E0E0E0';
@@ -2092,7 +2199,6 @@ function pickSwatch(idx, name, hex) {
     swatch.classList.add('selected');
     document.getElementById('mixColor2').style.background = hex;
   } else {
-    // Reset and start over
     document.querySelectorAll('.swatch').forEach(s => s.classList.remove('selected'));
     colorPick1 = { name, hex };
     colorPick2 = null;
@@ -2149,73 +2255,65 @@ function updateArtStats() {
   document.getElementById('colorMixPct').textContent = colorMixCount + '/5';
 }
 
-
 // ══════════════════════════════════════════════════════
 //  YOGA MUSIC PLAYER
-//  Uses YouTube IFrame API with curated instrumental playlists
-//  Each grade gets age-appropriate calming background music
 // ══════════════════════════════════════════════════════
-
-// Grade-appropriate instrumental playlists
-// All tracks are free YouTube instrumental / kids yoga / nature sounds
 const YOGA_PLAYLISTS = {
-  // Each grade gets 6 curated free instrumental YouTube tracks
-  // Titles are kid-friendly descriptions shown in the player UI
-  PreK: [
-    { title:'Twinkle Twinkle -- Soft Piano 🌟',        id:'yCjJyiqpAuU' },
-    { title:'Lullaby for Little Ones 🌙',             id:'SvKzSouZHB4' },
-    { title:'Gentle Kids Yoga Music 🦋',              id:'YBQ_oLMCMng' },
-    { title:'Soft Nursery Piano 🎹',                  id:'7maJOI3QMu0' },
-    { title:'Baby Animals & Calm Music 🐰',           id:'TpH4XBOsWFg' },
-    { title:'Happy Clouds Instrumental ☁',           id:'1ZYbU82GVz4' },
+  PreK:[
+    { title:'Twinkle Twinkle -- Soft Piano 🌟', id:'yCjJyiqpAuU' },
+    { title:'Lullaby for Little Ones 🌙', id:'SvKzSouZHB4' },
+    { title:'Gentle Kids Yoga Music 🦋', id:'YBQ_oLMCMng' },
+    { title:'Soft Nursery Piano 🎹', id:'7maJOI3QMu0' },
+    { title:'Baby Animals & Calm Music 🐰', id:'TpH4XBOsWFg' },
+    { title:'Happy Clouds Instrumental ☁', id:'1ZYbU82GVz4' },
   ],
-  K: [
-    { title:'Kids Yoga Happy Music 🌈',               id:'YBQ_oLMCMng' },
-    { title:'Magical Forest Sounds 🌳',               id:'eKFTSSKCzWA' },
-    { title:'Gentle Piano for Little Learners 🎹',    id:'7maJOI3QMu0' },
-    { title:'Soft Sunny Meadow Music 🌸',             id:'1ZYbU82GVz4' },
-    { title:'Peaceful Flute & Birds 🐦',              id:'OFSMvFuJQKE' },
-    { title:'Calm Rainbow Instrumental 🌈',           id:'WHPEKLQID4U' },
+  K:[
+    { title:'Kids Yoga Happy Music 🌈', id:'YBQ_oLMCMng' },
+    { title:'Magical Forest Sounds 🌳', id:'eKFTSSKCzWA' },
+    { title:'Gentle Piano for Little Learners 🎹', id:'7maJOI3QMu0' },
+    { title:'Soft Sunny Meadow Music 🌸', id:'1ZYbU82GVz4' },
+    { title:'Peaceful Flute & Birds 🐦', id:'OFSMvFuJQKE' },
+    { title:'Calm Rainbow Instrumental 🌈', id:'WHPEKLQID4U' },
   ],
-  1: [
-    { title:'Kids Yoga Calm Vibes 🧘',                id:'YBQ_oLMCMng' },
-    { title:'Peaceful Piano & Birdsong 🐦',           id:'1ZYbU82GVz4' },
-    { title:'Soft Forest Ambient 🌲',                 id:'eKFTSSKCzWA' },
-    { title:'Gentle Guitar Focus Music 🎸',           id:'OFSMvFuJQKE' },
-    { title:'Calming Ocean Waves 🌊',                 id:'WHPEKLQID4U' },
-    { title:'Relaxing Rain & Piano 🌧',               id:'77ZozI0rw7w' },
+  1:[
+    { title:'Kids Yoga Calm Vibes 🧘', id:'YBQ_oLMCMng' },
+    { title:'Peaceful Piano & Birdsong 🐦', id:'1ZYbU82GVz4' },
+    { title:'Soft Forest Ambient 🌲', id:'eKFTSSKCzWA' },
+    { title:'Gentle Guitar Focus Music 🎸', id:'OFSMvFuJQKE' },
+    { title:'Calming Ocean Waves 🌊', id:'WHPEKLQID4U' },
+    { title:'Relaxing Rain & Piano 🌧', id:'77ZozI0rw7w' },
   ],
-  2: [
-    { title:'Yoga Flow -- Soft Piano 🌿',              id:'lFcSrYw2zXY' },
-    { title:'Nature Sounds & Gentle Guitar 🎸',       id:'1ZYbU82GVz4' },
-    { title:'Calm Meditation Bells 🔔',               id:'OFSMvFuJQKE' },
-    { title:'Focus Music for Kids 🎵',                id:'7maJOI3QMu0' },
-    { title:'Soft Rain on Leaves 🍃',                 id:'WHPEKLQID4U' },
-    { title:'Peaceful Strings Instrumental 🎻',       id:'77ZozI0rw7w' },
+  2:[
+    { title:'Yoga Flow -- Soft Piano 🌿', id:'lFcSrYw2zXY' },
+    { title:'Nature Sounds & Gentle Guitar 🎸', id:'1ZYbU82GVz4' },
+    { title:'Calm Meditation Bells 🔔', id:'OFSMvFuJQKE' },
+    { title:'Focus Music for Kids 🎵', id:'7maJOI3QMu0' },
+    { title:'Soft Rain on Leaves 🍃', id:'WHPEKLQID4U' },
+    { title:'Peaceful Strings Instrumental 🎻', id:'77ZozI0rw7w' },
   ],
-  3: [
-    { title:'Kids Meditation Instrumental 🧘',        id:'lFcSrYw2zXY' },
-    { title:'Calming Piano & Soft Pads 🎹',           id:'77ZozI0rw7w' },
-    { title:'Forest Stream Ambience 🌊',              id:'eKFTSSKCzWA' },
-    { title:'Peaceful Flute & Strings 🎻',            id:'OFSMvFuJQKE' },
-    { title:'Tibetan Singing Bowls 🪘',               id:'7maJOI3QMu0' },
-    { title:'Gentle Breeze & Piano 🍃',               id:'1ZYbU82GVz4' },
+  3:[
+    { title:'Kids Meditation Instrumental 🧘', id:'lFcSrYw2zXY' },
+    { title:'Calming Piano & Soft Pads 🎹', id:'77ZozI0rw7w' },
+    { title:'Forest Stream Ambience 🌊', id:'eKFTSSKCzWA' },
+    { title:'Peaceful Flute & Strings 🎻', id:'OFSMvFuJQKE' },
+    { title:'Tibetan Singing Bowls 🪘', id:'7maJOI3QMu0' },
+    { title:'Gentle Breeze & Piano 🍃', id:'1ZYbU82GVz4' },
   ],
-  4: [
-    { title:'Deep Focus Yoga Music 🌌',               id:'77ZozI0rw7w' },
-    { title:'Calm Piano Meditation 🎹',               id:'lFcSrYw2zXY' },
-    { title:'Nature Soundscape -- Forest 🌿',          id:'eKFTSSKCzWA' },
-    { title:'Relaxing Ambient Guitar 🎸',             id:'OFSMvFuJQKE' },
-    { title:'Mindfulness Bowls & Bells 🔔',           id:'WHPEKLQID4U' },
-    { title:'Rain & Soft Piano 🌧',                   id:'1ZYbU82GVz4' },
+  4:[
+    { title:'Deep Focus Yoga Music 🌌', id:'77ZozI0rw7w' },
+    { title:'Calm Piano Meditation 🎹', id:'lFcSrYw2zXY' },
+    { title:'Nature Soundscape -- Forest 🌿', id:'eKFTSSKCzWA' },
+    { title:'Relaxing Ambient Guitar 🎸', id:'OFSMvFuJQKE' },
+    { title:'Mindfulness Bowls & Bells 🔔', id:'WHPEKLQID4U' },
+    { title:'Rain & Soft Piano 🌧', id:'1ZYbU82GVz4' },
   ],
-  5: [
-    { title:'Focus & Flow Instrumental 🎵',           id:'77ZozI0rw7w' },
-    { title:'Deep Calm Piano 🎹',                     id:'lFcSrYw2zXY' },
-    { title:'Zen Meditation Ambient 🧘',              id:'OFSMvFuJQKE' },
-    { title:'Peaceful Forest Rain 🌧',                id:'eKFTSSKCzWA' },
-    { title:'Study & Yoga -- Soft Pads 🌌',            id:'WHPEKLQID4U' },
-    { title:'Sunrise Instrumental Piano 🌅',          id:'1ZYbU82GVz4' },
+  5:[
+    { title:'Focus & Flow Instrumental 🎵', id:'77ZozI0rw7w' },
+    { title:'Deep Calm Piano 🎹', id:'lFcSrYw2zXY' },
+    { title:'Zen Meditation Ambient 🧘', id:'OFSMvFuJQKE' },
+    { title:'Peaceful Forest Rain 🌧', id:'eKFTSSKCzWA' },
+    { title:'Study & Yoga -- Soft Pads 🌌', id:'WHPEKLQID4U' },
+    { title:'Sunrise Instrumental Piano 🌅', id:'1ZYbU82GVz4' },
   ],
 };
 
@@ -2225,9 +2323,9 @@ let ytReady = false;
 let ytPlayer = null;
 let currentPlaylist = [];
 
-// Load YouTube IFrame API
 function loadYouTubeAPI() {
-  if (window.YT) { onYouTubeIframeAPIReady(); return; }
+  if (window.YT && window.YT.Player) { onYouTubeIframeAPIReady(); return; }
+  if (document.querySelector('script[src*="youtube.com/iframe_api"]')) return;
   const tag = document.createElement('script');
   tag.src = 'https://www.youtube.com/iframe_api';
   document.head.appendChild(tag);
@@ -2273,7 +2371,8 @@ function toggleMusic() {
     musicPlaying = false;
     document.getElementById('playPauseBtn').textContent = '> Play';
   } else {
-    if (ytPlayer.getPlayerState() === -1 || ytPlayer.getPlayerState() === 5) {
+    const state = ytPlayer.getPlayerState ? ytPlayer.getPlayerState() : -1;
+    if (state === -1 || state === 5) {
       loadTrack(currentTrackIdx);
     } else {
       ytPlayer.playVideo();
@@ -2286,7 +2385,7 @@ function toggleMusic() {
 function loadTrack(idx) {
   if (!currentPlaylist.length) return;
   const track = currentPlaylist[idx];
-  if (ytPlayer && ytReady) {
+  if (ytPlayer && ytReady && ytPlayer.loadVideoById) {
     ytPlayer.loadVideoById({ videoId: track.id, startSeconds: 0 });
     ytPlayer.setVolume(parseInt(document.getElementById('volumeSlider').value));
     musicPlaying = true;
@@ -2301,19 +2400,17 @@ function nextTrack() {
 }
 
 function setVolume(val) {
-  if (ytPlayer && ytReady) ytPlayer.setVolume(parseInt(val));
+  if (ytPlayer && ytReady && ytPlayer.setVolume) ytPlayer.setVolume(parseInt(val));
 }
 
 function updateTrackDisplay() {
   if (!currentPlaylist.length) return;
   const track = currentPlaylist[currentTrackIdx];
   document.getElementById('trackName').textContent = track.title;
-  const total = currentPlaylist.length;
   document.getElementById('trackList').textContent =
-    `Track ${currentTrackIdx + 1} of ${total} · ${activeGrade === 'PreK' || activeGrade === 'K' ? 'Calming kids music 🎶' : 'Instrumental yoga music 🎵'}`;
+    `Track ${currentTrackIdx + 1} of ${currentPlaylist.length} · ${activeGrade === 'PreK' || activeGrade === 'K' ? 'Calming kids music 🎶' : 'Instrumental yoga music 🎵'}`;
 }
 
-// Stop music when switching away from yoga tab
 // -- Word of the Day -----------------------------------
 document.getElementById('wordCard').addEventListener('click',()=>{
   if (!gradeContent) return;
@@ -2326,6 +2423,7 @@ document.getElementById('wordCard').addEventListener('click',()=>{
 //  UTILITIES
 // ══════════════════════════════════════════════════════
 function switchTab(tab) {
+  // Pause music when leaving yoga tab
   if (tab !== 'yoga' && musicPlaying && ytPlayer && ytReady) {
     ytPlayer.pauseVideo();
     musicPlaying = false;
@@ -2334,8 +2432,9 @@ function switchTab(tab) {
   if (tab === 'yoga') {
     setTimeout(() => { if (!currentPlaylist.length) initMusicPlayer(); }, 100);
   }
-  if (tab === 'art') {
-    setTimeout(() => buildArtTab(), 50);
+  // ✅ FIX 4: Only build art tab once per child session
+  if (tab === 'art' && !artTabBuilt) {
+    setTimeout(() => { buildArtTab(); artTabBuilt = true; }, 50);
   }
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>{
@@ -2344,10 +2443,7 @@ function switchTab(tab) {
   });
   document.getElementById('panel-'+tab).classList.add('active');
 }
-function getWeekStart() {
-  const d=new Date(), day=d.getDay(), diff=d.getDate()-day+(day===0?-6:1);
-  return new Date(d.setDate(diff)).toISOString().split('T')[0];
-}
+
 async function upsertDailyActivity(updates) {
   const today=new Date().toISOString().split('T')[0];
   const {data:ex}=await sb.from('daily_activity').select('*').eq('child_id',activeChild.id).eq('activity_date',today).single();
@@ -2359,15 +2455,18 @@ async function upsertDailyActivity(updates) {
     await sb.from('daily_activity').insert({child_id:activeChild.id,activity_date:today,minutes_academic:updates.minutes_academic||0,minutes_yoga:updates.minutes_yoga||0,minutes_reading:updates.minutes_reading||0,tasks_done:updates.tasks_done||0});
   }
 }
+
 async function syncData() {
   if (!activeChild) return;
   setSyncState('syncing'); await loadDashboardStats(); setSyncState(''); toast('✅ Synced!');
 }
+
 async function startSubject(name) {
   toast(`📚 Opening ${name}! +5 min logged ⭐`);
   await upsertDailyActivity({minutes_academic:5,tasks_done:1});
   sessionData.tasks++; document.getElementById('statTasks').textContent=sessionData.tasks;
 }
+
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); deferredPrompt=e; setTimeout(()=>{ if(deferredPrompt) toast('📲 Add BloomiKids to your home screen!',5000); },10000); });
 </script>
