@@ -1739,25 +1739,25 @@ const POSE_COLORS = {
 
 // Photo map — falls back to SVG via onerror if files not in repo
 const POSE_PHOTOS = {
-  'Tree':          { src:'IMG_0857.PNG.png', pos:'center 15%' },
-  'Tree Pose':     { src:'IMG_0857.PNG.png', pos:'center 15%' },
-  'Snake':         { src:'IMG_0855.png', pos:'center 55%' },
-  'Cobra':         { src:'IMG_0855.png', pos:'center 55%' },
-  'Cobra Pose':    { src:'IMG_0855.png', pos:'center 55%' },
-  'Butterfly':     { src:'IMG_0856.png', pos:'center 40%' },
-  'Butterfly Pose':{ src:'IMG_0856.png', pos:'center 40%' },
-  'Star':          { src:'IMG_0858.png', pos:'center center'},
-  'Warrior I':     { src:'IMG_0859.png', pos:'center center'},
-  'Warrior II':    { src:'IMG_0862.png', pos:'center center'},
-  'Warrior Pose':  { src:'IMG_0861.png', pos:'center center'},
-  'Eagle Pose':    { src:'IMG_0863.png', pos:'center center'},
-  'Bridge Pose':   { src:'IMG_0864.png', pos:'center 60%' },
-  'Cat Stretch':   { src:'IMG_0865.png', pos:'center 50%' },
-  'Cat-Cow':       { src:'IMG_0866.png', pos:'center 50%' },
-  "Child's Pose":  { src:'IMG_0860.png', pos:'center 60%' },
-  'Mountain':      { src:'IMG_0861.png', pos:'center center'},
-  'Mountain Pose': { src:'IMG_0861.png', pos:'center center'},
-  'Moon':          { src:'IMG_0860.png', pos:'center 60%' },
+  'Tree':          { src:'IMG_0857.PNG', pos:'center 15%' },
+  'Tree Pose':     { src:'IMG_0857.PNG', pos:'center 15%' },
+  'Snake':         { src:'IMG_0855.PNG', pos:'center 55%' },
+  'Cobra':         { src:'IMG_0855.PNG', pos:'center 55%' },
+  'Cobra Pose':    { src:'IMG_0855.PNG', pos:'center 55%' },
+  'Butterfly':     { src:'IMG_0856.PNG', pos:'center 40%' },
+  'Butterfly Pose':{ src:'IMG_0856.PNG', pos:'center 40%' },
+  'Star':          { src:'IMG_0858.PNG', pos:'center center'},
+  'Warrior I':     { src:'IMG_0859.PNG', pos:'center center'},
+  'Warrior II':    { src:'IMG_0862.PNG', pos:'center center'},
+  'Warrior Pose':  { src:'IMG_0861.PNG', pos:'center center'},
+  'Eagle Pose':    { src:'IMG_0863.PNG', pos:'center center'},
+  'Bridge Pose':   { src:'IMG_0864.PNG', pos:'center 60%' },
+  'Cat Stretch':   { src:'IMG_0865.PNG', pos:'center 50%' },
+  'Cat-Cow':       { src:'IMG_0866.PNG', pos:'center 50%' },
+  "Child's Pose":  { src:'IMG_0860.PNG', pos:'center 60%' },
+  'Mountain':      { src:'IMG_0861.PNG', pos:'center center'},
+  'Mountain Pose': { src:'IMG_0861.PNG', pos:'center center'},
+  'Moon':          { src:'IMG_0860.PNG', pos:'center 60%' },
 };
 
 function buildYogaGrid() {
@@ -1780,7 +1780,7 @@ function buildYogaGrid() {
       ${illustration}
       <div class="pose-name">${p.name}</div>
       <div class="pose-tip">${p.tip}</div>
-      <div style="margin-top:8px;background:linear-gradient(135deg,var(--lavender),#8B6FE8);color:white;border-radius:20px;padding:4px 12px;font-size:.68rem;font-weight:800;display:inline-block;position:relative;z-index:1;">▶ Tap to Select</div>
+      <button onclick="this.closest('.pose-card').click()" style="margin-top:8px;background:linear-gradient(135deg,var(--lavender),#8B6FE8);color:white;border-radius:20px;padding:6px 14px;font-size:.72rem;font-weight:800;border:none;cursor:pointer;position:relative;z-index:2;">▶ Select This Pose</button>
     </div>`;
   }).join('');
 }
@@ -1951,9 +1951,11 @@ function renderBookShelf(books) {
   shelf.innerHTML=books.map((b,i)=>{
     const pct=b.total_pages>0?Math.round(100*b.pages_read/b.total_pages):0;
     const done=b.completed||pct>=100;
-    const ra = b.readAloud || '';
+    const ra = b.readAloud || b.read_aloud_url || '';
+    const bTitle = (b.book_title||b.title||'').replace(/`/g,'').replace(/\\/g,'');
+    const bRa = ra.replace(/`/g,'');
     return `
-      <div class="book-card" onclick="openBook('${(b.book_title||b.title).replace(/'/g,"\\'")}','${b.id||i}','${b.readAloud||b.read_aloud_url||""}')" style="cursor:pointer;">
+      <div class="book-card" data-title="${bTitle}" data-ra="${bRa}" onclick="openBookSafe(this)" style="cursor:pointer;">
         ${ra ? '<div style="position:absolute;top:10px;left:10px;background:rgba(255,255,255,.92);border-radius:10px;padding:3px 8px;font-size:.62rem;font-weight:800;color:#8B6FE8;z-index:2;">👨‍👧 Read Together</div>' : ''}
         ${done ? '<div style="position:absolute;top:10px;right:10px;background:rgba(255,255,255,.92);border-radius:10px;padding:3px 8px;font-size:.62rem;font-weight:800;color:#2A9970;z-index:2;">✅ Done!</div>' : ''}
         <div class="book-title">${b.book_title||b.title}</div>
@@ -1990,6 +1992,12 @@ function renderComingSoon() {
       <div class="book-author">by ${b.author}</div>
       <div class="coming-tag">✨ ${b.grade} · Added Monthly</div>
     </div>`).join('');
+}
+
+function openBookSafe(el) {
+  const title = el.getAttribute('data-title') || '';
+  const ra    = el.getAttribute('data-ra') || '';
+  openBook(title, 'safe', ra);
 }
 
 function openBook(title, bookId, readAloudUrl) {
@@ -2689,7 +2697,8 @@ function showChildMenu() {
       <div class="modal-sub" style="margin-bottom:20px;">${GRADE_DATA[activeGrade]?.label||activeGrade}</div>
       <button onclick="window._menuAct('avatar')" style="width:100%;padding:13px;border-radius:16px;border:2px solid #F0F0F8;background:white;font-family:'Nunito',sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;margin-bottom:10px;">🎨 Change Avatar</button>
       <button onclick="window._menuAct('birthday')" style="width:100%;padding:13px;border-radius:16px;border:2px solid #F0F0F8;background:white;font-family:'Nunito',sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;margin-bottom:10px;">🎂 Set Birthday</button>
-      <button onclick="window._menuAct('switch')" style="width:100%;padding:13px;border-radius:16px;border:2px solid #F0F0F8;background:white;font-family:'Nunito',sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;margin-bottom:16px;">👋 Switch Child</button>
+      <button onclick="window._menuAct('switch')" style="width:100%;padding:13px;border-radius:16px;border:2px solid #F0F0F8;background:white;font-family:'Nunito',sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;margin-bottom:10px;">👋 Switch Child</button>
+      <button onclick="window._menuAct('delete')" style="width:100%;padding:13px;border-radius:16px;border:2px solid #FFD0CC;background:#FFF5F4;font-family:'Nunito',sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;margin-bottom:16px;color:var(--coral);">🗑 Delete This Profile</button>
       <button class="modal-cancel" onclick="document.body.removeChild(this.closest('.modal-overlay'))">Cancel</button>
     </div>`;
   document.body.appendChild(overlay);
@@ -2707,6 +2716,8 @@ function showChildMenu() {
       } catch(e) { toast('Could not update avatar'); }
     } else if (action === 'birthday') {
       await setBirthday();
+    } else if (action === 'delete') {
+      await deleteChild();
     } else {
       switchChild();
     }
@@ -2772,6 +2783,39 @@ async function setBirthday() {
       const fmt = d.toLocaleDateString('en-US',{month:'long',day:'numeric'});
       toast('🎂 Birthday saved: ' + fmt + '!');
     } catch(e) { toast('Could not save birthday'); }
+  };
+}
+
+async function deleteChild() {
+  const name = activeChild?.name || 'this child';
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.innerHTML = `
+    <div class="modal-card" style="max-width:320px;text-align:center;">
+      <div style="font-size:2.5rem;margin-bottom:10px;">⚠️</div>
+      <div class="modal-title" style="font-size:1.2rem;color:var(--coral);">Delete ${name}'s Profile?</div>
+      <div class="modal-sub" style="color:#CC4444;margin-bottom:20px;">All stars, streaks and progress will be permanently deleted.</div>
+      <button onclick="window._doDelete(true)" style="width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--coral),#CC3333);color:white;font-family:'Nunito',sans-serif;font-weight:800;font-size:1rem;cursor:pointer;margin-bottom:10px;">Yes, Delete Profile</button>
+      <button onclick="window._doDelete(false)" style="width:100%;padding:12px;border-radius:40px;border:none;background:#F0F0F8;color:#8888AA;font-family:'Nunito',sans-serif;font-weight:700;cursor:pointer;">Cancel — Keep Profile</button>
+    </div>`;
+  document.body.appendChild(overlay);
+  window._doDelete = async (yes) => {
+    document.body.removeChild(overlay);
+    delete window._doDelete;
+    if (!yes) return;
+    try {
+      const id = activeChild.id;
+      await sb.from('quiz_results').delete().eq('child_id',id);
+      await sb.from('yoga_sessions').delete().eq('child_id',id);
+      await sb.from('daily_activity').delete().eq('child_id',id);
+      await sb.from('stars').delete().eq('child_id',id);
+      await sb.from('streaks').delete().eq('child_id',id);
+      await sb.from('children').delete().eq('id',id);
+      activeChild = null;
+      toast('Profile deleted.');
+      showScreen('children');
+      await loadChildren();
+    } catch(e) { toast('Could not delete profile. Try again.'); }
   };
 }
 
