@@ -1992,8 +1992,8 @@ function renderBookShelf(books) {
     const pct=b.total_pages>0?Math.round(100*b.pages_read/b.total_pages):0;
     const done=b.completed||pct>=100;
     const ra = b.readAloud || b.read_aloud_url || '';
-    const bTitle = (b.book_title||b.title||'').replace(/`/g,''').replace(/\\/g,'');
-    const bRa = ra.replace(/`/g,''');
+    const bTitle = (b.book_title||b.title||'').replace(/'/g,"'").replace(/"/g,'');
+    const bRa = ra || '';
     const fc = 'fc-'+(i%9);
     const bEmoji = b.emoji || '📖';
     return `
@@ -2923,3 +2923,4 @@ let deferredPrompt;
 window.addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); deferredPrompt=e; setTimeout(()=>{ if(deferredPrompt) toast('📲 Add BloomiKids to your home screen!',5000); },10000); });
 </script>
 </body>
+</html>
