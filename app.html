@@ -386,6 +386,30 @@ body.grade-prek .breath-circle, body.grade-k .breath-circle, body.grade-1 .breat
 .book-card:nth-child(5){background:linear-gradient(160deg,#4ECDC4,#5ECDA0)}
 .book-card:nth-child(6){background:linear-gradient(160deg,#FFD166,#5ECDA0)}
 .book-cover-emoji { display:none; }
+.book-card { border-radius:20px !important; padding:0 !important; cursor:pointer; overflow:hidden !important; min-height:200px; display:flex !important; flex-direction:column !important; justify-content:flex-start !important; box-shadow:var(--shadow); transition:all .3s; }
+.book-card:hover { transform:translateY(-6px) scale(1.02) !important; box-shadow:0 20px 44px rgba(45,45,78,.22) !important; }
+.book-cover-img { width:100%; height:130px; object-fit:cover; display:block; border-radius:0; }
+.book-cover-fallback { width:100%; height:130px; display:flex; align-items:center; justify-content:center; font-size:3.2rem; filter:drop-shadow(0 4px 10px rgba(0,0,0,.2)); position:relative; }
+.book-cover-fallback::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,.28) 0%,transparent 55%); }
+.book-ra-badge { position:absolute; top:8px; left:8px; background:rgba(255,255,255,.93); border-radius:8px; padding:2px 7px; font-size:.58rem; font-weight:800; color:#8B6FE8; z-index:2; line-height:1.6; }
+.book-done-badge { position:absolute; top:8px; right:8px; background:rgba(255,255,255,.93); border-radius:8px; padding:2px 7px; font-size:.7rem; font-weight:800; color:#2A9970; z-index:2; }
+.fc-0 { background:linear-gradient(145deg,#FF6B6B,#FFD166); }
+.fc-1 { background:linear-gradient(145deg,#5ECDA0,#4ECDC4); }
+.fc-2 { background:linear-gradient(145deg,#C9B8FF,#8B6FE8); }
+.fc-3 { background:linear-gradient(145deg,#FF6B9D,#C9B8FF); }
+.fc-4 { background:linear-gradient(145deg,#4ECDC4,#FFD166); }
+.fc-5 { background:linear-gradient(145deg,#FFD166,#FF8E53); }
+.fc-6 { background:linear-gradient(145deg,#8B6FE8,#4ECDC4); }
+.fc-7 { background:linear-gradient(145deg,#FF8E53,#5ECDA0); }
+.fc-8 { background:linear-gradient(145deg,#5ECDA0,#C9B8FF); }
+.book-cover { height:130px; display:flex; align-items:center; justify-content:center; position:relative; flex-shrink:0; }
+.book-cover-shine { position:absolute; top:0; left:0; right:0; bottom:0; background:linear-gradient(135deg,rgba(255,255,255,.32) 0%,transparent 55%); pointer-events:none; }
+.book-info { padding:10px 12px 12px; background:white; flex:1; }
+.book-title { font-family:'Baloo 2',cursive; font-weight:800; font-size:.88rem; color:#2D2D4E; margin-bottom:2px; line-height:1.25; }
+.book-author { font-size:.7rem; color:#8888AA; font-weight:600; margin-bottom:6px; }
+.book-progress { height:5px; background:rgba(0,0,0,.07); border-radius:10px; margin-bottom:3px; overflow:hidden; }
+.book-progress-fill { height:100%; background:linear-gradient(90deg,var(--mint),var(--sky)); border-radius:10px; }
+.book-pages { font-size:.68rem; color:#8888AA; font-weight:700; }
 .book-card-soon { border-radius:20px; padding:22px; position:relative; overflow:hidden; min-height:180px; display:flex; flex-direction:column; justify-content:flex-end; box-shadow:var(--shadow); background:linear-gradient(160deg,#E8E0F0,#D8D0E8); filter:grayscale(30%); }
 .book-card-soon::after { content:''; position:absolute; inset:0; background:rgba(255,255,255,.45); backdrop-filter:blur(1px); border-radius:20px; }
 .book-card-soon .lock-badge { position:absolute; top:12px; left:12px; background:rgba(80,60,120,.7); color:white; font-size:.65rem; font-weight:900; letter-spacing:1.5px; text-transform:uppercase; padding:4px 10px; border-radius:12px; z-index:2; }
@@ -934,7 +958,7 @@ const GRADE_DATA = {
       { emoji:'🌙', name:'Moon', tip:'Stretch side to side like the moon!', secs:20, level:'Easy' },
       { emoji:'🏔', name:'Mountain', tip:'Stand up super tall like a big mountain!', secs:15, level:'Easy' },
       { emoji:'🙏', name:"Child's Pose", tip:'Curl up tiny like a little seed!', secs:20, level:'Easy' },
-      { emoji:'⭐', name:'Star', tip:'Jump wide and be a shining star!', secs:15, level:'Easy' },
+      { emoji:'🍼', name:'Happy Baby', tip:'Lie on your back, grab your feet and rock like a baby!', secs:20, level:'Easy' },
     ],
     books:[
       { title:'Pat the Bunny',                  author:'Dorothy Kunhardt', pages:14, read:14, emoji:'🐰', readAloud:'https://www.youtube.com/watch?v=2NpfpkqMbOI' },
@@ -994,6 +1018,7 @@ const GRADE_DATA = {
       { emoji:'🏔', name:'Mountain', tip:'Stand tall and still like a mountain!', secs:30, level:'Easy' },
       { emoji:'🙏', name:"Child's Pose", tip:'Fold down and rest like a sleeping seed!', secs:40, level:'Easy' },
       { emoji:'⚔', name:'Warrior I', tip:'Step forward and reach your arms up high!', secs:30, level:'Easy' },
+      { emoji:'🍼', name:'Happy Baby', tip:'Lie on your back, grab your feet and smile!', secs:30, level:'Easy' },
     ],
     books:[
       { title:'The Very Hungry Caterpillar', author:'Eric Carle',   pages:22, read:22, emoji:'🐛', readAloud:'https://www.youtube.com/watch?v=75NQK-Sm1YY' },
@@ -1044,15 +1069,16 @@ const GRADE_DATA = {
     ],
     subjects_progress:['Numbers & Adding','Reading & Writing','Science Fun'],
     poses:[
-      { emoji:'🌳', name:'Tree Pose', tip:'Balance on one foot!', secs:45, level:'Easy' },
-      { emoji:'🦋', name:'Butterfly', tip:'Sit and flap your legs!', secs:60, level:'Easy' },
-      { emoji:'🐍', name:'Cobra', tip:'Lie down and look up!', secs:45, level:'Easy' },
-      { emoji:'🏔', name:'Mountain', tip:'Stand very straight and tall!', secs:60, level:'Easy' },
-      { emoji:'🐱', name:'Cat-Cow', tip:'Arch and dip your back slowly!', secs:60, level:'Easy' },
-      { emoji:'🌙', name:"Child's Pose", tip:'Curl up small and rest!', secs:60, level:'Easy' },
-      { emoji:'⭐', name:'Star', tip:'Stand wide with arms out -- make a big star!', secs:45, level:'Easy' },
-      { emoji:'⚔', name:'Warrior I', tip:'Lunge forward and reach arms to sky!', secs:60, level:'Easy' },
-      { emoji:'🌉', name:'Bridge Pose', tip:'Lie down and push hips up high!', secs:45, level:'Easy' },
+      { emoji:'🏔', name:'Mountain', tip:'Stand tall and still — feel the ground under your feet!', secs:30, level:'Easy' },
+      { emoji:'🌳', name:'Tree Pose', tip:'Balance on one foot and reach your arms up!', secs:45, level:'Easy' },
+      { emoji:'⭐', name:'Star', tip:'Jump wide and stretch your arms out!', secs:30, level:'Easy' },
+      { emoji:'🦋', name:'Butterfly', tip:'Sit down, hold your feet and flap your knees!', secs:60, level:'Easy' },
+      { emoji:'🐍', name:'Cobra', tip:'Lie on your tummy and push your chest up!', secs:45, level:'Easy' },
+      { emoji:'🐱', name:'Cat-Cow', tip:'On hands and knees — arch up then dip!', secs:60, level:'Easy' },
+      { emoji:'🌉', name:'Bridge Pose', tip:'Lie down, bend knees and push hips up!', secs:45, level:'Easy' },
+      { emoji:'⚔', name:'Warrior I', tip:'Step one foot forward and reach both arms high!', secs:60, level:'Easy' },
+      { emoji:'🍼', name:'Happy Baby', tip:'Lie on your back, grab your feet and rock side to side!', secs:45, level:'Easy' },
+      { emoji:'🙏', name:"Child's Pose", tip:'Sit back on heels and stretch arms forward to rest!', secs:60, level:'Easy' },
     ],
     books:[
       { title:'Green Eggs and Ham',    author:'Dr. Seuss',     pages:62,  read:62,  emoji:'🥚', readAloud:'https://www.youtube.com/watch?v=NRLkiGH5LpU' },
@@ -1087,31 +1113,33 @@ const GRADE_DATA = {
     },
     subjects:[
       { icon:'🔢', title:'Math', desc:'Addition, subtraction, and number patterns!', badge:'3 activities', color:'mint' },
-      { icon:'📖', title:'Reading', desc:'Sound out harder words and read stories!', badge:'2 stories', color:'coral' },
+      { icon:'🔬', title:'Science', desc:'Animals, plants, weather and experiments!', badge:'Explore!', color:'coral' },
       { icon:'✏', title:'Writing', desc:'Write sentences with describing words!', badge:'1 assignment', color:'lavender' },
       { icon:'🌍', title:'Social Studies', desc:'Maps, communities, and our world!', badge:'Explore!', color:'sun' },
     ],
     questions:[
       { q:'What is 14 + 8?', opts:['20','21','22','23'], answer:2, subject:'Math' },
       { q:'What is 20 − 7?', opts:['11','12','13','14'], answer:2, subject:'Math' },
-      { q:'Which word has a silent "e"?', opts:['Cat','Hop','Cake','Fit'], answer:2, subject:'Reading' },
-      { q:'What is the opposite of "hot"?', opts:['Warm','Cold','Wet','Big'], answer:1, subject:'Reading' },
+      { q:'What do all living things need to survive?', opts:['TV and toys','Food, water and air','Phones and games','Clothes and shoes'], answer:1, subject:'Science' },
+      { q:'Which animal is a mammal?', opts:['Eagle','Salmon','Dolphin','Frog'], answer:2, subject:'Science' },
       { q:'How many days are in a week?', opts:['5','6','7','8'], answer:2, subject:'Social Studies' },
       { q:'🌊 What covers most of Earth?', opts:['Land','Ice','Water','Desert'], answer:2, subject:'Science' },
       { q:'Which of these is an adjective?', opts:['Run','Fluffy','Under','Ate'], answer:1, subject:'Writing' },
       { q:'2 × 3 = ?', opts:['4','5','6','7'], answer:2, subject:'Math' },
     ],
-    subjects_progress:['Math','Reading','Writing'],
+    subjects_progress:['Math','Science','Writing'],
     poses:[
-      { emoji:'🌳', name:'Tree Pose', tip:'Balance & breathe for 1 minute!', secs:60, level:'Easy' },
-      { emoji:'🏔', name:'Mountain Pose', tip:'Feet together, arms up tall!', secs:90, level:'Easy' },
-      { emoji:'🦋', name:'Butterfly', tip:'Sit tall, hold feet, flap knees!', secs:90, level:'Easy' },
-      { emoji:'🐍', name:'Cobra Pose', tip:'Lie down, press up, open chest!', secs:60, level:'Easy' },
-      { emoji:'⚔', name:'Warrior I', tip:'Lunge forward, reach arms high!', secs:90, level:'Medium' },
-      { emoji:'🐱', name:'Cat-Cow', tip:'On all fours -- arch and release!', secs:90, level:'Easy' },
-      { emoji:'⭐', name:'Star', tip:'Wide stance, arms spread -- feel the stretch!', secs:60, level:'Easy' },
-      { emoji:'⚔', name:'Warrior II', tip:'Arms out wide, gaze forward, hold strong!', secs:90, level:'Medium' },
-      { emoji:'🌉', name:'Bridge Pose', tip:'Lift your hips and breathe!', secs:60, level:'Easy' },
+      { emoji:'🏔', name:'Mountain Pose', tip:'Stand tall, feet together, arms stretched high!', secs:60, level:'Easy' },
+      { emoji:'🌳', name:'Tree Pose', tip:'Balance on one foot and breathe for 1 minute!', secs:60, level:'Easy' },
+      { emoji:'⭐', name:'Star', tip:'Wide stance, arms out — feel the whole body stretch!', secs:60, level:'Easy' },
+      { emoji:'🦋', name:'Butterfly', tip:'Sit tall, hold your feet and gently flap your knees!', secs:90, level:'Easy' },
+      { emoji:'🐍', name:'Cobra Pose', tip:'Lie flat, press up with arms and open your chest!', secs:60, level:'Easy' },
+      { emoji:'🐱', name:'Cat-Cow', tip:'On all fours — arch up like a cat, then dip like a cow!', secs:90, level:'Easy' },
+      { emoji:'🙏', name:"Child's Pose", tip:'Sit back on heels, arms stretched forward — breathe and rest!', secs:60, level:'Easy' },
+      { emoji:'⚔', name:'Warrior I', tip:'Lunge one foot forward and reach both arms up high!', secs:90, level:'Medium' },
+      { emoji:'⚔', name:'Warrior II', tip:'Arms stretched wide, look over your front hand!', secs:90, level:'Medium' },
+      { emoji:'🧱', name:'Plank Pose', tip:'Hands down, body straight like a board — hold it!', secs:30, level:'Medium' },
+      { emoji:'🐕', name:'Three-Legged Dog', tip:'Downward dog then kick one leg up high!', secs:45, level:'Medium' },
     ],
     books:[
       { title:'Charlotte\'s Web',      author:'E.B. White',    pages:184, read:80,  emoji:'🕷' },
@@ -1171,17 +1199,20 @@ const GRADE_DATA = {
       { emoji:'🦅', name:'Eagle Pose', tip:'Wrap arms and legs -- find your center!', secs:90, level:'Medium' },
       { emoji:'🌉', name:'Bridge Pose', tip:'Strong hips lifted -- breathe deeply!', secs:90, level:'Easy' },
       { emoji:'🙏', name:"Child's Pose", tip:'Rest and reset between poses.', secs:60, level:'Easy' },
+      { emoji:'🧱', name:'Plank Pose', tip:'Hold a strong plank — breathe and stay steady!', secs:45, level:'Medium' },
+      { emoji:'🐕', name:'Three-Legged Dog', tip:'From downward dog, lift one leg high and hold!', secs:60, level:'Medium' },
+      { emoji:'⚖️', name:'Warrior III', tip:'Balance on one leg, lean forward, arms like wings!', secs:60, level:'Medium' },
     ],
     books:[
-      { title:'Charlotte\'s Web',    author:'E.B. White',      pages:184, read:120, emoji:'🕷' },
-      { title:'Matilda',             author:'Roald Dahl',       pages:240, read:60,  emoji:'📖' },
-      { title:'The BFG',             author:'Roald Dahl',       pages:195, read:195, emoji:'👣' },
-      { title:'Magic Tree House #1', author:'M.P. Osborne',     pages:96,  read:96,  emoji:'🌳' },
-      { title:'My Father\'s Dragon', author:'R.S. Gannett',     pages:86,  read:0,   emoji:'🐉' },
-      { title:'Judy Moody',          author:'M. McDonald',      pages:172, read:100, emoji:'😄' },
-      { title:'Encyclopedia Brown',   author:'D.J. Sobol',       pages:96,  read:0,   emoji:'🔎' },
-      { title:'Diary of a Wimpy Kid', author:'J. Kinney',        pages:217, read:100, emoji:'📓' },
-      { title:'The One and Only Ivan', author:'K. Applegate',    pages:305, read:0,   emoji:'🦍' },
+      { title:'Charlotte\'s Web',    author:'E.B. White',   pages:184, read:120, emoji:'🕷', cover:'https://covers.openlibrary.org/b/isbn/9780061124952-M.jpg', readAloud:'https://www.youtube.com/watch?v=k_aN4-rlqKk' },
+      { title:'Matilda',             author:'Roald Dahl',    pages:240, read:60,  emoji:'📖', cover:'https://covers.openlibrary.org/b/isbn/9780142410370-M.jpg', readAloud:'https://www.youtube.com/watch?v=VSOsmFJv4bs' },
+      { title:'The BFG',             author:'Roald Dahl',    pages:195, read:195, emoji:'👣', cover:'https://covers.openlibrary.org/b/isbn/9780142410381-M.jpg', readAloud:'https://www.youtube.com/watch?v=ot76RkQbFxI' },
+      { title:'Magic Tree House #1', author:'M.P. Osborne',  pages:96,  read:96,  emoji:'🌳', cover:'https://covers.openlibrary.org/b/isbn/9780679824114-M.jpg', readAloud:'https://www.youtube.com/watch?v=EYgdPJtDXCM' },
+      { title:'My Father\'s Dragon', author:'R.S. Gannett',  pages:86,  read:0,   emoji:'🐉', cover:'https://covers.openlibrary.org/b/isbn/9780394890487-M.jpg', readAloud:'https://www.youtube.com/watch?v=tSoFOspPBHo' },
+      { title:'Judy Moody',          author:'M. McDonald',   pages:172, read:100, emoji:'😄', cover:'https://covers.openlibrary.org/b/isbn/9780763610609-M.jpg', readAloud:'https://www.youtube.com/watch?v=wnBfnVcUcEo' },
+      { title:'Encyclopedia Brown',  author:'D.J. Sobol',    pages:96,  read:0,   emoji:'🔎', cover:'https://covers.openlibrary.org/b/isbn/9780553157024-M.jpg', readAloud:'https://www.youtube.com/watch?v=5e5ZT-OdQhQ' },
+      { title:'Diary of a Wimpy Kid', author:'J. Kinney',    pages:217, read:100, emoji:'📓', cover:'https://covers.openlibrary.org/b/isbn/9780810993136-M.jpg', readAloud:'https://www.youtube.com/watch?v=gRQarFaiwDc' },
+      { title:'The One and Only Ivan', author:'K. Applegate', pages:305, read:0,  emoji:'🦍', cover:'https://covers.openlibrary.org/b/isbn/9780062098269-M.jpg', readAloud:'https://www.youtube.com/watch?v=5CXvQqgaZl8' },
     ],
     words:[
       { w:'Perseverance', d:'Continuing to work hard even when things are difficult.' },
@@ -1230,17 +1261,20 @@ const GRADE_DATA = {
       { emoji:'🐱', name:'Cat-Cow', tip:'Alternate arch and release -- slow and mindful!', secs:120, level:'Easy' },
       { emoji:'⭐', name:'Star', tip:'Wide powerful stance, reach through fingertips!', secs:90, level:'Easy' },
       { emoji:'🙏', name:"Child's Pose", tip:'Surrender into rest -- breathe into your back.', secs:90, level:'Easy' },
+      { emoji:'⚖️', name:'Warrior III', tip:'One leg back, arms forward — find your balance!', secs:90, level:'Medium' },
+      { emoji:'🧱', name:'Plank Pose', tip:'Core tight, body straight — breathe through the hold!', secs:60, level:'Medium' },
+      { emoji:'🐕', name:'Three-Legged Dog', tip:'Downward dog — kick one leg up high, hold each side!', secs:90, level:'Medium' },
     ],
     books:[
-      { title:'Harry Potter & the Sorcerer\'s Stone', author:'J.K. Rowling',    pages:309, read:200, emoji:'🧙' },
-      { title:'A Wrinkle in Time',                    author:'M. L\'Engle',      pages:218, read:100, emoji:'⭐' },
-      { title:'Hatchet',                              author:'G. Paulsen',       pages:195, read:195, emoji:'🪓' },
-      { title:'Island of the Blue Dolphins',          author:'S. O\'Dell',       pages:181, read:0,   emoji:'🐬' },
-      { title:'Stuart Little',                        author:'E.B. White',       pages:131, read:131, emoji:'🐭' },
-      { title:'The Phantom Tollbooth',                author:'N. Juster',        pages:256, read:80,  emoji:'🚗' },
-      { title:'Wonder',                               author:'R.J. Palacio',     pages:320, read:150, emoji:'⭐' },
-      { title:'Number the Stars',                     author:'L. Lowry',         pages:160, read:0,   emoji:'⭐' },
-      { title:'Holes',                                author:'L. Sachar',        pages:233, read:233, emoji:'🕳' },
+      { title:'Harry Potter & Sorcerer\'s Stone', author:'J.K. Rowling', pages:309, read:200, emoji:'🧙', cover:'https://covers.openlibrary.org/b/isbn/9780590353427-M.jpg', readAloud:'https://www.youtube.com/watch?v=q_mmOCbfDrc' },
+      { title:'A Wrinkle in Time',    author:'M. L\'Engle',  pages:218, read:100, emoji:'⭐', cover:'https://covers.openlibrary.org/b/isbn/9780312367541-M.jpg', readAloud:'https://www.youtube.com/watch?v=RxHMRnoPNVA' },
+      { title:'Hatchet',              author:'G. Paulsen',    pages:195, read:195, emoji:'🪓', cover:'https://covers.openlibrary.org/b/isbn/9781416936473-M.jpg', readAloud:'https://www.youtube.com/watch?v=9c4LSBY-g8Y' },
+      { title:'Island of the Blue Dolphins', author:'S. O\'Dell', pages:181, read:0, emoji:'🐬', cover:'https://covers.openlibrary.org/b/isbn/9780547328614-M.jpg', readAloud:'https://www.youtube.com/watch?v=J6UIFiHYH14' },
+      { title:'Stuart Little',        author:'E.B. White',    pages:131, read:131, emoji:'🐭', cover:'https://covers.openlibrary.org/b/isbn/9780062113443-M.jpg', readAloud:'https://www.youtube.com/watch?v=GRJP9n5mZ6M' },
+      { title:'The Phantom Tollbooth', author:'N. Juster',    pages:256, read:80,  emoji:'🚗', cover:'https://covers.openlibrary.org/b/isbn/9780394820378-M.jpg', readAloud:'https://www.youtube.com/watch?v=iHaJq_y6VDI' },
+      { title:'Wonder',               author:'R.J. Palacio',  pages:320, read:150, emoji:'⭐', cover:'https://covers.openlibrary.org/b/isbn/9780375869020-M.jpg', readAloud:'https://www.youtube.com/watch?v=uVHWGf5K1bA' },
+      { title:'Number the Stars',     author:'L. Lowry',      pages:160, read:0,   emoji:'⭐', cover:'https://covers.openlibrary.org/b/isbn/9780547577098-M.jpg', readAloud:'https://www.youtube.com/watch?v=XhPHRniRFjU' },
+      { title:'Holes',                author:'L. Sachar',     pages:233, read:233, emoji:'🕳', cover:'https://covers.openlibrary.org/b/isbn/9780440414803-M.jpg', readAloud:'https://www.youtube.com/watch?v=7RKQGT7mU_E' },
     ],
     words:[
       { w:'Perseverance', d:'Continuing to work hard even when things are difficult.' },
@@ -1289,17 +1323,20 @@ const GRADE_DATA = {
       { emoji:'⚔', name:'Warrior I', tip:'Deepen the lunge, square the hips, reach tall.', secs:150, level:'Medium' },
       { emoji:'⚔', name:'Warrior II', tip:'Extended hold -- cultivate stillness and power.', secs:150, level:'Medium' },
       { emoji:'🌉', name:'Bridge Pose', tip:'Three-breath hold, release, repeat twice.', secs:120, level:'Medium' },
+      { emoji:'⚖️', name:'Warrior III', tip:'One leg back, torso parallel — find stillness and focus.', secs:120, level:'Medium' },
+      { emoji:'🧱', name:'Plank Pose', tip:'60-second plank challenge — breathe through it!', secs:60, level:'Medium' },
+      { emoji:'🐕', name:'Three-Legged Dog', tip:'Flow from downward dog to three-legged — breathe and hold!', secs:90, level:'Medium' },
     ],
     books:[
-      { title:'Charlotte\'s Web',            author:'E.B. White',      pages:184, read:184, emoji:'🕷' },
-      { title:'A Wrinkle in Time',           author:'M. L\'Engle',      pages:218, read:100, emoji:'⭐' },
-      { title:'Harry Potter & Sorcerer\'s Stone', author:'J.K. Rowling',pages:309, read:200, emoji:'🧙' },
-      { title:'Matilda',                     author:'Roald Dahl',       pages:240, read:60,  emoji:'📖' },
-      { title:'Hatchet',                     author:'G. Paulsen',       pages:195, read:0,   emoji:'🪓' },
-      { title:'The Giver',                   author:'L. Lowry',         pages:179, read:50,  emoji:'🌈' },
-      { title:'Bridge to Terabithia',        author:'K. Paterson',      pages:163, read:0,   emoji:'🌉' },
-      { title:'From the Mixed-Up Files of Mrs. Basil E. Frankweiler', author:'E.L. Konigsburg', pages:162, read:162, emoji:'🏛' },
-      { title:'Roll of Thunder, Hear My Cry', author:'M.D. Taylor',     pages:276, read:0,   emoji:'⛈' },
+      { title:'Charlotte\'s Web',    author:'E.B. White',    pages:184, read:184, emoji:'🕷', cover:'https://covers.openlibrary.org/b/isbn/9780061124952-M.jpg', readAloud:'https://www.youtube.com/watch?v=k_aN4-rlqKk' },
+      { title:'A Wrinkle in Time',    author:'M. L\'Engle',   pages:218, read:100, emoji:'⭐', cover:'https://covers.openlibrary.org/b/isbn/9780312367541-M.jpg', readAloud:'https://www.youtube.com/watch?v=RxHMRnoPNVA' },
+      { title:'Harry Potter & Sorcerer\'s Stone', author:'J.K. Rowling', pages:309, read:200, emoji:'🧙', cover:'https://covers.openlibrary.org/b/isbn/9780590353427-M.jpg', readAloud:'https://www.youtube.com/watch?v=q_mmOCbfDrc' },
+      { title:'Matilda',              author:'Roald Dahl',     pages:240, read:60,  emoji:'📖', cover:'https://covers.openlibrary.org/b/isbn/9780142410370-M.jpg', readAloud:'https://www.youtube.com/watch?v=VSOsmFJv4bs' },
+      { title:'Hatchet',              author:'G. Paulsen',     pages:195, read:0,   emoji:'🪓', cover:'https://covers.openlibrary.org/b/isbn/9781416936473-M.jpg', readAloud:'https://www.youtube.com/watch?v=9c4LSBY-g8Y' },
+      { title:'The Giver',            author:'L. Lowry',       pages:179, read:50,  emoji:'🌈', cover:'https://covers.openlibrary.org/b/isbn/9780385732574-M.jpg', readAloud:'https://www.youtube.com/watch?v=FpZCRHBHBP0' },
+      { title:'Bridge to Terabithia', author:'K. Paterson',    pages:163, read:0,   emoji:'🌉', cover:'https://covers.openlibrary.org/b/isbn/9780064401845-M.jpg', readAloud:'https://www.youtube.com/watch?v=5IroKCmIz9I' },
+      { title:'From the Mixed-Up Files', author:'E.L. Konigsburg', pages:162, read:162, emoji:'🏛', cover:'https://covers.openlibrary.org/b/isbn/9781416949763-M.jpg', readAloud:'https://www.youtube.com/watch?v=GJP8Gs_E9HQ' },
+      { title:'Roll of Thunder, Hear My Cry', author:'M.D. Taylor', pages:276, read:0, emoji:'⛈', cover:'https://covers.openlibrary.org/b/isbn/9780142401316-M.jpg', readAloud:'https://www.youtube.com/watch?v=N0xOoTmXHgo' },
     ],
     words:[
       { w:'Perseverance', d:'Continuing to work hard even when things are difficult.' },
@@ -1721,7 +1758,9 @@ const SVG_ALIASES = {
   'Tree Pose':'Tree', 'Mountain Pose':'Mountain', 'Butterfly Pose':'Butterfly',
   'Cobra':'_default', 'Cobra Pose':'_default', 'Snake':'_default',
   'Cat Stretch':'_default', 'Cat-Cow':'_default', 'Moon':'_default',
-  'Warrior Pose':'Warrior I', 'Butterfly Pose':'Butterfly',
+  'Warrior Pose':'Warrior I', 'Warrior III':'Warrior I',
+  'Three-Legged Dog':'_default', 'Plank Pose':'_default',
+  'Happy Baby':'_default', 'Knee Hug':'_default',
 };
 
 function getPoseSVG(name) {
@@ -1735,6 +1774,7 @@ const POSE_COLORS = {
   'Cobra Pose':'coral','Cat Stretch':'mint','Cat-Cow':'mint','Moon':'lavender',
   'Star':'sun',"Child's Pose":'lavender','Warrior I':'coral','Warrior II':'coral',
   'Warrior Pose':'coral','Eagle Pose':'sky','Bridge Pose':'mint',
+  'Warrior III':'coral','Three-Legged Dog':'lavender','Plank Pose':'sky','Happy Baby':'sun','Knee Hug':'sun',
 };
 
 // Photo map — falls back to SVG via onerror if files not in repo
@@ -1952,16 +1992,21 @@ function renderBookShelf(books) {
     const pct=b.total_pages>0?Math.round(100*b.pages_read/b.total_pages):0;
     const done=b.completed||pct>=100;
     const ra = b.readAloud || b.read_aloud_url || '';
-    const bTitle = (b.book_title||b.title||'').replace(/`/g,'').replace(/\\/g,'');
-    const bRa = ra.replace(/`/g,'');
+    const bTitle = (b.book_title||b.title||'').replace(/`/g,''').replace(/\\/g,'');
+    const bRa = ra.replace(/`/g,''');
+    const fc = 'fc-'+(i%9);
+    const bEmoji = b.emoji || '📖';
     return `
-      <div class="book-card" data-title="${bTitle}" data-ra="${bRa}" onclick="openBookSafe(this)" style="cursor:pointer;">
-        ${ra ? '<div style="position:absolute;top:10px;left:10px;background:rgba(255,255,255,.92);border-radius:10px;padding:3px 8px;font-size:.62rem;font-weight:800;color:#8B6FE8;z-index:2;">👨‍👧 Read Together</div>' : ''}
-        ${done ? '<div style="position:absolute;top:10px;right:10px;background:rgba(255,255,255,.92);border-radius:10px;padding:3px 8px;font-size:.62rem;font-weight:800;color:#2A9970;z-index:2;">✅ Done!</div>' : ''}
-        <div class="book-title">${b.book_title||b.title}</div>
-        <div class="book-author">by ${b.author}</div>
-        <div class="book-progress"><div class="book-progress-fill" style="width:${pct}%"></div></div>
-        <div class="book-pages">${done?'🎉 Finished!': pct > 0 ? `📖 ${pct}% read` : '📖 Tap to start!'}</div>
+      <div class="book-card" data-title="${bTitle}" data-ra="${bRa}" onclick="openBookSafe(this)" style="position:relative;">
+        <div class="book-cover-fallback ${fc}">${bEmoji}</div>
+        ${ra ? '<div class="book-ra-badge">👨‍👧 Read Together</div>' : ''}
+        ${done ? '<div class="book-done-badge">✅</div>' : ''}
+        <div class="book-info">
+          <div class="book-title">${b.book_title||b.title}</div>
+          <div class="book-author">by ${b.author}</div>
+          <div class="book-progress"><div class="book-progress-fill" style="width:${pct}%"></div></div>
+          <div class="book-pages">${done ? '🎉 Finished!' : pct > 0 ? '📖 '+pct+'% read' : '📖 Tap to start!'}</div>
+        </div>
       </div>`;
   }).join('');
   const completed=books.filter(b=>b.completed||(b.pages_read>=b.total_pages)).length;
@@ -1984,14 +2029,21 @@ function renderComingSoon() {
   ];
   const shelf = document.getElementById('comingSoonShelf');
   if (!shelf) return;
-  shelf.innerHTML = comingSoon.map(b => `
-    <div class="book-card-soon">
-      <div class="lock-badge">🔒 Coming Soon</div>
-      <div class="book-cover-emoji">${b.emoji}</div>
-      <div class="book-title">${b.title}</div>
-      <div class="book-author">by ${b.author}</div>
-      <div class="coming-tag">✨ ${b.grade} · Added Monthly</div>
-    </div>`).join('');
+  const comingBgs = ['linear-gradient(145deg,#E8E0F8,#D8D0F0)','linear-gradient(145deg,#E0F0F8,#D0E8F0)','linear-gradient(145deg,#F0E8F8,#E8D8F0)','linear-gradient(145deg,#F8F0E0,#F0E8D0)','linear-gradient(145deg,#E8F8F0,#D8F0E8)','linear-gradient(145deg,#F8E8E0,#F0D8D0)'];
+  shelf.innerHTML = comingSoon.map((b,ci) => {
+    const cfc = 'fc-'+((ci+3)%9);
+    return `
+      <div class="book-card" style="cursor:default;opacity:.8;">
+        <div class="book-cover-fallback ${cfc}" style="filter:grayscale(25%);">${b.emoji}
+          <div style="position:absolute;top:8px;left:8px;background:rgba(80,60,120,.8);border-radius:8px;padding:2px 8px;font-size:.58rem;font-weight:800;color:white;z-index:3;line-height:1.6;">🔒 Soon</div>
+        </div>
+        <div class="book-info">
+          <div class="book-title" style="color:#6A5A8A;">${b.title}</div>
+          <div class="book-author">by ${b.author}</div>
+          <div class="book-pages" style="color:#9B6FE8;font-weight:800;">✨ ${b.grade}</div>
+        </div>
+      </div>`;
+  }).join('');
 }
 
 function openBookSafe(el) {
@@ -2006,12 +2058,14 @@ function openBook(title, bookId, readAloudUrl) {
   overlay.className = 'modal-overlay';
   overlay.innerHTML = `
     <div class="modal-card" style="max-width:340px;text-align:center;">
-      <div style="font-size:2.5rem;margin-bottom:8px;">📖</div>
-      <div class="modal-title" style="font-size:1.1rem;margin-bottom:6px;">${title}</div>
-      <div class="modal-sub">What do you want to do?</div>
-      ${readAloudUrl ? `<button onclick="window._bookAction('listen','${readAloudUrl}')" style="width:100%;padding:16px;border-radius:18px;border:none;background:linear-gradient(135deg,#5ECDA0,#4ECDC4);color:white;font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem;cursor:pointer;margin-bottom:12px;box-shadow:0 4px 14px rgba(94,205,160,.35);">👨‍👧 Read Together ▶</button>` : ''}
-      <button onclick="window._bookAction('log','')" style="width:100%;padding:14px;border-radius:18px;border:none;background:linear-gradient(135deg,#FFD166,#FF6B6B);color:white;font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem;cursor:pointer;margin-bottom:12px;box-shadow:0 4px 14px rgba(255,107,107,.3);">📄 I Read Pages Today! ⭐</button>
-      <button class="modal-cancel" onclick="document.body.removeChild(this.closest('.modal-overlay'))">Maybe later</button>
+      <div style="font-size:2.2rem;margin-bottom:8px;">📖</div>
+      <div class="modal-title" style="font-size:1.05rem;margin-bottom:4px;">${title}</div>
+      <div class="modal-sub" style="margin-bottom:16px;">What would you like to do?</div>
+      ${readAloudUrl ? `
+      <button onclick="window._bookAction('listen','${readAloudUrl}')" style="width:100%;padding:15px;border-radius:18px;border:none;background:linear-gradient(135deg,#5ECDA0,#4ECDC4);color:white;font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem;cursor:pointer;margin-bottom:6px;box-shadow:0 4px 14px rgba(94,205,160,.35);">▶ Watch Read-Aloud on YouTube</button>
+      <div style="font-size:.72rem;color:#AAAACC;font-weight:600;margin-bottom:12px;background:#F8F8FF;border-radius:10px;padding:6px 10px;">📱 YouTube opens in a new tab — tap <strong>← Back</strong> in your browser to return to BloomiKids</div>` : ''}
+      <button onclick="window._bookAction('log','')" style="width:100%;padding:14px;border-radius:18px;border:none;background:linear-gradient(135deg,#FFD166,#FF6B6B);color:white;font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem;cursor:pointer;margin-bottom:10px;box-shadow:0 4px 14px rgba(255,107,107,.3);">📝 Log Pages I Read ⭐</button>
+      <button class="modal-cancel" onclick="document.body.removeChild(this.closest('.modal-overlay'))">Not now</button>
     </div>`;
   document.body.appendChild(overlay);
   window._bookAction = async (action, url) => {
