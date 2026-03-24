@@ -2116,10 +2116,7 @@ function openBook(title, bookId, readAloudUrl) {
     document.body.removeChild(overlay);
     delete window._bookAction;
     if (action === 'listen') {
-      // If URL is empty or likely broken, search YouTube instead
-      const ytUrl = url && url.includes('youtube') ? url
-        : 'https://www.youtube.com/results?search_query=' + encodeURIComponent(title + ' read aloud children');
-      window.open(ytUrl, '_blank');
+      openBookReader(title, url);
       try {
         await upsertDailyActivity({minutes_reading:10});
         await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:10});
@@ -2348,6 +2345,115 @@ const COLORING_SCENES = {
   ],
 };
 
+
+// ── IN-APP DRAWING CANVAS ─────────────────────────────
+let drawCtx,drawCanvas,drawTool='pen',drawColor='#FF6B6B',drawSize=6,drawPainting=false,drawLastX=0,drawLastY=0;
+const DRAW_COLORS=['#FF6B6B','#FF8E53','#FFD166','#5ECDA0','#4ECDC4','#C9B8FF','#8B6FE8','#2D2D4E','#000000','#FFFFFF'];
+
+function buildDrawingCanvas(container) {
+  const h = Math.min(380, Math.round(window.innerWidth * 0.7));
+  container.innerHTML =
+    '<div style="background:white;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);">' +
+    '<div style="display:flex;align-items:center;gap:6px;padding:10px 12px;background:#F8F6FF;border-bottom:2px solid #EDE9FF;flex-wrap:wrap;">' +
+    '<button id="dToolPen" onclick="setDrawTool('pen')" style="width:34px;height:34px;border-radius:10px;border:2px solid var(--lavender);background:#EDE9FF;cursor:pointer;font-size:1rem;">✏️</button>' +
+    '<button id="dToolBrush" onclick="setDrawTool('brush')" style="width:34px;height:34px;border-radius:10px;border:2px solid transparent;background:white;cursor:pointer;font-size:1rem;">🖌️</button>' +
+    '<button id="dToolEraser" onclick="setDrawTool('eraser')" style="width:34px;height:34px;border-radius:10px;border:2px solid transparent;background:white;cursor:pointer;font-size:1rem;">🧹</button>' +
+    '<div style="width:1px;height:22px;background:#E0DAFF;margin:0 2px;"></div>' +
+    DRAW_COLORS.map((c,i)=>'<div onclick="setDrawColor(''+c+'',this)" style="width:24px;height:24px;border-radius:50%;background:'+c+';border:3px solid '+(i===0?'#2D2D4E':'transparent')+';cursor:pointer;flex-shrink:0;"'+( c==='#FFFFFF'?' outline:1px solid #ccc;':'')+' class="dclr"></div>').join('') +
+    '<div style="width:1px;height:22px;background:#E0DAFF;margin:0 2px;"></div>' +
+    ['S','M','L','XL'].map((s,i)=>'<button onclick="setDrawSize('+([ 3,6,12,20][i])+',this)" style="padding:3px 9px;border-radius:20px;border:2px solid '+(i===1?'var(--lavender)':'#E0DAFF')+';background:'+(i===1?'var(--lavender)':'white')+';color:'+(i===1?'white':'var(--body)')+';font-size:.72rem;font-weight:800;cursor:pointer;" class="dsz">'+s+'</button>').join('') +
+    '</div>' +
+    '<canvas id="drawingCanvas" style="display:block;width:100%;cursor:crosshair;touch-action:none;" height="'+h+'"></canvas>' +
+    '<div style="display:flex;gap:8px;padding:10px 12px;background:#F8F6FF;border-top:2px solid #EDE9FF;">' +
+    '<button onclick="clearCanvas()" style="flex:1;padding:10px;border-radius:14px;border:none;background:#FFF0EE;color:var(--coral);font-family:Nunito,sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;">🗑️ Clear</button>' +
+    '<button onclick="saveDrawing()" style="flex:2;padding:10px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;">💾 Save My Art! +20 ⭐</button>' +
+    '</div>' +
+    '</div>';
+
+  drawCanvas = document.getElementById('drawingCanvas');
+  drawCtx = drawCanvas.getContext('2d');
+  drawCanvas.width = drawCanvas.offsetWidth || 360;
+  drawCanvas.height = h;
+  drawCtx.fillStyle='#FFFFFF'; drawCtx.fillRect(0,0,drawCanvas.width,drawCanvas.height);
+
+  ['mousedown','mousemove','mouseup','mouseleave'].forEach(ev => drawCanvas.addEventListener(ev, handleDrawMouse));
+  drawCanvas.addEventListener('touchstart', e=>{e.preventDefault();handleDrawTouch(e);},{passive:false});
+  drawCanvas.addEventListener('touchmove', e=>{e.preventDefault();handleDrawTouch(e);},{passive:false});
+  drawCanvas.addEventListener('touchend', ()=>drawPainting=false,{passive:false});
+}
+
+function handleDrawMouse(e) {
+  if(e.type==='mousedown') drawPainting=true;
+  if(e.type==='mouseup'||e.type==='mouseleave') {drawPainting=false;return;}
+  if(!drawPainting&&e.type==='mousemove') return;
+  const r=drawCanvas.getBoundingClientRect();
+  const x=(e.clientX-r.left)*(drawCanvas.width/r.width);
+  const y=(e.clientY-r.top)*(drawCanvas.height/r.height);
+  if(e.type==='mousedown'){drawLastX=x;drawLastY=y;}
+  drawStroke(x,y);
+}
+
+function handleDrawTouch(e) {
+  const t=e.touches[0];
+  const r=drawCanvas.getBoundingClientRect();
+  const x=(t.clientX-r.left)*(drawCanvas.width/r.width);
+  const y=(t.clientY-r.top)*(drawCanvas.height/r.height);
+  if(e.type==='touchstart'){drawPainting=true;drawLastX=x;drawLastY=y;}
+  if(drawPainting) drawStroke(x,y);
+}
+
+function drawStroke(x,y) {
+  const isEraser=drawTool==='eraser';
+  drawCtx.beginPath();
+  drawCtx.moveTo(drawLastX,drawLastY);
+  drawCtx.lineTo(x,y);
+  drawCtx.strokeStyle=isEraser?'#FFFFFF':drawColor;
+  drawCtx.lineWidth=isEraser?drawSize*3:drawTool==='brush'?drawSize*2:drawSize;
+  drawCtx.lineCap='round'; drawCtx.lineJoin='round';
+  drawCtx.globalAlpha=drawTool==='brush'?0.65:1;
+  drawCtx.stroke(); drawCtx.globalAlpha=1;
+  drawLastX=x; drawLastY=y;
+}
+
+function setDrawTool(t) {
+  drawTool=t;
+  ['Pen','Brush','Eraser'].forEach(n=>{const b=document.getElementById('dTool'+n);if(b){b.style.borderColor=t===n.toLowerCase()?'var(--lavender)':'transparent';b.style.background=t===n.toLowerCase()?'#EDE9FF':'white';}});
+}
+
+function setDrawColor(c,el) {
+  drawColor=c;
+  document.querySelectorAll('.dclr').forEach(d=>d.style.borderColor='transparent');
+  if(el) el.style.borderColor='#2D2D4E';
+  if(drawTool==='eraser') setDrawTool('pen');
+}
+
+function setDrawSize(s,el) {
+  drawSize=s;
+  document.querySelectorAll('.dsz').forEach(b=>{b.style.borderColor='#E0DAFF';b.style.background='white';b.style.color='var(--body)';});
+  if(el){el.style.borderColor='var(--lavender)';el.style.background='var(--lavender)';el.style.color='white';}
+}
+
+function clearCanvas() {
+  if(!drawCtx) return;
+  drawCtx.fillStyle='#FFFFFF'; drawCtx.fillRect(0,0,drawCanvas.width,drawCanvas.height);
+  toast('🎨 Canvas cleared!');
+}
+
+async function saveDrawing() {
+  if(!drawCanvas) return;
+  const link=document.createElement('a');
+  link.download='my-bloomikids-art.png';
+  link.href=drawCanvas.toDataURL('image/png');
+  link.click();
+  try {
+    await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:20});
+    sessionData.stars+=20; document.getElementById('statStars').textContent=sessionData.stars;
+    await upsertDailyActivity({minutes_academic:5});
+  } catch(e){}
+  toast('🎨 Art saved to your device! +20 stars ⭐');
+}
+// ── END DRAWING CANVAS ────────────────────────────────
+
 function buildArtTab() {
   artContent = ART_DATA[activeGrade] || ART_DATA['K'];
   artActivitiesDone = 0; artStarsEarned = 0; colorMixCount = 0;
@@ -2361,6 +2467,18 @@ function buildArtTab() {
 
   const isYoung = activeGrade==='PreK'||activeGrade==='K'||activeGrade==='1';
   const grid = document.getElementById('artActivities');
+
+  // DRAWING CANVAS — available for all grades
+  const drawWrap = document.createElement('div');
+  drawWrap.style.cssText = 'grid-column:1/-1;';
+  const prompts = artContent.drawPrompts || ['Draw whatever makes you happy!'];
+  const prompt = prompts[Math.floor(Math.random()*prompts.length)];
+  const promptEl = document.createElement('div');
+  promptEl.innerHTML = '<div style="font-family:Baloo 2,cursive;font-size:1.1rem;font-weight:800;color:var(--dark);margin:0 0 6px;">🎨 Drawing Challenge</div>' +
+    '<div style="font-size:.88rem;color:var(--body);margin-bottom:14px;font-style:italic;">\'' + prompt + '\'</div>';
+  grid.appendChild(promptEl);
+  grid.appendChild(drawWrap);
+  buildDrawingCanvas(drawWrap);
 
   if (isYoung) {
     // ✅ COLORING BOOK MODE for PreK/K/Grade 1
@@ -2960,13 +3078,155 @@ async function syncData() {
 }
 
 async function startSubject(name) {
-  toast(`📚 Opening ${name}! +5 min logged ⭐`);
+  activeSubjectFilter = name;
+  const allQ = gradeContent.questions;
+  const filtered = allQ.filter(q => (q.subject||'').toLowerCase().includes(name.toLowerCase()) || name.toLowerCase().includes((q.subject||'').toLowerCase()));
+  filteredQuestions = filtered.length >= 2 ? filtered : allQ;
+  subjectQIdx = 0; subjectScore = 0;
+
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.id = 'subjectQuizOverlay';
+  const icons = {Math:'🔢',Science:'🔬',Writing:'✏️','Social Studies':'🌍','Language Arts':'📝',Reading:'📖',Mathematics:'📐'};
+  const icon = icons[name] || '📚';
+  overlay.innerHTML =
+    '<div class="modal-card" style="max-width:380px;padding:0;overflow:hidden;">' +
+    '<div style="background:linear-gradient(135deg,var(--coral),var(--sunshine));padding:18px 22px;color:white;">' +
+    '<div style="font-family:Baloo 2,cursive;font-size:1.3rem;font-weight:800;">' + icon + ' ' + name + ' Quiz!</div>' +
+    '<div style="font-size:.82rem;opacity:.9;margin-top:3px;">' + filteredQuestions.length + ' questions · Earn 5 stars each!</div>' +
+    '</div>' +
+    '<div id="subjectQuizBody" style="padding:18px 22px;min-height:160px;"></div>' +
+    '<div style="padding:0 22px 18px;display:flex;gap:8px;">' +
+    '<button id="subjectNextBtn" onclick="nextSubjectQ()" style="flex:1;padding:12px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;">Next →</button>' +
+    '<button onclick="closeSubjectQuiz()" style="padding:12px 16px;border-radius:40px;border:2px solid #E0DAFF;background:white;font-family:Nunito,sans-serif;font-weight:700;cursor:pointer;color:#888;">Done</button>' +
+    '</div></div>';
+  document.body.appendChild(overlay);
+  renderSubjectQ();
+
   await upsertDailyActivity({minutes_academic:5,tasks_done:1});
   sessionData.tasks++; document.getElementById('statTasks').textContent=sessionData.tasks;
 }
+
+let filteredQuestions=[], activeSubjectFilter='', subjectQIdx=0, subjectScore=0;
+
+function renderSubjectQ() {
+  const body = document.getElementById('subjectQuizBody');
+  if (!body) return;
+  if (subjectQIdx >= filteredQuestions.length) {
+    const pct = Math.round(subjectScore/filteredQuestions.length*100);
+    body.innerHTML = '<div style="text-align:center;padding:8px 0;">' +
+      '<div style="font-size:2.8rem;margin-bottom:10px;">' + (pct===100?'🏆':pct>=70?'🌟':'💪') + '</div>' +
+      '<div style="font-family:Baloo 2,cursive;font-size:1.25rem;font-weight:800;color:var(--dark);">Quiz Complete!</div>' +
+      '<div style="margin:8px 0;font-size:1rem;color:var(--body);">Score: <strong style="color:var(--coral);">' + subjectScore + '/' + filteredQuestions.length + '</strong></div>' +
+      '<div style="font-size:.9rem;color:var(--muted);">' + (pct===100?'Perfect score! Amazing!':pct>=70?'Great work! Keep it up!':'Keep practicing — you can do it!') + '</div>' +
+      '</div>';
+    const btn = document.getElementById('subjectNextBtn');
+    if (btn) { btn.textContent='✅ Done!'; btn.onclick=closeSubjectQuiz; btn.style.background='linear-gradient(135deg,var(--coral),var(--sunshine))'; }
+    const stars = subjectScore*5;
+    if (stars>0) { sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:stars}).catch(()=>{}); sessionData.stars+=stars; document.getElementById('statStars').textContent=sessionData.stars; }
+    return;
+  }
+  const q = filteredQuestions[subjectQIdx];
+  body.innerHTML =
+    '<div style="font-size:.72rem;font-weight:800;color:var(--muted);margin-bottom:8px;letter-spacing:1px;">Q ' + (subjectQIdx+1) + ' of ' + filteredQuestions.length + '</div>' +
+    '<div style="font-size:1rem;font-weight:800;color:var(--dark);margin-bottom:14px;line-height:1.4;">' + q.q + '</div>' +
+    '<div id="sqOpts" style="display:flex;flex-direction:column;gap:7px;">' +
+    q.opts.map((o,i)=>'<button onclick="checkSubjectQ(this,'+(i===q.answer)+','+q.answer+')" style="padding:10px 14px;border-radius:12px;border:2px solid #E8E4FF;background:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;text-align:left;">'+o+'</button>').join('') +
+    '</div>';
+}
+
+function checkSubjectQ(btn,correct,answerIdx) {
+  document.querySelectorAll('#sqOpts button').forEach((b,i)=>{ b.style.pointerEvents='none'; if(i===answerIdx){b.style.background='#E8FBF3';b.style.borderColor='var(--mint)';b.style.color='#2A9970';} });
+  if(correct){btn.style.background='#E8FBF3';btn.style.borderColor='var(--mint)';subjectScore++;toast('✅ Correct! +5 ⭐');}
+  else{btn.style.background='#FFF0EE';btn.style.borderColor='var(--coral)';toast('Not quite! See the green answer 💪');}
+  const nb=document.getElementById('subjectNextBtn'); if(nb) nb.style.background='linear-gradient(135deg,var(--coral),var(--sunshine))';
+}
+
+function nextSubjectQ(){ subjectQIdx++; renderSubjectQ(); }
+function closeSubjectQuiz(){ subjectQIdx=0;subjectScore=0; const ov=document.getElementById('subjectQuizOverlay'); if(ov)document.body.removeChild(ov); }
 
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); deferredPrompt=e; setTimeout(()=>{ if(deferredPrompt) toast('📲 Add BloomiKids to your home screen!',5000); },10000); });
 </script>
 </body>
-</html>
+</html>function openBookReader(title, ytUrl) {
+  const match = ytUrl && ytUrl.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  const videoId = match ? match[1] : null;
+  
+  const overlay = document.createElement('div');
+  overlay.id = 'bookReaderOverlay';
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:9998;background:#0A0A1A;display:flex;flex-direction:column;';
+  
+  const searchUrl = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(title + ' read aloud children');
+  
+  overlay.innerHTML =
+    '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#1A1A2E;">' +
+    '<div style="font-family:Baloo 2,cursive;font-size:.95rem;font-weight:800;color:white;max-width:70%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">📖 ' + title + '</div>' +
+    '<button onclick="closeBookReader()" style="background:rgba(255,255,255,.15);border:none;color:white;border-radius:50%;width:34px;height:34px;font-size:1rem;cursor:pointer;font-weight:800;flex-shrink:0;">✕</button>' +
+    '</div>' +
+    (videoId
+      ? '<div style="flex:1;position:relative;" id="ytWrapper">' +
+        '<iframe id="bookYtFrame" src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&playsinline=1&rel=0&modestbranding=1" ' +
+        'style="width:100%;height:100%;border:none;" allow="autoplay;encrypted-media" allowfullscreen></iframe>' +
+        '<div id="ytBlockedMsg" style="display:none;position:absolute;inset:0;background:#1A1A2E;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;">' +
+        '<div style="font-size:3rem;">📺</div>' +
+        '<div style="color:white;font-weight:800;font-size:1rem;">This video isn't available here</div>' +
+        '<div style="color:rgba(255,255,255,.6);font-size:.85rem;">Find it on YouTube instead!</div>' +
+        '<button onclick="window.open('' + searchUrl + '','_blank')" style="background:linear-gradient(135deg,#FF6B6B,#FFD166);color:white;border:none;border-radius:40px;padding:12px 28px;font-weight:800;font-size:.95rem;cursor:pointer;">🔍 Find on YouTube</button>' +
+        '</div>' +
+        '</div>'
+      : '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;text-align:center;">' +
+        '<div style="font-size:3.5rem;">🔍</div>' +
+        '<div style="color:white;font-weight:800;font-size:1.1rem;">' + title + '</div>' +
+        '<div style="color:rgba(255,255,255,.6);font-size:.9rem;">Search YouTube for the read-aloud</div>' +
+        '<button onclick="window.open('' + searchUrl + '','_blank')" style="background:linear-gradient(135deg,#5ECDA0,#4ECDC4);color:white;border:none;border-radius:40px;padding:14px 32px;font-weight:800;font-size:1rem;cursor:pointer;">🔍 Find Read-Aloud on YouTube</button>' +
+        '</div>'
+    ) +
+    '<div style="padding:10px 16px;background:#1A1A2E;display:flex;gap:8px;align-items:center;justify-content:center;">' +
+    '<button onclick="closeBookReader()" style="flex:1;max-width:200px;background:linear-gradient(135deg,#5ECDA0,#4ECDC4);color:white;border:none;border-radius:40px;padding:12px 20px;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;">✅ Done — Back to App</button>' +
+    (videoId ? '<button onclick="window.open('' + searchUrl + '','_blank')" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);border:none;border-radius:40px;padding:12px 16px;font-size:.8rem;font-weight:700;cursor:pointer;">🔍 YouTube</button>' : '') +
+    '</div>';
+  
+  document.body.appendChild(overlay);
+  
+  // Detect blocked video after 3 seconds
+  if (videoId) {
+    setTimeout(() => {
+      const msg = document.getElementById('ytBlockedMsg');
+      if (!msg) return;
+      const iframe = document.getElementById('bookYtFrame');
+      // Check if iframe loaded - if we can detect it's showing an error page
+      try {
+        // This will throw cross-origin error if iframe loaded external content (good)
+        // If it doesn't throw, the iframe may be showing YouTube's error page
+        iframe.contentWindow.document;
+        // If we get here without error, something weird happened
+      } catch(e) {
+        // Normal - iframe loaded external content, it's probably working
+        // Don't show fallback
+      }
+    }, 3500);
+    
+    // Listen for YouTube postMessage errors
+    window._ytMsgHandler = (e) => {
+      if (!e.data) return;
+      const str = typeof e.data === 'string' ? e.data : '';
+      if (str.includes('"code":150') || str.includes('"code":101')) {
+        const msg = document.getElementById('ytBlockedMsg');
+        if (msg) msg.style.display = 'flex';
+      }
+    };
+    window.addEventListener('message', window._ytMsgHandler);
+  }
+}
+
+window.closeBookReader = function() {
+  const ov = document.getElementById('bookReaderOverlay');
+  if (ov) document.body.removeChild(ov);
+  if (window._ytMsgHandler) {
+    window.removeEventListener('message', window._ytMsgHandler);
+    delete window._ytMsgHandler;
+  }
+};
+
+
