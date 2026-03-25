@@ -1897,12 +1897,12 @@ function buildYogaGrid() {
       : `<div class="pose-illustration">${getPoseSVG(p.name)}</div>`;
 
     return `
-    <div class="pose-card" data-color="${color}" onclick="selectPose(this,'${p.name.replace(/'/g,"\\'")}',${p.secs})">
+    <div class="pose-card" data-color="${color}" data-name="${p.name}" data-secs="${p.secs}" onclick="handlePoseCardClick(this)" style="cursor:pointer;">
       <span class="pose-level lvl-${p.level==='Easy'?'easy':'medium'}">${p.level}</span>
       ${illustration}
       <div class="pose-name">${p.name}</div>
       <div class="pose-tip">${p.tip}</div>
-      <button onclick="selectPose(this.closest('.pose-card'),'${p.name.replace(/'/g,\"\\'\")}',${p.secs})" style="margin-top:8px;background:linear-gradient(135deg,var(--lavender),#8B6FE8);color:white;border-radius:20px;padding:6px 14px;font-size:.72rem;font-weight:800;border:none;cursor:pointer;position:relative;z-index:2;">▶ Select This Pose</button>
+      <button onclick="event.stopPropagation();handlePoseCardClick(this.closest('.pose-card'))" style="margin-top:8px;background:linear-gradient(135deg,var(--lavender),#8B6FE8);color:white;border-radius:20px;padding:6px 14px;font-size:.72rem;font-weight:800;border:none;cursor:pointer;position:relative;z-index:2;">▶ Select This Pose</button>
     </div>`;
   }).join('');
 }
@@ -3086,9 +3086,6 @@ function showLetterTracing() {
   show();
   upsertDailyActivity({minutes_academic:5,tasks_done:1}).catch(()=>{});
 }
-
-
-let filteredQuestions=[], subjectQIdx=0, subjectScore=0;
 
 function renderSubjectQ(){
   const body=document.getElementById('sqBody'); if(!body) return;
