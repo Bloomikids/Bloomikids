@@ -938,11 +938,11 @@ const GRADE_DATA = {
       bookshelfTitle:'📚 Story Time!', timerTopLabel:'Hold and breathe!'
     },
     subjects:[
-      { icon:'✏️', title:'Letter Tracing', desc:'Trace A B C with your finger!', badge:'New!', color:'mint' },
-      { icon:'🔢', title:'Numbers Fun', desc:'Count 1 to 10 with friends!', badge:'Count with me!', color:'coral' },
-      { icon:'🔤', title:'ABC Time', desc:'Learn letters A B C D E!', badge:'ABCs!', color:'lavender' },
+      { icon:'✏️', title:'Letter Tracing', img:'icon_letter_tracing.png', desc:'Trace A B C with your finger!', badge:'New!', color:'mint' },
+      { icon:'🔢', title:'Numbers Fun', img:'icon_math.png', desc:'Count 1 to 10 with friends!', badge:'Count with me!', color:'coral' },
+      { icon:'🔤', title:'ABC Time', img:'icon_reading.png', desc:'Learn letters A B C D E!', badge:'ABCs!', color:'lavender' },
       { icon:'🎨', title:'Colors & Art', desc:'Paint, draw, and make things!', badge:'Create!', color:'lavender' },
-      { icon:'🐾', title:'Animals & Nature', desc:'Bugs, birds, dogs, and trees!', badge:'Explore!', color:'sun' },
+      { icon:'🐾', title:'Animals & Nature', img:'icon_animal_nature.png', desc:'Bugs, birds, dogs, and trees!', badge:'Explore!', color:'sun' },
     ],
     questions:[
       { q:'Which letter comes first?', opts:['A','B','C','D'], answer:0, subject:'Letter Tracing' },
@@ -954,6 +954,37 @@ const GRADE_DATA = {
       { q:'🌞 Sun starts with which letter?', opts:['R','S','T','U'], answer:1, subject:'Letter Tracing' },
       { q:'🐟 Fish starts with which letter?', opts:['E','F','G','H'], answer:1, subject:'Letter Tracing' },
       { q:'How many dogs are there? 🐶🐶🐶', opts:['1','2','3','4'], answer:2, subject:'Numbers' },
+      { q:'How many fingers on one hand?', opts:['3','4','5','6'], answer:2, subject:'Numbers' },
+      { q:'Count the stars! ⭐⭐', opts:['1','2','3','4'], answer:1, subject:'Numbers' },
+      { q:'What number comes after 5?', opts:['4','5','6','7'], answer:2, subject:'Numbers' },
+      { q:'How many wheels on a car?', opts:['2','3','4','5'], answer:2, subject:'Numbers' },
+      { q:'Count: 1 2 3 — what comes next?', opts:['2','4','5','6'], answer:1, subject:'Numbers' },
+      { q:'How many legs does a dog have?', opts:['2','3','4','6'], answer:2, subject:'Numbers' },
+      { q:'What number comes before 3?', opts:['1','2','4','5'], answer:1, subject:'Numbers' },
+      { q:'What color is the sky?', opts:['Red','Yellow','Blue','Green'], answer:2, subject:'Colors' },
+      { q:'What color is the sun?', opts:['Blue','Yellow','Pink','Purple'], answer:1, subject:'Colors' },
+      { q:'What color is grass?', opts:['Blue','Red','Green','Orange'], answer:2, subject:'Colors' },
+      { q:'What color is a banana?', opts:['Red','Blue','Yellow','Green'], answer:2, subject:'Colors' },
+      { q:'What color is snow?', opts:['Gray','Black','White','Yellow'], answer:2, subject:'Colors' },
+      { q:'Mix red and yellow — what color?', opts:['Purple','Green','Orange','Blue'], answer:2, subject:'Colors' },
+      { q:'What color is a carrot?', opts:['Purple','Orange','Blue','Pink'], answer:1, subject:'Colors' },
+      { q:'Which letter comes after A?', opts:['C','B','D','E'], answer:1, subject:'Letters' },
+      { q:'Which letter does Sun start with?', opts:['A','R','S','T'], answer:2, subject:'Letters' },
+      { q:'Which letter does Moon start with?', opts:['L','M','N','O'], answer:1, subject:'Letters' },
+      { q:'How many letters in CAT?', opts:['2','3','4','5'], answer:1, subject:'Letters' },
+      { q:'How many sides does a square have?', opts:['3','4','5','6'], answer:1, subject:'Shapes' },
+      { q:'Which shape has no corners?', opts:['Square','Triangle','Rectangle','Circle'], answer:3, subject:'Shapes' },
+      { q:'A pizza slice looks like which shape?', opts:['Circle','Triangle','Square','Heart'], answer:1, subject:'Shapes' },
+      { q:'What shape is a door?', opts:['Circle','Triangle','Rectangle','Star'], answer:2, subject:'Shapes' },
+      { q:'What does a dog say?', opts:['Moo','Woof','Meow','Oink'], answer:1, subject:'Animals' },
+      { q:'What does a cow say?', opts:['Moo','Baa','Quack','Roar'], answer:0, subject:'Animals' },
+      { q:'Which animal hops?', opts:['Fish','Rabbit','Cat','Snake'], answer:1, subject:'Animals' },
+      { q:'Which animal lives in water?', opts:['Dog','Cat','Fish','Rabbit'], answer:2, subject:'Animals' },
+      { q:'Which animal has a long neck?', opts:['Dog','Elephant','Giraffe','Cat'], answer:2, subject:'Animals' },
+      { q:'What falls from clouds?', opts:['Stars','Rain','Birds','Leaves'], answer:1, subject:'Nature' },
+      { q:'What season has snow?', opts:['Summer','Spring','Fall','Winter'], answer:3, subject:'Nature' },
+      { q:'What do plants need to grow?', opts:['Candy','Water and sun','Toys','Music'], answer:1, subject:'Nature' },
+      { q:'Which is the hottest season?', opts:['Winter','Spring','Fall','Summer'], answer:3, subject:'Nature' },
       { q:'🍎 What color is an apple?', opts:['Blue','Red','Green','Purple'], answer:1, subject:'Colors' },
       { q:'Which letter is this? 🅰', opts:['B','C','A','D'], answer:2, subject:'Letters' },
       { q:'🐱 What does a cat say?', opts:['Moo','Woof','Meow','Quack'], answer:2, subject:'Animals' },
@@ -1006,8 +1037,8 @@ const GRADE_DATA = {
       bookshelfTitle:'📚 My Books!', timerTopLabel:'Hold this move!'
     },
     subjects:[
-      { icon:'🔢', title:'Counting', desc:'Count bears, apples, and toys!', badge:'Let\'s count!', color:'mint' },
-      { icon:'🔤', title:'Letters', desc:'Learn the ABCs and letter sounds!', badge:'ABC time!', color:'coral' },
+      { icon:'🔢', title:'Counting', img:'icon_math.png', desc:'Count bears, apples, and toys!', badge:'Let\'s count!', color:'mint' },
+      { icon:'🔤', title:'Letters', img:'icon_reading.png', desc:'Learn the ABCs and letter sounds!', badge:'ABC time!', color:'coral' },
       { icon:'🎨', title:'Colors & Shapes', desc:'Circles, squares, and all the colors!', badge:'So colorful!', color:'lavender' },
       { icon:'🌤', title:'My World', desc:'Weather, animals, and nature!', badge:'Explore!', color:'sun' },
     ],
@@ -1070,7 +1101,7 @@ const GRADE_DATA = {
       { icon:'🔢', title:'Numbers & Adding', desc:'Add numbers up to 20 and count on!', badge:'Let\'s add!', color:'mint' },
       { icon:'📝', title:'Reading & Writing', desc:'Sound out words and write sentences!', badge:'Sound it out!', color:'coral' },
       { icon:'🔬', title:'Science Fun', desc:'Plants, animals, and how things work!', badge:'Explore!', color:'lavender' },
-      { icon:'🌍', title:'Our Community', desc:'Families, helpers, and our neighborhood!', badge:'Learn more!', color:'sun' },
+      { icon:'🌍', title:'Our Community', img:'icon_our_community.png', desc:'Families, helpers, and our neighborhood!', badge:'Learn more!', color:'sun' },
     ],
     questions:[
       { q:'🍎🍎🍎 + 🍎🍎 = ?', opts:['4','5','6','7'], answer:1, subject:'Numbers' },
@@ -1128,10 +1159,10 @@ const GRADE_DATA = {
       bookshelfTitle:'📚 My Bookshelf', timerTopLabel:'Hold this pose'
     },
     subjects:[
-      { icon:'🔢', title:'Math', desc:'Addition, subtraction, and number patterns!', badge:'3 activities', color:'mint' },
-      { icon:'🔬', title:'Science', desc:'Animals, plants, weather and experiments!', badge:'Explore!', color:'coral' },
-      { icon:'✏', title:'Writing', desc:'Write sentences with describing words!', badge:'1 assignment', color:'lavender' },
-      { icon:'🌍', title:'Social Studies', desc:'Maps, communities, and our world!', badge:'Explore!', color:'sun' },
+      { icon:'🔢', title:'Math', img:'icon_math.png', desc:'Addition, subtraction, and number patterns!', badge:'3 activities', color:'mint' },
+      { icon:'🔬', title:'Science', img:'icon_science.png', desc:'Animals, plants, weather and experiments!', badge:'Explore!', color:'coral' },
+      { icon:'✏', title:'Writing', img:'icon_reading.png', desc:'Write sentences with describing words!', badge:'1 assignment', color:'lavender' },
+      { icon:'🌍', title:'Social Studies', img:'icon_social_studies.png', desc:'Maps, communities, and our world!', badge:'Explore!', color:'sun' },
     ],
     questions:[
       { q:'What is 14 + 8?', opts:['20','21','22','23'], answer:2, subject:'Math' },
@@ -1189,10 +1220,10 @@ const GRADE_DATA = {
       bookshelfTitle:'📚 My Bookshelf', timerTopLabel:'Current Pose'
     },
     subjects:[
-      { icon:'🔢', title:'Mathematics', desc:'Multiplication, division, and fractions!', badge:'3 lessons left', color:'mint' },
-      { icon:'🔬', title:'Science', desc:'States of matter, ecosystems, and experiments!', badge:'✅ Completed!', color:'coral' },
-      { icon:'✍', title:'Language Arts', desc:'Paragraphs, punctuation, and vocabulary!', badge:'2 exercises left', color:'lavender' },
-      { icon:'🌍', title:'Social Studies', desc:'U.S. regions, maps, and communities!', badge:'New lesson!', color:'sun' },
+      { icon:'🔢', title:'Mathematics', img:'icon_math.png', desc:'Multiplication, division, and fractions!', badge:'3 lessons left', color:'mint' },
+      { icon:'🔬', title:'Science', img:'icon_science.png', desc:'States of matter, ecosystems, and experiments!', badge:'✅ Completed!', color:'coral' },
+      { icon:'✍', title:'Language Arts', img:'icon_reading.png', desc:'Paragraphs, punctuation, and vocabulary!', badge:'2 exercises left', color:'lavender' },
+      { icon:'🌍', title:'Social Studies', img:'icon_social_studies.png', desc:'U.S. regions, maps, and communities!', badge:'New lesson!', color:'sun' },
     ],
     questions:[
       { q:'What is 6 × 7?', opts:['36','40','42','48'], answer:2, subject:'Math' },
@@ -1252,10 +1283,10 @@ const GRADE_DATA = {
       bookshelfTitle:'📚 My Bookshelf', timerTopLabel:'Current Pose'
     },
     subjects:[
-      { icon:'🔢', title:'Mathematics', desc:'Multi-digit multiplication, fractions, and decimals!', badge:'3 lessons left', color:'mint' },
-      { icon:'🔬', title:'Science', desc:'Energy, ecosystems, and the scientific method!', badge:'2 lessons left', color:'coral' },
-      { icon:'✍', title:'Language Arts', desc:'Essay writing, figurative language, and grammar!', badge:'1 assignment', color:'lavender' },
-      { icon:'🌍', title:'Social Studies', desc:'U.S. history, regions, and government basics!', badge:'New topic!', color:'sun' },
+      { icon:'🔢', title:'Mathematics', img:'icon_math.png', desc:'Multi-digit multiplication, fractions, and decimals!', badge:'3 lessons left', color:'mint' },
+      { icon:'🔬', title:'Science', img:'icon_science.png', desc:'Energy, ecosystems, and the scientific method!', badge:'2 lessons left', color:'coral' },
+      { icon:'✍', title:'Language Arts', img:'icon_reading.png', desc:'Essay writing, figurative language, and grammar!', badge:'1 assignment', color:'lavender' },
+      { icon:'🌍', title:'Social Studies', img:'icon_social_studies.png', desc:'U.S. history, regions, and government basics!', badge:'New topic!', color:'sun' },
     ],
     questions:[
       { q:'What is 24 × 7?', opts:['148','168','158','178'], answer:1, subject:'Math' },
@@ -1315,10 +1346,10 @@ const GRADE_DATA = {
       bookshelfTitle:'📚 My Bookshelf', timerTopLabel:'Current Pose Duration'
     },
     subjects:[
-      { icon:'🔢', title:'Mathematics', desc:'Fractions, decimals, percentages, and geometry!', badge:'3 lessons left', color:'mint' },
-      { icon:'🔬', title:'Science', desc:'Earth systems, matter, and the scientific method!', badge:'✅ Completed!', color:'coral' },
-      { icon:'✍', title:'Language Arts', desc:'Research writing, literary analysis, and debate!', badge:'2 exercises left', color:'lavender' },
-      { icon:'🌍', title:'Social Studies', desc:'U.S. history, economics, and civics!', badge:'New lesson!', color:'sun' },
+      { icon:'🔢', title:'Mathematics', img:'icon_math.png', desc:'Fractions, decimals, percentages, and geometry!', badge:'3 lessons left', color:'mint' },
+      { icon:'🔬', title:'Science', img:'icon_science.png', desc:'Earth systems, matter, and the scientific method!', badge:'✅ Completed!', color:'coral' },
+      { icon:'✍', title:'Language Arts', img:'icon_reading.png', desc:'Research writing, literary analysis, and debate!', badge:'2 exercises left', color:'lavender' },
+      { icon:'🌍', title:'Social Studies', img:'icon_social_studies.png', desc:'U.S. history, economics, and civics!', badge:'New lesson!', color:'sun' },
     ],
     questions:[
       { q:'What is 7 × 8?', opts:['54','56','48','63'], answer:1, subject:'Math' },
@@ -1995,6 +2026,12 @@ function updateTimerDisplay() {
   const s=(timerSecs%60).toString().padStart(2,'0');
   document.getElementById('timerDisplay').textContent=`${m}:${s}`;
 }
+function handlePoseCardClick(el) {
+  const name = el.getAttribute('data-name') || '';
+  const secs = parseInt(el.getAttribute('data-secs') || '30', 10);
+  selectPose(el, name, secs);
+}
+
 function selectPose(el,name,secs) {
   document.querySelectorAll('.pose-card').forEach(p=>p.classList.remove('active-pose'));
   el.classList.add('active-pose');
