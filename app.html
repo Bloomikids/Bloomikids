@@ -205,7 +205,7 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .section-title { font-family:'Baloo 2',cursive; font-size:var(--font-heading); font-weight:800; margin-bottom:18px; display:flex; align-items:center; gap:10px; }
 
 .cards-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-bottom:28px; }
-.card { background:white; border-radius:28px; padding:20px 12px; box-shadow:0 4px 20px rgba(45,45,78,.10); cursor:pointer; transition:all .3s; position:relative; overflow:hidden; min-height:150px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.card { background:white; border-radius:24px; padding:16px 10px 14px; box-shadow:0 4px 20px rgba(45,45,78,.10); cursor:pointer; transition:all .3s; position:relative; overflow:visible; min-height:155px; display:flex; flex-direction:column; align-items:center; text-align:center; }
 .card:hover { transform:translateY(-6px) scale(1.02); box-shadow:0 16px 40px rgba(45,45,78,.18); }
 .card::before { display:none; }
 .card.mint     { background:linear-gradient(145deg,#E8FFF6,#C5F0E0); }
@@ -222,7 +222,7 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .badge-sun     { background:#FFF9E8; color:#D4A017; }
 
 /* K-2 larger card icons */
-body.grade-prek .card-icon, body.grade-k .card-icon, body.grade-1 .card-icon { font-size:4.2rem; }
+body.grade-prek .card-icon, body.grade-k .card-icon, body.grade-1 .card-icon { width:72px; height:72px; border-radius:14px; overflow:hidden; display:flex; align-items:center; justify-content:center; font-size:2rem; margin:0 auto 8px; flex-shrink:0; }
 
 .stats-row { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:28px; }
 .stat-chip { background:white; border-radius:16px; padding:14px 20px; box-shadow:var(--shadow); flex:1; min-width:90px; text-align:center; }
@@ -2949,15 +2949,139 @@ async function syncData() {
   setSyncState('syncing'); await loadDashboardStats(); setSyncState(''); toast('✅ Synced!');
 }
 
+function closeSubjectQuiz(){var e=document.getElementById('subjectQuizOv');if(e)e.remove();}
 async function startSubject(name) {
   if(name==="Letter Tracing"){showLetterTracing();return;}
-  toast(`📚 Opening ${name}! +5 min logged ⭐`);
+  
+  // Filter questions to this subject
+  var allQ = gradeContent.questions || [];
+  var filtered = allQ.filter(function(q){ return (q.subject||'').toLowerCase() === name.toLowerCase(); });
+  var pool = filtered.length >= 2 ? filtered : allQ;
+  var questions = pool.slice().sort(function(){return Math.random()-.5;});
+  var qIndex = 0, score = 0;
+
+  var ov = document.createElement('div');
+  ov.className = 'modal-overlay';
+  ov.id = 'subjectQuizOv';
+
+  var icons = {Math:'🔢',Mathematics:'🔢',Science:'🔬',Writing:'✏️','Social Studies':'🌍','Language Arts':'📝',Reading:'📖','Numbers Fun':'🔢',Counting:'🔢',Colors:'🎨',Shapes:'🔷',Animals:'🐾',Nature:'🌿',Letters:'🔤','Our Community':'🏘️','Animals & Nature':'🌿','Letter Tracing':'✏️'};
+  var icon = icons[name] || '📚';
+
+  function renderQ() {
+    var card = document.createElement('div');
+    card.className = 'modal-card';
+    card.style.cssText = 'max-width:380px;padding:0;overflow:hidden;';
+
+    if (qIndex >= questions.length) {
+      // Results screen
+      var pct = questions.length ? Math.round(score/questions.length*100) : 0;
+      card.innerHTML = '<div style="background:linear-gradient(135deg,var(--coral),var(--sunshine));padding:24px;text-align:center;">' +
+        '<div style="font-size:3rem;margin-bottom:8px;">'+(pct===100?'🏆':pct>=70?'🌟':'💪')+'</div>' +
+        '<div style="font-family:Baloo 2,cursive;font-size:1.4rem;font-weight:800;color:white;">Quiz Complete!</div>' +
+        '<div style="color:rgba(255,255,255,.9);margin-top:6px;">'+score+' / '+questions.length+' correct</div></div>' +
+        '<div style="padding:20px;text-align:center;">' +
+        '<div style="font-size:1rem;color:var(--body);margin-bottom:16px;">'+(pct===100?'Perfect! Amazing work! 🎉':pct>=70?'Great job! Keep it up! 🌟':'Keep practicing! You got this! 💪')+'</div>' +
+        '<button onclick="closeSubjectQuiz()" style="width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">✅ Done!</button></div>';
+      var stars = score * 5;
+      if(stars>0){sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:stars}).catch(function(){});sessionData.stars+=stars;document.getElementById('statStars').textContent=sessionData.stars;}
+    } else {
+      var q = questions[qIndex];
+      var headerDiv = '<div style="background:linear-gradient(135deg,var(--coral),var(--sunshine));padding:16px 20px;color:white;">' +
+        '<div style="font-family:Baloo 2,cursive;font-size:1.1rem;font-weight:800;">'+icon+' '+name+'</div>' +
+        '<div style="font-size:.8rem;opacity:.85;margin-top:2px;">Question '+(qIndex+1)+' of '+questions.length+'</div></div>';
+      var qDiv = '<div style="padding:20px;">' +
+        '<div style="font-size:1rem;font-weight:800;color:var(--dark);margin-bottom:16px;line-height:1.4;">'+q.q+'</div>' +
+        '<div id="sqOpts" style="display:flex;flex-direction:column;gap:8px;">' +
+        q.opts.map(function(o,i){
+          return '<button data-idx="'+i+'" data-correct="'+(i===q.answer)+'" style="padding:12px 16px;border-radius:14px;border:2px solid #E8E4FF;background:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;text-align:left;">'+o+'</button>';
+        }).join('') + '</div></div>' +
+        '<div style="padding:0 20px 16px;">' +
+        '<button id="sqNext" disabled style="width:100%;padding:12px;border-radius:40px;border:none;background:#E0DAFF;color:#888;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:not-allowed;">Next →</button></div>';
+      card.innerHTML = headerDiv + qDiv;
+    }
+
+    ov.innerHTML = '';
+    ov.appendChild(card);
+
+    // Wire answer buttons
+    var opts = ov.querySelectorAll('[data-idx]');
+    opts.forEach(function(btn){
+      btn.onclick = function(){
+        var correct = this.getAttribute('data-correct') === 'true';
+        var ansIdx = q.answer;
+        opts.forEach(function(b,i){
+          b.style.pointerEvents='none';
+          if(i===ansIdx){b.style.background='#E8FBF3';b.style.borderColor='var(--mint)';b.style.color='#2A9970';}
+        });
+        if(correct){this.style.background='#E8FBF3';score++;toast('✅ Correct! +5 ⭐');}
+        else{this.style.background='#FFF0EE';this.style.borderColor='var(--coral)';this.style.color='var(--coral)';toast('Not quite! See the green answer 💪');}
+        var nb=document.getElementById('sqNext');
+        if(nb){nb.disabled=false;nb.style.background='linear-gradient(135deg,var(--coral),var(--sunshine))';nb.style.color='white';nb.style.cursor='pointer';}
+      };
+    });
+
+    var nextBtn = document.getElementById('sqNext');
+    if(nextBtn) nextBtn.onclick = function(){ qIndex++; renderQ(); };
+
+    // Close button
+    var closeRow = document.createElement('div');
+    closeRow.style.cssText = 'text-align:center;padding-bottom:12px;';
+    closeRow.innerHTML = '<button onclick="closeSubjectQuiz()" style="background:none;border:none;color:var(--muted);font-family:Nunito,sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;">✕ Close</button>';
+    card.appendChild(closeRow);
+  }
+
+  document.body.appendChild(ov);
+  renderQ();
+
   await upsertDailyActivity({minutes_academic:5,tasks_done:1});
   sessionData.tasks++; document.getElementById('statTasks').textContent=sessionData.tasks;
 }
 
 
-function openBookReader(title,ytUrl){var m=ytUrl&&ytUrl.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);var vid=m?m[1]:null;var su='https://www.youtube.com/results?search_query='+encodeURIComponent(title+' read aloud children');var ov=document.createElement('div');ov.id='bookOv';ov.style.cssText='position:fixed;inset:0;z-index:9999;background:#0A0A1A;display:flex;flex-direction:column;';var hdr=document.createElement('div');hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#1A1A2E;flex-shrink:0;';var ht=document.createElement('div');ht.style.cssText='font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:white;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:75%;';ht.textContent='📖 '+title;var hc=document.createElement('button');hc.textContent='✕';hc.style.cssText='background:rgba(255,255,255,.15);border:none;color:white;border-radius:50%;width:34px;height:34px;font-size:1rem;cursor:pointer;font-weight:800;';hc.onclick=function(){ov.remove();};hdr.appendChild(ht);hdr.appendChild(hc);ov.appendChild(hdr);var body=document.createElement('div');body.style.cssText='flex:1;min-height:0;';if(vid){var ifr=document.createElement('iframe');ifr.src='https://www.youtube.com/embed/'+vid+'?autoplay=1&playsinline=1&rel=0&modestbranding=1';ifr.style.cssText='width:100%;height:100%;border:none;display:block;';ifr.setAttribute('allow','autoplay;encrypted-media');ifr.setAttribute('allowfullscreen','');body.appendChild(ifr);}else{body.style.cssText+='display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;';var si=document.createElement('div');si.style.fontSize='3rem';si.textContent='🔍';body.appendChild(si);var sb3=document.createElement('button');sb3.textContent='🔍 Find on YouTube';sb3.style.cssText='background:linear-gradient(135deg,#5ECDA0,#4ECDC4);color:white;border:none;border-radius:40px;padding:14px 28px;font-weight:800;cursor:pointer;';sb3.onclick=function(){window.open(su,'_blank');};body.appendChild(sb3);}ov.appendChild(body);var ftr=document.createElement('div');ftr.style.cssText='display:flex;gap:8px;padding:10px 16px;background:#1A1A2E;flex-shrink:0;';var db=document.createElement('button');db.textContent='✅ Done Reading';db.style.cssText='flex:1;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;border:none;border-radius:40px;padding:12px 20px;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;';db.onclick=async function(){ov.remove();try{await upsertDailyActivity({minutes_reading:10});await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:10});sessionData.stars+=10;document.getElementById('statStars').textContent=sessionData.stars;toast('📖 +10 stars! ⭐');}catch(e){}};ftr.appendChild(db);if(vid){var eb=document.createElement('button');eb.textContent='↗ YouTube';eb.style.cssText='background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);border:none;border-radius:40px;padding:12px 14px;font-size:.8rem;font-weight:700;cursor:pointer;';eb.onclick=function(){window.open(ytUrl,'_blank');};ftr.appendChild(eb);}ov.appendChild(ftr);document.body.appendChild(ov);}
+function openBookReader(title,ytUrl){
+  var m=ytUrl&&ytUrl.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  var vid=m?m[1]:null;
+  var su='https://www.youtube.com/results?search_query='+encodeURIComponent(title+' read aloud children');
+  var ov=document.createElement('div');ov.id='bookOv';ov.style.cssText='position:fixed;inset:0;z-index:9999;background:#0A0A1A;display:flex;flex-direction:column;';
+  // Header
+  var hdr=document.createElement('div');hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#1A1A2E;flex-shrink:0;';
+  var ht=document.createElement('div');ht.style.cssText='font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:white;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:75%;';ht.textContent='📖 '+title;
+  var hc=document.createElement('button');hc.textContent='✕';hc.style.cssText='background:rgba(255,255,255,.15);border:none;color:white;border-radius:50%;width:34px;height:34px;font-size:1rem;cursor:pointer;font-weight:800;';hc.onclick=function(){ov.remove();};
+  hdr.appendChild(ht);hdr.appendChild(hc);ov.appendChild(hdr);
+  // Body - always show search + option to watch if we have ID
+  var body=document.createElement('div');body.style.cssText='flex:1;min-height:0;display:flex;flex-direction:column;';
+  if(vid){
+    var ifr=document.createElement('iframe');
+    ifr.src='https://www.youtube.com/embed/'+vid+'?autoplay=1&playsinline=1&rel=0&modestbranding=1';
+    ifr.style.cssText='flex:1;width:100%;border:none;display:block;';
+    ifr.setAttribute('allow','autoplay;encrypted-media');
+    ifr.setAttribute('allowfullscreen','');
+    body.appendChild(ifr);
+    // Fallback message below
+    var fb=document.createElement('div');
+    fb.style.cssText='padding:10px 16px;background:#1A1A2E;text-align:center;flex-shrink:0;';
+    fb.style.cssText='padding:10px 16px;background:#1A1A2E;text-align:center;flex-shrink:0;';
+    var fbtxt=document.createElement('span');fbtxt.style.cssText='color:rgba(255,255,255,.5);font-size:.8rem;';fbtxt.textContent='Video not loading? ';
+    var fblink=document.createElement('button');fblink.textContent='Search YouTube instead →';fblink.style.cssText='background:none;border:none;color:#4ECDC4;font-size:.8rem;font-weight:700;cursor:pointer;text-decoration:underline;';fblink.onclick=function(){window.open(su,'_blank');};
+    fb.appendChild(fbtxt);fb.appendChild(fblink);
+    body.appendChild(fb);
+  } else {
+    // No ID - search screen
+    body.style.cssText+='align-items:center;justify-content:center;gap:16px;padding:24px;text-align:center;';
+    var sico=document.createElement('div');sico.style.cssText='font-size:3.5rem;';sico.textContent='📺';body.appendChild(sico);
+    var stit=document.createElement('div');stit.style.cssText='color:white;font-weight:800;font-size:1.1rem;';stit.textContent=title;body.appendChild(stit);
+    var ssub=document.createElement('div');ssub.style.cssText='color:rgba(255,255,255,.6);font-size:.85rem;';ssub.textContent='Find the read-aloud on YouTube';body.appendChild(ssub);
+    var sb3=document.createElement('button');sb3.textContent='🔍 Search YouTube';sb3.style.cssText='background:linear-gradient(135deg,#FF6B6B,#FFD166);color:white;border:none;border-radius:40px;padding:14px 32px;font-weight:800;font-size:1rem;cursor:pointer;';sb3.onclick=function(){window.open(su,'_blank');};body.appendChild(sb3);
+  }
+  ov.appendChild(body);
+  // Footer
+  var ftr=document.createElement('div');ftr.style.cssText='display:flex;gap:8px;padding:10px 16px;background:#1A1A2E;flex-shrink:0;';
+  var db=document.createElement('button');db.textContent='✅ Done Reading +10 ⭐';db.style.cssText='flex:1;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;border:none;border-radius:40px;padding:12px 20px;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;';
+  db.onclick=async function(){ov.remove();try{await upsertDailyActivity({minutes_reading:10});await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:10});sessionData.stars+=10;document.getElementById('statStars').textContent=sessionData.stars;toast('📖 +10 stars for reading! ⭐');}catch(e){}};
+  ftr.appendChild(db);
+  ov.appendChild(ftr);
+  document.body.appendChild(ov);
+}
 
 function buildDrawingCanvas(container){var COLORS=['#FF6B6B','#FF8E53','#FFD166','#5ECDA0','#4ECDC4','#C9B8FF','#8B6FE8','#2D2D4E','#000000','#FFFFFF'];var SIZES=[3,6,12,20];var SL=['S','M','L','XL'];var tool='pen',color='#FF6B6B',size=6;var wrap=document.createElement('div');wrap.style.cssText='background:white;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:16px;';var tb=document.createElement('div');tb.style.cssText='display:flex;align-items:center;gap:6px;padding:10px 12px;background:#F8F6FF;border-bottom:2px solid #EDE9FF;flex-wrap:wrap;';var tbtns={};[{id:'pen',ico:'✏️'},{id:'brush',ico:'🖌️'},{id:'eraser',ico:'🧹'}].forEach(function(t){var b=document.createElement('button');b.textContent=t.ico;b.style.cssText='width:34px;height:34px;border-radius:10px;border:2px solid '+(t.id==='pen'?'var(--lavender)':'transparent')+';background:'+(t.id==='pen'?'#EDE9FF':'white')+';cursor:pointer;font-size:1rem;';b.onclick=function(){tool=t.id;Object.values(tbtns).forEach(function(x){x.style.borderColor='transparent';x.style.background='white';});b.style.borderColor='var(--lavender)';b.style.background='#EDE9FF';};tbtns[t.id]=b;tb.appendChild(b);});var sep=document.createElement('div');sep.style.cssText='width:1px;height:22px;background:#E0DAFF;';tb.appendChild(sep);var cdots=[];COLORS.forEach(function(c,i){var d=document.createElement('div');d.style.cssText='width:24px;height:24px;border-radius:50%;background:'+c+';border:3px solid '+(i===0?'#2D2D4E':'transparent')+';cursor:pointer;flex-shrink:0;'+(c==='#FFFFFF'?'outline:1px solid #ccc;':'');d.onclick=function(){color=c;cdots.forEach(function(x){x.style.borderColor='transparent';});d.style.borderColor='#2D2D4E';if(tool==='eraser'){tool='pen';tbtns.pen.style.borderColor='var(--lavender)';tbtns.pen.style.background='#EDE9FF';tbtns.eraser.style.borderColor='transparent';tbtns.eraser.style.background='white';}};cdots.push(d);tb.appendChild(d);});var sep2=document.createElement('div');sep2.style.cssText='width:1px;height:22px;background:#E0DAFF;';tb.appendChild(sep2);var sbtns=[];SIZES.forEach(function(s,i){var b=document.createElement('button');b.textContent=SL[i];b.style.cssText='padding:3px 9px;border-radius:20px;border:2px solid '+(i===1?'var(--lavender)':'#E0DAFF')+';background:'+(i===1?'var(--lavender)':'white')+';color:'+(i===1?'white':'var(--body)')+';font-size:.72rem;font-weight:800;cursor:pointer;';b.onclick=function(){size=s;sbtns.forEach(function(x){x.style.borderColor='#E0DAFF';x.style.background='white';x.style.color='var(--body)';});b.style.borderColor='var(--lavender)';b.style.background='var(--lavender)';b.style.color='white';};sbtns.push(b);tb.appendChild(b);});wrap.appendChild(tb);var cv=document.createElement('canvas');cv.style.cssText='display:block;width:100%;cursor:crosshair;touch-action:none;';cv.height=Math.min(380,Math.round(window.innerWidth*0.7));wrap.appendChild(cv);var act=document.createElement('div');act.style.cssText='display:flex;gap:8px;padding:10px 12px;background:#F8F6FF;border-top:2px solid #EDE9FF;';var clrB=document.createElement('button');clrB.textContent='🗑️ Clear';clrB.style.cssText='flex:1;padding:10px;border-radius:14px;border:none;background:#FFF0EE;color:var(--coral);font-family:Nunito,sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;';act.appendChild(clrB);var savB=document.createElement('button');savB.textContent='💾 Save Art! +20 ⭐';savB.style.cssText='flex:2;padding:10px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;';act.appendChild(savB);wrap.appendChild(act);container.appendChild(wrap);setTimeout(function(){cv.width=cv.offsetWidth||360;var ctx=cv.getContext('2d');ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,cv.width,cv.height);clrB.onclick=function(){ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,cv.width,cv.height);toast('🎨 Cleared!');};savB.onclick=async function(){var a=document.createElement('a');a.download='art.png';a.href=cv.toDataURL();a.click();try{await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:20});sessionData.stars+=20;document.getElementById('statStars').textContent=sessionData.stars;}catch(e){}toast('💾 Saved! +20 ⭐');};var ptg=false,lx=0,ly=0;function gp(e){var r=cv.getBoundingClientRect(),s=e.touches?e.touches[0]:e;return{x:(s.clientX-r.left)*(cv.width/r.width),y:(s.clientY-r.top)*(cv.height/r.height)};}function st(e){ptg=true;var p=gp(e);lx=p.x;ly=p.y;}function dr(e){if(!ptg)return;var p=gp(e);ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(p.x,p.y);ctx.strokeStyle=tool==='eraser'?'#FFFFFF':color;ctx.lineWidth=tool==='eraser'?size*3:tool==='brush'?size*2:size;ctx.lineCap='round';ctx.setLineDash([]);ctx.globalAlpha=tool==='brush'?0.7:1;ctx.stroke();ctx.globalAlpha=1;lx=p.x;ly=p.y;}cv.addEventListener('mousedown',st);cv.addEventListener('mousemove',dr);cv.addEventListener('mouseup',function(){ptg=false;});cv.addEventListener('mouseleave',function(){ptg=false;});cv.addEventListener('touchstart',function(e){e.preventDefault();st(e);},{passive:false});cv.addEventListener('touchmove',function(e){e.preventDefault();dr(e);},{passive:false});cv.addEventListener('touchend',function(){ptg=false;},{passive:false});},50);}
 
