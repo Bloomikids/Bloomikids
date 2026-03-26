@@ -205,7 +205,7 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .section-title { font-family:'Baloo 2',cursive; font-size:var(--font-heading); font-weight:800; margin-bottom:18px; display:flex; align-items:center; gap:10px; }
 
 .cards-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-bottom:28px; }
-.card { background:white; border-radius:24px; padding:16px 10px 14px; box-shadow:0 4px 20px rgba(45,45,78,.10); cursor:pointer; transition:all .3s; position:relative; overflow:visible; min-height:155px; display:flex; flex-direction:column; align-items:center; text-align:center; }
+.card { background:white; border-radius:28px; padding:20px 12px; box-shadow:0 4px 20px rgba(45,45,78,.10); cursor:pointer; transition:all .3s; position:relative; overflow:hidden; min-height:150px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
 .card:hover { transform:translateY(-6px) scale(1.02); box-shadow:0 16px 40px rgba(45,45,78,.18); }
 .card::before { display:none; }
 .card.mint     { background:linear-gradient(145deg,#E8FFF6,#C5F0E0); }
@@ -222,7 +222,7 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .badge-sun     { background:#FFF9E8; color:#D4A017; }
 
 /* K-2 larger card icons */
-body.grade-prek .card-icon, body.grade-k .card-icon, body.grade-1 .card-icon { width:72px; height:72px; border-radius:14px; overflow:hidden; display:flex; align-items:center; justify-content:center; font-size:2rem; margin:0 auto 8px; flex-shrink:0; }
+body.grade-prek .card-icon, body.grade-k .card-icon, body.grade-1 .card-icon { font-size:4.2rem; }
 
 .stats-row { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:28px; }
 .stat-chip { background:white; border-radius:16px; padding:14px 20px; box-shadow:var(--shadow); flex:1; min-width:90px; text-align:center; }
@@ -924,7 +924,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 // ══════════════════════════════════════════════════════
 //  GRADE-ADAPTIVE CONTENT DATABASE
 // ══════════════════════════════════════════════════════
-const SUBJECT_ICONS={'Math':'icon_math.png','Mathematics':'icon_math.png','Numbers Fun':'icon_math.png','Counting':'icon_math.png','Numbers':'icon_math.png','Science':'icon_science.png','Science Fun':'icon_science.png','Reading':'icon_reading.png','Language Arts':'icon_reading.png','Writing':'icon_reading.png','ABC Time':'icon_reading.png','Letters':'icon_reading.png','Social Studies':'icon_social_studies.png','Our Community':'icon_our_community.png','Animals & Nature':'icon_animal_nature.png','Letter Tracing':'icon_letter_tracing.png'};
+const SUBJECT_ICONS={'Math':'icon_math.png','Mathematics':'icon_math.png','Numbers':'icon_math.png','Numbers Fun':'icon_math.png','Counting':'icon_math.png','Science':'icon_science.png','Science Fun':'icon_science.png','Reading':'icon_reading.png','Language Arts':'icon_reading.png','Writing':'icon_reading.png','ABC Time':'icon_reading.png','Letters':'icon_reading.png','Social Studies':'icon_social_studies.png','Our Community':'icon_our_community.png','Community':'icon_our_community.png','Animals & Nature':'icon_animal_nature.png','Animals':'icon_animal_nature.png','Nature':'icon_animal_nature.png','Letter Tracing':'icon_letter_tracing.png','Colors':'icon_math.png','Shapes':'icon_math.png','Colors & Shapes':'icon_math.png','My World':'icon_social_studies.png'};
 const GRADE_DATA = {
 
   PreK: {
@@ -939,7 +939,6 @@ const GRADE_DATA = {
       bookshelfTitle:'📚 Story Time!', timerTopLabel:'Hold and breathe!'
     },
     subjects:[
-      { icon:'✏️', title:'Letter Tracing', desc:'Trace A B C with your finger!', badge:'New!', color:'mint' },
       { icon:'🔢', title:'Numbers Fun', desc:'Count 1 to 10 with friends!', badge:'Count with me!', color:'mint' },
       { icon:'🔤', title:'ABC Time', desc:'Learn letters A B C D E!', badge:'ABCs!', color:'coral' },
       { icon:'🎨', title:'Colors & Art', desc:'Paint, draw, and make things!', badge:'Create!', color:'lavender' },
@@ -1123,7 +1122,7 @@ const GRADE_DATA = {
     subjects:[
       { icon:'🔢', title:'Math', desc:'Addition, subtraction, and number patterns!', badge:'3 activities', color:'mint' },
       { icon:'🔬', title:'Science', desc:'Animals, plants, weather and experiments!', badge:'Explore!', color:'coral' },
-      { icon:'✏', title:'Writing', desc:'Write sentences with describing words!', badge:'1 assignment', color:'lavender' },
+      { icon:'✏️', title:'Language Arts', desc:'Reading, writing and grammar!', badge:'Write on!', color:'lavender' },
       { icon:'🌍', title:'Social Studies', desc:'Maps, communities, and our world!', badge:'Explore!', color:'sun' },
     ],
     questions:[
@@ -1133,7 +1132,7 @@ const GRADE_DATA = {
       { q:'Which animal is a mammal?', opts:['Eagle','Salmon','Dolphin','Frog'], answer:2, subject:'Science' },
       { q:'How many days are in a week?', opts:['5','6','7','8'], answer:2, subject:'Social Studies' },
       { q:'🌊 What covers most of Earth?', opts:['Land','Ice','Water','Desert'], answer:2, subject:'Science' },
-      { q:'Which of these is an adjective?', opts:['Run','Fluffy','Under','Ate'], answer:1, subject:'Writing' },
+      { q:'Which of these is an adjective?', opts:['Run','Fluffy','Under','Ate'], answer:1, subject:'Language Arts' },
       { q:'2 × 3 = ?', opts:['4','5','6','7'], answer:2, subject:'Math' },
     ],
     subjects_progress:['Math','Science','Writing'],
@@ -1708,7 +1707,32 @@ function applyGradeUI() {
   ['tabArt',  'tabArt2'  ].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=ui.tabArt||'Art'; });
 }
 
-function buildSubjectCards(){var el=document.getElementById('subjectCards');el.innerHTML='';gradeContent.subjects.forEach(function(s){var d=document.createElement('div');d.className='card '+s.color;(function(t){d.onclick=function(){startSubject(t);};})(s.title);var ic=document.createElement('div');ic.className='card-icon';ic.style.cssText='width:72px;height:72px;margin:0 auto 10px;border-radius:14px;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:2rem;';var src2=SUBJECT_ICONS[s.title]||'';if(src2){var im=document.createElement('img');im.src=src2;im.alt=s.title;im.style.cssText='width:72px;height:72px;object-fit:cover;border-radius:14px;';im.onerror=function(){ic.innerHTML='';ic.textContent=s.icon;};ic.appendChild(im);}else{ic.textContent=s.icon;}d.appendChild(ic);['card-title','card-desc','card-badge'].forEach(function(c,i){var x=document.createElement('div');x.className=c;x.textContent=[s.title,s.desc,s.badge][i];d.appendChild(x);});el.appendChild(d);});}
+function buildSubjectCards(){
+  var el=document.getElementById('subjectCards');
+  el.innerHTML='';
+  gradeContent.subjects.forEach(function(s){
+    var d=document.createElement('div');
+    d.className='card '+s.color;
+    (function(title){d.onclick=function(){startSubject(title);};})(s.title);
+    var ic=document.createElement('div');
+    ic.className='card-icon';
+    ic.style.cssText='width:72px;height:72px;margin:0 auto 10px;border-radius:14px;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0;';
+    var imgSrc=SUBJECT_ICONS[s.title]||'';
+    if(imgSrc){
+      var im=document.createElement('img');
+      im.src=imgSrc; im.alt=s.title;
+      im.style.cssText='width:72px;height:72px;object-fit:cover;border-radius:14px;';
+      im.onerror=function(){ic.innerHTML='';ic.textContent=s.icon;};
+      ic.appendChild(im);
+    } else { ic.textContent=s.icon; }
+    d.appendChild(ic);
+    ['card-title','card-desc','card-badge'].forEach(function(c,i){
+      var x=document.createElement('div'); x.className=c;
+      x.textContent=[s.title,s.desc,s.badge][i]; d.appendChild(x);
+    });
+    el.appendChild(d);
+  });
+}
 
 function buildProgressSection() {
   const container = document.getElementById('progressSection');
@@ -1921,7 +1945,8 @@ async function checkAnswer(btn, correct) {
   const stars = correct?10:2;
   setSyncState('syncing');
   try {
-    const q = gradeContent.questions[qIdx%gradeContent.questions.length];
+    const questions2 = shuffledQuestions.length ? shuffledQuestions : gradeContent.questions;
+    const q = questions2[qIdx%questions2.length];
     await sb.from('quiz_results').insert({child_id:activeChild.id,subject:q.subject,question:q.q,correct,stars_earned:stars});
     await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:stars});
     await upsertDailyActivity({tasks_done:sessionData.tasks+1});
@@ -1932,7 +1957,26 @@ async function checkAnswer(btn, correct) {
     if (correct) toast(`⭐ +${stars} stars!`);
   } catch(e) { setSyncState('error'); }
 }
-function nextQuestion() { qIdx++; renderQuestion(); }
+function nextQuestion() {
+  const questions = shuffledQuestions.length ? shuffledQuestions : gradeContent.questions;
+  qIdx++;
+  if (qIdx >= questions.length) {
+    // All done - show completion
+    document.getElementById('quizQuestion').textContent = '🎉 Amazing! You finished all the questions!';
+    document.getElementById('quizOptions').innerHTML = '';
+    document.getElementById('quizFeedback').textContent = '';
+    document.getElementById('nextBtn').textContent = '🔄 Play Again';
+    document.getElementById('nextBtn').onclick = function() {
+      shuffledQuestions = [...(gradeContent?.questions||[])].sort(()=>Math.random()-.5);
+      qIdx = 0;
+      document.getElementById('nextBtn').textContent = 'Next Question →';
+      document.getElementById('nextBtn').onclick = nextQuestion;
+      renderQuestion();
+    };
+  } else {
+    renderQuestion();
+  }
+}
 
 // ══════════════════════════════════════════════════════
 //  YOGA TIMER
@@ -2350,24 +2394,54 @@ function buildArtTab() {
 
   const isYoung = activeGrade==='PreK'||activeGrade==='K'||activeGrade==='1';
   const grid = document.getElementById('artActivities');
+  
+  // Clear grid first
+  grid.innerHTML = '';
 
-  var dcw=document.createElement("div");dcw.style.cssText="grid-column:1/-1;";grid.appendChild(dcw);buildDrawingCanvas(dcw);
+  // Drawing canvas at top for ALL grades
+  var dcw = document.createElement('div');
+  dcw.style.cssText = 'grid-column:1/-1;margin-bottom:8px;';
+  
+  var drawTitle = document.createElement('div');
+  drawTitle.className = 'section-title';
+  drawTitle.style.cssText = 'grid-column:1/-1;margin-bottom:8px;';
+  drawTitle.textContent = '🎨 Drawing Canvas';
+  grid.appendChild(drawTitle);
+  grid.appendChild(dcw);
+  buildDrawingCanvas(dcw);
+
   if (isYoung) {
-    // ✅ COLORING BOOK MODE for PreK/K/Grade 1
+    // Coloring book for PreK/K/Grade 1 BELOW drawing canvas
+    var colorTitle = document.createElement('div');
+    colorTitle.className = 'section-title';
+    colorTitle.style.cssText = 'grid-column:1/-1;margin-top:8px;';
+    colorTitle.textContent = '🖍️ Coloring Book';
+    grid.appendChild(colorTitle);
     buildColoringBook(grid);
   } else {
-    // Activity cards for Grade 2+
-    grid.innerHTML = artContent.activities.map((a, i) => `
-      <div class="art-card ac-${a.color}" id="artCard_${i}" onclick="toggleArtCard(${i})">
-        <span class="art-card-icon">${a.icon}</span>
-        <div class="art-card-title">${a.title}</div>
-        <div class="art-card-desc">${a.desc}</div>
-        <span class="art-card-badge ${a.badge_style}">${a.badge}</span>
-        <div class="art-card-steps">
-          ${a.steps.map((s, si) => `<div class="art-step"><div class="art-step-num">${si+1}</div><span>${s}</span></div>`).join('')}
-          <button class="art-card-done-btn" onclick="markArtDone(event, ${i})">✅ I Made This! +20 Stars</button>
-        </div>
-      </div>`).join('');
+    // Activity cards for Grade 2+ BELOW drawing canvas
+    var actTitle = document.createElement('div');
+    actTitle.className = 'section-title';
+    actTitle.style.cssText = 'grid-column:1/-1;margin-top:8px;';
+    actTitle.textContent = '🖼️ Art Activities';
+    grid.appendChild(actTitle);
+    artContent.activities.forEach(function(a, i) {
+      var card = document.createElement('div');
+      card.className = 'art-card ac-' + a.color;
+      card.id = 'artCard_' + i;
+      card.onclick = function() { toggleArtCard(i); };
+      card.innerHTML = '<span class="art-card-icon">' + a.icon + '</span>' +
+        '<div class="art-card-title">' + a.title + '</div>' +
+        '<div class="art-card-desc">' + a.desc + '</div>' +
+        '<span class="art-card-badge ' + a.badge_style + '">' + a.badge + '</span>' +
+        '<div class="art-card-steps">' +
+        a.steps.map(function(s, si) {
+          return '<div class="art-step"><div class="art-step-num">' + (si+1) + '</div><span>' + s + '</span></div>';
+        }).join('') +
+        '<button class="art-card-done-btn" onclick="markArtDone(event,' + i + ')">✅ I Made This! +20 Stars</button>' +
+        '</div>';
+      grid.appendChild(card);
+    });
   }
 
   buildColorSwatches();
@@ -2951,90 +3025,96 @@ async function syncData() {
 
 function closeSubjectQuiz(){var e=document.getElementById('subjectQuizOv');if(e)e.remove();}
 async function startSubject(name) {
-  if(name==="Letter Tracing"){showLetterTracing();return;}
-  
-  // Filter questions to this subject
-  var allQ = gradeContent.questions || [];
-  var filtered = allQ.filter(function(q){ return (q.subject||'').toLowerCase() === name.toLowerCase(); });
-  var pool = filtered.length >= 2 ? filtered : allQ;
-  var questions = pool.slice().sort(function(){return Math.random()-.5;});
-  var qIndex = 0, score = 0;
+  if(name==='Letter Tracing'){showLetterTracing();return;}
+  var allQ=gradeContent.questions||[];
+  // Match questions to subject - handle name variations
+  var filtered=allQ.filter(function(q){
+    var qs=(q.subject||'').toLowerCase();
+    var ns=name.toLowerCase();
+    return qs===ns || ns.includes(qs) || qs.includes(ns);
+  });
+  var pool=filtered.length>=2?filtered:allQ;
+  var questions=pool.slice().sort(function(){return Math.random()-.5;});
+  var qIndex=0, score=0;
+  var ICONS={Math:'🔢',Mathematics:'🔢',Numbers:'🔢',Science:'🔬',Writing:'✏️',Reading:'📖','Language Arts':'📝','Social Studies':'🌍',Community:'🏘️','Our Community':'🏘️',Colors:'🎨',Shapes:'🔷',Animals:'🐾',Nature:'🌿',Letters:'🔤','Letter Tracing':'✏️','My World':'🌍','Colors & Shapes':'🎨'};
+  var icon=ICONS[name]||'📚';
 
-  var ov = document.createElement('div');
-  ov.className = 'modal-overlay';
-  ov.id = 'subjectQuizOv';
+  var ov=document.createElement('div');
+  ov.className='modal-overlay'; ov.id='subjectQuizOv';
 
-  var icons = {Math:'🔢',Mathematics:'🔢',Science:'🔬',Writing:'✏️','Social Studies':'🌍','Language Arts':'📝',Reading:'📖','Numbers Fun':'🔢',Counting:'🔢',Colors:'🎨',Shapes:'🔷',Animals:'🐾',Nature:'🌿',Letters:'🔤','Our Community':'🏘️','Animals & Nature':'🌿','Letter Tracing':'✏️'};
-  var icon = icons[name] || '📚';
-
-  function renderQ() {
-    var card = document.createElement('div');
-    card.className = 'modal-card';
-    card.style.cssText = 'max-width:380px;padding:0;overflow:hidden;';
-
-    if (qIndex >= questions.length) {
-      // Results screen
-      var pct = questions.length ? Math.round(score/questions.length*100) : 0;
-      card.innerHTML = '<div style="background:linear-gradient(135deg,var(--coral),var(--sunshine));padding:24px;text-align:center;">' +
-        '<div style="font-size:3rem;margin-bottom:8px;">'+(pct===100?'🏆':pct>=70?'🌟':'💪')+'</div>' +
-        '<div style="font-family:Baloo 2,cursive;font-size:1.4rem;font-weight:800;color:white;">Quiz Complete!</div>' +
-        '<div style="color:rgba(255,255,255,.9);margin-top:6px;">'+score+' / '+questions.length+' correct</div></div>' +
-        '<div style="padding:20px;text-align:center;">' +
-        '<div style="font-size:1rem;color:var(--body);margin-bottom:16px;">'+(pct===100?'Perfect! Amazing work! 🎉':pct>=70?'Great job! Keep it up! 🌟':'Keep practicing! You got this! 💪')+'</div>' +
-        '<button onclick="closeSubjectQuiz()" style="width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">✅ Done!</button></div>';
-      var stars = score * 5;
+  function renderSQ(){
+    var card=document.createElement('div');
+    card.className='modal-card';
+    card.style.cssText='max-width:380px;padding:0;overflow:hidden;';
+    if(qIndex>=questions.length){
+      var pct=questions.length?Math.round(score/questions.length*100):0;
+      var trophy=pct===100?'🏆':pct>=70?'🌟':'💪';
+      var msg=pct===100?'Perfect score! Amazing!':pct>=70?'Great work! Keep it up!':'Keep practicing!';
+      card.innerHTML='<div style="background:linear-gradient(135deg,var(--coral),var(--sunshine));padding:24px;text-align:center;color:white;"><div style="font-size:3rem;margin-bottom:8px;">'+trophy+'</div><div style="font-family:Baloo 2,cursive;font-size:1.3rem;font-weight:800;">Quiz Complete!</div><div style="opacity:.9;margin-top:6px;">'+score+' of '+questions.length+' correct</div></div><div style="padding:20px;text-align:center;"><div style="font-size:.95rem;color:var(--body);margin-bottom:18px;">'+msg+'</div><button onclick="closeSubjectQuiz()" style="width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">✅ Done!</button></div>';
+      var stars=score*5;
       if(stars>0){sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:stars}).catch(function(){});sessionData.stars+=stars;document.getElementById('statStars').textContent=sessionData.stars;}
     } else {
-      var q = questions[qIndex];
-      var headerDiv = '<div style="background:linear-gradient(135deg,var(--coral),var(--sunshine));padding:16px 20px;color:white;">' +
-        '<div style="font-family:Baloo 2,cursive;font-size:1.1rem;font-weight:800;">'+icon+' '+name+'</div>' +
-        '<div style="font-size:.8rem;opacity:.85;margin-top:2px;">Question '+(qIndex+1)+' of '+questions.length+'</div></div>';
-      var qDiv = '<div style="padding:20px;">' +
-        '<div style="font-size:1rem;font-weight:800;color:var(--dark);margin-bottom:16px;line-height:1.4;">'+q.q+'</div>' +
-        '<div id="sqOpts" style="display:flex;flex-direction:column;gap:8px;">' +
-        q.opts.map(function(o,i){
-          return '<button data-idx="'+i+'" data-correct="'+(i===q.answer)+'" style="padding:12px 16px;border-radius:14px;border:2px solid #E8E4FF;background:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;text-align:left;">'+o+'</button>';
-        }).join('') + '</div></div>' +
-        '<div style="padding:0 20px 16px;">' +
-        '<button id="sqNext" disabled style="width:100%;padding:12px;border-radius:40px;border:none;background:#E0DAFF;color:#888;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:not-allowed;">Next →</button></div>';
-      card.innerHTML = headerDiv + qDiv;
+      var q=questions[qIndex];
+      var hdr=document.createElement('div');
+      hdr.style.cssText='background:linear-gradient(135deg,var(--coral),var(--sunshine));padding:16px 20px;color:white;';
+      hdr.innerHTML='<div style="font-family:Baloo 2,cursive;font-size:1.1rem;font-weight:800;">'+icon+' '+name+'</div><div style="font-size:.8rem;opacity:.85;margin-top:2px;">Q '+(qIndex+1)+' of '+questions.length+'</div>';
+      card.appendChild(hdr);
+      var body=document.createElement('div');
+      body.style.cssText='padding:20px;';
+      var qtext=document.createElement('div');
+      qtext.style.cssText='font-size:1rem;font-weight:800;color:var(--dark);margin-bottom:16px;line-height:1.4;';
+      qtext.textContent=q.q; body.appendChild(qtext);
+      var opts=document.createElement('div');
+      opts.style.cssText='display:flex;flex-direction:column;gap:8px;';
+      var answered=false;
+      q.opts.forEach(function(o,i){
+        var btn=document.createElement('button');
+        btn.textContent=o;
+        btn.style.cssText='padding:12px 16px;border-radius:14px;border:2px solid #E8E4FF;background:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;text-align:left;';
+        btn.onclick=function(){
+          if(answered)return; answered=true;
+          var correct=(i===q.answer);
+          // Mark all options
+          opts.querySelectorAll('button').forEach(function(b,bi){
+            b.style.pointerEvents='none';
+            if(bi===q.answer){b.style.background='#E8FBF3';b.style.borderColor='var(--mint)';b.style.color='#2A9970';}
+          });
+          if(correct){this.style.background='#E8FBF3';score++;toast('✅ Correct! +5 ⭐');}
+          else{this.style.background='#FFF0EE';this.style.borderColor='var(--coral)';this.style.color='var(--coral)';toast('Not quite! The green one is right 💪');}
+          nextBtn.disabled=false;
+          nextBtn.style.background='linear-gradient(135deg,var(--coral),var(--sunshine))';
+          nextBtn.style.color='white'; nextBtn.style.cursor='pointer';
+        };
+        opts.appendChild(btn);
+      });
+      body.appendChild(opts);
+      card.appendChild(body);
+      var footer=document.createElement('div');
+      footer.style.cssText='padding:0 20px 16px;display:flex;gap:8px;';
+      var nextBtn=document.createElement('button');
+      nextBtn.textContent=qIndex<questions.length-1?'Next →':'See Results 🎉';
+      nextBtn.disabled=true;
+      nextBtn.style.cssText='flex:1;padding:12px;border-radius:40px;border:none;background:#E0DAFF;color:#888;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:not-allowed;';
+      nextBtn.onclick=function(){qIndex++;ov.innerHTML='';ov.appendChild(renderSQCard());};
+      footer.appendChild(nextBtn);
+      var closeB=document.createElement('button');
+      closeB.textContent='✕';
+      closeB.style.cssText='padding:12px 16px;border-radius:40px;border:2px solid #E0DAFF;background:white;font-family:Nunito,sans-serif;font-weight:700;cursor:pointer;color:#888;';
+      closeB.onclick=closeSubjectQuiz;
+      footer.appendChild(closeB);
+      card.appendChild(footer);
     }
-
-    ov.innerHTML = '';
-    ov.appendChild(card);
-
-    // Wire answer buttons
-    var opts = ov.querySelectorAll('[data-idx]');
-    opts.forEach(function(btn){
-      btn.onclick = function(){
-        var correct = this.getAttribute('data-correct') === 'true';
-        var ansIdx = q.answer;
-        opts.forEach(function(b,i){
-          b.style.pointerEvents='none';
-          if(i===ansIdx){b.style.background='#E8FBF3';b.style.borderColor='var(--mint)';b.style.color='#2A9970';}
-        });
-        if(correct){this.style.background='#E8FBF3';score++;toast('✅ Correct! +5 ⭐');}
-        else{this.style.background='#FFF0EE';this.style.borderColor='var(--coral)';this.style.color='var(--coral)';toast('Not quite! See the green answer 💪');}
-        var nb=document.getElementById('sqNext');
-        if(nb){nb.disabled=false;nb.style.background='linear-gradient(135deg,var(--coral),var(--sunshine))';nb.style.color='white';nb.style.cursor='pointer';}
-      };
-    });
-
-    var nextBtn = document.getElementById('sqNext');
-    if(nextBtn) nextBtn.onclick = function(){ qIndex++; renderQ(); };
-
-    // Close button
-    var closeRow = document.createElement('div');
-    closeRow.style.cssText = 'text-align:center;padding-bottom:12px;';
-    closeRow.innerHTML = '<button onclick="closeSubjectQuiz()" style="background:none;border:none;color:var(--muted);font-family:Nunito,sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;">✕ Close</button>';
-    card.appendChild(closeRow);
+    return card;
   }
 
-  document.body.appendChild(ov);
-  renderQ();
+  function renderSQCard(){
+    var c=renderSQ(); return c;
+  }
 
+  ov.appendChild(renderSQ());
+  document.body.appendChild(ov);
   await upsertDailyActivity({minutes_academic:5,tasks_done:1});
-  sessionData.tasks++; document.getElementById('statTasks').textContent=sessionData.tasks;
+  sessionData.tasks++;document.getElementById('statTasks').textContent=sessionData.tasks;
 }
 
 
@@ -3043,49 +3123,163 @@ function openBookReader(title,ytUrl){
   var vid=m?m[1]:null;
   var su='https://www.youtube.com/results?search_query='+encodeURIComponent(title+' read aloud children');
   var ov=document.createElement('div');ov.id='bookOv';ov.style.cssText='position:fixed;inset:0;z-index:9999;background:#0A0A1A;display:flex;flex-direction:column;';
-  // Header
   var hdr=document.createElement('div');hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#1A1A2E;flex-shrink:0;';
   var ht=document.createElement('div');ht.style.cssText='font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:white;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:75%;';ht.textContent='📖 '+title;
   var hc=document.createElement('button');hc.textContent='✕';hc.style.cssText='background:rgba(255,255,255,.15);border:none;color:white;border-radius:50%;width:34px;height:34px;font-size:1rem;cursor:pointer;font-weight:800;';hc.onclick=function(){ov.remove();};
   hdr.appendChild(ht);hdr.appendChild(hc);ov.appendChild(hdr);
-  // Body - always show search + option to watch if we have ID
   var body=document.createElement('div');body.style.cssText='flex:1;min-height:0;display:flex;flex-direction:column;';
   if(vid){
     var ifr=document.createElement('iframe');
-    ifr.src='https://www.youtube.com/embed/'+vid+'?autoplay=1&playsinline=1&rel=0&modestbranding=1';
+    ifr.src='https://www.youtube-nocookie.com/embed/'+vid+'?autoplay=1&playsinline=1&rel=0&modestbranding=1&origin='+encodeURIComponent(window.location.origin);
     ifr.style.cssText='flex:1;width:100%;border:none;display:block;';
-    ifr.setAttribute('allow','autoplay;encrypted-media');
-    ifr.setAttribute('allowfullscreen','');
+    ifr.setAttribute('allow','autoplay;encrypted-media');ifr.setAttribute('allowfullscreen','');
     body.appendChild(ifr);
-    // Fallback message below
-    var fb=document.createElement('div');
-    fb.style.cssText='padding:10px 16px;background:#1A1A2E;text-align:center;flex-shrink:0;';
-    fb.style.cssText='padding:10px 16px;background:#1A1A2E;text-align:center;flex-shrink:0;';
-    var fbtxt=document.createElement('span');fbtxt.style.cssText='color:rgba(255,255,255,.5);font-size:.8rem;';fbtxt.textContent='Video not loading? ';
-    var fblink=document.createElement('button');fblink.textContent='Search YouTube instead →';fblink.style.cssText='background:none;border:none;color:#4ECDC4;font-size:.8rem;font-weight:700;cursor:pointer;text-decoration:underline;';fblink.onclick=function(){window.open(su,'_blank');};
-    fb.appendChild(fbtxt);fb.appendChild(fblink);
-    body.appendChild(fb);
+    var fb=document.createElement('div');fb.style.cssText='padding:8px 16px;background:#1A1A2E;text-align:center;flex-shrink:0;';
+    var fbt=document.createElement('span');fbt.style.cssText='color:rgba(255,255,255,.45);font-size:.75rem;';fbt.textContent='Video not loading? ';
+    var fbl=document.createElement('button');fbl.textContent='Search YouTube →';fbl.style.cssText='background:none;border:none;color:#4ECDC4;font-size:.75rem;font-weight:700;cursor:pointer;';fbl.onclick=function(){window.open(su,'_blank');};
+    fb.appendChild(fbt);fb.appendChild(fbl);body.appendChild(fb);
   } else {
-    // No ID - search screen
-    body.style.cssText+='align-items:center;justify-content:center;gap:16px;padding:24px;text-align:center;';
-    var sico=document.createElement('div');sico.style.cssText='font-size:3.5rem;';sico.textContent='📺';body.appendChild(sico);
-    var stit=document.createElement('div');stit.style.cssText='color:white;font-weight:800;font-size:1.1rem;';stit.textContent=title;body.appendChild(stit);
-    var ssub=document.createElement('div');ssub.style.cssText='color:rgba(255,255,255,.6);font-size:.85rem;';ssub.textContent='Find the read-aloud on YouTube';body.appendChild(ssub);
+    body.style.cssText+='align-items:center;justify-content:center;gap:16px;padding:32px 24px;text-align:center;';
+    var si=document.createElement('div');si.style.cssText='font-size:3.5rem;';si.textContent='📺';body.appendChild(si);
+    var st=document.createElement('div');st.style.cssText='color:white;font-weight:800;font-size:1.1rem;';st.textContent=title;body.appendChild(st);
+    var ss=document.createElement('div');ss.style.cssText='color:rgba(255,255,255,.6);font-size:.88rem;';ss.textContent='Find the read-aloud on YouTube';body.appendChild(ss);
     var sb3=document.createElement('button');sb3.textContent='🔍 Search YouTube';sb3.style.cssText='background:linear-gradient(135deg,#FF6B6B,#FFD166);color:white;border:none;border-radius:40px;padding:14px 32px;font-weight:800;font-size:1rem;cursor:pointer;';sb3.onclick=function(){window.open(su,'_blank');};body.appendChild(sb3);
   }
   ov.appendChild(body);
-  // Footer
   var ftr=document.createElement('div');ftr.style.cssText='display:flex;gap:8px;padding:10px 16px;background:#1A1A2E;flex-shrink:0;';
   var db=document.createElement('button');db.textContent='✅ Done Reading +10 ⭐';db.style.cssText='flex:1;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;border:none;border-radius:40px;padding:12px 20px;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;';
-  db.onclick=async function(){ov.remove();try{await upsertDailyActivity({minutes_reading:10});await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:10});sessionData.stars+=10;document.getElementById('statStars').textContent=sessionData.stars;toast('📖 +10 stars for reading! ⭐');}catch(e){}};
-  ftr.appendChild(db);
-  ov.appendChild(ftr);
-  document.body.appendChild(ov);
+  db.onclick=async function(){ov.remove();try{await upsertDailyActivity({minutes_reading:10});await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:10});sessionData.stars+=10;document.getElementById('statStars').textContent=sessionData.stars;toast('📖 +10 stars! ⭐');}catch(e){}};
+  ftr.appendChild(db);ov.appendChild(ftr);document.body.appendChild(ov);
 }
 
-function buildDrawingCanvas(container){var COLORS=['#FF6B6B','#FF8E53','#FFD166','#5ECDA0','#4ECDC4','#C9B8FF','#8B6FE8','#2D2D4E','#000000','#FFFFFF'];var SIZES=[3,6,12,20];var SL=['S','M','L','XL'];var tool='pen',color='#FF6B6B',size=6;var wrap=document.createElement('div');wrap.style.cssText='background:white;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:16px;';var tb=document.createElement('div');tb.style.cssText='display:flex;align-items:center;gap:6px;padding:10px 12px;background:#F8F6FF;border-bottom:2px solid #EDE9FF;flex-wrap:wrap;';var tbtns={};[{id:'pen',ico:'✏️'},{id:'brush',ico:'🖌️'},{id:'eraser',ico:'🧹'}].forEach(function(t){var b=document.createElement('button');b.textContent=t.ico;b.style.cssText='width:34px;height:34px;border-radius:10px;border:2px solid '+(t.id==='pen'?'var(--lavender)':'transparent')+';background:'+(t.id==='pen'?'#EDE9FF':'white')+';cursor:pointer;font-size:1rem;';b.onclick=function(){tool=t.id;Object.values(tbtns).forEach(function(x){x.style.borderColor='transparent';x.style.background='white';});b.style.borderColor='var(--lavender)';b.style.background='#EDE9FF';};tbtns[t.id]=b;tb.appendChild(b);});var sep=document.createElement('div');sep.style.cssText='width:1px;height:22px;background:#E0DAFF;';tb.appendChild(sep);var cdots=[];COLORS.forEach(function(c,i){var d=document.createElement('div');d.style.cssText='width:24px;height:24px;border-radius:50%;background:'+c+';border:3px solid '+(i===0?'#2D2D4E':'transparent')+';cursor:pointer;flex-shrink:0;'+(c==='#FFFFFF'?'outline:1px solid #ccc;':'');d.onclick=function(){color=c;cdots.forEach(function(x){x.style.borderColor='transparent';});d.style.borderColor='#2D2D4E';if(tool==='eraser'){tool='pen';tbtns.pen.style.borderColor='var(--lavender)';tbtns.pen.style.background='#EDE9FF';tbtns.eraser.style.borderColor='transparent';tbtns.eraser.style.background='white';}};cdots.push(d);tb.appendChild(d);});var sep2=document.createElement('div');sep2.style.cssText='width:1px;height:22px;background:#E0DAFF;';tb.appendChild(sep2);var sbtns=[];SIZES.forEach(function(s,i){var b=document.createElement('button');b.textContent=SL[i];b.style.cssText='padding:3px 9px;border-radius:20px;border:2px solid '+(i===1?'var(--lavender)':'#E0DAFF')+';background:'+(i===1?'var(--lavender)':'white')+';color:'+(i===1?'white':'var(--body)')+';font-size:.72rem;font-weight:800;cursor:pointer;';b.onclick=function(){size=s;sbtns.forEach(function(x){x.style.borderColor='#E0DAFF';x.style.background='white';x.style.color='var(--body)';});b.style.borderColor='var(--lavender)';b.style.background='var(--lavender)';b.style.color='white';};sbtns.push(b);tb.appendChild(b);});wrap.appendChild(tb);var cv=document.createElement('canvas');cv.style.cssText='display:block;width:100%;cursor:crosshair;touch-action:none;';cv.height=Math.min(380,Math.round(window.innerWidth*0.7));wrap.appendChild(cv);var act=document.createElement('div');act.style.cssText='display:flex;gap:8px;padding:10px 12px;background:#F8F6FF;border-top:2px solid #EDE9FF;';var clrB=document.createElement('button');clrB.textContent='🗑️ Clear';clrB.style.cssText='flex:1;padding:10px;border-radius:14px;border:none;background:#FFF0EE;color:var(--coral);font-family:Nunito,sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;';act.appendChild(clrB);var savB=document.createElement('button');savB.textContent='💾 Save Art! +20 ⭐';savB.style.cssText='flex:2;padding:10px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;';act.appendChild(savB);wrap.appendChild(act);container.appendChild(wrap);setTimeout(function(){cv.width=cv.offsetWidth||360;var ctx=cv.getContext('2d');ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,cv.width,cv.height);clrB.onclick=function(){ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,cv.width,cv.height);toast('🎨 Cleared!');};savB.onclick=async function(){var a=document.createElement('a');a.download='art.png';a.href=cv.toDataURL();a.click();try{await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:20});sessionData.stars+=20;document.getElementById('statStars').textContent=sessionData.stars;}catch(e){}toast('💾 Saved! +20 ⭐');};var ptg=false,lx=0,ly=0;function gp(e){var r=cv.getBoundingClientRect(),s=e.touches?e.touches[0]:e;return{x:(s.clientX-r.left)*(cv.width/r.width),y:(s.clientY-r.top)*(cv.height/r.height)};}function st(e){ptg=true;var p=gp(e);lx=p.x;ly=p.y;}function dr(e){if(!ptg)return;var p=gp(e);ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(p.x,p.y);ctx.strokeStyle=tool==='eraser'?'#FFFFFF':color;ctx.lineWidth=tool==='eraser'?size*3:tool==='brush'?size*2:size;ctx.lineCap='round';ctx.setLineDash([]);ctx.globalAlpha=tool==='brush'?0.7:1;ctx.stroke();ctx.globalAlpha=1;lx=p.x;ly=p.y;}cv.addEventListener('mousedown',st);cv.addEventListener('mousemove',dr);cv.addEventListener('mouseup',function(){ptg=false;});cv.addEventListener('mouseleave',function(){ptg=false;});cv.addEventListener('touchstart',function(e){e.preventDefault();st(e);},{passive:false});cv.addEventListener('touchmove',function(e){e.preventDefault();dr(e);},{passive:false});cv.addEventListener('touchend',function(){ptg=false;},{passive:false});},50);}
+function buildDrawingCanvas(container){
+  var COLORS=['#FF6B6B','#FF8E53','#FFD166','#5ECDA0','#4ECDC4','#C9B8FF','#8B6FE8','#2D2D4E','#000000','#FFFFFF'];
+  var SIZES=[3,6,12,20];var SL=['S','M','L','XL'];
+  var tool='pen',color='#FF6B6B',size=6;
+  var wrap=document.createElement('div');wrap.style.cssText='background:white;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:16px;';
+  var tb=document.createElement('div');tb.style.cssText='display:flex;align-items:center;gap:6px;padding:10px 12px;background:#F8F6FF;border-bottom:2px solid #EDE9FF;flex-wrap:wrap;';
+  var tbtns={};
+  [{id:'pen',ico:'✏️'},{id:'brush',ico:'🖌️'},{id:'eraser',ico:'🧹'}].forEach(function(t){
+    var b=document.createElement('button');b.textContent=t.ico;
+    b.style.cssText='width:34px;height:34px;border-radius:10px;border:2px solid '+(t.id==='pen'?'var(--lavender)':'transparent')+';background:'+(t.id==='pen'?'#EDE9FF':'white')+';cursor:pointer;font-size:1rem;';
+    b.onclick=function(){tool=t.id;Object.values(tbtns).forEach(function(x){x.style.borderColor='transparent';x.style.background='white';});b.style.borderColor='var(--lavender)';b.style.background='#EDE9FF';};
+    tbtns[t.id]=b;tb.appendChild(b);
+  });
+  var sep=document.createElement('div');sep.style.cssText='width:1px;height:22px;background:#E0DAFF;';tb.appendChild(sep);
+  var cdots=[];
+  COLORS.forEach(function(c,i){
+    var d=document.createElement('div');
+    d.style.cssText='width:24px;height:24px;border-radius:50%;background:'+c+';border:3px solid '+(i===0?'#2D2D4E':'transparent')+';cursor:pointer;flex-shrink:0;'+(c==='#FFFFFF'?'outline:1px solid #ccc;':'');
+    d.onclick=function(){color=c;cdots.forEach(function(x){x.style.borderColor='transparent';});d.style.borderColor='#2D2D4E';if(tool==='eraser'){tool='pen';tbtns.pen.style.borderColor='var(--lavender)';tbtns.pen.style.background='#EDE9FF';tbtns.eraser.style.borderColor='transparent';tbtns.eraser.style.background='white';}};
+    cdots.push(d);tb.appendChild(d);
+  });
+  var sep2=document.createElement('div');sep2.style.cssText='width:1px;height:22px;background:#E0DAFF;';tb.appendChild(sep2);
+  var sbtns=[];
+  SIZES.forEach(function(s,i){
+    var b=document.createElement('button');b.textContent=SL[i];
+    b.style.cssText='padding:3px 9px;border-radius:20px;border:2px solid '+(i===1?'var(--lavender)':'#E0DAFF')+';background:'+(i===1?'var(--lavender)':'white')+';color:'+(i===1?'white':'var(--body)')+';font-size:.72rem;font-weight:800;cursor:pointer;';
+    b.onclick=function(){size=s;sbtns.forEach(function(x){x.style.borderColor='#E0DAFF';x.style.background='white';x.style.color='var(--body)';});b.style.borderColor='var(--lavender)';b.style.background='var(--lavender)';b.style.color='white';};
+    sbtns.push(b);tb.appendChild(b);
+  });
+  wrap.appendChild(tb);
+  var cv=document.createElement('canvas');cv.style.cssText='display:block;width:100%;cursor:crosshair;touch-action:none;';cv.height=Math.min(360,Math.round(window.innerWidth*0.65));wrap.appendChild(cv);
+  var act=document.createElement('div');act.style.cssText='display:flex;gap:8px;padding:10px 12px;background:#F8F6FF;border-top:2px solid #EDE9FF;';
+  var clrB=document.createElement('button');clrB.textContent='🗑️ Clear';clrB.style.cssText='flex:1;padding:10px;border-radius:14px;border:none;background:#FFF0EE;color:var(--coral);font-family:Nunito,sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;';act.appendChild(clrB);
+  var savB=document.createElement('button');savB.textContent='💾 Save Art! +20 ⭐';savB.style.cssText='flex:2;padding:10px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;';act.appendChild(savB);
+  wrap.appendChild(act);container.appendChild(wrap);
+  setTimeout(function(){
+    cv.width=cv.offsetWidth||360;
+    var ctx=cv.getContext('2d');ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,cv.width,cv.height);
+    clrB.onclick=function(){ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,cv.width,cv.height);toast('🎨 Cleared!');};
+    savB.onclick=async function(){var a=document.createElement('a');a.download='bloomikids-art.png';a.href=cv.toDataURL();a.click();try{await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:20});sessionData.stars+=20;document.getElementById('statStars').textContent=sessionData.stars;}catch(e){}toast('💾 Art saved! +20 ⭐');};
+    var ptg=false,lx=0,ly=0;
+    function gp(e){var r=cv.getBoundingClientRect(),s=e.touches?e.touches[0]:e;return{x:(s.clientX-r.left)*(cv.width/r.width),y:(s.clientY-r.top)*(cv.height/r.height)};}
+    function st(e){ptg=true;var p=gp(e);lx=p.x;ly=p.y;}
+    function dr(e){if(!ptg)return;var p=gp(e);ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(p.x,p.y);ctx.strokeStyle=tool==='eraser'?'#FFFFFF':color;ctx.lineWidth=tool==='eraser'?size*3:tool==='brush'?size*2:size;ctx.lineCap='round';ctx.setLineDash([]);ctx.globalAlpha=tool==='brush'?0.7:1;ctx.stroke();ctx.globalAlpha=1;lx=p.x;ly=p.y;}
+    cv.addEventListener('mousedown',st);cv.addEventListener('mousemove',dr);cv.addEventListener('mouseup',function(){ptg=false;});cv.addEventListener('mouseleave',function(){ptg=false;});
+    cv.addEventListener('touchstart',function(e){e.preventDefault();st(e);},{passive:false});
+    cv.addEventListener('touchmove',function(e){e.preventDefault();dr(e);},{passive:false});
+    cv.addEventListener('touchend',function(){ptg=false;},{passive:false});
+  },50);
+}
 
-function showLetterTracing(){var LETTERS='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');var WORDS={A:'Apple',B:'Bear',C:'Cat',D:'Dog',E:'Egg',F:'Fish',G:'Goat',H:'Hat',I:'Ice Cream',J:'Jar',K:'Kite',L:'Lion',M:'Moon',N:'Nest',O:'Orange',P:'Pig',Q:'Queen',R:'Rainbow',S:'Sun',T:'Tree',U:'Umbrella',V:'Volcano',W:'Whale',X:'X-ray',Y:'Yarn',Z:'Zebra'};var EMOJIS={A:'🍎',B:'🐻',C:'🐱',D:'🐶',E:'🥚',F:'🐟',G:'🐐',H:'🎩',I:'🍦',J:'🫙',K:'🪁',L:'🦁',M:'🌙',N:'🪺',O:'🍊',P:'🐷',Q:'👑',R:'🌈',S:'🌞',T:'🌳',U:'☂️',V:'🌋',W:'🐳',X:'❌',Y:'🧶',Z:'🦓'};var idx=0;function build(){var ex=document.getElementById('ltOv');if(ex)ex.remove();var L=LETTERS[idx];var ov=document.createElement('div');ov.className='modal-overlay';ov.id='ltOv';var card=document.createElement('div');card.className='modal-card';card.style.cssText='max-width:340px;text-align:center;padding:22px 20px;';var num=document.createElement('div');num.style.cssText='font-size:.7rem;font-weight:800;letter-spacing:2px;color:var(--muted);margin-bottom:10px;';num.textContent='LETTER '+(idx+1)+' OF 26';card.appendChild(num);var row=document.createElement('div');row.style.cssText='display:flex;align-items:center;justify-content:center;gap:24px;margin-bottom:8px;';var big=document.createElement('span');big.style.cssText='font-family:Baloo 2,cursive;font-size:5rem;font-weight:800;color:var(--coral);line-height:1;';big.textContent=L;var sml=document.createElement('span');sml.style.cssText='font-family:Baloo 2,cursive;font-size:4rem;font-weight:800;color:var(--mint);line-height:1;';sml.textContent=L.toLowerCase();row.appendChild(big);row.appendChild(sml);card.appendChild(row);var wd=document.createElement('div');wd.style.cssText='font-size:1.1rem;font-weight:700;color:var(--body);margin-bottom:12px;';wd.textContent=(EMOJIS[L]||'')+' '+(WORDS[L]||'');card.appendChild(wd);var hint=document.createElement('div');hint.style.cssText='font-size:.8rem;color:var(--muted);margin-bottom:10px;';hint.textContent='✏️ Trace the letter with your finger!';card.appendChild(hint);var cv=document.createElement('canvas');cv.id='ltC';cv.width=260;cv.height=180;cv.style.cssText='border:3px dashed #C9B8FF;border-radius:16px;touch-action:none;cursor:crosshair;background:#FAFAFF;display:block;margin:0 auto;';card.appendChild(cv);var br=document.createElement('div');br.style.cssText='display:flex;gap:8px;margin-top:14px;';var clr=document.createElement('button');clr.textContent='🗑 Clear';clr.style.cssText='padding:10px 12px;border-radius:40px;border:2px solid #E0DAFF;background:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.82rem;cursor:pointer;color:#888;';br.appendChild(clr);if(idx>0){var bk=document.createElement('button');bk.textContent='← Back';bk.style.cssText='flex:1;padding:10px;border-radius:40px;border:none;background:#F0F0F8;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';bk.onclick=function(){idx--;build();};br.appendChild(bk);}var nx=document.createElement('button');nx.textContent=idx<25?'Next →':'🎉 Done!';nx.style.cssText='flex:2;padding:10px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';br.appendChild(nx);card.appendChild(br);var cl=document.createElement('button');cl.textContent='✕ Close';cl.style.cssText='margin-top:10px;width:100%;padding:8px;border-radius:40px;border:none;background:transparent;color:var(--muted);font-family:Nunito,sans-serif;font-weight:700;cursor:pointer;font-size:.82rem;';cl.onclick=function(){ov.remove();};card.appendChild(cl);ov.appendChild(card);document.body.appendChild(ov);var ctx=cv.getContext('2d');function guide(){ctx.clearRect(0,0,cv.width,cv.height);ctx.fillStyle='#FAFAFF';ctx.fillRect(0,0,cv.width,cv.height);ctx.save();ctx.font='bold 130px Arial,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='rgba(201,184,255,0.25)';ctx.fillText(L,cv.width/2,cv.height/2+8);ctx.strokeStyle='rgba(139,111,232,0.5)';ctx.lineWidth=10;ctx.setLineDash([8,6]);ctx.strokeText(L,cv.width/2,cv.height/2+8);ctx.restore();}guide();clr.onclick=guide;var ptg=false,lx=0,ly=0;function gp(e){var r=cv.getBoundingClientRect(),s=e.touches?e.touches[0]:e;return{x:(s.clientX-r.left)*(cv.width/r.width),y:(s.clientY-r.top)*(cv.height/r.height)};}cv.addEventListener('mousedown',function(e){ptg=true;var p=gp(e);lx=p.x;ly=p.y;});cv.addEventListener('mousemove',function(e){if(!ptg)return;var p=gp(e);ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(p.x,p.y);ctx.strokeStyle='#FF6B6B';ctx.lineWidth=9;ctx.lineCap='round';ctx.setLineDash([]);ctx.stroke();lx=p.x;ly=p.y;});cv.addEventListener('mouseup',function(){ptg=false;});cv.addEventListener('mouseleave',function(){ptg=false;});cv.addEventListener('touchstart',function(e){e.preventDefault();ptg=true;var p=gp(e);lx=p.x;ly=p.y;},{passive:false});cv.addEventListener('touchmove',function(e){e.preventDefault();if(!ptg)return;var p=gp(e);ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(p.x,p.y);ctx.strokeStyle='#FF6B6B';ctx.lineWidth=9;ctx.lineCap='round';ctx.setLineDash([]);ctx.stroke();lx=p.x;ly=p.y;},{passive:false});cv.addEventListener('touchend',function(){ptg=false;},{passive:false});nx.onclick=function(){if(idx<25){idx++;build();}else{ov.remove();toast('🎉 All 26 letters! +26 ⭐');sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:26}).catch(function(){});sessionData.stars+=26;document.getElementById('statStars').textContent=sessionData.stars;}};}build();upsertDailyActivity({minutes_academic:5,tasks_done:1}).catch(function(){});}
+function showLetterTracing(){
+  var LETTERS='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  var WORDS={A:'Apple',B:'Bear',C:'Cat',D:'Dog',E:'Egg',F:'Fish',G:'Goat',H:'Hat',I:'Ice Cream',J:'Jar',K:'Kite',L:'Lion',M:'Moon',N:'Nest',O:'Orange',P:'Pig',Q:'Queen',R:'Rainbow',S:'Sun',T:'Tree',U:'Umbrella',V:'Volcano',W:'Whale',X:'X-ray',Y:'Yarn',Z:'Zebra'};
+  var EMOJIS={A:'🍎',B:'🐻',C:'🐱',D:'🐶',E:'🥚',F:'🐟',G:'🐐',H:'🎩',I:'🍦',J:'🫙',K:'🪁',L:'🦁',M:'🌙',N:'🪺',O:'🍊',P:'🐷',Q:'👑',R:'🌈',S:'🌞',T:'🌳',U:'☂️',V:'🌋',W:'🐳',X:'❌',Y:'🧶',Z:'🦓'};
+  var idx=0;
+  function build(){
+    var ex=document.getElementById('ltOv');if(ex)ex.remove();
+    var L=LETTERS[idx];
+    var ov=document.createElement('div');ov.className='modal-overlay';ov.id='ltOv';
+    var card=document.createElement('div');card.className='modal-card';card.style.cssText='max-width:340px;text-align:center;padding:22px 20px;';
+    var num=document.createElement('div');num.style.cssText='font-size:.7rem;font-weight:800;letter-spacing:2px;color:var(--muted);margin-bottom:10px;';num.textContent='LETTER '+(idx+1)+' OF 26';card.appendChild(num);
+    var row=document.createElement('div');row.style.cssText='display:flex;align-items:center;justify-content:center;gap:24px;margin-bottom:8px;';
+    var big=document.createElement('span');big.style.cssText='font-family:Baloo 2,cursive;font-size:5rem;font-weight:800;color:var(--coral);line-height:1;';big.textContent=L;
+    var sml=document.createElement('span');sml.style.cssText='font-family:Baloo 2,cursive;font-size:4rem;font-weight:800;color:var(--mint);line-height:1;';sml.textContent=L.toLowerCase();
+    row.appendChild(big);row.appendChild(sml);card.appendChild(row);
+    var wd=document.createElement('div');wd.style.cssText='font-size:1.1rem;font-weight:700;color:var(--body);margin-bottom:12px;';wd.textContent=(EMOJIS[L]||'')+' '+(WORDS[L]||'');card.appendChild(wd);
+    var hint=document.createElement('div');hint.style.cssText='font-size:.8rem;color:var(--muted);margin-bottom:10px;';hint.textContent='✏️ Trace the letter with your finger!';card.appendChild(hint);
+    var cv=document.createElement('canvas');cv.id='ltC';cv.width=260;cv.height=180;cv.style.cssText='border:3px dashed #C9B8FF;border-radius:16px;touch-action:none;cursor:crosshair;background:#FAFAFF;display:block;margin:0 auto;';card.appendChild(cv);
+    var br=document.createElement('div');br.style.cssText='display:flex;gap:8px;margin-top:14px;';
+    var clr=document.createElement('button');clr.textContent='🗑 Clear';clr.style.cssText='padding:10px 12px;border-radius:40px;border:2px solid #E0DAFF;background:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.82rem;cursor:pointer;color:#888;';br.appendChild(clr);
+    if(idx>0){var bk=document.createElement('button');bk.textContent='← Back';bk.style.cssText='flex:1;padding:10px;border-radius:40px;border:none;background:#F0F0F8;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';bk.onclick=function(){idx--;build();};br.appendChild(bk);}
+    var nx=document.createElement('button');nx.textContent=idx<25?'Next →':'🎉 Done!';nx.style.cssText='flex:2;padding:10px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';br.appendChild(nx);card.appendChild(br);
+    var cl=document.createElement('button');cl.textContent='✕ Close';cl.style.cssText='margin-top:10px;width:100%;padding:8px;border-radius:40px;border:none;background:transparent;color:var(--muted);font-family:Nunito,sans-serif;font-weight:700;cursor:pointer;font-size:.82rem;';cl.onclick=function(){ov.remove();};card.appendChild(cl);
+    ov.appendChild(card);document.body.appendChild(ov);
+    var ctx=cv.getContext('2d');
+    function guide(){ctx.clearRect(0,0,cv.width,cv.height);ctx.fillStyle='#FAFAFF';ctx.fillRect(0,0,cv.width,cv.height);ctx.save();ctx.font='bold 130px Arial,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='rgba(201,184,255,0.25)';ctx.fillText(L,cv.width/2,cv.height/2+8);ctx.strokeStyle='rgba(139,111,232,0.5)';ctx.lineWidth=10;ctx.setLineDash([8,6]);ctx.strokeText(L,cv.width/2,cv.height/2+8);ctx.restore();}
+    guide();clr.onclick=guide;
+    var ptg=false,lx=0,ly=0;
+    function gp(e){var r=cv.getBoundingClientRect(),s=e.touches?e.touches[0]:e;return{x:(s.clientX-r.left)*(cv.width/r.width),y:(s.clientY-r.top)*(cv.height/r.height)};}
+    cv.addEventListener('mousedown',function(e){ptg=true;var p=gp(e);lx=p.x;ly=p.y;});
+    cv.addEventListener('mousemove',function(e){if(!ptg)return;var p=gp(e);ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(p.x,p.y);ctx.strokeStyle='#FF6B6B';ctx.lineWidth=9;ctx.lineCap='round';ctx.setLineDash([]);ctx.stroke();lx=p.x;ly=p.y;});
+    cv.addEventListener('mouseup',function(){ptg=false;});cv.addEventListener('mouseleave',function(){ptg=false;});
+    cv.addEventListener('touchstart',function(e){e.preventDefault();ptg=true;var p=gp(e);lx=p.x;ly=p.y;},{passive:false});
+    cv.addEventListener('touchmove',function(e){e.preventDefault();if(!ptg)return;var p=gp(e);ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(p.x,p.y);ctx.strokeStyle='#FF6B6B';ctx.lineWidth=9;ctx.lineCap='round';ctx.setLineDash([]);ctx.stroke();lx=p.x;ly=p.y;},{passive:false});
+    cv.addEventListener('touchend',function(){ptg=false;},{passive:false});
+    nx.onclick=function(){if(idx<25){idx++;build();}else{ov.remove();toast('🎉 All 26 letters traced! +26 ⭐');sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:26}).catch(function(){});sessionData.stars+=26;document.getElementById('statStars').textContent=sessionData.stars;}};
+  }
+  build();upsertDailyActivity({minutes_academic:5,tasks_done:1}).catch(function(){});
+}
+
+
+// ══ FREE ONLINE LIBRARY ══
+function buildOnlineLibrary() {
+  var section = document.createElement('div');
+  section.style.cssText = 'margin-top:24px;';
+  
+  var title = document.createElement('div');
+  title.className = 'section-title';
+  title.textContent = '📚 Free Online Libraries';
+  section.appendChild(title);
+  
+  var grid = document.createElement('div');
+  grid.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;';
+  
+  var libraries = [
+    { name:'Epic! Books', desc:'Thousands of kids books free!', icon:'📗', color:'#4CAF50', url:'https://www.getepic.com/', note:'Free for students' },
+    { name:'Libby', desc:'Free with your library card', icon:'📘', color:'#2196F3', url:'https://libbyapp.com/', note:'Needs library card' },
+    { name:'Storyline Online', desc:'Celebs read kids books aloud', icon:'🎭', color:'#9C27B0', url:'https://storylineonline.net/', note:'Free read-alouds' },
+    { name:'Open Library', desc:'Millions of free books online', icon:'🌐', color:'#FF5722', url:'https://openlibrary.org/subjects/children', note:'Free & open' },
+    { name:'Unite for Literacy', desc:'Free picture books with audio', icon:'🔊', color:'#FF9800', url:'https://www.uniteforliteracy.com/', note:'Free audio books' },
+    { name:'International Digital Library', desc:'Books in many languages', icon:'🌍', color:'#00BCD4', url:'http://en.childrenslibrary.org/', note:'Free & multilingual' },
+  ];
+  
+  libraries.forEach(function(lib) {
+    var card = document.createElement('div');
+    card.style.cssText = 'background:white;border-radius:18px;padding:14px 12px;box-shadow:0 2px 12px rgba(45,45,78,.08);cursor:pointer;text-align:center;';
+    card.onclick = function() { window.open(lib.url, '_blank'); };
+    card.innerHTML = '<div style="font-size:2rem;margin-bottom:6px;">'+lib.icon+'</div>' +
+      '<div style="font-weight:800;font-size:.85rem;color:#2D2D4E;margin-bottom:3px;">'+lib.name+'</div>' +
+      '<div style="font-size:.72rem;color:#888;margin-bottom:6px;">'+lib.desc+'</div>' +
+      '<div style="background:'+lib.color+';color:white;font-size:.68rem;font-weight:800;border-radius:20px;padding:3px 8px;display:inline-block;">'+lib.note+'</div>';
+    grid.appendChild(card);
+  });
+  
+  section.appendChild(grid);
+  return section;
+}
 
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); deferredPrompt=e; setTimeout(()=>{ if(deferredPrompt) toast('📲 Add BloomiKids to your home screen!',5000); },10000); });
