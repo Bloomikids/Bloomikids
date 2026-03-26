@@ -939,19 +939,38 @@ const GRADE_DATA = {
       bookshelfTitle:'📚 Story Time!', timerTopLabel:'Hold and breathe!'
     },
     subjects:[
-      { icon:'🔢', title:'Numbers Fun', desc:'Count 1 to 10 with friends!', badge:'Count with me!', color:'mint' },
-      { icon:'🔤', title:'ABC Time', desc:'Learn letters A B C D E!', badge:'ABCs!', color:'coral' },
-      { icon:'🎨', title:'Colors & Art', desc:'Paint, draw, and make things!', badge:'Create!', color:'lavender' },
+      { icon:'🔢', title:'Numbers', desc:'Count 1 to 10 with friends!', badge:'Count with me!', color:'coral' },
+      { icon:'🔤', title:'Letters', desc:'Learn your ABCs!', badge:'ABCs!', color:'lavender' },
+      { icon:'🎨', title:'Colors', desc:'Learn all the colors!', badge:'Colorful!', color:'sun' },
       { icon:'🐾', title:'Animals & Nature', desc:'Bugs, birds, dogs, and trees!', badge:'Explore!', color:'sun' },
     ],
     questions:[
-      { q:'How many dogs are there? 🐶🐶🐶', opts:['1','2','3','4'], answer:2, subject:'Numbers' },
+      { q:'Count the apples: 🍎🍎🍎🍎🍎. How many?', opts:['3','4','5','6'], answer:2, subject:'Numbers' },
+      { q:'Count the stars: ⭐⭐⭐⭐⭐⭐⭐. How many?', opts:['5','6','7','8'], answer:2, subject:'Numbers' },
+      { q:'Which number is 10?', opts:['8','9','10','11'], answer:2, subject:'Numbers' },
+      { q:'Count to 5: 1, 2, 3, ___, 5', opts:['2','3','4','6'], answer:2, subject:'Numbers' },
+      { q:'How many dogs? 🐶🐶🐶', opts:['1','2','3','4'], answer:2, subject:'Numbers' },
+      { q:'Count the balloons: 🎈🎈🎈🎈🎈🎈🎈🎈. How many?', opts:['6','7','8','9'], answer:2, subject:'Numbers' },
+      { q:'Which group has MORE? 🍎🍎🍎 or 🍌🍌', opts:['Apples','Bananas','Same','Not sure'], answer:0, subject:'Numbers' },
+      { q:'Which group has LESS? ⭐⭐⭐⭐⭐ or 🌙🌙🌙', opts:['Stars','Moons','Same','Cannot tell'], answer:1, subject:'Numbers' },
+      { q:'5 is MORE than 3. True or false?', opts:['True','False','Same','Not sure'], answer:0, subject:'Numbers' },
+      { q:'2 is LESS than 4. True or false?', opts:['False','True','Same','Cannot tell'], answer:1, subject:'Numbers' },
+      { q:'What comes NEXT? 1, 2, 3, ___', opts:['2','4','5','6'], answer:1, subject:'Numbers' },
+      { q:'What comes NEXT? 5, 6, 7, ___', opts:['6','7','8','9'], answer:2, subject:'Numbers' },
+      { q:'What comes NEXT? 8, 9, ___', opts:['7','10','11','12'], answer:1, subject:'Numbers' },
+      { q:'What comes next? 🔴🔵🔴🔵___', opts:['🔴','🔵','🟡','🟢'], answer:0, subject:'Numbers' },
+      { q:'What comes next? 🐱🐶🐱🐶___', opts:['🐱','🐶','🐸','🐻'], answer:0, subject:'Numbers' },
+      { q:'What comes next? ⭐⭐🌙⭐⭐___', opts:['⭐','🌙','☀️','🌟'], answer:1, subject:'Numbers' },
+      { q:'1 apple + 1 apple = ?', opts:['1','2','3','4'], answer:1, subject:'Numbers' },
+      { q:'2 cats + 1 cat = ?', opts:['2','3','4','5'], answer:1, subject:'Numbers' },
+      { q:'3 stars + 2 stars = ?', opts:['4','5','6','7'], answer:1, subject:'Numbers' },
+      { q:'5 cookies - 2 cookies = ?', opts:['2','3','4','5'], answer:1, subject:'Numbers' },
+      { q:'4 balloons - 1 balloon = ?', opts:['2','3','4','5'], answer:1, subject:'Numbers' },
       { q:'🍎 What color is an apple?', opts:['Blue','Red','Green','Purple'], answer:1, subject:'Colors' },
       { q:'Which letter is this? 🅰', opts:['B','C','A','D'], answer:2, subject:'Letters' },
       { q:'🐱 What does a cat say?', opts:['Moo','Woof','Meow','Quack'], answer:2, subject:'Animals' },
       { q:'⭕ Which shape is a circle?', opts:['⬛','⭕','🔺','📄'], answer:1, subject:'Shapes' },
       { q:'🌈 What comes after Red in a rainbow?', opts:['Blue','Orange','Green','Yellow'], answer:1, subject:'Colors' },
-      { q:'✋ How many fingers on one hand?', opts:['3','4','5','6'], answer:2, subject:'Numbers' },
       { q:'🌞 When does the sun shine?', opts:['At night','In the morning','Never','Underground'], answer:1, subject:'Nature' },
     ],
     subjects_progress:['Numbers Fun','ABC Time','Colors & Art'],
@@ -1004,7 +1023,26 @@ const GRADE_DATA = {
       { icon:'🌤', title:'My World', desc:'Weather, animals, and nature!', badge:'Explore!', color:'sun' },
     ],
     questions:[
-      { q:'🍎 How many apples? 🍎🍎🍎', opts:['1','2','3','4'], answer:2, subject:'Counting', emoji:true },
+      { q:'Count to 10: 1,2,3,4,5,6,7,8,9,___', opts:['8','10','11','12'], answer:1, subject:'Counting' },
+      { q:'How many fingers on TWO hands?', opts:['8','9','10','11'], answer:2, subject:'Counting' },
+      { q:'Count: 11, 12, 13, ___', opts:['12','14','15','16'], answer:1, subject:'Counting' },
+      { q:'Which number comes after 19?', opts:['18','20','21','22'], answer:1, subject:'Counting' },
+      { q:'Count the dots: ●●●●●●●●●●. How many?', opts:['8','9','10','11'], answer:2, subject:'Counting' },
+      { q:'9 is ___ than 6', opts:['less','more','equal','same'], answer:1, subject:'Counting' },
+      { q:'Which is MORE: 15 or 12?', opts:['12','15','Same','Cannot tell'], answer:1, subject:'Counting' },
+      { q:'Which is LESS: 7 or 11?', opts:['11','7','Same','Cannot tell'], answer:1, subject:'Counting' },
+      { q:'3 + 4 = ?', opts:['5','6','7','8'], answer:2, subject:'Counting' },
+      { q:'5 + 5 = ?', opts:['8','9','10','11'], answer:2, subject:'Counting' },
+      { q:'8 - 3 = ?', opts:['4','5','6','7'], answer:1, subject:'Counting' },
+      { q:'6 - 2 = ?', opts:['3','4','5','6'], answer:1, subject:'Counting' },
+      { q:'10 + 4 = ?', opts:['13','14','15','16'], answer:1, subject:'Counting' },
+      { q:'10 + 7 = ?', opts:['16','17','18','19'], answer:1, subject:'Counting' },
+      { q:'What teen number is 10 + 3?', opts:['12','13','14','15'], answer:1, subject:'Counting' },
+      { q:'Which does NOT belong? 🍎🍊🍌🐶', opts:['Apple','Orange','Banana','Dog'], answer:3, subject:'Counting' },
+      { q:'Sort by size — which is BIGGEST? 🐘🐭🐕', opts:['Mouse','Dog','Elephant','Same'], answer:2, subject:'Counting' },
+      { q:'A pencil is ___ than a ruler', opts:['longer','shorter','same','heavier'], answer:1, subject:'Counting' },
+      { q:'Which is LONGER: a bus or a bicycle?', opts:['Bicycle','Bus','Same length','Cannot tell'], answer:1, subject:'Counting' },
+      { q:'What comes next? 2, 4, 6, ___', opts:['5','7','8','10'], answer:2, subject:'Counting' },
       { q:'Which one is a circle? 🔵', opts:['⬛ Square','🔵 Circle','🔺 Triangle','⬜ Rectangle'], answer:1, subject:'Shapes' },
       { q:'What letter makes the "Sss" sound?', opts:['B','D','S','T'], answer:2, subject:'Letters' },
       { q:'🐶 What sound does a dog make?', opts:['Moo!','Woof!','Baa!','Meow!'], answer:1, subject:'Animals' },
@@ -1065,12 +1103,25 @@ const GRADE_DATA = {
       { icon:'🌍', title:'Our Community', desc:'Families, helpers, and our neighborhood!', badge:'Learn more!', color:'sun' },
     ],
     questions:[
-      { q:'🍎🍎🍎 + 🍎🍎 = ?', opts:['4','5','6','7'], answer:1, subject:'Numbers' },
+      { q:'Count by 10s: 10, 20, 30, ___', opts:['35','40','45','50'], answer:1, subject:'Math' },
+      { q:'What number comes after 99?', opts:['98','100','101','102'], answer:1, subject:'Math' },
+      { q:'Count by 5s: 5, 10, 15, ___', opts:['18','19','20','25'], answer:2, subject:'Math' },
+      { q:'Which is GREATER: 45 or 54?', opts:['45','54','Equal','Cannot tell'], answer:1, subject:'Math' },
+      { q:'Which is LESS: 67 or 76?', opts:['76','67','Equal','Cannot tell'], answer:1, subject:'Math' },
+      { q:'Put in order smallest to biggest: 12, 5, 8', opts:['5,8,12','8,5,12','12,8,5','5,12,8'], answer:0, subject:'Math' },
+      { q:'14 + 5 = ?', opts:['18','19','20','21'], answer:1, subject:'Math' },
+      { q:'23 + 6 = ?', opts:['28','29','30','31'], answer:1, subject:'Math' },
+      { q:'18 - 5 = ?', opts:['11','12','13','14'], answer:2, subject:'Math' },
+      { q:'30 - 8 = ?', opts:['20','21','22','23'], answer:2, subject:'Math' },
+      { q:'A clock shows 3:00. What time is it?', opts:['Two o clock','Three o clock','Four o clock','Five o clock'], answer:1, subject:'Math' },
+      { q:'How many minutes in one hour?', opts:['30','45','60','100'], answer:2, subject:'Math' },
+      { q:'What time is half past 2?', opts:['2:00','2:15','2:30','2:45'], answer:2, subject:'Math' },
+      { q:'How many tallies? |||| = ?', opts:['3','4','5','6'], answer:1, subject:'Math' },
+      { q:'How many tallies? |||| || = ?', opts:['5','6','7','8'], answer:2, subject:'Math' },
+      { q:'You count 8 birds. How many tally marks?', opts:['|||| |||','|||| ||||','||| ||||','|||| ||'], answer:0, subject:'Math' },
       { q:'What comes after the letter G?', opts:['F','H','I','J'], answer:1, subject:'Reading' },
       { q:'Which word rhymes with CAT?', opts:['Dog','Bat','Cup','Hen'], answer:1, subject:'Reading' },
       { q:'🌱 What do plants need to grow?', opts:['Ice cream','Sunlight & water','Pizza','TV'], answer:1, subject:'Science' },
-      { q:'How many sides does a triangle have?', opts:['2','3','4','5'], answer:1, subject:'Math' },
-      { q:'10 + 5 = ?', opts:['14','15','16','20'], answer:1, subject:'Numbers' },
       { q:'Who helps us if we get hurt?', opts:['A chef','A doctor','A pilot','A builder'], answer:1, subject:'Community' },
       { q:'Which word is a color?', opts:['Jump','Soft','Blue','Fast'], answer:2, subject:'Reading' },
     ],
@@ -1126,14 +1177,27 @@ const GRADE_DATA = {
       { icon:'🌍', title:'Social Studies', desc:'Maps, communities, and our world!', badge:'Explore!', color:'sun' },
     ],
     questions:[
-      { q:'What is 14 + 8?', opts:['20','21','22','23'], answer:2, subject:'Math' },
-      { q:'What is 20 − 7?', opts:['11','12','13','14'], answer:2, subject:'Math' },
+      { q:'On a number line, what is between 14 and 16?', opts:['13','15','17','18'], answer:1, subject:'Math' },
+      { q:'On a number line, 50 is between ___ and ___', opts:['40 and 60','45 and 55','48 and 52','49 and 51'], answer:3, subject:'Math' },
+      { q:'Count by 10s: 150, 160, 170, ___', opts:['175','180','185','190'], answer:1, subject:'Math' },
+      { q:'What number comes after 199?', opts:['198','200','201','210'], answer:1, subject:'Math' },
+      { q:'Skip count by 2s: 4, 6, 8, ___', opts:['9','10','11','12'], answer:1, subject:'Math' },
+      { q:'Skip count by 5s: 15, 20, 25, ___', opts:['28','29','30','35'], answer:2, subject:'Math' },
+      { q:'Skip count by 2s: 12, 14, 16, ___', opts:['17','18','19','20'], answer:1, subject:'Math' },
+      { q:'Is 14 even or odd?', opts:['Odd','Even','Neither','Both'], answer:1, subject:'Math' },
+      { q:'Is 7 even or odd?', opts:['Even','Odd','Neither','Both'], answer:1, subject:'Math' },
+      { q:'Which number is EVEN?', opts:['13','15','16','19'], answer:2, subject:'Math' },
+      { q:'45 + 23 = ?', opts:['66','67','68','69'], answer:2, subject:'Math' },
+      { q:'78 - 35 = ?', opts:['42','43','44','45'], answer:1, subject:'Math' },
+      { q:'56 + 37 = ?', opts:['91','92','93','94'], answer:2, subject:'Math' },
+      { q:'A pizza cut in 2 equal pieces. Each piece is ___', opts:['a quarter','a third','a half','a whole'], answer:2, subject:'Math' },
+      { q:'A pie cut into 4 equal pieces. Each piece is ___', opts:['a half','a third','a quarter','a fifth'], answer:2, subject:'Math' },
+      { q:'Which fraction is bigger: 1/2 or 1/4?', opts:['1/4','1/2','They are equal','Cannot tell'], answer:1, subject:'Math' },
       { q:'What do all living things need to survive?', opts:['TV and toys','Food, water and air','Phones and games','Clothes and shoes'], answer:1, subject:'Science' },
       { q:'Which animal is a mammal?', opts:['Eagle','Salmon','Dolphin','Frog'], answer:2, subject:'Science' },
       { q:'How many days are in a week?', opts:['5','6','7','8'], answer:2, subject:'Social Studies' },
       { q:'🌊 What covers most of Earth?', opts:['Land','Ice','Water','Desert'], answer:2, subject:'Science' },
       { q:'Which of these is an adjective?', opts:['Run','Fluffy','Under','Ate'], answer:1, subject:'Language Arts' },
-      { q:'2 × 3 = ?', opts:['4','5','6','7'], answer:2, subject:'Math' },
     ],
     subjects_progress:['Math','Science','Writing'],
     poses:[
@@ -1187,12 +1251,25 @@ const GRADE_DATA = {
       { icon:'🌍', title:'Social Studies', desc:'U.S. regions, maps, and communities!', badge:'New lesson!', color:'sun' },
     ],
     questions:[
-      { q:'What is 6 × 7?', opts:['36','40','42','48'], answer:2, subject:'Math' },
-      { q:'What is 45 ÷ 9?', opts:['4','5','6','7'], answer:1, subject:'Math' },
+      { q:'In 345, what is the value of the 3?', opts:['3','30','300','3000'], answer:2, subject:'Math' },
+      { q:'In 527, what digit is in the tens place?', opts:['5','2','7','52'], answer:1, subject:'Math' },
+      { q:'What is 400 + 60 + 8?', opts:['468','486','648','864'], answer:0, subject:'Math' },
+      { q:'Which is GREATEST: 456, 654, 564?', opts:['456','564','654','All equal'], answer:2, subject:'Math' },
+      { q:'Put in order: 234, 432, 342', opts:['234,342,432','432,342,234','342,234,432','234,432,342'], answer:0, subject:'Math' },
+      { q:'What number is halfway between 100 and 200?', opts:['125','140','150','160'], answer:2, subject:'Math' },
+      { q:'345 + 123 = ?', opts:['456','467','468','478'], answer:2, subject:'Math' },
+      { q:'567 - 234 = ?', opts:['331','332','333','334'], answer:2, subject:'Math' },
+      { q:'400 + 250 + 75 = ?', opts:['715','725','735','745'], answer:1, subject:'Math' },
+      { q:'Skip count by 3s: 3, 6, 9, ___', opts:['10','11','12','13'], answer:2, subject:'Math' },
+      { q:'Skip count by 4s: 4, 8, 12, ___', opts:['14','15','16','17'], answer:2, subject:'Math' },
+      { q:'3 × 4 = ?', opts:['10','11','12','13'], answer:2, subject:'Math' },
+      { q:'5 × 6 = ?', opts:['28','29','30','31'], answer:2, subject:'Math' },
+      { q:'2 × 8 = ?', opts:['14','15','16','17'], answer:2, subject:'Math' },
+      { q:'4 × 4 = ?', opts:['14','15','16','17'], answer:2, subject:'Math' },
+      { q:'7 × 3 = ?', opts:['19','20','21','22'], answer:2, subject:'Math' },
       { q:'Which sentence has correct punctuation?', opts:['I like cats','I like cats.','i like cats.','I Like cats'], answer:1, subject:'Language Arts' },
       { q:'What state of matter is water usually?', opts:['Solid','Liquid','Gas','Plasma'], answer:1, subject:'Science' },
       { q:'What is the capital of the United States?', opts:['New York','Los Angeles','Washington D.C.','Chicago'], answer:2, subject:'Social Studies' },
-      { q:'What is 1/2 of 20?', opts:['5','8','10','12'], answer:2, subject:'Math' },
       { q:'Which word means the same as "happy"?', opts:['Angry','Joyful','Tired','Scared'], answer:1, subject:'Language Arts' },
       { q:'What do plants make during photosynthesis?', opts:['Water','Carbon dioxide','Oxygen','Nitrogen'], answer:2, subject:'Science' },
     ],
@@ -1250,12 +1327,25 @@ const GRADE_DATA = {
       { icon:'🌍', title:'Social Studies', desc:'U.S. history, regions, and government basics!', badge:'New topic!', color:'sun' },
     ],
     questions:[
-      { q:'What is 24 × 7?', opts:['148','168','158','178'], answer:1, subject:'Math' },
-      { q:'What fraction equals 0.5?', opts:['1/3','1/4','1/2','2/3'], answer:2, subject:'Math' },
+      { q:'In 4,567 what is the value of the 4?', opts:['4','40','400','4000'], answer:3, subject:'Math' },
+      { q:'In 3,892 what digit is in the hundreds place?', opts:['3','8','9','2'], answer:1, subject:'Math' },
+      { q:'What is 3000 + 400 + 20 + 5?', opts:['3425','3452','3524','3245'], answer:0, subject:'Math' },
+      { q:'Which is GREATEST: 1,456 or 1,645 or 1,564?', opts:['1,456','1,564','1,645','All equal'], answer:2, subject:'Math' },
+      { q:'Which is LEAST: 987, 978, 897?', opts:['987','978','897','All equal'], answer:2, subject:'Math' },
+      { q:'Estimate 48 + 53 by rounding to nearest 10', opts:['90','100','110','120'], answer:1, subject:'Math' },
+      { q:'Estimate 197 + 304 by rounding to nearest 100', opts:['400','500','600','700'], answer:1, subject:'Math' },
+      { q:'Round 476 to the nearest hundred', opts:['400','500','480','470'], answer:1, subject:'Math' },
+      { q:'6 × 7 = ?', opts:['40','41','42','43'], answer:2, subject:'Math' },
+      { q:'8 × 9 = ?', opts:['70','71','72','73'], answer:2, subject:'Math' },
+      { q:'12 × 4 = ?', opts:['46','47','48','49'], answer:2, subject:'Math' },
+      { q:'7 × 8 = ?', opts:['54','55','56','57'], answer:2, subject:'Math' },
+      { q:'20 ÷ 4 = ?', opts:['4','5','6','7'], answer:1, subject:'Math' },
+      { q:'36 ÷ 6 = ?', opts:['5','6','7','8'], answer:1, subject:'Math' },
+      { q:'48 ÷ 8 = ?', opts:['5','6','7','8'], answer:1, subject:'Math' },
+      { q:'56 ÷ 7 = ?', opts:['6','7','8','9'], answer:2, subject:'Math' },
       { q:'What is a metaphor?', opts:['A comparison using like or as','Saying something IS something else','A funny exaggeration','A word that sounds like a noise'], answer:1, subject:'Language Arts' },
       { q:'Which of these is a renewable energy source?', opts:['Coal','Oil','Solar','Natural Gas'], answer:2, subject:'Science' },
       { q:'What year did the U.S. declare independence?', opts:['1492','1776','1812','1865'], answer:1, subject:'Social Studies' },
-      { q:'What is 360 ÷ 12?', opts:['28','30','32','36'], answer:1, subject:'Math' },
       { q:'What is the largest planet in our solar system?', opts:['Saturn','Mars','Jupiter','Neptune'], answer:2, subject:'Science' },
       { q:'In the food chain, what are organisms that make their own food called?', opts:['Consumers','Decomposers','Producers','Predators'], answer:2, subject:'Science' },
     ],
@@ -1313,12 +1403,25 @@ const GRADE_DATA = {
       { icon:'🌍', title:'Social Studies', desc:'U.S. history, economics, and civics!', badge:'New lesson!', color:'sun' },
     ],
     questions:[
-      { q:'What is 7 × 8?', opts:['54','56','48','63'], answer:1, subject:'Math' },
+      { q:'In 45,678 what is the value of the 4?', opts:['4,000','40,000','400,000','4,000,000'], answer:1, subject:'Math' },
+      { q:'In 1,234,567 what digit is in the ten-thousands place?', opts:['1','2','3','4'], answer:2, subject:'Math' },
+      { q:'What is 50,000 + 3,000 + 200 + 40 + 1?', opts:['53,241','53,214','52,341','53,421'], answer:0, subject:'Math' },
+      { q:'Which is GREATEST: 1,987 or 1,879 or 1,978?', opts:['1,879','1,978','1,987','All equal'], answer:2, subject:'Math' },
+      { q:'Order from least to greatest: 2,345  2,435  2,354', opts:['2345,2354,2435','2435,2354,2345','2354,2345,2435','2345,2435,2354'], answer:0, subject:'Math' },
+      { q:'Estimate 4,876 + 3,124 by rounding to nearest 1000', opts:['7,000','8,000','9,000','10,000'], answer:1, subject:'Math' },
+      { q:'Round 6,749 to the nearest thousand', opts:['6,000','7,000','6,700','6,800'], answer:1, subject:'Math' },
+      { q:'Estimate 598 × 3 by rounding 598 to nearest 100', opts:['1,500','1,600','1,700','1,800'], answer:3, subject:'Math' },
+      { q:'24 × 5 = ?', opts:['110','115','120','125'], answer:2, subject:'Math' },
+      { q:'13 × 7 = ?', opts:['89','90','91','92'], answer:2, subject:'Math' },
+      { q:'35 × 4 = ?', opts:['138','139','140','141'], answer:2, subject:'Math' },
+      { q:'16 × 6 = ?', opts:['94','95','96','97'], answer:2, subject:'Math' },
+      { q:'84 ÷ 7 = ?', opts:['10','11','12','13'], answer:2, subject:'Math' },
+      { q:'72 ÷ 9 = ?', opts:['6','7','8','9'], answer:2, subject:'Math' },
+      { q:'96 ÷ 8 = ?', opts:['10','11','12','13'], answer:2, subject:'Math' },
+      { q:'132 ÷ 11 = ?', opts:['10','11','12','13'], answer:2, subject:'Math' },
       { q:'What is the capital of France?', opts:['London','Rome','Paris','Berlin'], answer:2, subject:'Social Studies' },
       { q:'What do plants produce during photosynthesis?', opts:['Carbon dioxide','Water','Oxygen','Nitrogen'], answer:2, subject:'Science' },
       { q:'Which word is a noun?', opts:['Run','Quickly','Happy','Apple'], answer:3, subject:'Language Arts' },
-      { q:'What is 144 ÷ 12?', opts:['10','11','12','13'], answer:2, subject:'Math' },
-      { q:'What is 3/4 as a decimal?', opts:['0.34','0.70','0.75','0.80'], answer:2, subject:'Math' },
       { q:'In which layer of Earth do tectonic plates move?', opts:['Crust','Mantle','Outer core','Inner core'], answer:1, subject:'Science' },
       { q:'What is the main idea of a paragraph called?', opts:['The conclusion','The topic sentence','The transition','The evidence'], answer:1, subject:'Language Arts' },
     ],
@@ -1707,32 +1810,7 @@ function applyGradeUI() {
   ['tabArt',  'tabArt2'  ].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=ui.tabArt||'Art'; });
 }
 
-function buildSubjectCards(){
-  var el=document.getElementById('subjectCards');
-  el.innerHTML='';
-  gradeContent.subjects.forEach(function(s){
-    var d=document.createElement('div');
-    d.className='card '+s.color;
-    (function(title){d.onclick=function(){startSubject(title);};})(s.title);
-    var ic=document.createElement('div');
-    ic.className='card-icon';
-    ic.style.cssText='width:72px;height:72px;margin:0 auto 10px;border-radius:14px;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0;';
-    var imgSrc=SUBJECT_ICONS[s.title]||'';
-    if(imgSrc){
-      var im=document.createElement('img');
-      im.src=imgSrc; im.alt=s.title;
-      im.style.cssText='width:72px;height:72px;object-fit:cover;border-radius:14px;';
-      im.onerror=function(){ic.innerHTML='';ic.textContent=s.icon;};
-      ic.appendChild(im);
-    } else { ic.textContent=s.icon; }
-    d.appendChild(ic);
-    ['card-title','card-desc','card-badge'].forEach(function(c,i){
-      var x=document.createElement('div'); x.className=c;
-      x.textContent=[s.title,s.desc,s.badge][i]; d.appendChild(x);
-    });
-    el.appendChild(d);
-  });
-}
+function buildSubjectCards(){var el=document.getElementById('subjectCards');el.innerHTML='';gradeContent.subjects.forEach(function(s){var d=document.createElement('div');d.className='card '+s.color;(function(t){d.onclick=function(){startSubject(t);};})(s.title);var ic=document.createElement('div');ic.className='card-icon';ic.style.cssText='width:72px;height:72px;margin:0 auto 10px;border-radius:14px;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0;';var imgSrc=SUBJECT_ICONS[s.title]||'';if(imgSrc){var im=document.createElement('img');im.src=imgSrc;im.alt=s.title;im.style.cssText='width:72px;height:72px;object-fit:cover;border-radius:14px;';im.onerror=function(){ic.innerHTML='';ic.textContent=s.icon;};ic.appendChild(im);}else{ic.textContent=s.icon;}d.appendChild(ic);['card-title','card-desc','card-badge'].forEach(function(c,i){var x=document.createElement('div');x.className=c;x.textContent=[s.title,s.desc,s.badge][i];d.appendChild(x);});el.appendChild(d);});}
 
 function buildProgressSection() {
   const container = document.getElementById('progressSection');
@@ -1945,8 +2023,8 @@ async function checkAnswer(btn, correct) {
   const stars = correct?10:2;
   setSyncState('syncing');
   try {
-    const questions2 = shuffledQuestions.length ? shuffledQuestions : gradeContent.questions;
-    const q = questions2[qIdx%questions2.length];
+    const qs2=shuffledQuestions.length?shuffledQuestions:gradeContent.questions;
+    const q=qs2[qIdx%qs2.length];
     await sb.from('quiz_results').insert({child_id:activeChild.id,subject:q.subject,question:q.q,correct,stars_earned:stars});
     await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:stars});
     await upsertDailyActivity({tasks_done:sessionData.tasks+1});
@@ -1957,26 +2035,7 @@ async function checkAnswer(btn, correct) {
     if (correct) toast(`⭐ +${stars} stars!`);
   } catch(e) { setSyncState('error'); }
 }
-function nextQuestion() {
-  const questions = shuffledQuestions.length ? shuffledQuestions : gradeContent.questions;
-  qIdx++;
-  if (qIdx >= questions.length) {
-    // All done - show completion
-    document.getElementById('quizQuestion').textContent = '🎉 Amazing! You finished all the questions!';
-    document.getElementById('quizOptions').innerHTML = '';
-    document.getElementById('quizFeedback').textContent = '';
-    document.getElementById('nextBtn').textContent = '🔄 Play Again';
-    document.getElementById('nextBtn').onclick = function() {
-      shuffledQuestions = [...(gradeContent?.questions||[])].sort(()=>Math.random()-.5);
-      qIdx = 0;
-      document.getElementById('nextBtn').textContent = 'Next Question →';
-      document.getElementById('nextBtn').onclick = nextQuestion;
-      renderQuestion();
-    };
-  } else {
-    renderQuestion();
-  }
-}
+function nextQuestion(){const qs=shuffledQuestions.length?shuffledQuestions:gradeContent.questions;qIdx++;if(qIdx>=qs.length){document.getElementById('quizQuestion').textContent='🎉 You finished all the questions!';document.getElementById('quizOptions').innerHTML='';document.getElementById('quizFeedback').textContent='';var nb=document.getElementById('nextBtn');nb.textContent='🔄 Play Again';nb.onclick=function(){shuffledQuestions=[...(gradeContent?.questions||[])].sort(()=>Math.random()-.5);qIdx=0;nb.textContent='Next Question →';nb.onclick=nextQuestion;renderQuestion();};}else{renderQuestion();}}
 
 // ══════════════════════════════════════════════════════
 //  YOGA TIMER
@@ -2394,52 +2453,24 @@ function buildArtTab() {
 
   const isYoung = activeGrade==='PreK'||activeGrade==='K'||activeGrade==='1';
   const grid = document.getElementById('artActivities');
-  
-  // Clear grid first
   grid.innerHTML = '';
 
-  // Drawing canvas at top for ALL grades
-  var dcw = document.createElement('div');
-  dcw.style.cssText = 'grid-column:1/-1;margin-bottom:8px;';
-  
-  var drawTitle = document.createElement('div');
-  drawTitle.className = 'section-title';
-  drawTitle.style.cssText = 'grid-column:1/-1;margin-bottom:8px;';
-  drawTitle.textContent = '🎨 Drawing Canvas';
-  grid.appendChild(drawTitle);
+  // Drawing canvas for ALL grades
+  var dcw=document.createElement('div');
+  dcw.style.cssText='grid-column:1/-1;margin-bottom:4px;';
   grid.appendChild(dcw);
   buildDrawingCanvas(dcw);
 
   if (isYoung) {
-    // Coloring book for PreK/K/Grade 1 BELOW drawing canvas
-    var colorTitle = document.createElement('div');
-    colorTitle.className = 'section-title';
-    colorTitle.style.cssText = 'grid-column:1/-1;margin-top:8px;';
-    colorTitle.textContent = '🖍️ Coloring Book';
-    grid.appendChild(colorTitle);
+    var ct=document.createElement('div');ct.className='section-title';ct.style.cssText='grid-column:1/-1;margin-top:12px;';ct.textContent='🖍️ Coloring Book';grid.appendChild(ct);
     buildColoringBook(grid);
   } else {
-    // Activity cards for Grade 2+ BELOW drawing canvas
-    var actTitle = document.createElement('div');
-    actTitle.className = 'section-title';
-    actTitle.style.cssText = 'grid-column:1/-1;margin-top:8px;';
-    actTitle.textContent = '🖼️ Art Activities';
-    grid.appendChild(actTitle);
-    artContent.activities.forEach(function(a, i) {
-      var card = document.createElement('div');
-      card.className = 'art-card ac-' + a.color;
-      card.id = 'artCard_' + i;
-      card.onclick = function() { toggleArtCard(i); };
-      card.innerHTML = '<span class="art-card-icon">' + a.icon + '</span>' +
-        '<div class="art-card-title">' + a.title + '</div>' +
-        '<div class="art-card-desc">' + a.desc + '</div>' +
-        '<span class="art-card-badge ' + a.badge_style + '">' + a.badge + '</span>' +
-        '<div class="art-card-steps">' +
-        a.steps.map(function(s, si) {
-          return '<div class="art-step"><div class="art-step-num">' + (si+1) + '</div><span>' + s + '</span></div>';
-        }).join('') +
-        '<button class="art-card-done-btn" onclick="markArtDone(event,' + i + ')">✅ I Made This! +20 Stars</button>' +
-        '</div>';
+    var at=document.createElement('div');at.className='section-title';at.style.cssText='grid-column:1/-1;margin-top:12px;';at.textContent='🖼️ Art Activities';grid.appendChild(at);
+    artContent.activities.forEach(function(a,i){
+      var card=document.createElement('div');
+      card.className='art-card ac-'+a.color;card.id='artCard_'+i;
+      card.onclick=function(){toggleArtCard(i);};
+      card.innerHTML='<span class="art-card-icon">'+a.icon+'</span><div class="art-card-title">'+a.title+'</div><div class="art-card-desc">'+a.desc+'</div><span class="art-card-badge '+a.badge_style+'">'+a.badge+'</span><div class="art-card-steps">'+a.steps.map(function(s,si){return '<div class="art-step"><div class="art-step-num">'+(si+1)+'</div><span>'+s+'</span></div>';}).join('')+'<button class="art-card-done-btn" onclick="markArtDone(event,'+i+')">✅ I Made This! +20 Stars</button></div>';
       grid.appendChild(card);
     });
   }
@@ -3027,96 +3058,117 @@ function closeSubjectQuiz(){var e=document.getElementById('subjectQuizOv');if(e)
 async function startSubject(name) {
   if(name==='Letter Tracing'){showLetterTracing();return;}
   var allQ=gradeContent.questions||[];
-  // Match questions to subject - handle name variations
   var filtered=allQ.filter(function(q){
-    var qs=(q.subject||'').toLowerCase();
-    var ns=name.toLowerCase();
-    return qs===ns || ns.includes(qs) || qs.includes(ns);
+    var qs=(q.subject||'').toLowerCase().trim();
+    var ns=name.toLowerCase().trim();
+    return qs===ns||ns===qs||ns.includes(qs)||qs.includes(ns);
   });
   var pool=filtered.length>=2?filtered:allQ;
   var questions=pool.slice().sort(function(){return Math.random()-.5;});
-  var qIndex=0, score=0;
-  var ICONS={Math:'🔢',Mathematics:'🔢',Numbers:'🔢',Science:'🔬',Writing:'✏️',Reading:'📖','Language Arts':'📝','Social Studies':'🌍',Community:'🏘️','Our Community':'🏘️',Colors:'🎨',Shapes:'🔷',Animals:'🐾',Nature:'🌿',Letters:'🔤','Letter Tracing':'✏️','My World':'🌍','Colors & Shapes':'🎨'};
+  var qIdx2=0,score=0;
+  var ICONS={Math:'🔢',Mathematics:'🔢',Numbers:'🔢',Science:'🔬',Reading:'📖','Language Arts':'📝',Writing:'✏️','Social Studies':'🌍',Community:'🏘️','Our Community':'🏘️',Colors:'🎨',Shapes:'🔷',Animals:'🐾',Nature:'🌿',Letters:'🔤','Letter Tracing':'✏️','My World':'🌍','Counting':'🔢'};
   var icon=ICONS[name]||'📚';
+  var ov=document.createElement('div');ov.className='modal-overlay';ov.id='subjectQuizOv';
 
-  var ov=document.createElement('div');
-  ov.className='modal-overlay'; ov.id='subjectQuizOv';
-
-  function renderSQ(){
-    var card=document.createElement('div');
-    card.className='modal-card';
-    card.style.cssText='max-width:380px;padding:0;overflow:hidden;';
-    if(qIndex>=questions.length){
+  function showQ(){
+    ov.innerHTML='';
+    var card=document.createElement('div');card.className='modal-card';card.style.cssText='max-width:380px;padding:0;overflow:hidden;';
+    if(qIdx2>=questions.length){
+      // RESULTS SCREEN
       var pct=questions.length?Math.round(score/questions.length*100):0;
       var trophy=pct===100?'🏆':pct>=70?'🌟':'💪';
-      var msg=pct===100?'Perfect score! Amazing!':pct>=70?'Great work! Keep it up!':'Keep practicing!';
-      card.innerHTML='<div style="background:linear-gradient(135deg,var(--coral),var(--sunshine));padding:24px;text-align:center;color:white;"><div style="font-size:3rem;margin-bottom:8px;">'+trophy+'</div><div style="font-family:Baloo 2,cursive;font-size:1.3rem;font-weight:800;">Quiz Complete!</div><div style="opacity:.9;margin-top:6px;">'+score+' of '+questions.length+' correct</div></div><div style="padding:20px;text-align:center;"><div style="font-size:.95rem;color:var(--body);margin-bottom:18px;">'+msg+'</div><button onclick="closeSubjectQuiz()" style="width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">✅ Done!</button></div>';
+      var rmsg=pct===100?'Perfect! Amazing work!':pct>=70?'Great job! Keep it up!':'Keep practicing!';
+      card.innerHTML=
+        '<div style="background:linear-gradient(135deg,var(--coral),var(--sunshine));padding:28px 24px;text-align:center;color:white;">'+
+        '<div style="font-size:3.5rem;margin-bottom:10px;">'+trophy+'</div>'+
+        '<div style="font-family:Baloo 2,cursive;font-size:1.4rem;font-weight:800;">Quiz Complete!</div>'+
+        '<div style="opacity:.9;font-size:1rem;margin-top:6px;">'+score+' of '+questions.length+' correct</div></div>'+
+        '<div style="padding:24px;text-align:center;">'+
+        '<div style="font-size:1rem;color:var(--body);margin-bottom:20px;">'+rmsg+'</div>'+
+        '<button id="sqDoneBtn" style="width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">✅ Done!</button>'+
+        '</div>';
+      ov.appendChild(card);
+      document.getElementById('sqDoneBtn').onclick=closeSubjectQuiz;
       var stars=score*5;
       if(stars>0){sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:stars}).catch(function(){});sessionData.stars+=stars;document.getElementById('statStars').textContent=sessionData.stars;}
-    } else {
-      var q=questions[qIndex];
-      var hdr=document.createElement('div');
-      hdr.style.cssText='background:linear-gradient(135deg,var(--coral),var(--sunshine));padding:16px 20px;color:white;';
-      hdr.innerHTML='<div style="font-family:Baloo 2,cursive;font-size:1.1rem;font-weight:800;">'+icon+' '+name+'</div><div style="font-size:.8rem;opacity:.85;margin-top:2px;">Q '+(qIndex+1)+' of '+questions.length+'</div>';
-      card.appendChild(hdr);
-      var body=document.createElement('div');
-      body.style.cssText='padding:20px;';
-      var qtext=document.createElement('div');
-      qtext.style.cssText='font-size:1rem;font-weight:800;color:var(--dark);margin-bottom:16px;line-height:1.4;';
-      qtext.textContent=q.q; body.appendChild(qtext);
-      var opts=document.createElement('div');
-      opts.style.cssText='display:flex;flex-direction:column;gap:8px;';
-      var answered=false;
-      q.opts.forEach(function(o,i){
-        var btn=document.createElement('button');
-        btn.textContent=o;
-        btn.style.cssText='padding:12px 16px;border-radius:14px;border:2px solid #E8E4FF;background:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;text-align:left;';
-        btn.onclick=function(){
-          if(answered)return; answered=true;
-          var correct=(i===q.answer);
-          // Mark all options
-          opts.querySelectorAll('button').forEach(function(b,bi){
-            b.style.pointerEvents='none';
-            if(bi===q.answer){b.style.background='#E8FBF3';b.style.borderColor='var(--mint)';b.style.color='#2A9970';}
-          });
-          if(correct){this.style.background='#E8FBF3';score++;toast('✅ Correct! +5 ⭐');}
-          else{this.style.background='#FFF0EE';this.style.borderColor='var(--coral)';this.style.color='var(--coral)';toast('Not quite! The green one is right 💪');}
-          nextBtn.disabled=false;
-          nextBtn.style.background='linear-gradient(135deg,var(--coral),var(--sunshine))';
-          nextBtn.style.color='white'; nextBtn.style.cursor='pointer';
-        };
-        opts.appendChild(btn);
-      });
-      body.appendChild(opts);
-      card.appendChild(body);
-      var footer=document.createElement('div');
-      footer.style.cssText='padding:0 20px 16px;display:flex;gap:8px;';
-      var nextBtn=document.createElement('button');
-      nextBtn.textContent=qIndex<questions.length-1?'Next →':'See Results 🎉';
-      nextBtn.disabled=true;
-      nextBtn.style.cssText='flex:1;padding:12px;border-radius:40px;border:none;background:#E0DAFF;color:#888;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:not-allowed;';
-      nextBtn.onclick=function(){qIndex++;ov.innerHTML='';ov.appendChild(renderSQCard());};
-      footer.appendChild(nextBtn);
-      var closeB=document.createElement('button');
-      closeB.textContent='✕';
-      closeB.style.cssText='padding:12px 16px;border-radius:40px;border:2px solid #E0DAFF;background:white;font-family:Nunito,sans-serif;font-weight:700;cursor:pointer;color:#888;';
-      closeB.onclick=closeSubjectQuiz;
-      footer.appendChild(closeB);
-      card.appendChild(footer);
+      return;
     }
-    return card;
+    // QUESTION SCREEN
+    var q=questions[qIdx2];
+    var hdr=document.createElement('div');hdr.style.cssText='background:linear-gradient(135deg,var(--coral),var(--sunshine));padding:16px 20px;color:white;';
+    hdr.innerHTML='<div style="font-family:Baloo 2,cursive;font-size:1.1rem;font-weight:800;">'+icon+' '+name+'</div><div style="font-size:.8rem;opacity:.85;margin-top:2px;">Question '+(qIdx2+1)+' of '+questions.length+'</div>';
+    card.appendChild(hdr);
+    var body=document.createElement('div');body.style.cssText='padding:20px;';
+    var qtxt=document.createElement('div');qtxt.style.cssText='font-size:1rem;font-weight:800;color:var(--dark);margin-bottom:16px;line-height:1.5;';qtxt.textContent=q.q;body.appendChild(qtxt);
+    var optsDiv=document.createElement('div');optsDiv.id='sqOpts'+qIdx2;optsDiv.style.cssText='display:flex;flex-direction:column;gap:8px;';
+    var ansGiven=false;
+    q.opts.forEach(function(o,i){
+      var btn=document.createElement('button');btn.textContent=o;
+      btn.style.cssText='padding:12px 16px;border-radius:14px;border:2px solid #E8E4FF;background:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;text-align:left;transition:all .15s;';
+      btn.onclick=function(){
+        if(ansGiven)return; ansGiven=true;
+        var correct=(i===q.answer);
+        optsDiv.querySelectorAll('button').forEach(function(b,bi){
+          b.style.pointerEvents='none';
+          if(bi===q.answer){b.style.background='#E8FBF3';b.style.borderColor='var(--mint)';b.style.color='#2A9970';}
+        });
+        if(correct){btn.style.background='#E8FBF3';score++;toast('✅ Correct! +5 ⭐');}
+        else{btn.style.background='#FFF0EE';btn.style.borderColor='var(--coral)';btn.style.color='var(--coral)';toast('Not quite — the green answer is right 💪');}
+        // Enable next button
+        var nb=document.getElementById('sqNextBtn');
+        if(nb){nb.disabled=false;nb.style.background='linear-gradient(135deg,var(--coral),var(--sunshine))';nb.style.color='white';nb.style.cursor='pointer';}
+      };
+      optsDiv.appendChild(btn);
+    });
+    body.appendChild(optsDiv);card.appendChild(body);
+    var ftr=document.createElement('div');ftr.style.cssText='padding:0 20px 16px;display:flex;gap:8px;';
+    var nextBtn=document.createElement('button');
+    nextBtn.id='sqNextBtn';
+    nextBtn.textContent=qIdx2<questions.length-1?'Next →':'See Results 🎉';
+    nextBtn.disabled=true;
+    nextBtn.style.cssText='flex:1;padding:12px;border-radius:40px;border:none;background:#E0DAFF;color:#888;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:not-allowed;transition:all .2s;';
+    nextBtn.onclick=function(){qIdx2++;showQ();};
+    ftr.appendChild(nextBtn);
+    var closeBtn=document.createElement('button');closeBtn.textContent='✕';
+    closeBtn.style.cssText='padding:12px 16px;border-radius:40px;border:2px solid #E0DAFF;background:white;font-family:Nunito,sans-serif;font-weight:700;cursor:pointer;color:#888;';
+    closeBtn.onclick=closeSubjectQuiz;ftr.appendChild(closeBtn);
+    card.appendChild(ftr);ov.appendChild(card);
   }
 
-  function renderSQCard(){
-    var c=renderSQ(); return c;
-  }
-
-  ov.appendChild(renderSQ());
+  showQ();
   document.body.appendChild(ov);
   await upsertDailyActivity({minutes_academic:5,tasks_done:1});
   sessionData.tasks++;document.getElementById('statTasks').textContent=sessionData.tasks;
 }
 
+
+function buildOnlineLibrary(){
+  var wrap=document.createElement('div');wrap.style.cssText='margin-top:24px;';
+  var title=document.createElement('div');title.className='section-title';title.textContent='📚 Free Online Libraries';wrap.appendChild(title);
+  var sub=document.createElement('div');sub.style.cssText='font-size:.82rem;color:var(--muted);margin:6px 0 14px;';sub.textContent='Access thousands of books for free — no local library needed!';wrap.appendChild(sub);
+  var grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:12px;';
+  var libs=[
+    {name:'Epic! Books',desc:'1000s of kids books & videos',icon:'📗',color:'#4CAF50',url:'https://www.getepic.com/',note:'Free for students'},
+    {name:'Libby App',desc:'Free with library card',icon:'📘',color:'#2196F3',url:'https://libbyapp.com/',note:'Free with card'},
+    {name:'Storyline Online',desc:'Celebrities read aloud',icon:'🎭',color:'#9C27B0',url:'https://storylineonline.net/',note:'Free videos'},
+    {name:'Open Library',desc:'Millions of books online',icon:'🌐',color:'#FF5722',url:'https://openlibrary.org/subjects/children',note:'Free & open'},
+    {name:'Unite for Literacy',desc:'Picture books with audio',icon:'🔊',color:'#FF9800',url:'https://www.uniteforliteracy.com/',note:'Free audio'},
+    {name:'Digital Public Library',desc:'Books in many languages',icon:'🌍',color:'#00BCD4',url:'https://dp.la/exhibitions',note:'Free always'},
+  ];
+  libs.forEach(function(lib){
+    var card=document.createElement('div');
+    card.style.cssText='background:white;border-radius:18px;padding:14px 12px;box-shadow:0 2px 12px rgba(45,45,78,.08);cursor:pointer;text-align:center;transition:transform .2s;';
+    card.onmouseenter=function(){this.style.transform='translateY(-2px)';};
+    card.onmouseleave=function(){this.style.transform='none';};
+    card.onclick=function(){window.open(lib.url,'_blank');};
+    card.innerHTML='<div style="font-size:2rem;margin-bottom:6px;">'+lib.icon+'</div>'+
+      '<div style="font-weight:800;font-size:.85rem;color:#2D2D4E;margin-bottom:3px;">'+lib.name+'</div>'+
+      '<div style="font-size:.72rem;color:#888;margin-bottom:6px;">'+lib.desc+'</div>'+
+      '<div style="background:'+lib.color+';color:white;font-size:.68rem;font-weight:800;border-radius:20px;padding:3px 8px;display:inline-block;">'+lib.note+'</div>';
+    grid.appendChild(card);
+  });
+  wrap.appendChild(grid);return wrap;
+}
 
 function openBookReader(title,ytUrl){
   var m=ytUrl&&ytUrl.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
@@ -3130,7 +3182,7 @@ function openBookReader(title,ytUrl){
   var body=document.createElement('div');body.style.cssText='flex:1;min-height:0;display:flex;flex-direction:column;';
   if(vid){
     var ifr=document.createElement('iframe');
-    ifr.src='https://www.youtube-nocookie.com/embed/'+vid+'?autoplay=1&playsinline=1&rel=0&modestbranding=1&origin='+encodeURIComponent(window.location.origin);
+    ifr.src='https://www.youtube-nocookie.com/embed/'+vid+'?autoplay=1&playsinline=1&rel=0&modestbranding=1';
     ifr.style.cssText='flex:1;width:100%;border:none;display:block;';
     ifr.setAttribute('allow','autoplay;encrypted-media');ifr.setAttribute('allowfullscreen','');
     body.appendChild(ifr);
@@ -3141,7 +3193,7 @@ function openBookReader(title,ytUrl){
   } else {
     body.style.cssText+='align-items:center;justify-content:center;gap:16px;padding:32px 24px;text-align:center;';
     var si=document.createElement('div');si.style.cssText='font-size:3.5rem;';si.textContent='📺';body.appendChild(si);
-    var st=document.createElement('div');st.style.cssText='color:white;font-weight:800;font-size:1.1rem;';st.textContent=title;body.appendChild(st);
+    var st2=document.createElement('div');st2.style.cssText='color:white;font-weight:800;font-size:1.1rem;';st2.textContent=title;body.appendChild(st2);
     var ss=document.createElement('div');ss.style.cssText='color:rgba(255,255,255,.6);font-size:.88rem;';ss.textContent='Find the read-aloud on YouTube';body.appendChild(ss);
     var sb3=document.createElement('button');sb3.textContent='🔍 Search YouTube';sb3.style.cssText='background:linear-gradient(135deg,#FF6B6B,#FFD166);color:white;border:none;border-radius:40px;padding:14px 32px;font-weight:800;font-size:1rem;cursor:pointer;';sb3.onclick=function(){window.open(su,'_blank');};body.appendChild(sb3);
   }
@@ -3188,8 +3240,7 @@ function buildDrawingCanvas(container){
   var savB=document.createElement('button');savB.textContent='💾 Save Art! +20 ⭐';savB.style.cssText='flex:2;padding:10px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;';act.appendChild(savB);
   wrap.appendChild(act);container.appendChild(wrap);
   setTimeout(function(){
-    cv.width=cv.offsetWidth||360;
-    var ctx=cv.getContext('2d');ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,cv.width,cv.height);
+    cv.width=cv.offsetWidth||360;var ctx=cv.getContext('2d');ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,cv.width,cv.height);
     clrB.onclick=function(){ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,cv.width,cv.height);toast('🎨 Cleared!');};
     savB.onclick=async function(){var a=document.createElement('a');a.download='bloomikids-art.png';a.href=cv.toDataURL();a.click();try{await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:20});sessionData.stars+=20;document.getElementById('statStars').textContent=sessionData.stars;}catch(e){}toast('💾 Art saved! +20 ⭐');};
     var ptg=false,lx=0,ly=0;
@@ -3241,44 +3292,6 @@ function showLetterTracing(){
     nx.onclick=function(){if(idx<25){idx++;build();}else{ov.remove();toast('🎉 All 26 letters traced! +26 ⭐');sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:26}).catch(function(){});sessionData.stars+=26;document.getElementById('statStars').textContent=sessionData.stars;}};
   }
   build();upsertDailyActivity({minutes_academic:5,tasks_done:1}).catch(function(){});
-}
-
-
-// ══ FREE ONLINE LIBRARY ══
-function buildOnlineLibrary() {
-  var section = document.createElement('div');
-  section.style.cssText = 'margin-top:24px;';
-  
-  var title = document.createElement('div');
-  title.className = 'section-title';
-  title.textContent = '📚 Free Online Libraries';
-  section.appendChild(title);
-  
-  var grid = document.createElement('div');
-  grid.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;';
-  
-  var libraries = [
-    { name:'Epic! Books', desc:'Thousands of kids books free!', icon:'📗', color:'#4CAF50', url:'https://www.getepic.com/', note:'Free for students' },
-    { name:'Libby', desc:'Free with your library card', icon:'📘', color:'#2196F3', url:'https://libbyapp.com/', note:'Needs library card' },
-    { name:'Storyline Online', desc:'Celebs read kids books aloud', icon:'🎭', color:'#9C27B0', url:'https://storylineonline.net/', note:'Free read-alouds' },
-    { name:'Open Library', desc:'Millions of free books online', icon:'🌐', color:'#FF5722', url:'https://openlibrary.org/subjects/children', note:'Free & open' },
-    { name:'Unite for Literacy', desc:'Free picture books with audio', icon:'🔊', color:'#FF9800', url:'https://www.uniteforliteracy.com/', note:'Free audio books' },
-    { name:'International Digital Library', desc:'Books in many languages', icon:'🌍', color:'#00BCD4', url:'http://en.childrenslibrary.org/', note:'Free & multilingual' },
-  ];
-  
-  libraries.forEach(function(lib) {
-    var card = document.createElement('div');
-    card.style.cssText = 'background:white;border-radius:18px;padding:14px 12px;box-shadow:0 2px 12px rgba(45,45,78,.08);cursor:pointer;text-align:center;';
-    card.onclick = function() { window.open(lib.url, '_blank'); };
-    card.innerHTML = '<div style="font-size:2rem;margin-bottom:6px;">'+lib.icon+'</div>' +
-      '<div style="font-weight:800;font-size:.85rem;color:#2D2D4E;margin-bottom:3px;">'+lib.name+'</div>' +
-      '<div style="font-size:.72rem;color:#888;margin-bottom:6px;">'+lib.desc+'</div>' +
-      '<div style="background:'+lib.color+';color:white;font-size:.68rem;font-weight:800;border-radius:20px;padding:3px 8px;display:inline-block;">'+lib.note+'</div>';
-    grid.appendChild(card);
-  });
-  
-  section.appendChild(grid);
-  return section;
 }
 
 let deferredPrompt;
