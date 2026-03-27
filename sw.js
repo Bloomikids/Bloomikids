@@ -1,26 +1,26 @@
-// BloomiKids Service Worker v99 - FORCE FRESH
-const CACHE_NAME = 'bloomikids-v99';
+const CACHE = 'bloomikids-v99';
+const OFFLINE = ['/app.html', '/manifest.json'];
 
-// On install - take control immediately  
-self.addEventListener('install', event => {
+self.addEventListener('install', e => {
   self.skipWaiting();
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(OFFLINE)));
 });
 
-// On activate - delete ALL old caches
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys => 
-      Promise.all(keys.map(key => {
-        console.log('Deleting cache:', key);
-        return caches.delete(key);
-      }))
+self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
     ).then(() => self.clients.claim())
   );
 });
 
-// Fetch - ALWAYS go to network first, never serve stale
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    fetch(event.request).catch(() => caches.match(event.request))
+self.addEventListener('fetch', e => {
+  // Always go to network first, cache as fallback
+  e.respondWith(
+    fetch(e.request).then(r => {
+      const clone = r.clone();
+      caches.open(CACHE).then(c => c.put(e.request, clone));
+      return r;
+    }).catch(() => caches.match(e.request))
   );
 });
