@@ -285,7 +285,7 @@ body.grade-1 .quiz-opt { padding:18px; font-size:1.1rem; }
 .pose-card[data-color="sun"]::before     { background:var(--sunshine); }
 .pose-card[data-color="sky"]::before     { background:var(--sky); }
 .pose-illustration { width:110px; height:110px; margin:0 auto 10px; display:block; position:relative; z-index:1; }
-img.pose-illustration { width:100% !important; height:110px !important; object-fit:cover; border-radius:12px; margin:0 0 8px; display:block; }
+img.pose-illustration { width:100% !important; height:150px !important; object-fit:cover; border-radius:12px; margin:0 0 8px; display:block; }
 .pose-name   { font-family:'Baloo 2',cursive; font-weight:800; font-size:1rem; color:var(--text); position:relative; z-index:1; }
 .pose-tip    { color:var(--muted); font-size:.78rem; margin-top:4px; font-weight:600; line-height:1.4; position:relative; z-index:1; }
 .pose-level  { position:absolute; top:10px; right:10px; padding:3px 10px; border-radius:20px; font-size:.7rem; font-weight:700; z-index:2; }
@@ -295,8 +295,8 @@ img.pose-illustration { width:100% !important; height:110px !important; object-f
 body.grade-prek .pose-illustration, body.grade-k .pose-illustration, body.grade-1 .pose-illustration { width:130px; height:130px; }
 body.grade-prek .pose-name, body.grade-k .pose-name, body.grade-1 .pose-name { font-size:1.15rem; }
 
-.timer-box { background:linear-gradient(135deg,#C9B8FF,#8B6FE8); border-radius:20px; padding:16px 20px; text-align:center; color:white; margin-bottom:20px; box-shadow:0 4px 20px rgba(139,111,232,.3); }
-.timer-display { font-family:'Baloo 2',cursive; font-size:5rem; font-weight:800; letter-spacing:4px; margin:10px 0; }
+.timer-box { background:linear-gradient(135deg,#C9B8FF,#8B6FE8); border-radius:20px; padding:12px 16px; text-align:center; color:white; margin-bottom:16px; box-shadow:0 4px 20px rgba(139,111,232,.3); }
+.timer-display { font-family:'Baloo 2',cursive; font-size:3rem; font-weight:800; letter-spacing:3px; margin:6px 0; }
 .timer-label { font-size:1rem; opacity:.85; font-weight:600; }
 .timer-controls { display:flex; justify-content:center; gap:14px; margin-top:18px; }
 .timer-btn { padding:12px 28px; border-radius:40px; border:none; cursor:pointer; font-family:'Nunito',sans-serif; font-weight:800; font-size:1rem; transition:all .2s; }
@@ -985,7 +985,7 @@ const GRADE_DATA = {
       { q:'5 cookies - 2 cookies = ?', opts:['2','3','4','5'], answer:1, subject:'Numbers' },
       { q:'4 balloons - 1 balloon = ?', opts:['2','3','4','5'], answer:1, subject:'Numbers' },
       { q:'🍎 What color is an apple?', opts:['Blue','Red','Green','Purple'], answer:1, subject:'Colors' },
-      { q:'Which letter is this? 🅰', opts:['B','C','A','D'], answer:2, subject:'Letters' },
+      { q:'Which letter is this? 🅰', opts:['B','C','A','D'], answer:2, subject:'Language Arts' },
       { q:'🐱 What does a cat say?', opts:['Moo','Woof','Meow','Quack'], answer:2, subject:'Animals' },
       { q:'Which shape is a circle?', opts:['Square','Circle','Triangle','Rectangle'], answer:1, subject:'Shapes' },
       { q:'🌈 What comes after Red in a rainbow?', opts:['Blue','Orange','Green','Yellow'], answer:1, subject:'Colors' },
@@ -1051,6 +1051,46 @@ const GRADE_DATA = {
       { q:'Who is part of your family?', opts:['Only you','Parents siblings grandparents and more','Only your friends','Only your pets'], answer:1, subject:'Social Studies' },
       { q:'What makes families special?', opts:['They all look the same','They love and care for each other','They all live in the same house','They all have the same name'], answer:1, subject:'Social Studies' },
       { q:'What is a family?', opts:['A group of strangers','People who love and take care of each other','Only a mom and dad','Only brothers and sisters'], answer:1, subject:'Social Studies' },
+    
+      // More Colors (total 10)
+      { q:'What color do red and yellow make?', opts:['Purple','Orange','Green','Brown'], answer:1, subject:'Colors' },
+      { q:'What color is the sky on a sunny day?', opts:['Green','Blue','Red','Yellow'], answer:1, subject:'Colors' },
+      { q:'What color is grass?', opts:['Blue','Red','Green','Orange'], answer:2, subject:'Colors' },
+      { q:'What color is a fire truck?', opts:['Blue','Green','Red','Yellow'], answer:2, subject:'Colors' },
+      { q:'What color is snow?', opts:['Gray','Black','White','Yellow'], answer:2, subject:'Colors' },
+      { q:'What color is a pumpkin?', opts:['Blue','Orange','Red','Green'], answer:1, subject:'Colors' },
+      { q:'What color is a strawberry?', opts:['Red','Blue','Yellow','Green'], answer:0, subject:'Colors' },
+      { q:'What color do blue and yellow make?', opts:['Red','Orange','Green','Purple'], answer:2, subject:'Colors' },
+      // More Animals (total 10)
+      { q:'What does a dog say?', opts:['Moo','Woof','Meow','Oink'], answer:1, subject:'Animals' },
+      { q:'What does a cat say?', opts:['Woof','Moo','Meow','Oink'], answer:2, subject:'Animals' },
+      { q:'How many legs does a dog have?', opts:['2','3','4','6'], answer:2, subject:'Animals' },
+      { q:'Which animal gives us milk?', opts:['Dog','Cow','Cat','Fish'], answer:1, subject:'Animals' },
+      { q:'Which animal can fly?', opts:['Dog','Fish','Bird','Cat'], answer:2, subject:'Animals' },
+      { q:'Which animal lives in water?', opts:['Dog','Cat','Fish','Rabbit'], answer:2, subject:'Animals' },
+      { q:'Which animal has a long neck?', opts:['Dog','Elephant','Giraffe','Cat'], answer:2, subject:'Animals' },
+      { q:'What does a duck say?', opts:['Moo','Woof','Quack','Oink'], answer:2, subject:'Animals' },
+      { q:'Which animal hops?', opts:['Fish','Rabbit','Cat','Snake'], answer:1, subject:'Animals' },
+      // More Shapes (total 10)
+      { q:'How many sides does a triangle have?', opts:['2','3','4','5'], answer:1, subject:'Shapes' },
+      { q:'How many sides does a square have?', opts:['3','4','5','6'], answer:1, subject:'Shapes' },
+      { q:'Which shape has no corners?', opts:['Square','Triangle','Rectangle','Circle'], answer:3, subject:'Shapes' },
+      { q:'What shape is a door?', opts:['Circle','Triangle','Rectangle','Star'], answer:2, subject:'Shapes' },
+      { q:'What shape is a pizza?', opts:['Square','Triangle','Circle','Rectangle'], answer:2, subject:'Shapes' },
+      { q:'A pizza slice looks like which shape?', opts:['Circle','Triangle','Square','Heart'], answer:1, subject:'Shapes' },
+      { q:'What shape is a window?', opts:['Circle','Triangle','Rectangle','Star'], answer:2, subject:'Shapes' },
+      { q:'How many corners does a square have?', opts:['2','3','4','5'], answer:2, subject:'Shapes' },
+      { q:'What shape looks like an egg?', opts:['Square','Oval','Triangle','Diamond'], answer:1, subject:'Shapes' },
+      // More Nature (total 10)
+      { q:'When does the sun shine?', opts:['At night','During the day','Never','Underground'], answer:1, subject:'Nature' },
+      { q:'What falls from clouds?', opts:['Stars','Rain','Birds','Leaves'], answer:1, subject:'Nature' },
+      { q:'Which season has the most snow?', opts:['Summer','Spring','Fall','Winter'], answer:3, subject:'Nature' },
+      { q:'What do plants need to grow?', opts:['Candy','Water and sun','Toys','Music'], answer:1, subject:'Nature' },
+      { q:'Which season do flowers bloom?', opts:['Winter','Fall','Spring','Night'], answer:2, subject:'Nature' },
+      { q:'What color are most leaves in fall?', opts:['Blue and purple','Red orange and yellow','Pink and white','Green and black'], answer:1, subject:'Nature' },
+      { q:'Which is the hottest season?', opts:['Winter','Spring','Fall','Summer'], answer:3, subject:'Nature' },
+      { q:'What comes after rain sometimes?', opts:['Snow','Rainbow','Lightning','Tornado'], answer:1, subject:'Nature' },
+      { q:'What do trees give us?', opts:['Rain','Air and shade','Music','Light'], answer:1, subject:'Nature' },
     ],
     subjects_progress:['Numbers Fun','ABC Time','Colors & Art'],
     poses:[
@@ -1118,16 +1158,16 @@ const GRADE_DATA = {
       { q:'Which number is biggest: 5, 3, 8, 6?', opts:['5','3','8','6'], answer:2, subject:'Counting' },
       { q:'What is 3 + 3 + 3?', opts:['6','7','8','9'], answer:2, subject:'Counting' },
       // Letters (10)
-      { q:'What letter comes after D?', opts:['C','D','E','F'], answer:2, subject:'Letters' },
-      { q:'Which letter starts the word "Sun"?', opts:['A','R','S','T'], answer:2, subject:'Letters' },
-      { q:'What sound does the letter M make?', opts:['Sss','Mmm','Rrr','Lll'], answer:1, subject:'Letters' },
-      { q:'Which word starts with B?', opts:['Apple','Ball','Cat','Dog'], answer:1, subject:'Letters' },
-      { q:'What is the last letter of the alphabet?', opts:['X','Y','Z','W'], answer:2, subject:'Letters' },
-      { q:'How many letters are in CAT?', opts:['2','3','4','5'], answer:1, subject:'Letters' },
-      { q:'Which letter does ELEPHANT start with?', opts:['A','E','I','O'], answer:1, subject:'Letters' },
-      { q:'What letter comes before F?', opts:['D','E','G','H'], answer:1, subject:'Letters' },
-      { q:'Which word rhymes with CAT?', opts:['Dog','Hat','Sun','Bed'], answer:1, subject:'Letters' },
-      { q:'What letter makes the "Buh" sound?', opts:['B','D','P','Q'], answer:0, subject:'Letters' },
+      { q:'What letter comes after D?', opts:['C','D','E','F'], answer:2, subject:'Language Arts' },
+      { q:'Which letter starts the word "Sun"?', opts:['A','R','S','T'], answer:2, subject:'Language Arts' },
+      { q:'What sound does the letter M make?', opts:['Sss','Mmm','Rrr','Lll'], answer:1, subject:'Language Arts' },
+      { q:'Which word starts with B?', opts:['Apple','Ball','Cat','Dog'], answer:1, subject:'Language Arts' },
+      { q:'What is the last letter of the alphabet?', opts:['X','Y','Z','W'], answer:2, subject:'Language Arts' },
+      { q:'How many letters are in CAT?', opts:['2','3','4','5'], answer:1, subject:'Language Arts' },
+      { q:'Which letter does ELEPHANT start with?', opts:['A','E','I','O'], answer:1, subject:'Language Arts' },
+      { q:'What letter comes before F?', opts:['D','E','G','H'], answer:1, subject:'Language Arts' },
+      { q:'Which word rhymes with CAT?', opts:['Dog','Hat','Sun','Bed'], answer:1, subject:'Language Arts' },
+      { q:'What letter makes the "Buh" sound?', opts:['B','D','P','Q'], answer:0, subject:'Language Arts' },
       // Colors (10)
       { q:'What color is the sky on a sunny day?', opts:['Green','Blue','Red','Yellow'], answer:1, subject:'Colors' },
       { q:'What color do red and blue make?', opts:['Orange','Green','Purple','Brown'], answer:2, subject:'Colors' },
@@ -2171,6 +2211,12 @@ async function selectChild(child) {
 
 function applyGradeUI() {
   const ui = gradeContent.ui;
+  // Hide drawing prompt for young grades
+  const isYoung = activeGrade==='PreK'||activeGrade==='K';
+  const dpSection = document.querySelector('.draw-prompt-box');
+  const dpTitle = dpSection && dpSection.previousElementSibling;
+  if(dpSection) dpSection.style.display = isYoung ? 'none' : '';
+  if(dpTitle && dpTitle.textContent && dpTitle.textContent.includes('Drawing Prompt')) dpTitle.style.display = isYoung ? 'none' : '';
   function setEl(id, val) { const e=document.getElementById(id); if(e&&val!==undefined) e.textContent=val; }
   setEl('appSubtitle', ui.subtitle);
   setEl('streakTitle', ui.streakTitle);
@@ -2326,7 +2372,7 @@ function buildYogaGrid() {
     // ✅ FIX 3: img has onerror that hides it and shows SVG fallback
     const illustration = photo
       ? `<img src="${photo.src}" alt="${p.name}" class="pose-illustration"
-           style="object-fit:cover;border-radius:16px;object-position:${photo.pos};width:100%;height:130px;"
+           style="object-fit:cover;border-radius:14px;object-position:${photo.pos};width:100%;height:150px;"
            onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
          <div class="pose-illustration" style="display:none;">${getPoseSVG(p.name)}</div>`
       : `<div class="pose-illustration">${getPoseSVG(p.name)}</div>`;
@@ -2485,7 +2531,7 @@ function selectPose(el,name,secs) {
     img.id = 'timerPosePreview';
     img.src = photo.src;
     img.alt = name;
-    img.style.cssText = 'width:100%;max-height:180px;object-fit:cover;border-radius:16px;margin-bottom:12px;display:block;';
+    img.style.cssText = 'width:100%;height:220px;object-fit:cover;object-position:'+( photo.pos||'center 20%')+';border-radius:16px;margin-bottom:10px;display:block;';
     img.onerror = function() { this.style.display='none'; };
     if (timerBox) timerBox.insertBefore(img, timerBox.firstChild);
   }
@@ -3568,16 +3614,25 @@ async function startSubject(name) {
 
 function buildOnlineLibrary(){
   var wrap=document.createElement('div');wrap.style.cssText='margin-top:24px;';
-  var title=document.createElement('div');title.className='section-title';title.textContent='📚 Free Online Libraries';wrap.appendChild(title);
+  var title=document.createElement('div');title.className='section-title';title.textContent='📚 Free Online Libraries';
+  title.style.cssText='font-size:1.1rem;font-weight:900;margin:20px 0 6px;';wrap.appendChild(title);
   var sub=document.createElement('div');sub.style.cssText='font-size:.82rem;color:var(--muted);margin:6px 0 14px;';sub.textContent='Access thousands of books for free — no local library needed!';wrap.appendChild(sub);
   var grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:12px;';
-  var libs=[
+  var isYoungReader = activeGrade==='PreK'||activeGrade==='K'||activeGrade==='1'||activeGrade==='2';
+  var libs = isYoungReader ? [
+    {name:'Storyline Online',desc:'Celebrities read books aloud!',icon:'🎭',color:'#9C27B0',url:'https://storylineonline.net/',note:'Free read-alouds'},
     {name:'Epic! Books',desc:'1000s of kids books & videos',icon:'📗',color:'#4CAF50',url:'https://www.getepic.com/',note:'Free for students'},
-    {name:'Libby App',desc:'Free with library card',icon:'📘',color:'#2196F3',url:'https://libbyapp.com/',note:'Free with card'},
-    {name:'Storyline Online',desc:'Celebrities read aloud',icon:'🎭',color:'#9C27B0',url:'https://storylineonline.net/',note:'Free videos'},
-    {name:'Open Library',desc:'Millions of books online',icon:'🌐',color:'#FF5722',url:'https://openlibrary.org/subjects/children',note:'Free & open'},
-    {name:'Unite for Literacy',desc:'Picture books with audio',icon:'🔊',color:'#FF9800',url:'https://www.uniteforliteracy.com/',note:'Free audio'},
-    {name:'Digital Public Library',desc:'Books in many languages',icon:'🌍',color:'#00BCD4',url:'https://dp.la/exhibitions',note:'Free always'},
+    {name:'Unite for Literacy',desc:'Picture books with audio',icon:'🔊',color:'#FF9800',url:'https://www.uniteforliteracy.com/',note:'Free always'},
+    {name:'Libby App',desc:'Free with library card',icon:'📘',color:'#2196F3',url:'https://libbyapp.com/',note:'Needs library card'},
+    {name:'Open Library',desc:'Borrow books online free',icon:'🌐',color:'#FF5722',url:'https://openlibrary.org/',note:'Free & open'},
+    {name:'International Library',desc:'Books in many languages',icon:'🌍',color:'#00BCD4',url:'http://en.childrenslibrary.org/',note:'Free always'},
+  ] : [
+    {name:'Libby App',desc:'Thousands of free ebooks & audiobooks',icon:'📘',color:'#2196F3',url:'https://libbyapp.com/',note:'Free with card'},
+    {name:'Open Library',desc:'Borrow millions of books online',icon:'🌐',color:'#FF5722',url:'https://openlibrary.org/',note:'Free & open'},
+    {name:'Storyline Online',desc:'Award-winning read-alouds',icon:'🎭',color:'#9C27B0',url:'https://storylineonline.net/',note:'Free videos'},
+    {name:'Epic! Books',desc:'Books learning videos quizzes',icon:'📗',color:'#4CAF50',url:'https://www.getepic.com/',note:'Free for students'},
+    {name:'Project Gutenberg',desc:'Free classic literature',icon:'📜',color:'#795548',url:'https://www.gutenberg.org/',note:'Free classics'},
+    {name:'CommonLit',desc:'Reading passages with questions',icon:'🎓',color:'#3F51B5',url:'https://www.commonlit.org/',note:'Free for students'},
   ];
   libs.forEach(function(lib){
     var card=document.createElement('div');
@@ -3585,139 +3640,75 @@ function buildOnlineLibrary(){
     card.onmouseenter=function(){this.style.transform='translateY(-2px)';};
     card.onmouseleave=function(){this.style.transform='none';};
     card.onclick=function(){window.open(lib.url,'_blank');};
-    card.innerHTML='<div style="font-size:2rem;margin-bottom:6px;">'+lib.icon+'</div>'+
-      '<div style="font-weight:800;font-size:.85rem;color:#2D2D4E;margin-bottom:3px;">'+lib.name+'</div>'+
-      '<div style="font-size:.72rem;color:#888;margin-bottom:6px;">'+lib.desc+'</div>'+
-      '<div style="background:'+lib.color+';color:white;font-size:.68rem;font-weight:800;border-radius:20px;padding:3px 8px;display:inline-block;">'+lib.note+'</div>';
+    card.innerHTML=
+      '<div style="font-size:2.2rem;margin-bottom:8px;">'+lib.icon+'</div>'+
+      '<div style="font-weight:800;font-size:.9rem;color:#2D2D4E;margin-bottom:4px;line-height:1.2;">'+lib.name+'</div>'+
+      '<div style="font-size:.75rem;color:#666;margin-bottom:8px;line-height:1.3;">'+lib.desc+'</div>'+
+      '<div style="background:'+lib.color+';color:white;font-size:.7rem;font-weight:800;border-radius:20px;padding:4px 10px;display:inline-block;">'+lib.note+'</div>';
     grid.appendChild(card);
   });
   wrap.appendChild(grid);return wrap;
 }
 
-function openBookReader(title,ytUrl){
-  var m=ytUrl&&ytUrl.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
-  var vid=m?m[1]:null;
-  var su='https://www.youtube.com/results?search_query='+encodeURIComponent(title+' read aloud children');
-  var ov=document.createElement('div');ov.id='bookOv';ov.style.cssText='position:fixed;inset:0;z-index:9999;background:#0A0A1A;display:flex;flex-direction:column;';
-  var hdr=document.createElement('div');hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#1A1A2E;flex-shrink:0;';
-  var ht=document.createElement('div');ht.style.cssText='font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:white;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:75%;';ht.textContent='📖 '+title;
-  var hc=document.createElement('button');hc.textContent='✕';hc.style.cssText='background:rgba(255,255,255,.15);border:none;color:white;border-radius:50%;width:34px;height:34px;font-size:1rem;cursor:pointer;font-weight:800;';hc.onclick=function(){ov.remove();};
-  hdr.appendChild(ht);hdr.appendChild(hc);ov.appendChild(hdr);
-  var body=document.createElement('div');body.style.cssText='flex:1;min-height:0;display:flex;flex-direction:column;';
-  if(vid){
-    var ifr=document.createElement('iframe');
-    ifr.src='https://www.youtube-nocookie.com/embed/'+vid+'?autoplay=1&playsinline=1&rel=0&modestbranding=1';
-    ifr.style.cssText='flex:1;width:100%;border:none;display:block;';
-    ifr.setAttribute('allow','autoplay;encrypted-media');ifr.setAttribute('allowfullscreen','');
-    body.appendChild(ifr);
-    var fb=document.createElement('div');fb.style.cssText='padding:8px 16px;background:#1A1A2E;text-align:center;flex-shrink:0;';
-    var fbt=document.createElement('span');fbt.style.cssText='color:rgba(255,255,255,.45);font-size:.75rem;';fbt.textContent='Video not loading? ';
-    var fbl=document.createElement('button');fbl.textContent='Search YouTube →';fbl.style.cssText='background:none;border:none;color:#4ECDC4;font-size:.75rem;font-weight:700;cursor:pointer;';fbl.onclick=function(){window.open(su,'_blank');};
-    fb.appendChild(fbt);fb.appendChild(fbl);body.appendChild(fb);
-  } else {
-    body.style.cssText+='align-items:center;justify-content:center;gap:16px;padding:32px 24px;text-align:center;';
-    var si=document.createElement('div');si.style.cssText='font-size:3.5rem;';si.textContent='📺';body.appendChild(si);
-    var st2=document.createElement('div');st2.style.cssText='color:white;font-weight:800;font-size:1.1rem;';st2.textContent=title;body.appendChild(st2);
-    var ss=document.createElement('div');ss.style.cssText='color:rgba(255,255,255,.6);font-size:.88rem;';ss.textContent='Find the read-aloud on YouTube';body.appendChild(ss);
-    var sb3=document.createElement('button');sb3.textContent='🔍 Search YouTube';sb3.style.cssText='background:linear-gradient(135deg,#FF6B6B,#FFD166);color:white;border:none;border-radius:40px;padding:14px 32px;font-weight:800;font-size:1rem;cursor:pointer;';sb3.onclick=function(){window.open(su,'_blank');};body.appendChild(sb3);
-  }
-  ov.appendChild(body);
-  var ftr=document.createElement('div');ftr.style.cssText='display:flex;gap:8px;padding:10px 16px;background:#1A1A2E;flex-shrink:0;';
-  var db=document.createElement('button');db.textContent='✅ Done Reading +10 ⭐';db.style.cssText='flex:1;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;border:none;border-radius:40px;padding:12px 20px;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;';
-  db.onclick=async function(){ov.remove();try{await upsertDailyActivity({minutes_reading:10});await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:10});sessionData.stars+=10;document.getElementById('statStars').textContent=sessionData.stars;toast('📖 +10 stars! ⭐');}catch(e){}};
-  ftr.appendChild(db);ov.appendChild(ftr);document.body.appendChild(ov);
-}
+function openBookReader(title, ytUrl) {
+  var m = ytUrl && ytUrl.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  var vid = m ? m[1] : null;
+  var searchUrl = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(title + ' read aloud children');
+  var directUrl = vid ? ('https://www.youtube.com/watch?v=' + vid) : searchUrl;
 
-function buildDrawingCanvas(container){
-  var COLORS=['#FF6B6B','#FF8E53','#FFD166','#5ECDA0','#4ECDC4','#C9B8FF','#8B6FE8','#2D2D4E','#000000','#FFFFFF'];
-  var SIZES=[3,6,12,20];var SL=['S','M','L','XL'];
-  var tool='pen',color='#FF6B6B',size=6;
-  var wrap=document.createElement('div');wrap.style.cssText='background:white;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:16px;';
-  var tb=document.createElement('div');tb.style.cssText='display:flex;align-items:center;gap:6px;padding:10px 12px;background:#F8F6FF;border-bottom:2px solid #EDE9FF;flex-wrap:wrap;';
-  var tbtns={};
-  [{id:'pen',ico:'✏️'},{id:'brush',ico:'🖌️'},{id:'eraser',ico:'🧹'}].forEach(function(t){
-    var b=document.createElement('button');b.textContent=t.ico;
-    b.style.cssText='width:34px;height:34px;border-radius:10px;border:2px solid '+(t.id==='pen'?'var(--lavender)':'transparent')+';background:'+(t.id==='pen'?'#EDE9FF':'white')+';cursor:pointer;font-size:1rem;';
-    b.onclick=function(){tool=t.id;Object.values(tbtns).forEach(function(x){x.style.borderColor='transparent';x.style.background='white';});b.style.borderColor='var(--lavender)';b.style.background='#EDE9FF';};
-    tbtns[t.id]=b;tb.appendChild(b);
-  });
-  var sep=document.createElement('div');sep.style.cssText='width:1px;height:22px;background:#E0DAFF;';tb.appendChild(sep);
-  var cdots=[];
-  COLORS.forEach(function(c,i){
-    var d=document.createElement('div');
-    d.style.cssText='width:24px;height:24px;border-radius:50%;background:'+c+';border:3px solid '+(i===0?'#2D2D4E':'transparent')+';cursor:pointer;flex-shrink:0;'+(c==='#FFFFFF'?'outline:1px solid #ccc;':'');
-    d.onclick=function(){color=c;cdots.forEach(function(x){x.style.borderColor='transparent';});d.style.borderColor='#2D2D4E';if(tool==='eraser'){tool='pen';tbtns.pen.style.borderColor='var(--lavender)';tbtns.pen.style.background='#EDE9FF';tbtns.eraser.style.borderColor='transparent';tbtns.eraser.style.background='white';}};
-    cdots.push(d);tb.appendChild(d);
-  });
-  var sep2=document.createElement('div');sep2.style.cssText='width:1px;height:22px;background:#E0DAFF;';tb.appendChild(sep2);
-  var sbtns=[];
-  SIZES.forEach(function(s,i){
-    var b=document.createElement('button');b.textContent=SL[i];
-    b.style.cssText='padding:3px 9px;border-radius:20px;border:2px solid '+(i===1?'var(--lavender)':'#E0DAFF')+';background:'+(i===1?'var(--lavender)':'white')+';color:'+(i===1?'white':'var(--body)')+';font-size:.72rem;font-weight:800;cursor:pointer;';
-    b.onclick=function(){size=s;sbtns.forEach(function(x){x.style.borderColor='#E0DAFF';x.style.background='white';x.style.color='var(--body)';});b.style.borderColor='var(--lavender)';b.style.background='var(--lavender)';b.style.color='white';};
-    sbtns.push(b);tb.appendChild(b);
-  });
-  wrap.appendChild(tb);
-  var cv=document.createElement('canvas');cv.style.cssText='display:block;width:100%;cursor:crosshair;touch-action:none;';cv.height=Math.min(360,Math.round(window.innerWidth*0.65));wrap.appendChild(cv);
-  var act=document.createElement('div');act.style.cssText='display:flex;gap:8px;padding:10px 12px;background:#F8F6FF;border-top:2px solid #EDE9FF;';
-  var clrB=document.createElement('button');clrB.textContent='🗑️ Clear';clrB.style.cssText='flex:1;padding:10px;border-radius:14px;border:none;background:#FFF0EE;color:var(--coral);font-family:Nunito,sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;';act.appendChild(clrB);
-  var savB=document.createElement('button');savB.textContent='💾 Save Art! +20 ⭐';savB.style.cssText='flex:2;padding:10px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;';act.appendChild(savB);
-  wrap.appendChild(act);container.appendChild(wrap);
-  setTimeout(function(){
-    cv.width=cv.offsetWidth||360;var ctx=cv.getContext('2d');ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,cv.width,cv.height);
-    clrB.onclick=function(){ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,cv.width,cv.height);toast('🎨 Cleared!');};
-    savB.onclick=async function(){var a=document.createElement('a');a.download='bloomikids-art.png';a.href=cv.toDataURL();a.click();try{await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:20});sessionData.stars+=20;document.getElementById('statStars').textContent=sessionData.stars;}catch(e){}toast('💾 Art saved! +20 ⭐');};
-    var ptg=false,lx=0,ly=0;
-    function gp(e){var r=cv.getBoundingClientRect(),s=e.touches?e.touches[0]:e;return{x:(s.clientX-r.left)*(cv.width/r.width),y:(s.clientY-r.top)*(cv.height/r.height)};}
-    function st(e){ptg=true;var p=gp(e);lx=p.x;ly=p.y;}
-    function dr(e){if(!ptg)return;var p=gp(e);ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(p.x,p.y);ctx.strokeStyle=tool==='eraser'?'#FFFFFF':color;ctx.lineWidth=tool==='eraser'?size*3:tool==='brush'?size*2:size;ctx.lineCap='round';ctx.setLineDash([]);ctx.globalAlpha=tool==='brush'?0.7:1;ctx.stroke();ctx.globalAlpha=1;lx=p.x;ly=p.y;}
-    cv.addEventListener('mousedown',st);cv.addEventListener('mousemove',dr);cv.addEventListener('mouseup',function(){ptg=false;});cv.addEventListener('mouseleave',function(){ptg=false;});
-    cv.addEventListener('touchstart',function(e){e.preventDefault();st(e);},{passive:false});
-    cv.addEventListener('touchmove',function(e){e.preventDefault();dr(e);},{passive:false});
-    cv.addEventListener('touchend',function(){ptg=false;},{passive:false});
-  },50);
-}
+  var ov = document.createElement('div');
+  ov.id = 'bookOv';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(10,10,26,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;';
 
-function showLetterTracing(){
-  var LETTERS='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-  var WORDS={A:'Apple',B:'Bear',C:'Cat',D:'Dog',E:'Egg',F:'Fish',G:'Goat',H:'Hat',I:'Ice Cream',J:'Jar',K:'Kite',L:'Lion',M:'Moon',N:'Nest',O:'Orange',P:'Pig',Q:'Queen',R:'Rainbow',S:'Sun',T:'Tree',U:'Umbrella',V:'Volcano',W:'Whale',X:'X-ray',Y:'Yarn',Z:'Zebra'};
-  var EMOJIS={A:'🍎',B:'🐻',C:'🐱',D:'🐶',E:'🥚',F:'🐟',G:'🐐',H:'🎩',I:'🍦',J:'🫙',K:'🪁',L:'🦁',M:'🌙',N:'🪺',O:'🍊',P:'🐷',Q:'👑',R:'🌈',S:'🌞',T:'🌳',U:'☂️',V:'🌋',W:'🐳',X:'❌',Y:'🧶',Z:'🦓'};
-  var idx=0;
-  function build(){
-    var ex=document.getElementById('ltOv');if(ex)ex.remove();
-    var L=LETTERS[idx];
-    var ov=document.createElement('div');ov.className='modal-overlay';ov.id='ltOv';
-    var card=document.createElement('div');card.className='modal-card';card.style.cssText='max-width:340px;text-align:center;padding:22px 20px;';
-    var num=document.createElement('div');num.style.cssText='font-size:.7rem;font-weight:800;letter-spacing:2px;color:var(--muted);margin-bottom:10px;';num.textContent='LETTER '+(idx+1)+' OF 26';card.appendChild(num);
-    var row=document.createElement('div');row.style.cssText='display:flex;align-items:center;justify-content:center;gap:24px;margin-bottom:8px;';
-    var big=document.createElement('span');big.style.cssText='font-family:Baloo 2,cursive;font-size:5rem;font-weight:800;color:var(--coral);line-height:1;';big.textContent=L;
-    var sml=document.createElement('span');sml.style.cssText='font-family:Baloo 2,cursive;font-size:4rem;font-weight:800;color:var(--mint);line-height:1;';sml.textContent=L.toLowerCase();
-    row.appendChild(big);row.appendChild(sml);card.appendChild(row);
-    var wd=document.createElement('div');wd.style.cssText='font-size:1.1rem;font-weight:700;color:var(--body);margin-bottom:12px;';wd.textContent=(EMOJIS[L]||'')+' '+(WORDS[L]||'');card.appendChild(wd);
-    var hint=document.createElement('div');hint.style.cssText='font-size:.8rem;color:var(--muted);margin-bottom:10px;';hint.textContent='✏️ Trace the letter with your finger!';card.appendChild(hint);
-    var cv=document.createElement('canvas');cv.id='ltC';cv.width=260;cv.height=180;cv.style.cssText='border:3px dashed #C9B8FF;border-radius:16px;touch-action:none;cursor:crosshair;background:#FAFAFF;display:block;margin:0 auto;';card.appendChild(cv);
-    var br=document.createElement('div');br.style.cssText='display:flex;gap:8px;margin-top:14px;';
-    var clr=document.createElement('button');clr.textContent='🗑 Clear';clr.style.cssText='padding:10px 12px;border-radius:40px;border:2px solid #E0DAFF;background:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.82rem;cursor:pointer;color:#888;';br.appendChild(clr);
-    if(idx>0){var bk=document.createElement('button');bk.textContent='← Back';bk.style.cssText='flex:1;padding:10px;border-radius:40px;border:none;background:#F0F0F8;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';bk.onclick=function(){idx--;build();};br.appendChild(bk);}
-    var nx=document.createElement('button');nx.textContent=idx<25?'Next →':'🎉 Done!';nx.style.cssText='flex:2;padding:10px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';br.appendChild(nx);card.appendChild(br);
-    var cl=document.createElement('button');cl.textContent='✕ Close';cl.style.cssText='margin-top:10px;width:100%;padding:8px;border-radius:40px;border:none;background:transparent;color:var(--muted);font-family:Nunito,sans-serif;font-weight:700;cursor:pointer;font-size:.82rem;';cl.onclick=function(){ov.remove();};card.appendChild(cl);
-    ov.appendChild(card);document.body.appendChild(ov);
-    var ctx=cv.getContext('2d');
-    function guide(){ctx.clearRect(0,0,cv.width,cv.height);ctx.fillStyle='#FAFAFF';ctx.fillRect(0,0,cv.width,cv.height);ctx.save();ctx.font='bold 130px Arial,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='rgba(201,184,255,0.25)';ctx.fillText(L,cv.width/2,cv.height/2+8);ctx.strokeStyle='rgba(139,111,232,0.5)';ctx.lineWidth=10;ctx.setLineDash([8,6]);ctx.strokeText(L,cv.width/2,cv.height/2+8);ctx.restore();}
-    guide();clr.onclick=guide;
-    var ptg=false,lx=0,ly=0;
-    function gp(e){var r=cv.getBoundingClientRect(),s=e.touches?e.touches[0]:e;return{x:(s.clientX-r.left)*(cv.width/r.width),y:(s.clientY-r.top)*(cv.height/r.height)};}
-    cv.addEventListener('mousedown',function(e){ptg=true;var p=gp(e);lx=p.x;ly=p.y;});
-    cv.addEventListener('mousemove',function(e){if(!ptg)return;var p=gp(e);ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(p.x,p.y);ctx.strokeStyle='#FF6B6B';ctx.lineWidth=9;ctx.lineCap='round';ctx.setLineDash([]);ctx.stroke();lx=p.x;ly=p.y;});
-    cv.addEventListener('mouseup',function(){ptg=false;});cv.addEventListener('mouseleave',function(){ptg=false;});
-    cv.addEventListener('touchstart',function(e){e.preventDefault();ptg=true;var p=gp(e);lx=p.x;ly=p.y;},{passive:false});
-    cv.addEventListener('touchmove',function(e){e.preventDefault();if(!ptg)return;var p=gp(e);ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(p.x,p.y);ctx.strokeStyle='#FF6B6B';ctx.lineWidth=9;ctx.lineCap='round';ctx.setLineDash([]);ctx.stroke();lx=p.x;ly=p.y;},{passive:false});
-    cv.addEventListener('touchend',function(){ptg=false;},{passive:false});
-    nx.onclick=function(){if(idx<25){idx++;build();}else{ov.remove();toast('🎉 All 26 letters traced! +26 ⭐');sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:26}).catch(function(){});sessionData.stars+=26;document.getElementById('statStars').textContent=sessionData.stars;}};
-  }
-  build();upsertDailyActivity({minutes_academic:5,tasks_done:1}).catch(function(){});
-}
+  var card = document.createElement('div');
+  card.style.cssText = 'background:white;border-radius:28px;overflow:hidden;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.4);';
 
+  // Header
+  var hdr = document.createElement('div');
+  hdr.style.cssText = 'background:linear-gradient(135deg,#8B6FE8,#C9B8FF);padding:24px 20px;text-align:center;';
+  hdr.innerHTML = '<div style="font-size:3rem;margin-bottom:8px;">📖</div>' +
+    '<div style="font-family:Baloo 2,cursive;font-size:1.2rem;font-weight:800;color:white;line-height:1.3;">' + title + '</div>';
+  card.appendChild(hdr);
+
+  // Body
+  var body = document.createElement('div');
+  body.style.cssText = 'padding:24px 20px;text-align:center;';
+  body.innerHTML = '<div style="font-size:.95rem;color:#555;margin-bottom:20px;line-height:1.5;">Tap below to watch the read-aloud video on YouTube. YouTube keeps kids safe and videos always work!</div>';
+
+  // Primary button - open YouTube
+  var ytBtn = document.createElement('button');
+  ytBtn.style.cssText = 'width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,#FF0000,#CC0000);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px;';
+  ytBtn.innerHTML = '<span style="font-size:1.3rem;">▶</span> Watch Read-Aloud on YouTube';
+  ytBtn.onclick = function() { window.open(directUrl, '_blank'); };
+  body.appendChild(ytBtn);
+
+  // Done reading button
+  var doneBtn = document.createElement('button');
+  doneBtn.style.cssText = 'width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;margin-bottom:10px;';
+  doneBtn.textContent = '✅ I Read This Book! +10 ⭐';
+  doneBtn.onclick = async function() {
+    ov.remove();
+    try {
+      await upsertDailyActivity({minutes_reading:10});
+      await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:10});
+      sessionData.stars+=10;
+      document.getElementById('statStars').textContent=sessionData.stars;
+      toast('📖 Great reading! +10 stars ⭐');
+    } catch(e) {}
+  };
+  body.appendChild(doneBtn);
+
+  // Close
+  var closeBtn = document.createElement('button');
+  closeBtn.style.cssText = 'background:none;border:none;color:#aaa;font-family:Nunito,sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;width:100%;padding:4px;';
+  closeBtn.textContent = '✕ Close';
+  closeBtn.onclick = function() { ov.remove(); };
+  body.appendChild(closeBtn);
+
+  card.appendChild(body);
+  ov.appendChild(card);
+  document.body.appendChild(ov);
+}
 
 function closeMathGame(){var e=document.getElementById('mathGameOv');if(e)e.remove();}
 function closeLangGame(){var e=document.getElementById('langGameOv');if(e)e.remove();}
