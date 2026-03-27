@@ -295,7 +295,7 @@ img.pose-illustration { width:100% !important; height:150px !important; object-f
 body.grade-prek .pose-illustration, body.grade-k .pose-illustration, body.grade-1 .pose-illustration { width:130px; height:130px; }
 body.grade-prek .pose-name, body.grade-k .pose-name, body.grade-1 .pose-name { font-size:1.15rem; }
 
-.timer-box { background:linear-gradient(135deg,#C9B8FF,#8B6FE8); border-radius:20px; padding:12px 16px; text-align:center; color:white; margin-bottom:16px; box-shadow:0 4px 20px rgba(139,111,232,.3); }
+.timer-box { background:linear-gradient(135deg,#C9B8FF,#8B6FE8); border-radius:18px; padding:10px 16px 14px; text-align:center; color:white; margin-bottom:16px; box-shadow:0 4px 20px rgba(139,111,232,.3); }
 .timer-display { font-family:'Baloo 2',cursive; font-size:3rem; font-weight:800; letter-spacing:3px; margin:6px 0; }
 .timer-label { font-size:1rem; opacity:.85; font-weight:600; }
 .timer-controls { display:flex; justify-content:center; gap:14px; margin-top:18px; }
@@ -1259,6 +1259,159 @@ const GRADE_DATA = {
       { q:'Which holiday celebrates giving thanks?', opts:['Halloween','Christmas','Thanksgiving','Easter'], answer:2, subject:'Social Studies' },
       { q:'Which holiday is celebrated on July 4th in the USA?', opts:['Thanksgiving','New Years','Independence Day','Halloween'], answer:2, subject:'Social Studies' },
       { q:'Which holiday involves decorating eggs?', opts:['Halloween','Christmas','Thanksgiving','Easter'], answer:3, subject:'Social Studies' },
+    
+      // More Counting (20 more = 30 total)
+      { q:'What is 3 + 3?', opts:['4','5','6','7'], answer:2, subject:'Counting' },
+      { q:'What is 7 - 2?', opts:['3','4','5','6'], answer:2, subject:'Counting' },
+      { q:'Which number comes between 4 and 6?', opts:['3','5','7','8'], answer:1, subject:'Counting' },
+      { q:'What is 1 + 1 + 1?', opts:['2','3','4','5'], answer:1, subject:'Counting' },
+      { q:'How many toes do you have?', opts:['8','9','10','12'], answer:2, subject:'Counting' },
+      { q:'Count by 5s: 5, 10, ___', opts:['12','13','14','15'], answer:3, subject:'Counting' },
+      { q:'What is 9 - 3?', opts:['4','5','6','7'], answer:2, subject:'Counting' },
+      { q:'Which is the biggest number: 3, 7, 5, 1?', opts:['3','7','5','1'], answer:1, subject:'Counting' },
+      { q:'What is 4 + 5?', opts:['7','8','9','10'], answer:2, subject:'Counting' },
+      { q:'How many sides does a square have?', opts:['3','4','5','6'], answer:1, subject:'Counting' },
+      { q:'What is 10 - 4?', opts:['4','5','6','7'], answer:2, subject:'Counting' },
+      { q:'What number comes before 10?', opts:['7','8','9','11'], answer:2, subject:'Counting' },
+      { q:'What is 6 + 3?', opts:['7','8','9','10'], answer:2, subject:'Counting' },
+      { q:'What is 2 + 2 + 2?', opts:['4','5','6','7'], answer:2, subject:'Counting' },
+      { q:'Which number is smallest: 8, 3, 6, 9?', opts:['8','3','6','9'], answer:1, subject:'Counting' },
+      { q:'What is 5 + 5?', opts:['8','9','10','11'], answer:2, subject:'Counting' },
+      { q:'How many months in a year?', opts:['10','11','12','13'], answer:2, subject:'Counting' },
+      { q:'What is 8 - 5?', opts:['1','2','3','4'], answer:2, subject:'Counting' },
+      { q:'Count by 2s: 2, 4, 6, ___', opts:['7','8','9','10'], answer:1, subject:'Counting' },
+      { q:'What is 7 + 2?', opts:['8','9','10','11'], answer:1, subject:'Counting' },
+      // More Language Arts (8 more = 30 total)
+      { q:'What letter comes after Z?', opts:['A','Y','AA','There is none'], answer:3, subject:'Language Arts' },
+      { q:'Which word is an animal?', opts:['Run','Happy','Dog','Blue'], answer:2, subject:'Language Arts' },
+      { q:'How many letters in DOG?', opts:['2','3','4','5'], answer:1, subject:'Language Arts' },
+      { q:'Which word starts with the letter P?', opts:['Apple','Ball','Pig','Dog'], answer:2, subject:'Language Arts' },
+      { q:'What makes a sentence complete?', opts:['Just a noun','A subject and a verb','Just a verb','Just a question mark'], answer:1, subject:'Language Arts' },
+      { q:'Which word rhymes with TREE?', opts:['Far','See','Big','Run'], answer:1, subject:'Language Arts' },
+      { q:'What is the first letter of ELEPHANT?', opts:['A','E','I','O'], answer:1, subject:'Language Arts' },
+      { q:'Which sentence is correct?', opts:['the dog ran.','The dog ran.','The Dog ran.','the Dog ran.'], answer:1, subject:'Language Arts' },
+      // More Colors (20 more = 30 total)
+      { q:'What color do you get mixing red and white?', opts:['Purple','Pink','Orange','Brown'], answer:1, subject:'Colors' },
+      { q:'What color is a blueberry?', opts:['Red','Green','Blue','Yellow'], answer:2, subject:'Colors' },
+      { q:'What color is mud?', opts:['Blue','Brown','Green','White'], answer:1, subject:'Colors' },
+      { q:'What color is the sun at sunset?', opts:['Blue','Green','Orange','Black'], answer:2, subject:'Colors' },
+      { q:'What colors make green?', opts:['Red and blue','Blue and yellow','Red and yellow','Black and white'], answer:1, subject:'Colors' },
+      { q:'What color is an elephant?', opts:['Brown','Gray','Black','White'], answer:1, subject:'Colors' },
+      { q:'What color is a frog usually?', opts:['Red','Blue','Green','Orange'], answer:2, subject:'Colors' },
+      { q:'What color is coal?', opts:['Gray','Black','Brown','Blue'], answer:1, subject:'Colors' },
+      { q:'What are the three primary colors?', opts:['Red green blue','Red yellow blue','Orange green purple','Pink brown gray'], answer:1, subject:'Colors' },
+      { q:'What color is a school bus?', opts:['Red','Blue','Yellow','Green'], answer:2, subject:'Colors' },
+      { q:'What color is a flamingo?', opts:['White','Blue','Pink','Yellow'], answer:2, subject:'Colors' },
+      { q:'What color is a lemon?', opts:['Orange','Yellow','Green','Red'], answer:1, subject:'Colors' },
+      { q:'What color is a crow?', opts:['Black','Brown','Gray','Blue'], answer:0, subject:'Colors' },
+      { q:'What color is a tomato?', opts:['Orange','Yellow','Red','Purple'], answer:2, subject:'Colors' },
+      { q:'What color is milk?', opts:['Yellow','Gray','White','Cream'], answer:2, subject:'Colors' },
+      { q:'What two colors make orange?', opts:['Red and blue','Red and yellow','Blue and yellow','White and red'], answer:1, subject:'Colors' },
+      { q:'What color is a ripe grape?', opts:['Red or purple','Yellow','Green','Blue'], answer:0, subject:'Colors' },
+      { q:'What color is sand at the beach?', opts:['White','Tan or beige','Brown','Yellow'], answer:1, subject:'Colors' },
+      { q:'What color is a lime?', opts:['Yellow','Orange','Green','Blue'], answer:2, subject:'Colors' },
+      { q:'What color is a plum?', opts:['Red','Purple','Blue','Pink'], answer:1, subject:'Colors' },
+      // More Shapes (20 more = 30 total)
+      { q:'What shape has 5 points like a star drawing?', opts:['Pentagon','Hexagon','Star','Diamond'], answer:2, subject:'Shapes' },
+      { q:'A stop sign has how many sides?', opts:['6','7','8','9'], answer:2, subject:'Shapes' },
+      { q:'What is the shape of a wheel?', opts:['Square','Triangle','Circle','Rectangle'], answer:2, subject:'Shapes' },
+      { q:'How many sides does a hexagon have?', opts:['5','6','7','8'], answer:1, subject:'Shapes' },
+      { q:'What shape is a book?', opts:['Circle','Triangle','Rectangle','Star'], answer:2, subject:'Shapes' },
+      { q:'A triangle has how many angles?', opts:['2','3','4','5'], answer:1, subject:'Shapes' },
+      { q:'What do we call a shape with 4 equal sides?', opts:['Rectangle','Triangle','Square','Oval'], answer:2, subject:'Shapes' },
+      { q:'What shape is a sunflower seed?', opts:['Circle','Oval','Square','Triangle'], answer:1, subject:'Shapes' },
+      { q:'How many faces does a cube have?', opts:['4','5','6','7'], answer:2, subject:'Shapes' },
+      { q:'What is the shape of most coins?', opts:['Square','Oval','Circle','Triangle'], answer:2, subject:'Shapes' },
+      { q:'Which shape rolls the easiest?', opts:['Cube','Pyramid','Cylinder','Cone'], answer:2, subject:'Shapes' },
+      { q:'What shape is a slice of bread?', opts:['Circle','Square','Rectangle','Triangle'], answer:2, subject:'Shapes' },
+      { q:'How many sides does a pentagon have?', opts:['4','5','6','7'], answer:1, subject:'Shapes' },
+      { q:'What shape is a diamond in cards?', opts:['Square','Diamond rhombus','Circle','Triangle'], answer:1, subject:'Shapes' },
+      { q:'A rectangle has how many corners?', opts:['2','3','4','5'], answer:2, subject:'Shapes' },
+      { q:'What 3D shape is a soup can?', opts:['Sphere','Cube','Cylinder','Cone'], answer:2, subject:'Shapes' },
+      { q:'What shape is a party hat?', opts:['Cube','Sphere','Cone','Cylinder'], answer:2, subject:'Shapes' },
+      { q:'How many sides does an octagon have?', opts:['6','7','8','9'], answer:2, subject:'Shapes' },
+      { q:'What shape is an egg more like?', opts:['Circle','Square','Oval','Triangle'], answer:2, subject:'Shapes' },
+      { q:'A square is a special type of what shape?', opts:['Triangle','Circle','Rectangle','Oval'], answer:2, subject:'Shapes' },
+      // More Animals (20 more = 30 total)
+      { q:'What do caterpillars turn into?', opts:['Bees','Butterflies','Birds','Worms'], answer:1, subject:'Animals' },
+      { q:'Which animal is the fastest on land?', opts:['Lion','Horse','Cheetah','Dog'], answer:2, subject:'Animals' },
+      { q:'How many legs does an insect have?', opts:['4','6','8','10'], answer:1, subject:'Animals' },
+      { q:'What is a baby dog called?', opts:['Kitten','Cub','Puppy','Foal'], answer:2, subject:'Animals' },
+      { q:'Which animal is known for its black and white stripes?', opts:['Tiger','Zebra','Giraffe','Elephant'], answer:1, subject:'Animals' },
+      { q:'What do bees make?', opts:['Milk','Honey','Syrup','Butter'], answer:1, subject:'Animals' },
+      { q:'Which animal can change its color?', opts:['Dog','Chameleon','Horse','Cow'], answer:1, subject:'Animals' },
+      { q:'What is a baby cat called?', opts:['Puppy','Cub','Kitten','Calf'], answer:2, subject:'Animals' },
+      { q:'Which animal has the longest neck?', opts:['Elephant','Giraffe','Horse','Camel'], answer:1, subject:'Animals' },
+      { q:'What sound does a lion make?', opts:['Bark','Meow','Roar','Moo'], answer:2, subject:'Animals' },
+      { q:'How many legs does a spider have?', opts:['4','6','8','10'], answer:2, subject:'Animals' },
+      { q:'What is a baby cow called?', opts:['Puppy','Calf','Kid','Lamb'], answer:1, subject:'Animals' },
+      { q:'Which animal sleeps in winter?', opts:['Bird','Bear','Dog','Fish'], answer:1, subject:'Animals' },
+      { q:'Where do penguins live?', opts:['Africa','Amazon','Antarctica','Asia'], answer:2, subject:'Animals' },
+      { q:'What is a group of fish called?', opts:['Pack','Herd','School','Flock'], answer:2, subject:'Animals' },
+      { q:'Which animal has a pouch for its baby?', opts:['Dog','Bear','Kangaroo','Horse'], answer:2, subject:'Animals' },
+      { q:'What do frogs start life as?', opts:['Fish','Tadpoles','Snakes','Worms'], answer:1, subject:'Animals' },
+      { q:'Which animal is the largest?', opts:['Elephant','Blue Whale','Giraffe','Hippo'], answer:1, subject:'Animals' },
+      { q:'What is a baby horse called?', opts:['Calf','Puppy','Foal','Cub'], answer:2, subject:'Animals' },
+      { q:'Which bird cannot fly?', opts:['Eagle','Robin','Penguin','Parrot'], answer:2, subject:'Animals' },
+      // More My World (20 more = 30 total)
+      { q:'What direction does the sun rise?', opts:['North','South','East','West'], answer:2, subject:'My World' },
+      { q:'How many seasons are there?', opts:['2','3','4','5'], answer:2, subject:'My World' },
+      { q:'What is the name of our planet?', opts:['Mars','Venus','Earth','Jupiter'], answer:2, subject:'My World' },
+      { q:'What do we call water that falls as frozen flakes?', opts:['Rain','Hail','Snow','Sleet'], answer:2, subject:'My World' },
+      { q:'Which season is the coldest?', opts:['Spring','Summer','Fall','Winter'], answer:3, subject:'My World' },
+      { q:'What is the largest ocean?', opts:['Atlantic','Indian','Pacific','Arctic'], answer:2, subject:'My World' },
+      { q:'What do we call the land surrounded by water on all sides?', opts:['Peninsula','Lake','Island','Mountain'], answer:2, subject:'My World' },
+      { q:'What is the tallest type of landform?', opts:['Hill','Valley','Mountain','Plain'], answer:2, subject:'My World' },
+      { q:'Which planet do we live on?', opts:['Mars','Venus','Earth','Jupiter'], answer:2, subject:'My World' },
+      { q:'What causes day and night?', opts:['Moon moving','Earth spinning','Sun moving','Clouds blocking'], answer:1, subject:'My World' },
+      { q:'What is the opposite of a mountain?', opts:['Ocean','Valley','Desert','Forest'], answer:1, subject:'My World' },
+      { q:'What do we call water on three sides but connected to land?', opts:['Island','Lake','Peninsula','Bay'], answer:2, subject:'My World' },
+      { q:'What is rain that has frozen called?', opts:['Snow','Hail','Sleet','Frost'], answer:1, subject:'My World' },
+      { q:'What is a very dry area with little rain?', opts:['Forest','Desert','Ocean','Lake'], answer:1, subject:'My World' },
+      { q:'What do we call a huge body of salt water?', opts:['Lake','River','Ocean','Pond'], answer:2, subject:'My World' },
+      { q:'Which season comes after winter?', opts:['Summer','Fall','Spring','Winter'], answer:2, subject:'My World' },
+      { q:'What is a river?', opts:['A large body of still water','A flowing body of fresh water','Salt water near the coast','A dry land area'], answer:1, subject:'My World' },
+      { q:'What do thermometers measure?', opts:['Wind','Rain','Temperature','Pressure'], answer:2, subject:'My World' },
+      { q:'What is fog?', opts:['Smoke','A cloud near the ground','Steam','Mist from the ocean only'], answer:1, subject:'My World' },
+      { q:'What is a forest?', opts:['A large body of water','An area with many trees','A dry sandy place','A grassy open land'], answer:1, subject:'My World' },
+      // More Science (19 more = 30 total)
+      { q:'What gives plants their green color?', opts:['Water','Soil','Chlorophyll','Sunlight'], answer:2, subject:'Science' },
+      { q:'What do we call animals that only eat meat?', opts:['Herbivores','Carnivores','Omnivores','Grazers'], answer:1, subject:'Science' },
+      { q:'What is the moon?', opts:['A star','A planet','A natural satellite of Earth','A comet'], answer:2, subject:'Science' },
+      { q:'Which sense do we use to smell?', opts:['Eyes','Ears','Nose','Tongue'], answer:2, subject:'Science' },
+      { q:'What is the job of the heart?', opts:['Help us think','Pump blood through the body','Help us breathe','Help us see'], answer:1, subject:'Science' },
+      { q:'What is a magnet?', opts:['A type of battery','An object that attracts iron and steel','A type of light','A kind of motor'], answer:1, subject:'Science' },
+      { q:'What is the sun?', opts:['A planet','A moon','A star','An asteroid'], answer:2, subject:'Science' },
+      { q:'What is a shadow?', opts:['A reflection in water','Darkness formed when light is blocked','A type of cloud','Light bouncing off a mirror'], answer:1, subject:'Science' },
+      { q:'What do plants give off that we breathe?', opts:['Carbon dioxide','Nitrogen','Oxygen','Hydrogen'], answer:2, subject:'Science' },
+      { q:'What is the water cycle?', opts:['Water flowing in rivers','Water evaporating rising forming clouds and falling as rain','Water freezing and melting','Water moving through pipes'], answer:1, subject:'Science' },
+      { q:'What is gravity?', opts:['A type of magnet','A force that pulls objects toward Earth','A type of energy','A kind of weather'], answer:1, subject:'Science' },
+      { q:'What body part do we use to see?', opts:['Ears','Nose','Eyes','Tongue'], answer:2, subject:'Science' },
+      { q:'What is soil made of?', opts:['Only sand','Only clay','Rocks minerals and organic matter','Only water'], answer:2, subject:'Science' },
+      { q:'What do animals need to survive?', opts:['Toys and games','Food water and shelter','TV and music','Books and pencils'], answer:1, subject:'Science' },
+      { q:'What is a food chain?', opts:['A grocery store','The order of who eats whom in nature','A type of plant','A kind of fish'], answer:1, subject:'Science' },
+      { q:'What kind of animal is a whale?', opts:['Fish','Reptile','Mammal','Amphibian'], answer:2, subject:'Science' },
+      { q:'What does a seed need to sprout?', opts:['Sunlight only','Water and warmth','Cold and darkness','Wind and rain'], answer:1, subject:'Science' },
+      { q:'What is air made mostly of?', opts:['Oxygen','Carbon dioxide','Nitrogen','Hydrogen'], answer:2, subject:'Science' },
+      { q:'What is the nearest star to Earth?', opts:['Sirius','Alpha Centauri','The Sun','Polaris'], answer:2, subject:'Science' },
+      // More Social Studies (17 more = 30 total)
+      { q:'What do we call the leader of a country?', opts:['Mayor','Governor','President or Prime Minister','Principal'], answer:2, subject:'Social Studies' },
+      { q:'What is a map?', opts:['A picture of a person','A drawing showing places and locations','A type of book','A kind of graph'], answer:1, subject:'Social Studies' },
+      { q:'Why do communities have rules?', opts:['To make things boring','To keep people safe and treat everyone fairly','To give leaders power','Just because'], answer:1, subject:'Social Studies' },
+      { q:'What is a neighbor?', opts:['Someone who lives far away','A person who lives near you','A relative','A classmate'], answer:1, subject:'Social Studies' },
+      { q:'What does a librarian do?', opts:['Fights fires','Helps people find and borrow books','Teaches school','Delivers mail'], answer:1, subject:'Social Studies' },
+      { q:'What is a tradition?', opts:['A type of food','A custom passed down through generations','A kind of holiday','A school subject'], answer:1, subject:'Social Studies' },
+      { q:'What is cooperation?', opts:['Working alone','Working together to reach a goal','Arguing with others','Following one person'], answer:1, subject:'Social Studies' },
+      { q:'What is a symbol?', opts:['A type of food','Something that stands for or represents something else','A kind of map','A school rule'], answer:1, subject:'Social Studies' },
+      { q:'What is the US flag a symbol of?', opts:['The president','The military','The United States of America','The government only'], answer:2, subject:'Social Studies' },
+      { q:'What is a continent?', opts:['A small island','A large body of water','A very large landmass','A type of country'], answer:2, subject:'Social Studies' },
+      { q:'How many continents are there?', opts:['5','6','7','8'], answer:2, subject:'Social Studies' },
+      { q:'What is transportation?', opts:['A way to make food','Moving people or goods from place to place','A type of building','A kind of communication'], answer:1, subject:'Social Studies' },
+      { q:'What is a community helper?', opts:['Someone who does nothing','A person whose job helps the community','A student','An animal'], answer:1, subject:'Social Studies' },
+      { q:'What is Thanksgiving about?', opts:['Giving candy to kids','Dressing in costumes','Being thankful for what you have','Celebrating a birthday'], answer:2, subject:'Social Studies' },
+      { q:'What does a firefighter use to put out fires?', opts:['Wind','Sand','Water and special chemicals','Dirt'], answer:2, subject:'Social Studies' },
+      { q:'What is a school?', opts:['A place to sleep','A place where children learn','A place to buy food','A hospital'], answer:1, subject:'Social Studies' },
+      { q:'What is recycling?', opts:['Throwing everything away','Turning old materials into new ones','Buying more things','Using things once'], answer:1, subject:'Social Studies' },
     ],
     subjects_progress:['Counting','Letters','Colors & Shapes'],
     poses:[
@@ -1374,6 +1527,80 @@ const GRADE_DATA = {
       { q:'What is respect?', opts:['Ignoring others','Treating others the way you want to be treated','Always getting what you want','Being mean to others'], answer:1, subject:'Social Studies' },
       { q:'What is responsibility?', opts:['Letting others do everything','Doing your job and keeping your promises','Never doing anything','Blaming others'], answer:1, subject:'Social Studies' },
       { q:'What should you do if you see someone being bullied?', opts:['Join in','Walk away','Tell a trusted adult and help the person','Laugh'], answer:2, subject:'Social Studies' },
+    
+      // More Math G1 (15 more = 30)
+      { q:'What is 12 + 8?', opts:['18','19','20','21'], answer:2, subject:'Math' },
+      { q:'What is 25 - 7?', opts:['16','17','18','19'], answer:2, subject:'Math' },
+      { q:'How many tens in 60?', opts:['4','5','6','7'], answer:2, subject:'Math' },
+      { q:'What is 5 x 3?', opts:['12','13','14','15'], answer:3, subject:'Math' },
+      { q:'What is double 8?', opts:['14','15','16','17'], answer:2, subject:'Math' },
+      { q:'What is 35 + 15?', opts:['40','45','50','55'], answer:2, subject:'Math' },
+      { q:'Which is odd: 12, 15, 18, 20?', opts:['12','15','18','20'], answer:1, subject:'Math' },
+      { q:'What is 10 x 4?', opts:['30','35','40','45'], answer:2, subject:'Math' },
+      { q:'What is 50 - 20?', opts:['20','25','30','35'], answer:2, subject:'Math' },
+      { q:'What is 7 + 8 + 5?', opts:['18','19','20','21'], answer:2, subject:'Math' },
+      { q:'How many minutes in 1 hour?', opts:['30','45','60','90'], answer:2, subject:'Math' },
+      { q:'What is 11 x 2?', opts:['20','21','22','23'], answer:2, subject:'Math' },
+      { q:'What is 80 - 35?', opts:['35','40','45','50'], answer:2, subject:'Math' },
+      { q:'What comes before 100?', opts:['97','98','99','101'], answer:2, subject:'Math' },
+      { q:'What is 4 + 4 + 4 + 4?', opts:['12','14','16','18'], answer:2, subject:'Math' },
+      // More Language Arts G1 (16 more = 30)
+      { q:'A word that describes a noun is called a ___', opts:['Verb','Noun','Adjective','Adverb'], answer:2, subject:'Language Arts' },
+      { q:'Which word has the long A sound?', opts:['cat','hat','cake','man'], answer:2, subject:'Language Arts' },
+      { q:'What is a compound word?', opts:['A very long word','Two words joined together','A rhyming word','A plural word'], answer:1, subject:'Language Arts' },
+      { q:'Which is a compound word?', opts:['happy','running','sunshine','quickly'], answer:2, subject:'Language Arts' },
+      { q:'What does a question mark tell us?', opts:['Stop','Shout it','This is a question','This is exciting'], answer:2, subject:'Language Arts' },
+      { q:'Which word is plural?', opts:['cat','dog','birds','fish'], answer:2, subject:'Language Arts' },
+      { q:'What is the root word of RUNNING?', opts:['runn','run','runnin','running'], answer:1, subject:'Language Arts' },
+      { q:'Which word rhymes with NIGHT?', opts:['Day','Light','Dark','Sun'], answer:1, subject:'Language Arts' },
+      { q:'What is a synonym?', opts:['A word with the opposite meaning','A word with a similar meaning','A rhyming word','A plural word'], answer:1, subject:'Language Arts' },
+      { q:'Which sentence has correct capitalization?', opts:['my dog is fluffy.','My Dog Is Fluffy.','My dog is fluffy.','my Dog is fluffy.'], answer:2, subject:'Language Arts' },
+      { q:'How many syllables in BUTTERFLY?', opts:['1','2','3','4'], answer:2, subject:'Language Arts' },
+      { q:'What is an antonym?', opts:['A word with a similar meaning','A word with the opposite meaning','A compound word','A suffix'], answer:1, subject:'Language Arts' },
+      { q:'Which word means the same as HAPPY?', opts:['Sad','Angry','Joyful','Tired'], answer:2, subject:'Language Arts' },
+      { q:'What does the suffix -ful mean?', opts:['Without','Full of or having','Not','Before'], answer:1, subject:'Language Arts' },
+      { q:'Which is a proper noun?', opts:['dog','park','Sarah','school'], answer:2, subject:'Language Arts' },
+      { q:'A story has a beginning middle and ___', opts:['Problem','Character','End','Setting'], answer:2, subject:'Language Arts' },
+      // More Science G1 (16 more = 30)
+      { q:'What is the job of the stem in a plant?', opts:['Make food','Absorb water','Carry water and nutrients up to leaves','Make seeds'], answer:2, subject:'Science' },
+      { q:'What do leaves do for a plant?', opts:['Absorb water','Make food using sunlight','Hold the plant up','Make seeds'], answer:1, subject:'Science' },
+      { q:'What is a habitat?', opts:['A type of food','The natural home of an animal','A kind of plant','A weather pattern'], answer:1, subject:'Science' },
+      { q:'What is the difference between living and non-living?', opts:['Living things eat only','Living things grow and respond; non-living do not','Non-living things move too','There is no difference'], answer:1, subject:'Science' },
+      { q:'What gives plants energy to make food?', opts:['Water','Soil','Sunlight','Wind'], answer:2, subject:'Science' },
+      { q:'Which is a renewable resource?', opts:['Coal','Oil','Natural gas','Sunlight'], answer:3, subject:'Science' },
+      { q:'What does a thermometer measure?', opts:['Wind speed','Rainfall','Temperature','Air pressure'], answer:2, subject:'Science' },
+      { q:'What is matter?', opts:['Anything you can see','Anything that has mass and takes up space','Only solid things','Only liquids'], answer:1, subject:'Science' },
+      { q:'Which is an example of reducing waste?', opts:['Buying more things','Using a reusable water bottle','Throwing away more','Ignoring litter'], answer:1, subject:'Science' },
+      { q:'What is a food web?', opts:['A spider web for food','Multiple interconnected food chains in an ecosystem','A type of plant','A fishing net'], answer:1, subject:'Science' },
+      { q:'What is the purpose of a flower?', opts:['To look pretty','To make food','To attract pollinators and produce seeds','To absorb water'], answer:2, subject:'Science' },
+      { q:'What do earthworms do for soil?', opts:['Nothing helpful','Break down organic matter making soil richer','Eat plant roots','Take away nutrients'], answer:1, subject:'Science' },
+      { q:'What is air pollution?', opts:['Clean fresh air','Harmful substances in the air','Wind and rain','A type of weather'], answer:1, subject:'Science' },
+      { q:'What is a fossil?', opts:['A very old rock','Preserved remains of ancient organisms','A type of mineral','A volcanic rock'], answer:1, subject:'Science' },
+      { q:'What is the water cycle?', opts:['Water in rivers only','Water evaporating condensing and falling back as rain','Water freezing only','Drinking water'], answer:1, subject:'Science' },
+      { q:'Which is an example of recycling?', opts:['Throwing old paper away','Turning old newspaper into new paper','Using more plastic','Buying new things'], answer:1, subject:'Science' },
+      // More Social Studies G1 (22 more = 30)
+      { q:'Who makes laws in the USA?', opts:['The President alone','The Supreme Court','Congress','The Governor'], answer:2, subject:'Social Studies' },
+      { q:'What is a community?', opts:['A type of food','A group of people living and working together','A kind of animal','A building'], answer:1, subject:'Social Studies' },
+      { q:'What is the capital city of the USA?', opts:['New York','Washington DC','Los Angeles','Chicago'], answer:1, subject:'Social Studies' },
+      { q:'What is respect?', opts:['Ignoring others','Treating others the way you want to be treated','Always getting what you want','Being mean'], answer:1, subject:'Social Studies' },
+      { q:'What does a mail carrier do?', opts:['Cooks food','Delivers letters and packages','Builds houses','Fixes cars'], answer:1, subject:'Social Studies' },
+      { q:'What is responsibility?', opts:['Letting others do everything','Doing your job and keeping your promises','Never doing anything','Blaming others'], answer:1, subject:'Social Studies' },
+      { q:'Who helps us when there is a fire?', opts:['Doctor','Firefighter','Teacher','Chef'], answer:1, subject:'Social Studies' },
+      { q:'What is a neighborhood?', opts:['A large city','A small area where people live and share spaces','A country','A school district'], answer:1, subject:'Social Studies' },
+      { q:'What is the purpose of a law?', opts:['To make things boring','To keep people safe and treat everyone fairly','To give leaders power','To take money from people'], answer:1, subject:'Social Studies' },
+      { q:'What is a mayor?', opts:['A police officer','The leader of a city','A teacher','A doctor'], answer:1, subject:'Social Studies' },
+      { q:'What is cooperation?', opts:['Doing everything alone','Working together to reach a goal','Arguing with others','Following rules only'], answer:1, subject:'Social Studies' },
+      { q:'What is culture?', opts:['A type of food only','The shared beliefs customs and traditions of a group','A kind of music only','A language only'], answer:1, subject:'Social Studies' },
+      { q:'What is a map?', opts:['A picture of a person','A drawing showing places and locations','A type of book','A kind of graph'], answer:1, subject:'Social Studies' },
+      { q:'Who teaches children at school?', opts:['Doctor','Police officer','Teacher','Firefighter'], answer:2, subject:'Social Studies' },
+      { q:'What is fairness?', opts:['Everyone getting the same thing','Everyone getting what they need to be equal','One person getting everything','Ignoring others needs'], answer:1, subject:'Social Studies' },
+      { q:'What does a doctor do?', opts:['Build roads','Fly planes','Help sick people','Teach school'], answer:2, subject:'Social Studies' },
+      { q:'What is a vote?', opts:['A type of food','A way to make a choice by counting opinions','A kind of rule','A school subject'], answer:1, subject:'Social Studies' },
+      { q:'What is the American flag?', opts:['A decoration','A symbol of the United States of America','A type of sport','A school banner'], answer:1, subject:'Social Studies' },
+      { q:'What is Thanksgiving?', opts:['A holiday to give candy to kids','A holiday to be thankful and gather with family','A birthday celebration','A winter holiday only'], answer:1, subject:'Social Studies' },
+      { q:'What is Independence Day?', opts:['A day off school only','The day the USA declared independence from Britain','A holiday in winter','A type of birthday'], answer:1, subject:'Social Studies' },
+      { q:'What is a principal?', opts:['A type of rule','The leader of a school','A teacher','A school bus driver'], answer:1, subject:'Social Studies' },
+      { q:'What is a citizen?', opts:['A visitor to a country','A person who belongs to and has rights in a country','A type of leader','A government worker'], answer:1, subject:'Social Studies' },
     ],
     subjects_progress:['Numbers & Adding','Reading & Writing','Science Fun'],
     poses:[
@@ -1492,6 +1719,76 @@ const GRADE_DATA = {
       { q:'What is a GOOD?', opts:['Something someone does for you','A physical thing you can buy','A type of job','A school subject'], answer:1, subject:'Social Studies' },
       { q:'What is a SERVICE?', opts:['Something you can hold','A physical product','Something someone does for you','A type of food'], answer:2, subject:'Social Studies' },
       { q:'What is the capital of the United States?', opts:['New York','Los Angeles','Washington DC','Chicago'], answer:2, subject:'Social Studies' },
+    
+      // More Math G2 (15 more = 30)
+      { q:'What is 9 x 4?', opts:['32','34','36','38'], answer:2, subject:'Math' },
+      { q:'What is 100 - 63?', opts:['27','37','47','57'], answer:1, subject:'Math' },
+      { q:'What is 7 x 6?', opts:['40','42','44','46'], answer:1, subject:'Math' },
+      { q:'What is 144 / 12?', opts:['10','11','12','14'], answer:2, subject:'Math' },
+      { q:'What is 3/4 of 40?', opts:['20','25','30','35'], answer:2, subject:'Math' },
+      { q:'Round 284 to the nearest hundred', opts:['200','300','280','290'], answer:1, subject:'Math' },
+      { q:'What is 8 x 9?', opts:['63','70','72','74'], answer:2, subject:'Math' },
+      { q:'What is 200 + 350 + 75?', opts:['525','615','625','635'], answer:2, subject:'Math' },
+      { q:'Which fraction equals one half?', opts:['1/3','2/4','2/3','3/4'], answer:1, subject:'Math' },
+      { q:'What is 48 / 6?', opts:['6','7','8','9'], answer:2, subject:'Math' },
+      { q:'What is 5 x 5 x 2?', opts:['40','45','50','55'], answer:2, subject:'Math' },
+      { q:'What is 1000 - 378?', opts:['612','622','632','642'], answer:1, subject:'Math' },
+      { q:'What is 11 x 11?', opts:['111','121','131','141'], answer:1, subject:'Math' },
+      { q:'What is the perimeter of a 5x3 rectangle?', opts:['8','12','16','20'], answer:2, subject:'Math' },
+      { q:'What is 450 / 9?', opts:['40','45','50','55'], answer:2, subject:'Math' },
+      // More Science G2 (15 more = 30)
+      { q:'What is a mineral?', opts:['A type of plant','A natural solid substance with a definite structure','A liquid chemical','A type of energy'], answer:1, subject:'Science' },
+      { q:'What is the hardest mineral?', opts:['Gold','Quartz','Diamond','Marble'], answer:2, subject:'Science' },
+      { q:'What causes a tsunami?', opts:['Heavy rain','Underwater earthquake or landslide','Strong winds','Moon gravity'], answer:1, subject:'Science' },
+      { q:'What are igneous rocks formed from?', opts:['Layers of sediment','Cooled lava or magma','Heat and pressure','Living organisms'], answer:1, subject:'Science' },
+      { q:'What is the difference between a mixture and a compound?', opts:['No difference','In a mixture substances keep properties; in a compound they combine chemically','Compounds are easier to separate','Mixtures are always liquids'], answer:1, subject:'Science' },
+      { q:'What is condensation?', opts:['Water turning to steam','Water vapor turning to liquid water','Ice melting','Rain falling'], answer:1, subject:'Science' },
+      { q:'What is the mass of an object?', opts:['How big it looks','The amount of matter it contains','How heavy it feels only','Its size'], answer:1, subject:'Science' },
+      { q:'What is a producer in a food chain?', opts:['An animal that hunts','A plant that makes its own food','A decomposer','An omnivore'], answer:1, subject:'Science' },
+      { q:'What is metamorphic rock?', opts:['Rock formed from lava','Rock formed from sediment','Rock changed by heat and pressure','Rock from volcanoes'], answer:2, subject:'Science' },
+      { q:'What instrument measures air pressure?', opts:['Thermometer','Barometer','Ruler','Scale'], answer:1, subject:'Science' },
+      { q:'What is a drought?', opts:['Too much rain','A long period of very little rainfall','A type of storm','A cold spell'], answer:1, subject:'Science' },
+      { q:'What is a blizzard?', opts:['A heavy rainstorm','A violent snowstorm with strong winds','A type of hurricane','An ice storm'], answer:1, subject:'Science' },
+      { q:'What is a flood?', opts:['Too little water','An overflow of water covering normally dry land','A type of drought','A cold snap'], answer:1, subject:'Science' },
+      { q:'What is a solid?', opts:['Has no definite shape','Has definite shape and volume','Takes the shape of its container','Has no definite volume'], answer:1, subject:'Science' },
+      { q:'What is a gas?', opts:['Has definite shape','Has definite volume','Has no definite shape or volume','Only found in the atmosphere'], answer:2, subject:'Science' },
+      // More Language Arts G2 (15 more = 30)
+      { q:'What is a prefix?', opts:['A word ending','Letters added to the beginning of a word','A root word','A type of noun'], answer:1, subject:'Language Arts' },
+      { q:'What does the prefix re- mean?', opts:['Before','Against','Again','Without'], answer:2, subject:'Language Arts' },
+      { q:'What is a suffix?', opts:['Letters added to the beginning of a word','A root word','Letters added to the end of a word','A type of verb'], answer:2, subject:'Language Arts' },
+      { q:'What is the plot of a story?', opts:['Where the story takes place','The main character','The sequence of events that make up the story','The theme'], answer:2, subject:'Language Arts' },
+      { q:'What is the setting?', opts:['The main character','Where and when a story takes place','The problem','The solution'], answer:1, subject:'Language Arts' },
+      { q:'What is an exclamation mark used for?', opts:['A question','Strong emotion or excitement','A pause','A list'], answer:1, subject:'Language Arts' },
+      { q:'Which word is an adverb?', opts:['dog','blue','quickly','jump'], answer:2, subject:'Language Arts' },
+      { q:'What does the suffix -less mean?', opts:['Full of','Without','Before','Again'], answer:1, subject:'Language Arts' },
+      { q:'What is a paragraph?', opts:['A single sentence','A group of sentences about one main idea','A type of poem','A chapter'], answer:1, subject:'Language Arts' },
+      { q:'What is the climax of a story?', opts:['The beginning','The most exciting or important moment','The ending','The setting'], answer:1, subject:'Language Arts' },
+      { q:'What is a simile?', opts:['A direct comparison','A comparison using like or as','A type of noun','A verb tense'], answer:1, subject:'Language Arts' },
+      { q:'Which word is spelled correctly?', opts:['recieve','receive','recive','reciive'], answer:1, subject:'Language Arts' },
+      { q:'What is dialogue?', opts:['The setting description','Conversation between characters shown with quotation marks','The plot summary','The theme'], answer:1, subject:'Language Arts' },
+      { q:'What is personification?', opts:['Describing a setting','Giving human qualities to non-human things','Comparing two things','Repeating sounds'], answer:1, subject:'Language Arts' },
+      { q:'What is a metaphor?', opts:['Comparison using like or as','A direct comparison without like or as','A type of verb','A punctuation mark'], answer:1, subject:'Language Arts' },
+      // More Social Studies G2 (20 more = 30)
+      { q:'What is a democracy?', opts:['Rule by one person','A system where citizens vote for leaders','Rule by a king','A system with no laws'], answer:1, subject:'Social Studies' },
+      { q:'What is a primary source?', opts:['A textbook','A firsthand account from someone who experienced an event','An encyclopedia','A news article'], answer:1, subject:'Social Studies' },
+      { q:'What is the purpose of government?', opts:['To control everyone','To make and enforce laws and protect citizens','To collect all money','To run businesses'], answer:1, subject:'Social Studies' },
+      { q:'What is an economy?', opts:['The weather system','How money goods and services are produced and used','A type of government','A landform'], answer:1, subject:'Social Studies' },
+      { q:'What is a consumer?', opts:['Someone who makes goods','Someone who buys or uses goods and services','A type of government worker','A type of business'], answer:1, subject:'Social Studies' },
+      { q:'What is a producer?', opts:['Someone who buys goods','A person or business that makes goods or provides services','A type of consumer','A government official'], answer:1, subject:'Social Studies' },
+      { q:'What is a tax?', opts:['A type of fine','Money paid to the government to fund public services','A kind of loan','A type of investment'], answer:1, subject:'Social Studies' },
+      { q:'What is a constitution?', opts:['A type of tax','A set of basic laws and principles that govern a country','A kind of map','A trade agreement'], answer:1, subject:'Social Studies' },
+      { q:'What does the president do?', opts:['Makes all laws alone','Leads the executive branch and enforces laws','Interprets laws','Collects taxes only'], answer:1, subject:'Social Studies' },
+      { q:'What is immigration?', opts:['Moving within your own country','Moving to a new country to live','Going on vacation','Starting a business abroad'], answer:1, subject:'Social Studies' },
+      { q:'What is a globe?', opts:['A type of map','A spherical model of Earth','A flat map','A type of atlas'], answer:1, subject:'Social Studies' },
+      { q:'What is latitude?', opts:['Lines running north-south on a map','Lines running east-west measuring distance from the equator','The height of a place','The timezone of a place'], answer:1, subject:'Social Studies' },
+      { q:'What is an atlas?', opts:['A single map','A collection of maps in book form','A globe','A type of compass'], answer:1, subject:'Social Studies' },
+      { q:'What is the equator?', opts:['A line dividing east and west','An imaginary line dividing Earth into Northern and Southern hemispheres','The Prime Meridian','The North Pole'], answer:1, subject:'Social Studies' },
+      { q:'What is a natural resource?', opts:['Something made in a factory','Materials found in nature that people use','A type of machine','A manufactured product'], answer:1, subject:'Social Studies' },
+      { q:'What is trade?', opts:['Giving things away free','Exchanging goods or services between people or countries','A type of tax','A government service'], answer:1, subject:'Social Studies' },
+      { q:'What is scarcity?', opts:['Having too much of something','When there is not enough of something to meet all needs and wants','A type of trade','A kind of tax'], answer:1, subject:'Social Studies' },
+      { q:'What is opportunity cost?', opts:['The price of a product','What you give up when you choose one thing over another','A type of tax','The cost of transportation'], answer:1, subject:'Social Studies' },
+      { q:'What is the difference between urban and rural?', opts:['They are the same','Urban means city; rural means countryside','Rural means city; urban means countryside','Urban is always larger'], answer:1, subject:'Social Studies' },
+      { q:'What is a landmark?', opts:['A road sign','A well-known place or feature used for navigation or as a symbol','A type of map','A school building'], answer:1, subject:'Social Studies' },
     ],
     subjects_progress:['Math','Science','Writing'],
     poses:[
@@ -1605,6 +1902,80 @@ const GRADE_DATA = {
       { q:'What is an ECONOMY?', opts:['The weather system','How money goods and services are produced and used','A type of government','A landform'], answer:1, subject:'Social Studies' },
       { q:'What is CULTURE?', opts:['A type of food only','The shared traditions beliefs and customs of a group','A kind of music','A language only'], answer:1, subject:'Social Studies' },
       { q:'What is a PRIMARY SOURCE?', opts:['A textbook','A firsthand account from someone who experienced an event','An encyclopedia','A summary article'], answer:1, subject:'Social Studies' },
+    
+      // More Math G3 (15 more = 30)
+      { q:'What is 9 x 9?', opts:['72','78','81','84'], answer:2, subject:'Math' },
+      { q:'What is 256 + 348?', opts:['594','604','614','624'], answer:1, subject:'Math' },
+      { q:'What is 7 x 7?', opts:['42','46','49','52'], answer:2, subject:'Math' },
+      { q:'What is 90 / 9?', opts:['8','9','10','11'], answer:2, subject:'Math' },
+      { q:'What is 1000 - 645?', opts:['345','355','365','375'], answer:1, subject:'Math' },
+      { q:'What is 6 x 8?', opts:['42','46','48','52'], answer:2, subject:'Math' },
+      { q:'What is 1/2 of 80?', opts:['30','35','40','45'], answer:2, subject:'Math' },
+      { q:'What is 125 x 4?', opts:['400','450','500','550'], answer:2, subject:'Math' },
+      { q:'What is the area of a 9x7 rectangle?', opts:['54','61','63','72'], answer:2, subject:'Math' },
+      { q:'What is 2000 - 875?', opts:['1025','1075','1125','1175'], answer:2, subject:'Math' },
+      { q:'What is 8 x 8?', opts:['56','60','64','68'], answer:2, subject:'Math' },
+      { q:'What is 3/4 of 120?', opts:['80','85','90','95'], answer:2, subject:'Math' },
+      { q:'Round 4,672 to the nearest thousand', opts:['4,000','5,000','4,600','4,700'], answer:0, subject:'Math' },
+      { q:'What is 144 / 12?', opts:['10','11','12','14'], answer:2, subject:'Math' },
+      { q:'What is 25 x 8?', opts:['180','190','200','210'], answer:2, subject:'Math' },
+      // More Science G3 (16 more = 30)
+      { q:'What is an electric circuit?', opts:['A type of battery','A path for electricity to flow through','A kind of wire','A power source'], answer:1, subject:'Science' },
+      { q:'What is a conductor?', opts:['A material that blocks electricity','A material that allows electricity to flow through it','A type of battery','A kind of switch'], answer:1, subject:'Science' },
+      { q:'What is an insulator?', opts:['A material that allows electricity to flow','A material that blocks electricity','A type of circuit','A kind of magnet'], answer:1, subject:'Science' },
+      { q:'What is the closest planet to the Sun?', opts:['Earth','Venus','Mars','Mercury'], answer:3, subject:'Science' },
+      { q:'What causes the seasons on Earth?', opts:['Earth moving closer to the sun','The tilt of Earths axis as it orbits','The moon blocking sunlight','Clouds covering the sun'], answer:1, subject:'Science' },
+      { q:'What is the Milky Way?', opts:['A type of star','Our galaxy containing billions of stars including the Sun','A type of planet','A nebula'], answer:1, subject:'Science' },
+      { q:'What is a meteor?', opts:['A planet','A rock that falls through Earths atmosphere','A type of comet','A moon'], answer:1, subject:'Science' },
+      { q:'What is humidity?', opts:['Wind speed','The amount of water vapor in the air','Air pressure','Temperature'], answer:1, subject:'Science' },
+      { q:'What is the difference between weather and climate?', opts:['They are the same','Weather is daily; climate is long-term patterns','Climate is daily; weather is yearly','Weather only means temperature'], answer:1, subject:'Science' },
+      { q:'What is an index fossil?', opts:['Any fossil','A fossil used to date rock layers because it lived only during a specific time period','The largest fossil found','A fossil in a museum'], answer:1, subject:'Science' },
+      { q:'What is erosion?', opts:['New rock forming','Wearing away of rock or soil by wind water or ice','Volcanoes erupting','Earthquakes happening'], answer:1, subject:'Science' },
+      { q:'What causes lightning?', opts:['Rain hitting the ground','A buildup and discharge of electrical energy in clouds','Wind colliding','Sun heating clouds'], answer:1, subject:'Science' },
+      { q:'What is an orbit?', opts:['A type of planet','The curved path of an object around another in space','A star explosion','A type of moon'], answer:1, subject:'Science' },
+      { q:'What is the water cycle?', opts:['Water in rivers only','Continuous movement of water through evaporation condensation and precipitation','Water freezing only','Drinking water systems'], answer:1, subject:'Science' },
+      { q:'What is a parallel circuit?', opts:['One path for electricity','Multiple paths so if one breaks others still work','A type of battery','A short circuit'], answer:1, subject:'Science' },
+      { q:'What is the difference between rotation and revolution?', opts:['They are the same','Rotation is spinning on axis; revolution is orbiting another body','Revolution is spinning; rotation is orbiting','Both mean spinning'], answer:1, subject:'Science' },
+      // More Language Arts G3 (18 more = 30)
+      { q:'What is alliteration?', opts:['Rhyming words','Repetition of the same beginning consonant sound','A type of metaphor','Exaggeration'], answer:1, subject:'Language Arts' },
+      { q:'What is onomatopoeia?', opts:['A type of noun','Words that imitate sounds like buzz or crash','A type of metaphor','A rhyming scheme'], answer:1, subject:'Language Arts' },
+      { q:'What is the theme of a story?', opts:['The main character','Where the story takes place','The central message or lesson','The problem'], answer:2, subject:'Language Arts' },
+      { q:'What is foreshadowing?', opts:['Explaining the past','Hinting at future events in a story','Describing the setting','Ending the story'], answer:1, subject:'Language Arts' },
+      { q:'What is a conjunction?', opts:['A naming word','A connecting word like and but or so','An action word','A describing word'], answer:1, subject:'Language Arts' },
+      { q:'Which is a conjunction?', opts:['dog','run','because','quickly'], answer:2, subject:'Language Arts' },
+      { q:'What is point of view?', opts:['The setting of a story','The perspective from which a story is told','The authors age','The problem in the story'], answer:1, subject:'Language Arts' },
+      { q:'What is first person point of view?', opts:['Using he she they','Using I me my we','Using you your','Using one and ones'], answer:1, subject:'Language Arts' },
+      { q:'What is a homophone?', opts:['A type of metaphor','Words that sound the same but have different meanings and spellings','A synonym','An antonym'], answer:1, subject:'Language Arts' },
+      { q:'Which pair are homophones?', opts:['happy and sad','their and there','cat and dog','run and walk'], answer:1, subject:'Language Arts' },
+      { q:'What makes a run-on sentence?', opts:['A sentence that is too long','Two or more independent clauses joined without proper punctuation','A sentence with no verb','A question'], answer:1, subject:'Language Arts' },
+      { q:'What is a topic sentence?', opts:['The last sentence of a paragraph','The sentence that states the main idea of a paragraph','Any sentence','A question'], answer:1, subject:'Language Arts' },
+      { q:'What are supporting details?', opts:['The main idea','Facts and examples that support the main idea','The conclusion','The title'], answer:1, subject:'Language Arts' },
+      { q:'What is the purpose of a concluding sentence?', opts:['To introduce a new topic','To wrap up the main idea of a paragraph','To ask a question','To list facts'], answer:1, subject:'Language Arts' },
+      { q:'What is an idiom?', opts:['A literal expression','A phrase whose meaning is different from the literal words like it is raining cats and dogs','A type of poem','A compound word'], answer:1, subject:'Language Arts' },
+      { q:'What is a hyperbole?', opts:['A comparison using like or as','An extreme exaggeration used for effect','A type of noun','A personification'], answer:1, subject:'Language Arts' },
+      { q:'What is imagery?', opts:['Only visual descriptions','Descriptive language that appeals to the senses to create mental pictures','A type of plot','A story structure'], answer:1, subject:'Language Arts' },
+      { q:'What is the difference between fiction and nonfiction?', opts:['Fiction is shorter','Fiction is made up; nonfiction is based on real facts','Nonfiction has pictures','Fiction is harder to read'], answer:1, subject:'Language Arts' },
+      // More Social Studies G3 (20 more = 30)
+      { q:'What is the Bill of Rights?', opts:['A shopping list','The first 10 amendments protecting citizens rights','A type of law','A document about taxes'], answer:1, subject:'Social Studies' },
+      { q:'How many amendments are in the Bill of Rights?', opts:['5','8','10','12'], answer:2, subject:'Social Studies' },
+      { q:'What is the role of the judicial branch?', opts:['Makes laws','Enforces laws','Interprets laws and the Constitution','Collects taxes'], answer:2, subject:'Social Studies' },
+      { q:'What is the role of the legislative branch?', opts:['Enforces laws','Makes laws','Interprets laws','Leads the military'], answer:1, subject:'Social Studies' },
+      { q:'What is the role of the executive branch?', opts:['Makes laws','Enforces laws','Interprets laws','Controls the courts'], answer:1, subject:'Social Studies' },
+      { q:'What are the two houses of Congress?', opts:['President and Vice President','Senate and House of Representatives','Supreme Court and Congress','Federal and State'], answer:1, subject:'Social Studies' },
+      { q:'What is the Declaration of Independence?', opts:['A tax document','A document declaring the colonies free from British rule','A type of constitution','A trade agreement'], answer:1, subject:'Social Studies' },
+      { q:'When was the Declaration of Independence signed?', opts:['1765','1776','1787','1800'], answer:1, subject:'Social Studies' },
+      { q:'What is the Constitution?', opts:['A list of laws','The supreme law of the United States','A type of treaty','A government building'], answer:1, subject:'Social Studies' },
+      { q:'What is longitude?', opts:['Lines running east-west','Lines running north-south measuring distance from the Prime Meridian','The height of a place','The temperature of a region'], answer:1, subject:'Social Studies' },
+      { q:'Where is the Prime Meridian?', opts:['At the equator','At 0 degrees longitude running through Greenwich England','At the North Pole','In Washington DC'], answer:1, subject:'Social Studies' },
+      { q:'What is the difference between a state and a country?', opts:['They are the same','A country contains states; states are regions within it','States are larger','States have presidents'], answer:1, subject:'Social Studies' },
+      { q:'What is the Pledge of Allegiance?', opts:['A type of law','A promise of loyalty to the American flag and the country','A song','A type of prayer'], answer:1, subject:'Social Studies' },
+      { q:'What are natural resources?', opts:['Things made in factories','Materials from nature that people use like water trees and minerals','A type of manufactured good','Only water and air'], answer:1, subject:'Social Studies' },
+      { q:'What is supply and demand?', opts:['A type of store','The economic relationship between how much is available and how much people want','A government policy','A type of tax'], answer:1, subject:'Social Studies' },
+      { q:'What is the difference between needs and wants?', opts:['They are the same','Needs are essential for survival; wants are extras','Wants are more important','Needs cost more'], answer:1, subject:'Social Studies' },
+      { q:'What is a budget?', opts:['A type of tax','A plan for how to spend money','A bank account','A type of investment'], answer:1, subject:'Social Studies' },
+      { q:'Who wrote the Declaration of Independence?', opts:['George Washington','Benjamin Franklin','Thomas Jefferson','John Adams'], answer:2, subject:'Social Studies' },
+      { q:'What was the Boston Tea Party?', opts:['A celebration of tea','A protest against British taxes on tea in 1773','A treaty signing','A type of holiday'], answer:1, subject:'Social Studies' },
+      { q:'What is civic responsibility?', opts:['Only paying taxes','The duties and responsibilities of citizens like voting obeying laws and participating in community','Only voting','Only serving in the military'], answer:1, subject:'Social Studies' },
     ],
     subjects_progress:['Mathematics','Science','Language Arts'],
     poses:[
@@ -1722,6 +2093,79 @@ const GRADE_DATA = {
       { q:'What is the UNITED NATIONS?', opts:['United Nations - an international organization for world peace','A type of government','A US government building','A type of school'], answer:0, subject:'Social Studies' },
       { q:'What is a PRIMARY SOURCE?', opts:['A textbook','A firsthand account from someone who experienced the event','An encyclopedia','A news summary'], answer:1, subject:'Social Studies' },
       { q:'What did Martin Luther King Jr. fight for?', opts:['Better schools only','Civil rights and equality for African Americans','A political party','Better wages only'], answer:1, subject:'Social Studies' },
+    
+      // More Math G4 (15 more = 30)
+      { q:'What is 13 x 13?', opts:['159','169','179','189'], answer:1, subject:'Math' },
+      { q:'What is 1/3 + 1/6?', opts:['1/2','2/9','1/4','2/6'], answer:0, subject:'Math' },
+      { q:'What is 2.75 + 1.5?', opts:['3.75','4.00','4.25','4.50'], answer:2, subject:'Math' },
+      { q:'What is 60% of 80?', opts:['40','44','48','52'], answer:2, subject:'Math' },
+      { q:'What is 15 x 15?', opts:['205','215','225','235'], answer:2, subject:'Math' },
+      { q:'What is the volume of a cube with side 4?', opts:['16','48','64','96'], answer:2, subject:'Math' },
+      { q:'What is 3/8 as a decimal?', opts:['0.325','0.375','0.425','0.475'], answer:1, subject:'Math' },
+      { q:'What is 1200 / 15?', opts:['70','75','80','85'], answer:2, subject:'Math' },
+      { q:'What is the area of a triangle with base 10 and height 6?', opts:['30','40','50','60'], answer:0, subject:'Math' },
+      { q:'What is 5/6 - 1/3?', opts:['1/2','4/3','1/4','2/6'], answer:0, subject:'Math' },
+      { q:'What is 0.25 x 40?', opts:['8','10','12','14'], answer:1, subject:'Math' },
+      { q:'What is the square root of 81?', opts:['7','8','9','10'], answer:2, subject:'Math' },
+      { q:'What is 75% of 200?', opts:['130','140','150','160'], answer:2, subject:'Math' },
+      { q:'What is 4500 / 50?', opts:['80','85','90','95'], answer:2, subject:'Math' },
+      { q:'What is 2.5 x 2.5?', opts:['5.0','5.5','6.0','6.25'], answer:3, subject:'Math' },
+      // More Science G4 (17 more = 30)
+      { q:'What is the difference between physical and chemical changes?', opts:['No difference','Physical changes are reversible; chemical create new substances','Chemical changes are faster','Physical changes make new materials'], answer:1, subject:'Science' },
+      { q:'What is density?', opts:['The size of an object','Mass per unit of volume','The weight of an object','The volume of an object'], answer:1, subject:'Science' },
+      { q:'What is a solution?', opts:['A type of mixture where one substance dissolves in another','Any liquid mixture','A solid mixture','A pure substance'], answer:0, subject:'Science' },
+      { q:'How does weather differ from climate?', opts:['They are the same','Weather is short-term atmospheric conditions; climate is long-term patterns','Climate is daily; weather is seasonal','Weather includes only temperature'], answer:1, subject:'Science' },
+      { q:'What is a watershed?', opts:['A type of dam','An area of land that drains water into a common body of water','A waterfall','An underwater cave'], answer:1, subject:'Science' },
+      { q:'What is the continental shelf?', opts:['A mountain range','A shallow area of ocean floor along the coast','A type of plateau','A deep ocean trench'], answer:1, subject:'Science' },
+      { q:'What is tectonic plate movement responsible for?', opts:['Weather patterns','Earthquakes volcanoes and mountain formation','Ocean currents','Air pressure changes'], answer:1, subject:'Science' },
+      { q:'What is the difference between a mixture and a pure substance?', opts:['They are the same','A mixture combines two or more substances; a pure substance is only one type of matter','Pure substances are always liquid','Mixtures cannot be separated'], answer:1, subject:'Science' },
+      { q:'What is filtration used for?', opts:['Heating substances','Separating insoluble solids from liquids','Mixing chemicals','Evaporating water'], answer:1, subject:'Science' },
+      { q:'What is evaporation?', opts:['Water freezing','Liquid water turning to water vapor','Rain falling','Condensation forming'], answer:1, subject:'Science' },
+      { q:'What is the difference between mass and weight?', opts:['They are the same','Mass is amount of matter; weight is force of gravity on that mass','Weight is more scientific','Mass changes in space'], answer:1, subject:'Science' },
+      { q:'What is a renewable resource?', opts:['Oil and coal','Resources that can be replenished naturally like sunlight and wind','Any natural material','Only water'], answer:1, subject:'Science' },
+      { q:'What is a non-renewable resource?', opts:['Sunlight','Wind','Oil coal and natural gas which take millions of years to form','Water'], answer:2, subject:'Science' },
+      { q:'What is biodiversity?', opts:['One type of organism in an area','The variety of different species in an ecosystem','A type of plant','A climate pattern'], answer:1, subject:'Science' },
+      { q:'What is an ecosystem?', opts:['A weather pattern','All living and non-living things interacting in an area','A type of habitat only','A kind of biome only'], answer:1, subject:'Science' },
+      { q:'What is weathering?', opts:['The daily weather','The breaking down of rocks by physical or chemical processes','A type of storm','Erosion only'], answer:1, subject:'Science' },
+      { q:'What is deposition in geography?', opts:['Money in a bank','The dropping of sediment carried by water ice or wind','A type of erosion','Underground rock formation'], answer:1, subject:'Science' },
+      // More Language Arts G4 (16 more = 30)
+      { q:'What is a thesis statement?', opts:['The last sentence','The main argument or point of an essay','A supporting detail','A conclusion'], answer:1, subject:'Language Arts' },
+      { q:'What is the purpose of a topic sentence?', opts:['To end a paragraph','To state the main idea of a paragraph','To provide evidence','To ask a question'], answer:1, subject:'Language Arts' },
+      { q:'What is an analogy?', opts:['A type of metaphor','A comparison showing the relationship between two pairs of words','A rhyming pair','A type of simile'], answer:1, subject:'Language Arts' },
+      { q:'What is the difference between denotation and connotation?', opts:['They are the same','Denotation is the literal meaning; connotation is the implied emotional meaning','Connotation is always negative','Denotation is always positive'], answer:1, subject:'Language Arts' },
+      { q:'What is allusion?', opts:['A direct description','A reference to a well-known person event or work','A type of metaphor','An exaggeration'], answer:1, subject:'Language Arts' },
+      { q:'What is the purpose of a hook in writing?', opts:['To end the essay','To grab the readers attention at the beginning','To summarize the main idea','To provide evidence'], answer:1, subject:'Language Arts' },
+      { q:'What is a participle?', opts:['A type of noun','A verb form used as an adjective','A type of adverb','A conjunction'], answer:1, subject:'Language Arts' },
+      { q:'What is an infinitive?', opts:['A finite verb','A verb form that starts with to like to run to eat','A past tense verb','A type of adjective'], answer:1, subject:'Language Arts' },
+      { q:'What is a gerund?', opts:['A type of adjective','A verb form ending in -ing used as a noun like swimming is fun','A past tense verb','A future tense verb'], answer:1, subject:'Language Arts' },
+      { q:'What is active voice in writing?', opts:['When the subject performs the action','When the subject receives the action','A type of verb tense','A type of sentence'], answer:0, subject:'Language Arts' },
+      { q:'What is passive voice?', opts:['When the subject performs the action','When the subject receives the action','A type of question','A type of command'], answer:1, subject:'Language Arts' },
+      { q:'What is the difference between a phrase and a clause?', opts:['They are the same','A clause has a subject and verb; a phrase does not','A phrase is longer','A clause is shorter'], answer:1, subject:'Language Arts' },
+      { q:'What is a dependent clause?', opts:['A clause that can stand alone','A clause that cannot stand alone and depends on an independent clause','A type of sentence','A type of phrase'], answer:1, subject:'Language Arts' },
+      { q:'What is a comma splice?', opts:['Using too many commas','Incorrectly joining two independent clauses with just a comma','A correct way to join sentences','A type of semicolon use'], answer:1, subject:'Language Arts' },
+      { q:'What is the difference between formal and informal writing?', opts:['They are the same','Formal uses academic language; informal is conversational','Informal is always wrong','Formal is shorter'], answer:1, subject:'Language Arts' },
+      { q:'What is text evidence?', opts:['The authors opinion','Specific details from the text used to support a claim','A type of summary','A personal connection'], answer:1, subject:'Language Arts' },
+      // More Social Studies G4 (20 more = 30)
+      { q:'What was the Civil War fought over?', opts:['Territory in the West','Slavery and states rights','Trade with Britain','Tax disputes'], answer:1, subject:'Social Studies' },
+      { q:'What was Reconstruction?', opts:['Building new roads','The period after the Civil War rebuilding the South and integrating freed enslaved people','A type of tax','A new government system'], answer:1, subject:'Social Studies' },
+      { q:'What is the Electoral College?', opts:['A school for politicians','The system for electing the US President through state representatives','A type of popular vote','A Senate committee'], answer:1, subject:'Social Studies' },
+      { q:'What are checks and balances?', opts:['A banking system','The system where each branch of government limits the power of the others','A type of law','A budget system'], answer:1, subject:'Social Studies' },
+      { q:'What is separation of powers?', opts:['Dividing the country into states','Dividing government into three branches with different powers','A type of election','A foreign policy'], answer:1, subject:'Social Studies' },
+      { q:'What is the First Amendment?', opts:['The right to bear arms','Freedom of speech religion press assembly and petition','The right to a jury trial','Protection from unreasonable searches'], answer:1, subject:'Social Studies' },
+      { q:'What was the Louisiana Purchase?', opts:['The purchase of Louisiana from Mexico','The 1803 purchase of a large territory from France that doubled the size of the USA','A type of trade agreement','A war settlement'], answer:1, subject:'Social Studies' },
+      { q:'What is manifest destiny?', opts:['A type of law','The 19th century belief that the USA was destined to expand across North America','A foreign policy','A type of trade'], answer:1, subject:'Social Studies' },
+      { q:'What is the industrial revolution?', opts:['A farming revolution','A period of rapid change from agricultural to manufacturing economy in the 1700s-1800s','A political revolution','A social movement'], answer:1, subject:'Social Studies' },
+      { q:'Who was Abraham Lincoln?', opts:['The first president','The 16th president who led the country through the Civil War and ended slavery','A general in the Civil War','A founding father'], answer:1, subject:'Social Studies' },
+      { q:'What is the significance of the Emancipation Proclamation?', opts:['It ended the Civil War','It declared enslaved people in Confederate states free in 1863','It created the Bill of Rights','It ended Reconstruction'], answer:1, subject:'Social Studies' },
+      { q:'What is federalism?', opts:['A type of democracy','A system where power is divided between national and state governments','A type of monarchy','A one-party system'], answer:1, subject:'Social Studies' },
+      { q:'What is the purpose of the Supreme Court?', opts:['To make laws','To enforce laws','To interpret laws and determine if they are constitutional','To elect the president'], answer:2, subject:'Social Studies' },
+      { q:'What is a census?', opts:['A type of tax','An official count or survey of a population','A type of election','A government budget'], answer:1, subject:'Social Studies' },
+      { q:'What is the Underground Railroad?', opts:['A type of subway','A secret network of routes and safe houses helping enslaved people escape to freedom','A train system','A type of communication'], answer:1, subject:'Social Studies' },
+      { q:'What is geography?', opts:['The study of history','The study of Earths physical features and human interaction with the environment','The study of government','The study of economics'], answer:1, subject:'Social Studies' },
+      { q:'What is the difference between climate zones?', opts:['They are all the same','Tropical temperate and polar zones differ in temperature and precipitation patterns','Only temperature differs','Only rainfall differs'], answer:1, subject:'Social Studies' },
+      { q:'What is urbanization?', opts:['Farming more land','The growth of cities as people move from rural to urban areas','Building more roads','A type of pollution'], answer:1, subject:'Social Studies' },
+      { q:'What is a constitutional amendment?', opts:['A type of law','A formal change or addition to the Constitution','A court decision','A presidential order'], answer:1, subject:'Social Studies' },
+      { q:'What was the significance of the 13th Amendment?', opts:['Gave women the right to vote','Abolished slavery in the United States','Gave citizenship to all born in the US','Gave all men the right to vote'], answer:1, subject:'Social Studies' },
     ],
     subjects_progress:['Mathematics','Science','Language Arts'],
     poses:[
@@ -1840,6 +2284,78 @@ const GRADE_DATA = {
       { q:'What was the UNDERGROUND RAILROAD?', opts:['A subway system','A secret network helping enslaved people escape to freedom','A trading route','A telegraph system'], answer:1, subject:'Social Studies' },
       { q:'What is DEMOCRACY?', opts:['Rule by one person','A system where citizens vote for representatives','Rule by a king','A system with no laws'], answer:1, subject:'Social Studies' },
       { q:'What is a AMENDMENT to the Constitution?', opts:['A type of tax','A formal change or addition to the Constitution','A court decision','A presidential order'], answer:1, subject:'Social Studies' },
+    
+      // More Math G5 (15 more = 30)
+      { q:'What is 3.14 x 10?', opts:['30.14','31.4','314','3.14'], answer:1, subject:'Math' },
+      { q:'What is the square root of 144?', opts:['10','11','12','13'], answer:2, subject:'Math' },
+      { q:'What is 2 to the power of 8?', opts:['128','256','512','1024'], answer:1, subject:'Math' },
+      { q:'What is 7/8 - 3/8?', opts:['4/8','1/2','4/16','1/4'], answer:0, subject:'Math' },
+      { q:'What is 0.3 x 0.3?', opts:['0.06','0.09','0.3','0.9'], answer:1, subject:'Math' },
+      { q:'If x + 5 = 12 what is x?', opts:['5','6','7','8'], answer:2, subject:'Math' },
+      { q:'What is the area of a circle with radius 7? (use 3.14)', opts:['43.96','153.86','21.98','98.00'], answer:1, subject:'Math' },
+      { q:'What is 25 squared?', opts:['500','550','600','625'], answer:3, subject:'Math' },
+      { q:'What is 3/4 x 2/3?', opts:['5/7','6/12','1/2','6/7'], answer:2, subject:'Math' },
+      { q:'What is the mode of: 3 5 3 7 5 3?', opts:['3','5','7','4.3'], answer:0, subject:'Math' },
+      { q:'What is 15% of 300?', opts:['30','40','45','50'], answer:2, subject:'Math' },
+      { q:'Solve: 4(x - 2) = 20. What is x?', opts:['5','6','7','8'], answer:2, subject:'Math' },
+      { q:'What is 1.5 to the power of 2?', opts:['2.00','2.25','2.50','3.00'], answer:1, subject:'Math' },
+      { q:'What is the range of: 4 7 2 9 5?', opts:['5','6','7','9'], answer:2, subject:'Math' },
+      { q:'What is 7/10 as a percentage?', opts:['0.7%','7%','70%','700%'], answer:2, subject:'Math' },
+      // More Science G5 (16 more = 30)
+      { q:'What is radiation?', opts:['Heat through direct contact','Heat through fluid movement','Transfer of energy through waves without needing matter','A type of conduction'], answer:2, subject:'Science' },
+      { q:'What is specific heat capacity?', opts:['How hot something gets','The amount of heat needed to raise 1 gram of a substance by 1 degree C','The boiling point','The melting point'], answer:1, subject:'Science' },
+      { q:'What is natural selection?', opts:['Humans choosing which animals survive','The process where organisms with favorable traits survive and reproduce more','A type of adaptation','Artificial breeding'], answer:1, subject:'Science' },
+      { q:'What is a mutation?', opts:['A type of disease','A change in DNA that can be passed to offspring','A type of adaptation','A behavioral trait'], answer:1, subject:'Science' },
+      { q:'What is an igneous rock?', opts:['Rock formed from layers','Rock formed from cooled magma or lava','Rock changed by heat and pressure','Rock from fossils'], answer:1, subject:'Science' },
+      { q:'What is relative age of rocks?', opts:['The exact age in years','The age compared to other rock layers - older layers are deeper','The hardness of rock','The color of rock'], answer:1, subject:'Science' },
+      { q:'What is the law of conservation of energy?', opts:['Energy can be created and destroyed','Energy cannot be created or destroyed only transformed','Energy only comes from the sun','Energy increases over time'], answer:1, subject:'Science' },
+      { q:'What is the difference between exothermic and endothermic reactions?', opts:['They are the same','Exothermic releases heat; endothermic absorbs heat','Endothermic releases heat; exothermic absorbs heat','Both release heat'], answer:1, subject:'Science' },
+      { q:'What is cellular respiration?', opts:['How cells breathe air','The process cells use to convert glucose and oxygen into energy CO2 and water','A type of photosynthesis','How lungs work'], answer:1, subject:'Science' },
+      { q:'What is the difference between an asteroid comet and meteor?', opts:['They are all the same','Asteroids are rocky; comets are icy with tails; meteors burn up in atmosphere','Comets are rocky; asteroids are icy','Meteors orbit the sun'], answer:1, subject:'Science' },
+      { q:'What is thermal expansion?', opts:['Objects shrinking when heated','Objects expanding when heated due to faster-moving particles','A type of chemical change','Objects melting'], answer:1, subject:'Science' },
+      { q:'What is an atom?', opts:['The smallest unit of matter that retains the properties of an element','A type of molecule','A type of compound','A charged particle'], answer:0, subject:'Science' },
+      { q:'What is a molecule?', opts:['A single atom','Two or more atoms bonded together','A type of element','A charged particle'], answer:1, subject:'Science' },
+      { q:'What is an element?', opts:['A mixture of substances','A pure substance made of only one type of atom','A type of compound','A molecule'], answer:1, subject:'Science' },
+      { q:'What is a compound?', opts:['A mixture','A pure substance made of two or more different elements chemically bonded','A type of element','A solution'], answer:1, subject:'Science' },
+      { q:'What is the difference between a physical and chemical property?', opts:['They are the same','Physical properties can be observed without changing the substance; chemical properties describe how it reacts','Chemical properties are observable','Physical properties change the substance'], answer:1, subject:'Science' },
+      // More Language Arts G5 (16 more = 30)
+      { q:'What is a rhetorical question?', opts:['A question with no answer','A question asked for effect not expecting an answer','A type of metaphor','An ironic statement'], answer:1, subject:'Language Arts' },
+      { q:'What is the authors purpose?', opts:['Where the author lives','The reason an author writes - to inform persuade or entertain','The authors favorite topic','The authors writing style'], answer:1, subject:'Language Arts' },
+      { q:'What is bias in writing?', opts:['Writing with no opinion','A tendency to favor one side over another often unfairly','A type of factual error','A grammar mistake'], answer:1, subject:'Language Arts' },
+      { q:'What is a counterclaim?', opts:['The main argument','An opposing argument to the main claim','A type of evidence','A conclusion'], answer:1, subject:'Language Arts' },
+      { q:'What is the purpose of a rebuttal?', opts:['To agree with the counterclaim','To respond to and refute the opposing argument','To summarize the essay','To introduce the topic'], answer:1, subject:'Language Arts' },
+      { q:'What is textual evidence?', opts:['The authors opinion','Specific quotes or details from a text to support a claim or inference','A summary','A personal anecdote'], answer:1, subject:'Language Arts' },
+      { q:'What is the difference between implicit and explicit meaning?', opts:['They are the same','Explicit is directly stated; implicit is suggested or implied','Implicit is stated; explicit is implied','Both are directly stated'], answer:1, subject:'Language Arts' },
+      { q:'What is a narrative essay?', opts:['An essay arguing a point','A type of essay that tells a story using personal experience','An informational essay','A persuasive essay'], answer:1, subject:'Language Arts' },
+      { q:'What is an expository essay?', opts:['A personal story','An essay that explains or informs about a topic','An argument essay','A creative fiction piece'], answer:1, subject:'Language Arts' },
+      { q:'What is a persuasive essay?', opts:['A personal narrative','An essay that informs','An essay that tries to convince the reader of a viewpoint','A creative writing piece'], answer:2, subject:'Language Arts' },
+      { q:'What is tone in writing?', opts:['The topic of the writing','The authors attitude or feeling conveyed through word choice','The volume of reading','The speed of reading'], answer:1, subject:'Language Arts' },
+      { q:'What is mood in writing?', opts:['The authors feeling','The emotional atmosphere or feeling created for the reader','The tone of the author','The setting only'], answer:1, subject:'Language Arts' },
+      { q:'What is a subordinating conjunction?', opts:['A conjunction joining equal clauses','A conjunction introducing a dependent clause like because although when','A type of preposition','A type of adverb'], answer:1, subject:'Language Arts' },
+      { q:'What is an appositive?', opts:['A type of verb','A noun or noun phrase that renames or explains the noun next to it','A type of adjective','A conjunction'], answer:1, subject:'Language Arts' },
+      { q:'What is parallel structure in writing?', opts:['Writing about parallel topics','Using the same grammatical form for similar ideas in a sentence or list','A type of comparison','A type of repetition'], answer:1, subject:'Language Arts' },
+      { q:'What is the difference between paraphrasing and quoting?', opts:['They are the same','Paraphrasing restates in your own words; quoting uses exact original words','Quoting is more common in essays','Paraphrasing uses quotation marks'], answer:1, subject:'Language Arts' },
+      // More Social Studies G5 (20 more = 30)
+      { q:'What was the New Deal?', opts:['A trade agreement','President Roosevelts programs to help America recover from the Great Depression','A type of tax law','A foreign policy'], answer:1, subject:'Social Studies' },
+      { q:'What was the Great Depression?', opts:['A type of war','A severe worldwide economic downturn in the 1930s with massive unemployment','A political crisis','A natural disaster'], answer:1, subject:'Social Studies' },
+      { q:'What was World War II fought over?', opts:['One simple cause','Multiple causes including aggression by Nazi Germany and Imperial Japan threatening world peace','Only the Holocaust','Only oil resources'], answer:1, subject:'Social Studies' },
+      { q:'What is the Holocaust?', opts:['A type of war','The genocide of approximately 6 million Jewish people and others by Nazi Germany','A type of battle','A peace treaty'], answer:1, subject:'Social Studies' },
+      { q:'What was the Cold War?', opts:['A literal war in cold climates','A period of political tension between the USA and Soviet Union from 1947-1991 without direct military conflict','A type of trade war','A nuclear war'], answer:1, subject:'Social Studies' },
+      { q:'What is the United Nations?', opts:['A US government agency','An international organization founded in 1945 to promote peace and cooperation','A type of treaty','A military alliance'], answer:1, subject:'Social Studies' },
+      { q:'What was the civil rights movement?', opts:['A political party','The struggle for racial equality and the rights of African Americans in the US especially in the 1950s-60s','A type of government reform','A war'], answer:1, subject:'Social Studies' },
+      { q:'What is the 19th Amendment?', opts:['Abolished slavery','Gave women the right to vote in 1920','Gave citizenship to all born in US','Prohibited alcohol'], answer:1, subject:'Social Studies' },
+      { q:'What is the 15th Amendment?', opts:['Abolished slavery','Gave citizenship to all born in US','Gave Black men the right to vote','Gave women the right to vote'], answer:2, subject:'Social Studies' },
+      { q:'What was the purpose of the Marshall Plan?', opts:['To rebuild Japan after WWII','To provide economic aid to rebuild Western Europe after WWII','A type of military alliance','A trade agreement with Asia'], answer:1, subject:'Social Studies' },
+      { q:'What is imperialism?', opts:['A type of democracy','A policy of extending a countrys power and influence over other territories','A type of socialism','A foreign aid program'], answer:1, subject:'Social Studies' },
+      { q:'What was the Industrial Revolution main impact?', opts:['More farming','Shift from hand production to machines leading to urbanization and economic growth','A reduction in population','Less trade'], answer:1, subject:'Social Studies' },
+      { q:'What is a free market economy?', opts:['A government-controlled economy','An economic system where prices are determined by supply and demand with little government control','A socialist economy','A barter system'], answer:1, subject:'Social Studies' },
+      { q:'What is GDP?', opts:['A type of tax','Gross Domestic Product - the total value of goods and services produced by a country','A government department','A type of budget'], answer:1, subject:'Social Studies' },
+      { q:'What is the significance of the Declaration of Independence?', opts:['It created the Constitution','It formally stated that the colonies were separating from Britain and outlined natural rights','It ended the Civil War','It created the Bill of Rights'], answer:1, subject:'Social Studies' },
+      { q:'What is the significance of the Constitutional Convention?', opts:['A trade meeting','The 1787 meeting where delegates created the US Constitution','A peace treaty signing','A war declaration'], answer:1, subject:'Social Studies' },
+      { q:'What are natural rights according to John Locke?', opts:['Rights given by the government','Life liberty and property - rights people are born with that governments should protect','Only voting rights','Only property rights'], answer:1, subject:'Social Studies' },
+      { q:'What is totalitarianism?', opts:['A type of democracy','A system where the government has total control over all aspects of life','A free market system','A federal system'], answer:1, subject:'Social Studies' },
+      { q:'What was the Space Race?', opts:['A competition between states','The competition between the USA and Soviet Union to achieve supremacy in space exploration','A type of arms race','A scientific cooperation'], answer:1, subject:'Social Studies' },
+      { q:'What is the significance of Brown v Board of Education?', opts:['It ended slavery','The 1954 Supreme Court ruling that racial segregation in public schools was unconstitutional','It gave women the right to vote','It created civil rights laws'], answer:1, subject:'Social Studies' },
     ],
     subjects_progress:['Mathematics','Science','Language Arts'],
     poses:[
@@ -2520,20 +3036,19 @@ function selectPose(el,name,secs) {
   const isYoung = activeGrade==='PreK'||activeGrade==='K'||activeGrade==='1';
   document.getElementById('timerBtn').textContent = isYoung ? '▶ Go!' : '▶ Start';
   clearInterval(timerInterval); timerRunning=false;
-  // Show pose image in timer box
+  // Show pose image ABOVE the timer box
   const photo = POSE_PHOTOS[name];
   const timerBox = document.getElementById('timerBox');
-  // Remove old pose preview if any
   const oldPrev = document.getElementById('timerPosePreview');
   if (oldPrev) oldPrev.remove();
-  if (photo) {
+  if (photo && timerBox) {
     const img = document.createElement('img');
     img.id = 'timerPosePreview';
     img.src = photo.src;
     img.alt = name;
-    img.style.cssText = 'width:100%;height:220px;object-fit:cover;object-position:'+( photo.pos||'center 20%')+';border-radius:16px;margin-bottom:10px;display:block;';
-    img.onerror = function() { this.style.display='none'; };
-    if (timerBox) timerBox.insertBefore(img, timerBox.firstChild);
+    img.style.cssText = 'width:100%;height:240px;object-fit:cover;object-position:'+(photo.pos||'center 20%')+';border-radius:20px;display:block;margin-bottom:12px;box-shadow:0 4px 20px rgba(0,0,0,.15);';
+    img.onerror = function(){ this.style.display='none'; };
+    timerBox.parentNode.insertBefore(img, timerBox);
   }
   // Scroll timer into view
   const timerEl = document.getElementById('timerDisplay');
@@ -3924,6 +4439,142 @@ function openLangGame(grade) {
   }
   render();
   document.body.appendChild(ov);
+  upsertDailyActivity({minutes_academic:5,tasks_done:1}).catch(function(){});
+}
+
+
+function buildDrawingCanvas(container){
+  var COLORS=['#FF6B6B','#FF8E53','#FFD166','#5ECDA0','#4ECDC4','#C9B8FF','#8B6FE8','#2D2D4E','#000000','#FFFFFF'];
+  var SIZES=[3,6,12,20];var SL=['S','M','L','XL'];
+  var tool='pen',color='#FF6B6B',size=6;
+  var wrap=document.createElement('div');
+  wrap.style.cssText='background:white;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:16px;';
+  var tb=document.createElement('div');
+  tb.style.cssText='display:flex;align-items:center;gap:6px;padding:10px 12px;background:#F8F6FF;border-bottom:2px solid #EDE9FF;flex-wrap:wrap;';
+  var tbtns={};
+  [{id:'pen',ico:'✏️'},{id:'brush',ico:'🖌️'},{id:'eraser',ico:'🧹'}].forEach(function(t){
+    var b=document.createElement('button');b.textContent=t.ico;
+    b.style.cssText='width:34px;height:34px;border-radius:10px;border:2px solid '+(t.id==='pen'?'var(--lavender)':'transparent')+';background:'+(t.id==='pen'?'#EDE9FF':'white')+';cursor:pointer;font-size:1rem;';
+    b.onclick=function(){tool=t.id;Object.values(tbtns).forEach(function(x){x.style.borderColor='transparent';x.style.background='white';});b.style.borderColor='var(--lavender)';b.style.background='#EDE9FF';};
+    tbtns[t.id]=b;tb.appendChild(b);
+  });
+  var sep=document.createElement('div');sep.style.cssText='width:1px;height:22px;background:#E0DAFF;';tb.appendChild(sep);
+  var cdots=[];
+  COLORS.forEach(function(c,i){
+    var d=document.createElement('div');
+    d.style.cssText='width:24px;height:24px;border-radius:50%;background:'+c+';border:3px solid '+(i===0?'#2D2D4E':'transparent')+';cursor:pointer;flex-shrink:0;'+(c==='#FFFFFF'?'outline:1px solid #ccc;':'');
+    d.onclick=function(){color=c;cdots.forEach(function(x){x.style.borderColor='transparent';});d.style.borderColor='#2D2D4E';if(tool==='eraser'){tool='pen';tbtns.pen.style.borderColor='var(--lavender)';tbtns.pen.style.background='#EDE9FF';tbtns.eraser.style.borderColor='transparent';tbtns.eraser.style.background='white';}};
+    cdots.push(d);tb.appendChild(d);
+  });
+  var sep2=document.createElement('div');sep2.style.cssText='width:1px;height:22px;background:#E0DAFF;';tb.appendChild(sep2);
+  var sbtns=[];
+  SIZES.forEach(function(s,i){
+    var b=document.createElement('button');b.textContent=SL[i];
+    b.style.cssText='padding:3px 9px;border-radius:20px;border:2px solid '+(i===1?'var(--lavender)':'#E0DAFF')+';background:'+(i===1?'var(--lavender)':'white')+';color:'+(i===1?'white':'var(--body)')+';font-size:.72rem;font-weight:800;cursor:pointer;';
+    b.onclick=function(){size=s;sbtns.forEach(function(x){x.style.borderColor='#E0DAFF';x.style.background='white';x.style.color='var(--body)';});b.style.borderColor='var(--lavender)';b.style.background='var(--lavender)';b.style.color='white';};
+    sbtns.push(b);tb.appendChild(b);
+  });
+  wrap.appendChild(tb);
+  var cv=document.createElement('canvas');
+  cv.style.cssText='display:block;width:100%;cursor:crosshair;touch-action:none;';
+  cv.height=Math.min(360,Math.round(window.innerWidth*0.65));
+  wrap.appendChild(cv);
+  var act=document.createElement('div');act.style.cssText='display:flex;gap:8px;padding:10px 12px;background:#F8F6FF;border-top:2px solid #EDE9FF;';
+  var clrB=document.createElement('button');clrB.textContent='🗑️ Clear';
+  clrB.style.cssText='flex:1;padding:10px;border-radius:14px;border:none;background:#FFF0EE;color:var(--coral);font-family:Nunito,sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;';
+  act.appendChild(clrB);
+  var savB=document.createElement('button');savB.textContent='💾 Save Art! +20 ⭐';
+  savB.style.cssText='flex:2;padding:10px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;';
+  act.appendChild(savB);
+  wrap.appendChild(act);
+  container.appendChild(wrap);
+  setTimeout(function(){
+    cv.width=cv.offsetWidth||360;
+    var ctx=cv.getContext('2d');ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,cv.width,cv.height);
+    clrB.onclick=function(){ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,cv.width,cv.height);toast('🎨 Cleared!');};
+    savB.onclick=async function(){
+      var a=document.createElement('a');a.download='bloomikids-art.png';a.href=cv.toDataURL();a.click();
+      try{await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:20});sessionData.stars+=20;document.getElementById('statStars').textContent=sessionData.stars;}catch(e){}
+      toast('💾 Art saved! +20 ⭐');
+    };
+    var ptg=false,lx=0,ly=0;
+    function gp(e){var r=cv.getBoundingClientRect(),s=e.touches?e.touches[0]:e;return{x:(s.clientX-r.left)*(cv.width/r.width),y:(s.clientY-r.top)*(cv.height/r.height)};}
+    function st(e){ptg=true;var p=gp(e);lx=p.x;ly=p.y;}
+    function dr(e){
+      if(!ptg)return;var p=gp(e);
+      ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(p.x,p.y);
+      ctx.strokeStyle=tool==='eraser'?'#FFFFFF':color;
+      ctx.lineWidth=tool==='eraser'?size*3:tool==='brush'?size*2:size;
+      ctx.lineCap='round';ctx.setLineDash([]);ctx.globalAlpha=tool==='brush'?0.7:1;
+      ctx.stroke();ctx.globalAlpha=1;lx=p.x;ly=p.y;
+    }
+    cv.addEventListener('mousedown',st);cv.addEventListener('mousemove',dr);
+    cv.addEventListener('mouseup',function(){ptg=false;});cv.addEventListener('mouseleave',function(){ptg=false;});
+    cv.addEventListener('touchstart',function(e){e.preventDefault();st(e);},{passive:false});
+    cv.addEventListener('touchmove',function(e){e.preventDefault();dr(e);},{passive:false});
+    cv.addEventListener('touchend',function(){ptg=false;},{passive:false});
+  },50);
+}
+
+function showLetterTracing(){
+  var LETTERS='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  var WORDS={A:'Apple',B:'Bear',C:'Cat',D:'Dog',E:'Egg',F:'Fish',G:'Goat',H:'Hat',I:'Ice Cream',J:'Jar',K:'Kite',L:'Lion',M:'Moon',N:'Nest',O:'Orange',P:'Pig',Q:'Queen',R:'Rainbow',S:'Sun',T:'Tree',U:'Umbrella',V:'Volcano',W:'Whale',X:'X-ray',Y:'Yarn',Z:'Zebra'};
+  var EMOJIS={A:'🍎',B:'🐻',C:'🐱',D:'🐶',E:'🥚',F:'🐟',G:'🐐',H:'🎩',I:'🍦',J:'🫙',K:'🪁',L:'🦁',M:'🌙',N:'🪺',O:'🍊',P:'🐷',Q:'👑',R:'🌈',S:'🌞',T:'🌳',U:'☂️',V:'🌋',W:'🐳',X:'❌',Y:'🧶',Z:'🦓'};
+  var idx=0;
+  function build(){
+    var ex=document.getElementById('ltOv');if(ex)ex.remove();
+    var L=LETTERS[idx];
+    var ov=document.createElement('div');ov.className='modal-overlay';ov.id='ltOv';
+    var card=document.createElement('div');card.className='modal-card';
+    card.style.cssText='max-width:360px;text-align:center;padding:22px 20px;';
+    var num=document.createElement('div');num.style.cssText='font-size:.7rem;font-weight:800;letter-spacing:2px;color:var(--muted);margin-bottom:10px;';
+    num.textContent='LETTER '+(idx+1)+' OF 26';card.appendChild(num);
+    var row=document.createElement('div');row.style.cssText='display:flex;align-items:center;justify-content:center;gap:24px;margin-bottom:8px;';
+    var big=document.createElement('span');big.style.cssText='font-family:Baloo 2,cursive;font-size:6.5rem;font-weight:800;color:var(--coral);line-height:1;';big.textContent=L;
+    var sml=document.createElement('span');sml.style.cssText='font-family:Baloo 2,cursive;font-size:5.5rem;font-weight:800;color:var(--mint);line-height:1;';sml.textContent=L.toLowerCase();
+    row.appendChild(big);row.appendChild(sml);card.appendChild(row);
+    var wd=document.createElement('div');wd.style.cssText='font-size:1.3rem;font-weight:800;color:var(--body);margin-bottom:12px;';
+    wd.textContent=(EMOJIS[L]||'')+' '+(WORDS[L]||'');card.appendChild(wd);
+    var hint=document.createElement('div');hint.style.cssText='font-size:.85rem;color:var(--muted);margin-bottom:12px;';
+    hint.textContent='✏️ Trace the letter with your finger!';card.appendChild(hint);
+    var cv=document.createElement('canvas');cv.id='ltC';cv.width=320;cv.height=240;
+    cv.style.cssText='border:3px dashed #C9B8FF;border-radius:16px;touch-action:none;cursor:crosshair;background:#FAFAFF;display:block;margin:0 auto;width:100%;max-width:340px;';
+    card.appendChild(cv);
+    var br=document.createElement('div');br.style.cssText='display:flex;gap:8px;margin-top:14px;';
+    var clr=document.createElement('button');clr.textContent='🗑 Clear';
+    clr.style.cssText='padding:10px 12px;border-radius:40px;border:2px solid #E0DAFF;background:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.82rem;cursor:pointer;color:#888;';
+    br.appendChild(clr);
+    if(idx>0){var bk=document.createElement('button');bk.textContent='← Back';bk.style.cssText='flex:1;padding:10px;border-radius:40px;border:none;background:#F0F0F8;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';bk.onclick=function(){idx--;build();};br.appendChild(bk);}
+    var nx=document.createElement('button');nx.textContent=idx<25?'Next →':'🎉 Done!';
+    nx.style.cssText='flex:2;padding:10px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';
+    br.appendChild(nx);card.appendChild(br);
+    var cl=document.createElement('button');cl.textContent='✕ Close';
+    cl.style.cssText='margin-top:10px;width:100%;padding:8px;border-radius:40px;border:none;background:transparent;color:var(--muted);font-family:Nunito,sans-serif;font-weight:700;cursor:pointer;font-size:.82rem;';
+    cl.onclick=function(){ov.remove();};card.appendChild(cl);
+    ov.appendChild(card);document.body.appendChild(ov);
+    var ctx=cv.getContext('2d');
+    function guide(){
+      ctx.clearRect(0,0,cv.width,cv.height);ctx.fillStyle='#FAFAFF';ctx.fillRect(0,0,cv.width,cv.height);
+      ctx.save();ctx.font='bold 180px Arial,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillStyle='rgba(201,184,255,0.25)';ctx.fillText(L,cv.width/2,cv.height/2+8);
+      ctx.strokeStyle='rgba(139,111,232,0.5)';ctx.lineWidth=10;ctx.setLineDash([8,6]);
+      ctx.strokeText(L,cv.width/2,cv.height/2+8);ctx.restore();
+    }
+    guide();clr.onclick=guide;
+    var ptg=false,lx=0,ly=0;
+    function gp(e){var r=cv.getBoundingClientRect(),s=e.touches?e.touches[0]:e;return{x:(s.clientX-r.left)*(cv.width/r.width),y:(s.clientY-r.top)*(cv.height/r.height)};}
+    cv.addEventListener('mousedown',function(e){ptg=true;var p=gp(e);lx=p.x;ly=p.y;});
+    cv.addEventListener('mousemove',function(e){if(!ptg)return;var p=gp(e);ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(p.x,p.y);ctx.strokeStyle='#FF6B6B';ctx.lineWidth=9;ctx.lineCap='round';ctx.setLineDash([]);ctx.stroke();lx=p.x;ly=p.y;});
+    cv.addEventListener('mouseup',function(){ptg=false;});cv.addEventListener('mouseleave',function(){ptg=false;});
+    cv.addEventListener('touchstart',function(e){e.preventDefault();ptg=true;var p=gp(e);lx=p.x;ly=p.y;},{passive:false});
+    cv.addEventListener('touchmove',function(e){e.preventDefault();if(!ptg)return;var p=gp(e);ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(p.x,p.y);ctx.strokeStyle='#FF6B6B';ctx.lineWidth=9;ctx.lineCap='round';ctx.setLineDash([]);ctx.stroke();lx=p.x;ly=p.y;},{passive:false});
+    cv.addEventListener('touchend',function(){ptg=false;},{passive:false});
+    nx.onclick=function(){
+      if(idx<25){idx++;build();}
+      else{ov.remove();toast('🎉 All 26 letters! +26 ⭐');sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:26}).catch(function(){});sessionData.stars+=26;document.getElementById('statStars').textContent=sessionData.stars;}
+    };
+  }
+  build();
   upsertDailyActivity({minutes_academic:5,tasks_done:1}).catch(function(){});
 }
 
