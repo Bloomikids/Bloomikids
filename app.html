@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -747,6 +750,7 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
     <div class="cards-grid" id="subjectCards"></div>
 
     <!-- Daily quiz removed - quizzes now open per-subject -->
+    <div id="quizTitle" style="display:none"></div>
     <div id="quizQuestion" style="display:none"></div>
     <div id="quizOptions" style="display:none"></div>
     <div id="quizFeedback" style="display:none"></div>
@@ -925,6 +929,7 @@ window.onerror = function(msg, src, line, col, err) {
 // ══════════════════════════════════════════════════════
 //  SUPABASE
 // ══════════════════════════════════════════════════════
+const APP_VERSION = 'v3.1-20250326';
 const SUPABASE_URL  = 'https://gzpkzbugumnkzoltlpch.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6cGt6YnVndW1ua3pvbHRscGNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxOTI3NDUsImV4cCI6MjA4ODc2ODc0NX0.YQVMl1qwu7X9B_6CJqEC2-zevEeBHVROuWeuPvlp6w0';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
@@ -2157,24 +2162,25 @@ async function selectChild(child) {
     currentPoseName = gradeContent.poses[0].name;
   }
 
-  await Promise.all([updateStreak(), loadDashboardStats()]);
-  renderQuestion();
-  initBreathing();
-  renderBookShelf(gradeContent.books.map((b,i)=>({...b,id:`default_${i}`,book_title:b.title,author:b.author,total_pages:b.pages,pages_read:b.read,completed:b.read>=b.pages})));
-  renderComingSoon();
+  try { await Promise.all([updateStreak(), loadDashboardStats()]); } catch(e) { console.log('stats err',e); }
+  try { renderQuestion(); } catch(e) { console.log('q err',e); }
+  try { initBreathing(); } catch(e) { console.log('breath err',e); }
+  try { renderBookShelf(gradeContent.books.map((b,i)=>({...b,id:'default_'+i,book_title:b.title,author:b.author,total_pages:b.pages,pages_read:b.read,completed:b.read>=b.pages}))); } catch(e) { console.log('books err',e); }
+  try { renderComingSoon(); } catch(e) {}
 }
 
 function applyGradeUI() {
   const ui = gradeContent.ui;
-  document.getElementById('appSubtitle').textContent    = ui.subtitle;
-  document.getElementById('streakTitle').textContent    = ui.streakTitle;
-  document.getElementById('streakSubtitle').textContent = ui.streakSub;
-  document.getElementById('subjectsTitle').textContent  = ui.subjectsTitle;
-  document.getElementById('quizTitle').textContent      = ui.quizTitle;
-  document.getElementById('posesTitle').textContent     = ui.posesTitle;
-  document.getElementById('breathSub').textContent      = ui.breathSub;
-  document.getElementById('bookshelfTitle').textContent = ui.bookshelfTitle;
-  document.getElementById('timerTopLabel').textContent  = ui.timerTopLabel;
+  function setEl(id, val) { const e=document.getElementById(id); if(e&&val!==undefined) e.textContent=val; }
+  setEl('appSubtitle', ui.subtitle);
+  setEl('streakTitle', ui.streakTitle);
+  setEl('streakSubtitle', ui.streakSub);
+  setEl('subjectsTitle', ui.subjectsTitle);
+  setEl('quizTitle', ui.quizTitle);
+  setEl('posesTitle', ui.posesTitle);
+  setEl('breathSub', ui.breathSub);
+  setEl('bookshelfTitle', ui.bookshelfTitle);
+  setEl('timerTopLabel', ui.timerTopLabel);
   ['tabLearn','tabLearn2'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=ui.tabLearn; });
   ['tabMove', 'tabMove2' ].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=ui.tabMove; });
   ['tabRead', 'tabRead2' ].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=ui.tabRead; });
@@ -2182,20 +2188,29 @@ function applyGradeUI() {
 }
 
 function buildSubjectCards(){
-  var el=document.getElementById('subjectCards');
-  if(!el||!gradeContent||!gradeContent.subjects) return;
-  el.innerHTML='';
-  gradeContent.subjects.forEach(function(s,i){
-    var d=document.createElement('div');
-    d.className='card '+s.color;
-    d.setAttribute('data-subj',s.title);
-    d.onclick=function(){ startSubject(this.getAttribute('data-subj')); };
-    d.innerHTML='<div class="card-icon" style="font-size:2.5rem;margin-bottom:8px;">'+s.icon+'</div>'+
-      '<div class="card-title">'+s.title+'</div>'+
-      '<div class="card-desc">'+s.desc+'</div>'+
-      '<div class="card-badge">'+s.badge+'</div>';
-    el.appendChild(d);
-  });
+  try {
+    var el=document.getElementById('subjectCards');
+    if(!el){ console.error('subjectCards element not found'); return; }
+    if(!gradeContent){ el.innerHTML='<p style="color:red;padding:10px;">Error: gradeContent is null</p>'; return; }
+    if(!gradeContent.subjects||!gradeContent.subjects.length){ el.innerHTML='<p style="color:red;padding:10px;">Error: no subjects for grade '+activeGrade+'</p>'; return; }
+    el.innerHTML='';
+    gradeContent.subjects.forEach(function(s){
+      var d=document.createElement('div');
+      d.className='card '+(s.color||'mint');
+      d.setAttribute('data-subj',s.title);
+      d.onclick=function(){ startSubject(this.getAttribute('data-subj')); };
+      d.innerHTML='<div style="font-size:2.5rem;margin-bottom:8px;">'+(s.icon||'📚')+'</div>'+
+        '<div class="card-title">'+(s.title||'')+'</div>'+
+        '<div class="card-desc">'+(s.desc||'')+'</div>'+
+        '<div class="card-badge">'+(s.badge||'')+'</div>';
+      el.appendChild(d);
+    });
+    console.log('Cards built: '+gradeContent.subjects.length+' for grade '+activeGrade);
+  } catch(e) {
+    var el2=document.getElementById('subjectCards');
+    if(el2) el2.innerHTML='<p style="color:red;padding:10px;font-size:.8rem;">Card error: '+e.message+'</p>';
+    console.error('buildSubjectCards error:', e);
+  }
 }
 
 function buildProgressSection() {
@@ -2372,6 +2387,7 @@ async function loadDashboardStats() {
 // ══════════════════════════════════════════════════════
 //  QUIZ
 // ══════════════════════════════════════════════════════
+
 function renderQuestion() {
   answered=false;
   const questions = shuffledQuestions.length ? shuffledQuestions : gradeContent.questions;
