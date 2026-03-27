@@ -963,8 +963,8 @@ const GRADE_DATA = {
       { icon:'🌍', title:'Social Studies', desc:'Community helpers and family!', badge:'Explore!', color:'sun' },
     ],
     questions:[
-      { q:'Count the apples: 🍎🍎🍎🍎🍎. How many?', opts:['3','4','5','6'], answer:2, subject:'Numbers' },
-      { q:'Count the stars: ⭐⭐⭐⭐⭐⭐⭐. How many?', opts:['5','6','7','8'], answer:2, subject:'Numbers' },
+      { q:'How many apples? 🍎🍎🍎🍎🍎', opts:['3','4','5','6'], answer:2, subject:'Numbers' },
+      { q:'How many stars? ⭐⭐⭐⭐⭐⭐⭐', opts:['5','6','7','8'], answer:2, subject:'Numbers' },
       { q:'Which number is 10?', opts:['8','9','10','11'], answer:2, subject:'Numbers' },
       { q:'Count to 5: 1, 2, 3, ___, 5', opts:['2','3','4','6'], answer:2, subject:'Numbers' },
       { q:'How many dogs? 🐶🐶🐶', opts:['1','2','3','4'], answer:2, subject:'Numbers' },
@@ -2419,6 +2419,19 @@ if ('serviceWorker' in navigator) {
 }
 
 // -- Offline -------------------------------------------
+window.addEventListener('visibilitychange', function() {
+  if (document.visibilityState === 'visible') {
+    // App came back to foreground - ensure we're on the right screen
+    if (activeChild && document.getElementById('appScreen') && 
+        !document.getElementById('appScreen').classList.contains('hidden')) {
+      // Already on app screen - nothing to do
+    } else if (currentUser && activeChild) {
+      // User is logged in and has a child selected - restore app
+      showScreen('app');
+    }
+  }
+});
+
 window.addEventListener('offline', () => document.getElementById('offlineBanner').style.display='block');
 window.addEventListener('online',  () => { document.getElementById('offlineBanner').style.display='none'; syncData(); });
 
@@ -3422,14 +3435,17 @@ function buildArtTab() {
   document.getElementById('artActivitiesTitle').textContent = artContent.activitiesTitle;
 
   const isYoung = activeGrade==='PreK'||activeGrade==='K'||activeGrade==='1';
+  const isPreK = activeGrade==='PreK';
   const grid = document.getElementById('artActivities');
   grid.innerHTML = '';
 
-  // Drawing canvas for ALL grades
-  var dcw=document.createElement('div');
-  dcw.style.cssText='grid-column:1/-1;margin-bottom:4px;';
-  grid.appendChild(dcw);
-  buildDrawingCanvas(dcw);
+  // Drawing canvas for K+ (not PreK - they get coloring book only)
+  if (!isPreK) {
+    var dcw=document.createElement('div');
+    dcw.style.cssText='grid-column:1/-1;margin-bottom:4px;';
+    grid.appendChild(dcw);
+    buildDrawingCanvas(dcw);
+  }
 
   if (isYoung) {
     var ct=document.createElement('div');ct.className='section-title';ct.style.cssText='grid-column:1/-1;margin-top:12px;';ct.textContent='🖍️ Coloring Book';grid.appendChild(ct);
@@ -4097,8 +4113,13 @@ async function startSubject(name) {
           b.style.pointerEvents='none';
           if(bi===q.answer){b.style.background='#E8FBF3';b.style.borderColor='var(--mint)';b.style.color='#2A9970';}
         });
-        if(correct){btn.style.background='#E8FBF3';score++;toast('✅ Correct! +5 ⭐');}
-        else{btn.style.background='#FFF0EE';btn.style.borderColor='var(--coral)';btn.style.color='var(--coral)';toast('Not quite — the green answer is right 💪');}
+        if(correct){
+          btn.style.background='#E8FBF3';score++;toast('✅ Correct! +5 ⭐');
+          if(q.explain){var ex=document.createElement('div');ex.style.cssText='grid-column:1/-1;margin-top:8px;padding:10px 12px;background:#F0FBF6;border-radius:12px;font-size:.82rem;color:#2A9970;border-left:3px solid var(--mint);line-height:1.4;';ex.innerHTML='💡 <b>Why:</b> '+q.explain;opts.appendChild(ex);}
+        } else {
+          btn.style.background='#FFF0EE';btn.style.borderColor='var(--coral)';btn.style.color='var(--coral)';toast('Not quite — the green answer is right 💪');
+          if(q.explain){var ex=document.createElement('div');ex.style.cssText='grid-column:1/-1;margin-top:8px;padding:10px 12px;background:#FFF0EE;border-radius:12px;font-size:.82rem;color:#c45c00;border-left:3px solid var(--coral);line-height:1.4;';ex.innerHTML='💡 <b>Answer:</b> '+q.explain;opts.appendChild(ex);}
+        }
         // Enable next button
         var nb=document.getElementById('sqNextBtn');
         if(nb){nb.disabled=false;nb.style.background='linear-gradient(135deg,var(--coral),var(--sunshine))';nb.style.color='white';nb.style.cursor='pointer';}
@@ -4130,6 +4151,11 @@ async function startSubject(name) {
 function buildOnlineLibrary(){
   var wrap=document.createElement('div');wrap.style.cssText='margin-top:24px;';
   var title=document.createElement('div');title.className='section-title';title.textContent='📚 Free Online Libraries';
+  title.style.cssText='font-size:1.1rem;font-weight:900;margin:20px 0 4px;';
+  var parentNote=document.createElement('div');
+  parentNote.style.cssText='font-size:.78rem;color:var(--muted);margin-bottom:12px;padding:8px 12px;background:#F8F6FF;border-radius:10px;border-left:3px solid var(--lavender);line-height:1.5;';
+  parentNote.innerHTML='<strong>👋 Parents:</strong> Tap any library below to open it. For <strong>Libby</strong> you will need your local library card number. <strong>Epic!</strong> is free with a teacher or student account. All others are completely free with no sign-up required.';
+  wrap.appendChild(parentNote);
   title.style.cssText='font-size:1.1rem;font-weight:900;margin:20px 0 6px;';wrap.appendChild(title);
   var sub=document.createElement('div');sub.style.cssText='font-size:.82rem;color:var(--muted);margin:6px 0 14px;';sub.textContent='Access thousands of books for free — no local library needed!';wrap.appendChild(sub);
   var grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:12px;';
@@ -4238,7 +4264,7 @@ function openMathGame(grade) {
     '5':    { type:'div',   title:'Math Master!',   icon:'🏆', color:'#FF8E53' },
   };
   var gd = gameData[grade] || gameData['3'];
-  var score = 0, total = 10, qNum = 0, startTime = Date.now();
+  var score = 0, total = 30, qNum = 0, startTime = Date.now();
 
   function makeQ() {
     var type = gd.type;
@@ -4383,14 +4409,37 @@ function openLangGame(grade) {
       {q:'What is an antonym for HOT?', opts:['Warm','Cold','Cool','Burning'], ans:1},
       {q:'What does a verb show?', opts:['A thing','A place','An action','A color'], ans:2},
       {q:'Which word is an adjective?', opts:['Run','Quickly','Happy','Jump'], ans:2},
-      {q:'What ends a question?', opts:['Period','"Comma"','Question mark','Exclamation mark'], ans:2},
+      {q:'What ends a question?', opts:['Period','Comma','Question mark','Exclamation mark'], ans:2},
       {q:'What is a compound word?', opts:['A very long word','Two words joined together','A rhyming word','A plural word'], ans:1},
       {q:'Which is spelled correctly?', opts:['Frend','Freind','Friend','Friand'], ans:2},
       {q:'What is the plural of CHILD?', opts:['Childs','Childrens','Children','Childes'], ans:2},
+      {q:'What is a noun?', opts:['An action word','A describing word','A person place or thing','A connecting word'], ans:2},
+      {q:'What is a simile?', opts:['A direct comparison','A comparison using like or as','A type of noun','A verb tense'], ans:1},
+      {q:'What is a metaphor?', opts:['Comparison using like or as','A direct comparison without like or as','A type of verb','A punctuation mark'], ans:1},
+      {q:'What is a prefix?', opts:['A word ending','Letters added to the beginning of a word','A root word','A type of noun'], ans:1},
+      {q:'What does the prefix un- mean?', opts:['Again','Before','Not or opposite','After'], ans:2},
+      {q:'What is the theme of a story?', opts:['The main character','The setting','The central message or lesson','The problem'], ans:2},
+      {q:'What is a homophone?', opts:['A type of metaphor','Words that sound the same but have different spellings and meanings','A synonym','An antonym'], ans:1},
+      {q:'Which pair are homophones?', opts:['happy and sad','their and there','cat and dog','run and walk'], ans:1},
+      {q:'What is alliteration?', opts:['Rhyming words','Repetition of the same beginning consonant sound','A metaphor','Exaggeration'], ans:1},
+      {q:'What is personification?', opts:['Describing a setting','Giving human qualities to non-human things','Comparing two things','Repeating sounds'], ans:1},
+      {q:'What is point of view?', opts:['The setting','The perspective from which a story is told','The authors age','The problem'], ans:1},
+      {q:'What is a thesis statement?', opts:['The last sentence','The main argument of an essay','A supporting detail','A conclusion'], ans:1},
+      {q:'What is foreshadowing?', opts:['Explaining the past','Hinting at future events','Describing the setting','Ending the story'], ans:1},
+      {q:'What is the plot of a story?', opts:['Where it takes place','The main character','The sequence of events','The theme'], ans:2},
+      {q:'What is the climax?', opts:['The beginning','The most exciting or important moment','The ending','The setting'], ans:1},
+      {q:'What is a suffix?', opts:['Letters at the beginning of a word','A root word','Letters added to the end of a word','A type of verb'], ans:2},
+      {q:'What does the suffix -ful mean?', opts:['Without','Full of or having','Not','Before'], ans:1},
+      {q:'What is an adverb?', opts:['A naming word','A word describing a noun','A word modifying a verb adjective or adverb','A connecting word'], ans:2},
+      {q:'What is a conjunction?', opts:['A naming word','A connecting word like and but or so','An action word','A describing word'], ans:1},
+      {q:'What is active voice?', opts:['When subject receives the action','When the subject performs the action','A type of verb tense','A type of question'], ans:1},
+      {q:'What is textual evidence?', opts:['The authors opinion','Specific details from a text to support a claim','A summary','A personal connection'], ans:1},
+      {q:'What is tone in writing?', opts:['The topic','The authors attitude conveyed through word choice','The volume','The speed'], ans:1},
+      {q:'What is a topic sentence?', opts:['The last sentence','The sentence that states the main idea of a paragraph','Any sentence','A question'], ans:1},
     ]
   };
   var qs = games[grade] || games['_default'];
-  qs = qs.slice().sort(function(){return Math.random()-.5;}).slice(0,6);
+  qs = qs.slice().sort(function(){return Math.random()-.5;}).slice(0,30);
   var qIdx2=0, score=0;
 
   var ov=document.createElement('div'); ov.className='modal-overlay'; ov.id='langGameOv';
