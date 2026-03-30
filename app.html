@@ -1248,13 +1248,13 @@ const GRADE_DATA = {
       { emoji:'🍼', name:'Happy Baby', tip:'Lie on your back, grab your feet and rock like a baby!', secs:20, level:'Easy' },
     ],
     books:[
-      { title:'Pat the Bunny',                  author:'Dorothy Kunhardt', pages:14, read:14, emoji:'🐰', readAloud:'https://www.youtube.com/watch?v=2NpfpkqMbOI' },
+      { title:'Pat the Bunny',                  author:'Dorothy Kunhardt', pages:14, read:14, emoji:'🐰', readAloud:'https://www.youtube.com/watch?v=KgSEiXNNKhk' },
       { title:'The Very Hungry Caterpillar',     author:'Eric Carle',       pages:22, read:10, emoji:'🐛', readAloud:'https://www.youtube.com/watch?v=btFCtMhF3iI' },
-      { title:'Goodnight Moon',                  author:'M.W. Brown',       pages:32, read:32, emoji:'🌙', readAloud:'https://www.youtube.com/watch?v=0s8oYJMTB20' },
+      { title:'Goodnight Moon',                  author:'M.W. Brown',       pages:32, read:32, emoji:'🌙', readAloud:'https://www.youtube.com/watch?v=9nBrCHJhLs4' },
       { title:'Brown Bear, Brown Bear',          author:'B. Martin Jr',     pages:32, read:0,  emoji:'🐻', readAloud:'https://www.youtube.com/watch?v=WSE5GsRo3GY' },
-      { title:'Duck & Goose',                    author:'Tad Hills',        pages:32, read:0,  emoji:'🦆', readAloud:'https://www.youtube.com/watch?v=7HrCBigwTps' },
+      { title:'Duck & Goose',                    author:'Tad Hills',        pages:32, read:0,  emoji:'🦆', readAloud:'https://www.youtube.com/watch?v=L3lkOE1j1vU' },
       { title:'Llama Llama Red Pajama',          author:'Anna Dewdney',     pages:40, read:20, emoji:'🦙', readAloud:'https://www.youtube.com/watch?v=JFMBHSdFOSI' },
-      { title:'The Snowy Day',                   author:'E.J. Keats',       pages:40, read:0,  emoji:'❄', readAloud:'https://www.youtube.com/watch?v=WwDGBgGX-cU' },
+      { title:'The Snowy Day',                   author:'E.J. Keats',       pages:40, read:0,  emoji:'❄', readAloud:'https://www.youtube.com/watch?v=tFDHDPGHqq8' },
       { title:'Chicka Chicka Boom Boom',         author:'B. Martin Jr',     pages:40, read:0,  emoji:'🌴', readAloud:'https://www.youtube.com/watch?v=h-HLZmRYqB4' },
       { title:'Corduroy',                        author:'Don Freeman',      pages:32, read:32, emoji:'🐻', readAloud:'https://www.youtube.com/watch?v=d-L3UMJaQbU' },
     ],
@@ -1572,14 +1572,14 @@ const GRADE_DATA = {
     ],
     books:[
       { title:'The Very Hungry Caterpillar', author:'Eric Carle',   pages:22, read:22, emoji:'🐛', readAloud:'https://www.youtube.com/watch?v=75NQK-Sm1YY' },
-      { title:'Where the Wild Things Are',   author:'M. Sendak',    pages:40, read:20, emoji:'🦁', readAloud:'https://www.youtube.com/watch?v=I8mdj5JkaUo' },
+      { title:'Where the Wild Things Are',   author:'M. Sendak',    pages:40, read:20, emoji:'🦁', readAloud:'https://www.youtube.com/watch?v=r1jwYQBs7rg' },
       { title:'Goodnight Moon',              author:'M.W. Brown',   pages:32, read:32, emoji:'🌙', readAloud:'https://www.youtube.com/watch?v=1ZTnwYOvo3Q' },
       { title:'The Snowy Day',               author:'E.J. Keats',   pages:40, read:10, emoji:'❄', readAloud:'https://www.youtube.com/watch?v=d-L3UMJaQbU' },
       { title:'Brown Bear, Brown Bear',      author:'B. Martin Jr', pages:32, read:0,  emoji:'🐻', readAloud:'https://www.youtube.com/watch?v=WSE5GsRo3GY' },
       { title:'If You Give a Mouse a Cookie',author:'L. Numeroff',  pages:40, read:40, emoji:'🍪', readAloud:'https://www.youtube.com/watch?v=THzKMfAMJAA' },
       { title:'Pete the Cat: I Love My White Shoes', author:'E. Litwin', pages:40, read:0, emoji:'👟', readAloud:'https://www.youtube.com/watch?v=NL9JBKpEMEE' },
       { title:'Dragons Love Tacos',           author:'A. Rubin',      pages:40, read:40, emoji:'🐉', readAloud:'https://www.youtube.com/watch?v=qKrY3LdNJkI' },
-      { title:'Dont Let the Pigeon Drive the Bus', author:'M. Willems', pages:40, read:0, emoji:'🐦', readAloud:'https://www.youtube.com/watch?v=P6UoGPbPzCM' },
+      { title:'Dont Let the Pigeon Drive the Bus', author:'M. Willems', pages:40, read:0, emoji:'🐦', readAloud:'https://www.youtube.com/watch?v=fNS7dh1eMlU' },
     ],
     words:[
       { w:'Happy',   d:'Feeling really good and smiley! 😊' },
@@ -2851,7 +2851,7 @@ async function selectChild(child) {
   buildSubjectCards();
   buildYogaGrid();
   buildProgressSection();
-  initMusicPlayer();
+  // Music player initialized lazily when yoga tab opens
 
   // Header
   document.getElementById('activeChildAvatar').textContent = child.avatar||'🌟';
@@ -3851,19 +3851,19 @@ function updateArtStats() {
 // ══════════════════════════════════════════════════════
 const YOGA_PLAYLISTS = {
   PreK:[
-    {title:'Calm Piano for Kids', id:'lFcSrYw2zXY'},
-    {title:'Nature Sounds Forest', id:'eKFTSSKCzWA'},
-    {title:'Gentle Kids Yoga Flow', id:'7maJOI3QMu0'},
-    {title:'Soft Lullaby Piano', id:'1ZYbU82GVz4'},
-    {title:'Happy Meditation Music', id:'OFSMvFuJQKE'},
-    {title:'Peaceful Ocean Waves', id:'WHPEKLQID4U'},
-    {title:'Rainbow Instrumental', id:'77ZozI0rw7w'},
-    {title:'Gentle Morning Music', id:'lFcSrYw2zXY'},
-    {title:'Sleepy Stars Lullaby', id:'1ZYbU82GVz4'},
-    {title:'Soft Sunshine Piano', id:'eKFTSSKCzWA'}
+    {title:'Happy Kids Yoga Music',   id:'dp7QSLOFifw'},
+    {title:'Calm Forest Sounds',      id:'eKFTSSKCzWA'},
+    {title:'Gentle Kids Yoga Flow',   id:'7maJOI3QMu0'},
+    {title:'Soft Lullaby Piano',      id:'1ZYbU82GVz4'},
+    {title:'Happy Meditation Music',  id:'OFSMvFuJQKE'},
+    {title:'Peaceful Ocean Waves',    id:'WHPEKLQID4U'},
+    {title:'Rainbow Instrumental',    id:'77ZozI0rw7w'},
+    {title:'Children Yoga Relaxation',id:'xNXS5aezjJ4'},
+    {title:'Dreamy Piano for Kids',   id:'lFcSrYw2zXY'},
+    {title:'Morning Sunshine Music',  id:'g0KDNB4JDXM'},
   ],
   K:[
-    {title:'Calm Piano for Kids', id:'lFcSrYw2zXY'},
+    {title:'Happy Kids Yoga Music', id:'dp7QSLOFifw'},
     {title:'Nature Sounds Forest', id:'eKFTSSKCzWA'},
     {title:'Gentle Kids Yoga Flow', id:'7maJOI3QMu0'},
     {title:'Soft Lullaby Piano', id:'1ZYbU82GVz4'},
@@ -3875,7 +3875,7 @@ const YOGA_PLAYLISTS = {
     {title:'Soft Sunshine Piano', id:'eKFTSSKCzWA'}
   ],
   1:[
-    {title:'Calm Piano for Kids', id:'lFcSrYw2zXY'},
+    {title:'Happy Kids Yoga Music', id:'dp7QSLOFifw'},
     {title:'Nature Sounds Forest', id:'eKFTSSKCzWA'},
     {title:'Gentle Kids Yoga Flow', id:'7maJOI3QMu0'},
     {title:'Soft Lullaby Piano', id:'1ZYbU82GVz4'},
@@ -3887,7 +3887,7 @@ const YOGA_PLAYLISTS = {
     {title:'Soft Sunshine Piano', id:'eKFTSSKCzWA'}
   ],
   2:[
-    {title:'Calm Piano for Kids', id:'lFcSrYw2zXY'},
+    {title:'Happy Kids Yoga Music', id:'dp7QSLOFifw'},
     {title:'Nature Sounds Forest', id:'eKFTSSKCzWA'},
     {title:'Gentle Kids Yoga Flow', id:'7maJOI3QMu0'},
     {title:'Soft Lullaby Piano', id:'1ZYbU82GVz4'},
@@ -3899,7 +3899,7 @@ const YOGA_PLAYLISTS = {
     {title:'Soft Sunshine Piano', id:'eKFTSSKCzWA'}
   ],
   3:[
-    {title:'Calm Piano for Kids', id:'lFcSrYw2zXY'},
+    {title:'Happy Kids Yoga Music', id:'dp7QSLOFifw'},
     {title:'Nature Sounds Forest', id:'eKFTSSKCzWA'},
     {title:'Gentle Kids Yoga Flow', id:'7maJOI3QMu0'},
     {title:'Soft Lullaby Piano', id:'1ZYbU82GVz4'},
@@ -3911,7 +3911,7 @@ const YOGA_PLAYLISTS = {
     {title:'Soft Sunshine Piano', id:'eKFTSSKCzWA'}
   ],
   4:[
-    {title:'Calm Piano for Kids', id:'lFcSrYw2zXY'},
+    {title:'Happy Kids Yoga Music', id:'dp7QSLOFifw'},
     {title:'Nature Sounds Forest', id:'eKFTSSKCzWA'},
     {title:'Gentle Kids Yoga Flow', id:'7maJOI3QMu0'},
     {title:'Soft Lullaby Piano', id:'1ZYbU82GVz4'},
@@ -3923,7 +3923,7 @@ const YOGA_PLAYLISTS = {
     {title:'Soft Sunshine Piano', id:'eKFTSSKCzWA'}
   ],
   5:[
-    {title:'Calm Piano for Kids', id:'lFcSrYw2zXY'},
+    {title:'Happy Kids Yoga Music', id:'dp7QSLOFifw'},
     {title:'Nature Sounds Forest', id:'eKFTSSKCzWA'},
     {title:'Gentle Kids Yoga Flow', id:'7maJOI3QMu0'},
     {title:'Soft Lullaby Piano', id:'1ZYbU82GVz4'},
@@ -4232,7 +4232,7 @@ function switchTab(tab) {
     document.getElementById('playPauseBtn').textContent = '> Play';
   }
   if (tab === 'yoga') {
-    setTimeout(() => { if (!currentPlaylist.length) initMusicPlayer(); }, 100);
+    setTimeout(() => { if (!currentPlaylist || !currentPlaylist.length || !ytPlayer) initMusicPlayer(); }, 200);
   }
   // ✅ FIX 4: Only build art tab once per child session
   if (tab === 'art' && !artTabBuilt) {
@@ -4327,10 +4327,10 @@ async function startSubject(name) {
         });
         if(correct){
           btn.style.background='#E8FBF3';score++;toast('✅ Correct! +5 ⭐');
-          if(q.explain){var ex=document.createElement('div');ex.style.cssText='grid-column:1/-1;margin-top:8px;padding:10px 12px;background:#F0FBF6;border-radius:12px;font-size:.82rem;color:#2A9970;border-left:3px solid var(--mint);line-height:1.4;';ex.innerHTML='💡 <b>Why:</b> '+q.explain;opts.appendChild(ex);}
+          if(q.explain){var ex=document.createElement('div');ex.style.cssText='grid-column:1/-1;margin-top:8px;padding:10px 12px;background:#F0FBF6;border-radius:12px;font-size:.82rem;color:#2A9970;border-left:3px solid var(--mint);line-height:1.4;';ex.innerHTML='💡 <b>Why:</b> '+q.explain;optsDiv.appendChild(ex);}
         } else {
           btn.style.background='#FFF0EE';btn.style.borderColor='var(--coral)';btn.style.color='var(--coral)';toast('Not quite — the green answer is right 💪');
-          if(q.explain){var ex=document.createElement('div');ex.style.cssText='grid-column:1/-1;margin-top:8px;padding:10px 12px;background:#FFF0EE;border-radius:12px;font-size:.82rem;color:#c45c00;border-left:3px solid var(--coral);line-height:1.4;';ex.innerHTML='💡 <b>Answer:</b> '+q.explain;opts.appendChild(ex);}
+          if(q.explain){var ex=document.createElement('div');ex.style.cssText='grid-column:1/-1;margin-top:8px;padding:10px 12px;background:#FFF0EE;border-radius:12px;font-size:.82rem;color:#c45c00;border-left:3px solid var(--coral);line-height:1.4;';ex.innerHTML='💡 <b>Answer:</b> '+q.explain;optsDiv.appendChild(ex);}
         }
         // Enable next button
         var nb=document.getElementById('sqNextBtn');
@@ -4457,6 +4457,7 @@ function openBookReader(title, ytUrl) {
   doneBtn.textContent = 'I Read This Book! +10 Stars';
   doneBtn.onclick = async function() {
     ov.remove();
+    if(currentUser && activeChild) showScreen('app');
     try {
       await upsertDailyActivity({minutes_reading:10});
       await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:10});
@@ -4477,10 +4478,10 @@ function openBookReader(title, ytUrl) {
   document.body.appendChild(ov);
 }
 
-function openGDLBook(title, h5pId) {
+function openGDLBook(title, slug) {
   // GDL books use their public book page URL for embedding
   // The slug is derived from the book data
-  var embedUrl = 'https://digitallibrary.io/en/book/' + h5pId + '/';
+  var embedUrl = 'https://digitallibrary.io/en/book/' + slug + '/';
   var ov = document.createElement('div');
   ov.id = 'gdlBookOv';
   ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#1A0A2E;display:flex;flex-direction:column;';
@@ -4508,7 +4509,7 @@ function openGDLBook(title, h5pId) {
   var fallbackBtn = document.createElement('button');
   fallbackBtn.textContent = 'Open on Global Digital Library';
   fallbackBtn.style.cssText = 'margin-top:8px;padding:10px 20px;border-radius:30px;border:none;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;font-size:.9rem;';
-  fallbackBtn.onclick = function() { window.open('https://digitallibrary.io/', '_blank'); };
+  fallbackBtn.onclick = function() { window.open('https://digitallibrary.io/en/book/' + slug + '/', '_blank'); };
   loading.appendChild(fallbackBtn);
   body.appendChild(loading);
 
@@ -4530,6 +4531,8 @@ function openGDLBook(title, h5pId) {
   doneBtn.style.cssText = 'flex:1;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;border:none;border-radius:40px;padding:12px 20px;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;';
   doneBtn.onclick = async function() {
     ov.remove();
+    // Ensure we're back on the main app screen
+    if(currentUser && activeChild) showScreen('app');
     try {
       await upsertDailyActivity({minutes_reading:15});
       await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:15});
@@ -4548,62 +4551,62 @@ function buildGDLLibrary(grade) {
   // These are free, Creative Commons licensed, interactive books
   var gradeBooks = {
     PreK: [
-      {t:'The Lost Doll',              id:'the-lost-doll-2',           d:'Abi loves her doll but it goes missing'},
-      {t:'Mia Wants a Pet',            id:'mia-wants-a-pet',           d:'Can Mia convince her parents?'},
-      {t:'A Cloudy Day',               id:'a-cloudy-day',              d:'What happens on a cloudy day?'},
-      {t:'The Big Red Ball',           id:'the-big-red-ball',          d:'Where did the red ball go?'},
-      {t:'My Family',                  id:'my-family-2',               d:'All about my wonderful family'},
-      {t:'Hello Animals',              id:'hello-animals',             d:'Meet friendly animals'},
+      {t:'The Lost Doll',              id:'the-lost-doll-2',           d:'Abi loves her doll, but one day it goes missing!'},
+      {t:'What Am I Made Of?',         id:'what-am-i-made-of',         d:'Discover what things are made of'},
+      {t:'My Two Grannies',            id:'my-two-grannies',           d:'A girl with two very different grannies'},
+      {t:'Coucal Finds a Home',        id:'coucal-finds-a-home',       d:'Where does coucal belong?'},
+      {t:'Sindi and the Dress',        id:'sindi-and-the-dress',       d:'Sindi wants a beautiful dress'},
+      {t:'Baby Animals',               id:'baby-animals-en',           d:'Meet the cutest baby animals!'},
     ],
     K: [
-      {t:'Thabo and the Lion',         id:'thabo-and-the-lion',        d:'A brave boy faces a lion'},
-      {t:'A Small Blue Egg',           id:'a-small-blue-egg',          d:'What hatches from the egg?'},
-      {t:'Sore Eyes',                  id:'sore-eyes',                 d:'Taking care when you are sick'},
-      {t:'A Tiny Seed',                id:'a-tiny-seed-2',             d:'Watch a seed become a plant'},
-      {t:'Counting Birds',             id:'counting-birds',            d:'Count the birds in the tree'},
-      {t:'My Wonderful World',         id:'my-wonderful-world',        d:'The world is full of wonders'},
+      {t:'A Little Seed',              id:'a-little-seed',             d:'Watch a tiny seed become something wonderful'},
+      {t:'Cooking Pot',                id:'cooking-pot',               d:'A magical pot that never runs out of food'},
+      {t:'Tell Me One Thing',          id:'tell-me-one-thing',         d:'A grandmother and grandchild share stories'},
+      {t:'The Colours of My Day',      id:'the-colours-of-my-day',     d:'Colors tell the story of your whole day'},
+      {t:'Up in the Tree',             id:'up-in-the-tree',            d:'What can you see from up high?'},
+      {t:'Where Is the Cat?',          id:'where-is-the-cat',          d:'Find the sneaky hiding cat!'},
     ],
     1: [
-      {t:'Where the River Monster Roams', id:'where-the-river-monster-roams', d:'Is there really a river monster?'},
-      {t:'The Greedy Dog',             id:'the-greedy-dog',            d:'A dog learns about being greedy'},
-      {t:'Two Goats and the Bridge',   id:'two-goats-and-the-bridge',  d:'Two stubborn goats on a bridge'},
-      {t:'Kindness',                   id:'kindness-2',                d:'Small acts of kindness matter'},
-      {t:'Lazy Little Brother',        id:'lazy-little-brother',       d:'A funny story about chores'},
-      {t:'The Sun and the Wind',       id:'the-sun-and-the-wind',      d:'A classic fable'},
+      {t:'Whale Moves',                id:'whale-moves',               d:'The amazing way whales move through the ocean'},
+      {t:'Friends',                    id:'friends-en',                d:'What makes a true friend?'},
+      {t:'My Body',                    id:'my-body-en',                d:'Learn about all your amazing body parts'},
+      {t:'Rain',                       id:'rain-en',                   d:'Where does rain come from?'},
+      {t:'Seeds',                      id:'seeds-en',                  d:'How do seeds grow into plants?'},
+      {t:'The Clever Monkey',          id:'the-clever-monkey',         d:'A clever monkey outsmarts everyone'},
     ],
     2: [
-      {t:'Divya Has Sniffles',         id:'divya-has-sniffles',        d:'Can Divya still play in the cup?'},
-      {t:'An Unlucky Day',             id:'an-unlucky-day',            d:'When everything goes wrong'},
-      {t:'The Goat and the Rope',      id:'the-goat-and-the-rope',     d:'A goat causes trouble'},
-      {t:'Who Spilled the Beans',      id:'who-spilled-the-beans',     d:'A mystery in the kitchen'},
-      {t:'Feelings',                   id:'feelings-2',                d:'Learn about different emotions'},
-      {t:'How the Stars Were Made',    id:'how-the-stars-were-made',   d:'A beautiful creation story'},
+      {t:'Formi the Ant',              id:'formi-the-ant',             d:'Follow Formi through a big adventure'},
+      {t:'Dreams',                     id:'dreams-en',                 d:'What do you dream about at night?'},
+      {t:'The Storm',                  id:'the-storm-en',              d:'A family faces a big storm together'},
+      {t:'Butterflies',                id:'butterflies-en',            d:'The magic life cycle of a butterfly'},
+      {t:'Mia the Mouse',              id:'mia-the-mouse',             d:'Mia is a brave little mouse'},
+      {t:'My School',                  id:'my-school-en',              d:'A day full of fun at school'},
     ],
     3: [
-      {t:'Why Bees Buzz',              id:'why-bees-buzz',             d:'Discover why bees make that sound'},
-      {t:'Little Canary',              id:'little-canary',             d:'First migration south'},
-      {t:'The Magic Drum',             id:'the-magic-drum',            d:'A drum with special powers'},
-      {t:'The Three Little Pigs',      id:'the-three-little-pigs-2',   d:'A classic tale of hard work'},
-      {t:'School in the Forest',       id:'school-in-the-forest',      d:'Animals learn together'},
-      {t:'Under the Mango Tree',       id:'under-the-mango-tree',      d:'Stories told under a big tree'},
+      {t:'Divya Has Sniffles',         id:'divya-has-sniffles',        d:'Can Divya play in the Football Cup?'},
+      {t:'Why Bees Buzz',              id:'why-bees-buzz',             d:'Discover the secret life of bees'},
+      {t:'The Little Canary',          id:'little-canary',             d:'A canary on its first migration'},
+      {t:'Priya Goes to School',       id:'priya-goes-to-school',      d:'Priya has butterflies on her first day'},
+      {t:'Khutso Has a Dream',         id:'khutso-has-a-dream',        d:'A dream that changes everything'},
+      {t:'Our Neighborhood',           id:'our-neighborhood-en',       d:'Meet the people who make your community'},
     ],
     4: [
-      {t:'The Invention',              id:'the-invention-2',           d:'A young inventor changes things'},
-      {t:'Girl With a Bicycle',        id:'girl-with-a-bicycle',       d:'A girl fights for her dream'},
-      {t:'My Body Belongs to Me',      id:'my-body-belongs-to-me',     d:'An important story about safety'},
-      {t:'Grandmas Farm',              id:'grandmas-farm',             d:'A visit to grandmas farm'},
-      {t:'The Power of Water',         id:'the-power-of-water',        d:'How water shapes our world'},
-      {t:'Brave Malak',                id:'brave-malak',               d:'Malak shows incredible courage'},
+      {t:'The River Monster',          id:'where-the-river-monster-roams', d:'Is there really a monster in the river?'},
+      {t:'Langlen and Curly Hair',     id:'langlen-and-curly-hair',    d:'Why do we look like our families?'},
+      {t:'Rose and the Tower',         id:'rose-and-the-tower',        d:'A new tower changes a quiet life forever'},
+      {t:'The Brave Astronaut',        id:'the-brave-astronaut',       d:'One small step leads to a big adventure'},
+      {t:'The River Runs',             id:'the-river-runs',            d:'Follow a river from mountains to sea'},
+      {t:'Our Earth',                  id:'our-earth-en',              d:'Learn to care for our incredible planet'},
     ],
     5: [
-      {t:'Beyond the River',           id:'beyond-the-river',          d:'A journey of discovery'},
-      {t:'The Last Tree',              id:'the-last-tree-2',           d:'Fighting to save the environment'},
-      {t:'I Am Not a Witch',           id:'i-am-not-a-witch',          d:'Standing up against superstition'},
-      {t:'Malaika Early Reader',       id:'malaika-early-reader',      d:'A beloved story character'},
-      {t:'The Golden Stool',           id:'the-golden-stool',          d:'An African heritage story'},
-      {t:'Women Who Changed Africa',   id:'women-who-changed-africa',  d:'Inspiring stories of brave women'},
+      {t:'Didi the Library Girl',      id:'didi-the-library-girl',     d:'Didi discovers the magic of books'},
+      {t:'The Long Walk',              id:'the-long-walk-en',          d:'A journey that teaches courage'},
+      {t:'Cuckoo Finds His Song',      id:'cuckoo-finds-his-song',     d:'Cuckoo lost his song through the seasons'},
+      {t:'Building Tomorrow',          id:'building-tomorrow-en',      d:'Young people building a better future'},
+      {t:'The Science of Rain',        id:'the-science-of-rain',       d:'The amazing science behind rainfall'},
+      {t:'What Will I Be?',            id:'what-will-i-be',            d:'Every child has a future full of possibility'},
     ],
-  };
+  }
   var books = gradeBooks[grade] || gradeBooks[1];
   var wrap = document.createElement('div');
   wrap.style.cssText = 'margin-top:24px;';
@@ -4984,7 +4987,9 @@ function buildDrawingCanvas(container){
   wrap.appendChild(act);
   container.appendChild(wrap);
   setTimeout(function(){
-    cv.width=cv.offsetWidth||360;
+    // Ensure panel is visible before measuring
+    var w = cv.offsetWidth || cv.parentElement && cv.parentElement.offsetWidth || window.innerWidth - 32;
+    cv.width = Math.max(w, 300);
     var ctx=cv.getContext('2d');ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,cv.width,cv.height);
     clrB.onclick=function(){ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,cv.width,cv.height);toast('Cleared!');};
     savB.onclick=async function(){
@@ -5128,7 +5133,7 @@ setTimeout(function() {
   var isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
   var isStandalone = window.navigator.standalone === true;
   var isInstalled = window.matchMedia('(display-mode: standalone)').matches;
-  if(isIOS && !isStandalone && !isInstalled && activeChild) {
+  if(isIOS && !isStandalone && !isInstalled) {  // Show regardless of activeChild
     var btn = document.getElementById('installAppBtn');
     if(!btn) {
       btn = document.createElement('button');
