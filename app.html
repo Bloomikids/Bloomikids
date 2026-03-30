@@ -566,7 +566,7 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
 
 /* -- BOTTOM NAV ---------------------------------------- */
 .bottom-nav::-webkit-scrollbar { display:none; }
-.bottom-nav { position:fixed; bottom:0; left:0; right:0; background:white; padding:10px 12px; display:flex; justify-content:flex-start; gap:6px; box-shadow:0 -8px 32px rgba(45,45,78,.08); z-index:100; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+.bottom-nav { position:fixed; bottom:0; left:0; right:0; background:white; padding:10px 12px; display:none; justify-content:flex-start; gap:6px; box-shadow:0 -8px 32px rgba(45,45,78,.08); z-index:100; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
 .bottom-nav .tab-btn { font-size:.88rem; padding:10px 20px; }
 
 /* -- MODAL OVERLAY (grade + avatar pickers) ------------ */
@@ -1094,6 +1094,146 @@ const GRADE_DATA = {
       { q:'Which is the hottest season?', opts:['Winter','Spring','Fall','Summer'], answer:3, subject:'Nature' },
       { q:'What comes after rain sometimes?', opts:['Snow','Rainbow','Lightning','Tornado'], answer:1, subject:'Nature' },
       { q:'What do trees give us?', opts:['Rain','Air and shade','Music','Light'], answer:1, subject:'Nature' },
+    
+      // More Language Arts PreK
+      { q:'Which picture starts with the letter B?', opts:['Apple','Ball','Cat','Dog'], answer:1, subject:'Language Arts' },
+      { q:'What letter does SUN start with?', opts:['T','M','S','B'], answer:2, subject:'Language Arts' },
+      { q:'Which word rhymes with CAT?', opts:['Dog','Hat','Sun','Run'], answer:1, subject:'Language Arts' },
+      { q:'How many letters are in the word DOG?', opts:['2','3','4','5'], answer:1, subject:'Language Arts' },
+      { q:'What letter does MOON start with?', opts:['N','B','M','P'], answer:2, subject:'Language Arts' },
+      { q:'Which word rhymes with BAT?', opts:['Car','Mat','Dog','Cup'], answer:1, subject:'Language Arts' },
+      { q:'What sound does the letter S make?', opts:['Buh','Sss','Muh','Tuh'], answer:1, subject:'Language Arts' },
+      { q:'Which starts with the letter F?', opts:['Ball','Car','Fish','Dog'], answer:2, subject:'Language Arts' },
+      { q:'What letter comes first in the alphabet?', opts:['B','Z','A','C'], answer:2, subject:'Language Arts' },
+    
+      // More Social Studies PreK
+      { q:'What does a teacher do?', opts:['Cook food','Help children learn','Drive a bus','Fix cars'], answer:1, subject:'Social Studies' },
+      { q:'Where do you go to learn?', opts:['Hospital','Restaurant','School','Store'], answer:2, subject:'Social Studies' },
+      { q:'What is a family?', opts:['A group of friends','People who love and care for each other','A classroom','A neighborhood'], answer:1, subject:'Social Studies' },
+      { q:'Which person helps keep us safe?', opts:['Chef','Police officer','Artist','Farmer'], answer:1, subject:'Social Studies' },
+      { q:'What do we say to greet someone?', opts:['Goodbye','Hello','Thank you','Sorry'], answer:1, subject:'Social Studies' },
+      { q:'What is sharing?', opts:['Keeping everything for yourself','Letting others have some too','Taking from others','Hiding things'], answer:1, subject:'Social Studies' },
+      { q:'Who delivers letters to your home?', opts:['Teacher','Doctor','Mail carrier','Chef'], answer:2, subject:'Social Studies' },
+      { q:'What is a rule?', opts:['Something you can ignore','A guideline that helps everyone get along','A type of game','A type of food'], answer:1, subject:'Social Studies' },
+      { q:'Why do we take turns?', opts:['Because we have to','So everyone gets a fair chance','Because it is slow','Because teachers say so'], answer:1, subject:'Social Studies' },
+      { q:'What does a doctor do?', opts:['Bake bread','Help sick people feel better','Build houses','Drive trucks'], answer:1, subject:'Social Studies' },
+      { q:'Which place has books to borrow?', opts:['Bank','Library','Gym','Bakery'], answer:1, subject:'Social Studies' },
+      { q:'What do we say when someone helps us?', opts:['Sorry','Goodbye','Thank you','Hello'], answer:2, subject:'Social Studies' },
+      { q:'What is a neighbor?', opts:['Someone far away','A person who lives near you','A family member','A teacher'], answer:1, subject:'Social Studies' },
+      { q:'What does a firefighter do?', opts:['Bake cookies','Put out fires and help people','Fly planes','Teach school'], answer:1, subject:'Social Studies' },
+      { q:'What is a community?', opts:['A type of food','People living and working together in the same area','A school subject','A kind of game'], answer:1, subject:'Social Studies' },
+      { q:'Which vehicle helps sick people get to hospital?', opts:['School bus','Ambulance','Fire truck','Taxi'], answer:1, subject:'Social Studies' },
+      // More Numbers PreK
+      { q:'What comes after 10?', opts:['9','11','12','8'], answer:1, subject:'Numbers' },
+      { q:'How many fingers on one hand?', opts:['4','5','6','3'], answer:1, subject:'Numbers' },
+      { q:'Which number is bigger: 3 or 7?', opts:['3','7','They are equal','Neither'], answer:1, subject:'Numbers' },
+      { q:'How many wheels does a car have?', opts:['2','3','4','5'], answer:2, subject:'Numbers' },
+      { q:'What is 2 + 3?', opts:['4','5','6','7'], answer:1, subject:'Numbers' },
+      { q:'How many days in a week?', opts:['5','6','7','8'], answer:2, subject:'Numbers' },
+      { q:'Count: 1 2 3 ___ 5. What is missing?', opts:['3','4','6','7'], answer:1, subject:'Numbers' },
+      { q:'How many legs does a cat have?', opts:['2','3','4','5'], answer:2, subject:'Numbers' },
+      { q:'What number comes before 8?', opts:['6','7','9','5'], answer:1, subject:'Numbers' },
+      // More Science PreK
+      { q:'What do plants need to grow?', opts:['Candy','Water and sun','Music','Toys'], answer:1, subject:'Science' },
+      { q:'Which falls from the sky when it is cold?', opts:['Sand','Snow','Rocks','Leaves'], answer:1, subject:'Science' },
+      { q:'What sound does thunder make?', opts:['A quiet hum','A loud boom','A soft whistle','A gentle drip'], answer:1, subject:'Science' },
+      { q:'Which is a fruit?', opts:['Carrot','Potato','Apple','Lettuce'], answer:2, subject:'Science' },
+      { q:'What does a caterpillar turn into?', opts:['A bee','A butterfly','A bird','A frog'], answer:1, subject:'Science' },
+      { q:'Where does the sun go at night?', opts:['It disappears','It is still there but Earth has turned away from it','It hides behind clouds','It falls into the ocean'], answer:1, subject:'Science' },
+      { q:'What is ice?', opts:['Hot water','Frozen water','A type of cloud','A rock'], answer:1, subject:'Science' },
+      { q:'Which is living?', opts:['A rock','A car','A tree','A shoe'], answer:2, subject:'Science' },
+      { q:'What do roots do for a plant?', opts:['Make flowers','Absorb water and hold the plant in ground','Make seeds','Make the plant tall'], answer:1, subject:'Science' },
+      { q:'Why do we need the sun?', opts:['For darkness','For light warmth and to help plants grow','For rain','For wind'], answer:1, subject:'Science' },
+      { q:'What is a tadpole?', opts:['A baby bird','A baby fish','A baby frog','A baby turtle'], answer:2, subject:'Science' },
+      { q:'What season comes after summer?', opts:['Spring','Winter','Fall','Summer again'], answer:2, subject:'Science' },
+      { q:'Which is a vegetable?', opts:['Apple','Orange','Carrot','Grape'], answer:2, subject:'Science' },
+      { q:'What do we use our nose for?', opts:['Hearing','Smelling','Seeing','Tasting'], answer:1, subject:'Science' },
+      { q:'What makes the wind blow?', opts:['Trees moving','Air moving from high pressure to low pressure areas','Fans outside','Clouds moving'], answer:1, subject:'Science' },
+    
+      // More Animals PreK (20 more = 30)
+      { q:'What does a cow say?', opts:['Woof','Moo','Oink','Cluck'], answer:1, subject:'Animals' },
+      { q:'Which animal has a trunk?', opts:['Dog','Elephant','Horse','Cow'], answer:1, subject:'Animals' },
+      { q:'What is a baby sheep called?', opts:['Calf','Kitten','Lamb','Puppy'], answer:2, subject:'Animals' },
+      { q:'Which animal lives in a shell?', opts:['Dog','Turtle','Cat','Bird'], answer:1, subject:'Animals' },
+      { q:'What do birds use to fly?', opts:['Fins','Wings','Arms','Legs'], answer:1, subject:'Animals' },
+      { q:'Which animal gives us eggs?', opts:['Dog','Cat','Hen','Horse'], answer:2, subject:'Animals' },
+      { q:'What animal is king of the jungle?', opts:['Tiger','Bear','Lion','Wolf'], answer:2, subject:'Animals' },
+      { q:'Which animal has stripes?', opts:['Elephant','Giraffe','Zebra','Bear'], answer:2, subject:'Animals' },
+      { q:'How does a fish breathe?', opts:['With lungs','With gills','With its skin','It cannot breathe'], answer:1, subject:'Animals' },
+      { q:'Which animal makes honey?', opts:['Butterfly','Ant','Bee','Fly'], answer:2, subject:'Animals' },
+      { q:'What do frogs do?', opts:['Bark','Hop and croak','Fly','Swim only'], answer:1, subject:'Animals' },
+      { q:'Which animal has a long tail and swings in trees?', opts:['Dog','Monkey','Cat','Rabbit'], answer:1, subject:'Animals' },
+      { q:'What does a horse say?', opts:['Moo','Oink','Neigh','Woof'], answer:2, subject:'Animals' },
+      { q:'Which animal has feathers?', opts:['Fish','Snake','Bird','Frog'], answer:2, subject:'Animals' },
+      { q:'What do bears eat?', opts:['Only grass','Berries fish and other foods','Only meat','Only fish'], answer:1, subject:'Animals' },
+      { q:'Which is the fastest bird?', opts:['Eagle','Penguin','Ostrich','Parrot'], answer:0, subject:'Animals' },
+      { q:'What animal barks?', opts:['Cat','Dog','Bird','Fish'], answer:1, subject:'Animals' },
+      { q:'Which animal can swim and walk on land?', opts:['Fish','Cat','Duck','Horse'], answer:2, subject:'Animals' },
+      { q:'What is a baby bear called?', opts:['Kitten','Cub','Pup','Lamb'], answer:1, subject:'Animals' },
+      { q:'Which animal has a very long neck?', opts:['Dog','Elephant','Giraffe','Cat'], answer:2, subject:'Animals' },
+      // More Colors PreK (20 more = 30)
+      { q:'What color is a school bus?', opts:['Red','Blue','Yellow','Green'], answer:2, subject:'Colors' },
+      { q:'What color is a fire truck?', opts:['Blue','Red','Green','Yellow'], answer:1, subject:'Colors' },
+      { q:'What color is a banana?', opts:['Red','Orange','Yellow','Green'], answer:2, subject:'Colors' },
+      { q:'What color is broccoli?', opts:['Orange','Purple','Green','Red'], answer:2, subject:'Colors' },
+      { q:'What color is a stop sign?', opts:['Blue','Red','Green','Yellow'], answer:1, subject:'Colors' },
+      { q:'What color is a polar bear?', opts:['Gray','Brown','White','Black'], answer:2, subject:'Colors' },
+      { q:'What color is the ocean?', opts:['Green','Red','Blue','Purple'], answer:2, subject:'Colors' },
+      { q:'What color is a pumpkin?', opts:['Blue','Orange','Red','Green'], answer:1, subject:'Colors' },
+      { q:'What color is chocolate?', opts:['Brown','Black','Red','Orange'], answer:0, subject:'Colors' },
+      { q:'What color is a frog?', opts:['Red','Blue','Green','Purple'], answer:2, subject:'Colors' },
+      { q:'What color is a ladybug?', opts:['Blue','Red','Green','Yellow'], answer:1, subject:'Colors' },
+      { q:'What color is a grape?', opts:['Orange','Red or purple','Blue','Green'], answer:1, subject:'Colors' },
+      { q:'What color is snow?', opts:['Gray','Blue','White','Silver'], answer:2, subject:'Colors' },
+      { q:'What color is a carrot?', opts:['Red','Purple','Orange','Yellow'], answer:2, subject:'Colors' },
+      { q:'What color is a blueberry?', opts:['Red','Blue','Green','Purple'], answer:1, subject:'Colors' },
+      { q:'What color is a strawberry?', opts:['Orange','Red','Pink','Purple'], answer:1, subject:'Colors' },
+      { q:'What color is mud?', opts:['Blue','Brown','Green','White'], answer:1, subject:'Colors' },
+      { q:'What color is the night sky?', opts:['Blue','Dark blue or black','Purple','Gray'], answer:1, subject:'Colors' },
+      { q:'What color is a flamingo?', opts:['White','Blue','Pink','Yellow'], answer:2, subject:'Colors' },
+      { q:'What color is a lemon?', opts:['Orange','Green','Yellow','White'], answer:2, subject:'Colors' },
+      // More Shapes PreK (20 more = 30)
+      { q:'What shape is a pizza?', opts:['Square','Rectangle','Circle','Triangle'], answer:2, subject:'Shapes' },
+      { q:'What shape is a door?', opts:['Circle','Triangle','Rectangle','Star'], answer:2, subject:'Shapes' },
+      { q:'What shape is a coin?', opts:['Square','Circle','Triangle','Rectangle'], answer:1, subject:'Shapes' },
+      { q:'How many corners does a triangle have?', opts:['2','3','4','5'], answer:1, subject:'Shapes' },
+      { q:'What shape is a book?', opts:['Circle','Triangle','Rectangle','Star'], answer:2, subject:'Shapes' },
+      { q:'What shape looks like an egg?', opts:['Square','Circle','Oval','Triangle'], answer:2, subject:'Shapes' },
+      { q:'How many sides does a square have?', opts:['3','4','5','6'], answer:1, subject:'Shapes' },
+      { q:'What shape is the sun in drawings?', opts:['Square','Triangle','Circle','Rectangle'], answer:2, subject:'Shapes' },
+      { q:'What shape is a piece of toast?', opts:['Circle','Oval','Square','Triangle'], answer:2, subject:'Shapes' },
+      { q:'What shape is a star?', opts:['Circle','Star with points','Square','Rectangle'], answer:1, subject:'Shapes' },
+      { q:'How many sides does a rectangle have?', opts:['3','4','5','6'], answer:1, subject:'Shapes' },
+      { q:'What shape is a slice of cheese?', opts:['Circle','Triangle','Star','Oval'], answer:1, subject:'Shapes' },
+      { q:'A ball is shaped like a ___', opts:['Square','Sphere','Rectangle','Triangle'], answer:1, subject:'Shapes' },
+      { q:'What shape is a party hat?', opts:['Cube','Cone','Sphere','Cylinder'], answer:1, subject:'Shapes' },
+      { q:'Which shape has no straight sides?', opts:['Square','Triangle','Circle','Rectangle'], answer:2, subject:'Shapes' },
+      { q:'What shape is a window usually?', opts:['Circle','Triangle','Rectangle','Star'], answer:2, subject:'Shapes' },
+      { q:'How many corners does a square have?', opts:['2','3','4','5'], answer:2, subject:'Shapes' },
+      { q:'What shape is a diamond?', opts:['Circle','Diamond rhombus shape','Square','Triangle'], answer:1, subject:'Shapes' },
+      { q:'What shape is a kite?', opts:['Circle','Square','Diamond kite shape','Triangle'], answer:2, subject:'Shapes' },
+      { q:'Which shape rolls the easiest?', opts:['Square','Triangle','Circle','Rectangle'], answer:2, subject:'Shapes' },
+      // More Nature PreK (20 more = 30)
+      { q:'What do trees give us to breathe?', opts:['Water','Oxygen air','Food','Shade only'], answer:1, subject:'Nature' },
+      { q:'What makes a rainbow?', opts:['Wind','Sun and rain together','Clouds','Snow'], answer:1, subject:'Nature' },
+      { q:'In which season do leaves fall from trees?', opts:['Spring','Summer','Fall Autumn','Winter'], answer:2, subject:'Nature' },
+      { q:'What is thunder?', opts:['Rain falling','The loud sound during a storm','Wind blowing','Snow falling'], answer:1, subject:'Nature' },
+      { q:'Which season do flowers bloom?', opts:['Winter','Spring','Fall','Night'], answer:1, subject:'Nature' },
+      { q:'What do flowers need to grow?', opts:['Only water','Sun water and soil','Candy','Music'], answer:1, subject:'Nature' },
+      { q:'What comes after a rainstorm sometimes?', opts:['More snow','A rainbow','Thunder','Hail'], answer:1, subject:'Nature' },
+      { q:'What is a pond?', opts:['A mountain','A small body of still water','A forest','A desert'], answer:1, subject:'Nature' },
+      { q:'Which is a sign that spring is coming?', opts:['Snow falling','Leaves turning red','Flowers blooming and birds singing','Pumpkins growing'], answer:2, subject:'Nature' },
+      { q:'What season is the coldest?', opts:['Spring','Summer','Fall','Winter'], answer:3, subject:'Nature' },
+      { q:'What do seeds need to sprout?', opts:['Cold and dark','Water and warmth','Wind and rain','Only sunlight'], answer:1, subject:'Nature' },
+      { q:'What is fog?', opts:['A type of rain','A cloud close to the ground','A type of snow','A type of wind'], answer:1, subject:'Nature' },
+      { q:'What do birds do in winter in cold places?', opts:['Stay and freeze','Fly south to warmer places','Swim underwater','Hibernate underground'], answer:1, subject:'Nature' },
+      { q:'What is a forest?', opts:['A large body of water','An area with many trees','A dry sandy place','A grassy open area'], answer:1, subject:'Nature' },
+      { q:'What is a river?', opts:['A small pond','A flowing body of water','A type of mountain','A desert'], answer:1, subject:'Nature' },
+      { q:'Which is the hottest season?', opts:['Winter','Spring','Fall','Summer'], answer:3, subject:'Nature' },
+      { q:'What is a volcano?', opts:['A type of river','A mountain that can erupt with hot lava','A large lake','A kind of cloud'], answer:1, subject:'Nature' },
+      { q:'What does a gardener do?', opts:['Fights fires','Grows and cares for plants','Builds houses','Drives trucks'], answer:1, subject:'Nature' },
+      { q:'What is soil?', opts:['Water','Sand only','The ground material where plants grow','A type of rock'], answer:2, subject:'Nature' },
+      { q:'What do bears do in winter?', opts:['Swim south','Hibernate and sleep','Build nests','Eat more food'], answer:1, subject:'Nature' },
     ],
     subjects_progress:['Numbers Fun','ABC Time','Colors & Art'],
     poses:[
@@ -2423,18 +2563,16 @@ if ('serviceWorker' in navigator) {
 
 // -- Offline -------------------------------------------
 window.addEventListener('visibilitychange', function() {
-  if (document.visibilityState === 'visible') {
-    if (currentUser && activeChild) {
-      // Ensure app screen is showing - not auth or children screen
-      var appEl = document.getElementById('appScreen');
-      var authEl = document.getElementById('authScreen');
-      var childEl = document.getElementById('childrenScreen');
-      if (authEl && !authEl.classList.contains('hidden')) {
-        showScreen('app');
-      } else if (childEl && !childEl.classList.contains('hidden')) {
-        showScreen('app');
-      }
+  if (document.visibilityState === 'visible' && currentUser && activeChild) {
+    // When returning from YouTube or another app, restore the app screen
+    var mainApp = document.getElementById('mainApp');
+    if (!mainApp || mainApp.style.display === 'none') {
+      showScreen('app');
     }
+    var authEl = document.getElementById('authScreen');
+    var childEl = document.getElementById('childPicker');
+    if (authEl && !authEl.classList.contains('hidden')) showScreen('app');
+    if (childEl && !childEl.classList.contains('hidden')) showScreen('app');
   }
 });
 
@@ -2510,6 +2648,9 @@ function showScreen(s) {
   document.getElementById('welcomeScreen').classList.toggle('hidden', s!=='welcome');
   document.getElementById('childPicker').classList.toggle('hidden',s!=='children');
   document.getElementById('mainApp').style.display = s==='app'?'block':'none';
+  // Hide bottom nav when not on main app screen
+  var bnav = document.querySelector('.bottom-nav');
+  if(bnav) bnav.style.display = s==='app' ? 'flex' : 'none';
 }
 function switchChild() { showScreen('children'); loadChildren(); }
 
@@ -3710,60 +3851,88 @@ function updateArtStats() {
 // ══════════════════════════════════════════════════════
 const YOGA_PLAYLISTS = {
   PreK:[
-    { title:'Gentle Instrumental Piano 🎹', id:'lFcSrYw2zXY' },
-    { title:'Lullaby for Little Ones 🌙', id:'77ZozI0rw7w' },
-    { title:'Gentle Kids Yoga Music 🦋', id:'eKFTSSKCzWA' },
-    { title:'Soft Nursery Piano 🎹', id:'7maJOI3QMu0' },
-    { title:'Baby Animals & Calm Music 🐰', id:'1ZYbU82GVz4' },
-    { title:'Happy Clouds Instrumental ☁', id:'1ZYbU82GVz4' },
+    {title:'Calm Piano for Kids', id:'lFcSrYw2zXY'},
+    {title:'Nature Sounds Forest', id:'eKFTSSKCzWA'},
+    {title:'Gentle Kids Yoga Flow', id:'7maJOI3QMu0'},
+    {title:'Soft Lullaby Piano', id:'1ZYbU82GVz4'},
+    {title:'Happy Meditation Music', id:'OFSMvFuJQKE'},
+    {title:'Peaceful Ocean Waves', id:'WHPEKLQID4U'},
+    {title:'Rainbow Instrumental', id:'77ZozI0rw7w'},
+    {title:'Gentle Morning Music', id:'lFcSrYw2zXY'},
+    {title:'Sleepy Stars Lullaby', id:'1ZYbU82GVz4'},
+    {title:'Soft Sunshine Piano', id:'eKFTSSKCzWA'}
   ],
   K:[
-    { title:'Kids Yoga Happy Music 🌈', id:'eKFTSSKCzWA' },
-    { title:'Magical Forest Sounds 🌳', id:'eKFTSSKCzWA' },
-    { title:'Gentle Piano for Little Learners 🎹', id:'7maJOI3QMu0' },
-    { title:'Soft Sunny Meadow Music 🌸', id:'1ZYbU82GVz4' },
-    { title:'Peaceful Flute & Birds 🐦', id:'OFSMvFuJQKE' },
-    { title:'Calm Rainbow Instrumental 🌈', id:'WHPEKLQID4U' },
+    {title:'Calm Piano for Kids', id:'lFcSrYw2zXY'},
+    {title:'Nature Sounds Forest', id:'eKFTSSKCzWA'},
+    {title:'Gentle Kids Yoga Flow', id:'7maJOI3QMu0'},
+    {title:'Soft Lullaby Piano', id:'1ZYbU82GVz4'},
+    {title:'Happy Meditation Music', id:'OFSMvFuJQKE'},
+    {title:'Peaceful Ocean Waves', id:'WHPEKLQID4U'},
+    {title:'Rainbow Instrumental', id:'77ZozI0rw7w'},
+    {title:'Gentle Morning Music', id:'lFcSrYw2zXY'},
+    {title:'Sleepy Stars Lullaby', id:'1ZYbU82GVz4'},
+    {title:'Soft Sunshine Piano', id:'eKFTSSKCzWA'}
   ],
   1:[
-    { title:'Kids Yoga Calm Vibes 🧘', id:'eKFTSSKCzWA' },
-    { title:'Peaceful Piano & Birdsong 🐦', id:'1ZYbU82GVz4' },
-    { title:'Soft Forest Ambient 🌲', id:'eKFTSSKCzWA' },
-    { title:'Gentle Guitar Focus Music 🎸', id:'OFSMvFuJQKE' },
-    { title:'Calming Ocean Waves 🌊', id:'WHPEKLQID4U' },
-    { title:'Relaxing Rain & Piano 🌧', id:'77ZozI0rw7w' },
+    {title:'Calm Piano for Kids', id:'lFcSrYw2zXY'},
+    {title:'Nature Sounds Forest', id:'eKFTSSKCzWA'},
+    {title:'Gentle Kids Yoga Flow', id:'7maJOI3QMu0'},
+    {title:'Soft Lullaby Piano', id:'1ZYbU82GVz4'},
+    {title:'Happy Meditation Music', id:'OFSMvFuJQKE'},
+    {title:'Peaceful Ocean Waves', id:'WHPEKLQID4U'},
+    {title:'Rainbow Instrumental', id:'77ZozI0rw7w'},
+    {title:'Gentle Morning Music', id:'lFcSrYw2zXY'},
+    {title:'Sleepy Stars Lullaby', id:'1ZYbU82GVz4'},
+    {title:'Soft Sunshine Piano', id:'eKFTSSKCzWA'}
   ],
   2:[
-    { title:'Yoga Flow -- Soft Piano 🌿', id:'lFcSrYw2zXY' },
-    { title:'Nature Sounds & Gentle Guitar 🎸', id:'1ZYbU82GVz4' },
-    { title:'Calm Meditation Bells 🔔', id:'OFSMvFuJQKE' },
-    { title:'Focus Music for Kids 🎵', id:'7maJOI3QMu0' },
-    { title:'Soft Rain on Leaves 🍃', id:'WHPEKLQID4U' },
-    { title:'Peaceful Strings Instrumental 🎻', id:'77ZozI0rw7w' },
+    {title:'Calm Piano for Kids', id:'lFcSrYw2zXY'},
+    {title:'Nature Sounds Forest', id:'eKFTSSKCzWA'},
+    {title:'Gentle Kids Yoga Flow', id:'7maJOI3QMu0'},
+    {title:'Soft Lullaby Piano', id:'1ZYbU82GVz4'},
+    {title:'Happy Meditation Music', id:'OFSMvFuJQKE'},
+    {title:'Peaceful Ocean Waves', id:'WHPEKLQID4U'},
+    {title:'Rainbow Instrumental', id:'77ZozI0rw7w'},
+    {title:'Gentle Morning Music', id:'lFcSrYw2zXY'},
+    {title:'Sleepy Stars Lullaby', id:'1ZYbU82GVz4'},
+    {title:'Soft Sunshine Piano', id:'eKFTSSKCzWA'}
   ],
   3:[
-    { title:'Kids Meditation Instrumental 🧘', id:'lFcSrYw2zXY' },
-    { title:'Calming Piano & Soft Pads 🎹', id:'77ZozI0rw7w' },
-    { title:'Forest Stream Ambience 🌊', id:'eKFTSSKCzWA' },
-    { title:'Peaceful Flute & Strings 🎻', id:'OFSMvFuJQKE' },
-    { title:'Tibetan Singing Bowls 🪘', id:'7maJOI3QMu0' },
-    { title:'Gentle Breeze & Piano 🍃', id:'1ZYbU82GVz4' },
+    {title:'Calm Piano for Kids', id:'lFcSrYw2zXY'},
+    {title:'Nature Sounds Forest', id:'eKFTSSKCzWA'},
+    {title:'Gentle Kids Yoga Flow', id:'7maJOI3QMu0'},
+    {title:'Soft Lullaby Piano', id:'1ZYbU82GVz4'},
+    {title:'Happy Meditation Music', id:'OFSMvFuJQKE'},
+    {title:'Peaceful Ocean Waves', id:'WHPEKLQID4U'},
+    {title:'Rainbow Instrumental', id:'77ZozI0rw7w'},
+    {title:'Gentle Morning Music', id:'lFcSrYw2zXY'},
+    {title:'Sleepy Stars Lullaby', id:'1ZYbU82GVz4'},
+    {title:'Soft Sunshine Piano', id:'eKFTSSKCzWA'}
   ],
   4:[
-    { title:'Deep Focus Yoga Music 🌌', id:'77ZozI0rw7w' },
-    { title:'Calm Piano Meditation 🎹', id:'lFcSrYw2zXY' },
-    { title:'Nature Soundscape -- Forest 🌿', id:'eKFTSSKCzWA' },
-    { title:'Relaxing Ambient Guitar 🎸', id:'OFSMvFuJQKE' },
-    { title:'Mindfulness Bowls & Bells 🔔', id:'WHPEKLQID4U' },
-    { title:'Rain & Soft Piano 🌧', id:'1ZYbU82GVz4' },
+    {title:'Calm Piano for Kids', id:'lFcSrYw2zXY'},
+    {title:'Nature Sounds Forest', id:'eKFTSSKCzWA'},
+    {title:'Gentle Kids Yoga Flow', id:'7maJOI3QMu0'},
+    {title:'Soft Lullaby Piano', id:'1ZYbU82GVz4'},
+    {title:'Happy Meditation Music', id:'OFSMvFuJQKE'},
+    {title:'Peaceful Ocean Waves', id:'WHPEKLQID4U'},
+    {title:'Rainbow Instrumental', id:'77ZozI0rw7w'},
+    {title:'Gentle Morning Music', id:'lFcSrYw2zXY'},
+    {title:'Sleepy Stars Lullaby', id:'1ZYbU82GVz4'},
+    {title:'Soft Sunshine Piano', id:'eKFTSSKCzWA'}
   ],
   5:[
-    { title:'Focus & Flow Instrumental 🎵', id:'77ZozI0rw7w' },
-    { title:'Deep Calm Piano 🎹', id:'lFcSrYw2zXY' },
-    { title:'Zen Meditation Ambient 🧘', id:'OFSMvFuJQKE' },
-    { title:'Peaceful Forest Rain 🌧', id:'eKFTSSKCzWA' },
-    { title:'Study & Yoga -- Soft Pads 🌌', id:'WHPEKLQID4U' },
-    { title:'Sunrise Instrumental Piano 🌅', id:'1ZYbU82GVz4' },
+    {title:'Calm Piano for Kids', id:'lFcSrYw2zXY'},
+    {title:'Nature Sounds Forest', id:'eKFTSSKCzWA'},
+    {title:'Gentle Kids Yoga Flow', id:'7maJOI3QMu0'},
+    {title:'Soft Lullaby Piano', id:'1ZYbU82GVz4'},
+    {title:'Happy Meditation Music', id:'OFSMvFuJQKE'},
+    {title:'Peaceful Ocean Waves', id:'WHPEKLQID4U'},
+    {title:'Rainbow Instrumental', id:'77ZozI0rw7w'},
+    {title:'Gentle Morning Music', id:'lFcSrYw2zXY'},
+    {title:'Sleepy Stars Lullaby', id:'1ZYbU82GVz4'},
+    {title:'Soft Sunshine Piano', id:'eKFTSSKCzWA'}
   ],
 };
 
@@ -4309,7 +4478,9 @@ function openBookReader(title, ytUrl) {
 }
 
 function openGDLBook(title, h5pId) {
-  var embedUrl = 'https://digitallibrary.io/wp-admin/admin-ajax.php?action=h5p_embed&id=' + h5pId;
+  // GDL books use their public book page URL for embedding
+  // The slug is derived from the book data
+  var embedUrl = 'https://digitallibrary.io/en/book/' + h5pId + '/';
   var ov = document.createElement('div');
   ov.id = 'gdlBookOv';
   ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#1A0A2E;display:flex;flex-direction:column;';
@@ -4377,63 +4548,62 @@ function buildGDLLibrary(grade) {
   // These are free, Creative Commons licensed, interactive books
   var gradeBooks = {
     PreK: [
-      {t:'The Lost Doll',        id:15434, d:'Abi loves her doll - but it goes missing!'},
-      {t:'Mia the Mouse',        id:14500, d:'Join Mia on a fun adventure'},
-      {t:'My Red Ball',          id:14510, d:'Where did the red ball go?'},
-      {t:'The Big Tree',         id:14520, d:'A tree full of animal friends'},
-      {t:'Hello Sun',            id:14530, d:'Greet the sun each morning'},
-      {t:'One Two Three',        id:14540, d:'Count with colorful pictures'},
+      {t:'The Lost Doll',              id:'the-lost-doll-2',           d:'Abi loves her doll but it goes missing'},
+      {t:'Mia Wants a Pet',            id:'mia-wants-a-pet',           d:'Can Mia convince her parents?'},
+      {t:'A Cloudy Day',               id:'a-cloudy-day',              d:'What happens on a cloudy day?'},
+      {t:'The Big Red Ball',           id:'the-big-red-ball',          d:'Where did the red ball go?'},
+      {t:'My Family',                  id:'my-family-2',               d:'All about my wonderful family'},
+      {t:'Hello Animals',              id:'hello-animals',             d:'Meet friendly animals'},
     ],
     K: [
-      {t:'The White Butterfly',  id:15420, d:'The white butterfly wants to go to school'},
-      {t:'Baby Bird',            id:15100, d:'A baby bird is separated from its mother'},
-      {t:'The Yellow Paint',     id:15110, d:'Yellow escapes from the painting!'},
-      {t:'Market Day',           id:15120, d:'A fun trip to the market'},
-      {t:'My Favorite Season',   id:15130, d:'What is your favorite season?'},
-      {t:'The Hungry Goat',      id:15140, d:'A very hungry goat eats everything!'},
+      {t:'Thabo and the Lion',         id:'thabo-and-the-lion',        d:'A brave boy faces a lion'},
+      {t:'A Small Blue Egg',           id:'a-small-blue-egg',          d:'What hatches from the egg?'},
+      {t:'Sore Eyes',                  id:'sore-eyes',                 d:'Taking care when you are sick'},
+      {t:'A Tiny Seed',                id:'a-tiny-seed-2',             d:'Watch a seed become a plant'},
+      {t:'Counting Birds',             id:'counting-birds',            d:'Count the birds in the tree'},
+      {t:'My Wonderful World',         id:'my-wonderful-world',        d:'The world is full of wonders'},
     ],
     1: [
-      {t:'Where the River Monster Roams', id:35879, d:'Is there really a river monster?'},
-      {t:'Cuckoo Finds His Song', id:15395, d:'Cuckoo lost his voice through the seasons'},
-      {t:'A Walk in the Rain',   id:15200, d:'What do you see in the rain?'},
-      {t:'My Friend the Dog',    id:15210, d:'The best kind of friend'},
-      {t:'The Garden Party',     id:15220, d:'Animals celebrate in the garden'},
-      {t:'Stars Above',          id:15230, d:'Learn about the night sky'},
+      {t:'Where the River Monster Roams', id:'where-the-river-monster-roams', d:'Is there really a river monster?'},
+      {t:'The Greedy Dog',             id:'the-greedy-dog',            d:'A dog learns about being greedy'},
+      {t:'Two Goats and the Bridge',   id:'two-goats-and-the-bridge',  d:'Two stubborn goats on a bridge'},
+      {t:'Kindness',                   id:'kindness-2',                d:'Small acts of kindness matter'},
+      {t:'Lazy Little Brother',        id:'lazy-little-brother',       d:'A funny story about chores'},
+      {t:'The Sun and the Wind',       id:'the-sun-and-the-wind',      d:'A classic fable'},
     ],
     2: [
-      {t:'Divya Has Sniffles',   id:15450, d:'Can Divya play in the Football Cup?'},
-      {t:'Khutso Has a Dream',   id:15445, d:'What did Khutso dream about?'},
-      {t:'Didi and the Dump',    id:15440, d:'A story that celebrates the joy of reading'},
-      {t:'The Missing Lunch Box', id:15300, d:'Who took the lunch box?'},
-      {t:'The Brave Little Girl', id:15310, d:'Courage comes in small sizes'},
-      {t:'Seasons Change',       id:15320, d:'Watch the world change through the year'},
+      {t:'Divya Has Sniffles',         id:'divya-has-sniffles',        d:'Can Divya still play in the cup?'},
+      {t:'An Unlucky Day',             id:'an-unlucky-day',            d:'When everything goes wrong'},
+      {t:'The Goat and the Rope',      id:'the-goat-and-the-rope',     d:'A goat causes trouble'},
+      {t:'Who Spilled the Beans',      id:'who-spilled-the-beans',     d:'A mystery in the kitchen'},
+      {t:'Feelings',                   id:'feelings-2',                d:'Learn about different emotions'},
+      {t:'How the Stars Were Made',    id:'how-the-stars-were-made',   d:'A beautiful creation story'},
     ],
     3: [
-      {t:'Why Bees Buzz',        id:15495, d:'Learn why bees buzz'},
-      {t:'Little Canary Migrates', id:15435, d:'First migration - will he find his way?'},
-      {t:'The Invention',        id:15400, d:'A young inventor changes everything'},
-      {t:'River Stories',        id:15410, d:'Tales from the river bank'},
-      {t:'The Great Race',       id:15420, d:'Who will win the great race?'},
-      {t:'Our Neighborhood',     id:15430, d:'The people who make our community'},
+      {t:'Why Bees Buzz',              id:'why-bees-buzz',             d:'Discover why bees make that sound'},
+      {t:'Little Canary',              id:'little-canary',             d:'First migration south'},
+      {t:'The Magic Drum',             id:'the-magic-drum',            d:'A drum with special powers'},
+      {t:'The Three Little Pigs',      id:'the-three-little-pigs-2',   d:'A classic tale of hard work'},
+      {t:'School in the Forest',       id:'school-in-the-forest',      d:'Animals learn together'},
+      {t:'Under the Mango Tree',       id:'under-the-mango-tree',      d:'Stories told under a big tree'},
     ],
     4: [
-      {t:'Rose and the Tower',   id:15550, d:'A new tower transforms a quiet life'},
-      {t:'Uranus Feeling Sad',   id:15545, d:'An astronaut helps a lonely planet'},
-      {t:'The Science Project',  id:15500, d:'A tricky school project leads to discovery'},
-      {t:'The Old Library',      id:15510, d:'What secrets does the old library hold?'},
-      {t:'Building Bridges',     id:15520, d:'More than just a bridge'},
-      {t:'The Explorer',         id:15530, d:'A young explorer maps the unknown'},
+      {t:'The Invention',              id:'the-invention-2',           d:'A young inventor changes things'},
+      {t:'Girl With a Bicycle',        id:'girl-with-a-bicycle',       d:'A girl fights for her dream'},
+      {t:'My Body Belongs to Me',      id:'my-body-belongs-to-me',     d:'An important story about safety'},
+      {t:'Grandmas Farm',              id:'grandmas-farm',             d:'A visit to grandmas farm'},
+      {t:'The Power of Water',         id:'the-power-of-water',        d:'How water shapes our world'},
+      {t:'Brave Malak',                id:'brave-malak',               d:'Malak shows incredible courage'},
     ],
     5: [
-      {t:'The Learning Tree',    id:15600, d:'A tree that teaches all who sit beneath it'},
-      {t:'The Code Breaker',     id:15610, d:'Solving the mystery code'},
-      {t:'Into the Deep',        id:15620, d:'An ocean adventure'},
-      {t:'The Last Forest',      id:15630, d:'Fighting to save the last forest'},
-      {t:'Tomorrow People',      id:15640, d:'Young leaders who change the world'},
-      {t:'The Time Capsule',     id:15650, d:'What will you leave for the future?'},
+      {t:'Beyond the River',           id:'beyond-the-river',          d:'A journey of discovery'},
+      {t:'The Last Tree',              id:'the-last-tree-2',           d:'Fighting to save the environment'},
+      {t:'I Am Not a Witch',           id:'i-am-not-a-witch',          d:'Standing up against superstition'},
+      {t:'Malaika Early Reader',       id:'malaika-early-reader',      d:'A beloved story character'},
+      {t:'The Golden Stool',           id:'the-golden-stool',          d:'An African heritage story'},
+      {t:'Women Who Changed Africa',   id:'women-who-changed-africa',  d:'Inspiring stories of brave women'},
     ],
   };
-
   var books = gradeBooks[grade] || gradeBooks[1];
   var wrap = document.createElement('div');
   wrap.style.cssText = 'margin-top:24px;';
@@ -4765,6 +4935,142 @@ async function sendStreakReminders() {
 if(typeof localStorage !== 'undefined') {
   var hasAnyNotif = Object.keys(localStorage).some(function(k){ return k.startsWith('notif_') && localStorage.getItem(k)==='true'; });
   if(hasAnyNotif) scheduleStreakChecks();
+}
+
+
+function buildDrawingCanvas(container){
+  var COLORS=['#FF6B6B','#FF8E53','#FFD166','#5ECDA0','#4ECDC4','#C9B8FF','#8B6FE8','#2D2D4E','#000000','#FFFFFF'];
+  var SIZES=[3,6,12,20];var SL=['S','M','L','XL'];
+  var tool='pen',color='#FF6B6B',size=6;
+  var wrap=document.createElement('div');
+  wrap.style.cssText='background:white;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:16px;';
+  var tb=document.createElement('div');
+  tb.style.cssText='display:flex;align-items:center;gap:6px;padding:10px 12px;background:#F8F6FF;border-bottom:2px solid #EDE9FF;flex-wrap:wrap;';
+  var tbtns={};
+  [{id:'pen',ico:'Pen'},{id:'brush',ico:'Brush'},{id:'eraser',ico:'Erase'}].forEach(function(t){
+    var b=document.createElement('button');b.textContent=t.ico;
+    b.style.cssText='padding:4px 8px;border-radius:10px;border:2px solid '+(t.id==='pen'?'var(--lavender)':'transparent')+';background:'+(t.id==='pen'?'#EDE9FF':'white')+';cursor:pointer;font-size:.75rem;font-weight:800;color:#555;';
+    b.onclick=function(){tool=t.id;Object.values(tbtns).forEach(function(x){x.style.borderColor='transparent';x.style.background='white';});b.style.borderColor='var(--lavender)';b.style.background='#EDE9FF';};
+    tbtns[t.id]=b;tb.appendChild(b);
+  });
+  var sep=document.createElement('div');sep.style.cssText='width:1px;height:22px;background:#E0DAFF;margin:0 2px;';tb.appendChild(sep);
+  var cdots=[];
+  COLORS.forEach(function(c,i){
+    var d=document.createElement('div');
+    d.style.cssText='width:22px;height:22px;border-radius:50%;background:'+c+';border:3px solid '+(i===0?'#2D2D4E':'transparent')+';cursor:pointer;flex-shrink:0;'+(c==='#FFFFFF'?'outline:1px solid #ccc;':'');
+    d.onclick=function(){color=c;cdots.forEach(function(x){x.style.borderColor='transparent';});d.style.borderColor='#2D2D4E';if(tool==='eraser'){tool='pen';tbtns.pen.style.borderColor='var(--lavender)';tbtns.pen.style.background='#EDE9FF';tbtns.eraser.style.borderColor='transparent';tbtns.eraser.style.background='white';}};
+    cdots.push(d);tb.appendChild(d);
+  });
+  var sep2=document.createElement('div');sep2.style.cssText='width:1px;height:22px;background:#E0DAFF;margin:0 2px;';tb.appendChild(sep2);
+  var sbtns=[];
+  SIZES.forEach(function(s,i){
+    var b=document.createElement('button');b.textContent=SL[i];
+    b.style.cssText='padding:3px 8px;border-radius:20px;border:2px solid '+(i===1?'var(--lavender)':'#E0DAFF')+';background:'+(i===1?'var(--lavender)':'white')+';color:'+(i===1?'white':'var(--body)')+';font-size:.7rem;font-weight:800;cursor:pointer;';
+    b.onclick=function(){size=s;sbtns.forEach(function(x){x.style.borderColor='#E0DAFF';x.style.background='white';x.style.color='var(--body)';});b.style.borderColor='var(--lavender)';b.style.background='var(--lavender)';b.style.color='white';};
+    sbtns.push(b);tb.appendChild(b);
+  });
+  wrap.appendChild(tb);
+  var cv=document.createElement('canvas');
+  cv.style.cssText='display:block;width:100%;cursor:crosshair;touch-action:none;';
+  cv.height=Math.min(320,Math.round(window.innerWidth*0.6));
+  wrap.appendChild(cv);
+  var act=document.createElement('div');act.style.cssText='display:flex;gap:8px;padding:10px 12px;background:#F8F6FF;border-top:2px solid #EDE9FF;';
+  var clrB=document.createElement('button');clrB.textContent='Clear';
+  clrB.style.cssText='flex:1;padding:10px;border-radius:14px;border:none;background:#FFF0EE;color:var(--coral);font-family:Nunito,sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;';
+  act.appendChild(clrB);
+  var savB=document.createElement('button');savB.textContent='Save Art! +20 Stars';
+  savB.style.cssText='flex:2;padding:10px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;';
+  act.appendChild(savB);
+  wrap.appendChild(act);
+  container.appendChild(wrap);
+  setTimeout(function(){
+    cv.width=cv.offsetWidth||360;
+    var ctx=cv.getContext('2d');ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,cv.width,cv.height);
+    clrB.onclick=function(){ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,cv.width,cv.height);toast('Cleared!');};
+    savB.onclick=async function(){
+      var a=document.createElement('a');a.download='bloomikids-art.png';a.href=cv.toDataURL();a.click();
+      try{await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:20});sessionData.stars+=20;document.getElementById('statStars').textContent=sessionData.stars;}catch(e){}
+      toast('Art saved! +20 Stars');
+    };
+    var ptg=false,lx=0,ly=0;
+    function gp(e){var r=cv.getBoundingClientRect(),s=e.touches?e.touches[0]:e;return{x:(s.clientX-r.left)*(cv.width/r.width),y:(s.clientY-r.top)*(cv.height/r.height)};}
+    function st(e){ptg=true;var p=gp(e);lx=p.x;ly=p.y;}
+    function dr(e){
+      if(!ptg)return;var p=gp(e);
+      ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(p.x,p.y);
+      ctx.strokeStyle=tool==='eraser'?'#FFFFFF':color;
+      ctx.lineWidth=tool==='eraser'?size*3:tool==='brush'?size*2:size;
+      ctx.lineCap='round';ctx.setLineDash([]);ctx.globalAlpha=tool==='brush'?0.7:1;
+      ctx.stroke();ctx.globalAlpha=1;lx=p.x;ly=p.y;
+    }
+    cv.addEventListener('mousedown',st);cv.addEventListener('mousemove',dr);
+    cv.addEventListener('mouseup',function(){ptg=false;});cv.addEventListener('mouseleave',function(){ptg=false;});
+    cv.addEventListener('touchstart',function(e){e.preventDefault();st(e);},{passive:false});
+    cv.addEventListener('touchmove',function(e){e.preventDefault();dr(e);},{passive:false});
+    cv.addEventListener('touchend',function(){ptg=false;},{passive:false});
+  },50);
+}
+
+function showLetterTracing(){
+  var LETTERS='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  var WORDS={A:'Apple',B:'Bear',C:'Cat',D:'Dog',E:'Egg',F:'Fish',G:'Goat',H:'Hat',I:'Ice Cream',J:'Jar',K:'Kite',L:'Lion',M:'Moon',N:'Nest',O:'Orange',P:'Pig',Q:'Queen',R:'Rainbow',S:'Sun',T:'Tree',U:'Umbrella',V:'Volcano',W:'Whale',X:'X-ray',Y:'Yarn',Z:'Zebra'};
+  var EMOJIS={A:'🍎',B:'🐻',C:'🐱',D:'🐶',E:'🥚',F:'🐟',G:'🐐',H:'🎩',I:'🍦',J:'🫙',K:'🪁',L:'🦁',M:'🌙',N:'🪺',O:'🍊',P:'🐷',Q:'👑',R:'🌈',S:'🌞',T:'🌳',U:'☂️',V:'🌋',W:'🐳',X:'❌',Y:'🧶',Z:'🦓'};
+  var idx=0;
+  function build(){
+    var ex=document.getElementById('ltOv');if(ex)ex.remove();
+    var L=LETTERS[idx];
+    var ov=document.createElement('div');ov.className='modal-overlay';ov.id='ltOv';
+    var card=document.createElement('div');card.className='modal-card';
+    card.style.cssText='max-width:360px;text-align:center;padding:22px 20px;';
+    var num=document.createElement('div');num.style.cssText='font-size:.7rem;font-weight:800;letter-spacing:2px;color:var(--muted);margin-bottom:10px;';
+    num.textContent='LETTER '+(idx+1)+' OF 26';card.appendChild(num);
+    var row=document.createElement('div');row.style.cssText='display:flex;align-items:center;justify-content:center;gap:24px;margin-bottom:8px;';
+    var big=document.createElement('span');big.style.cssText='font-family:Baloo 2,cursive;font-size:6.5rem;font-weight:800;color:var(--coral);line-height:1;';big.textContent=L;
+    var sml=document.createElement('span');sml.style.cssText='font-family:Baloo 2,cursive;font-size:5.5rem;font-weight:800;color:var(--mint);line-height:1;';sml.textContent=L.toLowerCase();
+    row.appendChild(big);row.appendChild(sml);card.appendChild(row);
+    var wd=document.createElement('div');wd.style.cssText='font-size:1.3rem;font-weight:800;color:var(--body);margin-bottom:12px;';
+    wd.textContent=(EMOJIS[L]||'')+' '+(WORDS[L]||'');card.appendChild(wd);
+    var hint=document.createElement('div');hint.style.cssText='font-size:.85rem;color:var(--muted);margin-bottom:12px;';
+    hint.textContent='Trace the letter with your finger!';card.appendChild(hint);
+    var cv=document.createElement('canvas');cv.id='ltC';cv.width=320;cv.height=240;
+    cv.style.cssText='border:3px dashed #C9B8FF;border-radius:16px;touch-action:none;cursor:crosshair;background:#FAFAFF;display:block;margin:0 auto;width:100%;max-width:340px;';
+    card.appendChild(cv);
+    var br=document.createElement('div');br.style.cssText='display:flex;gap:8px;margin-top:14px;';
+    var clr=document.createElement('button');clr.textContent='Clear';
+    clr.style.cssText='padding:10px 12px;border-radius:40px;border:2px solid #E0DAFF;background:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.82rem;cursor:pointer;color:#888;';
+    br.appendChild(clr);
+    if(idx>0){var bk=document.createElement('button');bk.textContent='Back';bk.style.cssText='flex:1;padding:10px;border-radius:40px;border:none;background:#F0F0F8;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';bk.onclick=function(){idx--;build();};br.appendChild(bk);}
+    var nx=document.createElement('button');nx.textContent=idx<25?'Next':'Done!';
+    nx.style.cssText='flex:2;padding:10px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';
+    br.appendChild(nx);card.appendChild(br);
+    var cl=document.createElement('button');cl.textContent='Close';
+    cl.style.cssText='margin-top:10px;width:100%;padding:8px;border-radius:40px;border:none;background:transparent;color:var(--muted);font-family:Nunito,sans-serif;font-weight:700;cursor:pointer;font-size:.82rem;';
+    cl.onclick=function(){ov.remove();};card.appendChild(cl);
+    ov.appendChild(card);document.body.appendChild(ov);
+    var ctx=cv.getContext('2d');
+    function guide(){
+      ctx.clearRect(0,0,cv.width,cv.height);ctx.fillStyle='#FAFAFF';ctx.fillRect(0,0,cv.width,cv.height);
+      ctx.save();ctx.font='bold 180px Arial,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillStyle='rgba(201,184,255,0.25)';ctx.fillText(L,cv.width/2,cv.height/2+8);
+      ctx.strokeStyle='rgba(139,111,232,0.5)';ctx.lineWidth=10;ctx.setLineDash([8,6]);
+      ctx.strokeText(L,cv.width/2,cv.height/2+8);ctx.restore();
+    }
+    guide();clr.onclick=guide;
+    var ptg=false,lx=0,ly=0;
+    function gp(e){var r=cv.getBoundingClientRect(),s=e.touches?e.touches[0]:e;return{x:(s.clientX-r.left)*(cv.width/r.width),y:(s.clientY-r.top)*(cv.height/r.height)};}
+    cv.addEventListener('mousedown',function(e){ptg=true;var p=gp(e);lx=p.x;ly=p.y;});
+    cv.addEventListener('mousemove',function(e){if(!ptg)return;var p=gp(e);ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(p.x,p.y);ctx.strokeStyle='#FF6B6B';ctx.lineWidth=9;ctx.lineCap='round';ctx.setLineDash([]);ctx.stroke();lx=p.x;ly=p.y;});
+    cv.addEventListener('mouseup',function(){ptg=false;});cv.addEventListener('mouseleave',function(){ptg=false;});
+    cv.addEventListener('touchstart',function(e){e.preventDefault();ptg=true;var p=gp(e);lx=p.x;ly=p.y;},{passive:false});
+    cv.addEventListener('touchmove',function(e){e.preventDefault();if(!ptg)return;var p=gp(e);ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(p.x,p.y);ctx.strokeStyle='#FF6B6B';ctx.lineWidth=9;ctx.lineCap='round';ctx.setLineDash([]);ctx.stroke();lx=p.x;ly=p.y;},{passive:false});
+    cv.addEventListener('touchend',function(){ptg=false;},{passive:false});
+    nx.onclick=function(){
+      if(idx<25){idx++;build();}
+      else{ov.remove();toast('All 26 letters! +26 Stars');sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:26}).catch(function(){});sessionData.stars+=26;document.getElementById('statStars').textContent=sessionData.stars;}
+    };
+  }
+  build();
+  upsertDailyActivity({minutes_academic:5,tasks_done:1}).catch(function(){});
 }
 
 let deferredPrompt;
