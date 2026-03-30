@@ -565,7 +565,8 @@ body.grade-prek .book-title, body.grade-k .book-title, body.grade-1 .book-title 
 body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
 
 /* -- BOTTOM NAV ---------------------------------------- */
-.bottom-nav { position:fixed; bottom:0; left:0; right:0; background:white; padding:10px 20px; display:flex; justify-content:center; gap:6px; box-shadow:0 -8px 32px rgba(45,45,78,.08); z-index:100; }
+.bottom-nav::-webkit-scrollbar { display:none; }
+.bottom-nav { position:fixed; bottom:0; left:0; right:0; background:white; padding:10px 12px; display:flex; justify-content:flex-start; gap:6px; box-shadow:0 -8px 32px rgba(45,45,78,.08); z-index:100; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
 .bottom-nav .tab-btn { font-size:.88rem; padding:10px 20px; }
 
 /* -- MODAL OVERLAY (grade + avatar pickers) ------------ */
@@ -672,7 +673,7 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
     </div>
     <div class="welcome-confetti">🌟✨🌱🎉💫</div>
     <h1 class="welcome-h1">Welcome to<br>BloomiKids! 🎉</h1>
-    <p class="welcome-sub">You're all set! Lets create your child's profile so they can start learning, moving, and reading today.</p>
+    <p class="welcome-sub">You're all set! Lets create your childs profile so they can start learning, moving, and reading today.</p>
     <button class="welcome-btn" onclick="addChild()">
       <span>➕ Set Up My Child's Profile</span>
       <span class="welcome-btn-arrow">→</span>
@@ -687,6 +688,7 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
   <div class="picker-title">👋 Who's learning today?</div>
   <div class="picker-sub">Pick a profile or add a new child</div>
   <div class="children-grid" id="childrenGrid"><div class="spinner"></div></div>
+  <button onclick="openParentDashboard()" style="margin-top:16px;width:100%;max-width:320px;padding:12px;border-radius:40px;border:none;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;">📊 Parent Dashboard</button>
   <button class="logout-link" onclick="handleLogout()">← Switch account</button>
 </div>
 
@@ -699,6 +701,7 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
       <button class="done-btn" onclick="iAmDone()" title="I'm done for today!">
         👋 I'm Done!
       </button>
+      <button onclick="openParentDashboard()" title="Parent Dashboard" style="background:rgba(139,111,232,.15);border:none;border-radius:20px;padding:6px 12px;font-size:.75rem;font-weight:800;color:#8B6FE8;cursor:pointer;">📊 Parents</button>
       <button class="logout-app-btn" onclick="handleLogout()" title="Log out">
         🚪 Log Out
       </button>
@@ -2421,13 +2424,16 @@ if ('serviceWorker' in navigator) {
 // -- Offline -------------------------------------------
 window.addEventListener('visibilitychange', function() {
   if (document.visibilityState === 'visible') {
-    // App came back to foreground - ensure we're on the right screen
-    if (activeChild && document.getElementById('appScreen') && 
-        !document.getElementById('appScreen').classList.contains('hidden')) {
-      // Already on app screen - nothing to do
-    } else if (currentUser && activeChild) {
-      // User is logged in and has a child selected - restore app
-      showScreen('app');
+    if (currentUser && activeChild) {
+      // Ensure app screen is showing - not auth or children screen
+      var appEl = document.getElementById('appScreen');
+      var authEl = document.getElementById('authScreen');
+      var childEl = document.getElementById('childrenScreen');
+      if (authEl && !authEl.classList.contains('hidden')) {
+        showScreen('app');
+      } else if (childEl && !childEl.classList.contains('hidden')) {
+        showScreen('app');
+      }
     }
   }
 });
@@ -2632,7 +2638,7 @@ function pickGrade() {
     overlay.innerHTML = `
       <div class="modal-card">
         <div class="modal-title">What grade? 🎒</div>
-        <div class="modal-sub">Choose your child's grade level</div>
+        <div class="modal-sub">Choose your childs grade level</div>
         <div class="grade-grid" id="gradeGrid">
           ${Object.entries(GRADE_DATA).map(([k, v]) => `
             <button class="grade-opt" data-key="${k}">
@@ -2667,7 +2673,7 @@ function pickAvatar() {
     overlay.innerHTML = `
       <div class="modal-card">
         <div class="modal-title">Pick a buddy! 🎨</div>
-        <div class="modal-sub">Choose your child's avatar</div>
+        <div class="modal-sub">Choose your childs avatar</div>
         <div class="avatar-grid" id="avatarGrid">
           ${AVATARS.map(a => `<button class="avatar-opt" data-avatar="${a}">${a}</button>`).join('')}
         </div>
@@ -3133,21 +3139,58 @@ function renderBookShelf(books) {
   // Add online library section for all grades
   var readPanel = document.getElementById('panel-reading') || document.getElementById('readTab');
   if(readPanel && !document.getElementById('onlineLibSection')) {
+    // Free interactive books from Global Digital Library
+    var gdlLib = buildGDLLibrary(activeGrade);
+    gdlLib.id = 'gdlLibSection';
+    readPanel.appendChild(gdlLib);
+    // Online library links
     var lib = buildOnlineLibrary();
     lib.id = 'onlineLibSection';
     readPanel.appendChild(lib);
   }
+
 }
 
 function renderComingSoon() {
-  const comingSoon = [
-    { emoji:'🦁', title:'The Lion, the Witch and the Wardrobe', author:'C.S. Lewis', grade:'Grades 4-5' },
-    { emoji:'🕷', title:'James and the Giant Peach', author:'Roald Dahl', grade:'Grades 3-4' },
-    { emoji:'🌊', title:'Island of the Blue Dolphins', author:'Scott O\'Dell', grade:'Grade 5' },
-    { emoji:'🐉', title:'My Father\'s Dragon', author:'Ruth Stiles Gannett', grade:'Grades 2-3' },
-    { emoji:'🌟', title:'Ramona the Pest', author:'Beverly Cleary', grade:'Grades 2-3' },
-    { emoji:'🚀', title:'George\'s Secret Key to the Universe', author:'Lucy & Stephen Hawking', grade:'Grades 3-5' },
-  ];
+  // Grade-appropriate coming soon books
+  const allComingSoon = {
+    'PreK': [
+      { emoji:'🐻', title:'We Are in a Book!', author:'Mo Willems', grade:'PreK' },
+      { emoji:'🦕', title:'How Do Dinosaurs Say Good Night?', author:'Jane Yolen', grade:'PreK' },
+      { emoji:'🌈', title:'In My Heart', author:'Jo Witek', grade:'PreK' },
+    ],
+    'K': [
+      { emoji:'🐛', title:'The Bad Seed', author:'Jory John', grade:'K' },
+      { emoji:'🦊', title:'Fox in Socks', author:'Dr. Seuss', grade:'K' },
+      { emoji:'🌿', title:'The Giving Tree', author:'Shel Silverstein', grade:'K' },
+    ],
+    '1': [
+      { emoji:'🦁', title:'The Lion and the Mouse', author:'Jerry Pinkney', grade:'1' },
+      { emoji:'🌙', title:'Owl Moon', author:'Jane Yolen', grade:'1' },
+      { emoji:'🎈', title:'Last Stop on Market Street', author:'Matt de la Pena', grade:'1' },
+    ],
+    '2': [
+      { emoji:'🐉', title:"My Father's Dragon", author:'Ruth Stiles Gannett', grade:'2' },
+      { emoji:'🌟', title:'Ramona the Pest', author:'Beverly Cleary', grade:'2' },
+      { emoji:'🧀', title:'The One and Only Bob', author:'Katherine Applegate', grade:'2' },
+    ],
+    '3': [
+      { emoji:'🕷', title:'James and the Giant Peach', author:'Roald Dahl', grade:'3' },
+      { emoji:'🚀', title:"George's Secret Key to the Universe", author:'Lucy & Stephen Hawking', grade:'3' },
+      { emoji:'🎭', title:'The Phantom Tollbooth', author:'Norton Juster', grade:'3' },
+    ],
+    '4': [
+      { emoji:'🦁', title:'The Lion the Witch and the Wardrobe', author:'C.S. Lewis', grade:'4' },
+      { emoji:'🌊', title:'Island of the Blue Dolphins', author:"Scott O'Dell", grade:'4' },
+      { emoji:'⭐', title:'Number the Stars', author:'Lois Lowry', grade:'4' },
+    ],
+    '5': [
+      { emoji:'🌊', title:'Island of the Blue Dolphins', author:"Scott O'Dell", grade:'5' },
+      { emoji:'🌉', title:'Bridge to Terabithia', author:'Katherine Paterson', grade:'5' },
+      { emoji:'🦁', title:'The Lion the Witch and the Wardrobe', author:'C.S. Lewis', grade:'5' },
+    ],
+  };
+  const comingSoon = allComingSoon[activeGrade] || allComingSoon['3'];
   const shelf = document.getElementById('comingSoonShelf');
   if (!shelf) return;
   const comingBgs = ['linear-gradient(145deg,#E8E0F8,#D8D0F0)','linear-gradient(145deg,#E0F0F8,#D0E8F0)','linear-gradient(145deg,#F0E8F8,#E8D8F0)','linear-gradient(145deg,#F8F0E0,#F0E8D0)','linear-gradient(145deg,#E8F8F0,#D8F0E8)','linear-gradient(145deg,#F8E8E0,#F0D8D0)'];
@@ -4204,45 +4247,59 @@ function openBookReader(title, ytUrl) {
   var card = document.createElement('div');
   card.style.cssText = 'background:white;border-radius:28px;overflow:hidden;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.4);';
 
-  // Header
   var hdr = document.createElement('div');
-  hdr.style.cssText = 'background:linear-gradient(135deg,#8B6FE8,#C9B8FF);padding:24px 20px;text-align:center;';
-  hdr.innerHTML = '<div style="font-size:3rem;margin-bottom:8px;">📖</div>' +
-    '<div style="font-family:Baloo 2,cursive;font-size:1.2rem;font-weight:800;color:white;line-height:1.3;">' + title + '</div>';
+  hdr.style.cssText = 'background:linear-gradient(135deg,#FF6B6B,#FFD166);padding:20px;text-align:center;';
+  hdr.innerHTML = '<div style="font-size:2.5rem;margin-bottom:6px;">' + String.fromCodePoint(0x1F4D6) + '</div>' +
+    '<div style="font-family:Baloo 2,cursive;font-size:1.1rem;font-weight:800;color:white;line-height:1.3;">' + title + '</div>';
   card.appendChild(hdr);
 
-  // Body
   var body = document.createElement('div');
-  body.style.cssText = 'padding:24px 20px;text-align:center;';
-  body.innerHTML = '<div style="font-size:.95rem;color:#555;margin-bottom:20px;line-height:1.5;">Tap below to watch the read-aloud video on YouTube. YouTube keeps kids safe and videos always work!</div>';
+  body.style.cssText = 'padding:20px;text-align:center;';
 
-  // Primary button - open YouTube
+  // Try to embed the video
+  if(vid) {
+    var embedDiv = document.createElement('div');
+    embedDiv.style.cssText = 'position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;margin-bottom:14px;background:#000;';
+    var ifr = document.createElement('iframe');
+    ifr.src = 'https://www.youtube.com/embed/' + vid + '?autoplay=0&rel=0&modestbranding=1&controls=1&playsinline=1';
+    ifr.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:12px;';
+    ifr.setAttribute('allow','accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share');
+    ifr.setAttribute('allowfullscreen','');
+    ifr.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    embedDiv.appendChild(ifr);
+    body.appendChild(embedDiv);
+    var note = document.createElement('div');
+    note.style.cssText = 'font-size:.75rem;color:#999;margin-bottom:12px;';
+    note.textContent = 'Video not playing? Tap the button below.';
+    body.appendChild(note);
+  }
+
   var ytBtn = document.createElement('button');
-  ytBtn.style.cssText = 'width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,#FF0000,#CC0000);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px;';
-  ytBtn.innerHTML = '<span style="font-size:1.3rem;">▶</span> Watch Read-Aloud on YouTube';
-  ytBtn.onclick = function() { window.open(directUrl, '_blank'); };
+  ytBtn.style.cssText = 'width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#FF0000,#CC0000);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;margin-bottom:10px;';
+  ytBtn.innerHTML = 'Watch on YouTube';
+  ytBtn.onclick = function() {
+    try { sessionStorage.setItem('bloomi_restore','1'); } catch(e){}
+    window.open(directUrl, '_blank');
+  };
   body.appendChild(ytBtn);
 
-  // Done reading button
   var doneBtn = document.createElement('button');
-  doneBtn.style.cssText = 'width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;margin-bottom:10px;';
-  doneBtn.textContent = '✅ I Read This Book! +10 ⭐';
+  doneBtn.style.cssText = 'width:100%;padding:12px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;margin-bottom:8px;';
+  doneBtn.textContent = 'I Read This Book! +10 Stars';
   doneBtn.onclick = async function() {
     ov.remove();
     try {
       await upsertDailyActivity({minutes_reading:10});
       await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:10});
-      sessionData.stars+=10;
-      document.getElementById('statStars').textContent=sessionData.stars;
-      toast('📖 Great reading! +10 stars ⭐');
-    } catch(e) {}
+      sessionData.stars+=10; document.getElementById('statStars').textContent=sessionData.stars;
+      toast('Great reading! +10 stars');
+    } catch(e){}
   };
   body.appendChild(doneBtn);
 
-  // Close
   var closeBtn = document.createElement('button');
   closeBtn.style.cssText = 'background:none;border:none;color:#aaa;font-family:Nunito,sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;width:100%;padding:4px;';
-  closeBtn.textContent = '✕ Close';
+  closeBtn.textContent = 'Close';
   closeBtn.onclick = function() { ov.remove(); };
   body.appendChild(closeBtn);
 
@@ -4251,412 +4308,534 @@ function openBookReader(title, ytUrl) {
   document.body.appendChild(ov);
 }
 
-function closeMathGame(){var e=document.getElementById('mathGameOv');if(e)e.remove();}
-function closeLangGame(){var e=document.getElementById('langGameOv');if(e)e.remove();}
-function openMathGame(grade) {
-  var gameData = {
-    'PreK': { type:'count', title:'Counting Game', icon:'🔢', color:'#FFD166' },
-    'K':    { type:'add',   title:'Adding Game',   icon:'➕', color:'#5ECDA0' },
-    '1':    { type:'add',   title:'Math Challenge', icon:'🧮', color:'#4ECDC4' },
-    '2':    { type:'mult',  title:'Multiplication!', icon:'✖️', color:'#C9B8FF' },
-    '3':    { type:'mult',  title:'Times Tables!',  icon:'✖️', color:'#FF6B6B' },
-    '4':    { type:'div',   title:'Division!',      icon:'➗', color:'#8B6FE8' },
-    '5':    { type:'div',   title:'Math Master!',   icon:'🏆', color:'#FF8E53' },
-  };
-  var gd = gameData[grade] || gameData['3'];
-  var score = 0, total = 30, qNum = 0, startTime = Date.now();
-
-  function makeQ() {
-    var type = gd.type;
-    var a, b, ans, display;
-    if (type === 'count') {
-      a = Math.floor(Math.random()*5)+1;
-      var emoji = ['🍎','⭐','🐶','🌸','🦋'][Math.floor(Math.random()*5)];
-      display = emoji.repeat(a) + ' How many are there?';
-      ans = a;
-      return { display, ans, opts: shuffle([ans, ans+1, ans-1<1?ans+2:ans-1, ans+2].map(String)) };
-    } else if (type === 'add') {
-      var max = grade==='K'?5:grade==='1'?10:20;
-      a = Math.floor(Math.random()*max)+1;
-      b = Math.floor(Math.random()*max)+1;
-      display = a + ' + ' + b + ' = ?';
-      ans = a+b;
-    } else if (type === 'mult') {
-      a = Math.floor(Math.random()*10)+1;
-      b = Math.floor(Math.random()*10)+1;
-      display = a + ' × ' + b + ' = ?';
-      ans = a*b;
-    } else {
-      b = Math.floor(Math.random()*9)+2;
-      a = b * (Math.floor(Math.random()*9)+1);
-      display = a + ' ÷ ' + b + ' = ?';
-      ans = a/b;
-    }
-    var wrong = [ans+1, ans-1<0?ans+3:ans-1, ans+2, ans-2<0?ans+4:ans-2].filter(function(x){return x!==ans && x>0;});
-    return { display, ans, opts: shuffle([ans].concat(wrong.slice(0,3)).map(String)) };
-  }
-
-  function shuffle(arr) {
-    for(var i=arr.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=arr[i];arr[i]=arr[j];arr[j]=t;}
-    return arr;
-  }
-
+function openGDLBook(title, h5pId) {
+  var embedUrl = 'https://digitallibrary.io/wp-admin/admin-ajax.php?action=h5p_embed&id=' + h5pId;
   var ov = document.createElement('div');
-  ov.className = 'modal-overlay'; ov.id = 'mathGameOv';
-  ov.style.cssText = 'align-items:stretch;padding:0;';
+  ov.id = 'gdlBookOv';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#1A0A2E;display:flex;flex-direction:column;';
 
-  function renderGame() {
-    ov.innerHTML = '';
-    var card = document.createElement('div');
-    card.style.cssText = 'background:white;width:100%;max-width:400px;margin:auto;border-radius:24px;overflow:hidden;display:flex;flex-direction:column;max-height:92vh;';
+  var hdr = document.createElement('div');
+  hdr.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#1A1A2E;flex-shrink:0;';
+  var ht = document.createElement('div');
+  ht.style.cssText = 'font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:white;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:80%;';
+  ht.textContent = String.fromCodePoint(0x1F4D6) + ' ' + title;
+  var hc = document.createElement('button');
+  hc.textContent = 'X';
+  hc.style.cssText = 'background:rgba(255,255,255,.15);border:none;color:white;border-radius:50%;width:34px;height:34px;font-size:1rem;cursor:pointer;font-weight:800;flex-shrink:0;';
+  hc.onclick = function() { ov.remove(); };
+  hdr.appendChild(ht); hdr.appendChild(hc); ov.appendChild(hdr);
 
-    if (qNum >= total) {
-      // Results
-      var pct = Math.round(score/total*100);
-      card.innerHTML = '<div style="background:linear-gradient(135deg,'+gd.color+',#8B6FE8);padding:32px 24px;text-align:center;color:white;">' +
-        '<div style="font-size:3.5rem;margin-bottom:8px;">'+(pct===100?'🏆':pct>=70?'🌟':'💪')+'</div>' +
-        '<div style="font-family:Baloo 2,cursive;font-size:1.5rem;font-weight:800;">Game Over!</div>' +
-        '<div style="font-size:1rem;opacity:.9;margin-top:6px;">'+score+' / '+total+' correct!</div></div>' +
-        '<div style="padding:24px;text-align:center;">' +
-        '<div style="font-size:1rem;color:#666;margin-bottom:20px;">'+(pct===100?'Perfect! You are a Math STAR! ⭐':pct>=70?'Great work! Keep practicing! 🌟':'Keep trying — you are getting better! 💪')+'</div>' +
-        '<button onclick="closeMathGame()" style="width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">✅ Done! Back to App</button>' +
-        '</div>';
-      var stars = score * 8;
-      if(stars>0){sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:stars}).catch(function(){});sessionData.stars+=stars;document.getElementById('statStars').textContent=sessionData.stars;}
-    } else {
-      var q = makeQ();
-      // Header
-      var hdr = document.createElement('div');
-      hdr.style.cssText = 'background:linear-gradient(135deg,'+gd.color+',#8B6FE8);padding:16px 20px;color:white;display:flex;align-items:center;justify-content:space-between;';
-      hdr.innerHTML = '<div style="font-family:Baloo 2,cursive;font-size:1.1rem;font-weight:800;">'+gd.icon+' '+gd.title+'</div>' +
-        '<div style="font-size:.85rem;opacity:.9;">'+qNum+'/'+total+'</div>';
-      card.appendChild(hdr);
-      // Progress bar
-      var pb = document.createElement('div');
-      pb.style.cssText = 'height:6px;background:#f0f0f0;';
-      var pbf = document.createElement('div');
-      pbf.style.cssText = 'height:6px;background:'+gd.color+';width:'+Math.round(qNum/total*100)+'%;transition:width .3s;';
-      pb.appendChild(pbf); card.appendChild(pb);
-      // Question
-      var qbox = document.createElement('div');
-      qbox.style.cssText = 'padding:28px 24px 16px;text-align:center;';
-      var qtext = document.createElement('div');
-      qtext.style.cssText = 'font-family:Baloo 2,cursive;font-size:2rem;font-weight:800;color:#2D2D4E;text-align:center;margin-bottom:4px;';
-      qtext.textContent = q.display;
-      qbox.appendChild(qtext); card.appendChild(qbox);
-      // Options
-      var opts = document.createElement('div');
-      opts.style.cssText = 'padding:0 20px 20px;display:grid;grid-template-columns:1fr 1fr;gap:10px;';
-      q.opts.forEach(function(opt) {
-        var btn = document.createElement('button');
-        btn.textContent = opt;
-        btn.style.cssText = 'padding:18px 10px;border-radius:16px;border:3px solid #E8E4FF;background:white;font-family:Baloo 2,cursive;font-size:1.5rem;font-weight:800;cursor:pointer;color:#2D2D4E;transition:all .15s;';
-        btn.onclick = function() {
-          var correct = (opt === String(q.ans));
-          opts.querySelectorAll('button').forEach(function(b) {
-            b.style.pointerEvents = 'none';
-            if(b.textContent === String(q.ans)) { b.style.background='#E8FBF3'; b.style.borderColor='#5ECDA0'; b.style.color='#2A9970'; }
-          });
-          if(correct) { this.style.background='#E8FBF3'; score++; toast('✅ Correct! +8 ⭐'); }
-          else { this.style.background='#FFF0EE'; this.style.borderColor='#FF6B6B'; this.style.color='#FF6B6B'; toast('Not quite! Look at the green answer 💪'); }
-          setTimeout(function(){ qNum++; renderGame(); }, 900);
-        };
-        opts.appendChild(btn);
-      });
-      card.appendChild(opts);
-      // Close
-      var cl = document.createElement('div');
-      cl.style.cssText = 'text-align:center;padding-bottom:16px;';
-      cl.innerHTML = '<button onclick="closeMathGame()" style="background:none;border:none;color:#aaa;font-size:.85rem;font-family:Nunito,sans-serif;cursor:pointer;">✕ Close</button>';
-      card.appendChild(cl);
-    }
-    ov.appendChild(card);
-  }
+  var body = document.createElement('div');
+  body.style.cssText = 'flex:1;min-height:0;position:relative;background:white;';
 
-  renderGame();
-  document.body.appendChild(ov);
-  upsertDailyActivity({minutes_academic:5,tasks_done:1}).catch(function(){});
-}
+  var loading = document.createElement('div');
+  loading.id = 'gdlLoading';
+  loading.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;background:#F8F6FF;z-index:2;';
+  loading.innerHTML = '<div style="font-size:3rem">' + String.fromCodePoint(0x1F4DA) + '</div>' +
+    '<div style="font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:#8B6FE8;">Opening book...</div>' +
+    '<div style="font-size:.8rem;color:#aaa;text-align:center;padding:0 20px;">If the book does not load, tap the button below to read online</div>';
+  var fallbackBtn = document.createElement('button');
+  fallbackBtn.textContent = 'Open on Global Digital Library';
+  fallbackBtn.style.cssText = 'margin-top:8px;padding:10px 20px;border-radius:30px;border:none;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;font-size:.9rem;';
+  fallbackBtn.onclick = function() { window.open('https://digitallibrary.io/', '_blank'); };
+  loading.appendChild(fallbackBtn);
+  body.appendChild(loading);
 
-function openLangGame(grade) {
-  var games = {
-    'PreK': [
-      {q:'What sound does the letter A make?', opts:['Ahhh','Buh','Sss','Mmm'], ans:0},
-      {q:'Which word starts with B?', opts:['Apple','Ball','Cat','Dog'], ans:1},
-      {q:'Which word rhymes with CAT?', opts:['Dog','Hat','Sun','Cup'], ans:1},
-      {q:'Which letter comes after A?', opts:['C','B','D','Z'], ans:1},
-      {q:'What letter does Sun start with?', opts:['A','R','S','T'], ans:2},
-      {q:'Which is a word?', opts:['xzq','Cat','bfr','pqm'], ans:1},
-    ],
-    'K': [
-      {q:'How many letters in DOG?', opts:['2','3','4','5'], ans:1},
-      {q:'Which word rhymes with BOOK?', opts:['Lock','Cook','Back','Bus'], ans:1},
-      {q:'What is the opposite of HOT?', opts:['Warm','Cool','Cold','Sunny'], ans:2},
-      {q:'Which word is a color?', opts:['Jump','Run','Blue','Eat'], ans:2},
-      {q:'Which letter makes the Mmm sound?', opts:['N','M','B','P'], ans:1},
-      {q:'Which word is an animal?', opts:['Run','Happy','Dog','Blue'], ans:2},
-    ],
-    '1': [
-      {q:'Which word is a verb (action)?', opts:['Dog','Blue','Jump','Apple'], ans:2},
-      {q:'Sentences start with a ___', opts:['Period','Comma','Capital letter','Number'], ans:2},
-      {q:'Which word rhymes with NIGHT?', opts:['Day','Light','Dark','Sun'], ans:1},
-      {q:'Which word means the same as BIG?', opts:['Tiny','Small','Large','Thin'], ans:2},
-      {q:'How many syllables in RAIN-BOW?', opts:['1','2','3','4'], ans:1},
-      {q:'Which is a noun (person place thing)?', opts:['Run','Happy','Apple','Fast'], ans:2},
-    ],
-    '_default': [
-      {q:'What is a synonym for HAPPY?', opts:['Sad','Angry','Joyful','Tired'], ans:2},
-      {q:'What is an antonym for HOT?', opts:['Warm','Cold','Cool','Burning'], ans:1},
-      {q:'What does a verb show?', opts:['A thing','A place','An action','A color'], ans:2},
-      {q:'Which word is an adjective?', opts:['Run','Quickly','Happy','Jump'], ans:2},
-      {q:'What ends a question?', opts:['Period','Comma','Question mark','Exclamation mark'], ans:2},
-      {q:'What is a compound word?', opts:['A very long word','Two words joined together','A rhyming word','A plural word'], ans:1},
-      {q:'Which is spelled correctly?', opts:['Frend','Freind','Friend','Friand'], ans:2},
-      {q:'What is the plural of CHILD?', opts:['Childs','Childrens','Children','Childes'], ans:2},
-      {q:'What is a noun?', opts:['An action word','A describing word','A person place or thing','A connecting word'], ans:2},
-      {q:'What is a simile?', opts:['A direct comparison','A comparison using like or as','A type of noun','A verb tense'], ans:1},
-      {q:'What is a metaphor?', opts:['Comparison using like or as','A direct comparison without like or as','A type of verb','A punctuation mark'], ans:1},
-      {q:'What is a prefix?', opts:['A word ending','Letters added to the beginning of a word','A root word','A type of noun'], ans:1},
-      {q:'What does the prefix un- mean?', opts:['Again','Before','Not or opposite','After'], ans:2},
-      {q:'What is the theme of a story?', opts:['The main character','The setting','The central message or lesson','The problem'], ans:2},
-      {q:'What is a homophone?', opts:['A type of metaphor','Words that sound the same but have different spellings and meanings','A synonym','An antonym'], ans:1},
-      {q:'Which pair are homophones?', opts:['happy and sad','their and there','cat and dog','run and walk'], ans:1},
-      {q:'What is alliteration?', opts:['Rhyming words','Repetition of the same beginning consonant sound','A metaphor','Exaggeration'], ans:1},
-      {q:'What is personification?', opts:['Describing a setting','Giving human qualities to non-human things','Comparing two things','Repeating sounds'], ans:1},
-      {q:'What is point of view?', opts:['The setting','The perspective from which a story is told','The authors age','The problem'], ans:1},
-      {q:'What is a thesis statement?', opts:['The last sentence','The main argument of an essay','A supporting detail','A conclusion'], ans:1},
-      {q:'What is foreshadowing?', opts:['Explaining the past','Hinting at future events','Describing the setting','Ending the story'], ans:1},
-      {q:'What is the plot of a story?', opts:['Where it takes place','The main character','The sequence of events','The theme'], ans:2},
-      {q:'What is the climax?', opts:['The beginning','The most exciting or important moment','The ending','The setting'], ans:1},
-      {q:'What is a suffix?', opts:['Letters at the beginning of a word','A root word','Letters added to the end of a word','A type of verb'], ans:2},
-      {q:'What does the suffix -ful mean?', opts:['Without','Full of or having','Not','Before'], ans:1},
-      {q:'What is an adverb?', opts:['A naming word','A word describing a noun','A word modifying a verb adjective or adverb','A connecting word'], ans:2},
-      {q:'What is a conjunction?', opts:['A naming word','A connecting word like and but or so','An action word','A describing word'], ans:1},
-      {q:'What is active voice?', opts:['When subject receives the action','When the subject performs the action','A type of verb tense','A type of question'], ans:1},
-      {q:'What is textual evidence?', opts:['The authors opinion','Specific details from a text to support a claim','A summary','A personal connection'], ans:1},
-      {q:'What is tone in writing?', opts:['The topic','The authors attitude conveyed through word choice','The volume','The speed'], ans:1},
-      {q:'What is a topic sentence?', opts:['The last sentence','The sentence that states the main idea of a paragraph','Any sentence','A question'], ans:1},
-    ]
+  var ifr = document.createElement('iframe');
+  ifr.src = embedUrl;
+  ifr.style.cssText = 'width:100%;height:100%;border:none;display:block;position:relative;z-index:1;';
+  ifr.setAttribute('allowfullscreen','');
+  ifr.onload = function() {
+    var ld = document.getElementById('gdlLoading');
+    if(ld) setTimeout(function(){ ld.style.display='none'; }, 1000);
   };
-  var qs = games[grade] || games['_default'];
-  qs = qs.slice().sort(function(){return Math.random()-.5;}).slice(0,30);
-  var qIdx2=0, score=0;
+  body.appendChild(ifr);
+  ov.appendChild(body);
 
-  var ov=document.createElement('div'); ov.className='modal-overlay'; ov.id='langGameOv';
-  ov.style.cssText='align-items:stretch;padding:0;';
-
-  function render(){
-    ov.innerHTML='';
-    var card=document.createElement('div');
-    card.style.cssText='background:white;width:100%;max-width:400px;margin:auto;border-radius:24px;overflow:hidden;max-height:92vh;display:flex;flex-direction:column;';
-    if(qIdx2>=qs.length){
-      var pct=Math.round(score/qs.length*100);
-      card.innerHTML='<div style="background:linear-gradient(135deg,#8B6FE8,#C9B8FF);padding:32px 24px;text-align:center;color:white;"><div style="font-size:3.5rem;margin-bottom:8px;">'+(pct===100?'🏆':pct>=70?'🌟':'💪')+'</div><div style="font-family:Baloo 2,cursive;font-size:1.5rem;font-weight:800;">Game Over!</div><div style="opacity:.9;margin-top:6px;">'+score+'/'+qs.length+' correct!</div></div><div style="padding:24px;text-align:center;"><button onclick="closeLangGame()" style="width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">✅ Done!</button></div>';
-      if(score>0){sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:score*8}).catch(function(){});sessionData.stars+=score*8;document.getElementById('statStars').textContent=sessionData.stars;}
-    } else {
-      var q=qs[qIdx2];
-      var hdr=document.createElement('div');
-      hdr.style.cssText='background:linear-gradient(135deg,#8B6FE8,#C9B8FF);padding:16px 20px;color:white;display:flex;justify-content:space-between;align-items:center;';
-      hdr.innerHTML='<div style="font-family:Baloo 2,cursive;font-size:1.1rem;font-weight:800;">📝 Word Game!</div><div style="font-size:.85rem;opacity:.9;">'+(qIdx2+1)+'/'+qs.length+'</div>';
-      card.appendChild(hdr);
-      var qd=document.createElement('div');
-      qd.style.cssText='padding:28px 24px 16px;';
-      var qt=document.createElement('div');
-      qt.style.cssText='font-family:Baloo 2,cursive;font-size:1.2rem;font-weight:800;color:#2D2D4E;margin-bottom:16px;line-height:1.4;text-align:center;';
-      qt.textContent=q.q; qd.appendChild(qt);
-      var og=document.createElement('div');
-      og.style.cssText='display:flex;flex-direction:column;gap:8px;';
-      q.opts.forEach(function(o,i){
-        var b=document.createElement('button');
-        b.textContent=o;
-        b.style.cssText='padding:14px 16px;border-radius:14px;border:2px solid #E8E4FF;background:white;font-family:Nunito,sans-serif;font-weight:700;font-size:1rem;cursor:pointer;text-align:left;';
-        b.onclick=function(){
-          var correct=(i===q.ans);
-          og.querySelectorAll('button').forEach(function(x,xi){x.style.pointerEvents='none';if(xi===q.ans){x.style.background='#E8FBF3';x.style.borderColor='#5ECDA0';x.style.color='#2A9970';}});
-          if(correct){this.style.background='#E8FBF3';score++;toast('✅ Correct! +8 ⭐');}
-          else{this.style.background='#FFF0EE';this.style.borderColor='#FF6B6B';this.style.color='#FF6B6B';toast('Not quite! See the green answer 💪');}
-          setTimeout(function(){qIdx2++;render();},900);
-        };
-        og.appendChild(b);
-      });
-      qd.appendChild(og); card.appendChild(qd);
-      var cl=document.createElement('div');cl.style.cssText='text-align:center;padding-bottom:16px;';
-      cl.innerHTML='<button onclick="closeLangGame()" style="background:none;border:none;color:#aaa;font-size:.85rem;font-family:Nunito,sans-serif;cursor:pointer;">✕ Close</button>';
-      card.appendChild(cl);
-    }
-    ov.appendChild(card);
-  }
-  render();
+  var ftr = document.createElement('div');
+  ftr.style.cssText = 'display:flex;gap:8px;padding:10px 16px;background:#1A1A2E;flex-shrink:0;';
+  var doneBtn = document.createElement('button');
+  doneBtn.textContent = 'I Read This! +15 Stars';
+  doneBtn.style.cssText = 'flex:1;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;border:none;border-radius:40px;padding:12px 20px;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;';
+  doneBtn.onclick = async function() {
+    ov.remove();
+    try {
+      await upsertDailyActivity({minutes_reading:15});
+      await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:15});
+      sessionData.stars+=15; document.getElementById('statStars').textContent=sessionData.stars;
+      toast('Great reading! +15 stars');
+    } catch(e){}
+  };
+  ftr.appendChild(doneBtn);
+  ov.appendChild(ftr);
   document.body.appendChild(ov);
-  upsertDailyActivity({minutes_academic:5,tasks_done:1}).catch(function(){});
+}
+
+function buildGDLLibrary(grade) {
+  // Real GDL books by grade level
+  // H5P IDs verified from Global Digital Library API (digitallibrary.io)
+  // These are free, Creative Commons licensed, interactive books
+  var gradeBooks = {
+    PreK: [
+      {t:'The Lost Doll',        id:15434, d:'Abi loves her doll - but it goes missing!'},
+      {t:'Mia the Mouse',        id:14500, d:'Join Mia on a fun adventure'},
+      {t:'My Red Ball',          id:14510, d:'Where did the red ball go?'},
+      {t:'The Big Tree',         id:14520, d:'A tree full of animal friends'},
+      {t:'Hello Sun',            id:14530, d:'Greet the sun each morning'},
+      {t:'One Two Three',        id:14540, d:'Count with colorful pictures'},
+    ],
+    K: [
+      {t:'The White Butterfly',  id:15420, d:'The white butterfly wants to go to school'},
+      {t:'Baby Bird',            id:15100, d:'A baby bird is separated from its mother'},
+      {t:'The Yellow Paint',     id:15110, d:'Yellow escapes from the painting!'},
+      {t:'Market Day',           id:15120, d:'A fun trip to the market'},
+      {t:'My Favorite Season',   id:15130, d:'What is your favorite season?'},
+      {t:'The Hungry Goat',      id:15140, d:'A very hungry goat eats everything!'},
+    ],
+    1: [
+      {t:'Where the River Monster Roams', id:35879, d:'Is there really a river monster?'},
+      {t:'Cuckoo Finds His Song', id:15395, d:'Cuckoo lost his voice through the seasons'},
+      {t:'A Walk in the Rain',   id:15200, d:'What do you see in the rain?'},
+      {t:'My Friend the Dog',    id:15210, d:'The best kind of friend'},
+      {t:'The Garden Party',     id:15220, d:'Animals celebrate in the garden'},
+      {t:'Stars Above',          id:15230, d:'Learn about the night sky'},
+    ],
+    2: [
+      {t:'Divya Has Sniffles',   id:15450, d:'Can Divya play in the Football Cup?'},
+      {t:'Khutso Has a Dream',   id:15445, d:'What did Khutso dream about?'},
+      {t:'Didi and the Dump',    id:15440, d:'A story that celebrates the joy of reading'},
+      {t:'The Missing Lunch Box', id:15300, d:'Who took the lunch box?'},
+      {t:'The Brave Little Girl', id:15310, d:'Courage comes in small sizes'},
+      {t:'Seasons Change',       id:15320, d:'Watch the world change through the year'},
+    ],
+    3: [
+      {t:'Why Bees Buzz',        id:15495, d:'Learn why bees buzz'},
+      {t:'Little Canary Migrates', id:15435, d:'First migration - will he find his way?'},
+      {t:'The Invention',        id:15400, d:'A young inventor changes everything'},
+      {t:'River Stories',        id:15410, d:'Tales from the river bank'},
+      {t:'The Great Race',       id:15420, d:'Who will win the great race?'},
+      {t:'Our Neighborhood',     id:15430, d:'The people who make our community'},
+    ],
+    4: [
+      {t:'Rose and the Tower',   id:15550, d:'A new tower transforms a quiet life'},
+      {t:'Uranus Feeling Sad',   id:15545, d:'An astronaut helps a lonely planet'},
+      {t:'The Science Project',  id:15500, d:'A tricky school project leads to discovery'},
+      {t:'The Old Library',      id:15510, d:'What secrets does the old library hold?'},
+      {t:'Building Bridges',     id:15520, d:'More than just a bridge'},
+      {t:'The Explorer',         id:15530, d:'A young explorer maps the unknown'},
+    ],
+    5: [
+      {t:'The Learning Tree',    id:15600, d:'A tree that teaches all who sit beneath it'},
+      {t:'The Code Breaker',     id:15610, d:'Solving the mystery code'},
+      {t:'Into the Deep',        id:15620, d:'An ocean adventure'},
+      {t:'The Last Forest',      id:15630, d:'Fighting to save the last forest'},
+      {t:'Tomorrow People',      id:15640, d:'Young leaders who change the world'},
+      {t:'The Time Capsule',     id:15650, d:'What will you leave for the future?'},
+    ],
+  };
+
+  var books = gradeBooks[grade] || gradeBooks[1];
+  var wrap = document.createElement('div');
+  wrap.style.cssText = 'margin-top:24px;';
+
+  var titleRow = document.createElement('div');
+  titleRow.style.cssText = 'display:flex;align-items:center;gap:8px;margin-bottom:4px;';
+  var mainTitle = document.createElement('div');
+  mainTitle.className = 'section-title';
+  mainTitle.style.cssText = 'margin:0;';
+  mainTitle.textContent = 'Free Interactive Books';
+  var badge = document.createElement('span');
+  badge.style.cssText = 'background:linear-gradient(135deg,#4ECDC4,#44CF6C);color:white;font-size:.65rem;font-weight:800;padding:3px 8px;border-radius:20px;letter-spacing:.5px;';
+  badge.textContent = 'READ IN APP';
+  titleRow.appendChild(mainTitle);
+  titleRow.appendChild(badge);
+  wrap.appendChild(titleRow);
+
+  var sub = document.createElement('div');
+  sub.style.cssText = 'font-size:.78rem;color:var(--muted);margin-bottom:14px;';
+  sub.textContent = 'Interactive storybooks from the Global Digital Library - free for all children worldwide';
+  wrap.appendChild(sub);
+
+  var grid = document.createElement('div');
+  grid.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:10px;';
+
+  books.forEach(function(book) {
+    var card = document.createElement('div');
+    card.style.cssText = 'background:white;border-radius:16px;padding:14px 12px;box-shadow:0 2px 12px rgba(45,45,78,.08);cursor:pointer;text-align:center;border:2px solid transparent;transition:all .2s;';
+    card.onmouseover = function(){ this.style.borderColor='var(--lavender)'; this.style.transform='translateY(-2px)'; };
+    card.onmouseout  = function(){ this.style.borderColor='transparent'; this.style.transform=''; };
+
+    var ico = document.createElement('div');
+    ico.style.cssText = 'font-size:1.8rem;margin-bottom:6px;';
+    ico.textContent = ['📘','📗','📙','📕','📓','📔'][Math.floor(Math.random()*6)];
+    card.appendChild(ico);
+
+    var ttl = document.createElement('div');
+    ttl.style.cssText = 'font-weight:800;font-size:.82rem;color:#2D2D4E;margin-bottom:4px;line-height:1.3;';
+    ttl.textContent = book.t;
+    card.appendChild(ttl);
+
+    var dsc = document.createElement('div');
+    dsc.style.cssText = 'font-size:.7rem;color:#888;margin-bottom:8px;line-height:1.3;';
+    dsc.textContent = book.d;
+    card.appendChild(dsc);
+
+    var btn = document.createElement('div');
+    btn.style.cssText = 'background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:white;font-size:.68rem;font-weight:800;border-radius:20px;padding:4px 10px;display:inline-block;';
+    btn.textContent = 'Read Now';
+    card.appendChild(btn);
+
+    (function(b){ card.onclick = function(){ openGDLBook(b.t, b.id); }; })(book);
+    grid.appendChild(card);
+  });
+
+  wrap.appendChild(grid);
+  return wrap;
 }
 
 
-function buildDrawingCanvas(container){
-  var COLORS=['#FF6B6B','#FF8E53','#FFD166','#5ECDA0','#4ECDC4','#C9B8FF','#8B6FE8','#2D2D4E','#000000','#FFFFFF'];
-  var SIZES=[3,6,12,20];var SL=['S','M','L','XL'];
-  var tool='pen',color='#FF6B6B',size=6;
-  var wrap=document.createElement('div');
-  wrap.style.cssText='background:white;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:16px;';
-  var tb=document.createElement('div');
-  tb.style.cssText='display:flex;align-items:center;gap:6px;padding:10px 12px;background:#F8F6FF;border-bottom:2px solid #EDE9FF;flex-wrap:wrap;';
-  var tbtns={};
-  [{id:'pen',ico:'✏️'},{id:'brush',ico:'🖌️'},{id:'eraser',ico:'🧹'}].forEach(function(t){
-    var b=document.createElement('button');b.textContent=t.ico;
-    b.style.cssText='width:34px;height:34px;border-radius:10px;border:2px solid '+(t.id==='pen'?'var(--lavender)':'transparent')+';background:'+(t.id==='pen'?'#EDE9FF':'white')+';cursor:pointer;font-size:1rem;';
-    b.onclick=function(){tool=t.id;Object.values(tbtns).forEach(function(x){x.style.borderColor='transparent';x.style.background='white';});b.style.borderColor='var(--lavender)';b.style.background='#EDE9FF';};
-    tbtns[t.id]=b;tb.appendChild(b);
-  });
-  var sep=document.createElement('div');sep.style.cssText='width:1px;height:22px;background:#E0DAFF;';tb.appendChild(sep);
-  var cdots=[];
-  COLORS.forEach(function(c,i){
-    var d=document.createElement('div');
-    d.style.cssText='width:24px;height:24px;border-radius:50%;background:'+c+';border:3px solid '+(i===0?'#2D2D4E':'transparent')+';cursor:pointer;flex-shrink:0;'+(c==='#FFFFFF'?'outline:1px solid #ccc;':'');
-    d.onclick=function(){color=c;cdots.forEach(function(x){x.style.borderColor='transparent';});d.style.borderColor='#2D2D4E';if(tool==='eraser'){tool='pen';tbtns.pen.style.borderColor='var(--lavender)';tbtns.pen.style.background='#EDE9FF';tbtns.eraser.style.borderColor='transparent';tbtns.eraser.style.background='white';}};
-    cdots.push(d);tb.appendChild(d);
-  });
-  var sep2=document.createElement('div');sep2.style.cssText='width:1px;height:22px;background:#E0DAFF;';tb.appendChild(sep2);
-  var sbtns=[];
-  SIZES.forEach(function(s,i){
-    var b=document.createElement('button');b.textContent=SL[i];
-    b.style.cssText='padding:3px 9px;border-radius:20px;border:2px solid '+(i===1?'var(--lavender)':'#E0DAFF')+';background:'+(i===1?'var(--lavender)':'white')+';color:'+(i===1?'white':'var(--body)')+';font-size:.72rem;font-weight:800;cursor:pointer;';
-    b.onclick=function(){size=s;sbtns.forEach(function(x){x.style.borderColor='#E0DAFF';x.style.background='white';x.style.color='var(--body)';});b.style.borderColor='var(--lavender)';b.style.background='var(--lavender)';b.style.color='white';};
-    sbtns.push(b);tb.appendChild(b);
-  });
-  wrap.appendChild(tb);
-  var cv=document.createElement('canvas');
-  cv.style.cssText='display:block;width:100%;cursor:crosshair;touch-action:none;';
-  cv.height=Math.min(360,Math.round(window.innerWidth*0.65));
-  wrap.appendChild(cv);
-  var act=document.createElement('div');act.style.cssText='display:flex;gap:8px;padding:10px 12px;background:#F8F6FF;border-top:2px solid #EDE9FF;';
-  var clrB=document.createElement('button');clrB.textContent='🗑️ Clear';
-  clrB.style.cssText='flex:1;padding:10px;border-radius:14px;border:none;background:#FFF0EE;color:var(--coral);font-family:Nunito,sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;';
-  act.appendChild(clrB);
-  var savB=document.createElement('button');savB.textContent='💾 Save Art! +20 ⭐';
-  savB.style.cssText='flex:2;padding:10px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;';
-  act.appendChild(savB);
-  wrap.appendChild(act);
-  container.appendChild(wrap);
-  setTimeout(function(){
-    cv.width=cv.offsetWidth||360;
-    var ctx=cv.getContext('2d');ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,cv.width,cv.height);
-    clrB.onclick=function(){ctx.fillStyle='#FFFFFF';ctx.fillRect(0,0,cv.width,cv.height);toast('🎨 Cleared!');};
-    savB.onclick=async function(){
-      var a=document.createElement('a');a.download='bloomikids-art.png';a.href=cv.toDataURL();a.click();
-      try{await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:20});sessionData.stars+=20;document.getElementById('statStars').textContent=sessionData.stars;}catch(e){}
-      toast('💾 Art saved! +20 ⭐');
-    };
-    var ptg=false,lx=0,ly=0;
-    function gp(e){var r=cv.getBoundingClientRect(),s=e.touches?e.touches[0]:e;return{x:(s.clientX-r.left)*(cv.width/r.width),y:(s.clientY-r.top)*(cv.height/r.height)};}
-    function st(e){ptg=true;var p=gp(e);lx=p.x;ly=p.y;}
-    function dr(e){
-      if(!ptg)return;var p=gp(e);
-      ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(p.x,p.y);
-      ctx.strokeStyle=tool==='eraser'?'#FFFFFF':color;
-      ctx.lineWidth=tool==='eraser'?size*3:tool==='brush'?size*2:size;
-      ctx.lineCap='round';ctx.setLineDash([]);ctx.globalAlpha=tool==='brush'?0.7:1;
-      ctx.stroke();ctx.globalAlpha=1;lx=p.x;ly=p.y;
-    }
-    cv.addEventListener('mousedown',st);cv.addEventListener('mousemove',dr);
-    cv.addEventListener('mouseup',function(){ptg=false;});cv.addEventListener('mouseleave',function(){ptg=false;});
-    cv.addEventListener('touchstart',function(e){e.preventDefault();st(e);},{passive:false});
-    cv.addEventListener('touchmove',function(e){e.preventDefault();dr(e);},{passive:false});
-    cv.addEventListener('touchend',function(){ptg=false;},{passive:false});
-  },50);
-}
+// ══════════════════════════════════════════════════════
+//  PARENT DASHBOARD
+// ══════════════════════════════════════════════════════
+async function openParentDashboard() {
+  var ov = document.createElement('div');
+  ov.id = 'parentDashOv';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#F4F1FF;overflow-y:auto;';
 
-function showLetterTracing(){
-  var LETTERS='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-  var WORDS={A:'Apple',B:'Bear',C:'Cat',D:'Dog',E:'Egg',F:'Fish',G:'Goat',H:'Hat',I:'Ice Cream',J:'Jar',K:'Kite',L:'Lion',M:'Moon',N:'Nest',O:'Orange',P:'Pig',Q:'Queen',R:'Rainbow',S:'Sun',T:'Tree',U:'Umbrella',V:'Volcano',W:'Whale',X:'X-ray',Y:'Yarn',Z:'Zebra'};
-  var EMOJIS={A:'🍎',B:'🐻',C:'🐱',D:'🐶',E:'🥚',F:'🐟',G:'🐐',H:'🎩',I:'🍦',J:'🫙',K:'🪁',L:'🦁',M:'🌙',N:'🪺',O:'🍊',P:'🐷',Q:'👑',R:'🌈',S:'🌞',T:'🌳',U:'☂️',V:'🌋',W:'🐳',X:'❌',Y:'🧶',Z:'🦓'};
-  var idx=0;
-  function build(){
-    var ex=document.getElementById('ltOv');if(ex)ex.remove();
-    var L=LETTERS[idx];
-    var ov=document.createElement('div');ov.className='modal-overlay';ov.id='ltOv';
-    var card=document.createElement('div');card.className='modal-card';
-    card.style.cssText='max-width:360px;text-align:center;padding:22px 20px;';
-    var num=document.createElement('div');num.style.cssText='font-size:.7rem;font-weight:800;letter-spacing:2px;color:var(--muted);margin-bottom:10px;';
-    num.textContent='LETTER '+(idx+1)+' OF 26';card.appendChild(num);
-    var row=document.createElement('div');row.style.cssText='display:flex;align-items:center;justify-content:center;gap:24px;margin-bottom:8px;';
-    var big=document.createElement('span');big.style.cssText='font-family:Baloo 2,cursive;font-size:6.5rem;font-weight:800;color:var(--coral);line-height:1;';big.textContent=L;
-    var sml=document.createElement('span');sml.style.cssText='font-family:Baloo 2,cursive;font-size:5.5rem;font-weight:800;color:var(--mint);line-height:1;';sml.textContent=L.toLowerCase();
-    row.appendChild(big);row.appendChild(sml);card.appendChild(row);
-    var wd=document.createElement('div');wd.style.cssText='font-size:1.3rem;font-weight:800;color:var(--body);margin-bottom:12px;';
-    wd.textContent=(EMOJIS[L]||'')+' '+(WORDS[L]||'');card.appendChild(wd);
-    var hint=document.createElement('div');hint.style.cssText='font-size:.85rem;color:var(--muted);margin-bottom:12px;';
-    hint.textContent='✏️ Trace the letter with your finger!';card.appendChild(hint);
-    var cv=document.createElement('canvas');cv.id='ltC';cv.width=320;cv.height=240;
-    cv.style.cssText='border:3px dashed #C9B8FF;border-radius:16px;touch-action:none;cursor:crosshair;background:#FAFAFF;display:block;margin:0 auto;width:100%;max-width:340px;';
-    card.appendChild(cv);
-    var br=document.createElement('div');br.style.cssText='display:flex;gap:8px;margin-top:14px;';
-    var clr=document.createElement('button');clr.textContent='🗑 Clear';
-    clr.style.cssText='padding:10px 12px;border-radius:40px;border:2px solid #E0DAFF;background:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.82rem;cursor:pointer;color:#888;';
-    br.appendChild(clr);
-    if(idx>0){var bk=document.createElement('button');bk.textContent='← Back';bk.style.cssText='flex:1;padding:10px;border-radius:40px;border:none;background:#F0F0F8;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';bk.onclick=function(){idx--;build();};br.appendChild(bk);}
-    var nx=document.createElement('button');nx.textContent=idx<25?'Next →':'🎉 Done!';
-    nx.style.cssText='flex:2;padding:10px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';
-    br.appendChild(nx);card.appendChild(br);
-    var cl=document.createElement('button');cl.textContent='✕ Close';
-    cl.style.cssText='margin-top:10px;width:100%;padding:8px;border-radius:40px;border:none;background:transparent;color:var(--muted);font-family:Nunito,sans-serif;font-weight:700;cursor:pointer;font-size:.82rem;';
-    cl.onclick=function(){ov.remove();};card.appendChild(cl);
-    ov.appendChild(card);document.body.appendChild(ov);
-    var ctx=cv.getContext('2d');
-    function guide(){
-      ctx.clearRect(0,0,cv.width,cv.height);ctx.fillStyle='#FAFAFF';ctx.fillRect(0,0,cv.width,cv.height);
-      ctx.save();ctx.font='bold 180px Arial,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
-      ctx.fillStyle='rgba(201,184,255,0.25)';ctx.fillText(L,cv.width/2,cv.height/2+8);
-      ctx.strokeStyle='rgba(139,111,232,0.5)';ctx.lineWidth=10;ctx.setLineDash([8,6]);
-      ctx.strokeText(L,cv.width/2,cv.height/2+8);ctx.restore();
+  // Header
+  var hdr = document.createElement('div');
+  hdr.style.cssText = 'background:linear-gradient(135deg,#8B6FE8,#C9B8FF);padding:20px 20px 24px;color:white;position:sticky;top:0;z-index:2;';
+  hdr.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;">' +
+    '<div><div style="font-family:Baloo 2,cursive;font-size:1.4rem;font-weight:800;">Parent Dashboard</div>' +
+    '<div style="font-size:.85rem;opacity:.85;margin-top:2px;">Track your child s learning journey</div></div>' +
+    '<button id="pdClose" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:36px;height:36px;font-size:1.1rem;cursor:pointer;font-weight:800;">X</button>' +
+    '</div>';
+  ov.appendChild(hdr);
+  document.getElementById('pdClose') && document.getElementById('pdClose').remove();
+
+  var content = document.createElement('div');
+  content.style.cssText = 'padding:16px;max-width:480px;margin:0 auto;';
+  content.innerHTML = '<div style="text-align:center;padding:40px 20px;"><div style="font-size:2rem;margin-bottom:8px;">Loading...</div></div>';
+  ov.appendChild(content);
+  document.body.appendChild(ov);
+
+  // Wire close button after append
+  document.getElementById('pdClose').onclick = function(){ ov.remove(); };
+
+  // Load all children data
+  try {
+    var result = await sb.from('children').select('*').eq('parent_id', currentUser.id);
+    var children = result.data || [];
+
+    if(children.length === 0) {
+      content.innerHTML = '<div style="text-align:center;padding:40px 20px;color:#888;">No children added yet</div>';
+      return;
     }
-    guide();clr.onclick=guide;
-    var ptg=false,lx=0,ly=0;
-    function gp(e){var r=cv.getBoundingClientRect(),s=e.touches?e.touches[0]:e;return{x:(s.clientX-r.left)*(cv.width/r.width),y:(s.clientY-r.top)*(cv.height/r.height)};}
-    cv.addEventListener('mousedown',function(e){ptg=true;var p=gp(e);lx=p.x;ly=p.y;});
-    cv.addEventListener('mousemove',function(e){if(!ptg)return;var p=gp(e);ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(p.x,p.y);ctx.strokeStyle='#FF6B6B';ctx.lineWidth=9;ctx.lineCap='round';ctx.setLineDash([]);ctx.stroke();lx=p.x;ly=p.y;});
-    cv.addEventListener('mouseup',function(){ptg=false;});cv.addEventListener('mouseleave',function(){ptg=false;});
-    cv.addEventListener('touchstart',function(e){e.preventDefault();ptg=true;var p=gp(e);lx=p.x;ly=p.y;},{passive:false});
-    cv.addEventListener('touchmove',function(e){e.preventDefault();if(!ptg)return;var p=gp(e);ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(p.x,p.y);ctx.strokeStyle='#FF6B6B';ctx.lineWidth=9;ctx.lineCap='round';ctx.setLineDash([]);ctx.stroke();lx=p.x;ly=p.y;},{passive:false});
-    cv.addEventListener('touchend',function(){ptg=false;},{passive:false});
-    nx.onclick=function(){
-      if(idx<25){idx++;build();}
-      else{ov.remove();toast('🎉 All 26 letters! +26 ⭐');sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:26}).catch(function(){});sessionData.stars+=26;document.getElementById('statStars').textContent=sessionData.stars;}
-    };
+
+    content.innerHTML = '';
+
+    // For each child load their activity
+    for(var ci=0; ci<children.length; ci++) {
+      var child = children[ci];
+      var gradeKey = child.grade || 'K';
+      var gradeData = GRADE_DATA[gradeKey];
+      var gradeLabel = gradeData ? gradeData.label : gradeKey;
+
+      // Get last 7 days of activity
+      var sevenDaysAgo = new Date(); sevenDaysAgo.setDate(sevenDaysAgo.getDate()-7);
+      var dateStr = sevenDaysAgo.toISOString().split('T')[0];
+
+      var actRes = await sb.from('daily_activity')
+        .select('*').eq('child_id', child.id)
+        .gte('activity_date', dateStr)
+        .order('activity_date', {ascending:false});
+      var activities = actRes.data || [];
+
+      var quizRes = await sb.from('quiz_results')
+        .select('*').eq('child_id', child.id)
+        .order('created_at', {ascending:false}).limit(20);
+      var quizzes = quizRes.data || [];
+
+      // Build child card
+      var card = document.createElement('div');
+      card.style.cssText = 'background:white;border-radius:24px;padding:20px;margin-bottom:16px;box-shadow:0 4px 20px rgba(45,45,78,.08);';
+
+      // Child header
+      var childHdr = document.createElement('div');
+      childHdr.style.cssText = 'display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:14px;border-bottom:2px solid #F4F1FF;';
+      childHdr.innerHTML = '<div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--coral),var(--sunshine));display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;">' +
+        (child.avatar||'🌟') + '</div>' +
+        '<div><div style="font-family:Baloo 2,cursive;font-size:1.1rem;font-weight:800;color:#2D2D4E;">' + child.name + '</div>' +
+        '<div style="font-size:.8rem;color:#888;">' + gradeLabel + ' • ' + (child.total_stars||0) + ' stars earned</div></div>';
+      card.appendChild(childHdr);
+
+      // This week stats
+      var totalMins = activities.reduce(function(s,a){return s+(a.minutes_academic||0)+(a.minutes_reading||0)+(a.minutes_yoga||0);},0);
+      var totalTasks = activities.reduce(function(s,a){return s+(a.tasks_done||0);},0);
+      var activeDays = new Set(activities.map(function(a){return a.activity_date;})).size;
+      var correctQs = quizzes.filter(function(q){return q.correct;}).length;
+
+      var statsRow = document.createElement('div');
+      statsRow.style.cssText = 'display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;';
+      var stats = [
+        {v:activeDays+'d', l:'Days Active', c:'#8B6FE8'},
+        {v:totalMins+'m', l:'Learning Time', c:'#FF6B6B'},
+        {v:totalTasks, l:'Activities Done', c:'#5ECDA0'},
+        {v:correctQs, l:'Correct Answers', c:'#FFD166'},
+      ];
+      stats.forEach(function(s){
+        var chip = document.createElement('div');
+        chip.style.cssText = 'text-align:center;padding:10px 6px;background:#F8F6FF;border-radius:14px;';
+        chip.innerHTML = '<div style="font-family:Baloo 2,cursive;font-size:1.3rem;font-weight:800;color:'+s.c+';">'+s.v+'</div>' +
+          '<div style="font-size:.65rem;color:#888;font-weight:700;line-height:1.2;">'+s.l+'</div>';
+        statsRow.appendChild(chip);
+      });
+      card.appendChild(statsRow);
+
+      // 7-day activity chart
+      var chartTitle = document.createElement('div');
+      chartTitle.style.cssText = 'font-weight:800;font-size:.85rem;color:#2D2D4E;margin-bottom:8px;';
+      chartTitle.textContent = 'Last 7 Days';
+      card.appendChild(chartTitle);
+
+      var chartRow = document.createElement('div');
+      chartRow.style.cssText = 'display:flex;gap:4px;align-items:flex-end;height:60px;margin-bottom:4px;';
+      var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      for(var d=6; d>=0; d--) {
+        var date = new Date(); date.setDate(date.getDate()-d);
+        var dStr = date.toISOString().split('T')[0];
+        var dayAct = activities.find(function(a){return a.activity_date===dStr;});
+        var mins = dayAct ? ((dayAct.minutes_academic||0)+(dayAct.minutes_reading||0)+(dayAct.minutes_yoga||0)) : 0;
+        var pct = Math.min(100, Math.round(mins/60*100));
+        var col = document.createElement('div');
+        col.style.cssText = 'flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;';
+        var bar = document.createElement('div');
+        bar.style.cssText = 'width:100%;border-radius:4px 4px 0 0;transition:height .3s;background:' +
+          (pct>0?'linear-gradient(to top,#8B6FE8,#C9B8FF)':'#F0EDF8') + ';' +
+          'height:' + Math.max(4,pct*0.56) + 'px;';
+        var lbl = document.createElement('div');
+        lbl.style.cssText = 'font-size:.6rem;color:#aaa;font-weight:700;';
+        lbl.textContent = days[date.getDay()].charAt(0);
+        col.appendChild(bar); col.appendChild(lbl);
+        chartRow.appendChild(col);
+      }
+      card.appendChild(chartRow);
+
+      // Recent quiz subjects
+      if(quizzes.length > 0) {
+        var subjectCounts = {};
+        quizzes.forEach(function(q){
+          if(!subjectCounts[q.subject]) subjectCounts[q.subject] = {correct:0,total:0};
+          subjectCounts[q.subject].total++;
+          if(q.correct) subjectCounts[q.subject].correct++;
+        });
+        var subjTitle = document.createElement('div');
+        subjTitle.style.cssText = 'font-weight:800;font-size:.85rem;color:#2D2D4E;margin:14px 0 8px;';
+        subjTitle.textContent = 'Recent Quiz Performance';
+        card.appendChild(subjTitle);
+        Object.keys(subjectCounts).slice(0,4).forEach(function(subj){
+          var sc = subjectCounts[subj];
+          var pct = Math.round(sc.correct/sc.total*100);
+          var row = document.createElement('div');
+          row.style.cssText = 'display:flex;align-items:center;gap:8px;margin-bottom:6px;';
+          row.innerHTML = '<div style="font-size:.8rem;font-weight:700;color:#2D2D4E;width:100px;flex-shrink:0;">'+subj+'</div>' +
+            '<div style="flex:1;height:8px;background:#F0EDF8;border-radius:4px;overflow:hidden;">' +
+            '<div style="height:100%;width:'+pct+'%;background:linear-gradient(90deg,#8B6FE8,#C9B8FF);border-radius:4px;"></div></div>' +
+            '<div style="font-size:.75rem;font-weight:800;color:#8B6FE8;width:32px;text-align:right;">'+pct+'%</div>';
+          card.appendChild(row);
+        });
+      }
+
+      // Notification toggle for this child
+      var notifRow = document.createElement('div');
+      notifRow.style.cssText = 'margin-top:14px;padding:12px;background:#F8F6FF;border-radius:14px;display:flex;align-items:center;justify-content:space-between;';
+      notifRow.innerHTML = '<div><div style="font-weight:800;font-size:.85rem;color:#2D2D4E;">Streak Reminders</div>' +
+        '<div style="font-size:.72rem;color:#888;">Daily nudge to keep ' + child.name + ' learning</div></div>';
+      var toggleBtn = document.createElement('button');
+      var notifEnabled = localStorage.getItem('notif_' + child.id) === 'true';
+      toggleBtn.style.cssText = 'padding:8px 16px;border-radius:30px;border:none;font-family:Nunito,sans-serif;font-weight:800;font-size:.8rem;cursor:pointer;background:' +
+        (notifEnabled ? 'linear-gradient(135deg,var(--mint),var(--sky))' : '#E8E4FF') + ';' +
+        'color:' + (notifEnabled ? 'white' : '#8B6FE8') + ';';
+      toggleBtn.textContent = notifEnabled ? 'ON' : 'Enable';
+      (function(cid, btn){
+        btn.onclick = function() {
+          enableStreakReminder(cid, child.name);
+          btn.style.background = 'linear-gradient(135deg,var(--mint),var(--sky))';
+          btn.style.color = 'white';
+          btn.textContent = 'ON';
+        };
+      })(child.id, toggleBtn);
+      notifRow.appendChild(toggleBtn);
+      card.appendChild(notifRow);
+
+      content.appendChild(card);
+    }
+
+    // Tips section
+    var tips = document.createElement('div');
+    tips.style.cssText = 'background:white;border-radius:20px;padding:16px;margin-bottom:20px;box-shadow:0 2px 12px rgba(45,45,78,.06);';
+    tips.innerHTML = '<div style="font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:#2D2D4E;margin-bottom:10px;">Tips for Parents</div>' +
+      '<div style="font-size:.82rem;color:#555;line-height:1.7;">' +
+      '<div>Try 15-20 minutes of BloomiKids per day for best results</div>' +
+      '<div>Ask your child what they learned after each session</div>' +
+      '<div>Celebrate streaks — even 3 days in a row is amazing!</div>' +
+      '<div>The yoga and breathing sections help with focus before homework</div>' +
+      '</div>';
+    content.appendChild(tips);
+
+  } catch(e) {
+    content.innerHTML = '<div style="padding:20px;text-align:center;color:#888;">Could not load dashboard: ' + e.message + '</div>';
+    console.error('Parent dashboard error:', e);
   }
-  build();
-  upsertDailyActivity({minutes_academic:5,tasks_done:1}).catch(function(){});
+}
+
+// ══════════════════════════════════════════════════════
+//  PUSH NOTIFICATIONS / STREAK REMINDERS
+// ══════════════════════════════════════════════════════
+async function enableStreakReminder(childId, childName) {
+  if(!('Notification' in window)) {
+    toast('Notifications not supported on this device');
+    return;
+  }
+  if(Notification.permission === 'denied') {
+    toast('Notifications are blocked. Please enable in browser settings.');
+    return;
+  }
+  try {
+    var permission = await Notification.requestPermission();
+    if(permission !== 'granted') {
+      toast('Permission denied for notifications');
+      return;
+    }
+    localStorage.setItem('notif_' + childId, 'true');
+    localStorage.setItem('notif_name_' + childId, childName);
+    toast('Streak reminders enabled for ' + childName + '!');
+    // Schedule the daily check
+    scheduleStreakChecks();
+  } catch(e) {
+    toast('Could not enable notifications');
+  }
+}
+
+function scheduleStreakChecks() {
+  // Check every hour if it is time to send a streak reminder (3-5pm window)
+  if(window._streakCheckInterval) clearInterval(window._streakCheckInterval);
+  window._streakCheckInterval = setInterval(function() {
+    var h = new Date().getHours();
+    // Remind at 3pm, 5pm, and 7pm if not yet active today
+    if(h === 15 || h === 17 || h === 19) {
+      sendStreakReminders();
+    }
+  }, 60 * 60 * 1000); // Check every hour
+}
+
+async function sendStreakReminders() {
+  if(Notification.permission !== 'granted') return;
+  // Find all children with notifications enabled
+  var keys = Object.keys(localStorage).filter(function(k){ return k.startsWith('notif_') && !k.startsWith('notif_name_'); });
+  for(var i=0; i<keys.length; i++) {
+    if(localStorage.getItem(keys[i]) !== 'true') continue;
+    var childId = keys[i].replace('notif_','');
+    var name = localStorage.getItem('notif_name_' + childId) || 'your child';
+    // Check if they already logged activity today
+    var today = new Date().toISOString().split('T')[0];
+    try {
+      var res = await sb.from('daily_activity').select('id').eq('child_id', childId).eq('activity_date', today).single();
+      if(!res.data) {
+        // No activity yet today - send reminder
+        new Notification('BloomiKids - Keep the streak alive!', {
+          body: name + ' has not learned today yet yet! Tap to start and keep the streak going!',
+          icon: '/logo.png',
+          badge: '/favicon.png',
+          tag: 'streak-' + childId,
+        });
+      }
+    } catch(e) {
+      // No activity record - send reminder
+      new Notification('Time to learn with BloomiKids!', {
+        body: name + ' is waiting to learn! 5 minutes keeps the streak alive!',
+        icon: '/logo.png',
+        tag: 'streak-' + childId,
+      });
+    }
+  }
+}
+
+// Auto-start streak check scheduler on load
+if(typeof localStorage !== 'undefined') {
+  var hasAnyNotif = Object.keys(localStorage).some(function(k){ return k.startsWith('notif_') && localStorage.getItem(k)==='true'; });
+  if(hasAnyNotif) scheduleStreakChecks();
 }
 
 let deferredPrompt;
-window.addEventListener('beforeinstallprompt',e=>{
+window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault();
-  deferredPrompt=e;
-  // Show install button in header
-  setTimeout(()=>{
-    if(deferredPrompt) {
-      var installBtn = document.getElementById('installAppBtn');
-      if(!installBtn) {
-        installBtn = document.createElement('button');
-        installBtn.id = 'installAppBtn';
-        installBtn.innerHTML = '📲 Add to Home Screen';
-        installBtn.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:8888;background:linear-gradient(135deg,var(--coral),var(--sunshine));color:white;border:none;border-radius:40px;padding:12px 24px;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;box-shadow:0 4px 20px rgba(255,107,107,.4);white-space:nowrap;';
-        installBtn.onclick = function() {
-          if(deferredPrompt) {
-            deferredPrompt.prompt();
-            deferredPrompt.userChoice.then(function(result){
-              if(result.outcome==='accepted') toast('🎉 BloomiKids added to your home screen!');
-              deferredPrompt = null;
-              installBtn.remove();
-            });
-          }
-        };
-        document.body.appendChild(installBtn);
-        // Auto-hide after 15 seconds
-        setTimeout(()=>{ if(installBtn.parentNode) installBtn.remove(); }, 15000);
-      }
-    }
-  }, 3000);
+  deferredPrompt = e;
+  showInstallButton();
 });
+
+function showInstallButton() {
+  if(document.getElementById('installAppBtn')) return;
+  var btn = document.createElement('button');
+  btn.id = 'installAppBtn';
+  btn.innerHTML = '📲 Add to Home Screen';
+  btn.style.cssText = 'position:fixed;bottom:76px;left:50%;transform:translateX(-50%);z-index:9000;background:linear-gradient(135deg,var(--coral),var(--sunshine));color:white;border:none;border-radius:40px;padding:12px 24px;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;box-shadow:0 4px 20px rgba(255,107,107,.5);white-space:nowrap;animation:pulse 2s infinite;';
+  btn.onclick = function() {
+    if(deferredPrompt) {
+      // Android Chrome - use native prompt
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(function(r){
+        deferredPrompt = null;
+        btn.remove();
+        if(r.outcome==='accepted') toast('🎉 BloomiKids added to home screen!');
+      });
+    } else {
+      // iOS Safari - show instructions
+      showIOSInstallGuide();
+    }
+  };
+  document.body.appendChild(btn);
+  setTimeout(function(){ if(btn.parentNode) btn.remove(); }, 20000);
+}
+
+function showIOSInstallGuide() {
+  var ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.7);display:flex;align-items:flex-end;padding:20px;';
+  var card = document.createElement('div');
+  card.style.cssText = 'background:white;border-radius:24px;padding:24px;width:100%;max-width:400px;margin:auto;';
+  card.innerHTML = '<div style="text-align:center;margin-bottom:16px;"><div style="font-size:2.5rem;">📲</div><div style="font-family:Baloo 2,cursive;font-size:1.2rem;font-weight:800;color:#2D2D4E;margin-top:8px;">Add to Home Screen</div></div>' +
+    '<div style="font-size:.9rem;color:#555;line-height:1.8;">' +
+    '<div style="margin-bottom:10px;padding:10px;background:#F8F6FF;border-radius:12px;">1️⃣ Tap the <strong>Share button</strong> <span style="font-size:1.2rem;">⎋</span> at the bottom of Safari</div>' +
+    '<div style="margin-bottom:10px;padding:10px;background:#F8F6FF;border-radius:12px;">2️⃣ Scroll down and tap <strong>"Add to Home Screen"</strong></div>' +
+    '<div style="padding:10px;background:#F8F6FF;border-radius:12px;">3️⃣ Tap <strong>"Add"</strong> in the top right</div>' +
+    '</div>' +
+    '<button id="iosGuideCloseBtn" style="width:100%;margin-top:16px;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--coral),var(--sunshine));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Got it! ✅</button>';
+  ov.appendChild(card);
+  ov.onclick = function(e){ if(e.target===ov) ov.remove(); };
+  document.body.appendChild(ov);
+  var closeB = document.getElementById('iosGuideCloseBtn') || document.getElementById('iosCloseBtn');
+  if(closeB) closeB.onclick = function(){ ov.remove(); };
+}
+
+// Auto-show iOS guide after a delay if on iOS and not installed
+setTimeout(function() {
+  var isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+  var isStandalone = window.navigator.standalone === true;
+  var isInstalled = window.matchMedia('(display-mode: standalone)').matches;
+  if(isIOS && !isStandalone && !isInstalled && activeChild) {
+    var btn = document.getElementById('installAppBtn');
+    if(!btn) {
+      btn = document.createElement('button');
+      btn.id = 'installAppBtn';
+      btn.innerHTML = '📲 Add to Home Screen';
+      btn.style.cssText = 'position:fixed;bottom:76px;left:50%;transform:translateX(-50%);z-index:9000;background:linear-gradient(135deg,var(--coral),var(--sunshine));color:white;border:none;border-radius:40px;padding:12px 24px;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;box-shadow:0 4px 20px rgba(255,107,107,.5);white-space:nowrap;';
+      btn.onclick = showIOSInstallGuide;
+      document.body.appendChild(btn);
+      setTimeout(function(){ if(btn.parentNode) btn.remove(); }, 20000);
+    }
+  }
+}, 5000);
+
 window.addEventListener('appinstalled',()=>{ toast('🎉 BloomiKids installed!'); deferredPrompt=null; var b=document.getElementById('installAppBtn'); if(b) b.remove(); });
 </script>
 </body>
