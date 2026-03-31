@@ -184,7 +184,7 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 @keyframes slideDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
 .subtitle { color:var(--muted); font-size:var(--font-body); margin-bottom:24px; font-weight:600; }
 
-.streak-banner { background:linear-gradient(135deg,#FF6B6B,#FFD166); border-radius:20px; padding:18px 28px; display:flex; align-items:center; gap:16px; margin-bottom:30px; color:white; box-shadow:0 8px 24px rgba(255,107,107,.3); }
+.streak-banner { background:linear-gradient(135deg,#8B6FE8,#C9B8FF); border-radius:20px; padding:18px 28px; display:flex; align-items:center; gap:16px; margin-bottom:30px; color:white; box-shadow:0 8px 24px rgba(255,107,107,.3); }
 .streak-icon { font-size:2.5rem; animation:bounce 1.5s infinite; }
 @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
 .streak-text h3 { font-family:'Baloo 2',cursive; font-size:1.4rem; font-weight:800; }
@@ -945,6 +945,7 @@ const GRADE_DATA = {
       { icon:'🔤', title:'ABC Time', desc:'Learn letters A B C D E!', badge:'ABCs!', color:'coral' },
       { icon:'🎨', title:'Colors & Art', desc:'Paint, draw, and make things!', badge:'Create!', color:'lavender' },
       { icon:'🐾', title:'Animals & Nature', desc:'Bugs, birds, dogs, and trees!', badge:'Explore!', color:'sun' },
+          { icon:'✏', title:'Letter Tracing', desc:'Trace every letter with your finger!', badge:'Trace!', color:'lavender' },
     ],
     questions:[
       // Numbers (30)
@@ -1244,6 +1245,7 @@ const GRADE_DATA = {
       { icon:'🔤', title:'Letters', desc:'Learn the ABCs and letter sounds!', badge:'ABC time!', color:'coral' },
       { icon:'🎨', title:'Colors & Shapes', desc:'Circles, squares, and all the colors!', badge:'So colorful!', color:'lavender' },
       { icon:'🌤', title:'My World', desc:'Weather, animals, and nature!', badge:'Explore!', color:'sun' },
+          { icon:'✏', title:'Letter Tracing', desc:'Trace every letter A to Z!', badge:'Trace!', color:'coral' },
     ],
     questions:[
       {q:'What is 3 + 3?',opts:['4','5','6','7'],answer:2,subject:'Counting'},
@@ -3192,7 +3194,7 @@ function buildArtTab() {
       drawTitle.textContent = 'Your Drawing Canvas';
       canvasSection.appendChild(drawTitle);
       buildDrawingCanvas(canvasSection);
-      var artTab = document.getElementById('artTab');
+      var artTab = document.getElementById('panel-art');
       if (artTab) artTab.appendChild(canvasSection);
     }
   }
@@ -3212,7 +3214,7 @@ function buildArtTab() {
       ltBtn.innerHTML = '✏️ Practice Letter Tracing A-Z';
       ltBtn.onclick = showLetterTracing;
       ltSection.appendChild(ltBtn);
-      var artTab2 = document.getElementById('artTab');
+      var artTab2 = document.getElementById('panel-art');
       if (artTab2) artTab2.appendChild(ltSection);
     }
   }
@@ -3416,16 +3418,16 @@ function updateArtStats() {
 // ══════════════════════════════════════════════════════
 const YOGA_PLAYLISTS = {
   PreK:[
-    { title:'Baby Shark Dance Music', id:'XqZsoesa55w' },
-    { title:'Happy Song for Kids', id:'JmE3aLSwwWQ' },
-    { title:'Twinkle Twinkle Little Star', id:'yCjJyiqpAuU' },
-    { title:'If You Are Happy and You Know It', id:'71hqRT9U0wg' },
-    { title:'The Wheels on the Bus', id:'e_04ZrNroTo' },
-    { title:'Old MacDonald Had a Farm', id:'5_sfnQDr1-o' },
-    { title:'Head Shoulders Knees and Toes', id:'h4eueDYPTIg' },
-    { title:'The Alphabet Song', id:'75p-N9YKqNo' },
-    { title:'Baa Baa Black Sheep', id:'pnBEuhRaWVU' },
-    { title:'Five Little Ducks', id:'jznT2KUUMYU' },
+    { title:'Peaceful Kids Yoga Music', id:'YBQ_oLMCMng' },
+    { title:'Gentle Baby Lullaby', id:'SvKzSouZHB4' },
+    { title:'Soft Piano for Little Ones', id:'7maJOI3QMu0' },
+    { title:'Happy Kids Calm Music', id:'TpH4XBOsWFg' },
+    { title:'Calm Rainbow Instrumental', id:'WHPEKLQID4U' },
+    { title:'Soothing Nature Sounds', id:'eKFTSSKCzWA' },
+    { title:'Gentle Flute for Kids', id:'OFSMvFuJQKE' },
+    { title:'Dreamy Soft Piano', id:'1ZYbU82GVz4' },
+    { title:'Kids Relaxation Music', id:'lFcSrYw2zXY' },
+    { title:'Bedtime Calm Music', id:'77ZozI0rw7w' },
   ],
   K:[
     { title:'Kids Yoga Music', id:'YBQ_oLMCMng' },
@@ -3836,10 +3838,12 @@ async function startSubject(name) {
   if(langNames.indexOf(name)>=0){openLangGame(activeGrade);return;}
 
   var allQ=gradeContent.questions||[];
+  var SUBJ_ALIASES={'abc time':['language arts','letters','phonics','reading'],'numbers fun':['numbers','counting','math'],'colors & art':['colors','shapes','art'],'animals & nature':['animals','nature','science'],'counting':['counting','numbers','math'],'letters':['letters','language arts','phonics','reading'],'colors & shapes':['colors','shapes'],'my world':['my world','social studies','science','nature'],'math':['math','counting','numbers'],'language arts':['language arts','letters','reading','phonics'],'science':['science','nature'],'social studies':['social studies','my world','community'],'community':['community','social studies']};
+  var nameLow=name.toLowerCase().trim();
+  var aliases=SUBJ_ALIASES[nameLow]||[nameLow];
   var filtered=allQ.filter(function(q){
     var qs=(q.subject||'').toLowerCase().trim();
-    var ns=name.toLowerCase().trim();
-    return qs===ns||ns.includes(qs)||qs.includes(ns);
+    return aliases.some(function(a){return qs===a||qs.includes(a)||a.includes(qs);});
   });
   var pool=filtered.length>=2?filtered:allQ;
   // Best practice session lengths: PreK/K=5, G1-G2=8, G3-G5=10
@@ -3906,8 +3910,20 @@ async function startSubject(name) {
       ttsBtn.style.cssText='padding:8px 18px;border-radius:30px;border:none;background:linear-gradient(135deg,var(--sky),var(--mint));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;';
       ttsBtn.onclick=function(){
         window.speechSynthesis.cancel();
+        // On iOS voices may not be loaded yet — retry once
+        if(!window.speechSynthesis.getVoices().length){
+          window.speechSynthesis.onvoiceschanged=function(){ttsBtn.click();window.speechSynthesis.onvoiceschanged=null;};
+          return;
+        }
         var u=new SpeechSynthesisUtterance(q.q);
-        u.rate=0.85;u.pitch=1.1;u.volume=1;
+        u.rate=0.85;u.pitch=1.05;u.volume=1;
+        // Pick most natural voice available
+        var voices=window.speechSynthesis.getVoices();
+        var prefer=['Samantha','Karen','Daniel','Google UK English Female','Microsoft Zira','Alex'];
+        var pick=null;
+        for(var vi=0;vi<prefer.length;vi++){pick=voices.find(function(v){return v.name===prefer[vi];});if(pick)break;}
+        if(!pick)pick=voices.find(function(v){return v.lang&&v.lang.startsWith('en');});
+        if(pick)u.voice=pick;
         window.speechSynthesis.speak(u);
       };
       ttsRow.appendChild(ttsBtn);
@@ -3917,7 +3933,13 @@ async function startSubject(name) {
         setTimeout(function(){
           window.speechSynthesis.cancel();
           var u=new SpeechSynthesisUtterance(q.q);
-          u.rate=0.85;u.pitch=1.1;u.volume=1;
+          u.rate=0.85;u.pitch=1.05;u.volume=1;
+          var voices=window.speechSynthesis.getVoices();
+          var prefer=['Samantha','Karen','Daniel','Google UK English Female','Microsoft Zira','Alex'];
+          var pick=null;
+          for(var vi=0;vi<prefer.length;vi++){pick=voices.find(function(v){return v.name===prefer[vi];});if(pick)break;}
+          if(!pick)pick=voices.find(function(v){return v.lang&&v.lang.startsWith('en');});
+          if(pick)u.voice=pick;
           window.speechSynthesis.speak(u);
         },600);
       }
@@ -4286,37 +4308,83 @@ function openBookReader(title, readAloudUrl) {
   var vid=m?m[1]:null;
   var searchUrl='https://www.youtube.com/results?search_query='+encodeURIComponent(title+' read aloud children');
   var directUrl=vid?('https://www.youtube.com/watch?v='+vid):searchUrl;
+  // Remove existing overlay if any
+  var old=document.getElementById('bookOv');if(old)old.remove();
   var ov=document.createElement('div');ov.id='bookOv';
-  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(10,10,26,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;';
-  var card=document.createElement('div');card.style.cssText='background:white;border-radius:28px;overflow:hidden;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.4);';
-  var hdr=document.createElement('div');hdr.style.cssText='background:linear-gradient(135deg,#FF6B6B,#FFD166);padding:20px;text-align:center;';
-  hdr.innerHTML='<div style="font-size:2.5rem;margin-bottom:6px;">📖</div><div style="font-family:Baloo 2,cursive;font-size:1.1rem;font-weight:800;color:white;line-height:1.3;">'+title+'</div>';
+  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(10,10,26,.93);display:flex;align-items:center;justify-content:center;padding:20px;';
+  var card=document.createElement('div');
+  card.style.cssText='background:white;border-radius:28px;overflow:hidden;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.4);';
+
+  // Header
+  var hdr=document.createElement('div');
+  hdr.style.cssText='background:linear-gradient(135deg,#FF6B6B,#FFD166);padding:24px 20px;text-align:center;';
+  hdr.innerHTML='<div style="font-size:3rem;margin-bottom:8px;">📖</div>'
+    +'<div style="font-family:Baloo 2,cursive;font-size:1.05rem;font-weight:800;color:white;line-height:1.3;">'+title+'</div>';
   card.appendChild(hdr);
-  var body=document.createElement('div');body.style.cssText='padding:20px;text-align:center;';
+
+  // Body
+  var body=document.createElement('div');
+  body.style.cssText='padding:22px 20px;';
+
+  // If we have a YouTube video ID, show a thumbnail preview
   if(vid){
-    var embedDiv=document.createElement('div');embedDiv.style.cssText='position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;margin-bottom:14px;background:#000;';
-    var ifr=document.createElement('iframe');
-    ifr.src='https://www.youtube.com/embed/'+vid+'?autoplay=0&rel=0&modestbranding=1&controls=1&playsinline=1';
-    ifr.style.cssText='position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:12px;';
-    ifr.setAttribute('allow','accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share');
-    ifr.setAttribute('allowfullscreen','');ifr.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
-    embedDiv.appendChild(ifr);body.appendChild(embedDiv);
+    var thumb=document.createElement('div');
+    thumb.style.cssText='position:relative;border-radius:14px;overflow:hidden;margin-bottom:14px;cursor:pointer;background:#000;';
+    var img=document.createElement('img');
+    img.src='https://img.youtube.com/vi/'+vid+'/mqdefault.jpg';
+    img.style.cssText='width:100%;display:block;border-radius:14px;opacity:.85;';
+    img.onerror=function(){thumb.style.display='none';};
+    var playBtn=document.createElement('div');
+    playBtn.style.cssText='position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:56px;height:56px;background:rgba(255,0,0,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:white;pointer-events:none;';
+    playBtn.textContent='▶';
+    thumb.appendChild(img);thumb.appendChild(playBtn);
+    thumb.onclick=function(){try{sessionStorage.setItem('bloomi_restore','1');}catch(e){}window.open(directUrl,'_blank');};
+    body.appendChild(thumb);
   }
-  var ytBtn=document.createElement('button');ytBtn.style.cssText='width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#FF0000,#CC0000);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;margin-bottom:10px;';
-  ytBtn.textContent='Watch on YouTube';
-  ytBtn.onclick=function(){try{sessionStorage.setItem('bloomi_restore','1');}catch(e){}window.open(directUrl,'_blank');};
+
+  var note=document.createElement('div');
+  note.style.cssText='font-size:.8rem;color:#888;text-align:center;margin-bottom:14px;line-height:1.4;';
+  note.textContent=vid?'Tap the thumbnail or the button below to watch this book read aloud!':'Opens YouTube to find a read-aloud of this book.';
+  body.appendChild(note);
+
+  // Main button - open YouTube
+  var ytBtn=document.createElement('button');
+  ytBtn.style.cssText='width:100%;padding:15px;border-radius:40px;border:none;background:linear-gradient(135deg,#FF0000,#CC0000);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px;';
+  ytBtn.innerHTML='▶ '+( vid?'Watch Read-Aloud':'Find Read-Aloud on YouTube');
+  ytBtn.onclick=function(){
+    try{sessionStorage.setItem('bloomi_restore','1');}catch(e){}
+    window.open(directUrl,'_blank');
+  };
   body.appendChild(ytBtn);
-  var doneBtn=document.createElement('button');doneBtn.style.cssText='width:100%;padding:12px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;margin-bottom:8px;';
-  doneBtn.textContent='I Read This! +10 Stars';
-  doneBtn.onclick=async function(){ov.remove();if(currentUser&&activeChild)showScreen('app');try{await upsertDailyActivity({minutes_reading:10});await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:10});sessionData.stars+=10;document.getElementById('statStars').textContent=sessionData.stars;toast('Great reading! +10 Stars');}catch(e){}};
+
+  // Stars button
+  var doneBtn=document.createElement('button');
+  doneBtn.style.cssText='width:100%;padding:13px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;margin-bottom:8px;';
+  doneBtn.textContent='📖 I Read This! +10 Stars';
+  doneBtn.onclick=async function(){
+    ov.remove();
+    if(currentUser&&activeChild)showScreen('app');
+    try{
+      await upsertDailyActivity({minutes_reading:10});
+      await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:10});
+      sessionData.stars+=10;document.getElementById('statStars').textContent=sessionData.stars;
+      toast('Great reading! +10 Stars');
+    }catch(e){}
+  };
   body.appendChild(doneBtn);
-  var closeBtn=document.createElement('button');closeBtn.style.cssText='background:none;border:none;color:#aaa;font-family:Nunito,sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;width:100%;padding:4px;';closeBtn.textContent='Close';closeBtn.onclick=function(){ov.remove();};body.appendChild(closeBtn);
-  card.appendChild(body);ov.appendChild(card);document.body.appendChild(ov);
+
+  var closeBtn=document.createElement('button');
+  closeBtn.style.cssText='background:none;border:none;color:#aaa;font-family:Nunito,sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;width:100%;padding:4px;';
+  closeBtn.textContent='Close';
+  closeBtn.onclick=function(){ov.remove();};
+  body.appendChild(closeBtn);
+
+  card.appendChild(body);
+  ov.appendChild(card);
+  ov.onclick=function(e){if(e.target===ov)ov.remove();};
+  document.body.appendChild(ov);
 }
 
-// ══════════════════════════════════════════════════════
-//  INTERNET ARCHIVE BOOK READER (FREE IN-APP CLASSICS)
-// ══════════════════════════════════════════════════════
 function openGDLBook(title, iaId) {
   var embedUrl='https://archive.org/embed/'+iaId+'?view=theater';
   var ov=document.createElement('div');ov.id='gdlBookOv';

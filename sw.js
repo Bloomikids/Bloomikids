@@ -1,5 +1,5 @@
 // BloomiKids Service Worker v99 - FORCE FRESH
-const CACHE_NAME = 'bloomikids-v103';
+const CACHE_NAME = 'bloomikids-v104';
 
 // On install - take control immediately  
 self.addEventListener('install', event => {
