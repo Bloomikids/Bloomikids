@@ -750,13 +750,12 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
     <div class="section-title" id="subjectsTitle">📖 Today's Subjects</div>
     <div class="cards-grid" id="subjectCards"></div>
 
-    <div class="section-title" id="quizTitle">🧠 Quiz Time!</div>
-    <div class="quiz-box">
-      <div class="quiz-question" id="quizQuestion">Loading...</div>
-      <div class="quiz-options" id="quizOptions"></div>
-      <div class="quiz-feedback" id="quizFeedback"></div>
-      <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next Question →</button>
-    </div>
+    <!-- Quiz box hidden - subjects handle quizzes via smart session -->
+    <div id="quizTitle" style="display:none"></div>
+    <div id="quizQuestion" style="display:none"></div>
+    <div id="quizOptions" style="display:none"></div>
+    <div id="quizFeedback" style="display:none"></div>
+    <button id="nextBtn" style="display:none"></button>
 
     <div class="section-title">📈 My Progress</div>
     <div class="progress-section" id="progressSection"></div>
@@ -850,12 +849,14 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
       <button class="color-mix-btn" onclick="mixColors()">Mix Colors! 🎨</button>
     </div>
 
-    <div class="section-title">✏ Drawing Prompt</div>
-    <div class="draw-prompt-box">
-      <div class="draw-prompt-title">🎯 Today's Drawing Challenge</div>
-      <div class="draw-prompt-text" id="drawPromptText">Tap the button to get your drawing prompt!</div>
-      <div class="draw-prompt-tip"  id="drawPromptTip"></div>
-      <button class="draw-new-btn" onclick="newDrawPrompt()">🎲 New Prompt!</button>
+    <div id="drawPromptSection">
+      <div class="section-title">✏ Drawing Prompt</div>
+      <div class="draw-prompt-box">
+        <div class="draw-prompt-title">🎯 Today's Drawing Challenge</div>
+        <div class="draw-prompt-text" id="drawPromptText">Tap the button to get your drawing prompt!</div>
+        <div class="draw-prompt-tip"  id="drawPromptTip"></div>
+        <button class="draw-new-btn" onclick="newDrawPrompt()">🎲 New Prompt!</button>
+      </div>
     </div>
 
     <div class="section-title">📈 Art Goals</div>
@@ -2556,8 +2557,6 @@ async function selectChild(child) {
   buildSubjectCards();
   buildYogaGrid();
   buildProgressSection();
-  initMusicPlayer();
-
   // Header
   document.getElementById('activeChildAvatar').textContent = child.avatar||'🌟';
   document.getElementById('activeChildName').textContent   = child.name;
@@ -3260,42 +3259,25 @@ function buildArtTab() {
   showDrawPrompt();
   updateArtStats();
 
-  // Drawing canvas for all grades (except PreK uses coloring book)
-  if (activeGrade !== 'PreK') {
-    var canvasSection = document.getElementById('artDrawCanvas');
-    if (!canvasSection) {
-      canvasSection = document.createElement('div');
-      canvasSection.id = 'artDrawCanvas';
-      canvasSection.style.cssText = 'margin-top:16px;';
-      var drawTitle = document.createElement('div');
-      drawTitle.className = 'section-title';
-      drawTitle.textContent = 'Your Drawing Canvas';
-      canvasSection.appendChild(drawTitle);
-      buildDrawingCanvas(canvasSection);
-      var artTab = document.getElementById('panel-art');
-      if (artTab) artTab.appendChild(canvasSection);
-    }
+  // Show/hide drawing prompt based on grade
+  var dpSection = document.getElementById('drawPromptSection');
+  if (dpSection) dpSection.style.display = (activeGrade==='PreK'||activeGrade==='K') ? 'none' : '';
+
+  // Drawing canvas for PreK and K (finger drawing), older grades also get it
+  var canvasSection = document.getElementById('artDrawCanvas');
+  if (!canvasSection) {
+    canvasSection = document.createElement('div');
+    canvasSection.id = 'artDrawCanvas';
+    canvasSection.style.cssText = 'margin-top:16px;';
+    var drawTitle = document.createElement('div');
+    drawTitle.className = 'section-title';
+    drawTitle.textContent = (activeGrade==='PreK'||activeGrade==='K') ? '🖌 Draw with Your Finger!' : 'Your Drawing Canvas';
+    canvasSection.appendChild(drawTitle);
+    buildDrawingCanvas(canvasSection);
+    var artTab = document.getElementById('panel-art');
+    if (artTab) artTab.appendChild(canvasSection);
   }
-  // Letter Tracing button for PreK and K
-  if (activeGrade === 'PreK' || activeGrade === 'K') {
-    var ltSection = document.getElementById('artLetterTrace');
-    if (!ltSection) {
-      ltSection = document.createElement('div');
-      ltSection.id = 'artLetterTrace';
-      ltSection.style.cssText = 'margin-top:16px;';
-      var ltTitle = document.createElement('div');
-      ltTitle.className = 'section-title';
-      ltTitle.textContent = 'Letter Tracing';
-      ltSection.appendChild(ltTitle);
-      var ltBtn = document.createElement('button');
-      ltBtn.style.cssText = 'width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--lavender),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';
-      ltBtn.innerHTML = '✏️ Practice Letter Tracing A-Z';
-      ltBtn.onclick = showLetterTracing;
-      ltSection.appendChild(ltBtn);
-      var artTab2 = document.getElementById('panel-art');
-      if (artTab2) artTab2.appendChild(ltSection);
-    }
-  }
+  // Letter Tracing button is already in subject cards - don't add it here again
 }
 
 // Coloring book state
@@ -3868,7 +3850,7 @@ function switchTab(tab) {
     document.getElementById('playPauseBtn').textContent = '> Play';
   }
   if (tab === 'yoga') {
-    setTimeout(() => { if (!currentPlaylist.length) initMusicPlayer(); }, 100);
+    setTimeout(() => { initMusicPlayer(); }, 100);
   }
   // ✅ FIX 4: Only build art tab once per child session
   if (tab === 'art' && !artTabBuilt) {
@@ -3941,17 +3923,43 @@ const LETTER_QUESTIONS = [
   { question_text:"Tap the letter Z", options:["X","Y","Z"], answer:"Z", voice_correct:"⭐ You did it! That's Z — you know the whole alphabet!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter Z. It sounds like zzz, as in zebra." }
 ];
 
+function stripEmoji(str) {
+  // Remove emoji and special unicode chars that TTS reads awkwardly
+  return (str || '').replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27FF}\u{2300}-\u{23FF}\u{FE00}-\u{FEFF}\u{1F900}-\u{1F9FF}]/gu, '').replace(/[⭐🌟🎉🎊🏆💪👋🔈✅❌]/g, '').trim();
+}
+
+function getBestVoice() {
+  var voices = window.speechSynthesis.getVoices();
+  if (!voices.length) return null;
+  var prefer = ['Samantha','Karen','Moira','Fiona','Google US English','Microsoft Aria Online (Natural)','Microsoft Jenny Online (Natural)','Microsoft Zira Desktop','Daniel','Alex'];
+  var pick = null;
+  for (var i = 0; i < prefer.length; i++) {
+    pick = voices.find(function(v){return v.name===prefer[i];});
+    if (pick) break;
+  }
+  if (!pick) pick = voices.find(function(v){return v.lang && v.lang.startsWith('en') && v.localService;});
+  if (!pick) pick = voices.find(function(v){return v.lang && v.lang.startsWith('en-US');});
+  if (!pick) pick = voices.find(function(v){return v.lang && v.lang.startsWith('en');});
+  return pick;
+}
+
 function speakText(text) {
   if (!('speechSynthesis' in window)) return;
+  var clean = stripEmoji(text);
+  if (!clean) return;
   window.speechSynthesis.cancel();
-  var u = new SpeechSynthesisUtterance(text);
-  u.rate = 0.82; u.pitch = 1.0; u.volume = 1;
   var voices = window.speechSynthesis.getVoices();
-  var prefer = ['Samantha','Karen','Moira','Google US English','Microsoft Aria Online (Natural)','Microsoft Jenny Online (Natural)','Daniel','Alex'];
-  var pick = null;
-  for (var i = 0; i < prefer.length; i++) { pick = voices.find(function(v){return v.name===prefer[i];}); if(pick) break; }
-  if (!pick) pick = voices.find(function(v){return v.lang && v.lang.startsWith('en') && v.localService;});
-  if (!pick) pick = voices.find(function(v){return v.lang && v.lang.startsWith('en');});
+  if (!voices.length) {
+    // Voices not loaded yet - wait for them
+    window.speechSynthesis.onvoiceschanged = function() {
+      window.speechSynthesis.onvoiceschanged = null;
+      speakText(text);
+    };
+    return;
+  }
+  var u = new SpeechSynthesisUtterance(clean);
+  u.rate = 0.82; u.pitch = 1.0; u.volume = 1;
+  var pick = getBestVoice();
   if (pick) u.voice = pick;
   window.speechSynthesis.speak(u);
 }
@@ -5011,60 +5019,60 @@ function openGDLBook(title, iaId) {
 function buildGDLLibrary(grade) {
   var BOOKS={
     PreK:[
-      {t:'The Tale of Peter Rabbit',ia:'petrabbit00pott',d:'Beatrix Potters mischievous little rabbit'},
-      {t:'Goodnight Moon',ia:'goodnightmoon00brow_0',d:'The classic cozy bedtime story'},
-      {t:'Where the Wild Things Are',ia:'where_wild_things_are_sendak',d:'Max sails to where the wild things are'},
-      {t:'The Snowy Day',ia:'snowyday00keat_0',d:'Peter has a wonderful adventure in the snow'},
-      {t:'Caps for Sale',ia:'capsforsale0000esph',d:'A peddler and some very naughty monkeys'},
-      {t:'Harold and the Purple Crayon',ia:'haroldpurplecray00john',d:'Harold draws his way through adventures'}
+      {t:'The Tale of Peter Rabbit',ia:'thetaleofpeterrabb00pott_2',d:'Beatrix Potters mischievous little rabbit'},
+      {t:'Little Red Riding Hood',ia:'littleredridingh00perrrich',d:'A beloved fairy tale classic'},
+      {t:'The Three Bears',ia:'storyofthreebear00south',d:'Goldilocks visits the three bears'},
+      {t:'Aesops Fables',ia:'aesopsfables00aeso_5',d:'Classic animal stories with lessons'},
+      {t:'Jack and the Beanstalk',ia:'jackandbeanstalk00unkn_4',d:'Jack climbs a magical beanstalk'},
+      {t:'Pinocchio',ia:'adventuresofpinoc00coll',d:'A wooden puppet who wants to be real'}
     ],
     K:[
-      {t:'Curious George',ia:'curiousgeorge00reys_0',d:'A curious little monkey gets into trouble'},
-      {t:'Make Way for Ducklings',ia:'makewayforduckli00mcco_0',d:'A family of ducks finds a home in Boston'},
-      {t:'The Story of Ferdinand',ia:'storyofferdinand00leaf_0',d:'A bull who loves smelling flowers'},
-      {t:'Blueberries for Sal',ia:'blueberriesforsa00mcco_0',d:'Sal picks blueberries and meets a bear'},
-      {t:'Mike Mulligan and His Steam Shovel',ia:'mikemulliganstea00burt',d:'Mike and his steam shovel dig their way to success'},
-      {t:'Little Red Riding Hood',ia:'littleredridingh00grim_2',d:'The classic fairy tale adventure'}
+      {t:'Alice in Wonderland',ia:'alicesadventuresiu00carr',d:'Alice falls into a wonderfully strange world'},
+      {t:'The Jungle Book',ia:'junglebook00kipling',d:'Mowgli is raised by wolves in the jungle'},
+      {t:'The Wind in the Willows',ia:'windinthewillows00grah',d:'Mole Rat Badger and Toad by the river'},
+      {t:'Cinderella',ia:'cinderellaorliitl00perrrich',d:'The classic fairy tale of Cinderella'},
+      {t:'Sleeping Beauty',ia:'sleepingbeautyandother',d:'A princess and a magical curse'},
+      {t:'The Wonderful Wizard of Oz',ia:'wonderfulwizardofo00baum',d:'Dorothy travels to the land of Oz'}
     ],
     1:[
-      {t:'Charlotte Web',ia:'charlottesweb00whit_1',d:'A pig and a spider become the best of friends'},
-      {t:'Alice in Wonderland',ia:'alicesadventures00carr_4',d:'Alice falls into a wonderfully strange world'},
-      {t:'The Jungle Book',ia:'junglebook00kipl_5',d:'Mowgli is raised by wolves in the jungle'},
-      {t:'Fantastic Mr Fox',ia:'fantasticmrfox00dahl_0',d:'Mr Fox outsmarts three mean farmers'},
-      {t:'The Lion the Witch and the Wardrobe',ia:'lionwitchwardrob00lewi',d:'Four children discover the magical land of Narnia'},
-      {t:'James and the Giant Peach',ia:'jamesandgiantpea00dahl_0',d:'James escapes inside a giant magical peach'}
+      {t:'Treasure Island',ia:'treasureisland00stevgoog',d:'Pirates treasure and high adventure'},
+      {t:'Black Beauty',ia:'blackbeauty00sewarich',d:'A horse tells his own life story'},
+      {t:'Little Women',ia:'littlewomen00louirich',d:'The March sisters growing up together'},
+      {t:'The Secret Garden',ia:'secretgarden00burn',d:'Mary discovers a hidden magical garden'},
+      {t:'Adventures of Tom Sawyer',ia:'adventuresoftomsa00mark',d:'Tom and Huck have wild adventures'},
+      {t:'A Little Princess',ia:'littleprincess00burn_0',d:'Sara Crewe faces hardship with grace'}
     ],
     2:[
-      {t:'The Secret Garden',ia:'secretgarden00burn_4',d:'Mary discovers a hidden magical garden'},
-      {t:'Black Beauty',ia:'blackbeauty00sewa_9',d:'A horse tells his own life story'},
-      {t:'Treasure Island',ia:'treasureisland00stev_8',d:'Pirates buried treasure and adventure'},
-      {t:'Little Women',ia:'littlewomen00alco_14',d:'The March sisters growing up during the Civil War'},
-      {t:'Wind in the Willows',ia:'windinthewillows00grah_8',d:'Mole Rat Badger and Toad have river adventures'},
-      {t:'A Little Princess',ia:'littleprincess00burn_5',d:'Sara Crewe faces hardship with grace and courage'}
+      {t:'Robinson Crusoe',ia:'robinsoncrusoe00defogoog',d:'Stranded alone on an island for years'},
+      {t:'Call of the Wild',ia:'callofwild00londgoog',d:'Buck the dog in the Alaskan wilderness'},
+      {t:'Pollyanna',ia:'pollyanna00eleanor',d:'Pollyanna finds something to be glad about'},
+      {t:'Around the World in 80 Days',ia:'aroundworldineigh00verne',d:'A race around the globe in 80 days'},
+      {t:'Kidnapped',ia:'kidnapped00stev_0',d:'David Balfour has Scottish adventures'},
+      {t:'Swiss Family Robinson',ia:'swissfamilyrobins00wyss',d:'A family stranded on a tropical island'}
     ],
     3:[
-      {t:'The Wizard of Oz',ia:'wonderfulwizardoz00baum_3',d:'Dorothy travels to the magical land of Oz'},
-      {t:'Robinson Crusoe',ia:'robinsoncrusoe00defo_6',d:'Stranded alone on an island for years'},
-      {t:'Adventures of Tom Sawyer',ia:'adventuresoftoms00twai_4',d:'Tom Sawyer and Huck Finn have wild adventures'},
-      {t:'Call of the Wild',ia:'callofwild00lond_7',d:'Buck the dog survives in the Alaskan wilderness'},
-      {t:'Around the World in 80 Days',ia:'aroundworldin80d00vern_1',d:'A race around the globe in 80 days'},
-      {t:'Pollyanna',ia:'pollyanna00port_4',d:'Pollyanna finds something to be glad about every day'}
+      {t:'Twenty Thousand Leagues',ia:'twentythousandlea00vern',d:'Captain Nemos undersea adventures'},
+      {t:'The Three Musketeers',ia:'threemusketeers00dumaurich',d:'All for one and one for all'},
+      {t:'Journey to the Center of the Earth',ia:'journeytocenterof00vern_0',d:'An expedition deep underground'},
+      {t:'Don Quixote',ia:'donquixote00cerv',d:'The adventures of a knight and his squire'},
+      {t:'Gullivers Travels',ia:'gulliverstravels00swif',d:'Gulliver travels to strange lands'},
+      {t:'The Count of Monte Cristo',ia:'countofmontecristo00duma',d:'Edmond Dantes seeks justice'}
     ],
     4:[
-      {t:'Twenty Thousand Leagues Under the Sea',ia:'twentythousandlea00vern_3',d:'Captain Nemos amazing undersea adventures'},
-      {t:'The Three Musketeers',ia:'threemusketeers00duma_4',d:'All for one and one for all'},
-      {t:'Kidnapped',ia:'kidnapped00stev_6',d:'David Balfour has Scottish adventures'},
-      {t:'Journey to the Center of the Earth',ia:'journeytocenter00vern',d:'An expedition deep underground'},
-      {t:'Little Men',ia:'littlemen00alco_3',d:'Life at Plumfield School with Jo March'},
-      {t:'The Jungle Book',ia:'junglebook00kipl_3',d:'Mowgli raised by wolves in the jungle'}
+      {t:'Frankenstein',ia:'frankenstein00marygoog',d:'The classic tale of creation gone wrong'},
+      {t:'The Time Machine',ia:'timemachine00well',d:'A traveler journeys to the far future'},
+      {t:'Jane Eyre',ia:'janeeyre00charlgoog',d:'Jane Eyre finds love and independence'},
+      {t:'The Invisible Man',ia:'invisibleman00well',d:'A scientist makes himself invisible'},
+      {t:'Dracula',ia:'draculabram00stok',d:'The classic vampire story'},
+      {t:'The Picture of Dorian Gray',ia:'pictureofdoriangr00wild',d:'A portrait that never ages'}
     ],
     5:[
-      {t:'Frankenstein',ia:'frankenstein00shel_5',d:'The classic tale of creation gone wrong'},
-      {t:'The Time Machine',ia:'timemachine00well_3',d:'A traveler journeys to the far future'},
-      {t:'Jane Eyre',ia:'janeeyre00bron_5',d:'Jane Eyre finds love and independence'},
-      {t:'The Count of Monte Cristo',ia:'countofmontecris00duma_3',d:'Edmond Dantes seeks justice after imprisonment'},
-      {t:'The Invisible Man',ia:'invisibleman00well_3',d:'A scientist makes himself invisible'},
-      {t:'Gullivers Travels',ia:'gulliverstravels00swif_4',d:'Gulliver travels to strange lands'}
+      {t:'Great Expectations',ia:'greatexpectation00dickgoog',d:'Pip rises from humble origins'},
+      {t:'David Copperfield',ia:'davidcopperfield00dickgoog',d:'The life of David Copperfield'},
+      {t:'Les Miserables',ia:'lesmisrables00hugogoog',d:'Justice mercy and redemption in France'},
+      {t:'Moby Dick',ia:'mobydick00melv',d:'The hunt for the great white whale'},
+      {t:'The Hunchback of Notre Dame',ia:'hunchbackofnotred00hugo',d:'Quasimodo and the bells of Paris'},
+      {t:'Around the World in 80 Days',ia:'aroundworldin80da00vern',d:'Phileas Fogg races around the globe'}
     ]
   };
   var books=BOOKS[grade]||BOOKS[3];
