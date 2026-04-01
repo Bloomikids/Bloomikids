@@ -182,7 +182,7 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .sync-dot.error { background:var(--coral); }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
 
-.greeting { font-family:'Baloo 2',cursive; font-size:var(--font-big); font-weight:800; margin-bottom:6px; animation:slideDown .6s ease; line-height:1.2; }
+.greeting { font-family:'Baloo 2',cursive; font-size:var(--font-big); font-weight:800; margin-bottom:6px; animation:slideDown .6s ease; line-height:1.2; color:var(--coral); }
 .greeting span { color:var(--coral); }
 @keyframes slideDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
 .subtitle { color:var(--muted); font-size:var(--font-body); margin-bottom:24px; font-weight:600; }
@@ -2721,6 +2721,11 @@ function buildYogaGrid() {
 
 function renderQuestion() {
   answered=false;
+  if (!gradeContent || !gradeContent.questions || !gradeContent.questions.length) {
+    document.getElementById('quizQuestion').textContent = 'Loading questions...';
+    setTimeout(renderQuestion, 500);
+    return;
+  }
   const questions = gradeContent.questions;
   const q = questions[qIdx % questions.length];
   document.getElementById('quizQuestion').textContent = q.q;
@@ -2856,51 +2861,63 @@ function initBreathing() {
 //  READING
 // ══════════════════════════════════════════════════════
 function renderBookShelf(books) {
-  const shelf=document.getElementById('bookShelf');
-  shelf.innerHTML=books.map((b,i)=>{
-    const pct=b.total_pages>0?Math.round(100*b.pages_read/b.total_pages):0;
-    const done=b.completed||pct>=100;
-    const ra = b.readAloud || b.read_aloud_url || '';
-    const bTitle = (b.book_title||b.title||'').replace(/'/g,"'").replace(/"/g,'');
-    const bRa = ra || '';
-    const fc = 'fc-'+(i%9);
-    const bEmoji = b.emoji || '📖';
-    return `
-      <div class="book-card" data-title="${bTitle}" data-ra="${bRa}" onclick="openBookSafe(this)" style="position:relative;">
-        <div class="book-cover-fallback ${fc}">${bEmoji}</div>
-        ${ra ? '<div class="book-ra-badge">👨‍👧 Read Together</div>' : ''}
-        ${done ? '<div class="book-done-badge">✅</div>' : ''}
-        <div class="book-info">
-          <div class="book-title">${b.book_title||b.title}</div>
-          <div class="book-author">by ${b.author}</div>
-          <div class="book-progress"><div class="book-progress-fill" style="width:${pct}%"></div></div>
-          <div class="book-pages">${done ? '🎉 Finished!' : pct > 0 ? '📖 '+pct+'% read' : '📖 Tap to start!'}</div>
-        </div>
-      </div>`;
-  }).join('');
-  const completed=books.filter(b=>b.completed||(b.pages_read>=b.total_pages)).length;
-  const totalPages=books.reduce((s,b)=>s+(b.pages_read||b.read||0),0);
-  document.getElementById('booksRead').textContent =completed;
-  document.getElementById('totalPages').textContent=totalPages;
-  const mPct=Math.min(100,Math.round(completed/4*100));
-  document.getElementById('monthlyReadBar').style.width=mPct+'%';
-  document.getElementById('monthlyReadPct').textContent=`${completed}/4 books`;
+  try {
+    const shelf = document.getElementById('bookShelf');
+    if (!shelf) return;
+    if (!books || !books.length) {
+      shelf.innerHTML = '<div style="text-align:center;padding:30px;color:#888;">No books found. 📚</div>';
+      return;
+    }
+    shelf.innerHTML = books.map((b,i) => {
+      const pct = b.total_pages > 0 ? Math.round(100 * b.pages_read / b.total_pages) : 0;
+      const done = b.completed || pct >= 100;
+      const ra = b.readAloud || b.read_aloud_url || '';
+      const bTitle = (b.book_title || b.title || '').replace(/'/g, "\'").replace(/"/g, '');
+      const bRa = ra || '';
+      const fc = 'fc-' + (i % 9);
+      const bEmoji = b.emoji || '📖';
+      return `
+        <div class="book-card" data-title="${bTitle}" data-ra="${bRa}" onclick="openBookSafe(this)" style="position:relative;">
+          <div class="book-cover-fallback ${fc}">${bEmoji}</div>
+          ${ra ? '<div class="book-ra-badge">👨‍👧 Read Together</div>' : ''}
+          ${done ? '<div class="book-done-badge">✅</div>' : ''}
+          <div class="book-info">
+            <div class="book-title">${b.book_title || b.title}</div>
+            <div class="book-author">by ${b.author}</div>
+            <div class="book-progress"><div class="book-progress-fill" style="width:${pct}%"></div></div>
+            <div class="book-pages">${done ? '🎉 Finished!' : pct > 0 ? '📖 ' + pct + '% read' : '📖 Tap to start!'}</div>
+          </div>
+        </div>`;
+    }).join('');
 
-  // Free classic books from Internet Archive
-  var gdlEl = document.getElementById('gdlBooksSection');
-  if (!gdlEl) {
+    const completed = books.filter(b => b.completed || (b.pages_read >= b.total_pages)).length;
+    const totalPages = books.reduce((s, b) => s + (b.pages_read || b.read || 0), 0);
+    document.getElementById('booksRead').textContent = completed;
+    document.getElementById('totalPages').textContent = totalPages;
+    const mPct = Math.min(100, Math.round(completed / 4 * 100));
+    document.getElementById('monthlyReadBar').style.width = mPct + '%';
+    document.getElementById('monthlyReadPct').textContent = `${completed}/4 books`;
+
+    // Always rebuild so switching grades/children shows correct books
+    var gdlEl = document.getElementById('gdlBooksSection');
+    if (gdlEl) gdlEl.remove();
     var gdlWrap = buildGDLLibrary(activeGrade);
     gdlWrap.id = 'gdlBooksSection';
     shelf.parentElement.appendChild(gdlWrap);
-  }
-  // Online library links
-  var libEl = document.getElementById('onlineLibSection');
-  if (!libEl) {
+
+    var libEl = document.getElementById('onlineLibSection');
+    if (libEl) libEl.remove();
     var libWrap = buildOnlineLibrary();
     libWrap.id = 'onlineLibSection';
     shelf.parentElement.appendChild(libWrap);
+
+  } catch(e) {
+    console.error('renderBookShelf error:', e);
+    var s = document.getElementById('bookShelf');
+    if (s) s.innerHTML = '<div style="text-align:center;padding:30px;color:#888;">Tap here to reload books 📚</div>';
   }
 }
+
 
 function renderComingSoon() {
   const comingSoon = [
@@ -3919,12 +3936,14 @@ async function startSubject(name) {
           return;
         }
         var u=new SpeechSynthesisUtterance(q.q);
-        u.rate=0.85;u.pitch=1.05;u.volume=1;
-        // Pick most natural voice available
+        u.rate=0.82;u.pitch=1.0;u.volume=1;
+        // Pick most natural voice available - prioritize local/neural voices
         var voices=window.speechSynthesis.getVoices();
-        var prefer=['Samantha','Karen','Daniel','Google UK English Female','Microsoft Zira','Alex'];
+        var prefer=['Samantha','Karen','Moira','Fiona','Google US English','Google UK English Female','Microsoft Aria Online (Natural)','Microsoft Jenny Online (Natural)','Microsoft Zira Desktop','Daniel','Alex'];
         var pick=null;
         for(var vi=0;vi<prefer.length;vi++){pick=voices.find(function(v){return v.name===prefer[vi];});if(pick)break;}
+        if(!pick)pick=voices.find(function(v){return v.lang&&v.lang.startsWith('en')&&v.localService;});
+        if(!pick)pick=voices.find(function(v){return v.lang&&v.lang.startsWith('en-US');});
         if(!pick)pick=voices.find(function(v){return v.lang&&v.lang.startsWith('en');});
         if(pick)u.voice=pick;
         window.speechSynthesis.speak(u);
