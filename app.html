@@ -562,7 +562,8 @@ body.grade-prek .book-title, body.grade-k .book-title, body.grade-1 .book-title 
 body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
 
 /* -- BOTTOM NAV ---------------------------------------- */
-.bottom-nav { position:fixed; bottom:0; left:0; right:0; background:white; padding:10px 20px; display:flex; justify-content:center; gap:6px; box-shadow:0 -8px 32px rgba(45,45,78,.08); z-index:100; }
+.bottom-nav { position:fixed; bottom:0; left:0; right:0; background:white; padding:10px 12px; display:flex; gap:6px; box-shadow:0 -8px 32px rgba(45,45,78,.08); z-index:100; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; justify-content:flex-start; }
+.bottom-nav::-webkit-scrollbar { display:none; }
 .bottom-nav .tab-btn { font-size:.88rem; padding:10px 20px; }
 
 /* -- MODAL OVERLAY (grade + avatar pickers) ------------ */
@@ -1217,6 +1218,9 @@ const GRADE_DATA = {
       { emoji:'🐸', name:'Frog', tip:'Squat down low and jump like a frog!', secs:20, level:'Easy' },
       { emoji:'🚀', name:'Rocket', tip:'Stand tall, arms up — blast off to space!', secs:15, level:'Easy' },
       { emoji:'🌊', name:'Wave', tip:'Stand and wave your arms up and down like the ocean!', secs:20, level:'Easy' },
+      { emoji:'🦅', name:'Bird Dog', tip:'Get on hands and knees, reach one arm and leg out like a flying bird!', secs:20, level:'Easy' },
+      { emoji:'🐍', name:'Upward Dog', tip:'Lie on your tummy, push up with your arms and look up high!', secs:20, level:'Easy' },
+      { emoji:'🌟', name:'Dancer', tip:'Stand tall, hold one foot behind you and reach your arm forward!', secs:25, level:'Medium' },
     ],
     books:[
       { title:'Pat the Bunny',                  author:'Dorothy Kunhardt', pages:14, read:14, emoji:'🐰', readAloud:'https://www.youtube.com/results?search_query=Pat%20the%20Bunny%20read%20aloud' },
@@ -1642,6 +1646,10 @@ const GRADE_DATA = {
       { emoji:'🧘', name:'Goddess Pose', tip:'Wide legs, bend your knees, raise your arms up like a goddess!', secs:45, level:'Easy' },
       { emoji:'🍼', name:'Happy Baby', tip:'Lie on your back, grab your feet and rock side to side!', secs:45, level:'Easy' },
       { emoji:'🙏', name:"Child's Pose", tip:'Sit back on heels and stretch arms forward to rest!', secs:60, level:'Easy' },
+      { emoji:'🦅', name:'Bird Dog', tip:'Balance on hands and knees, extend opposite arm and leg!', secs:25, level:'Easy' },
+      { emoji:'🏹', name:'Bow Pose', tip:'Lie on your tummy, reach back and hold your ankles, arch up!', secs:20, level:'Medium' },
+      { emoji:'🌟', name:'Dancer', tip:'Stand on one foot, hold the other foot behind you, reach forward!', secs:25, level:'Medium' },
+      { emoji:'🐦', name:'Crow Pose', tip:'Squat down, place hands on ground, and try to balance!', secs:20, level:'Hard' },
     ],
     books:[
       { title:'Green Eggs and Ham',    author:'Dr. Seuss',     pages:62,  read:62,  emoji:'🥚', readAloud:'https://www.youtube.com/results?search_query=Green%20Eggs%20and%20Ham%20read%20aloud' },
@@ -2724,6 +2732,17 @@ const POSE_PHOTOS = {
   'Knee Hug':      { src:'pose_happybaby.png', pos:'center 40%' },
   'Goddess Pose':  { src:'pose_goddess.jpg', pos:'center 20%' },
   'Goddess':       { src:'pose_goddess.jpg', pos:'center 20%' },
+  'Dancer':        { src:'IMG_1349.jpeg', pos:'center 20%' },
+  'Dancer Pose':   { src:'IMG_1349.jpeg', pos:'center 20%' },
+  'Crow':          { src:'IMG_1345.jpeg', pos:'center 50%' },
+  'Crow Pose':     { src:'IMG_1345.jpeg', pos:'center 50%' },
+  'Upward Dog':    { src:'IMG_1347.jpeg', pos:'center 30%' },
+  'Updog':         { src:'IMG_1347.jpeg', pos:'center 30%' },
+  'Side Plank':    { src:'IMG_1348.jpeg', pos:'center 30%' },
+  'Bow Pose':      { src:'IMG_1351.jpeg', pos:'center 40%' },
+  'Bow':           { src:'IMG_1351.jpeg', pos:'center 40%' },
+  'Bird Dog':      { src:'IMG_1350.jpeg', pos:'center 40%' },
+  'Superman':      { src:'IMG_1350.jpeg', pos:'center 40%' },
 };
 
 function buildYogaGrid() {
@@ -3894,32 +3913,32 @@ function closeSubjectQuiz(){
 //  ABC TIME LETTER QUIZ (PreK & K)
 // ══════════════════════════════════════════════════════
 const LETTER_QUESTIONS = [
-  { question_text:"Tap the letter A", options:["A","B","C"], answer:"A", voice_correct:"Great job! You found A!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter A. It makes the /a/ sound." },
-  { question_text:"Tap the letter B", options:["A","B","D"], answer:"B", voice_correct:"You got it! That's B!", voice_wrong:"Not quite, look carefully.", voice_instruction:"This is the letter B. It makes the /b/ sound." },
-  { question_text:"Tap the letter C", options:["C","D","E"], answer:"C", voice_correct:"Perfect! That's C!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter C. It makes the /c/ sound." },
-  { question_text:"Tap the letter D", options:["C","D","F"], answer:"D", voice_correct:"Awesome, keep going! That's D!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter D. It makes the /d/ sound." },
-  { question_text:"Tap the letter E", options:["E","F","G"], answer:"E", voice_correct:"You got it! E is right!", voice_wrong:"Not quite, look carefully.", voice_instruction:"This is the letter E. It makes the /e/ sound." },
-  { question_text:"Tap the letter F", options:["E","F","H"], answer:"F", voice_correct:"Great job! That's F!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter F. It makes the /f/ sound." },
-  { question_text:"Tap the letter G", options:["G","H","I"], answer:"G", voice_correct:"Perfect! G is correct!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter G. It makes the /g/ sound." },
-  { question_text:"Tap the letter H", options:["G","H","J"], answer:"H", voice_correct:"Awesome, keep going! That's H!", voice_wrong:"Not quite, look carefully.", voice_instruction:"This is the letter H. It makes the /h/ sound." },
-  { question_text:"Tap the letter I", options:["I","J","K"], answer:"I", voice_correct:"You got it! I is correct!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter I. It makes the /i/ sound." },
-  { question_text:"Tap the letter J", options:["I","J","L"], answer:"J", voice_correct:"Great job! That's J!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter J. It makes the /j/ sound." },
-  { question_text:"Tap the letter K", options:["K","L","M"], answer:"K", voice_correct:"Perfect! That's K!", voice_wrong:"Not quite, look carefully.", voice_instruction:"This is the letter K. It makes the /k/ sound." },
-  { question_text:"Tap the letter L", options:["K","L","M"], answer:"L", voice_correct:"Awesome, keep going! That's L!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter L. It makes the /l/ sound." },
-  { question_text:"Tap the letter M", options:["L","M","N"], answer:"M", voice_correct:"You got it! That's M!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter M. It makes the /m/ sound." },
-  { question_text:"Tap the letter N", options:["M","N","O"], answer:"N", voice_correct:"Great job! N is correct!", voice_wrong:"Not quite, look carefully.", voice_instruction:"This is the letter N. It makes the /n/ sound." },
-  { question_text:"Tap the letter O", options:["N","O","P"], answer:"O", voice_correct:"Perfect! That's O!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter O. It makes the /o/ sound." },
-  { question_text:"Tap the letter P", options:["O","P","Q"], answer:"P", voice_correct:"Awesome, keep going! P is correct!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter P. It makes the /p/ sound." },
-  { question_text:"Tap the letter Q", options:["P","Q","R"], answer:"Q", voice_correct:"You got it! That's Q!", voice_wrong:"Not quite, look carefully.", voice_instruction:"This is the letter Q. It makes the /q/ sound." },
-  { question_text:"Tap the letter R", options:["Q","R","S"], answer:"R", voice_correct:"Great job! R is right!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter R. It makes the /r/ sound." },
-  { question_text:"Tap the letter S", options:["R","S","T"], answer:"S", voice_correct:"Perfect! That's S!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter S. It makes the /s/ sound." },
-  { question_text:"Tap the letter T", options:["S","T","U"], answer:"T", voice_correct:"Awesome, keep going! That's T!", voice_wrong:"Not quite, look carefully.", voice_instruction:"This is the letter T. It makes the /t/ sound." },
-  { question_text:"Tap the letter U", options:["T","U","V"], answer:"U", voice_correct:"You got it! U is correct!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter U. It makes the /u/ sound." },
-  { question_text:"Tap the letter V", options:["U","V","W"], answer:"V", voice_correct:"Great job! That's V!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter V. It makes the /v/ sound." },
-  { question_text:"Tap the letter W", options:["V","W","X"], answer:"W", voice_correct:"Perfect! W is right!", voice_wrong:"Not quite, look carefully.", voice_instruction:"This is the letter W. It makes the /w/ sound." },
-  { question_text:"Tap the letter X", options:["W","X","Y"], answer:"X", voice_correct:"⭐ You did it! That's X!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter X. It makes the /x/ sound." },
-  { question_text:"Tap the letter Y", options:["X","Y","Z"], answer:"Y", voice_correct:"Awesome, keep going! That's Y!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter Y. It makes the /y/ sound." },
-  { question_text:"Tap the letter Z", options:["X","Y","Z"], answer:"Z", voice_correct:"⭐ You did it! That's Z — you know the whole alphabet!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter Z. It makes the /z/ sound." }
+  { question_text:"Tap the letter A", options:["A","B","C"], answer:"A", voice_correct:"Great job! You found A!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter A. It sounds like aaa, as in apple." },
+  { question_text:"Tap the letter B", options:["A","B","D"], answer:"B", voice_correct:"You got it! That's B!", voice_wrong:"Not quite, look carefully.", voice_instruction:"This is the letter B. It sounds like buh, as in ball." },
+  { question_text:"Tap the letter C", options:["C","D","E"], answer:"C", voice_correct:"Perfect! That's C!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter C. It sounds like kuh, as in cat." },
+  { question_text:"Tap the letter D", options:["C","D","F"], answer:"D", voice_correct:"Awesome, keep going! That's D!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter D. It sounds like duh, as in dog." },
+  { question_text:"Tap the letter E", options:["E","F","G"], answer:"E", voice_correct:"You got it! E is right!", voice_wrong:"Not quite, look carefully.", voice_instruction:"This is the letter E. It sounds like eh, as in egg." },
+  { question_text:"Tap the letter F", options:["E","F","H"], answer:"F", voice_correct:"Great job! That's F!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter F. It sounds like fff, as in fish." },
+  { question_text:"Tap the letter G", options:["G","H","I"], answer:"G", voice_correct:"Perfect! G is correct!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter G. It sounds like guh, as in go." },
+  { question_text:"Tap the letter H", options:["G","H","J"], answer:"H", voice_correct:"Awesome, keep going! That's H!", voice_wrong:"Not quite, look carefully.", voice_instruction:"This is the letter H. It sounds like huh, as in hat." },
+  { question_text:"Tap the letter I", options:["I","J","K"], answer:"I", voice_correct:"You got it! I is correct!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter I. It sounds like ih, as in itch." },
+  { question_text:"Tap the letter J", options:["I","J","L"], answer:"J", voice_correct:"Great job! That's J!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter J. It sounds like juh, as in jump." },
+  { question_text:"Tap the letter K", options:["K","L","M"], answer:"K", voice_correct:"Perfect! That's K!", voice_wrong:"Not quite, look carefully.", voice_instruction:"This is the letter K. It sounds like kuh, as in kite." },
+  { question_text:"Tap the letter L", options:["K","L","M"], answer:"L", voice_correct:"Awesome, keep going! That's L!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter L. It sounds like lll, as in lion." },
+  { question_text:"Tap the letter M", options:["L","M","N"], answer:"M", voice_correct:"You got it! That's M!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter M. It sounds like mmm, as in moon." },
+  { question_text:"Tap the letter N", options:["M","N","O"], answer:"N", voice_correct:"Great job! N is correct!", voice_wrong:"Not quite, look carefully.", voice_instruction:"This is the letter N. It sounds like nnn, as in nose." },
+  { question_text:"Tap the letter O", options:["N","O","P"], answer:"O", voice_correct:"Perfect! That's O!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter O. It sounds like oh, as in orange." },
+  { question_text:"Tap the letter P", options:["O","P","Q"], answer:"P", voice_correct:"Awesome, keep going! P is correct!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter P. It sounds like puh, as in pig." },
+  { question_text:"Tap the letter Q", options:["P","Q","R"], answer:"Q", voice_correct:"You got it! That's Q!", voice_wrong:"Not quite, look carefully.", voice_instruction:"This is the letter Q. It sounds like kwuh, as in queen." },
+  { question_text:"Tap the letter R", options:["Q","R","S"], answer:"R", voice_correct:"Great job! R is right!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter R. It sounds like rrr, as in rain." },
+  { question_text:"Tap the letter S", options:["R","S","T"], answer:"S", voice_correct:"Perfect! That's S!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter S. It sounds like sss, as in sun." },
+  { question_text:"Tap the letter T", options:["S","T","U"], answer:"T", voice_correct:"Awesome, keep going! That's T!", voice_wrong:"Not quite, look carefully.", voice_instruction:"This is the letter T. It sounds like tuh, as in tiger." },
+  { question_text:"Tap the letter U", options:["T","U","V"], answer:"U", voice_correct:"You got it! U is correct!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter U. It sounds like uh, as in up." },
+  { question_text:"Tap the letter V", options:["U","V","W"], answer:"V", voice_correct:"Great job! That's V!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter V. It sounds like vvv, as in van." },
+  { question_text:"Tap the letter W", options:["V","W","X"], answer:"W", voice_correct:"Perfect! W is right!", voice_wrong:"Not quite, look carefully.", voice_instruction:"This is the letter W. It sounds like wuh, as in water." },
+  { question_text:"Tap the letter X", options:["W","X","Y"], answer:"X", voice_correct:"⭐ You did it! That's X!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter X. It sounds like ks, as in fox." },
+  { question_text:"Tap the letter Y", options:["X","Y","Z"], answer:"Y", voice_correct:"Awesome, keep going! That's Y!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter Y. It sounds like yuh, as in yellow." },
+  { question_text:"Tap the letter Z", options:["X","Y","Z"], answer:"Z", voice_correct:"⭐ You did it! That's Z — you know the whole alphabet!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter Z. It sounds like zzz, as in zebra." }
 ];
 
 function speakText(text) {
@@ -4226,6 +4245,16 @@ function startSmartSession(title, icon, questions, onComplete) {
     qtxt.textContent = q.q;
     body.appendChild(qtxt);
 
+    // Read to Me for PreK, K, Grade 1
+    if (activeGrade==='PreK'||activeGrade==='K'||activeGrade==='1') {
+      var readBtn = document.createElement('button');
+      readBtn.innerHTML = '🔈 Read to Me';
+      readBtn.style.cssText = 'display:block;margin:0 auto 10px;padding:7px 18px;border-radius:30px;border:none;background:linear-gradient(135deg,var(--sky),var(--mint));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.82rem;cursor:pointer;';
+      readBtn.onclick = function() { speakText(q.q); };
+      body.appendChild(readBtn);
+      setTimeout(function() { speakText(q.q); }, 600);
+    }
+
     // Picture if present
     if (q.pic) {
       var pic = document.createElement('div');
@@ -4443,19 +4472,21 @@ async function startSubject(name) {
       ttsRow.appendChild(ttsBtn);
       body.appendChild(ttsRow);
       // Auto-read for PreK
-      if(activeGrade==='PreK'){
+      if(activeGrade==='PreK'||activeGrade==='K'||activeGrade==='1'){
         setTimeout(function(){
           window.speechSynthesis.cancel();
-          var u=new SpeechSynthesisUtterance(q.q);
-          u.rate=0.85;u.pitch=1.05;u.volume=1;
           var voices=window.speechSynthesis.getVoices();
-          var prefer=['Samantha','Karen','Daniel','Google UK English Female','Microsoft Zira','Alex'];
+          if(!voices.length){window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.onvoiceschanged=null;ttsBtn.click();};return;}
+          var u=new SpeechSynthesisUtterance(q.q);
+          u.rate=0.82;u.pitch=1.0;u.volume=1;
+          var prefer=['Samantha','Karen','Moira','Google US English','Microsoft Aria Online (Natural)','Daniel','Alex'];
           var pick=null;
           for(var vi=0;vi<prefer.length;vi++){pick=voices.find(function(v){return v.name===prefer[vi];});if(pick)break;}
+          if(!pick)pick=voices.find(function(v){return v.lang&&v.lang.startsWith('en')&&v.localService;});
           if(!pick)pick=voices.find(function(v){return v.lang&&v.lang.startsWith('en');});
           if(pick)u.voice=pick;
           window.speechSynthesis.speak(u);
-        },600);
+        },800);
       }
     }
 
@@ -4817,11 +4848,70 @@ function showLetterTracing(){
 // ══════════════════════════════════════════════════════
 //  BOOK READER (YouTube + Internet Archive)
 // ══════════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════════
+//  IN-APP YOUTUBE VIDEO PLAYER FOR READ-ALOUDS
+// ══════════════════════════════════════════════════════
+function openInAppVideo(title, videoId) {
+  var old = document.getElementById('inAppVideoOv');
+  if (old) old.remove();
+
+  var ov = document.createElement('div');
+  ov.id = 'inAppVideoOv';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#0A0A1A;display:flex;flex-direction:column;';
+
+  // Header
+  var hdr = document.createElement('div');
+  hdr.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#1A1A2E;flex-shrink:0;';
+  hdr.innerHTML = '<div style="font-family:Baloo 2,cursive;font-size:.95rem;font-weight:800;color:white;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:75%;">📖 ' + title + '</div>';
+  var closeBtn = document.createElement('button');
+  closeBtn.textContent = '✕ Close';
+  closeBtn.style.cssText = 'background:rgba(255,255,255,.15);border:none;color:white;border-radius:20px;padding:6px 14px;font-family:Nunito,sans-serif;font-weight:800;font-size:.8rem;cursor:pointer;flex-shrink:0;';
+  closeBtn.onclick = function() { ov.remove(); };
+  hdr.appendChild(closeBtn);
+  ov.appendChild(hdr);
+
+  // Video container
+  var videoWrap = document.createElement('div');
+  videoWrap.style.cssText = 'flex:1;position:relative;background:#000;display:flex;align-items:center;justify-content:center;';
+
+  // Use YT IFrame embed - works in PWA
+  var iframe = document.createElement('iframe');
+  iframe.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0&modestbranding=1&playsinline=1';
+  iframe.style.cssText = 'width:100%;height:100%;border:none;';
+  iframe.setAttribute('allowfullscreen', '');
+  iframe.setAttribute('allow', 'autoplay; fullscreen');
+  videoWrap.appendChild(iframe);
+  ov.appendChild(videoWrap);
+
+  // Footer
+  var ftr = document.createElement('div');
+  ftr.style.cssText = 'display:flex;gap:8px;padding:10px 16px;background:#1A1A2E;flex-shrink:0;';
+  var doneBtn = document.createElement('button');
+  doneBtn.textContent = '📖 I Read This! +10 Stars';
+  doneBtn.style.cssText = 'flex:1;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;border:none;border-radius:40px;padding:12px;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;';
+  doneBtn.onclick = async function() {
+    ov.remove();
+    try {
+      await upsertDailyActivity({minutes_reading:10});
+      await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:10});
+      sessionData.stars+=10;
+      var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;
+      toast('Great reading! +10 Stars ⭐');
+    } catch(e){}
+  };
+  ftr.appendChild(doneBtn);
+  ov.appendChild(ftr);
+  document.body.appendChild(ov);
+}
+
 function openBookReader(title, readAloudUrl) {
   var m=readAloudUrl&&readAloudUrl.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
   var vid=m?m[1]:null;
   var searchUrl='https://www.youtube.com/results?search_query='+encodeURIComponent(title+' read aloud children');
   var directUrl=vid?('https://www.youtube.com/watch?v='+vid):searchUrl;
+  // If we have a video ID, play it in-app using YT IFrame API
+  if (vid) { openInAppVideo(title, vid); return; }
   // Remove existing overlay if any
   var old=document.getElementById('bookOv');if(old)old.remove();
   var ov=document.createElement('div');ov.id='bookOv';
@@ -4920,13 +5010,62 @@ function openGDLBook(title, iaId) {
 
 function buildGDLLibrary(grade) {
   var BOOKS={
-    PreK:[{t:'The Tale of Peter Rabbit',ia:'thetaleofpeterrabb00pott',d:'Beatrix Potters mischievous little rabbit'},{t:'Goodnight Moon',ia:'goodnightmoon0000brow',d:'The classic cozy bedtime story'},{t:'The Very Hungry Caterpillar',ia:'veryhungrycaterpi00carl',d:'Count food with Eric Carles caterpillar'},{t:'Where the Wild Things Are',ia:'wherewildthingsar00send',d:'Max sails to where the wild things are'},{t:'Corduroy',ia:'corduroy00free',d:'A bear looking for his missing button'},{t:'The Snowy Day',ia:'snowyday00keat',d:'Peter has a wonderful adventure in the snow'}],
-    K:[{t:'Caps for Sale',ia:'capsforsale00esph',d:'A peddler and some very naughty monkeys'},{t:'Make Way for Ducklings',ia:'makewayforduckli00mcco',d:'A family of ducks finds a home in Boston'},{t:'Blueberries for Sal',ia:'blueberriesforsa00mcco',d:'Sal picks blueberries and meets some bears'},{t:'Curious George',ia:'curiousgeorge00reys',d:'A curious little monkey gets into trouble'},{t:'Harold and the Purple Crayon',ia:'haroldpurplecrayon00john',d:'Harold draws his way through adventures'},{t:'The Story of Ferdinand',ia:'storyofferdinand00leaf',d:'A bull who loves smelling flowers'}],
-    1:[{t:'Charlottes Web',ia:'charlotteswebwhit',d:'A pig and a spider become the best of friends'},{t:'Stuart Little',ia:'stuartlittle00whit',d:'A tiny mouse born to a human family'},{t:'James and the Giant Peach',ia:'jamesandgiantpeach',d:'James escapes inside a giant magical peach'},{t:'Fantastic Mr Fox',ia:'fantasticmrfox00dahl',d:'Mr Fox outsmarts three mean farmers'},{t:'The Boxcar Children',ia:'boxcarchildren00warn',d:'Four orphan children live in a boxcar'},{t:'Alice in Wonderland',ia:'alicesadventurei00carr',d:'Alice falls into a wonderfully strange world'}],
-    2:[{t:'Little Women',ia:'littlewomen00alco',d:'The March sisters growing up during the Civil War'},{t:'Black Beauty',ia:'blackbeauty00sewa',d:'A horse tells his own life story'},{t:'The Secret Garden',ia:'secretgarden00burn',d:'Mary discovers a hidden magical garden'},{t:'Treasure Island',ia:'treasureisland00stev',d:'Pirates buried treasure and adventure'},{t:'Wind in the Willows',ia:'windinthewillows00grah',d:'Mole Rat Badger and Toad have river adventures'},{t:'A Little Princess',ia:'littleprincess00burn',d:'Sara Crewe faces hardship with grace and courage'}],
-    3:[{t:'The Wizard of Oz',ia:'wonderfulwizardofo00baum',d:'Dorothy travels to the magical land of Oz'},{t:'The Jungle Book',ia:'junglebook00kipl',d:'Mowgli is raised by wolves in the jungle'},{t:'Robinson Crusoe',ia:'robinsoncrusoedani00defo',d:'Stranded alone on an island for years'},{t:'Adventures of Tom Sawyer',ia:'adventuresoftomsa00twai',d:'Tom Sawyer and Huck Finn have wild adventures'},{t:'Call of the Wild',ia:'callofwild00lond',d:'Buck the dog survives in the Alaskan wilderness'},{t:'Pollyanna',ia:'pollyanna00port',d:'Pollyanna finds something to be glad about every day'}],
-    4:[{t:'Twenty Thousand Leagues Under the Sea',ia:'twentythousandlea00vern',d:'Captain Nemos amazing undersea adventures'},{t:'Journey to the Center of the Earth',ia:'journeytocenterof00vern',d:'An expedition deep underground'},{t:'Around the World in 80 Days',ia:'aroundworldineigh00vern',d:'A race around the globe in 80 days'},{t:'The Three Musketeers',ia:'threemusketeers00duma',d:'All for one and one for all'},{t:'Kidnapped',ia:'kidnapped00stev',d:'David Balfour has Scottish adventures'},{t:'Little Men',ia:'littlemen00alco',d:'Life at Plumfield School with Jo March'}],
-    5:[{t:'The Count of Monte Cristo',ia:'countofmontecristo00duma',d:'Edmond Dantes seeks justice after imprisonment'},{t:'Gulliver s Travels',ia:'gulliverstravels00swif',d:'Gulliver travels to strange lands'},{t:'Frankenstein',ia:'frankenstein00shel',d:'The classic tale of creation gone wrong'},{t:'The Time Machine',ia:'timemachine00well',d:'A traveler journeys to the far future'},{t:'The Invisible Man',ia:'invisibleman00well',d:'A scientist makes himself invisible'},{t:'Jane Eyre',ia:'janeeyre00bron',d:'Jane Eyre finds love and independence'}]
+    PreK:[
+      {t:'The Tale of Peter Rabbit',ia:'petrabbit00pott',d:'Beatrix Potters mischievous little rabbit'},
+      {t:'Goodnight Moon',ia:'goodnightmoon00brow_0',d:'The classic cozy bedtime story'},
+      {t:'Where the Wild Things Are',ia:'where_wild_things_are_sendak',d:'Max sails to where the wild things are'},
+      {t:'The Snowy Day',ia:'snowyday00keat_0',d:'Peter has a wonderful adventure in the snow'},
+      {t:'Caps for Sale',ia:'capsforsale0000esph',d:'A peddler and some very naughty monkeys'},
+      {t:'Harold and the Purple Crayon',ia:'haroldpurplecray00john',d:'Harold draws his way through adventures'}
+    ],
+    K:[
+      {t:'Curious George',ia:'curiousgeorge00reys_0',d:'A curious little monkey gets into trouble'},
+      {t:'Make Way for Ducklings',ia:'makewayforduckli00mcco_0',d:'A family of ducks finds a home in Boston'},
+      {t:'The Story of Ferdinand',ia:'storyofferdinand00leaf_0',d:'A bull who loves smelling flowers'},
+      {t:'Blueberries for Sal',ia:'blueberriesforsa00mcco_0',d:'Sal picks blueberries and meets a bear'},
+      {t:'Mike Mulligan and His Steam Shovel',ia:'mikemulliganstea00burt',d:'Mike and his steam shovel dig their way to success'},
+      {t:'Little Red Riding Hood',ia:'littleredridingh00grim_2',d:'The classic fairy tale adventure'}
+    ],
+    1:[
+      {t:'Charlotte Web',ia:'charlottesweb00whit_1',d:'A pig and a spider become the best of friends'},
+      {t:'Alice in Wonderland',ia:'alicesadventures00carr_4',d:'Alice falls into a wonderfully strange world'},
+      {t:'The Jungle Book',ia:'junglebook00kipl_5',d:'Mowgli is raised by wolves in the jungle'},
+      {t:'Fantastic Mr Fox',ia:'fantasticmrfox00dahl_0',d:'Mr Fox outsmarts three mean farmers'},
+      {t:'The Lion the Witch and the Wardrobe',ia:'lionwitchwardrob00lewi',d:'Four children discover the magical land of Narnia'},
+      {t:'James and the Giant Peach',ia:'jamesandgiantpea00dahl_0',d:'James escapes inside a giant magical peach'}
+    ],
+    2:[
+      {t:'The Secret Garden',ia:'secretgarden00burn_4',d:'Mary discovers a hidden magical garden'},
+      {t:'Black Beauty',ia:'blackbeauty00sewa_9',d:'A horse tells his own life story'},
+      {t:'Treasure Island',ia:'treasureisland00stev_8',d:'Pirates buried treasure and adventure'},
+      {t:'Little Women',ia:'littlewomen00alco_14',d:'The March sisters growing up during the Civil War'},
+      {t:'Wind in the Willows',ia:'windinthewillows00grah_8',d:'Mole Rat Badger and Toad have river adventures'},
+      {t:'A Little Princess',ia:'littleprincess00burn_5',d:'Sara Crewe faces hardship with grace and courage'}
+    ],
+    3:[
+      {t:'The Wizard of Oz',ia:'wonderfulwizardoz00baum_3',d:'Dorothy travels to the magical land of Oz'},
+      {t:'Robinson Crusoe',ia:'robinsoncrusoe00defo_6',d:'Stranded alone on an island for years'},
+      {t:'Adventures of Tom Sawyer',ia:'adventuresoftoms00twai_4',d:'Tom Sawyer and Huck Finn have wild adventures'},
+      {t:'Call of the Wild',ia:'callofwild00lond_7',d:'Buck the dog survives in the Alaskan wilderness'},
+      {t:'Around the World in 80 Days',ia:'aroundworldin80d00vern_1',d:'A race around the globe in 80 days'},
+      {t:'Pollyanna',ia:'pollyanna00port_4',d:'Pollyanna finds something to be glad about every day'}
+    ],
+    4:[
+      {t:'Twenty Thousand Leagues Under the Sea',ia:'twentythousandlea00vern_3',d:'Captain Nemos amazing undersea adventures'},
+      {t:'The Three Musketeers',ia:'threemusketeers00duma_4',d:'All for one and one for all'},
+      {t:'Kidnapped',ia:'kidnapped00stev_6',d:'David Balfour has Scottish adventures'},
+      {t:'Journey to the Center of the Earth',ia:'journeytocenter00vern',d:'An expedition deep underground'},
+      {t:'Little Men',ia:'littlemen00alco_3',d:'Life at Plumfield School with Jo March'},
+      {t:'The Jungle Book',ia:'junglebook00kipl_3',d:'Mowgli raised by wolves in the jungle'}
+    ],
+    5:[
+      {t:'Frankenstein',ia:'frankenstein00shel_5',d:'The classic tale of creation gone wrong'},
+      {t:'The Time Machine',ia:'timemachine00well_3',d:'A traveler journeys to the far future'},
+      {t:'Jane Eyre',ia:'janeeyre00bron_5',d:'Jane Eyre finds love and independence'},
+      {t:'The Count of Monte Cristo',ia:'countofmontecris00duma_3',d:'Edmond Dantes seeks justice after imprisonment'},
+      {t:'The Invisible Man',ia:'invisibleman00well_3',d:'A scientist makes himself invisible'},
+      {t:'Gullivers Travels',ia:'gulliverstravels00swif_4',d:'Gulliver travels to strange lands'}
+    ]
   };
   var books=BOOKS[grade]||BOOKS[3];
   var wrap=document.createElement('div');wrap.style.cssText='margin-top:24px;';
