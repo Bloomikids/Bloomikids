@@ -1211,6 +1211,12 @@ const GRADE_DATA = {
       { emoji:'🏔', name:'Mountain', tip:'Stand up super tall like a big mountain!', secs:15, level:'Easy' },
       { emoji:'🙏', name:"Child's Pose", tip:'Curl up tiny like a little seed!', secs:20, level:'Easy' },
       { emoji:'🍼', name:'Happy Baby', tip:'Lie on your back, grab your feet and rock like a baby!', secs:20, level:'Easy' },
+      { emoji:'🐢', name:'Turtle', tip:'Sit cross-legged and fold forward like a turtle!', secs:20, level:'Easy' },
+      { emoji:'🦁', name:'Lion', tip:'Kneel, open your mouth wide and roar like a lion!', secs:15, level:'Easy' },
+      { emoji:'🌈', name:'Rainbow', tip:'Stand and arc your arms up high like a rainbow!', secs:20, level:'Easy' },
+      { emoji:'🐸', name:'Frog', tip:'Squat down low and jump like a frog!', secs:20, level:'Easy' },
+      { emoji:'🚀', name:'Rocket', tip:'Stand tall, arms up — blast off to space!', secs:15, level:'Easy' },
+      { emoji:'🌊', name:'Wave', tip:'Stand and wave your arms up and down like the ocean!', secs:20, level:'Easy' },
     ],
     books:[
       { title:'Pat the Bunny',                  author:'Dorothy Kunhardt', pages:14, read:14, emoji:'🐰', readAloud:'https://www.youtube.com/results?search_query=Pat%20the%20Bunny%20read%20aloud' },
@@ -1222,6 +1228,15 @@ const GRADE_DATA = {
       { title:'The Snowy Day',                   author:'E.J. Keats',       pages:40, read:0,  emoji:'❄', readAloud:'https://www.youtube.com/results?search_query=The%20Snowy%20Day%20read%20aloud' },
       { title:'Chicka Chicka Boom Boom',         author:'B. Martin Jr',     pages:40, read:0,  emoji:'🌴', readAloud:'https://www.youtube.com/results?search_query=Chicka%20Chicka%20Boom%20Boom%20read%20aloud' },
       { title:'Corduroy',                        author:'Don Freeman',      pages:32, read:32, emoji:'🐻', readAloud:'https://www.youtube.com/results?search_query=Corduroy%20read%20aloud' },
+      { title:'Where the Wild Things Are',       author:'M. Sendak',        pages:40, read:0,  emoji:'🦁', readAloud:'https://www.youtube.com/results?search_query=Where%20the%20Wild%20Things%20Are%20read%20aloud' },
+      { title:'Guess How Much I Love You',       author:'S. McBratney',     pages:32, read:0,  emoji:'🐰', readAloud:'https://www.youtube.com/results?search_query=Guess%20How%20Much%20I%20Love%20You%20read%20aloud' },
+      { title:'The Giving Tree',                 author:'S. Silverstein',   pages:64, read:0,  emoji:'🌳', readAloud:'https://www.youtube.com/results?search_query=The%20Giving%20Tree%20read%20aloud' },
+      { title:'If You Give a Mouse a Cookie',    author:'L. Numeroff',      pages:40, read:0,  emoji:'🍪', readAloud:'https://www.youtube.com/results?search_query=If%20You%20Give%20a%20Mouse%20a%20Cookie%20read%20aloud' },
+      { title:'Green Eggs and Ham',              author:'Dr. Seuss',        pages:62, read:0,  emoji:'🥚', readAloud:'https://www.youtube.com/results?search_query=Green%20Eggs%20and%20Ham%20read%20aloud' },
+      { title:'The Lorax',                       author:'Dr. Seuss',        pages:72, read:0,  emoji:'🌿', readAloud:'https://www.youtube.com/results?search_query=The%20Lorax%20read%20aloud' },
+      { title:'Dragons Love Tacos',              author:'A. Rubin',         pages:40, read:0,  emoji:'🐉', readAloud:'https://www.youtube.com/results?search_query=Dragons%20Love%20Tacos%20read%20aloud' },
+      { title:'Pete the Cat: I Love My White Shoes', author:'E. Litwin',   pages:40, read:0,  emoji:'👟', readAloud:'https://www.youtube.com/results?search_query=Pete%20the%20Cat%20read%20aloud' },
+      { title:'The Dot',                         author:'P. Reynolds',      pages:32, read:0,  emoji:'🔵', readAloud:'https://www.youtube.com/results?search_query=The%20Dot%20Peter%20Reynolds%20read%20aloud' },
     ],
     words:[
       { w:'Big',    d:'Very very large! Bigger than you! 🐘' },
@@ -2491,56 +2506,32 @@ function pickAvatar() {
 //  SELECT CHILD & APPLY GRADE
 // ══════════════════════════════════════════════════════
 
-// ══════════════════════════════════════════════════════
-//  MISSING CORE FUNCTIONS
-// ══════════════════════════════════════════════════════
 async function updateStreak() {
   try {
     if (!activeChild) return;
     const today = new Date().toISOString().split('T')[0];
-    const { data: acts } = await sb.from('daily_activity')
-      .select('activity_date')
-      .eq('child_id', activeChild.id)
-      .order('activity_date', { ascending: false })
-      .limit(30);
-    const dates = (acts || []).map(a => a.activity_date);
-    let streak = 0;
-    let check = new Date();
-    for (let i = 0; i < 30; i++) {
-      const d = check.toISOString().split('T')[0];
-      if (dates.includes(d)) { streak++; check.setDate(check.getDate() - 1); }
-      else if (i === 0) { break; }
-      else { break; }
-    }
-    sessionData.streak = streak;
-    const el = document.getElementById('readingStreak');
-    if (el) el.textContent = streak;
-    const el2 = document.getElementById('streakCount');
-    if (el2) el2.textContent = streak;
-  } catch(e) { console.log('updateStreak skipped:', e.message); }
+    const { data: acts } = await sb.from('daily_activity').select('activity_date').eq('child_id', activeChild.id).order('activity_date',{ascending:false}).limit(30);
+    const dates = (acts||[]).map(a=>a.activity_date);
+    let streak=0,check=new Date();
+    for(let i=0;i<30;i++){const d=check.toISOString().split('T')[0];if(dates.includes(d)){streak++;check.setDate(check.getDate()-1);}else{break;}}
+    sessionData.streak=streak;
+    const el=document.getElementById('readingStreak');if(el)el.textContent=streak;
+    const el2=document.getElementById('streakCount');if(el2)el2.textContent=streak;
+  } catch(e){console.log('updateStreak skipped:',e.message);}
 }
 
 async function loadDashboardStats() {
   try {
     if (!activeChild) return;
-    const today = new Date().toISOString().split('T')[0];
-    const { data: act } = await sb.from('daily_activity')
-      .select('*').eq('child_id', activeChild.id)
-      .eq('activity_date', today).single();
-    if (act) {
-      sessionData.tasks   = act.tasks_done || 0;
-      sessionData.minutes = (act.minutes_academic || 0) + (act.minutes_yoga || 0) + (act.minutes_reading || 0);
-    }
-    const { data: starRow } = await sb.from('children')
-      .select('stars').eq('id', activeChild.id).single();
-    if (starRow) sessionData.stars = starRow.stars || 0;
-    const tasksEl = document.getElementById('statTasks');
-    if (tasksEl) tasksEl.textContent = sessionData.tasks;
-    const minsEl = document.getElementById('statMinutes');
-    if (minsEl) minsEl.textContent = sessionData.minutes;
-    const starsEl = document.getElementById('statStars');
-    if (starsEl) starsEl.textContent = sessionData.stars;
-  } catch(e) { console.log('loadDashboardStats skipped:', e.message); }
+    const today=new Date().toISOString().split('T')[0];
+    const {data:act}=await sb.from('daily_activity').select('*').eq('child_id',activeChild.id).eq('activity_date',today).single();
+    if(act){sessionData.tasks=act.tasks_done||0;sessionData.minutes=(act.minutes_academic||0)+(act.minutes_yoga||0)+(act.minutes_reading||0);}
+    const {data:starRow}=await sb.from('children').select('stars').eq('id',activeChild.id).single();
+    if(starRow)sessionData.stars=starRow.stars||0;
+    const t=document.getElementById('statTasks');if(t)t.textContent=sessionData.tasks;
+    const m=document.getElementById('statMinutes');if(m)m.textContent=sessionData.minutes;
+    const s=document.getElementById('statStars');if(s)s.textContent=sessionData.stars;
+  } catch(e){console.log('loadDashboardStats skipped:',e.message);}
 }
 
 async function selectChild(child) {
@@ -2571,6 +2562,18 @@ async function selectChild(child) {
   // Grade banner
   document.getElementById('gradePill').textContent  = activeGrade;
   document.getElementById('gradeLabel').textContent = gradeContent.label;
+  // Show CC alignment note
+  var ccNote = document.getElementById('ccAlignNote');
+  if (!ccNote) {
+    var gradePillRow = document.getElementById('gradePill') && document.getElementById('gradePill').parentElement;
+    if (gradePillRow) {
+      ccNote = document.createElement('span');
+      ccNote.id = 'ccAlignNote';
+      ccNote.style.cssText = 'font-size:.6rem;font-weight:800;color:#8B6FE8;background:#EDE9FF;padding:2px 8px;border-radius:10px;margin-left:6px;';
+      ccNote.textContent = '✅ CC Aligned';
+      gradePillRow.appendChild(ccNote);
+    }
+  }
 
   // Word of day
   wIdx = 0;
@@ -2611,7 +2614,7 @@ function applyGradeUI() {
 function buildSubjectCards() {
   const container = document.getElementById('subjectCards');
   container.innerHTML = gradeContent.subjects.map(s=>`
-    <div class="card ${s.color}" onclick="startSubject('${s.title}')">
+    <div class="card ${s.color}" onclick="startSubject('${s.title}')" title="Common Core Aligned">
       <div class="card-icon">${s.icon}</div>
       <div class="card-title">${s.title}</div>
       <div class="card-desc">${s.desc}</div>
@@ -2786,13 +2789,13 @@ function renderQuestion() {
 }
 
 const feedbackMessages = {
-  PreK: { correct:['🎉 YAY YAY YAY! So smart!','⭐ WOW! You did it!','🌈 AMAZING! You\'re wonderful!','🎊 That\'s RIGHT! You\'re a star!'], wrong:['💛 Oops! Let\'s try again!','🤗 Almost! You\'re so close!','💪 Keep trying -- you\'ve got this!'] },
-  K:    { correct:['🎉 YAY! You got it!','⭐ AMAZING! You\'re so smart!','🌈 WOW! Brilliant!'],  wrong:['💛 Good try! Let\'s try again!','💪 Almost! You can do it!'] },
-  1:    { correct:['🎉 Fantastic! You got it!','⭐ Awesome work!','🌟 Super job!'],                wrong:['💛 Good try! Keep going!','💪 Almost there! Try again!'] },
-  2:    { correct:['🎉 Great job! That\'s right!','⭐ Well done!','✅ Correct! Nice work!'],       wrong:['💛 Not quite -- but keep trying!','💪 Good effort! Try again!'] },
-  3:    { correct:['🎉 Correct! Great work!','⭐ Excellent! +10 stars!','✅ Right answer!'],        wrong:['💪 Not quite! Review and try again!','📚 Good effort -- keep going!'] },
-  4:    { correct:['🎉 Correct! Well done!','⭐ Excellent reasoning! +10 stars!'],                wrong:['💪 Not quite! Think it through and try again.'] },
-  5:    { correct:['🎉 Correct! Excellent thinking!','⭐ Strong answer! +10 stars!'],             wrong:['💪 Not this time -- review your notes and try again.'] },
+  PreK: { correct:['Great job!','You got it!','Awesome, keep going!','Perfect!','⭐ You did it!'], wrong:['Almost! Try again.','Not quite, look carefully.','You can do it!'] },
+  K:    { correct:['Great job!','You got it!','Awesome, keep going!','Perfect!','⭐ You did it!'], wrong:['Almost! Try again.','Not quite, look carefully.','You can do it!'] },
+  1:    { correct:['Great job!','You got it!','Awesome, keep going!','Perfect!','⭐ You did it!'], wrong:['Almost! Try again.','Not quite, look carefully.','You can do it!'] },
+  2:    { correct:['Great job!','You got it!','Awesome, keep going!','Perfect!'],                  wrong:['Almost! Try again.','Not quite, look carefully.','You can do it!'] },
+  3:    { correct:['Great job!','You got it!','Perfect!','Awesome, keep going!'],                  wrong:['Almost! Try again.','Not quite, look carefully.','You can do it!'] },
+  4:    { correct:['Great job!','You got it!','Perfect!','Awesome, keep going!'],                  wrong:['Almost! Try again.','Not quite, look carefully.','You can do it!'] },
+  5:    { correct:['Great job!','You got it!','Perfect!','Awesome, keep going!'],                  wrong:['Almost! Try again.','Not quite, look carefully.','You can do it!'] },
 };
 
 async function checkAnswer(btn, correct) {
@@ -3886,11 +3889,461 @@ function closeSubjectQuiz(){
   showScreen('app');
 }
 
+
+// ══════════════════════════════════════════════════════
+//  ABC TIME LETTER QUIZ (PreK & K)
+// ══════════════════════════════════════════════════════
+const LETTER_QUESTIONS = [
+  { question_text:"Tap the letter A", options:["A","B","C"], answer:"A", voice_correct:"Great job! You found A!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter A. It makes the /a/ sound." },
+  { question_text:"Tap the letter B", options:["A","B","D"], answer:"B", voice_correct:"You got it! That's B!", voice_wrong:"Not quite, look carefully.", voice_instruction:"This is the letter B. It makes the /b/ sound." },
+  { question_text:"Tap the letter C", options:["C","D","E"], answer:"C", voice_correct:"Perfect! That's C!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter C. It makes the /c/ sound." },
+  { question_text:"Tap the letter D", options:["C","D","F"], answer:"D", voice_correct:"Awesome, keep going! That's D!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter D. It makes the /d/ sound." },
+  { question_text:"Tap the letter E", options:["E","F","G"], answer:"E", voice_correct:"You got it! E is right!", voice_wrong:"Not quite, look carefully.", voice_instruction:"This is the letter E. It makes the /e/ sound." },
+  { question_text:"Tap the letter F", options:["E","F","H"], answer:"F", voice_correct:"Great job! That's F!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter F. It makes the /f/ sound." },
+  { question_text:"Tap the letter G", options:["G","H","I"], answer:"G", voice_correct:"Perfect! G is correct!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter G. It makes the /g/ sound." },
+  { question_text:"Tap the letter H", options:["G","H","J"], answer:"H", voice_correct:"Awesome, keep going! That's H!", voice_wrong:"Not quite, look carefully.", voice_instruction:"This is the letter H. It makes the /h/ sound." },
+  { question_text:"Tap the letter I", options:["I","J","K"], answer:"I", voice_correct:"You got it! I is correct!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter I. It makes the /i/ sound." },
+  { question_text:"Tap the letter J", options:["I","J","L"], answer:"J", voice_correct:"Great job! That's J!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter J. It makes the /j/ sound." },
+  { question_text:"Tap the letter K", options:["K","L","M"], answer:"K", voice_correct:"Perfect! That's K!", voice_wrong:"Not quite, look carefully.", voice_instruction:"This is the letter K. It makes the /k/ sound." },
+  { question_text:"Tap the letter L", options:["K","L","M"], answer:"L", voice_correct:"Awesome, keep going! That's L!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter L. It makes the /l/ sound." },
+  { question_text:"Tap the letter M", options:["L","M","N"], answer:"M", voice_correct:"You got it! That's M!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter M. It makes the /m/ sound." },
+  { question_text:"Tap the letter N", options:["M","N","O"], answer:"N", voice_correct:"Great job! N is correct!", voice_wrong:"Not quite, look carefully.", voice_instruction:"This is the letter N. It makes the /n/ sound." },
+  { question_text:"Tap the letter O", options:["N","O","P"], answer:"O", voice_correct:"Perfect! That's O!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter O. It makes the /o/ sound." },
+  { question_text:"Tap the letter P", options:["O","P","Q"], answer:"P", voice_correct:"Awesome, keep going! P is correct!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter P. It makes the /p/ sound." },
+  { question_text:"Tap the letter Q", options:["P","Q","R"], answer:"Q", voice_correct:"You got it! That's Q!", voice_wrong:"Not quite, look carefully.", voice_instruction:"This is the letter Q. It makes the /q/ sound." },
+  { question_text:"Tap the letter R", options:["Q","R","S"], answer:"R", voice_correct:"Great job! R is right!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter R. It makes the /r/ sound." },
+  { question_text:"Tap the letter S", options:["R","S","T"], answer:"S", voice_correct:"Perfect! That's S!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter S. It makes the /s/ sound." },
+  { question_text:"Tap the letter T", options:["S","T","U"], answer:"T", voice_correct:"Awesome, keep going! That's T!", voice_wrong:"Not quite, look carefully.", voice_instruction:"This is the letter T. It makes the /t/ sound." },
+  { question_text:"Tap the letter U", options:["T","U","V"], answer:"U", voice_correct:"You got it! U is correct!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter U. It makes the /u/ sound." },
+  { question_text:"Tap the letter V", options:["U","V","W"], answer:"V", voice_correct:"Great job! That's V!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter V. It makes the /v/ sound." },
+  { question_text:"Tap the letter W", options:["V","W","X"], answer:"W", voice_correct:"Perfect! W is right!", voice_wrong:"Not quite, look carefully.", voice_instruction:"This is the letter W. It makes the /w/ sound." },
+  { question_text:"Tap the letter X", options:["W","X","Y"], answer:"X", voice_correct:"⭐ You did it! That's X!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter X. It makes the /x/ sound." },
+  { question_text:"Tap the letter Y", options:["X","Y","Z"], answer:"Y", voice_correct:"Awesome, keep going! That's Y!", voice_wrong:"Almost! Try again.", voice_instruction:"This is the letter Y. It makes the /y/ sound." },
+  { question_text:"Tap the letter Z", options:["X","Y","Z"], answer:"Z", voice_correct:"⭐ You did it! That's Z — you know the whole alphabet!", voice_wrong:"You can do it! Try again.", voice_instruction:"This is the letter Z. It makes the /z/ sound." }
+];
+
+function speakText(text) {
+  if (!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text);
+  u.rate = 0.82; u.pitch = 1.0; u.volume = 1;
+  var voices = window.speechSynthesis.getVoices();
+  var prefer = ['Samantha','Karen','Moira','Google US English','Microsoft Aria Online (Natural)','Microsoft Jenny Online (Natural)','Daniel','Alex'];
+  var pick = null;
+  for (var i = 0; i < prefer.length; i++) { pick = voices.find(function(v){return v.name===prefer[i];}); if(pick) break; }
+  if (!pick) pick = voices.find(function(v){return v.lang && v.lang.startsWith('en') && v.localService;});
+  if (!pick) pick = voices.find(function(v){return v.lang && v.lang.startsWith('en');});
+  if (pick) u.voice = pick;
+  window.speechSynthesis.speak(u);
+}
+
+function openLetterQuiz() {
+  // Pick 6 random questions
+  var pool = LETTER_QUESTIONS.slice().sort(function(){return Math.random()-.5;}).slice(0,6);
+  var qIdx = 0, score = 0, answered = false;
+
+  var ov = document.createElement('div');
+  ov.id = 'letterQuizOv';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#F4F1FF,#FFF0F8);overflow-y:auto;display:flex;flex-direction:column;';
+
+  function buildQ() {
+    if (qIdx >= pool.length) { showResult(); return; }
+    answered = false;
+    var q = pool[qIdx];
+    ov.innerHTML = '';
+
+    // Header
+    var hdr = document.createElement('div');
+    hdr.style.cssText = 'background:linear-gradient(135deg,#FF6B6B,#FFD166);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;';
+    hdr.innerHTML = '<div style="font-family:Baloo 2,cursive;font-size:1.1rem;font-weight:800;color:white;">🔤 ABC Time!</div>'
+      + '<div style="display:flex;align-items:center;gap:10px;">'
+      + '<div style="font-size:.85rem;font-weight:800;color:white;opacity:.9;">' + (qIdx+1) + ' of ' + pool.length + '</div>'
+      + '<button onclick="document.getElementById('letterQuizOv').remove();window.speechSynthesis&&window.speechSynthesis.cancel();" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:32px;height:32px;font-size:1rem;cursor:pointer;font-weight:800;">✕</button>'
+      + '</div>';
+    ov.appendChild(hdr);
+
+    // Progress bar
+    var prog = document.createElement('div');
+    prog.style.cssText = 'height:6px;background:rgba(255,107,107,.2);';
+    var fill = document.createElement('div');
+    fill.style.cssText = 'height:100%;background:linear-gradient(90deg,#FF6B6B,#FFD166);border-radius:3px;transition:width .4s;width:' + Math.round((qIdx/pool.length)*100) + '%;';
+    prog.appendChild(fill); ov.appendChild(prog);
+
+    // Body
+    var body = document.createElement('div');
+    body.style.cssText = 'flex:1;padding:24px 20px;display:flex;flex-direction:column;align-items:center;max-width:480px;margin:0 auto;width:100%;';
+
+    // Question text
+    var qtxt = document.createElement('div');
+    qtxt.style.cssText = 'font-family:Baloo 2,cursive;font-size:1.4rem;font-weight:800;color:#2D2D4E;text-align:center;margin-bottom:10px;';
+    qtxt.textContent = q.question_text;
+    body.appendChild(qtxt);
+
+    // Speak instruction button
+    var speakBtn = document.createElement('button');
+    speakBtn.innerHTML = '🔈 Hear it!';
+    speakBtn.style.cssText = 'padding:8px 20px;border-radius:30px;border:none;background:linear-gradient(135deg,#4ECDC4,#5ECDA0);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;margin-bottom:24px;';
+    speakBtn.onclick = function(){ speakText(q.voice_instruction); };
+    body.appendChild(speakBtn);
+
+    // Auto-speak instruction
+    setTimeout(function(){ speakText(q.voice_instruction); }, 400);
+
+    // Big letter options
+    var optsDiv = document.createElement('div');
+    optsDiv.style.cssText = 'display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:24px;width:100%;';
+
+    q.options.forEach(function(opt) {
+      var btn = document.createElement('button');
+      btn.textContent = opt;
+      btn.style.cssText = 'width:90px;height:90px;border-radius:20px;border:3px solid #E0DAFF;background:white;font-family:Baloo 2,cursive;font-size:2.8rem;font-weight:800;color:#2D2D4E;cursor:pointer;transition:all .15s;box-shadow:0 4px 16px rgba(45,45,78,.1);';
+      btn.onmouseover = function(){ if(!answered) this.style.transform='scale(1.08)'; };
+      btn.onmouseout  = function(){ if(!answered) this.style.transform='scale(1)'; };
+      btn.onclick = function() {
+        if (answered) return;
+        answered = true;
+        var correct = opt === q.answer;
+        if (correct) {
+          score++;
+          btn.style.background = 'linear-gradient(135deg,#5ECDA0,#4ECDC4)';
+          btn.style.color = 'white';
+          btn.style.border = '3px solid #5ECDA0';
+          btn.style.transform = 'scale(1.12)';
+          speakText(q.voice_correct);
+        } else {
+          btn.style.background = 'linear-gradient(135deg,#FF6B6B,#FF8E53)';
+          btn.style.color = 'white';
+          btn.style.border = '3px solid #FF6B6B';
+          // Highlight correct answer
+          optsDiv.querySelectorAll('button').forEach(function(b){
+            if (b.textContent === q.answer) {
+              b.style.background = 'linear-gradient(135deg,#5ECDA0,#4ECDC4)';
+              b.style.color = 'white';
+              b.style.border = '3px solid #5ECDA0';
+            }
+          });
+          speakText(q.voice_wrong);
+        }
+        // Feedback message
+        var fb = document.createElement('div');
+        fb.style.cssText = 'font-family:Baloo 2,cursive;font-size:1.2rem;font-weight:800;text-align:center;margin-bottom:16px;color:' + (correct?'#2A9970':'#FF6B6B') + ';animation:fadeIn .3s ease;';
+        fb.textContent = correct ? q.voice_correct : q.voice_wrong;
+        body.appendChild(fb);
+        // Next button
+        var nextBtn = document.createElement('button');
+        nextBtn.textContent = qIdx < pool.length-1 ? 'Next Letter →' : 'See My Stars! ⭐';
+        nextBtn.style.cssText = 'padding:14px 32px;border-radius:40px;border:none;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 16px rgba(139,111,232,.3);';
+        nextBtn.onclick = function(){ qIdx++; buildQ(); };
+        body.appendChild(nextBtn);
+      };
+      optsDiv.appendChild(btn);
+    });
+    body.appendChild(optsDiv);
+    ov.appendChild(body);
+  }
+
+  function showResult() {
+    window.speechSynthesis && window.speechSynthesis.cancel();
+    var stars = score * 5;
+    var msg = score === pool.length ? '🎉 Perfect score! You know your letters!' :
+              score >= pool.length * 0.7 ? '⭐ Great job! Keep practicing!' :
+              '💪 Good try! Let's practice more!';
+    ov.innerHTML = '<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;">'
+      + '<div style="font-size:4rem;margin-bottom:16px;">' + (score===pool.length?'🏆':'⭐') + '</div>'
+      + '<div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:#2D2D4E;margin-bottom:8px;">' + score + ' of ' + pool.length + ' correct!</div>'
+      + '<div style="font-family:Baloo 2,cursive;font-size:1.1rem;color:#8B6FE8;margin-bottom:8px;">+' + stars + ' Stars earned! 🌟</div>'
+      + '<div style="font-size:1rem;color:#666;margin-bottom:32px;line-height:1.5;">' + msg + '</div>'
+      + '<button onclick="openLetterQuiz()" style="padding:14px 32px;border-radius:40px;border:none;background:linear-gradient(135deg,#FF6B6B,#FFD166);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;margin-bottom:12px;display:block;width:220px;">Play Again! 🔤</button>'
+      + '<button onclick="document.getElementById('letterQuizOv').remove();" style="padding:12px 32px;border-radius:40px;border:none;background:linear-gradient(135deg,#5ECDA0,#4ECDC4);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:block;width:220px;">All Done! 👋</button>'
+      + '</div>';
+    // Save stars
+    try {
+      sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:stars}).catch(function(){});
+      upsertDailyActivity({tasks_done:1,minutes_academic:3}).catch(function(){});
+      sessionData.stars += stars;
+      var el = document.getElementById('statStars');
+      if(el) el.textContent = sessionData.stars;
+      toast('Great job! +' + stars + ' Stars! ⭐');
+    } catch(e){}
+    speakText(msg);
+  }
+
+  document.body.appendChild(ov);
+  buildQ();
+}
+
+
+// ══════════════════════════════════════════════════════
+//  SMART SESSION ENGINE
+//  - Tracks answered questions per child (localStorage)
+//  - Avoids repeats, re-queues wrong answers
+//  - Difficulty levels 1-3, advances after 3 correct in a row
+//  - Session timer + progress bar + celebration screen
+// ══════════════════════════════════════════════════════
+
+var sessionEngine = {
+  // Track per-child progress
+  getKey: function(childId) { return 'bloomi_progress_' + childId; },
+  
+  loadProgress: function(childId) {
+    try {
+      var raw = localStorage.getItem(this.getKey(childId));
+      return raw ? JSON.parse(raw) : { correct: {}, wrong: {}, difficulty: 1, streak: 0 };
+    } catch(e) { return { correct: {}, wrong: {}, difficulty: 1, streak: 0 }; }
+  },
+
+  saveProgress: function(childId, data) {
+    try { localStorage.setItem(this.getKey(childId), JSON.stringify(data)); } catch(e) {}
+  },
+
+  markCorrect: function(childId, qKey) {
+    var p = this.loadProgress(childId);
+    p.correct[qKey] = (p.correct[qKey] || 0) + 1;
+    delete p.wrong[qKey];
+    p.streak = (p.streak || 0) + 1;
+    // Level up after 3 correct in a row
+    if (p.streak >= 3 && p.difficulty < 3) { p.difficulty++; p.streak = 0; }
+    this.saveProgress(childId, p);
+  },
+
+  markWrong: function(childId, qKey) {
+    var p = this.loadProgress(childId);
+    p.wrong[qKey] = (p.wrong[qKey] || 0) + 1;
+    p.streak = 0;
+    this.saveProgress(childId, p);
+  },
+
+  // Build a smart session: avoid already-correct, re-queue wrong, match difficulty
+  buildSession: function(childId, allQuestions, sessionSize) {
+    var p = this.loadProgress(childId);
+    var difficulty = p.difficulty || 1;
+    
+    // Tag questions with difficulty if not already tagged
+    allQuestions = allQuestions.map(function(q, i) {
+      return Object.assign({}, q, { 
+        _key: q.q ? (q.q.substring(0,20) + i) : String(i),
+        _diff: q.difficulty || (i % 3) + 1
+      });
+    });
+
+    // Priority 1: Wrong answers come back first
+    var wrongOnes = allQuestions.filter(function(q) { return p.wrong[q._key]; });
+    
+    // Priority 2: Not yet answered at current difficulty
+    var notSeen = allQuestions.filter(function(q) {
+      return !p.correct[q._key] && !p.wrong[q._key] && q._diff <= difficulty;
+    });
+    
+    // Priority 3: Already correct but good for review (answered < 2 times)
+    var review = allQuestions.filter(function(q) {
+      return p.correct[q._key] && p.correct[q._key] < 2;
+    });
+
+    // Build session pool
+    var pool = [];
+    // Add wrong ones first (up to 2)
+    wrongOnes.sort(function(){return Math.random()-.5;}).slice(0,2).forEach(function(q){pool.push(q);});
+    // Fill with not-seen
+    notSeen.sort(function(){return Math.random()-.5;}).forEach(function(q){if(pool.length<sessionSize)pool.push(q);});
+    // Fill remainder with review
+    review.sort(function(){return Math.random()-.5;}).forEach(function(q){if(pool.length<sessionSize)pool.push(q);});
+    // If still short, add any question
+    allQuestions.sort(function(){return Math.random()-.5;}).forEach(function(q){if(pool.length<sessionSize)pool.push(q);});
+
+    return pool.slice(0, sessionSize);
+  }
+};
+
+// ══════════════════════════════════════════════════════
+//  SESSION WRAPPER - timer + progress + celebration
+// ══════════════════════════════════════════════════════
+function startSmartSession(title, icon, questions, onComplete) {
+  var SESSION_MINS = 5;
+  var sessionSize = 8;
+  var childId = activeChild ? activeChild.id : 'guest';
+  var pool = sessionEngine.buildSession(childId, questions, sessionSize);
+  var qIdx = 0, score = 0, wrongQueue = [];
+  var startTime = Date.now();
+  var timerInterval = null;
+
+  var ov = document.createElement('div');
+  ov.id = 'smartSessionOv';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9998;background:linear-gradient(135deg,#F4F1FF,#FFF0F8);display:flex;flex-direction:column;overflow:hidden;';
+
+  function buildHeader() {
+    var hdr = document.createElement('div');
+    hdr.id = 'sessionHdr';
+    hdr.style.cssText = 'background:linear-gradient(135deg,#8B6FE8,#C9B8FF);padding:14px 18px;flex-shrink:0;';
+    hdr.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">'
+      + '<div style="font-family:Baloo 2,cursive;font-size:1.05rem;font-weight:800;color:white;">' + icon + ' ' + title + '</div>'
+      + '<div style="display:flex;align-items:center;gap:10px;">'
+      + '<div id="sessionTimer" style="font-family:Baloo 2,cursive;font-size:.95rem;font-weight:800;color:white;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:20px;">⏱ 5:00</div>'
+      + '<button onclick="endSession(true)" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:30px;height:30px;font-size:.9rem;cursor:pointer;font-weight:800;">✕</button>'
+      + '</div></div>'
+      + '<div style="background:rgba(255,255,255,.25);border-radius:10px;height:8px;overflow:hidden;">'
+      + '<div id="sessionProgBar" style="height:100%;background:white;border-radius:10px;transition:width .4s;width:0%;"></div>'
+      + '</div>'
+      + '<div id="sessionProgTxt" style="font-size:.72rem;color:rgba(255,255,255,.85);font-weight:700;margin-top:4px;text-align:right;">Question 1 of ' + pool.length + '</div>';
+    return hdr;
+  }
+
+  function updateTimer() {
+    var elapsed = Math.floor((Date.now() - startTime) / 1000);
+    var remaining = Math.max(0, SESSION_MINS * 60 - elapsed);
+    var m = Math.floor(remaining / 60);
+    var s = remaining % 60;
+    var el = document.getElementById('sessionTimer');
+    if (el) el.textContent = '⏱ ' + m + ':' + (s < 10 ? '0' : '') + s;
+    if (remaining === 0) endSession(true);
+  }
+
+  function updateProgress() {
+    var pct = Math.round((qIdx / pool.length) * 100);
+    var bar = document.getElementById('sessionProgBar');
+    var txt = document.getElementById('sessionProgTxt');
+    if (bar) bar.style.width = pct + '%';
+    if (txt) txt.textContent = 'Question ' + (qIdx + 1) + ' of ' + pool.length;
+  }
+
+  function showQ() {
+    if (qIdx >= pool.length) { endSession(false); return; }
+    updateProgress();
+    var q = pool[qIdx];
+    var body = document.getElementById('sessionBody');
+    if (!body) return;
+    body.innerHTML = '';
+
+    var diff = q._diff || 1;
+    var diffLabel = diff === 1 ? '🟢 Starter' : diff === 2 ? '🟡 Getting Harder' : '🔴 Challenge';
+    var diffDiv = document.createElement('div');
+    diffDiv.style.cssText = 'font-size:.7rem;font-weight:800;color:#8B6FE8;text-align:center;margin-bottom:8px;';
+    diffDiv.textContent = diffLabel;
+    body.appendChild(diffDiv);
+
+    // Question text
+    var qtxt = document.createElement('div');
+    qtxt.style.cssText = 'font-family:Baloo 2,cursive;font-size:1.25rem;font-weight:800;color:#2D2D4E;text-align:center;margin-bottom:8px;line-height:1.3;';
+    qtxt.textContent = q.q;
+    body.appendChild(qtxt);
+
+    // Picture if present
+    if (q.pic) {
+      var pic = document.createElement('div');
+      pic.style.cssText = 'font-size:2rem;text-align:center;margin-bottom:12px;letter-spacing:4px;';
+      pic.textContent = q.pic;
+      body.appendChild(pic);
+    }
+
+    // Options
+    var optsDiv = document.createElement('div');
+    optsDiv.style.cssText = 'display:flex;flex-direction:column;gap:10px;width:100%;';
+    var answered = false;
+
+    q.opts.forEach(function(opt, i) {
+      var btn = document.createElement('button');
+      btn.textContent = opt;
+      btn.style.cssText = 'width:100%;padding:14px 18px;border-radius:16px;border:2.5px solid #E0DAFF;background:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;color:#2D2D4E;cursor:pointer;text-align:left;transition:all .15s;';
+      btn.onclick = function() {
+        if (answered) return;
+        answered = true;
+        var correct = i === q.answer;
+        var qKey = q._key;
+
+        if (correct) {
+          btn.style.background = 'linear-gradient(135deg,#5ECDA0,#4ECDC4)';
+          btn.style.color = 'white'; btn.style.borderColor = '#5ECDA0';
+          score++;
+          sessionEngine.markCorrect(childId, qKey);
+        } else {
+          btn.style.background = 'linear-gradient(135deg,#FF6B6B,#FF8E53)';
+          btn.style.color = 'white'; btn.style.borderColor = '#FF6B6B';
+          // Show correct answer
+          optsDiv.querySelectorAll('button')[q.answer].style.background = 'linear-gradient(135deg,#5ECDA0,#4ECDC4)';
+          optsDiv.querySelectorAll('button')[q.answer].style.color = 'white';
+          sessionEngine.markWrong(childId, qKey);
+          // Re-queue for end of session
+          wrongQueue.push(q);
+        }
+
+        // Feedback
+        var msgs = correct
+          ? ['Great job!','You got it!','Awesome, keep going!','Perfect!','⭐ You did it!']
+          : ['Almost! Try again.','Not quite, look carefully.','You can do it!'];
+        var fb = document.createElement('div');
+        fb.style.cssText = 'font-family:Baloo 2,cursive;font-size:1.1rem;font-weight:800;text-align:center;margin-top:14px;color:' + (correct?'#2A9970':'#FF6B6B') + ';';
+        fb.textContent = msgs[Math.floor(Math.random()*msgs.length)];
+        body.appendChild(fb);
+
+        var nextBtn = document.createElement('button');
+        nextBtn.textContent = qIdx < pool.length - 1 ? 'Next →' : wrongQueue.length > 0 ? 'Try the tricky ones! 💪' : 'Finish! 🎉';
+        nextBtn.style.cssText = 'margin-top:16px;width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';
+        nextBtn.onclick = function() {
+          qIdx++;
+          if (qIdx >= pool.length && wrongQueue.length > 0) {
+            // Add wrong answers back for a second try
+            pool = pool.concat(wrongQueue.splice(0, Math.min(3, wrongQueue.length)));
+          }
+          showQ();
+        };
+        body.appendChild(nextBtn);
+      };
+      optsDiv.appendChild(btn);
+    });
+    body.appendChild(optsDiv);
+  }
+
+  window.endSession = function(fromTimer) {
+    clearInterval(timerInterval);
+    var stars = score * 10;
+    var pct = pool.length > 0 ? Math.round((score/pool.length)*100) : 0;
+    var emoji = pct === 100 ? '🏆' : pct >= 70 ? '⭐' : '💪';
+    var msg = pct === 100 ? 'Perfect score! You are amazing!' : pct >= 70 ? 'Great job! Keep it up!' : 'Good effort! Practice makes perfect!';
+    
+    ov.innerHTML = '<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;background:linear-gradient(135deg,#F4F1FF,#FFF0F8);">'
+      + '<div style="font-size:5rem;margin-bottom:12px;animation:bounce .6s ease infinite alternate;">' + emoji + '</div>'
+      + '<div style="font-family:Baloo 2,cursive;font-size:2rem;font-weight:800;color:#2D2D4E;margin-bottom:6px;">' + score + ' of ' + pool.length + ' correct!</div>'
+      + '<div style="font-size:1.1rem;font-weight:700;color:#8B6FE8;margin-bottom:6px;">+' + stars + ' Stars! 🌟</div>'
+      + '<div style="font-size:.95rem;color:#666;margin-bottom:28px;line-height:1.6;">' + msg + '</div>'
+      + '<div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:280px;">'
+      + '<button onclick="ov.remove();startSmartSession('' + title + '','' + icon + '',arguments[0]||[])" style="padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#FF6B6B,#FFD166);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Play Again! 🔄</button>'
+      + '<button onclick="document.getElementById('smartSessionOv').remove();" style="padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#5ECDA0,#4ECDC4);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">All Done! 👋</button>'
+      + '</div></div>';
+
+    // Save stars + activity
+    try {
+      if(activeChild) {
+        sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:stars}).catch(function(){});
+        upsertDailyActivity({tasks_done:score,minutes_academic:SESSION_MINS}).catch(function(){});
+        sessionData.stars += stars;
+        var el = document.getElementById('statStars');
+        if(el) el.textContent = sessionData.stars;
+        if(stars>0) toast('Session complete! +' + stars + ' Stars ⭐');
+      }
+    } catch(e){}
+    if(onComplete) onComplete(score, pool.length);
+  };
+
+  // Build UI
+  ov.appendChild(buildHeader());
+  var body = document.createElement('div');
+  body.id = 'sessionBody';
+  body.style.cssText = 'flex:1;overflow-y:auto;padding:20px;max-width:520px;margin:0 auto;width:100%;display:flex;flex-direction:column;';
+  ov.appendChild(body);
+  document.body.appendChild(ov);
+
+  // Start timer
+  timerInterval = setInterval(updateTimer, 1000);
+  updateTimer();
+  showQ();
+}
+
 async function startSubject(name) {
   if(name==='Letter Tracing'){showLetterTracing();return;}
   var mathNames=['Math','Mathematics','Numbers','Counting','Numbers Fun'];
   var langNames=['Language Arts','Reading','Letters','ABC Time'];
   if(mathNames.indexOf(name)>=0){openMathGame(activeGrade);return;}
+  // PreK and K get the interactive letter quiz for ABC Time
+  if(name==='ABC Time' && (activeGrade==='PreK'||activeGrade==='K')){openLetterQuiz();return;}
   if(langNames.indexOf(name)>=0){openLangGame(activeGrade);return;}
 
   var allQ=gradeContent.questions||[];
@@ -3902,8 +4355,13 @@ async function startSubject(name) {
     return aliases.some(function(a){return qs===a||qs.includes(a)||a.includes(qs);});
   });
   var pool=filtered.length>=2?filtered:allQ;
-  // Best practice session lengths: PreK/K=5, G1-G2=8, G3-G5=10
-  var sessionLimit=activeGrade==='PreK'||activeGrade==='K'?5:activeGrade==='1'||activeGrade==='2'?8:10;
+  // Route through smart session engine
+  var sessionLimit = activeGrade==='PreK'||activeGrade==='K' ? 8 : activeGrade==='1'||activeGrade==='2' ? 10 : 12;
+  var ICONS2={Math:'🔢',Science:'🔬','Language Arts':'📝','Social Studies':'🌍','Community':'🏘️','Colors':'🎨','Shapes':'🔷','Animals':'🐾','Nature':'🌿','Letters':'🔤','My World':'🌍','Counting':'🔢','Numbers Fun':'🔢','ABC Time':'🔤','Colors & Art':'🎨','Animals & Nature':'🐾'};
+  var icon2 = ICONS2[name] || '📚';
+  startSmartSession(name, icon2, pool, null);
+  return;
+  var sessionLimit2 = sessionLimit;
   var questions=pool.slice().sort(function(){return Math.random()-.5;}).slice(0,sessionLimit);
   var qIdx=0,score=0;
   var ICONS={Math:'🔢',Science:'🔬','Language Arts':'📝','Social Studies':'🌍',
@@ -4527,6 +4985,101 @@ function buildOnlineLibrary(){
 // ══════════════════════════════════════════════════════
 //  PARENT DASHBOARD + STREAK NOTIFICATIONS
 // ══════════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════════
+//  COMMON CORE STANDARDS ALIGNMENT
+//  Full map: subject × grade → standards
+// ══════════════════════════════════════════════════════
+const COMMON_CORE = {
+  // PreK (not official CC but aligned to Head Start / early learning frameworks)
+  PreK: {
+    'Numbers':       { codes:['PK.CC.1','PK.CC.2'], desc:'Counting to 10, number recognition', domain:'Counting & Cardinality' },
+    'Counting':      { codes:['PK.CC.1','PK.CC.2'], desc:'Counting to 10, number recognition', domain:'Counting & Cardinality' },
+    'Colors':        { codes:['PK.MD.1'], desc:'Identify and describe colors and attributes', domain:'Measurement & Data' },
+    'Shapes':        { codes:['PK.G.1'], desc:'Identify and describe shapes', domain:'Geometry' },
+    'Animals':       { codes:['PK.SCI.1'], desc:'Identify living things and their habitats', domain:'Science' },
+    'Nature':        { codes:['PK.SCI.1'], desc:'Explore the natural world', domain:'Science' },
+    'My World':      { codes:['PK.SS.1'], desc:'Family, community and self', domain:'Social Studies' },
+    'Language Arts': { codes:['PK.RF.1','PK.L.1'], desc:'Letter recognition, phonological awareness', domain:'Reading Foundations' },
+    'Letters':       { codes:['PK.RF.1','PK.L.1'], desc:'Letter recognition, phonological awareness', domain:'Reading Foundations' },
+  },
+  K: {
+    'Numbers':       { codes:['K.CC.A.1','K.CC.A.2','K.CC.B.4'], desc:'Count to 100, count objects, understand number relationships', domain:'Counting & Cardinality' },
+    'Counting':      { codes:['K.CC.A.1','K.CC.B.4','K.CC.B.5'], desc:'Count objects, match numbers to quantities', domain:'Counting & Cardinality' },
+    'Math':          { codes:['K.OA.A.1','K.OA.A.2','K.NBT.A.1'], desc:'Addition, subtraction, place value', domain:'Operations & Algebraic Thinking' },
+    'Shapes':        { codes:['K.G.A.1','K.G.A.2','K.G.B.4'], desc:'Identify, describe and compare shapes', domain:'Geometry' },
+    'Colors':        { codes:['K.MD.A.1','K.MD.B.3'], desc:'Describe and classify objects', domain:'Measurement & Data' },
+    'Language Arts': { codes:['K.RF.1','K.RF.2','K.RF.3','K.L.1'], desc:'Print concepts, phonological awareness, phonics, language conventions', domain:'Reading Foundations' },
+    'Letters':       { codes:['K.RF.1','K.RF.2','K.RF.3'], desc:'Letter sounds, word recognition, phonics', domain:'Reading Foundations' },
+    'Science':       { codes:['K-ESS2-1','K-LS1-1'], desc:'Earth systems, living things', domain:'Science' },
+    'Social Studies':{ codes:['K.SS.1','K.SS.2'], desc:'Self, family, and community', domain:'Social Studies' },
+    'My World':      { codes:['K.SS.1','K.SS.2'], desc:'Community helpers, maps, and neighborhoods', domain:'Social Studies' },
+  },
+  1: {
+    'Math':          { codes:['1.OA.A.1','1.OA.C.6','1.NBT.B.2','1.NBT.C.4'], desc:'Add and subtract within 20, place value, two-digit addition', domain:'Operations & Algebraic Thinking' },
+    'Language Arts': { codes:['1.RF.2','1.RF.3','1.RF.4','1.RL.1','1.L.1'], desc:'Phonics, fluency, reading literature, language conventions', domain:'Reading & Language Arts' },
+    'Science':       { codes:['1-PS4-1','1-LS1-1','1-ESS1-1'], desc:'Light and sound, plant and animal needs, sun and stars', domain:'Science' },
+    'Social Studies':{ codes:['1.SS.1','1.SS.2','1.SS.3'], desc:'Community, maps, basic economics, history', domain:'Social Studies' },
+    'Shapes':        { codes:['1.G.A.1','1.G.A.2','1.G.A.3'], desc:'Compose shapes, partition circles and rectangles', domain:'Geometry' },
+  },
+  2: {
+    'Math':          { codes:['2.OA.A.1','2.OA.B.2','2.NBT.A.1','2.NBT.B.5','2.MD.A.1'], desc:'Add/subtract within 100, place value, measurement', domain:'Operations & Algebraic Thinking' },
+    'Language Arts': { codes:['2.RF.3','2.RF.4','2.RL.1','2.RI.1','2.L.1','2.L.2'], desc:'Phonics, fluency, reading comprehension, language conventions', domain:'Reading & Language Arts' },
+    'Science':       { codes:['2-PS1-1','2-LS4-1','2-ESS1-1'], desc:'Matter properties, biodiversity, Earth changes', domain:'Science' },
+    'Social Studies':{ codes:['2.SS.1','2.SS.2','2.SS.3'], desc:'Communities, government, geography, economics', domain:'Social Studies' },
+  },
+  3: {
+    'Math':          { codes:['3.OA.A.1','3.OA.C.7','3.NBT.A.2','3.NF.A.1','3.MD.A.1'], desc:'Multiplication, division, fractions, area, time', domain:'Operations & Algebraic Thinking' },
+    'Language Arts': { codes:['3.RF.4','3.RL.1','3.RI.1','3.W.1','3.L.1','3.L.2'], desc:'Reading fluency, literature, informational text, writing, grammar', domain:'Reading & Language Arts' },
+    'Science':       { codes:['3-LS1-1','3-LS3-1','3-PS2-1','3-ESS2-1'], desc:'Life cycles, heredity, forces, weather', domain:'Science' },
+    'Social Studies':{ codes:['3.SS.1','3.SS.2','3.SS.3'], desc:'Local community, state history, geography', domain:'Social Studies' },
+  },
+  4: {
+    'Math':          { codes:['4.OA.A.1','4.NBT.B.4','4.NF.A.1','4.NF.B.3','4.MD.A.1'], desc:'Multi-step problems, multi-digit arithmetic, fractions, measurement', domain:'Operations & Algebraic Thinking' },
+    'Language Arts': { codes:['4.RF.4','4.RL.1','4.RI.1','4.W.1','4.L.1','4.L.2'], desc:'Reading fluency, literature, informational text, writing, grammar', domain:'Reading & Language Arts' },
+    'Science':       { codes:['4-PS3-1','4-LS1-1','4-ESS1-1','4-ESS2-1'], desc:'Energy, plant/animal structures, Earth history, weathering', domain:'Science' },
+    'Social Studies':{ codes:['4.SS.1','4.SS.2','4.SS.3'], desc:'State history, regional geography, economics', domain:'Social Studies' },
+  },
+  5: {
+    'Math':          { codes:['5.OA.A.1','5.NBT.A.1','5.NF.A.1','5.MD.A.1','5.G.A.1'], desc:'Numerical expressions, decimals, fractions, volume, coordinate plane', domain:'Operations & Algebraic Thinking' },
+    'Language Arts': { codes:['5.RF.4','5.RL.1','5.RI.1','5.W.1','5.L.1','5.L.3'], desc:'Reading fluency, literature, informational text, argumentative writing, language', domain:'Reading & Language Arts' },
+    'Science':       { codes:['5-PS1-1','5-LS1-1','5-ESS1-1','5-ESS2-1'], desc:'Matter properties, ecosystems, Earth systems, space', domain:'Science' },
+    'Social Studies':{ codes:['5.SS.1','5.SS.2','5.SS.3'], desc:'US history, civics, geography, economics', domain:'Social Studies' },
+  },
+};
+
+// Map subject name → standard lookup key
+function getStandard(grade, subject) {
+  var gradeMap = COMMON_CORE[grade] || COMMON_CORE['K'];
+  var subj = (subject||'').trim();
+  // Direct match
+  if (gradeMap[subj]) return gradeMap[subj];
+  // Fuzzy match
+  var keys = Object.keys(gradeMap);
+  for (var i=0; i<keys.length; i++) {
+    if (subj.toLowerCase().includes(keys[i].toLowerCase()) || keys[i].toLowerCase().includes(subj.toLowerCase())) {
+      return gradeMap[keys[i]];
+    }
+  }
+  return null;
+}
+
+// Get all standards practiced by a child based on quiz_results subjects
+function getStandardsSummary(grade, quizResults) {
+  var seen = {};
+  quizResults.forEach(function(q) {
+    var std = getStandard(grade, q.subject);
+    if (std) {
+      std.codes.forEach(function(c) {
+        if (!seen[c]) seen[c] = { code:c, desc:std.desc, domain:std.domain, correct:0, total:0 };
+        seen[c].total++;
+        if (q.correct) seen[c].correct++;
+      });
+    }
+  });
+  return Object.values(seen).sort(function(a,b){ return b.total-a.total; });
+}
+
 async function openParentDashboard() {
   var ov=document.createElement('div');ov.id='parentDashOv';ov.style.cssText='position:fixed;inset:0;z-index:9999;background:#F4F1FF;overflow-y:auto;';
   var hdr=document.createElement('div');hdr.style.cssText='background:linear-gradient(135deg,#8B6FE8,#C9B8FF);padding:20px;color:white;position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;';
@@ -4559,7 +5112,60 @@ async function openParentDashboard() {
       var tb=document.createElement('button');var notifOn=localStorage.getItem('notif_'+child.id)==='true';
       tb.textContent=notifOn?'ON':'Enable';tb.style.cssText='padding:7px 14px;border-radius:30px;border:none;font-family:Nunito,sans-serif;font-weight:800;font-size:.78rem;cursor:pointer;background:'+(notifOn?'linear-gradient(135deg,var(--mint),var(--sky))':'#E8E4FF')+';color:'+(notifOn?'white':'#8B6FE8')+';';
       (function(cid,btn){btn.onclick=function(){enableStreakReminder(cid,child.name);btn.style.background='linear-gradient(135deg,var(--mint),var(--sky))';btn.style.color='white';btn.textContent='ON';};})(child.id,tb);
-      notifRow.appendChild(tb);card.appendChild(notifRow);content.appendChild(card);
+      notifRow.appendChild(tb);card.appendChild(notifRow);
+
+      // ── COMMON CORE STANDARDS SECTION ──
+      if (quizzes.length > 0) {
+        var stdSummary = getStandardsSummary(child.grade||'K', quizzes);
+        if (stdSummary.length > 0) {
+          var stdCard = document.createElement('div');
+          stdCard.style.cssText = 'background:white;border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:0 4px 16px rgba(45,45,78,.08);';
+          var stdTitle = '<div style="font-family:Baloo 2,cursive;font-size:.95rem;font-weight:800;color:#2D2D4E;margin-bottom:4px;">📋 Common Core Standards Practiced</div>'
+            + '<div style="font-size:.72rem;color:#888;margin-bottom:12px;">Based on ' + quizzes.length + ' quiz answers · ' + (child.grade||'K') + ' grade alignment</div>';
+          var stdRows = stdSummary.slice(0,6).map(function(s) {
+            var pct = s.total>0 ? Math.round(s.correct/s.total*100) : 0;
+            var barColor = pct>=80?'#5ECDA0':pct>=50?'#FFD166':'#FF6B6B';
+            return '<div style="margin-bottom:10px;">'
+              + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">'
+              + '<div><span style="background:#EDE9FF;color:#8B6FE8;font-size:.65rem;font-weight:800;padding:2px 7px;border-radius:8px;margin-right:6px;">' + s.code + '</span>'
+              + '<span style="font-size:.75rem;color:#2D2D4E;font-weight:700;">' + s.domain + '</span></div>'
+              + '<span style="font-size:.72rem;font-weight:800;color:' + barColor + ';">' + pct + '%</span>'
+              + '</div>'
+              + '<div style="font-size:.68rem;color:#888;margin-bottom:4px;">' + s.desc + '</div>'
+              + '<div style="height:5px;background:#F0EEFF;border-radius:10px;overflow:hidden;">'
+              + '<div style="height:100%;width:' + pct + '%;background:' + barColor + ';border-radius:10px;transition:width .5s;"></div>'
+              + '</div></div>';
+          }).join('');
+          // CC badge
+          var ccBadge = '<div style="margin-top:12px;padding:10px 14px;background:linear-gradient(135deg,#F0EEFF,#E8F8FF);border-radius:12px;border-left:3px solid #8B6FE8;">'
+            + '<div style="font-size:.72rem;font-weight:800;color:#8B6FE8;margin-bottom:2px;">✅ Common Core Aligned</div>'
+            + '<div style="font-size:.68rem;color:#666;line-height:1.4;">All BloomiKids activities are aligned to Common Core State Standards and Head Start Early Learning Outcomes Framework.</div>'
+            + '</div>';
+          stdCard.innerHTML = stdTitle + stdRows + ccBadge;
+          content.appendChild(card);
+          content.appendChild(stdCard);
+        } else { content.appendChild(card); }
+      } else {
+        // No quizzes yet — show standards roadmap for their grade
+        var roadCard = document.createElement('div');
+        roadCard.style.cssText = 'background:white;border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:0 4px 16px rgba(45,45,78,.08);';
+        var grade = child.grade||'K';
+        var gradeStds = COMMON_CORE[grade]||COMMON_CORE['K'];
+        var roadRows = Object.entries(gradeStds).slice(0,4).map(function(entry) {
+          var subj=entry[0], std=entry[1];
+          return '<div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #F4F1FF;">'
+            + '<div style="background:#EDE9FF;color:#8B6FE8;font-size:.65rem;font-weight:800;padding:3px 8px;border-radius:8px;white-space:nowrap;margin-top:1px;">' + std.codes[0] + '</div>'
+            + '<div><div style="font-size:.78rem;font-weight:800;color:#2D2D4E;">' + std.domain + '</div>'
+            + '<div style="font-size:.68rem;color:#888;">' + std.desc + '</div></div>'
+            + '</div>';
+        }).join('');
+        roadCard.innerHTML = '<div style="font-family:Baloo 2,cursive;font-size:.95rem;font-weight:800;color:#2D2D4E;margin-bottom:4px;">📋 ' + grade + ' Grade Standards Roadmap</div>'
+          + '<div style="font-size:.72rem;color:#888;margin-bottom:10px;">Standards ' + child.name + ' will practice in BloomiKids</div>'
+          + roadRows
+          + '<div style="margin-top:12px;padding:8px 12px;background:#F0EEFF;border-radius:10px;font-size:.68rem;color:#8B6FE8;font-weight:700;">✅ All activities aligned to Common Core State Standards</div>';
+        content.appendChild(card);
+        content.appendChild(roadCard);
+      }
     }
   }catch(e){content.innerHTML='<div style="padding:20px;text-align:center;color:#888;">Could not load data: '+e.message+'</div>';}
 }
