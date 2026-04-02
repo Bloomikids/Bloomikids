@@ -190,6 +190,28 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 @keyframes slideDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
 .subtitle { color:var(--muted); font-size:var(--font-body); margin-bottom:24px; font-weight:600; }
 
+.bloomi-mascot-row { display:flex; align-items:center; gap:14px; margin-bottom:20px; }
+.bloomi-mascot { width:90px; height:90px; background:url('bloom_spritesheet.png') -330px -40px; background-size:1000px auto; animation:bounce 2s ease infinite; cursor:pointer; user-select:none; flex-shrink:0; border-radius:50%; overflow:hidden; display:block; }
+.bloomi-mascot.correct { background-position:-40px -550px; }
+.bloomi-mascot.wrong { background-position:-250px -550px; }
+.bloomi-mascot.dance { background-position:-710px -100px; }
+.bloomi-streak-card { flex:1; background:linear-gradient(135deg,#FF6B6B,#FFD166); border-radius:18px; padding:12px 16px; color:white; }
+.bloomi-streak-num { font-family:'Baloo 2',cursive; font-size:2rem; font-weight:800; line-height:1; }
+.bloomi-streak-label { font-size:.72rem; font-weight:800; opacity:.9; margin-top:2px; }
+.bloomi-daily-mission { background:white; border-radius:18px; padding:12px 16px; margin-bottom:20px; box-shadow:0 4px 16px rgba(45,45,78,.08); border-left:4px solid var(--coral); }
+.bloomi-mission-title { font-family:'Baloo 2',cursive; font-size:.85rem; font-weight:800; color:#2D2D4E; margin-bottom:8px; }
+.bloomi-mission-item { display:flex; align-items:center; gap:8px; font-size:.8rem; color:#666; margin-bottom:4px; font-weight:600; }
+.bloomi-mission-item.done { color:var(--mint); text-decoration:line-through; }
+.bloomi-mission-check { width:18px; height:18px; border-radius:50%; border:2px solid #ddd; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:.6rem; }
+.bloomi-mission-item.done .bloomi-mission-check { background:var(--mint); border-color:var(--mint); color:white; }
+.bloom-level { display:flex; align-items:center; gap:8px; margin-bottom:16px; }
+.bloom-level-sprite { width:50px; height:70px; background:url('bloom_spritesheet.png') -555px -680px; background-size:1000px auto; flex-shrink:0; }
+.bloom-level-sprite.lvl2 { background-position:-645px -660px; width:50px; height:80px; }
+.bloom-level-sprite.lvl3 { background-position:-330px -40px; width:60px; height:70px; background-size:800px auto; }
+.bloom-level-info { flex:1; }
+.bloom-level-name { font-family:'Baloo 2',cursive; font-size:.85rem; font-weight:800; color:#2D2D4E; }
+.bloom-level-bar { height:6px; background:#F0EEFF; border-radius:10px; margin-top:4px; overflow:hidden; }
+.bloom-level-fill { height:100%; background:linear-gradient(90deg,var(--mint),var(--sky)); border-radius:10px; transition:width .5s; }
 .streak-banner { background:linear-gradient(135deg,#8B6FE8,#C9B8FF); border-radius:20px; padding:18px 28px; display:flex; align-items:center; gap:16px; margin-bottom:30px; color:white; box-shadow:0 8px 24px rgba(255,107,107,.3); }
 .streak-icon { font-size:2.5rem; animation:bounce 1.5s infinite; }
 @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
@@ -749,6 +771,32 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
 
   <!-- -- ACADEMICS -- -->
   <div class="panel active" id="panel-academics">
+    <!-- Bloomi Mascot + Streak -->
+    <div class="bloomi-mascot-row">
+      <div class="bloomi-mascot" id="bloomiMascot" onclick="bloomiDance()" title="Tap Bloom!"></div>
+      <div class="bloomi-streak-card">
+        <div class="bloomi-streak-num"><span id="bloomiStreakNum">0</span> 🔥</div>
+        <div class="bloomi-streak-label" id="bloomiStreakLabel">Day streak — keep going!</div>
+      </div>
+    </div>
+
+    <!-- Bloom Level -->
+    <div class="bloom-level" id="bloomLevel">
+      <div class="bloom-level-sprite" id="bloomLevelSprite"></div>
+      <div class="bloom-level-info">
+        <div class="bloom-level-name" id="bloomLevelName">Seedling</div>
+        <div class="bloom-level-bar"><div class="bloom-level-fill" id="bloomLevelBar" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- Daily Mission -->
+    <div class="bloomi-daily-mission" id="bloomiMission">
+      <div class="bloomi-mission-title">⭐ Today's Mission</div>
+      <div class="bloomi-mission-item" id="mission-quiz"><div class="bloomi-mission-check" id="mcheck-quiz"></div>Answer 3 questions</div>
+      <div class="bloomi-mission-item" id="mission-yoga"><div class="bloomi-mission-check" id="mcheck-yoga"></div>Try a yoga pose</div>
+      <div class="bloomi-mission-item" id="mission-book"><div class="bloomi-mission-check" id="mcheck-book"></div>Read a book</div>
+    </div>
+
     <div class="stats-row">
       <div class="stat-chip"><div class="stat-num num-mint" id="statTasks">0</div><div class="stat-lbl" id="labelTasks">Done!</div></div>
       <div class="stat-chip"><div class="stat-num num-coral" id="statAccuracy">--</div><div class="stat-lbl">💡 Correct!</div></div>
@@ -2526,6 +2574,133 @@ function pickAvatar() {
 //  SELECT CHILD & APPLY GRADE
 // ══════════════════════════════════════════════════════
 
+
+// ══════════════════════════════════════════════════════
+//  BLOOMI MASCOT + DAILY MISSION
+// ══════════════════════════════════════════════════════
+var bloomiMoods = ['🌸','🌺','🌼','🌻','💐','🌹'];
+var bloomiMoodIdx = 0;
+
+function bloomiDance() {
+  var m = document.getElementById('bloomiMascot');
+  if (!m) return;
+  m.classList.remove('correct','wrong');
+  m.classList.add('dance');
+  // Bounce through poses
+  var poses = ['-40px -550px', '-330px -40px', '-710px -100px', '-40px -550px', '-330px -40px'];
+  var i = 0;
+  var iv = setInterval(function() {
+    m.style.backgroundPosition = poses[i % poses.length]; i++;
+    if (i > poses.length * 2) {
+      clearInterval(iv);
+      m.classList.remove('dance');
+      m.style.backgroundPosition = '-330px -40px'; // default standing pose
+    }
+  }, 180);
+}
+
+function bloomiReact(mood) {
+  var m = document.getElementById('bloomiMascot');
+  if (!m) return;
+  m.classList.remove('correct','wrong','dance');
+  if (mood === 'correct') {
+    m.style.backgroundPosition = '-40px -550px'; // happy celebrating pose
+    m.classList.add('correct');
+  } else if (mood === 'wrong') {
+    m.style.backgroundPosition = '-250px -550px'; // thinking pose
+    m.classList.add('wrong');
+  } else if (mood === 'done') {
+    bloomiDance();
+    return;
+  }
+  setTimeout(function() {
+    m.classList.remove('correct','wrong');
+    m.style.backgroundPosition = '-330px -40px'; // back to default
+  }, 1800);
+}
+
+function updateBloomLevel(stars) {
+  var levels = [
+    {name:'Seedling 🌱', min:0,   max:50,  cls:''},
+    {name:'Sprout 🌿',   min:50,  max:150, cls:'lvl2'},
+    {name:'Bloomer 🌸',  min:150, max:300, cls:'lvl3'},
+    {name:'Super Bloom 🌺', min:300, max:500, cls:'lvl3'},
+    {name:'Master Bloomer 🌻', min:500, max:9999, cls:'lvl3'},
+  ];
+  var lvl = levels[0];
+  for (var i = levels.length-1; i >= 0; i--) {
+    if (stars >= levels[i].min) { lvl = levels[i]; break; }
+  }
+  var nameEl = document.getElementById('bloomLevelName');
+  var barEl = document.getElementById('bloomLevelBar');
+  var spriteEl = document.getElementById('bloomLevelSprite');
+  if (nameEl) nameEl.textContent = lvl.name;
+  if (barEl) {
+    var pct = lvl.max < 9999 ? Math.round(((stars - lvl.min)/(lvl.max - lvl.min))*100) : 100;
+    barEl.style.width = Math.min(100,pct) + '%';
+  }
+  if (spriteEl) {
+    spriteEl.className = 'bloom-level-sprite' + (lvl.cls ? ' ' + lvl.cls : '');
+  }
+}
+
+function updateBloomiStreak(streak) {
+  var numEl = document.getElementById('bloomiStreakNum');
+  var lblEl = document.getElementById('bloomiStreakLabel');
+  if (numEl) numEl.textContent = streak || 0;
+  if (lblEl) {
+    if (!streak || streak === 0) lblEl.textContent = 'Start your streak today!';
+    else if (streak === 1) lblEl.textContent = 'Day 1 — great start!';
+    else if (streak < 5) lblEl.textContent = streak + ' days — keep it up!';
+    else if (streak < 10) lblEl.textContent = streak + ' days — on fire! 🔥';
+    else lblEl.textContent = streak + ' days — AMAZING streak!';
+  }
+}
+
+function updateDailyMission() {
+  var today = new Date().toISOString().split('T')[0];
+  var key = 'bloomi_mission_' + (activeChild ? activeChild.id : 'guest') + '_' + today;
+  var mission = {};
+  try { mission = JSON.parse(localStorage.getItem(key) || '{}'); } catch(e) {}
+
+  ['quiz','yoga','book'].forEach(function(type) {
+    var item = document.getElementById('mission-' + type);
+    var check = document.getElementById('mcheck-' + type);
+    if (!item || !check) return;
+    if (mission[type]) {
+      item.classList.add('done');
+      check.textContent = '✓';
+    } else {
+      item.classList.remove('done');
+      check.textContent = '';
+    }
+  });
+
+  // Check if all done
+  if (mission.quiz && mission.yoga && mission.book) {
+    var m = document.getElementById('bloomiMission');
+    if (m && !m.dataset.celebrated) {
+      m.dataset.celebrated = '1';
+      m.style.borderLeftColor = '#5ECDA0';
+      m.querySelector('.bloomi-mission-title').textContent = '🎉 Mission Complete!';
+      bloomiDance();
+    }
+  }
+}
+
+function completeMission(type) {
+  var today = new Date().toISOString().split('T')[0];
+  var key = 'bloomi_mission_' + (activeChild ? activeChild.id : 'guest') + '_' + today;
+  var mission = {};
+  try { mission = JSON.parse(localStorage.getItem(key) || '{}'); } catch(e) {}
+  if (!mission[type]) {
+    mission[type] = true;
+    try { localStorage.setItem(key, JSON.stringify(mission)); } catch(e) {}
+    updateDailyMission();
+    bloomiReact('done');
+  }
+}
+
 async function updateStreak() {
   try {
     if (!activeChild) return;
@@ -2537,6 +2712,7 @@ async function updateStreak() {
     sessionData.streak=streak;
     const el=document.getElementById('readingStreak');if(el)el.textContent=streak;
     const el2=document.getElementById('streakCount');if(el2)el2.textContent=streak;
+    updateBloomiStreak(streak);
   } catch(e){console.log('updateStreak skipped:',e.message);}
 }
 
@@ -2550,6 +2726,7 @@ async function loadDashboardStats() {
     const t=document.getElementById('statTasks');if(t)t.textContent=sessionData.tasks;
     const m=document.getElementById('statMinutes');if(m)m.textContent=sessionData.minutes;
     const s=document.getElementById('statStars');if(s)s.textContent=sessionData.stars;
+    if(typeof updateBloomLevel==='function')updateBloomLevel(sessionData.stars||0);
   } catch(e){console.log('loadDashboardStats skipped:',e.message);}
 }
 
@@ -2603,6 +2780,12 @@ async function selectChild(child) {
   // Grade banner
   document.getElementById('gradePill').textContent  = activeGrade;
   document.getElementById('gradeLabel').textContent = gradeContent.label;
+  // Init Bloomi mascot
+  setTimeout(function() {
+    updateBloomiStreak(sessionData.streak || 0);
+    updateBloomLevel(sessionData.stars || 0);
+    updateDailyMission();
+  }, 500);
   // Show CC alignment note
   var ccNote = document.getElementById('ccAlignNote');
   if (!ccNote) {
@@ -2879,7 +3062,7 @@ async function checkAnswer(btn, correct) {
     document.getElementById('statTasks').textContent=sessionData.tasks;
     document.getElementById('statStars').textContent=sessionData.stars;
     setSyncState('');
-    if (correct) toast(`⭐ +${stars} stars!`);
+    if (correct) { toast(`+${stars} stars!`); bloomiReact('correct'); completeMission('quiz'); } else { bloomiReact('wrong'); }
   } catch(e) { setSyncState('error'); }
 }
 function nextQuestion() { qIdx++; renderQuestion(); }
@@ -2952,7 +3135,7 @@ async function saveYogaSession() {
     await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:15});
     sessionData.stars+=15; document.getElementById('statStars').textContent=sessionData.stars;
     setSyncState('');
-    toast(activeGrade==='PreK'||activeGrade==='K'||activeGrade==='1'?'🎉 Great move! +15 stars!':'🧘 Pose complete! +15 stars');
+    toast(activeGrade==='PreK'||activeGrade==='K'||activeGrade==='1'?'Great move! +15 stars!':'Pose complete! +15 stars'); completeMission('yoga');
   } catch(e) { setSyncState('error'); }
 }
 
@@ -3703,14 +3886,19 @@ function toggleMusic() {
 // YT API ready handler defined above
 
 function loadTrack(idx) {
-  if (!currentPlaylist.length) return;
-  const track = currentPlaylist[idx];
+  if (!currentPlaylist || !currentPlaylist.length) return;
+  currentTrackIdx = ((idx % currentPlaylist.length) + currentPlaylist.length) % currentPlaylist.length;
+  const track = currentPlaylist[currentTrackIdx];
+  if (!track) return;
   if (ytPlayer && ytReady) {
-    ytPlayer.loadVideoById({videoId: track.id, startSeconds: 0});
-    const vol = parseInt(document.getElementById('volumeSlider')?.value || 60);
-    ytPlayer.setVolume(vol);
-    musicPlaying = true;
-    document.getElementById('playPauseBtn').textContent = '⏸ Pause';
+    try {
+      ytPlayer.loadVideoById({videoId: track.id, startSeconds: 0});
+      const vol = parseInt(document.getElementById('volumeSlider')?.value || 60);
+      ytPlayer.setVolume(vol);
+      musicPlaying = true;
+      var ppBtn = document.getElementById('playPauseBtn');
+      if (ppBtn) ppBtn.textContent = '⏸ Pause';
+    } catch(e) { console.log('loadTrack error:', e); }
   }
   updateTrackDisplay();
 }
@@ -4537,8 +4725,8 @@ async function startSubject(name) {
           b.style.pointerEvents='none';
           if(bi===q.answer){b.style.background='#E8FBF3';b.style.borderColor='var(--mint)';b.style.color='#2A9970';}
         });
-        if(correct){btn.style.background='#E8FBF3';score++;toast('Correct! +5 Stars');}
-        else{btn.style.background='#FFF0EE';btn.style.borderColor='var(--coral)';btn.style.color='var(--coral)';toast('Not quite - see the green answer!');}
+        if(correct){btn.style.background='#E8FBF3';score++;toast('Correct! +5 Stars');if(typeof bloomiReact==='function')bloomiReact('correct');if(typeof showStarBurst==='function')showStarBurst(btn);if(typeof completeMission==='function')completeMission('quiz');}
+        else{btn.style.background='#FFF0EE';btn.style.borderColor='var(--coral)';btn.style.color='var(--coral)';toast('Not quite - see the green answer!');if(typeof bloomiReact==='function')bloomiReact('wrong');}
         if(q.explain){var ex=document.createElement('div');ex.style.cssText='margin-top:8px;padding:10px 12px;background:#F0FBF6;border-radius:12px;font-size:.82rem;color:#2A9970;border-left:3px solid var(--mint);line-height:1.4;';ex.innerHTML='Why: '+q.explain;optsDiv.appendChild(ex);}
         var nb=document.getElementById('sqNextBtn');
         if(nb){nb.disabled=false;nb.style.background='linear-gradient(135deg,var(--coral),var(--sunshine))';nb.style.color='white';nb.style.cursor='pointer';}
@@ -4979,8 +5167,13 @@ function openBookReader(title, readAloudUrl) {
     openInAppVideo(title, vid);
     return;
   }
-  // Fallback: show a friendly message - no external links
-  openStorylineFallback(title);
+  // Try Internet Archive as fallback (only if ID is truthy)
+  if (typeof IA_FALLBACKS !== 'undefined' && IA_FALLBACKS[title]) {
+    openGDLBook(title, IA_FALLBACKS[title]);
+    return;
+  }
+  // Always open Storyline Online homepage as final fallback - child can browse
+  openStorylineSearch(title);
 }
 
 const STORYLINE_SLUGS = {
@@ -4997,14 +5190,59 @@ const STORYLINE_SLUGS = {
   'Tops and Bottoms':'tops-and-bottoms',
   'Thank You Mr Falker':'thank-you-mr-falker',
   'Imogene Antlers':'imogene-s-antlers',
-  'Ruby Bridges':'through-my-eyes',
   'Knuffle Bunny':'knuffle-bunny',
   'Lilly Purple Plastic Purse':'lillys-purple-plastic-purse',
   'Carmela Full of Wishes':'carmela-full-of-wishes',
   'Brave Girl':'brave-girl',
-  'The Night I Followed the Dog':'the-night-i-followed-the-dog',
   'Pete the Cat':'pete-the-cat-i-love-my-white-shoes',
   'Pete the Cat: I Love My White Shoes':'pete-the-cat-i-love-my-white-shoes',
+  'The Snowy Day':'the-snowy-day',
+  'Ish':'ish',
+  'The Dot':'the-dot',
+  'Each Kindness':'each-kindness',
+  'Crown':'crown-an-ode-to-the-fresh-cut',
+  'Separate is Never Equal':'separate-is-never-equal',
+  'Fancy Nancy':'fancy-nancy',
+  'The Gruffalo':'the-gruffalo',
+  'Llama Llama Red Pajama':'llama-llama-red-pajama',
+  'The Very Hungry Caterpillar':'the-very-hungry-caterpillar',
+  'Where the Wild Things Are':'where-the-wild-things-are',
+  'Goodnight Moon':'goodnight-moon',
+  'Green Eggs and Ham':'green-eggs-and-ham',
+  'The Lorax':'the-lorax',
+  'Green Eggs and Ham':'green-eggs-and-ham',
+  'Pat the Bunny':'pat-the-bunny',
+  'Brown Bear Brown Bear':'brown-bear-brown-bear',
+  'Brown Bear, Brown Bear':'brown-bear-brown-bear',
+  'If You Give a Mouse a Cookie':'if-you-give-a-mouse-a-cookie',
+  'Guess How Much I Love You':'guess-how-much-i-love-you',
+  'The Giving Tree':'the-giving-tree',
+  'Llama Llama Red Pajama':'llama-llama-red-pajama',
+  'Duck & Goose':'duck-and-goose',
+  'The Very Hungry Caterpillar':'the-very-hungry-caterpillar',
+  'Goodnight Moon':'goodnight-moon',
+  'Where the Wild Things Are':'where-the-wild-things-are',
+  'Pete the Cat I Love My White Shoes':'pete-the-cat-i-love-my-white-shoes',
+  'The Dot':'the-dot',
+};
+
+// Internet Archive IDs for books not on Storyline
+const IA_FALLBACKS = {
+  'Pat the Bunny': 'patbunny00kund',
+  'Brown Bear, Brown Bear': 'brownbearbrown00mart',
+  'Duck & Goose': null,
+  'Guess How Much I Love You': null,
+  'The Giving Tree': null,
+  'If You Give a Mouse a Cookie': null,
+  'Charlotte\'s Web': 'charlotteswebwhit',
+  'Alice in Wonderland': 'alicesadventuresiu00carr',
+  'Treasure Island': 'treasureisland00stevgoog',
+  'Black Beauty': 'blackbeauty00sewarich',
+  'The Secret Garden': 'secretgarden00burn',
+  'The Wizard of Oz': 'wonderfulwizardofo00baum',
+  'Tom Sawyer': 'adventuresoftomsa00mark',
+  'Frankenstein': 'frankenstein00marygoog',
+  'Jane Eyre': 'janeeyre00charlgoog',
 };
 
 function getStorylineSlug(title) {
@@ -5060,7 +5298,7 @@ function openStorylineReader(title, slug) {
       await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:15});
       sessionData.stars+=15;
       var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;
-      toast('Great reading! +15 Stars');
+      toast('Great reading! +15 Stars'); completeMission('book');
     } catch(e){}
   };
   ftr.appendChild(doneBtn);
@@ -5068,20 +5306,47 @@ function openStorylineReader(title, slug) {
   document.body.appendChild(ov);
 }
 
-function openStorylineFallback(title) {
-  // No external link - show a gentle message
-  var old = document.getElementById('bookOv'); if (old) old.remove();
+function openStorylineSearch(title) {
+  // Open Storyline Online search in-app - child stays in app
+  var old = document.getElementById('storylineOv'); if (old) old.remove();
   var ov = document.createElement('div');
-  ov.id = 'bookOv';
-  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(10,10,26,.93);display:flex;align-items:center;justify-content:center;padding:20px;';
-  var card = document.createElement('div');
-  card.style.cssText = 'background:white;border-radius:28px;overflow:hidden;width:100%;max-width:360px;text-align:center;padding:32px 24px;';
-  card.innerHTML = '<div style="font-size:3rem;margin-bottom:12px;">📚</div>'
-    + '<div style="font-family:Baloo 2,cursive;font-size:1.1rem;font-weight:800;color:#2D2D4E;margin-bottom:8px;">' + title + '</div>'
-    + '<div style="font-size:.9rem;color:#888;line-height:1.6;margin-bottom:20px;">This book is in your reading library! Ask a parent or teacher to read it with you.</div>'
-    + '<button onclick="var e=document.getElementById(\'bookOv\');if(e)e.remove();" style="width:100%;padding:13px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;">Got it! Back to Books</button>';
-  ov.appendChild(card);
-  ov.onclick = function(e){if(e.target===ov)ov.remove();};
+  ov.id = 'storylineOv';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#1A0A2E;display:flex;flex-direction:column;';
+  var hdr = document.createElement('div');
+  hdr.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#2D1A4E;flex-shrink:0;';
+  hdr.innerHTML = '<div style="font-family:Baloo 2,cursive;font-size:.95rem;font-weight:800;color:white;max-width:75%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">📖 ' + title + '</div>';
+  var closeBtn = document.createElement('button');
+  closeBtn.textContent = '✕ Close';
+  closeBtn.style.cssText = 'background:rgba(255,255,255,.15);border:none;color:white;border-radius:20px;padding:6px 14px;font-family:Nunito,sans-serif;font-weight:800;font-size:.8rem;cursor:pointer;flex-shrink:0;';
+  closeBtn.onclick = function() { ov.remove(); };
+  hdr.appendChild(closeBtn);
+  ov.appendChild(hdr);
+  var body = document.createElement('div');
+  body.style.cssText = 'flex:1;position:relative;background:#000;min-height:0;';
+  var iframe = document.createElement('iframe');
+  // Load Storyline Online homepage - kids can browse all read-alouds
+  iframe.src = 'https://storylineonline.net/';
+  iframe.style.cssText = 'width:100%;height:100%;border:none;display:block;';
+  iframe.setAttribute('allowfullscreen','');
+  body.appendChild(iframe);
+  ov.appendChild(body);
+  var ftr = document.createElement('div');
+  ftr.style.cssText = 'display:flex;gap:8px;padding:10px 16px;background:#2D1A4E;flex-shrink:0;';
+  var doneBtn = document.createElement('button');
+  doneBtn.textContent = 'I Read This! +15 Stars';
+  doneBtn.style.cssText = 'flex:1;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;border:none;border-radius:40px;padding:12px;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;';
+  doneBtn.onclick = async function() {
+    ov.remove();
+    try {
+      await upsertDailyActivity({minutes_reading:15});
+      await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:15});
+      sessionData.stars+=15;
+      var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;
+      toast('Great reading! +15 Stars');
+    } catch(e){}
+  };
+  ftr.appendChild(doneBtn);
+  ov.appendChild(ftr);
   document.body.appendChild(ov);
 }
 
@@ -5476,12 +5741,31 @@ function showInstallButton(){
 }
 
 // Back navigation handler
-window.addEventListener('visibilitychange',function(){
-  if(document.visibilityState==='visible'&&currentUser&&activeChild){
-    var mainApp=document.getElementById('mainApp');var authEl=document.getElementById('authScreen');var childEl=document.getElementById('childPicker');
-    if(mainApp&&mainApp.style.display==='none'){showScreen('app');}
-    if(authEl&&!authEl.classList.contains('hidden')){showScreen('app');}
-    if(childEl&&!childEl.classList.contains('hidden')){showScreen('app');}
+window.addEventListener('visibilitychange', async function() {
+  if (document.visibilityState !== 'visible') return;
+  try {
+    // Re-validate Supabase session when app comes back into focus
+    var { data: sessionData2 } = await sb.auth.getSession();
+    if (!sessionData2 || !sessionData2.session) {
+      // Session expired - go back to auth
+      currentUser = null; activeChild = null;
+      showScreen('auth');
+      return;
+    }
+    // Session still valid - restore app state
+    if (currentUser && activeChild) {
+      var mainApp = document.getElementById('mainApp');
+      var appVisible = mainApp && mainApp.style.display !== 'none';
+      if (!appVisible) showScreen('app');
+    } else if (currentUser && !activeChild) {
+      showScreen('children');
+    }
+  } catch(e) {
+    // Network error - show app as-is, don't logout
+    if (currentUser && activeChild) {
+      var mainApp2 = document.getElementById('mainApp');
+      if (mainApp2 && mainApp2.style.display === 'none') showScreen('app');
+    }
   }
 });
 
