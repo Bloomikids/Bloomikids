@@ -181,6 +181,9 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .sync-dot.syncing { background:var(--sunshine); animation:pulse .8s infinite; }
 .sync-dot.error { background:var(--coral); }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+@keyframes starBurst { 0%{transform:scale(0) rotate(0deg);opacity:1} 60%{transform:scale(1.4) rotate(15deg);opacity:1} 100%{transform:scale(1) rotate(0deg);opacity:0} }
+@keyframes floatUp { 0%{transform:translateY(0) scale(1);opacity:1} 100%{transform:translateY(-80px) scale(1.5);opacity:0} }
+@keyframes correctPulse { 0%{transform:scale(1)} 30%{transform:scale(1.06)} 60%{transform:scale(.97)} 100%{transform:scale(1)} }
 
 .greeting { font-family:'Baloo 2',cursive; font-size:var(--font-big); font-weight:800; margin-bottom:6px; animation:slideDown .6s ease; line-height:1.2; color:var(--coral); }
 .greeting span { color:var(--coral); }
@@ -201,8 +204,8 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .tab-btn[data-tab="yoga"].active      { background:linear-gradient(135deg,#C9B8FF,#FF6B6B); }
 .tab-btn[data-tab="reading"].active   { background:linear-gradient(135deg,#FFD166,#FF6B6B); }
 
-.panel { display:none; animation:fadeIn .4s ease; }
-.panel.active { display:block; }
+.panel { display:none; }
+.panel.active { display:block; animation:fadeIn .35s ease; }
 @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 
 .section-title { font-family:'Baloo 2',cursive; font-size:var(--font-heading); font-weight:800; margin-bottom:18px; display:flex; align-items:center; gap:10px; }
@@ -643,6 +646,12 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
   <div class="auth-card">
     <div class="auth-logo" style="text-align:center;"><img src="logo.png" alt="BloomiKids" style="width:150px;height:150px;object-fit:cover;border-radius:50%;display:block;margin:0 auto 8px;"></div>
     <div class="auth-tagline">Learn 📚 &nbsp;·&nbsp; Breathe 🧘 &nbsp;·&nbsp; Read 📖</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:-16px 0 12px;">
+      <span style="font-size:.62rem;font-weight:800;background:#E8FBF3;color:#2A9970;padding:3px 9px;border-radius:20px;">No Ads</span>
+      <span style="font-size:.62rem;font-weight:800;background:#E8F4FF;color:#1A6FB0;padding:3px 9px;border-radius:20px;">No In-App Purchases</span>
+      <span style="font-size:.62rem;font-weight:800;background:#F3EFFF;color:#6B44CC;padding:3px 9px;border-radius:20px;">COPPA Safe</span>
+      <span style="font-size:.62rem;font-weight:800;background:#FFF8E0;color:#B8860B;padding:3px 9px;border-radius:20px;">CC Aligned</span>
+    </div>
     <div class="auth-tabs">
       <button class="auth-tab active" onclick="showAuthTab('login')">Sign In</button>
       <button class="auth-tab" onclick="showAuthTab('signup')">Sign Up</button>
@@ -2537,12 +2546,35 @@ async function loadDashboardStats() {
     const today=new Date().toISOString().split('T')[0];
     const {data:act}=await sb.from('daily_activity').select('*').eq('child_id',activeChild.id).eq('activity_date',today).single();
     if(act){sessionData.tasks=act.tasks_done||0;sessionData.minutes=(act.minutes_academic||0)+(act.minutes_yoga||0)+(act.minutes_reading||0);}
-    const {data:starRow}=await sb.from('children').select('stars').eq('id',activeChild.id).single();
-    if(starRow)sessionData.stars=starRow.stars||0;
+    // Stars are tracked in sessionData only - no stars column in children table
     const t=document.getElementById('statTasks');if(t)t.textContent=sessionData.tasks;
     const m=document.getElementById('statMinutes');if(m)m.textContent=sessionData.minutes;
     const s=document.getElementById('statStars');if(s)s.textContent=sessionData.stars;
   } catch(e){console.log('loadDashboardStats skipped:',e.message);}
+}
+
+
+// ══════════════════════════════════════════════════════
+//  STAR BURST ANIMATION on correct answers
+// ══════════════════════════════════════════════════════
+function showStarBurst(targetEl) {
+  var rect = targetEl ? targetEl.getBoundingClientRect() : {left: window.innerWidth/2, top: window.innerHeight/2, width:0, height:0};
+  var cx = rect.left + rect.width/2;
+  var cy = rect.top + rect.height/2;
+  var stars = ['⭐','🌟','✨','💫'];
+  for (var i = 0; i < 6; i++) {
+    var s = document.createElement('div');
+    var angle = (i / 6) * Math.PI * 2;
+    var dist = 50 + Math.random() * 40;
+    s.style.cssText = 'position:fixed;z-index:99999;font-size:' + (1.2 + Math.random()) + 'rem;pointer-events:none;'
+      + 'left:' + cx + 'px;top:' + cy + 'px;'
+      + 'transform:translate(-50%,-50%);'
+      + 'animation:floatUp .8s ease forwards;'
+      + 'animation-delay:' + (i * 0.08) + 's;';
+    s.textContent = stars[i % stars.length];
+    document.body.appendChild(s);
+    setTimeout(function(el){ el.remove(); }, 1200 + i * 80, s);
+  }
 }
 
 async function selectChild(child) {
@@ -2828,6 +2860,7 @@ async function checkAnswer(btn, correct) {
   if (answered) return;
   answered=true;
   btn.classList.add(correct?'correct':'wrong');
+  if (correct) showStarBurst(btn);
   const msgs = feedbackMessages[activeGrade]||feedbackMessages[5];
   const pool = correct?msgs.correct:msgs.wrong;
   const msg  = pool[Math.floor(Math.random()*pool.length)];
@@ -3865,7 +3898,12 @@ function switchTab(tab) {
     b.classList.remove('active');
     if (b.dataset.tab===tab) b.classList.add('active');
   });
-  document.getElementById('panel-'+tab).classList.add('active');
+  var newPanel = document.getElementById('panel-'+tab);
+  if (newPanel) {
+    newPanel.style.animation = 'none';
+    newPanel.classList.add('active');
+    requestAnimationFrame(function(){ newPanel.style.animation = ''; });
+  }
 }
 
 async function upsertDailyActivity(updates) {
@@ -4017,8 +4055,7 @@ function openLetterQuiz() {
     speakBtn.onclick = function(){ speakText(q.voice_instruction); };
     body.appendChild(speakBtn);
 
-    // Auto-speak instruction
-    setTimeout(function(){ speakText(q.voice_instruction); }, 400);
+    // Voice plays only on button tap - iOS blocks auto-speak
 
     // Big letter options
     var optsDiv = document.createElement('div');
@@ -4264,7 +4301,7 @@ function startSmartSession(title, icon, questions, onComplete) {
       readBtn.style.cssText = 'display:block;margin:0 auto 10px;padding:7px 18px;border-radius:30px;border:none;background:linear-gradient(135deg,var(--sky),var(--mint));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.82rem;cursor:pointer;';
       readBtn.onclick = function() { speakText(q.q); };
       body.appendChild(readBtn);
-      setTimeout(function() { speakText(q.q); }, 600);
+      // Auto-speak removed - iOS requires user tap
     }
 
     // Picture if present
@@ -4484,22 +4521,7 @@ async function startSubject(name) {
       ttsRow.appendChild(ttsBtn);
       body.appendChild(ttsRow);
       // Auto-read for PreK
-      if(activeGrade==='PreK'||activeGrade==='K'||activeGrade==='1'){
-        setTimeout(function(){
-          window.speechSynthesis.cancel();
-          var voices=window.speechSynthesis.getVoices();
-          if(!voices.length){window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.onvoiceschanged=null;ttsBtn.click();};return;}
-          var u=new SpeechSynthesisUtterance(q.q);
-          u.rate=0.82;u.pitch=1.0;u.volume=1;
-          var prefer=['Samantha','Karen','Moira','Google US English','Microsoft Aria Online (Natural)','Daniel','Alex'];
-          var pick=null;
-          for(var vi=0;vi<prefer.length;vi++){pick=voices.find(function(v){return v.name===prefer[vi];});if(pick)break;}
-          if(!pick)pick=voices.find(function(v){return v.lang&&v.lang.startsWith('en')&&v.localService;});
-          if(!pick)pick=voices.find(function(v){return v.lang&&v.lang.startsWith('en');});
-          if(pick)u.voice=pick;
-          window.speechSynthesis.speak(u);
-        },800);
-      }
+      // Auto-speak removed - iOS blocks it. User taps 'Read to Me' button.
     }
 
     var optsDiv=document.createElement('div');optsDiv.id='sqOpts'+qIdx;
@@ -4825,7 +4847,11 @@ function showLetterTracing(){
     var L=LETTERS[idx];
     var ov=document.createElement('div');ov.className='modal-overlay';ov.id='ltOv';
     var card=document.createElement('div');card.className='modal-card';card.style.cssText='max-width:360px;text-align:center;padding:20px;';
-    var num=document.createElement('div');num.style.cssText='font-size:.7rem;font-weight:800;letter-spacing:2px;color:var(--muted);margin-bottom:8px;';num.textContent='LETTER '+(idx+1)+' OF 26';card.appendChild(num);
+    // Mini BloomiKids header
+    var ltHdr=document.createElement('div');ltHdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;';
+    var ltLogo=document.createElement('div');ltLogo.style.cssText='font-family:Baloo 2,cursive;font-size:.9rem;font-weight:800;background:linear-gradient(135deg,var(--coral),var(--sunshine));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;';ltLogo.innerHTML='Bloomi<span style="-webkit-text-fill-color:var(--mint)">Kids</span>';
+    var num=document.createElement('div');num.style.cssText='font-size:.7rem;font-weight:800;letter-spacing:2px;color:var(--muted);';num.textContent='LETTER '+(idx+1)+' OF 26';
+    ltHdr.appendChild(ltLogo);ltHdr.appendChild(num);card.appendChild(ltHdr);
     var row=document.createElement('div');row.style.cssText='display:flex;align-items:center;justify-content:center;gap:20px;margin-bottom:6px;';
     var big=document.createElement('span');big.style.cssText='font-family:Baloo 2,cursive;font-size:6rem;font-weight:800;color:var(--coral);line-height:1;';big.textContent=L;
     var sml=document.createElement('span');sml.style.cssText='font-family:Baloo 2,cursive;font-size:5rem;font-weight:800;color:var(--mint);line-height:1;';sml.textContent=L.toLowerCase();
@@ -4848,7 +4874,7 @@ function showLetterTracing(){
       ctxC.fillRect(0,0,cv.width,cv.height);
       // Draw large dashed letter guide
       ctxC.save();
-      ctxC.font='bold 260px Baloo\ 2,Arial Black,sans-serif';
+      ctxC.font='bold 240px Arial Black,Arial,sans-serif';
       ctxC.textAlign='center';
       ctxC.textBaseline='middle';
       // Thick dashed black stroke like the reference image
