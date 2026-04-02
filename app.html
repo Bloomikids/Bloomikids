@@ -191,7 +191,7 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .subtitle { color:var(--muted); font-size:var(--font-body); margin-bottom:24px; font-weight:600; }
 
 .bloomi-mascot-row { display:flex; align-items:center; gap:14px; margin-bottom:20px; }
-.bloomi-mascot { width:90px; height:90px; background:url('bloom_spritesheet.png') -330px -40px; background-size:1000px auto; animation:bounce 2s ease infinite; cursor:pointer; user-select:none; flex-shrink:0; border-radius:50%; overflow:hidden; display:block; }
+.bloomi-mascot { width:90px; height:110px; background:url('bloom_spritesheet.png') -330px -40px no-repeat; background-size:1000px auto; animation:bounce 2s ease infinite; cursor:pointer; user-select:none; flex-shrink:0; display:block; }
 .bloomi-mascot.correct { background-position:-40px -550px; }
 .bloomi-mascot.wrong { background-position:-250px -550px; }
 .bloomi-mascot.dance { background-position:-710px -100px; }
@@ -204,10 +204,10 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .bloomi-mission-item.done { color:var(--mint); text-decoration:line-through; }
 .bloomi-mission-check { width:18px; height:18px; border-radius:50%; border:2px solid #ddd; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:.6rem; }
 .bloomi-mission-item.done .bloomi-mission-check { background:var(--mint); border-color:var(--mint); color:white; }
-.bloom-level { display:flex; align-items:center; gap:8px; margin-bottom:16px; }
-.bloom-level-sprite { width:50px; height:70px; background:url('bloom_spritesheet.png') -555px -680px; background-size:1000px auto; flex-shrink:0; }
-.bloom-level-sprite.lvl2 { background-position:-645px -660px; width:50px; height:80px; }
-.bloom-level-sprite.lvl3 { background-position:-330px -40px; width:60px; height:70px; background-size:800px auto; }
+.bloom-level { display:flex; align-items:center; gap:10px; margin-bottom:16px; background:white; border-radius:14px; padding:8px 12px; box-shadow:0 2px 8px rgba(45,45,78,.06); }
+.bloom-level-sprite { width:40px; height:50px; background:url('bloom_spritesheet.png') -555px -680px; background-size:1000px auto; flex-shrink:0; overflow:hidden; }
+.bloom-level-sprite.lvl2 { background-position:-645px -660px; }
+.bloom-level-sprite.lvl3 { background-position:-330px -40px; background-size:850px auto; width:44px; height:50px; }
 .bloom-level-info { flex:1; }
 .bloom-level-name { font-family:'Baloo 2',cursive; font-size:.85rem; font-weight:800; color:#2D2D4E; }
 .bloom-level-bar { height:6px; background:#F0EEFF; border-radius:10px; margin-top:4px; overflow:hidden; }
@@ -1283,24 +1283,24 @@ const GRADE_DATA = {
       { emoji:'🌟', name:'Dancer', tip:'Stand tall, hold one foot behind you and reach your arm forward!', secs:25, level:'Medium' },
     ],
     books:[
-      { title:'Pat the Bunny',                  author:'Dorothy Kunhardt', pages:14, read:14, emoji:'🐰', readAloud:'https://www.youtube.com/results?search_query=Pat%20the%20Bunny%20read%20aloud' },
-      { title:'The Very Hungry Caterpillar',     author:'Eric Carle',       pages:22, read:10, emoji:'🐛', readAloud:'https://www.youtube.com/results?search_query=The%20Very%20Hungry%20Caterpillar%20read%20aloud' },
-      { title:'Goodnight Moon',                  author:'M.W. Brown',       pages:32, read:32, emoji:'🌙', readAloud:'https://www.youtube.com/results?search_query=Goodnight%20Moon%20read%20aloud' },
-      { title:'Brown Bear, Brown Bear',          author:'B. Martin Jr',     pages:32, read:0,  emoji:'🐻', readAloud:'https://www.youtube.com/results?search_query=Brown%20Bear%2C%20Brown%20Bear%20read%20aloud' },
-      { title:'Duck & Goose',                    author:'Tad Hills',        pages:32, read:0,  emoji:'🦆', readAloud:'https://www.youtube.com/results?search_query=Duck%20%26%20Goose%20read%20aloud' },
-      { title:'Llama Llama Red Pajama',          author:'Anna Dewdney',     pages:40, read:20, emoji:'🦙', readAloud:'https://www.youtube.com/results?search_query=Llama%20Llama%20Red%20Pajama%20read%20aloud' },
-      { title:'The Snowy Day',                   author:'E.J. Keats',       pages:40, read:0,  emoji:'❄', readAloud:'https://www.youtube.com/results?search_query=The%20Snowy%20Day%20read%20aloud' },
-      { title:'Chicka Chicka Boom Boom',         author:'B. Martin Jr',     pages:40, read:0,  emoji:'🌴', readAloud:'https://www.youtube.com/results?search_query=Chicka%20Chicka%20Boom%20Boom%20read%20aloud' },
-      { title:'Corduroy',                        author:'Don Freeman',      pages:32, read:32, emoji:'🐻', readAloud:'https://www.youtube.com/results?search_query=Corduroy%20read%20aloud' },
-      { title:'Where the Wild Things Are',       author:'M. Sendak',        pages:40, read:0,  emoji:'🦁', readAloud:'https://www.youtube.com/results?search_query=Where%20the%20Wild%20Things%20Are%20read%20aloud' },
-      { title:'Guess How Much I Love You',       author:'S. McBratney',     pages:32, read:0,  emoji:'🐰', readAloud:'https://www.youtube.com/results?search_query=Guess%20How%20Much%20I%20Love%20You%20read%20aloud' },
-      { title:'The Giving Tree',                 author:'S. Silverstein',   pages:64, read:0,  emoji:'🌳', readAloud:'https://www.youtube.com/results?search_query=The%20Giving%20Tree%20read%20aloud' },
-      { title:'If You Give a Mouse a Cookie',    author:'L. Numeroff',      pages:40, read:0,  emoji:'🍪', readAloud:'https://www.youtube.com/results?search_query=If%20You%20Give%20a%20Mouse%20a%20Cookie%20read%20aloud' },
-      { title:'Green Eggs and Ham',              author:'Dr. Seuss',        pages:62, read:0,  emoji:'🥚', readAloud:'https://www.youtube.com/results?search_query=Green%20Eggs%20and%20Ham%20read%20aloud' },
-      { title:'The Lorax',                       author:'Dr. Seuss',        pages:72, read:0,  emoji:'🌿', readAloud:'https://www.youtube.com/results?search_query=The%20Lorax%20read%20aloud' },
-      { title:'Dragons Love Tacos',              author:'A. Rubin',         pages:40, read:0,  emoji:'🐉', readAloud:'https://www.youtube.com/results?search_query=Dragons%20Love%20Tacos%20read%20aloud' },
-      { title:'Pete the Cat: I Love My White Shoes', author:'E. Litwin',   pages:40, read:0,  emoji:'👟', readAloud:'https://www.youtube.com/results?search_query=Pete%20the%20Cat%20read%20aloud' },
-      { title:'The Dot',                         author:'P. Reynolds',      pages:32, read:0,  emoji:'🔵', readAloud:'https://www.youtube.com/results?search_query=The%20Dot%20Peter%20Reynolds%20read%20aloud' },
+      { title:'Dragons Love Tacos',              author:'A. Rubin',         pages:40, read:0,  emoji:'🐉' },
+      { title:'Chicka Chicka Boom Boom',         author:'B. Martin Jr',     pages:40, read:0,  emoji:'🌴' },
+      { title:'Corduroy',                        author:'Don Freeman',      pages:32, read:32, emoji:'🐻' },
+      { title:'The Snowy Day',                   author:'E.J. Keats',       pages:40, read:0,  emoji:'❄️' },
+      { title:'Pete the Cat: I Love My White Shoes', author:'E. Litwin',   pages:40, read:0,  emoji:'👟' },
+      { title:'The Dot',                         author:'P. Reynolds',      pages:32, read:0,  emoji:'🔵' },
+      { title:'Enemy Pie',                       author:'D. Munson',        pages:40, read:0,  emoji:'🥧' },
+      { title:'Harry the Dirty Dog',             author:'G. Zion',          pages:32, read:0,  emoji:'🐶' },
+      { title:'Knuffle Bunny',                   author:'M. Willems',       pages:36, read:0,  emoji:'🐰' },
+      { title:'The Rainbow Fish',                author:'M. Pfister',       pages:32, read:0,  emoji:'🐟' },
+      { title:'Last Stop on Market Street',      author:'M. de la Peña',    pages:32, read:0,  emoji:'🚌' },
+      { title:'Fancy Nancy',                     author:'J. OConnor',       pages:32, read:0,  emoji:'👑' },
+      { title:'The Wizard of Oz',                author:'L.F. Baum',        pages:120, read:0, emoji:'🌈' },
+      { title:'Alice in Wonderland',             author:'L. Carroll',       pages:96,  read:0, emoji:'🐇' },
+      { title:'The Jungle Book',                 author:'R. Kipling',       pages:100, read:0, emoji:'🐆' },
+      { title:'Pinocchio',                       author:'C. Collodi',       pages:80,  read:0, emoji:'🪆' },
+      { title:'Aesops Fables',                   author:'Aesop',            pages:60,  read:0, emoji:'🦁' },
+      { title:'The Wind in the Willows',         author:'K. Grahame',       pages:100, read:0, emoji:'🌿' },
     ],
     words:[
       { w:'Big',    d:'Very very large! Bigger than you! 🐘' },
@@ -5154,26 +5154,25 @@ function openInAppVideo(title, videoId) {
 }
 
 function openBookReader(title, readAloudUrl) {
-  // Check if we have a Storyline Online version first
-  var storylineSlug = getStorylineSlug(title);
-  if (storylineSlug) {
-    openStorylineReader(title, storylineSlug);
+  var t = (title || '').trim();
+
+  // 1. Check confirmed Storyline Online books
+  var slug = getStorylineSlug(t);
+  if (slug) {
+    openStorylineReader(t, slug);
     return;
   }
-  // Check for YouTube video ID
-  var m = readAloudUrl && readAloudUrl.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
-  var vid = m ? m[1] : null;
-  if (vid) {
-    openInAppVideo(title, vid);
+
+  // 2. Check Internet Archive public domain books
+  var iaId = (typeof IA_FALLBACKS !== 'undefined') ? IA_FALLBACKS[t] : null;
+  if (iaId) {
+    openGDLBook(t, iaId);
     return;
   }
-  // Try Internet Archive as fallback (only if ID is truthy)
-  if (typeof IA_FALLBACKS !== 'undefined' && IA_FALLBACKS[title]) {
-    openGDLBook(title, IA_FALLBACKS[title]);
-    return;
-  }
-  // Always open Storyline Online homepage as final fallback - child can browse
-  openStorylineSearch(title);
+
+  // 3. Any book not matched → open Storyline Online homepage in-app
+  // Child can browse all available read-alouds freely
+  openStorylineSearch(t);
 }
 
 const STORYLINE_SLUGS = {
@@ -5189,60 +5188,41 @@ const STORYLINE_SLUGS = {
   'The Rainbow Fish':'rainbow-fish',
   'Tops and Bottoms':'tops-and-bottoms',
   'Thank You Mr Falker':'thank-you-mr-falker',
-  'Imogene Antlers':'imogene-s-antlers',
   'Knuffle Bunny':'knuffle-bunny',
-  'Lilly Purple Plastic Purse':'lillys-purple-plastic-purse',
-  'Carmela Full of Wishes':'carmela-full-of-wishes',
   'Brave Girl':'brave-girl',
   'Pete the Cat':'pete-the-cat-i-love-my-white-shoes',
   'Pete the Cat: I Love My White Shoes':'pete-the-cat-i-love-my-white-shoes',
   'The Snowy Day':'the-snowy-day',
-  'Ish':'ish',
   'The Dot':'the-dot',
   'Each Kindness':'each-kindness',
+  'Fancy Nancy':'fancy-nancy',
+  'Harry the Dirty Dog':'harry-the-dirty-dog',
+  'Chester Way':'chesters-way',
+  'Ish':'ish',
   'Crown':'crown-an-ode-to-the-fresh-cut',
   'Separate is Never Equal':'separate-is-never-equal',
-  'Fancy Nancy':'fancy-nancy',
-  'The Gruffalo':'the-gruffalo',
-  'Llama Llama Red Pajama':'llama-llama-red-pajama',
-  'The Very Hungry Caterpillar':'the-very-hungry-caterpillar',
-  'Where the Wild Things Are':'where-the-wild-things-are',
-  'Goodnight Moon':'goodnight-moon',
-  'Green Eggs and Ham':'green-eggs-and-ham',
-  'The Lorax':'the-lorax',
-  'Green Eggs and Ham':'green-eggs-and-ham',
-  'Pat the Bunny':'pat-the-bunny',
-  'Brown Bear Brown Bear':'brown-bear-brown-bear',
-  'Brown Bear, Brown Bear':'brown-bear-brown-bear',
-  'If You Give a Mouse a Cookie':'if-you-give-a-mouse-a-cookie',
-  'Guess How Much I Love You':'guess-how-much-i-love-you',
-  'The Giving Tree':'the-giving-tree',
-  'Llama Llama Red Pajama':'llama-llama-red-pajama',
-  'Duck & Goose':'duck-and-goose',
-  'The Very Hungry Caterpillar':'the-very-hungry-caterpillar',
-  'Goodnight Moon':'goodnight-moon',
-  'Where the Wild Things Are':'where-the-wild-things-are',
-  'Pete the Cat I Love My White Shoes':'pete-the-cat-i-love-my-white-shoes',
-  'The Dot':'the-dot',
 };
 
-// Internet Archive IDs for books not on Storyline
 const IA_FALLBACKS = {
-  'Pat the Bunny': 'patbunny00kund',
-  'Brown Bear, Brown Bear': 'brownbearbrown00mart',
-  'Duck & Goose': null,
-  'Guess How Much I Love You': null,
-  'The Giving Tree': null,
-  'If You Give a Mouse a Cookie': null,
-  'Charlotte\'s Web': 'charlotteswebwhit',
-  'Alice in Wonderland': 'alicesadventuresiu00carr',
-  'Treasure Island': 'treasureisland00stevgoog',
-  'Black Beauty': 'blackbeauty00sewarich',
-  'The Secret Garden': 'secretgarden00burn',
-  'The Wizard of Oz': 'wonderfulwizardofo00baum',
-  'Tom Sawyer': 'adventuresoftomsa00mark',
-  'Frankenstein': 'frankenstein00marygoog',
-  'Jane Eyre': 'janeeyre00charlgoog',
+  'The Wizard of Oz':           'wonderfulwizardofo00baum',
+  'Alice in Wonderland':        'alicesadventuresiu00carr',
+  'Treasure Island':            'treasureisland00stevgoog',
+  'Black Beauty':               'blackbeauty00sewarich',
+  'The Secret Garden':          'secretgarden00burn',
+  'Frankenstein':               'frankenstein00marygoog',
+  'Jane Eyre':                  'janeeyre00charlgoog',
+  'The Jungle Book':            'junglebook00kipling',
+  'Pinocchio':                  'adventuresofpinoc00coll',
+  'Gulliver Travels':           'gulliverstravels00swif',
+  'The Time Machine':           'timemachine00well',
+  'The Invisible Man':          'invisibleman00well',
+  'Little Women':               'littlewomen00louirich',
+  'A Little Princess':          'littleprincess00burn_0',
+  'The Wind in the Willows':    'windinthewillows00grah',
+  'Pollyanna':                  'pollyanna00eleanor',
+  'Robinson Crusoe':            'robinsoncrusoe00defogoog',
+  'Around the World in 80 Days':'aroundworldineigh00verne',
+  'Aesops Fables':              'aesopsfables00aeso_5',
 };
 
 function getStorylineSlug(title) {
