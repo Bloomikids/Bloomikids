@@ -190,11 +190,11 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 @keyframes slideDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
 .subtitle { color:var(--muted); font-size:var(--font-body); margin-bottom:24px; font-weight:600; }
 
-.bloomi-mascot-row { display:flex; align-items:center; gap:14px; margin-bottom:20px; }
-.bloomi-mascot { width:90px; height:110px; background:url('bloom_spritesheet.png') -330px -40px no-repeat; background-size:1000px auto; animation:bounce 2s ease infinite; cursor:pointer; user-select:none; flex-shrink:0; display:block; }
-.bloomi-mascot.correct { background-position:-40px -550px; }
-.bloomi-mascot.wrong { background-position:-250px -550px; }
-.bloomi-mascot.dance { background-position:-710px -100px; }
+.bloomi-mascot-row { display:flex; align-items:flex-end; gap:14px; margin-bottom:20px; min-height:130px; }
+.bloomi-mascot { width:100px; height:130px; background:url('bloom_spritesheet.png') -310px -20px no-repeat; background-size:1100px auto; cursor:pointer; user-select:none; flex-shrink:0; display:block; image-rendering:auto; }
+.bloomi-mascot.correct { background-position:-20px -530px; }
+.bloomi-mascot.wrong { background-position:-230px -530px; }
+.bloomi-mascot.dance { background-position:-690px -80px; }
 .bloomi-streak-card { flex:1; background:linear-gradient(135deg,#FF6B6B,#FFD166); border-radius:18px; padding:12px 16px; color:white; }
 .bloomi-streak-num { font-family:'Baloo 2',cursive; font-size:2rem; font-weight:800; line-height:1; }
 .bloomi-streak-label { font-size:.72rem; font-weight:800; opacity:.9; margin-top:2px; }
@@ -204,10 +204,10 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .bloomi-mission-item.done { color:var(--mint); text-decoration:line-through; }
 .bloomi-mission-check { width:18px; height:18px; border-radius:50%; border:2px solid #ddd; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:.6rem; }
 .bloomi-mission-item.done .bloomi-mission-check { background:var(--mint); border-color:var(--mint); color:white; }
-.bloom-level { display:flex; align-items:center; gap:10px; margin-bottom:16px; background:white; border-radius:14px; padding:8px 12px; box-shadow:0 2px 8px rgba(45,45,78,.06); }
-.bloom-level-sprite { width:40px; height:50px; background:url('bloom_spritesheet.png') -555px -680px; background-size:1000px auto; flex-shrink:0; overflow:hidden; }
-.bloom-level-sprite.lvl2 { background-position:-645px -660px; }
-.bloom-level-sprite.lvl3 { background-position:-330px -40px; background-size:850px auto; width:44px; height:50px; }
+.bloom-level { display:flex; align-items:center; gap:10px; margin-bottom:16px; background:white; border-radius:14px; padding:8px 14px; box-shadow:0 2px 8px rgba(45,45,78,.06); }
+.bloom-level-sprite { width:45px; height:58px; background:url('bloom_spritesheet.png') -548px -672px no-repeat; background-size:1100px auto; flex-shrink:0; }
+.bloom-level-sprite.lvl2 { background-position:-638px -652px; }
+.bloom-level-sprite.lvl3 { background-position:-310px -20px; background-size:1100px auto; width:45px; height:58px; }
 .bloom-level-info { flex:1; }
 .bloom-level-name { font-family:'Baloo 2',cursive; font-size:.85rem; font-weight:800; color:#2D2D4E; }
 .bloom-level-bar { height:6px; background:#F0EEFF; border-radius:10px; margin-top:4px; overflow:hidden; }
@@ -1283,24 +1283,24 @@ const GRADE_DATA = {
       { emoji:'🌟', name:'Dancer', tip:'Stand tall, hold one foot behind you and reach your arm forward!', secs:25, level:'Medium' },
     ],
     books:[
-      { title:'Dragons Love Tacos',              author:'A. Rubin',         pages:40, read:0,  emoji:'🐉' },
-      { title:'Chicka Chicka Boom Boom',         author:'B. Martin Jr',     pages:40, read:0,  emoji:'🌴' },
-      { title:'Corduroy',                        author:'Don Freeman',      pages:32, read:32, emoji:'🐻' },
-      { title:'The Snowy Day',                   author:'E.J. Keats',       pages:40, read:0,  emoji:'❄️' },
-      { title:'Pete the Cat: I Love My White Shoes', author:'E. Litwin',   pages:40, read:0,  emoji:'👟' },
-      { title:'The Dot',                         author:'P. Reynolds',      pages:32, read:0,  emoji:'🔵' },
-      { title:'Enemy Pie',                       author:'D. Munson',        pages:40, read:0,  emoji:'🥧' },
-      { title:'Harry the Dirty Dog',             author:'G. Zion',          pages:32, read:0,  emoji:'🐶' },
-      { title:'Knuffle Bunny',                   author:'M. Willems',       pages:36, read:0,  emoji:'🐰' },
-      { title:'The Rainbow Fish',                author:'M. Pfister',       pages:32, read:0,  emoji:'🐟' },
-      { title:'Last Stop on Market Street',      author:'M. de la Peña',    pages:32, read:0,  emoji:'🚌' },
-      { title:'Fancy Nancy',                     author:'J. OConnor',       pages:32, read:0,  emoji:'👑' },
-      { title:'The Wizard of Oz',                author:'L.F. Baum',        pages:120, read:0, emoji:'🌈' },
-      { title:'Alice in Wonderland',             author:'L. Carroll',       pages:96,  read:0, emoji:'🐇' },
-      { title:'The Jungle Book',                 author:'R. Kipling',       pages:100, read:0, emoji:'🐆' },
-      { title:'Pinocchio',                       author:'C. Collodi',       pages:80,  read:0, emoji:'🪆' },
-      { title:'Aesops Fables',                   author:'Aesop',            pages:60,  read:0, emoji:'🦁' },
-      { title:'The Wind in the Willows',         author:'K. Grahame',       pages:100, read:0, emoji:'🌿' },
+      { title:"Dragons Love Tacos",              author:'A. Rubin',       pages:40,  read:0,  emoji:'🐉' },
+      { title:'Chicka Chicka Boom Boom',         author:'B. Martin Jr',   pages:40,  read:0,  emoji:'🌴' },
+      { title:'Corduroy',                        author:'Don Freeman',    pages:32,  read:0,  emoji:'🐻' },
+      { title:'The Snowy Day',                   author:'E.J. Keats',     pages:40,  read:0,  emoji:'❄️' },
+      { title:'Enemy Pie',                       author:'D. Munson',      pages:40,  read:0,  emoji:'🥧' },
+      { title:'Harry the Dirty Dog',             author:'G. Zion',        pages:32,  read:0,  emoji:'🐶' },
+      { title:'Knuffle Bunny',                   author:'M. Willems',     pages:36,  read:0,  emoji:'🐰' },
+      { title:'The Rainbow Fish',                author:'M. Pfister',     pages:32,  read:0,  emoji:'🐟' },
+      { title:'Last Stop on Market Street',      author:'M. de la Peña',  pages:32,  read:0,  emoji:'🚌' },
+      { title:'Fancy Nancy',                     author:'J. OConnor',     pages:32,  read:0,  emoji:'👑' },
+      { title:'Pete the Cat: I Love My White Shoes', author:'E. Litwin', pages:40,  read:0,  emoji:'👟' },
+      { title:'The Dot',                         author:'P. Reynolds',    pages:32,  read:0,  emoji:'🔵' },
+      { title:'Alice in Wonderland',             author:'L. Carroll',     pages:96,  read:0,  emoji:'🐇' },
+      { title:'The Wizard of Oz',                author:'L.F. Baum',      pages:120, read:0,  emoji:'🌈' },
+      { title:'The Jungle Book',                 author:'R. Kipling',     pages:100, read:0,  emoji:'🐆' },
+      { title:'Pinocchio',                       author:'C. Collodi',     pages:80,  read:0,  emoji:'🪆' },
+      { title:'Aesops Fables',                   author:'Aesop',          pages:60,  read:0,  emoji:'🦁' },
+      { title:'The Wind in the Willows',         author:'K. Grahame',     pages:100, read:0,  emoji:'🌿' },
     ],
     words:[
       { w:'Big',    d:'Very very large! Bigger than you! 🐘' },
@@ -1563,15 +1563,18 @@ const GRADE_DATA = {
       { emoji:'🍼', name:'Happy Baby', tip:'Lie on your back, grab your feet and smile!', secs:30, level:'Easy' },
     ],
     books:[
-      { title:'The Very Hungry Caterpillar', author:'Eric Carle',   pages:22, read:22, emoji:'🐛', readAloud:'https://www.youtube.com/results?search_query=The%20Very%20Hungry%20Caterpillar%20read%20aloud' },
-      { title:'Where the Wild Things Are',   author:'M. Sendak',    pages:40, read:20, emoji:'🦁', readAloud:'https://www.youtube.com/results?search_query=Where%20the%20Wild%20Things%20Are%20read%20aloud' },
-      { title:'Goodnight Moon',              author:'M.W. Brown',   pages:32, read:32, emoji:'🌙', readAloud:'https://www.youtube.com/results?search_query=Goodnight%20Moon%20read%20aloud' },
-      { title:'The Snowy Day',               author:'E.J. Keats',   pages:40, read:10, emoji:'❄', readAloud:'https://www.youtube.com/results?search_query=The%20Snowy%20Day%20read%20aloud' },
-      { title:'Brown Bear, Brown Bear',      author:'B. Martin Jr', pages:32, read:0,  emoji:'🐻', readAloud:'https://www.youtube.com/results?search_query=Brown%20Bear%2C%20Brown%20Bear%20read%20aloud' },
-      { title:'If You Give a Mouse a Cookie',author:'L. Numeroff',  pages:40, read:40, emoji:'🍪', readAloud:'https://www.youtube.com/results?search_query=If%20You%20Give%20a%20Mouse%20a%20Cookie%20read%20aloud' },
-      { title:'Pete the Cat: I Love My White Shoes', author:'E. Litwin', pages:40, read:0, emoji:'👟', readAloud:'https://www.youtube.com/results?search_query=Pete%20the%20Cat%3A%20I%20Love%20My%20White%20Shoes%20read%20aloud' },
-      { title:'Dragons Love Tacos',           author:'A. Rubin',      pages:40, read:40, emoji:'🐉', readAloud:'https://www.youtube.com/results?search_query=Dragons%20Love%20Tacos%20read%20aloud' },
-      { title:'Dont Let the Pigeon Drive the Bus', author:'M. Willems', pages:40, read:0, emoji:'🐦', readAloud:'https://www.youtube.com/results?search_query=Dont%20Let%20the%20Pigeon%20Drive%20the%20Bus%20read%20aloud' },
+      { title:'Frog and Toad Together',          author:'A. Lobel',       pages:64,  read:0,  emoji:'🐸' },
+      { title:'Harry the Dirty Dog',             author:'G. Zion',        pages:32,  read:0,  emoji:'🐶' },
+      { title:'Fancy Nancy',                     author:'J. OConnor',     pages:32,  read:0,  emoji:'👑' },
+      { title:'Enemy Pie',                       author:'D. Munson',      pages:40,  read:0,  emoji:'🥧' },
+      { title:'The Rainbow Fish',                author:'M. Pfister',     pages:32,  read:0,  emoji:'🐟' },
+      { title:'The Dot',                         author:'P. Reynolds',    pages:32,  read:0,  emoji:'🔵' },
+      { title:'Ish',                             author:'P. Reynolds',    pages:32,  read:0,  emoji:'🎨' },
+      { title:'Dragons Love Tacos',              author:'A. Rubin',       pages:40,  read:0,  emoji:'🐉' },
+      { title:'Knuffle Bunny',                   author:'M. Willems',     pages:36,  read:0,  emoji:'🐰' },
+      { title:'Alice in Wonderland',             author:'L. Carroll',     pages:96,  read:0,  emoji:'🐇' },
+      { title:'The Wizard of Oz',                author:'L.F. Baum',      pages:120, read:0,  emoji:'🌈' },
+      { title:'The Wind in the Willows',         author:'K. Grahame',     pages:100, read:0,  emoji:'🌿' },
     ],
     words:[
       { w:'Happy',   d:'Feeling really good and smiley! 😊' },
@@ -1712,15 +1715,18 @@ const GRADE_DATA = {
       { emoji:'🐦', name:'Crow Pose', tip:'Squat down, place hands on ground, and try to balance!', secs:20, level:'Hard' },
     ],
     books:[
-      { title:'Green Eggs and Ham',    author:'Dr. Seuss',     pages:62,  read:62,  emoji:'🥚', readAloud:'https://www.youtube.com/results?search_query=Green%20Eggs%20and%20Ham%20read%20aloud' },
-      { title:'Elephant & Piggie',     author:'Mo Willems',    pages:64,  read:40,  emoji:'🐘', readAloud:'https://www.youtube.com/results?search_query=Elephant%20%26%20Piggie%20read%20aloud' },
-      { title:'Frog and Toad Together',author:'A. Lobel',      pages:64,  read:64,  emoji:'🐸', readAloud:'https://www.youtube.com/results?search_query=Frog%20and%20Toad%20Together%20read%20aloud' },
-      { title:'Fly Guy Presents: Bugs',author:'T. Arnold',     pages:48,  read:20,  emoji:'🐛', readAloud:'https://www.youtube.com/results?search_query=Fly%20Guy%20Presents%3A%20Bugs%20read%20aloud' },
-      { title:'Magic Tree House #1',   author:'M.P. Osborne',  pages:96,  read:0,   emoji:'🌳', readAloud:'https://www.youtube.com/results?search_query=Magic%20Tree%20House%20%231%20read%20aloud' },
-      { title:'Junie B. Jones',        author:'B. Park',       pages:72,  read:72,  emoji:'🎒', readAloud:'https://www.youtube.com/results?search_query=Junie%20B.%20Jones%20read%20aloud' },
-      { title:'Amelia Bedelia',         author:'P. Parish',     pages:64,  read:0,   emoji:'👒', readAloud:'https://www.youtube.com/results?search_query=Amelia%20Bedelia%20read%20aloud' },
-      { title:'Owl at Home',            author:'A. Lobel',      pages:64,  read:30,  emoji:'🦉', readAloud:'https://www.youtube.com/results?search_query=Owl%20at%20Home%20read%20aloud' },
-      { title:'The Boxcar Children #1', author:'G.C. Warner',   pages:160, read:0,   emoji:'🚂', readAloud:'https://www.youtube.com/results?search_query=The%20Boxcar%20Children%20%231%20read%20aloud' },
+      { title:'Frog and Toad Together',          author:'A. Lobel',       pages:64,  read:0,  emoji:'🐸' },
+      { title:'Each Kindness',                   author:'J. Woodson',     pages:32,  read:0,  emoji:'💙' },
+      { title:'The Recess Queen',                author:'A. ONeill',      pages:40,  read:0,  emoji:'👑' },
+      { title:'Stellaluna',                      author:'J. Cannon',      pages:48,  read:0,  emoji:'🦇' },
+      { title:'Last Stop on Market Street',      author:'M. de la Peña',  pages:32,  read:0,  emoji:'🚌' },
+      { title:'Tops and Bottoms',                author:'J. Stevens',     pages:40,  read:0,  emoji:'🐰' },
+      { title:'Brave Irene',                     author:'W. Steig',       pages:32,  read:0,  emoji:'🌨️' },
+      { title:'Alice in Wonderland',             author:'L. Carroll',     pages:96,  read:0,  emoji:'🐇' },
+      { title:'The Wizard of Oz',                author:'L.F. Baum',      pages:120, read:0,  emoji:'🌈' },
+      { title:'Treasure Island',                 author:'R.L. Stevenson', pages:160, read:0,  emoji:'🏴‍☠️' },
+      { title:'Black Beauty',                    author:'A. Sewell',      pages:160, read:0,  emoji:'🐴' },
+      { title:'Little Women',                    author:'L.M. Alcott',    pages:200, read:0,  emoji:'📖' },
     ],
     words:[
       { w:'Brave',   d:'Not scared to try new things! 🦁' },
@@ -1856,15 +1862,18 @@ const GRADE_DATA = {
       { emoji:'🐕', name:'Three-Legged Dog', tip:'Downward dog then kick one leg up high!', secs:45, level:'Medium' },
     ],
     books:[
-      { title:'Charlotte\'s Web',      author:'E.B. White',    pages:184, read:80,  emoji:'🕷' },
-      { title:'Flat Stanley',          author:'J. Brown',      pages:90,  read:90,  emoji:'📄' },
-      { title:'Nate the Great',        author:'M. Sharmat',    pages:80,  read:50,  emoji:'🔍' },
-      { title:'Magic Tree House #5',   author:'M.P. Osborne',  pages:88,  read:0,   emoji:'🌳' },
-      { title:'Horrible Harry in Room 2B', author:'S. Kline',  pages:72,  read:72,  emoji:'😄' },
-      { title:'Ivy + Bean',            author:'A. Barrows',    pages:115, read:40,  emoji:'🌿' },
-      { title:'The Mouse and the Motorcycle', author:'B. Cleary',  pages:158, read:0,   emoji:'🏍' },
-      { title:'Pippi Longstocking',     author:'A. Lindgren',   pages:160, read:80,  emoji:'🧧' },
-      { title:'Cam Jansen Mystery #1',  author:'D.A. Adler',    pages:80,  read:0,   emoji:'📷' },
+      { title:'Thank You Mr Falker',             author:'P. Polacco',     pages:48,  read:0,  emoji:'📚' },
+      { title:'Each Kindness',                   author:'J. Woodson',     pages:32,  read:0,  emoji:'💙' },
+      { title:'Stellaluna',                      author:'J. Cannon',      pages:48,  read:0,  emoji:'🦇' },
+      { title:'Crown',                           author:'D. Barnes',      pages:48,  read:0,  emoji:'👑' },
+      { title:'Separate is Never Equal',         author:'D. Tonatiuh',    pages:40,  read:0,  emoji:'✊' },
+      { title:'Tops and Bottoms',                author:'J. Stevens',     pages:40,  read:0,  emoji:'🐰' },
+      { title:'Treasure Island',                 author:'R.L. Stevenson', pages:160, read:0,  emoji:'🏴‍☠️' },
+      { title:'Black Beauty',                    author:'A. Sewell',      pages:160, read:0,  emoji:'🐴' },
+      { title:'The Secret Garden',               author:'F.H. Burnett',   pages:160, read:0,  emoji:'🌺' },
+      { title:'Little Women',                    author:'L.M. Alcott',    pages:200, read:0,  emoji:'📖' },
+      { title:'A Little Princess',               author:'F.H. Burnett',   pages:150, read:0,  emoji:'👸' },
+      { title:'Robinson Crusoe',                 author:'D. Defoe',       pages:200, read:0,  emoji:'🏝️' },
     ],
     words:[
       { w:'Curious',    d:'Wanting to know or learn something.' },
@@ -2002,15 +2011,18 @@ const GRADE_DATA = {
       { emoji:'⚖️', name:'Warrior III', tip:'Balance on one leg, lean forward, arms like wings!', secs:60, level:'Medium' },
     ],
     books:[
-      { title:'Charlotte\'s Web',    author:'E.B. White',   pages:184, read:120, emoji:'🕷', cover:'https://covers.openlibrary.org/b/isbn/9780061124952-M.jpg', readAloud:'https://www.youtube.com/results?search_query=Charlotte%5C%20read%20aloud' },
-      { title:'Matilda',             author:'Roald Dahl',    pages:240, read:60,  emoji:'📖', cover:'https://covers.openlibrary.org/b/isbn/9780142410370-M.jpg', readAloud:'https://www.youtube.com/results?search_query=Matilda%20read%20aloud' },
-      { title:'The BFG',             author:'Roald Dahl',    pages:195, read:195, emoji:'👣', cover:'https://covers.openlibrary.org/b/isbn/9780142410381-M.jpg', readAloud:'https://www.youtube.com/results?search_query=The%20BFG%20read%20aloud' },
-      { title:'Magic Tree House #1', author:'M.P. Osborne',  pages:96,  read:96,  emoji:'🌳', cover:'https://covers.openlibrary.org/b/isbn/9780679824114-M.jpg', readAloud:'https://www.youtube.com/results?search_query=Magic%20Tree%20House%20%231%20read%20aloud' },
-      { title:'My Father\'s Dragon', author:'R.S. Gannett',  pages:86,  read:0,   emoji:'🐉', cover:'https://covers.openlibrary.org/b/isbn/9780394890487-M.jpg', readAloud:'https://www.youtube.com/results?search_query=My%20Father%5C%20read%20aloud' },
-      { title:'Judy Moody',          author:'M. McDonald',   pages:172, read:100, emoji:'😄', cover:'https://covers.openlibrary.org/b/isbn/9780763610609-M.jpg', readAloud:'https://www.youtube.com/results?search_query=Judy%20Moody%20read%20aloud' },
-      { title:'Encyclopedia Brown',  author:'D.J. Sobol',    pages:96,  read:0,   emoji:'🔎', cover:'https://covers.openlibrary.org/b/isbn/9780553157024-M.jpg', readAloud:'https://www.youtube.com/results?search_query=Encyclopedia%20Brown%20read%20aloud' },
-      { title:'Diary of a Wimpy Kid', author:'J. Kinney',    pages:217, read:100, emoji:'📓', cover:'https://covers.openlibrary.org/b/isbn/9780810993136-M.jpg', readAloud:'https://www.youtube.com/results?search_query=Diary%20of%20a%20Wimpy%20Kid%20read%20aloud' },
-      { title:'The One and Only Ivan', author:'K. Applegate', pages:305, read:0,  emoji:'🦍', cover:'https://covers.openlibrary.org/b/isbn/9780062098269-M.jpg', readAloud:'https://www.youtube.com/results?search_query=The%20One%20and%20Only%20Ivan%20read%20aloud' },
+      { title:'Crown',                           author:'D. Barnes',      pages:48,  read:0,  emoji:'👑' },
+      { title:'Each Kindness',                   author:'J. Woodson',     pages:32,  read:0,  emoji:'💙' },
+      { title:'Thank You Mr Falker',             author:'P. Polacco',     pages:48,  read:0,  emoji:'📚' },
+      { title:'Treasure Island',                 author:'R.L. Stevenson', pages:160, read:0,  emoji:'🏴‍☠️' },
+      { title:'The Secret Garden',               author:'F.H. Burnett',   pages:160, read:0,  emoji:'🌺' },
+      { title:'Black Beauty',                    author:'A. Sewell',      pages:160, read:0,  emoji:'🐴' },
+      { title:'Little Women',                    author:'L.M. Alcott',    pages:200, read:0,  emoji:'📖' },
+      { title:'Robinson Crusoe',                 author:'D. Defoe',       pages:200, read:0,  emoji:'🏝️' },
+      { title:'Around the World in 80 Days',     author:'J. Verne',       pages:180, read:0,  emoji:'🌍' },
+      { title:'A Little Princess',               author:'F.H. Burnett',   pages:150, read:0,  emoji:'👸' },
+      { title:'Alice in Wonderland',             author:'L. Carroll',     pages:96,  read:0,  emoji:'🐇' },
+      { title:'The Wizard of Oz',                author:'L.F. Baum',      pages:120, read:0,  emoji:'🌈' },
     ],
     words:[
       { w:'Perseverance', d:'Continuing to work hard even when things are difficult.' },
@@ -2138,15 +2150,16 @@ const GRADE_DATA = {
       { emoji:'🐕', name:'Three-Legged Dog', tip:'Downward dog — kick one leg up high, hold each side!', secs:90, level:'Medium' },
     ],
     books:[
-      { title:'Harry Potter & Sorcerer\'s Stone', author:'J.K. Rowling', pages:309, read:200, emoji:'🧙', cover:'https://covers.openlibrary.org/b/isbn/9780590353427-M.jpg', readAloud:'https://www.youtube.com/results?search_query=Harry%20Potter%20%26%20Sorcerer%5C%20read%20aloud' },
-      { title:'A Wrinkle in Time',    author:'M. L\'Engle',  pages:218, read:100, emoji:'⭐', cover:'https://covers.openlibrary.org/b/isbn/9780312367541-M.jpg', readAloud:'https://www.youtube.com/results?search_query=A%20Wrinkle%20in%20Time%20read%20aloud' },
-      { title:'Hatchet',              author:'G. Paulsen',    pages:195, read:195, emoji:'🪓', cover:'https://covers.openlibrary.org/b/isbn/9781416936473-M.jpg', readAloud:'https://www.youtube.com/results?search_query=Hatchet%20read%20aloud' },
-      { title:'Island of the Blue Dolphins', author:'S. O\'Dell', pages:181, read:0, emoji:'🐬', cover:'https://covers.openlibrary.org/b/isbn/9780547328614-M.jpg', readAloud:'https://www.youtube.com/results?search_query=Island%20of%20the%20Blue%20Dolphins%20read%20aloud' },
-      { title:'Stuart Little',        author:'E.B. White',    pages:131, read:131, emoji:'🐭', cover:'https://covers.openlibrary.org/b/isbn/9780062113443-M.jpg', readAloud:'https://www.youtube.com/results?search_query=Stuart%20Little%20read%20aloud' },
-      { title:'The Phantom Tollbooth', author:'N. Juster',    pages:256, read:80,  emoji:'🚗', cover:'https://covers.openlibrary.org/b/isbn/9780394820378-M.jpg', readAloud:'https://www.youtube.com/results?search_query=The%20Phantom%20Tollbooth%20read%20aloud' },
-      { title:'Wonder',               author:'R.J. Palacio',  pages:320, read:150, emoji:'⭐', cover:'https://covers.openlibrary.org/b/isbn/9780375869020-M.jpg', readAloud:'https://www.youtube.com/results?search_query=Wonder%20read%20aloud' },
-      { title:'Number the Stars',     author:'L. Lowry',      pages:160, read:0,   emoji:'⭐', cover:'https://covers.openlibrary.org/b/isbn/9780547577098-M.jpg', readAloud:'https://www.youtube.com/results?search_query=Number%20the%20Stars%20read%20aloud' },
-      { title:'Holes',                author:'L. Sachar',     pages:233, read:233, emoji:'🕳', cover:'https://covers.openlibrary.org/b/isbn/9780440414803-M.jpg', readAloud:'https://www.youtube.com/results?search_query=Holes%20read%20aloud' },
+      { title:'Treasure Island',                 author:'R.L. Stevenson', pages:160, read:0,  emoji:'🏴‍☠️' },
+      { title:'The Secret Garden',               author:'F.H. Burnett',   pages:160, read:0,  emoji:'🌺' },
+      { title:'Black Beauty',                    author:'A. Sewell',      pages:160, read:0,  emoji:'🐴' },
+      { title:'Little Women',                    author:'L.M. Alcott',    pages:200, read:0,  emoji:'📖' },
+      { title:'Around the World in 80 Days',     author:'J. Verne',       pages:180, read:0,  emoji:'🌍' },
+      { title:'Robinson Crusoe',                 author:'D. Defoe',       pages:200, read:0,  emoji:'🏝️' },
+      { title:'A Little Princess',               author:'F.H. Burnett',   pages:150, read:0,  emoji:'👸' },
+      { title:'Frankenstein',                    author:'M. Shelley',     pages:200, read:0,  emoji:'⚡' },
+      { title:'Jane Eyre',                       author:'C. Bronte',      pages:250, read:0,  emoji:'🌹' },
+      { title:'The Time Machine',                author:'H.G. Wells',     pages:100, read:0,  emoji:'⏱️' },
     ],
     words:[
       { w:'Perseverance', d:'Continuing to work hard even when things are difficult.' },
@@ -2274,15 +2287,16 @@ const GRADE_DATA = {
       { emoji:'🐕', name:'Three-Legged Dog', tip:'Flow from downward dog to three-legged — breathe and hold!', secs:90, level:'Medium' },
     ],
     books:[
-      { title:'Charlotte\'s Web',    author:'E.B. White',    pages:184, read:184, emoji:'🕷', cover:'https://covers.openlibrary.org/b/isbn/9780061124952-M.jpg', readAloud:'https://www.youtube.com/results?search_query=Charlotte%5C%20read%20aloud' },
-      { title:'A Wrinkle in Time',    author:'M. L\'Engle',   pages:218, read:100, emoji:'⭐', cover:'https://covers.openlibrary.org/b/isbn/9780312367541-M.jpg', readAloud:'https://www.youtube.com/results?search_query=A%20Wrinkle%20in%20Time%20read%20aloud' },
-      { title:'Harry Potter & Sorcerer\'s Stone', author:'J.K. Rowling', pages:309, read:200, emoji:'🧙', cover:'https://covers.openlibrary.org/b/isbn/9780590353427-M.jpg', readAloud:'https://www.youtube.com/results?search_query=Harry%20Potter%20%26%20Sorcerer%5C%20read%20aloud' },
-      { title:'Matilda',              author:'Roald Dahl',     pages:240, read:60,  emoji:'📖', cover:'https://covers.openlibrary.org/b/isbn/9780142410370-M.jpg', readAloud:'https://www.youtube.com/results?search_query=Matilda%20read%20aloud' },
-      { title:'Hatchet',              author:'G. Paulsen',     pages:195, read:0,   emoji:'🪓', cover:'https://covers.openlibrary.org/b/isbn/9781416936473-M.jpg', readAloud:'https://www.youtube.com/results?search_query=Hatchet%20read%20aloud' },
-      { title:'The Giver',            author:'L. Lowry',       pages:179, read:50,  emoji:'🌈', cover:'https://covers.openlibrary.org/b/isbn/9780385732574-M.jpg', readAloud:'https://www.youtube.com/results?search_query=The%20Giver%20read%20aloud' },
-      { title:'Bridge to Terabithia', author:'K. Paterson',    pages:163, read:0,   emoji:'🌉', cover:'https://covers.openlibrary.org/b/isbn/9780064401845-M.jpg', readAloud:'https://www.youtube.com/results?search_query=Bridge%20to%20Terabithia%20read%20aloud' },
-      { title:'From the Mixed-Up Files', author:'E.L. Konigsburg', pages:162, read:162, emoji:'🏛', cover:'https://covers.openlibrary.org/b/isbn/9781416949763-M.jpg', readAloud:'https://www.youtube.com/results?search_query=From%20the%20Mixed-Up%20Files%20read%20aloud' },
-      { title:'Roll of Thunder, Hear My Cry', author:'M.D. Taylor', pages:276, read:0, emoji:'⛈', cover:'https://covers.openlibrary.org/b/isbn/9780142401316-M.jpg', readAloud:'https://www.youtube.com/results?search_query=Roll%20of%20Thunder%2C%20Hear%20My%20Cry%20read%20aloud' },
+      { title:'Frankenstein',                    author:'M. Shelley',     pages:200, read:0,  emoji:'⚡' },
+      { title:'Jane Eyre',                       author:'C. Bronte',      pages:250, read:0,  emoji:'🌹' },
+      { title:'The Time Machine',                author:'H.G. Wells',     pages:100, read:0,  emoji:'⏱️' },
+      { title:'Treasure Island',                 author:'R.L. Stevenson', pages:160, read:0,  emoji:'🏴‍☠️' },
+      { title:'Around the World in 80 Days',     author:'J. Verne',       pages:180, read:0,  emoji:'🌍' },
+      { title:'Black Beauty',                    author:'A. Sewell',      pages:160, read:0,  emoji:'🐴' },
+      { title:'Little Women',                    author:'L.M. Alcott',    pages:200, read:0,  emoji:'📖' },
+      { title:'The Secret Garden',               author:'F.H. Burnett',   pages:160, read:0,  emoji:'🌺' },
+      { title:'Robinson Crusoe',                 author:'D. Defoe',       pages:200, read:0,  emoji:'🏝️' },
+      { title:'Alice in Wonderland',             author:'L. Carroll',     pages:96,  read:0,  emoji:'🐇' },
     ],
     words:[
       { w:'Perseverance', d:'Continuing to work hard even when things are difficult.' },
@@ -2372,8 +2386,13 @@ async function handleLogout() {
   window.location.href = 'index.html';
 }
 sb.auth.onAuthStateChange(async(event,session)=>{
-  if (session?.user) { currentUser=session.user; showScreen('children'); await loadChildren(); }
-  else {
+  if (session?.user) {
+    currentUser = session.user;
+    // Show spinner silently while we fetch children
+    showScreen('children');
+    await loadChildren();
+    // loadChildren handles routing: welcome (no children) or children picker
+  } else {
     showScreen('auth');
     const hash = window.location.hash;
     if (hash === '#signup') showAuthTab('signup');
@@ -2421,7 +2440,7 @@ function iAmDone() {
 async function loadChildren() {
   const grid = document.getElementById('childrenGrid');
   grid.innerHTML = '<div class="spinner"></div>';
-  showScreen('children');
+  // Don't flash children screen — wait for data first
 
   let data, error;
   try {
@@ -2444,7 +2463,12 @@ async function loadChildren() {
   }
 
   // First time user — show welcome screen
-  if (!data || data.length === 0) { showScreen('welcome'); return; }
+  if (!data || data.length === 0) {
+    showScreen('welcome');
+    return;
+  }
+  // Has children - show picker
+  showScreen('children');
 
   grid.innerHTML = '';
   data.forEach(child => {
@@ -2965,6 +2989,14 @@ const POSE_PHOTOS = {
   'Knee Hug':      { src:'IMG_1356.PNG',  pos:'center 50%' },
   'Baby Cobra':    { src:'IMG_1355.PNG',  pos:'center 40%' },
   'Low Cobra':     { src:'IMG_1355.PNG',  pos:'center 40%' },
+  // PreK poses using best-match existing photos
+  'Turtle':        { src:'IMG_1356.PNG',  pos:'center 60%' },  // seated folded = turtle
+  'Lion':          { src:'IMG_0861.PNG',  pos:'center 30%' },  // standing = lion
+  'Rainbow':       { src:'IMG_1358.PNG',  pos:'center 20%' },  // side bend = rainbow arc
+  'Frog':          { src:'IMG_0856.PNG',  pos:'center 50%' },  // squat = frog
+  'Rocket':        { src:'IMG_0858.PNG',  pos:'center center'},// star = rocket arms up
+  'Wave':          { src:'IMG_1358.PNG',  pos:'center 40%' },  // side bend = wave
+  "Child's Pose":  { src:'IMG_0860.PNG',  pos:'center 60%' },
 };
 
 function buildYogaGrid() {
@@ -5176,53 +5208,52 @@ function openBookReader(title, readAloudUrl) {
 }
 
 const STORYLINE_SLUGS = {
-  'Dragons Love Tacos':'dragons-love-tacos',
-  'Chicka Chicka Boom Boom':'chicka-chicka-boom-boom',
-  'Enemy Pie':'enemy-pie',
-  'Stellaluna':'stellaluna',
-  'Brave Irene':'brave-irene',
-  'Speak Up':'speak-up',
-  'The Recess Queen':'the-recess-queen',
-  'Last Stop on Market Street':'last-stop-on-market-street',
-  'Corduroy':'corduroy',
-  'The Rainbow Fish':'rainbow-fish',
-  'Tops and Bottoms':'tops-and-bottoms',
-  'Thank You Mr Falker':'thank-you-mr-falker',
-  'Knuffle Bunny':'knuffle-bunny',
-  'Brave Girl':'brave-girl',
-  'Pete the Cat':'pete-the-cat-i-love-my-white-shoes',
-  'Pete the Cat: I Love My White Shoes':'pete-the-cat-i-love-my-white-shoes',
-  'The Snowy Day':'the-snowy-day',
-  'The Dot':'the-dot',
-  'Each Kindness':'each-kindness',
-  'Fancy Nancy':'fancy-nancy',
-  'Harry the Dirty Dog':'harry-the-dirty-dog',
-  'Chester Way':'chesters-way',
-  'Ish':'ish',
-  'Crown':'crown-an-ode-to-the-fresh-cut',
-  'Separate is Never Equal':'separate-is-never-equal',
+  'Dragons Love Tacos':                  'dragons-love-tacos',
+  'Chicka Chicka Boom Boom':             'chicka-chicka-boom-boom',
+  'Enemy Pie':                           'enemy-pie',
+  'The Snowy Day':                       'the-snowy-day',
+  'Corduroy':                            'corduroy',
+  'The Rainbow Fish':                    'rainbow-fish',
+  'Knuffle Bunny':                       'knuffle-bunny',
+  'Last Stop on Market Street':          'last-stop-on-market-street',
+  'The Dot':                             'the-dot',
+  'Ish':                                 'ish',
+  'Harry the Dirty Dog':                 'harry-the-dirty-dog',
+  'Fancy Nancy':                         'fancy-nancy',
+  'Pete the Cat: I Love My White Shoes': 'pete-the-cat-i-love-my-white-shoes',
+  "Don't Let the Pigeon Drive the Bus":  'dont-let-the-pigeon-drive-the-bus',
+  'Elephant and Piggie':                 'elephant-and-piggie-we-are-in-a-book',
+  'Frog and Toad Together':              'frog-and-toad-together',
+  'Each Kindness':                       'each-kindness',
+  'Brave Irene':                         'brave-irene',
+  'Tops and Bottoms':                    'tops-and-bottoms',
+  'Thank You Mr Falker':                 'thank-you-mr-falker',
+  'The Recess Queen':                    'the-recess-queen',
+  'Stellaluna':                          'stellaluna',
+  'Crown':                               'crown-an-ode-to-the-fresh-cut',
+  'Separate is Never Equal':             'separate-is-never-equal',
+  'Corduroy':                            'corduroy',
+  'Ish':                                 'ish',
+  'Stellaluna':                          'stellaluna',
 };
 
 const IA_FALLBACKS = {
-  'The Wizard of Oz':           'wonderfulwizardofo00baum',
-  'Alice in Wonderland':        'alicesadventuresiu00carr',
-  'Treasure Island':            'treasureisland00stevgoog',
-  'Black Beauty':               'blackbeauty00sewarich',
-  'The Secret Garden':          'secretgarden00burn',
-  'Frankenstein':               'frankenstein00marygoog',
-  'Jane Eyre':                  'janeeyre00charlgoog',
-  'The Jungle Book':            'junglebook00kipling',
-  'Pinocchio':                  'adventuresofpinoc00coll',
-  'Gulliver Travels':           'gulliverstravels00swif',
-  'The Time Machine':           'timemachine00well',
-  'The Invisible Man':          'invisibleman00well',
-  'Little Women':               'littlewomen00louirich',
-  'A Little Princess':          'littleprincess00burn_0',
-  'The Wind in the Willows':    'windinthewillows00grah',
-  'Pollyanna':                  'pollyanna00eleanor',
-  'Robinson Crusoe':            'robinsoncrusoe00defogoog',
-  'Around the World in 80 Days':'aroundworldineigh00verne',
-  'Aesops Fables':              'aesopsfables00aeso_5',
+  'Alice in Wonderland':         'alicesadventuresiu00carr',
+  'The Wizard of Oz':            'wonderfulwizardofo00baum',
+  'The Jungle Book':             'junglebook00kipling',
+  'Pinocchio':                   'adventuresofpinoc00coll',
+  'Aesops Fables':               'aesopsfables00aeso_5',
+  'The Wind in the Willows':     'windinthewillows00grah',
+  'Treasure Island':             'treasureisland00stevgoog',
+  'Black Beauty':                'blackbeauty00sewarich',
+  'The Secret Garden':           'secretgarden00burn',
+  'Little Women':                'littlewomen00louirich',
+  'A Little Princess':           'littleprincess00burn_0',
+  'Robinson Crusoe':             'robinsoncrusoe00defogoog',
+  'Frankenstein':                'frankenstein00marygoog',
+  'Jane Eyre':                   'janeeyre00charlgoog',
+  'The Time Machine':            'timemachine00well',
+  'Around the World in 80 Days': 'aroundworldineigh00verne',
 };
 
 function getStorylineSlug(title) {
