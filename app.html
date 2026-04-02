@@ -22,7 +22,7 @@
   --sunshine: #FFD166;
   --coral:    #FF6B6B;
   --lavender: #C9B8FF;
-  --bg:       #FFF8F0;
+  --bg:       #FAF7FF;
   --text:     #2D2D4E;
   --muted:    #8888AA;
   --shadow:   0 8px 32px rgba(45,45,78,0.10);
@@ -43,8 +43,8 @@ body.grade-5    { --font-body:1rem; --font-heading:1.5rem; --font-big:2.4rem; }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Nunito',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; font-size:var(--font-body); }
 
-body::before { content:''; position:fixed; width:600px; height:600px; background:radial-gradient(circle,#FFD16633 0%,transparent 70%); top:-200px; right:-200px; pointer-events:none; z-index:0; }
-body::after  { content:''; position:fixed; width:500px; height:500px; background:radial-gradient(circle,#5ECDA033 0%,transparent 70%); bottom:-150px; left:-150px; pointer-events:none; z-index:0; }
+body::before { content:''; position:fixed; width:700px; height:700px; background:radial-gradient(circle,#C9B8FF22 0%,#FFD16618 50%,transparent 70%); top:-250px; right:-200px; pointer-events:none; z-index:0; }
+body::after  { content:''; position:fixed; width:600px; height:600px; background:radial-gradient(circle,#5ECDA028 0%,#4ECDC418 50%,transparent 70%); bottom:-180px; left:-180px; pointer-events:none; z-index:0; }
 
 /* -- OFFLINE / TOAST ----------------------------------- */
 #offlineBanner { position:fixed; top:0; left:0; right:0; z-index:500; background:linear-gradient(90deg,var(--coral),var(--sunshine)); color:white; text-align:center; padding:10px; font-weight:700; font-size:.9rem; display:none; }
@@ -1220,7 +1220,9 @@ const GRADE_DATA = {
       { emoji:'🚀', name:'Rocket', tip:'Stand tall, arms up — blast off to space!', secs:15, level:'Easy' },
       { emoji:'🌊', name:'Wave', tip:'Stand and wave your arms up and down like the ocean!', secs:20, level:'Easy' },
       { emoji:'🦅', name:'Bird Dog', tip:'Get on hands and knees, reach one arm and leg out like a flying bird!', secs:20, level:'Easy' },
-      { emoji:'🐍', name:'Upward Dog', tip:'Lie on your tummy, push up with your arms and look up high!', secs:20, level:'Easy' },
+      { emoji:'🐍', name:'Baby Cobra', tip:'Lie on your tummy and push up gently with your arms!', secs:20, level:'Easy' },
+      { emoji:'🌙', name:'Side Bend', tip:'Stand tall and stretch your arms up then bend sideways like a rainbow!', secs:20, level:'Easy' },
+      { emoji:'🤗', name:'Seated Hug', tip:'Sit cross-legged and give yourself a big hug!', secs:15, level:'Easy' },
       { emoji:'🌟', name:'Dancer', tip:'Stand tall, hold one foot behind you and reach your arm forward!', secs:25, level:'Medium' },
     ],
     books:[
@@ -2742,6 +2744,12 @@ const POSE_PHOTOS = {
   'Bow':           { src:'IMG_1351.jpeg', pos:'center 40%' },
   'Bird Dog':      { src:'IMG_1350.jpeg', pos:'center 40%' },
   'Superman':      { src:'IMG_1350.jpeg', pos:'center 40%' },
+  'Side Bend':     { src:'IMG_1358.PNG',  pos:'center 30%' },
+  'Moon Stretch':  { src:'IMG_1358.PNG',  pos:'center 30%' },
+  'Seated Hug':    { src:'IMG_1356.PNG',  pos:'center 50%' },
+  'Knee Hug':      { src:'IMG_1356.PNG',  pos:'center 50%' },
+  'Baby Cobra':    { src:'IMG_1355.PNG',  pos:'center 40%' },
+  'Low Cobra':     { src:'IMG_1355.PNG',  pos:'center 40%' },
 };
 
 function buildYogaGrid() {
@@ -3659,11 +3667,7 @@ function toggleMusic() {
   }
 }
 
-// Override onReady to handle auto-play
-const _origOnReady = window.onYouTubeIframeAPIReady;
-window.onYouTubeIframeAPIReady = function() {
-  initYTPlayer();
-};
+// YT API ready handler defined above
 
 function loadTrack(idx) {
   if (!currentPlaylist.length) return;
@@ -4828,8 +4832,9 @@ function showLetterTracing(){
     row.appendChild(big);row.appendChild(sml);card.appendChild(row);
     var wd=document.createElement('div');wd.style.cssText='font-size:1.2rem;font-weight:800;color:var(--body);margin-bottom:10px;';wd.textContent=WORDS[L]||'';card.appendChild(wd);
     var hint=document.createElement('div');hint.style.cssText='font-size:.82rem;color:var(--muted);margin-bottom:10px;';hint.textContent='Trace the letter with your finger!';card.appendChild(hint);
-    var cv=document.createElement('canvas');cv.style.cssText='border:3px dashed #C9B8FF;border-radius:16px;touch-action:none;cursor:crosshair;background:#FAFAFF;display:block;margin:0 auto;width:100%;max-width:320px;';
-    cv.width=300;cv.height=220;card.appendChild(cv);
+    var traceLabel=document.createElement('div');traceLabel.style.cssText='font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:#2D2D4E;text-align:center;margin-bottom:8px;';traceLabel.textContent='Trace the alphabet';card.appendChild(traceLabel);
+    var cv=document.createElement('canvas');cv.style.cssText='border:4px solid #E8E0FF;border-radius:20px;touch-action:none;cursor:crosshair;background:#FFFFFF;display:block;margin:0 auto;width:100%;max-width:340px;box-shadow:0 4px 20px rgba(139,111,232,.15);';
+    cv.width=340;cv.height=340;card.appendChild(cv);
     var br=document.createElement('div');br.style.cssText='display:flex;gap:8px;margin-top:12px;';
     var clr=document.createElement('button');clr.textContent='Clear';clr.style.cssText='padding:8px 12px;border-radius:40px;border:2px solid #E0DAFF;background:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.8rem;cursor:pointer;color:#888;';br.appendChild(clr);
     if(idx>0){var bk=document.createElement('button');bk.textContent='Back';bk.style.cssText='flex:1;padding:8px;border-radius:40px;border:none;background:#F0F0F8;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';bk.onclick=function(){idx--;build();};br.appendChild(bk);}
@@ -4837,15 +4842,36 @@ function showLetterTracing(){
     var cl=document.createElement('button');cl.textContent='Close';cl.style.cssText='margin-top:8px;width:100%;padding:7px;border-radius:40px;border:none;background:transparent;color:var(--muted);font-family:Nunito,sans-serif;font-weight:700;cursor:pointer;font-size:.82rem;';cl.onclick=function(){ov.remove();};card.appendChild(cl);
     ov.appendChild(card);document.body.appendChild(ov);
     var ctxC=cv.getContext('2d');
-    function guide(){ctxC.clearRect(0,0,cv.width,cv.height);ctxC.fillStyle='#FAFAFF';ctxC.fillRect(0,0,cv.width,cv.height);ctxC.save();ctxC.font='bold 160px Arial,sans-serif';ctxC.textAlign='center';ctxC.textBaseline='middle';ctxC.fillStyle='rgba(201,184,255,0.25)';ctxC.fillText(L,cv.width/2,cv.height/2+8);ctxC.strokeStyle='rgba(139,111,232,0.5)';ctxC.lineWidth=8;ctxC.setLineDash([8,6]);ctxC.strokeText(L,cv.width/2,cv.height/2+8);ctxC.restore();}
+    function guide(){
+      ctxC.clearRect(0,0,cv.width,cv.height);
+      ctxC.fillStyle='#FFFFFF';
+      ctxC.fillRect(0,0,cv.width,cv.height);
+      // Draw large dashed letter guide
+      ctxC.save();
+      ctxC.font='bold 260px Baloo\ 2,Arial Black,sans-serif';
+      ctxC.textAlign='center';
+      ctxC.textBaseline='middle';
+      // Thick dashed black stroke like the reference image
+      ctxC.strokeStyle='rgba(30,30,30,0.85)';
+      ctxC.lineWidth=18;
+      ctxC.lineCap='round';
+      ctxC.lineJoin='round';
+      ctxC.setLineDash([22,14]);
+      ctxC.strokeText(L,cv.width/2,cv.height/2+10);
+      // Very faint fill so shape is visible but traceable
+      ctxC.fillStyle='rgba(180,160,240,0.08)';
+      ctxC.setLineDash([]);
+      ctxC.fillText(L,cv.width/2,cv.height/2+10);
+      ctxC.restore();
+    }
     guide();clr.onclick=guide;
     var ptg=false,lx=0,ly=0;
     function gpL(e){var r=cv.getBoundingClientRect(),s=e.touches?e.touches[0]:e;return{x:(s.clientX-r.left)*(cv.width/r.width),y:(s.clientY-r.top)*(cv.height/r.height)};}
     cv.addEventListener('mousedown',function(e){ptg=true;var p=gpL(e);lx=p.x;ly=p.y;});
-    cv.addEventListener('mousemove',function(e){if(!ptg)return;var p=gpL(e);ctxC.beginPath();ctxC.moveTo(lx,ly);ctxC.lineTo(p.x,p.y);ctxC.strokeStyle='#FF6B6B';ctxC.lineWidth=8;ctxC.lineCap='round';ctxC.setLineDash([]);ctxC.stroke();lx=p.x;ly=p.y;});
+    cv.addEventListener('mousemove',function(e){if(!ptg)return;var p=gpL(e);ctxC.beginPath();ctxC.moveTo(lx,ly);ctxC.lineTo(p.x,p.y);ctxC.strokeStyle='#FF6B6B';ctxC.lineWidth=14;ctxC.lineCap='round';ctxC.lineJoin='round';ctxC.setLineDash([]);ctxC.stroke();lx=p.x;ly=p.y;});
     cv.addEventListener('mouseup',function(){ptg=false;});cv.addEventListener('mouseleave',function(){ptg=false;});
     cv.addEventListener('touchstart',function(e){e.preventDefault();ptg=true;var p=gpL(e);lx=p.x;ly=p.y;},{passive:false});
-    cv.addEventListener('touchmove',function(e){e.preventDefault();if(!ptg)return;var p=gpL(e);ctxC.beginPath();ctxC.moveTo(lx,ly);ctxC.lineTo(p.x,p.y);ctxC.strokeStyle='#FF6B6B';ctxC.lineWidth=8;ctxC.lineCap='round';ctxC.setLineDash([]);ctxC.stroke();lx=p.x;ly=p.y;},{passive:false});
+    cv.addEventListener('touchmove',function(e){e.preventDefault();if(!ptg)return;var p=gpL(e);ctxC.beginPath();ctxC.moveTo(lx,ly);ctxC.lineTo(p.x,p.y);ctxC.strokeStyle='#FF6B6B';ctxC.lineWidth=14;ctxC.lineCap='round';ctxC.lineJoin='round';ctxC.setLineDash([]);ctxC.stroke();lx=p.x;ly=p.y;},{passive:false});
     cv.addEventListener('touchend',function(){ptg=false;},{passive:false});
     nx.onclick=function(){if(idx<25){idx++;build();}else{ov.remove();toast('All 26 letters! +26 Stars');sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:26}).catch(function(){});sessionData.stars+=26;document.getElementById('statStars').textContent=sessionData.stars;}};
   }
@@ -4914,86 +4940,122 @@ function openInAppVideo(title, videoId) {
 }
 
 function openBookReader(title, readAloudUrl) {
-  var m=readAloudUrl&&readAloudUrl.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
-  var vid=m?m[1]:null;
-  var searchUrl='https://www.youtube.com/results?search_query='+encodeURIComponent(title+' read aloud children');
-  var directUrl=vid?('https://www.youtube.com/watch?v='+vid):searchUrl;
-  // If we have a video ID, play it in-app using YT IFrame API
-  if (vid) { openInAppVideo(title, vid); return; }
-  // Remove existing overlay if any
-  var old=document.getElementById('bookOv');if(old)old.remove();
-  var ov=document.createElement('div');ov.id='bookOv';
-  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(10,10,26,.93);display:flex;align-items:center;justify-content:center;padding:20px;';
-  var card=document.createElement('div');
-  card.style.cssText='background:white;border-radius:28px;overflow:hidden;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.4);';
-
-  // Header
-  var hdr=document.createElement('div');
-  hdr.style.cssText='background:linear-gradient(135deg,#FF6B6B,#FFD166);padding:24px 20px;text-align:center;';
-  hdr.innerHTML='<div style="font-size:3rem;margin-bottom:8px;">📖</div>'
-    +'<div style="font-family:Baloo 2,cursive;font-size:1.05rem;font-weight:800;color:white;line-height:1.3;">'+title+'</div>';
-  card.appendChild(hdr);
-
-  // Body
-  var body=document.createElement('div');
-  body.style.cssText='padding:22px 20px;';
-
-  // If we have a YouTube video ID, show a thumbnail preview
-  if(vid){
-    var thumb=document.createElement('div');
-    thumb.style.cssText='position:relative;border-radius:14px;overflow:hidden;margin-bottom:14px;cursor:pointer;background:#000;';
-    var img=document.createElement('img');
-    img.src='https://img.youtube.com/vi/'+vid+'/mqdefault.jpg';
-    img.style.cssText='width:100%;display:block;border-radius:14px;opacity:.85;';
-    img.onerror=function(){thumb.style.display='none';};
-    var playBtn=document.createElement('div');
-    playBtn.style.cssText='position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:56px;height:56px;background:rgba(255,0,0,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:white;pointer-events:none;';
-    playBtn.textContent='▶';
-    thumb.appendChild(img);thumb.appendChild(playBtn);
-    thumb.onclick=function(){try{sessionStorage.setItem('bloomi_restore','1');}catch(e){}window.open(directUrl,'_blank');};
-    body.appendChild(thumb);
+  // Check if we have a Storyline Online version first
+  var storylineSlug = getStorylineSlug(title);
+  if (storylineSlug) {
+    openStorylineReader(title, storylineSlug);
+    return;
   }
+  // Check for YouTube video ID
+  var m = readAloudUrl && readAloudUrl.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  var vid = m ? m[1] : null;
+  if (vid) {
+    openInAppVideo(title, vid);
+    return;
+  }
+  // Fallback: show a friendly message - no external links
+  openStorylineFallback(title);
+}
 
-  var note=document.createElement('div');
-  note.style.cssText='font-size:.8rem;color:#888;text-align:center;margin-bottom:14px;line-height:1.4;';
-  note.textContent=vid?'Tap the thumbnail or the button below to watch this book read aloud!':'Opens YouTube to find a read-aloud of this book.';
-  body.appendChild(note);
+const STORYLINE_SLUGS = {
+  'Dragons Love Tacos':'dragons-love-tacos',
+  'Chicka Chicka Boom Boom':'chicka-chicka-boom-boom',
+  'Enemy Pie':'enemy-pie',
+  'Stellaluna':'stellaluna',
+  'Brave Irene':'brave-irene',
+  'Speak Up':'speak-up',
+  'The Recess Queen':'the-recess-queen',
+  'Last Stop on Market Street':'last-stop-on-market-street',
+  'Corduroy':'corduroy',
+  'The Rainbow Fish':'rainbow-fish',
+  'Tops and Bottoms':'tops-and-bottoms',
+  'Thank You Mr Falker':'thank-you-mr-falker',
+  'Imogene Antlers':'imogene-s-antlers',
+  'Ruby Bridges':'through-my-eyes',
+  'Knuffle Bunny':'knuffle-bunny',
+  'Lilly Purple Plastic Purse':'lillys-purple-plastic-purse',
+  'Carmela Full of Wishes':'carmela-full-of-wishes',
+  'Brave Girl':'brave-girl',
+  'The Night I Followed the Dog':'the-night-i-followed-the-dog',
+  'Pete the Cat':'pete-the-cat-i-love-my-white-shoes',
+  'Pete the Cat: I Love My White Shoes':'pete-the-cat-i-love-my-white-shoes',
+};
 
-  // Main button - open YouTube
-  var ytBtn=document.createElement('button');
-  ytBtn.style.cssText='width:100%;padding:15px;border-radius:40px;border:none;background:linear-gradient(135deg,#FF0000,#CC0000);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px;';
-  ytBtn.innerHTML='▶ '+( vid?'Watch Read-Aloud':'Find Read-Aloud on YouTube');
-  ytBtn.onclick=function(){
-    try{sessionStorage.setItem('bloomi_restore','1');}catch(e){}
-    window.open(directUrl,'_blank');
-  };
-  body.appendChild(ytBtn);
+function getStorylineSlug(title) {
+  if (!title) return null;
+  var t = title.trim();
+  if (STORYLINE_SLUGS[t]) return STORYLINE_SLUGS[t];
+  // Fuzzy match
+  var keys = Object.keys(STORYLINE_SLUGS);
+  for (var i = 0; i < keys.length; i++) {
+    if (t.toLowerCase().includes(keys[i].toLowerCase()) || keys[i].toLowerCase().includes(t.toLowerCase())) {
+      return STORYLINE_SLUGS[keys[i]];
+    }
+  }
+  return null;
+}
 
-  // Stars button
-  var doneBtn=document.createElement('button');
-  doneBtn.style.cssText='width:100%;padding:13px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;margin-bottom:8px;';
-  doneBtn.textContent='📖 I Read This! +10 Stars';
-  doneBtn.onclick=async function(){
+function openStorylineReader(title, slug) {
+  var old = document.getElementById('storylineOv'); if (old) old.remove();
+  var ov = document.createElement('div');
+  ov.id = 'storylineOv';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#1A0A2E;display:flex;flex-direction:column;';
+
+  var hdr = document.createElement('div');
+  hdr.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#2D1A4E;flex-shrink:0;';
+  hdr.innerHTML = '<div style="font-family:Baloo 2,cursive;font-size:.95rem;font-weight:800;color:white;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:75%;">📖 ' + title + '</div>';
+  var closeBtn = document.createElement('button');
+  closeBtn.textContent = '✕ Close';
+  closeBtn.style.cssText = 'background:rgba(255,255,255,.15);border:none;color:white;border-radius:20px;padding:6px 14px;font-family:Nunito,sans-serif;font-weight:800;font-size:.8rem;cursor:pointer;flex-shrink:0;';
+  closeBtn.onclick = function() { ov.remove(); };
+  hdr.appendChild(closeBtn);
+  ov.appendChild(hdr);
+
+  var embedUrl = 'https://storylineonline.net/books/' + slug + '/';
+  var body = document.createElement('div');
+  body.style.cssText = 'flex:1;position:relative;background:#000;min-height:0;';
+  var iframe = document.createElement('iframe');
+  iframe.src = embedUrl;
+  iframe.style.cssText = 'width:100%;height:100%;border:none;display:block;';
+  iframe.setAttribute('allowfullscreen', '');
+  iframe.setAttribute('allow', 'autoplay; fullscreen');
+  body.appendChild(iframe);
+  ov.appendChild(body);
+
+  var ftr = document.createElement('div');
+  ftr.style.cssText = 'display:flex;gap:8px;padding:10px 16px;background:#2D1A4E;flex-shrink:0;';
+  var doneBtn = document.createElement('button');
+  doneBtn.textContent = 'I Read This! +15 Stars';
+  doneBtn.style.cssText = 'flex:1;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;border:none;border-radius:40px;padding:12px;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;';
+  doneBtn.onclick = async function() {
     ov.remove();
-    if(currentUser&&activeChild)showScreen('app');
-    try{
-      await upsertDailyActivity({minutes_reading:10});
-      await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:10});
-      sessionData.stars+=10;document.getElementById('statStars').textContent=sessionData.stars;
-      toast('Great reading! +10 Stars');
-    }catch(e){}
+    try {
+      await upsertDailyActivity({minutes_reading:15});
+      await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:15});
+      sessionData.stars+=15;
+      var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;
+      toast('Great reading! +15 Stars');
+    } catch(e){}
   };
-  body.appendChild(doneBtn);
+  ftr.appendChild(doneBtn);
+  ov.appendChild(ftr);
+  document.body.appendChild(ov);
+}
 
-  var closeBtn=document.createElement('button');
-  closeBtn.style.cssText='background:none;border:none;color:#aaa;font-family:Nunito,sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;width:100%;padding:4px;';
-  closeBtn.textContent='Close';
-  closeBtn.onclick=function(){ov.remove();};
-  body.appendChild(closeBtn);
-
-  card.appendChild(body);
+function openStorylineFallback(title) {
+  // No external link - show a gentle message
+  var old = document.getElementById('bookOv'); if (old) old.remove();
+  var ov = document.createElement('div');
+  ov.id = 'bookOv';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(10,10,26,.93);display:flex;align-items:center;justify-content:center;padding:20px;';
+  var card = document.createElement('div');
+  card.style.cssText = 'background:white;border-radius:28px;overflow:hidden;width:100%;max-width:360px;text-align:center;padding:32px 24px;';
+  card.innerHTML = '<div style="font-size:3rem;margin-bottom:12px;">📚</div>'
+    + '<div style="font-family:Baloo 2,cursive;font-size:1.1rem;font-weight:800;color:#2D2D4E;margin-bottom:8px;">' + title + '</div>'
+    + '<div style="font-size:.9rem;color:#888;line-height:1.6;margin-bottom:20px;">This book is in your reading library! Ask a parent or teacher to read it with you.</div>'
+    + '<button onclick="var e=document.getElementById(\'bookOv\');if(e)e.remove();" style="width:100%;padding:13px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;">Got it! Back to Books</button>';
   ov.appendChild(card);
-  ov.onclick=function(e){if(e.target===ov)ov.remove();};
+  ov.onclick = function(e){if(e.target===ov)ov.remove();};
   document.body.appendChild(ov);
 }
 
