@@ -192,8 +192,8 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 @keyframes slideDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
 .subtitle { color:var(--muted); font-size:var(--font-body); margin-bottom:24px; font-weight:600; }
 
-.bloomi-mascot-row { display:flex; align-items:flex-end; gap:14px; margin-bottom:20px; min-height:130px; }
-.bloomi-mascot { width:100px; height:100px; cursor:pointer; user-select:none; flex-shrink:0; display:block; object-fit:contain; }
+.bloomi-mascot-row { display:flex; align-items:center; gap:14px; margin-bottom:20px; min-height:110px; }
+.bloomi-mascot { width:90px; height:108px; cursor:pointer; user-select:none; flex-shrink:0; display:block; object-fit:contain; border-radius:8px; }
 .bloomi-streak-card { flex:1; background:linear-gradient(135deg,#FF6B6B,#FFD166); border-radius:18px; padding:12px 16px; color:white; }
 .bloomi-streak-num { font-family:'Baloo 2',cursive; font-size:2rem; font-weight:800; line-height:1; }
 .bloomi-streak-label { font-size:.72rem; font-weight:800; opacity:.9; margin-top:2px; }
@@ -204,7 +204,7 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .bloomi-mission-check { width:18px; height:18px; border-radius:50%; border:2px solid #ddd; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:.6rem; }
 .bloomi-mission-item.done .bloomi-mission-check { background:var(--mint); border-color:var(--mint); color:white; }
 .bloom-level { display:flex; align-items:center; gap:10px; margin-bottom:16px; background:white; border-radius:14px; padding:8px 14px; box-shadow:0 2px 8px rgba(45,45,78,.06); }
-.bloom-level-sprite { width:55px; height:70px; flex-shrink:0; object-fit:contain; }
+.bloom-level-sprite { width:60px; height:76px; flex-shrink:0; object-fit:contain; }
 .bloom-level-info { flex:1; }
 .bloom-level-name { font-family:'Baloo 2',cursive; font-size:.85rem; font-weight:800; color:#2D2D4E; }
 .bloom-level-bar { height:6px; background:#F0EEFF; border-radius:10px; margin-top:4px; overflow:hidden; }
@@ -278,8 +278,9 @@ body.grade-1 .quiz-opt { padding:18px; font-size:1.1rem; }
 .quiz-feedback.show { display:block; }
 .quiz-feedback.correct { background:#E8FBF3; color:var(--mint); }
 .quiz-feedback.wrong   { background:#FFF0F0; color:var(--coral); }
-.next-btn { margin-top:16px; padding:14px 32px; border-radius:40px; border:none; background:linear-gradient(135deg,var(--mint),var(--sky)); color:white; font-weight:800; font-size:var(--font-body); cursor:pointer; display:none; font-family:'Nunito',sans-serif; transition:all .2s; }
-.next-btn.show { display:inline-block; }
+.next-btn { margin-top:16px; padding:16px 32px; border-radius:40px; border:none; background:linear-gradient(135deg,#5ECDA0,#4ECDC4); color:white; font-weight:800; font-size:1.05rem; cursor:pointer; display:none; font-family:'Nunito',sans-serif; width:100%; box-shadow:0 6px 20px rgba(78,205,196,.35); transition:transform .1s; }
+.next-btn:active { transform:scale(.97); }
+.next-btn.show { display:block; animation:correctPulse .4s ease; }
 
 /* -- PROGRESS ------------------------------------------ */
 .progress-section { background:white; border-radius:24px; padding:24px; box-shadow:var(--shadow); margin-bottom:28px; }
@@ -1277,7 +1278,7 @@ const GRADE_DATA = {
       { emoji:'🌟', name:'Dancer', tip:'Stand tall, hold one foot behind you and reach your arm forward!', secs:25, level:'Medium' },
     ],
     books:[
-      { title:"Dragons Love Tacos",              author:'A. Rubin',       pages:40,  read:0,  emoji:'🐉' },
+      { title:'Harry the Dirty Dog',             author:'G. Zion',        pages:32,  read:0,  emoji:'🐶' },
       { title:'Chicka Chicka Boom Boom',         author:'B. Martin Jr',   pages:40,  read:0,  emoji:'🌴' },
       { title:'Corduroy',                        author:'Don Freeman',    pages:32,  read:0,  emoji:'🐻' },
       { title:'The Snowy Day',                   author:'E.J. Keats',     pages:40,  read:0,  emoji:'❄️' },
@@ -1564,7 +1565,7 @@ const GRADE_DATA = {
       { title:'The Rainbow Fish',                author:'M. Pfister',     pages:32,  read:0,  emoji:'🐟' },
       { title:'The Dot',                         author:'P. Reynolds',    pages:32,  read:0,  emoji:'🔵' },
       { title:'Ish',                             author:'P. Reynolds',    pages:32,  read:0,  emoji:'🎨' },
-      { title:'Dragons Love Tacos',              author:'A. Rubin',       pages:40,  read:0,  emoji:'🐉' },
+      { title:'Harry the Dirty Dog',             author:'G. Zion',        pages:32,  read:0,  emoji:'🐶' },
       { title:'Knuffle Bunny',                   author:'M. Willems',     pages:36,  read:0,  emoji:'🐰' },
       { title:'Alice in Wonderland',             author:'L. Carroll',     pages:96,  read:0,  emoji:'🐇' },
       { title:'The Wizard of Oz',                author:'L.F. Baum',      pages:120, read:0,  emoji:'🌈' },
@@ -2605,27 +2606,52 @@ var bloomiMoodIdx = 0;
 function bloomiDance() {
   var m = document.getElementById('bloomiMascot');
   if (!m) return;
-  // Bounce between correct and happy
-  var imgs = ['bloom_correct.png','bloom_happy.png','bloom_correct.png','bloom_happy.png','bloom_correct.png'];
-  var i = 0;
-  var iv = setInterval(function() {
-    m.src = imgs[i % imgs.length]; i++;
-    if (i >= imgs.length) { clearInterval(iv); m.src = 'bloom_happy.png'; }
-  }, 300);
+  m.src = 'bloom_correct_anim.gif?' + Date.now();
+  showBloomCelebration();
+  setTimeout(function() { m.src = 'bloom_happy.png'; }, 2200);
 }
 
 function bloomiReact(mood) {
   var m = document.getElementById('bloomiMascot');
   if (!m) return;
-  if (mood === 'correct') {
-    m.src = 'bloom_correct.png';
-  } else if (mood === 'done') {
-    bloomiDance();
-    return;
+  if (mood === 'correct' || mood === 'done') {
+    // Swap home mascot to correct pose
+    m.src = 'bloom_correct_anim.gif?' + Date.now();
+    // Also show brief centered celebration overlay
+    showBloomCelebration();
+    setTimeout(function() { m.src = 'bloom_happy.png'; }, 2200);
   } else if (mood === 'wrong') {
     m.src = 'bloom_wrong.png';
+    setTimeout(function() { m.src = 'bloom_happy.png'; }, 1800);
   }
-  setTimeout(function() { m.src = 'bloom_happy.png'; }, mood === 'done' ? 2500 : 1800);
+}
+
+function showBloomCelebration() {
+  // Remove any existing overlay
+  var old = document.getElementById('bloomCelebOv');
+  if (old) old.remove();
+
+  var ov = document.createElement('div');
+  ov.id = 'bloomCelebOv';
+  ov.style.cssText = [
+    'position:fixed',
+    'bottom:90px',
+    'right:12px',
+    'z-index:9990',
+    'pointer-events:none',
+    'animation:bloomiPop .4s cubic-bezier(.34,1.56,.64,1) both'
+  ].join(';');
+
+  var img = document.createElement('img');
+  img.src = 'bloom_correct_anim.gif?' + Date.now();
+  img.style.cssText = 'width:110px;height:132px;object-fit:contain;display:block;';
+  ov.appendChild(img);
+  document.body.appendChild(ov);
+
+  setTimeout(function() {
+    ov.style.animation = 'bloomiPop .3s cubic-bezier(.55,.06,.68,.19) reverse both';
+    setTimeout(function() { ov.remove(); }, 300);
+  }, 1900);
 }
 
 function updateBloomLevel(stars) {
@@ -2769,6 +2795,47 @@ async function loadDashboardStats() {
 // ══════════════════════════════════════════════════════
 //  STAR BURST ANIMATION on correct answers
 // ══════════════════════════════════════════════════════
+function playSound(type) {
+  try {
+    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if (type === 'correct') {
+      // Happy ding ding
+      [523, 659, 784].forEach(function(freq, i) {
+        var o = ctx.createOscillator();
+        var g = ctx.createGain();
+        o.connect(g); g.connect(ctx.destination);
+        o.frequency.value = freq;
+        o.type = 'sine';
+        g.gain.setValueAtTime(0.3, ctx.currentTime + i * 0.12);
+        g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.12 + 0.3);
+        o.start(ctx.currentTime + i * 0.12);
+        o.stop(ctx.currentTime + i * 0.12 + 0.3);
+      });
+    } else if (type === 'wrong') {
+      // Soft low thud
+      var o = ctx.createOscillator();
+      var g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.frequency.value = 200;
+      o.type = 'sine';
+      g.gain.setValueAtTime(0.2, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+      o.start(); o.stop(ctx.currentTime + 0.4);
+    } else if (type === 'star') {
+      // Sparkle sound
+      var o = ctx.createOscillator();
+      var g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.frequency.setValueAtTime(1047, ctx.currentTime);
+      o.frequency.exponentialRampToValueAtTime(1568, ctx.currentTime + 0.15);
+      o.type = 'sine';
+      g.gain.setValueAtTime(0.15, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+      o.start(); o.stop(ctx.currentTime + 0.3);
+    }
+  } catch(e) {}
+}
+
 function showStarBurst(targetEl) {
   var rect = targetEl ? targetEl.getBoundingClientRect() : {left: window.innerWidth/2, top: window.innerHeight/2, width:0, height:0};
   var cx = rect.left + rect.width/2;
@@ -2785,12 +2852,7 @@ function showStarBurst(targetEl) {
     document.body.appendChild(s);
     setTimeout(function(el){ el.remove(); }, 1200 + i * 80, s);
   }
-  // Show Bloom correct image briefly in corner
-  var bloomPop = document.createElement('img');
-  bloomPop.src = 'bloom_correct.png';
-  bloomPop.style.cssText = 'position:fixed;bottom:100px;right:16px;width:80px;height:80px;object-fit:contain;z-index:99998;animation:bloomiPop .5s cubic-bezier(.34,1.56,.64,1) both;pointer-events:none;';
-  document.body.appendChild(bloomPop);
-  setTimeout(function() { bloomPop.remove(); }, 2000);
+  // Bloom celebration handled by bloomiReact
 }
 
 async function selectChild(child) {
@@ -3109,7 +3171,7 @@ async function checkAnswer(btn, correct) {
     document.getElementById('statTasks').textContent=sessionData.tasks;
     document.getElementById('statStars').textContent=sessionData.stars;
     setSyncState('');
-    if (correct) { toast(`+${stars} stars!`); bloomiReact('correct'); completeMission('quiz'); } else { bloomiReact('wrong'); }
+    if (correct) { playSound('correct'); toast(`+${stars} stars!`); bloomiReact('correct'); completeMission('quiz'); } else { playSound('wrong'); bloomiReact('wrong'); }
   } catch(e) { setSyncState('error'); }
 }
 function nextQuestion() { qIdx++; renderQuestion(); }
@@ -3787,88 +3849,88 @@ function updateArtStats() {
 // ══════════════════════════════════════════════════════
 const YOGA_PLAYLISTS = {
   PreK:[
-    { title:'Peaceful Kids Yoga Music', id:'YBQ_oLMCMng' },
-    { title:'Gentle Baby Lullaby', id:'SvKzSouZHB4' },
+    { title:'Peaceful Kids Yoga Music', id:'9J9-kE4VlMo' },
+    { title:'Gentle Baby Lullaby', id:'7NOSDKb0HlU' },
     { title:'Soft Piano for Little Ones', id:'7maJOI3QMu0' },
-    { title:'Happy Kids Calm Music', id:'TpH4XBOsWFg' },
+    { title:'Happy Kids Calm Music', id:'x8zKOQl5-kQ' },
     { title:'Calm Rainbow Instrumental', id:'WHPEKLQID4U' },
     { title:'Soothing Nature Sounds', id:'eKFTSSKCzWA' },
-    { title:'Gentle Flute for Kids', id:'OFSMvFuJQKE' },
+    { title:'Gentle Flute for Kids', id:'H-2C8hfqBrg' },
     { title:'Dreamy Soft Piano', id:'1ZYbU82GVz4' },
     { title:'Kids Relaxation Music', id:'lFcSrYw2zXY' },
     { title:'Bedtime Calm Music', id:'77ZozI0rw7w' },
   ],
   K:[
-    { title:'Kids Yoga Music', id:'YBQ_oLMCMng' },
+    { title:'Kids Yoga Music', id:'9J9-kE4VlMo' },
     { title:'Peaceful Piano for Kids', id:'7maJOI3QMu0' },
     { title:'Calm Kids Ambient Music', id:'1ZYbU82GVz4' },
     { title:'Happy Kids Dance Songs', id:'JmE3aLSwwWQ' },
     { title:'Magical Forest Ambience', id:'eKFTSSKCzWA' },
-    { title:'Peaceful Flute Music', id:'OFSMvFuJQKE' },
+    { title:'Peaceful Flute Music', id:'H-2C8hfqBrg' },
     { title:'Calm Rainbow Instrumental', id:'WHPEKLQID4U' },
     { title:'Sunny Day Kids Songs', id:'71hqRT9U0wg' },
-    { title:'Gentle Morning Music', id:'SvKzSouZHB4' },
-    { title:'Kids Relaxation and Calm', id:'TpH4XBOsWFg' },
+    { title:'Gentle Morning Music', id:'7NOSDKb0HlU' },
+    { title:'Kids Relaxation and Calm', id:'x8zKOQl5-kQ' },
   ],
   1:[
-    { title:'Calm Kids Yoga Vibes', id:'YBQ_oLMCMng' },
+    { title:'Calm Kids Yoga Vibes', id:'9J9-kE4VlMo' },
     { title:'Peaceful Piano and Birdsong', id:'1ZYbU82GVz4' },
     { title:'Forest Ambience Calm', id:'eKFTSSKCzWA' },
-    { title:'Gentle Guitar Focus Music', id:'OFSMvFuJQKE' },
+    { title:'Gentle Guitar Focus Music', id:'H-2C8hfqBrg' },
     { title:'Calming Ocean Waves', id:'WHPEKLQID4U' },
     { title:'Relaxing Rain and Piano', id:'77ZozI0rw7w' },
     { title:'Soft Study Music', id:'7maJOI3QMu0' },
     { title:'Morning Yoga Calm Music', id:'lFcSrYw2zXY' },
-    { title:'Kids Mindfulness Bells', id:'SvKzSouZHB4' },
-    { title:'Relaxing Nature Sounds', id:'TpH4XBOsWFg' },
+    { title:'Kids Mindfulness Bells', id:'7NOSDKb0HlU' },
+    { title:'Relaxing Nature Sounds', id:'x8zKOQl5-kQ' },
   ],
   2:[
     { title:'Yoga Flow Soft Piano', id:'lFcSrYw2zXY' },
     { title:'Nature Sounds and Guitar', id:'1ZYbU82GVz4' },
-    { title:'Calm Meditation Bells', id:'OFSMvFuJQKE' },
+    { title:'Calm Meditation Bells', id:'H-2C8hfqBrg' },
     { title:'Focus Music for Kids', id:'7maJOI3QMu0' },
     { title:'Soft Rain on Leaves', id:'WHPEKLQID4U' },
     { title:'Peaceful Strings Instrumental', id:'77ZozI0rw7w' },
     { title:'Calm Morning Piano', id:'lFcSrYw2zXY' },
     { title:'Deep Calm Ambience', id:'eKFTSSKCzWA' },
-    { title:'Stress Relief Kids Music', id:'YBQ_oLMCMng' },
-    { title:'Relaxing Ambient Sounds', id:'SvKzSouZHB4' },
+    { title:'Stress Relief Kids Music', id:'9J9-kE4VlMo' },
+    { title:'Relaxing Ambient Sounds', id:'7NOSDKb0HlU' },
   ],
   3:[
     { title:'Kids Meditation Instrumental', id:'lFcSrYw2zXY' },
     { title:'Calming Piano and Soft Pads', id:'77ZozI0rw7w' },
     { title:'Forest Stream Ambience', id:'eKFTSSKCzWA' },
-    { title:'Peaceful Flute and Strings', id:'OFSMvFuJQKE' },
+    { title:'Peaceful Flute and Strings', id:'H-2C8hfqBrg' },
     { title:'Tibetan Singing Bowls', id:'7maJOI3QMu0' },
     { title:'Gentle Breeze and Piano', id:'1ZYbU82GVz4' },
     { title:'Deep Focus Calm Music', id:'WHPEKLQID4U' },
-    { title:'Nature Healing Music', id:'YBQ_oLMCMng' },
-    { title:'Peaceful Yoga Flow', id:'TpH4XBOsWFg' },
-    { title:'Mindful Kids Session', id:'SvKzSouZHB4' },
+    { title:'Nature Healing Music', id:'9J9-kE4VlMo' },
+    { title:'Peaceful Yoga Flow', id:'x8zKOQl5-kQ' },
+    { title:'Mindful Kids Session', id:'7NOSDKb0HlU' },
   ],
   4:[
     { title:'Deep Focus Yoga Music', id:'77ZozI0rw7w' },
     { title:'Calm Piano Meditation', id:'lFcSrYw2zXY' },
     { title:'Nature Soundscape Forest', id:'eKFTSSKCzWA' },
-    { title:'Relaxing Ambient Guitar', id:'OFSMvFuJQKE' },
+    { title:'Relaxing Ambient Guitar', id:'H-2C8hfqBrg' },
     { title:'Mindfulness Bowls and Bells', id:'WHPEKLQID4U' },
     { title:'Rain and Soft Piano', id:'1ZYbU82GVz4' },
-    { title:'Stress Free Healing Music', id:'YBQ_oLMCMng' },
+    { title:'Stress Free Healing Music', id:'9J9-kE4VlMo' },
     { title:'Healing Sound Bath', id:'7maJOI3QMu0' },
-    { title:'Deep Relaxation Music', id:'TpH4XBOsWFg' },
-    { title:'Peaceful Morning Calm', id:'SvKzSouZHB4' },
+    { title:'Deep Relaxation Music', id:'x8zKOQl5-kQ' },
+    { title:'Peaceful Morning Calm', id:'7NOSDKb0HlU' },
   ],
   5:[
     { title:'Focus and Flow Instrumental', id:'77ZozI0rw7w' },
     { title:'Deep Calm Piano', id:'lFcSrYw2zXY' },
-    { title:'Zen Meditation Ambient', id:'OFSMvFuJQKE' },
+    { title:'Zen Meditation Ambient', id:'H-2C8hfqBrg' },
     { title:'Peaceful Forest Rain', id:'eKFTSSKCzWA' },
     { title:'Study and Yoga Soft Pads', id:'WHPEKLQID4U' },
     { title:'Sunrise Instrumental Piano', id:'1ZYbU82GVz4' },
     { title:'Ambient Study Session', id:'7maJOI3QMu0' },
-    { title:'Deep Breathwork Calm Music', id:'YBQ_oLMCMng' },
-    { title:'Healing Frequency Music', id:'TpH4XBOsWFg' },
-    { title:'Evening Wind Down Calm', id:'SvKzSouZHB4' },
+    { title:'Deep Breathwork Calm Music', id:'9J9-kE4VlMo' },
+    { title:'Healing Frequency Music', id:'x8zKOQl5-kQ' },
+    { title:'Evening Wind Down Calm', id:'7NOSDKb0HlU' },
   ],
 };
 
@@ -4813,8 +4875,8 @@ async function startSubject(name) {
           b.style.pointerEvents='none';
           if(bi===q.answer){b.style.background='#E8FBF3';b.style.borderColor='var(--mint)';b.style.color='#2A9970';}
         });
-        if(correct){btn.style.background='#E8FBF3';score++;toast('Correct! +5 Stars');if(typeof bloomiReact==='function')bloomiReact('correct');if(typeof showStarBurst==='function')showStarBurst(btn);if(typeof completeMission==='function')completeMission('quiz');}
-        else{btn.style.background='#FFF0EE';btn.style.borderColor='var(--coral)';btn.style.color='var(--coral)';toast('Not quite - see the green answer!');if(typeof bloomiReact==='function')bloomiReact('wrong');}
+        if(correct){btn.style.background='#E8FBF3';score++;toast('Correct! +5 Stars');if(typeof playSound==='function')playSound('correct');if(typeof bloomiReact==='function')bloomiReact('correct');if(typeof showStarBurst==='function')showStarBurst(btn);if(typeof completeMission==='function')completeMission('quiz');}
+        else{btn.style.background='#FFF0EE';btn.style.borderColor='var(--coral)';btn.style.color='var(--coral)';toast('Not quite - see the green answer!');if(typeof playSound==='function')playSound('wrong');if(typeof bloomiReact==='function')bloomiReact('wrong');}
         if(q.explain){var ex=document.createElement('div');ex.style.cssText='margin-top:8px;padding:10px 12px;background:#F0FBF6;border-radius:12px;font-size:.82rem;color:#2A9970;border-left:3px solid var(--mint);line-height:1.4;';ex.innerHTML='Why: '+q.explain;optsDiv.appendChild(ex);}
         var nb=document.getElementById('sqNextBtn');
         if(nb){nb.disabled=false;nb.style.background='linear-gradient(135deg,var(--coral),var(--sunshine))';nb.style.color='white';nb.style.cursor='pointer';}
@@ -4826,8 +4888,9 @@ async function startSubject(name) {
     var ftr=document.createElement('div');ftr.style.cssText='padding:0 20px 16px;display:flex;gap:8px;';
     var nextBtn=document.createElement('button');
     nextBtn.id='sqNextBtn';
-    nextBtn.textContent=qIdx<questions.length-1?'Next':'See Results';
+    nextBtn.textContent=qIdx<questions.length-1?'Next Question →':'See Results 🎉';
     nextBtn.disabled=true;
+    nextBtn.style.cssText='flex:1;padding:14px;border-radius:40px;border:none;background:#E8E4FF;color:#888;font-family:Nunito,sans-serif;font-weight:800;font-size:.95rem;cursor:not-allowed;transition:all .2s;';
     nextBtn.style.cssText='flex:1;padding:12px;border-radius:40px;border:none;background:#E0DAFF;color:#888;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:not-allowed;';
     nextBtn.onclick=function(){qIdx++;showQ();};
     ftr.appendChild(nextBtn);
@@ -5136,7 +5199,7 @@ function showLetterTracing(){
     var hint=document.createElement('div');hint.style.cssText='font-size:.82rem;color:var(--muted);margin-bottom:10px;';hint.textContent='Trace the letter with your finger!';card.appendChild(hint);
     var traceLabel=document.createElement('div');traceLabel.style.cssText='font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:#2D2D4E;text-align:center;margin-bottom:8px;';traceLabel.textContent='Trace the alphabet';card.appendChild(traceLabel);
     var cv=document.createElement('canvas');cv.style.cssText='border:4px solid #E8E0FF;border-radius:20px;touch-action:none;cursor:crosshair;background:#FFFFFF;display:block;margin:0 auto;width:100%;max-width:340px;box-shadow:0 4px 20px rgba(139,111,232,.15);';
-    cv.width=340;cv.height=340;card.appendChild(cv);
+    cv.width=320;cv.height=320;card.appendChild(cv);
     var br=document.createElement('div');br.style.cssText='display:flex;gap:8px;margin-top:12px;';
     var clr=document.createElement('button');clr.textContent='Clear';clr.style.cssText='padding:8px 12px;border-radius:40px;border:2px solid #E0DAFF;background:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.8rem;cursor:pointer;color:#888;';br.appendChild(clr);
     if(idx>0){var bk=document.createElement('button');bk.textContent='Back';bk.style.cssText='flex:1;padding:8px;border-radius:40px;border:none;background:#F0F0F8;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';bk.onclick=function(){idx--;build();};br.appendChild(bk);}
@@ -5148,23 +5211,32 @@ function showLetterTracing(){
       ctxC.clearRect(0,0,cv.width,cv.height);
       ctxC.fillStyle='#FFFFFF';
       ctxC.fillRect(0,0,cv.width,cv.height);
-      // Draw large dashed letter guide
       ctxC.save();
-      ctxC.font='bold 240px Arial Black,Arial,sans-serif';
-      ctxC.textAlign='center';
-      ctxC.textBaseline='middle';
-      // Thick dashed black stroke like the reference image
-      ctxC.strokeStyle='rgba(30,30,30,0.85)';
-      ctxC.lineWidth=18;
-      ctxC.lineCap='round';
-      ctxC.lineJoin='round';
-      ctxC.setLineDash([22,14]);
-      ctxC.strokeText(L,cv.width/2,cv.height/2+10);
-      // Very faint fill so shape is visible but traceable
-      ctxC.fillStyle='rgba(180,160,240,0.08)';
+      // Step 1: Draw letter as a path, then use dotted circles along it
+      var fontSize = Math.min(cv.width, cv.height) * 0.80;
+      ctxC.font = 'bold ' + fontSize + 'px Arial Black, Arial, sans-serif';
+      ctxC.textAlign = 'center';
+      ctxC.textBaseline = 'middle';
+      var cx = cv.width / 2;
+      var cy = cv.height / 2 + fontSize * 0.04;
+      // Draw thick DOTTED stroke (round linecap + gap = circular dots)
+      ctxC.strokeStyle = '#1A1A2E';
+      ctxC.lineWidth = 22;
+      ctxC.lineCap = 'round';
+      ctxC.lineJoin = 'round';
+      // Dot size = lineWidth, gap = 2.5x lineWidth gives well-spaced dots
+      ctxC.setLineDash([1, 34]);
+      ctxC.strokeText(L, cx, cy);
+      // Step 2: Very faint fill to show letter shape
       ctxC.setLineDash([]);
-      ctxC.fillText(L,cv.width/2,cv.height/2+10);
+      ctxC.fillStyle = 'rgba(100,120,200,0.06)';
+      ctxC.fillText(L, cx, cy);
       ctxC.restore();
+      // Step 3: Draw a thin border around canvas
+      ctxC.strokeStyle = '#E0DAFF';
+      ctxC.lineWidth = 3;
+      ctxC.setLineDash([]);
+      ctxC.strokeRect(4, 4, cv.width-8, cv.height-8);
     }
     guide();clr.onclick=guide;
     var ptg=false,lx=0,ly=0;
@@ -5264,7 +5336,6 @@ function openBookReader(title, readAloudUrl) {
 }
 
 const STORYLINE_SLUGS = {
-  'Dragons Love Tacos':                  'dragons-love-tacos',
   'Chicka Chicka Boom Boom':             'chicka-chicka-boom-boom',
   'Enemy Pie':                           'enemy-pie',
   'The Snowy Day':                       'the-snowy-day',
