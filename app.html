@@ -204,6 +204,19 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .bloomi-mission-check { width:18px; height:18px; border-radius:50%; border:2px solid #ddd; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:.6rem; }
 .bloomi-mission-item.done .bloomi-mission-check { background:var(--mint); border-color:var(--mint); color:white; }
 .bloom-level { display:flex; align-items:center; gap:10px; margin-bottom:16px; background:white; border-radius:14px; padding:8px 14px; box-shadow:0 2px 8px rgba(45,45,78,.06); }
+.reading-badge { display:inline-flex; align-items:center; gap:6px; padding:5px 12px; border-radius:20px; font-size:.75rem; font-weight:800; margin:2px; animation:correctPulse .5s ease; }
+.reading-badge.bookworm { background:#E8F4FF; color:#1A6FB0; }
+.reading-badge.explorer { background:#FFF8E0; color:#B8860B; }
+.reading-badge.superreader { background:#F3EFFF; color:#6B44CC; }
+.reading-badge.master { background:linear-gradient(135deg,#FFD166,#FF6B6B); color:white; }
+.badge-strip { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:16px; min-height:0; }
+.continue-card { background:linear-gradient(135deg,#F0EEFF,#E8F8F5); border-radius:18px; padding:12px 16px; margin-bottom:16px; display:flex; align-items:center; gap:12px; cursor:pointer; border:2px solid rgba(139,111,232,.15); box-shadow:0 4px 16px rgba(45,45,78,.06); transition:transform .15s; }
+.continue-card:active { transform:scale(.98); }
+.continue-card-icon { font-size:1.8rem; flex-shrink:0; }
+.continue-card-text { flex:1; }
+.continue-card-title { font-family:'Baloo 2',cursive; font-size:.85rem; font-weight:800; color:#2D2D4E; }
+.continue-card-sub { font-size:.75rem; color:var(--muted); font-weight:600; margin-top:2px; }
+.continue-card-arrow { font-size:1.2rem; color:var(--muted); flex-shrink:0; }
 .bloom-level-sprite { width:60px; height:76px; flex-shrink:0; object-fit:contain; }
 .bloom-level-info { flex:1; }
 .bloom-level-name { font-family:'Baloo 2',cursive; font-size:.85rem; font-weight:800; color:#2D2D4E; }
@@ -705,7 +718,7 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
       <span>➕ Set Up My Child's Profile</span>
       <span class="welcome-btn-arrow">→</span>
     </button>
-    <p class="welcome-note">Takes less than 30 seconds · Free for 14 days</p>
+    <p class="welcome-note">Takes less than 30 seconds · <button onclick="showPricingModal()" style="background:none;border:none;color:var(--mint);font-weight:800;cursor:pointer;font-size:inherit;">See pricing</button></p>
     <button class="logout-link" style="margin-top:24px" onclick="handleLogout()">← Sign out</button>
   </div>
 </div>
@@ -727,7 +740,7 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
       <button class="done-btn" onclick="iAmDone()" title="I'm done for today!">
         👋 I'm Done!
       </button>
-      <button class="logout-app-btn" onclick="handleLogout()" title="Log out">
+      <a href="privacy.html" target="_blank" style="font-size:.72rem;color:#888;font-weight:600;text-decoration:none;margin-right:8px;">Privacy</a><button class="logout-app-btn" onclick="handleLogout()" title="Log out">
         🚪 Log Out
       </button>
       <button class="logout-app-btn" onclick="openParentDashboard()" title="Parent Dashboard" style="background:linear-gradient(135deg,var(--lavender),var(--sky));color:white;border:none;">
@@ -770,6 +783,16 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
 
   <!-- -- ACADEMICS -- -->
   <div class="panel active" id="panel-academics">
+    <!-- Continue where you left off -->
+    <div id="continueCard" style="display:none;" class="continue-card" onclick="resumeLastActivity()">
+      <div class="continue-card-icon" id="continueIcon">📖</div>
+      <div class="continue-card-text">
+        <div class="continue-card-title" id="continueTitle">Keep going!</div>
+        <div class="continue-card-sub" id="continueSub">Continue where you left off</div>
+      </div>
+      <div class="continue-card-arrow">→</div>
+    </div>
+
     <!-- Bloomi Mascot + Streak -->
     <div class="bloomi-mascot-row">
       <img class="bloomi-mascot" id="bloomiMascot" src="bloom_happy.png" onclick="bloomiDance()" title="Tap Bloom!" alt="Bloom">
@@ -942,6 +965,7 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
       <span style="background:linear-gradient(135deg,#5ECDA0,#4ECDC4);color:white;font-size:.65rem;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:20px;">Educator Curated</span>
       A handpicked library -- new books added every month 🌱
     </div>
+    <div class="badge-strip" id="readingBadgeStrip"></div>
     <div class="book-shelf" id="bookShelf"><div class="spinner"></div></div>
 
     <!-- -- Coming Soon -- -->
@@ -2762,6 +2786,304 @@ function completeMission(type) {
   if (typeof bloomiReact === 'function') bloomiReact('done');
 }
 
+
+
+
+
+
+// ══════════════════════════════════════════════════════
+//  PUSH NOTIFICATIONS (PWA)
+// ══════════════════════════════════════════════════════
+function askNotificationPermission() {
+  if (!('Notification' in window)) return;
+  if (Notification.permission === 'granted') {
+    scheduleStreakReminder();
+    return;
+  }
+  if (Notification.permission !== 'denied') {
+    // Ask after 30 seconds of use — not immediately
+    setTimeout(function() {
+      Notification.requestPermission().then(function(permission) {
+        if (permission === 'granted') {
+          scheduleStreakReminder();
+          toast('Notifications on! Keep your streak going!');
+        }
+      });
+    }, 30000);
+  }
+}
+
+function scheduleStreakReminder() {
+  // Store last active date in localStorage
+  var today = new Date().toISOString().split('T')[0];
+  var childName = activeChild ? activeChild.name : 'your child';
+  try { localStorage.setItem('bloomi_last_active', today); } catch(e) {}
+
+  // Check yesterday — if not active yesterday AND not today, remind
+  var lastActive = localStorage.getItem('bloomi_last_active');
+  if (!lastActive) return;
+  var yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  var yStr = yesterday.toISOString().split('T')[0];
+
+  // Schedule a check after 6 hours — if no activity today, fire notification
+  setTimeout(function() {
+    var todayCheck = new Date().toISOString().split('T')[0];
+    var lastCheck = localStorage.getItem('bloomi_last_active');
+    if (lastCheck !== todayCheck && Notification.permission === 'granted') {
+      new Notification('BloomiKids 🌸', {
+        body: childName + ' has not practiced today! Keep the streak going',
+        icon: 'logo.png',
+        badge: 'logo.png',
+      });
+    }
+  }, 6 * 60 * 60 * 1000);
+}
+
+// ══════════════════════════════════════════════════════
+//  STRIPE PAYMENT
+// ══════════════════════════════════════════════════════
+// Replace these with your actual Stripe Payment Link URLs
+// Create at: dashboard.stripe.com → Payment Links
+var STRIPE_LINKS = {
+  monthly: 'https://buy.stripe.com/YOUR_MONTHLY_LINK', // $9.99/mo
+  yearly:  'https://buy.stripe.com/YOUR_YEARLY_LINK',   // $79.99/yr
+};
+
+var _selectedPlan = 'yearly'; // default to yearly
+
+function showPricingModal() {
+  var old = document.getElementById('pricingModalOv');
+  if (old) old.remove();
+
+  var ov = document.createElement('div');
+  ov.id = 'pricingModalOv';
+  ov.className = 'pricing-modal-overlay';
+
+  ov.innerHTML = `
+    <div class="pricing-card">
+      <div class="pricing-header">
+        <div style="font-size:2.5rem;margin-bottom:8px;">🌸</div>
+        <h2>Start Your Free Trial</h2>
+        <p>14 days free · Cancel anytime · No ads ever</p>
+      </div>
+      <div class="pricing-body">
+        <ul class="pricing-features">
+          <li>✅ All subjects PreK–5th grade</li>
+          <li>✅ Yoga, breathing & wellness</li>
+          <li>✅ 38 books + public domain library</li>
+          <li>✅ Up to 5 child profiles</li>
+          <li>✅ Parent progress dashboard</li>
+          <li>✅ Common Core aligned</li>
+        </ul>
+
+        <div class="price-option selected" id="planYearly" onclick="selectPlan('yearly')">
+          <span class="best-value">BEST VALUE</span>
+          <div class="price-label">Annual Plan</div>
+          <div class="price-amount">$79.99<span style="font-size:1rem;color:#888;">/year</span></div>
+          <div class="price-note">Just $6.67/month · Save 33%</div>
+        </div>
+
+        <div class="price-option" id="planMonthly" onclick="selectPlan('monthly')">
+          <div class="price-label">Monthly Plan</div>
+          <div class="price-amount">$9.99<span style="font-size:1rem;color:#888;">/month</span></div>
+          <div class="price-note">Billed monthly · Cancel anytime</div>
+        </div>
+
+        <p class="trial-note">🎉 Free for 14 days · No credit card charged until trial ends</p>
+
+        <button class="subscribe-btn" onclick="goToStripe()">Start Free Trial →</button>
+        <button class="pricing-close" onclick="document.getElementById('pricingModalOv').remove()">Maybe later</button>
+
+        <p style="text-align:center;font-size:.72rem;color:#bbb;margin-top:10px;">
+          Secure payment via Stripe · <a href="privacy.html" target="_blank" style="color:#bbb;">Privacy Policy</a>
+        </p>
+      </div>
+    </div>`;
+
+  document.body.appendChild(ov);
+}
+
+function selectPlan(plan) {
+  _selectedPlan = plan;
+  document.getElementById('planYearly').classList.toggle('selected', plan === 'yearly');
+  document.getElementById('planMonthly').classList.toggle('selected', plan === 'monthly');
+}
+
+function goToStripe() {
+  var url = STRIPE_LINKS[_selectedPlan];
+  if (url.includes('YOUR_')) {
+    toast('Stripe not configured yet — add your Payment Link URLs');
+    return;
+  }
+  // Pass email so Stripe can pre-fill checkout
+  if (currentUser && currentUser.email) {
+    url += '?prefilled_email=' + encodeURIComponent(currentUser.email);
+  }
+  window.open(url, '_blank');
+}
+
+// ══════════════════════════════════════════════════════
+//  CONTINUE WHERE YOU LEFT OFF
+// ══════════════════════════════════════════════════════
+function saveLastActivity(type, label, icon, action) {
+  try {
+    var key = 'bloomi_last_' + (activeChild ? activeChild.id : 'guest');
+    localStorage.setItem(key, JSON.stringify({type:type, label:label, icon:icon, action:action, ts:Date.now()}));
+  } catch(e) {}
+}
+
+function loadLastActivity() {
+  try {
+    var key = 'bloomi_last_' + (activeChild ? activeChild.id : 'guest');
+    var data = localStorage.getItem(key);
+    if (!data) return null;
+    var d = JSON.parse(data);
+    // Only show if within last 24 hours
+    if (Date.now() - d.ts > 86400000) return null;
+    return d;
+  } catch(e) { return null; }
+}
+
+function updateContinueCard() {
+  var card = document.getElementById('continueCard');
+  if (!card) return;
+  var last = loadLastActivity();
+  if (!last) { card.style.display = 'none'; return; }
+  card.style.display = 'flex';
+  var iconEl = document.getElementById('continueIcon');
+  var titleEl = document.getElementById('continueTitle');
+  var subEl = document.getElementById('continueSub');
+  if (iconEl) iconEl.textContent = last.icon || '📖';
+  if (titleEl) titleEl.textContent = 'Keep going with ' + last.label + '!';
+  if (subEl) subEl.textContent = 'You were doing this earlier today';
+}
+
+function resumeLastActivity() {
+  var last = loadLastActivity();
+  if (!last) return;
+  if (last.action === 'subject') {
+    switchTab('learn');
+  } else if (last.action === 'yoga') {
+    switchTab('yoga');
+  } else if (last.action === 'stories') {
+    switchTab('stories');
+  } else if (last.action === 'art') {
+    switchTab('art');
+  }
+}
+
+// ══════════════════════════════════════════════════════
+//  COMPREHENSION CHECK after reading
+// ══════════════════════════════════════════════════════
+var COMPREHENSION_QUESTIONS = {
+  PreK: [
+    { q:'What did you like best about the story?', opts:['The characters', 'The pictures', 'The ending', 'All of it!'], answer:3 },
+    { q:'How did the main character feel?', opts:['Happy', 'Sad', 'Surprised', 'Scared'], answer:0 },
+    { q:'What happened at the beginning?', opts:['A problem started', 'Everyone was happy', 'It was night time', 'They went home'], answer:0 },
+  ],
+  K: [
+    { q:'What was the main character problem?', opts:['They were lost', 'They needed help', 'They were scared', 'Something changed'], answer:3 },
+    { q:'How was the problem solved?', opts:['With help from friends', 'By being brave', 'By trying hard', 'All of these!'], answer:3 },
+    { q:'What is the lesson of this story?', opts:['Be kind', 'Never give up', 'Ask for help', 'Be yourself'], answer:0 },
+  ],
+  default: [
+    { q:'What was the main idea of this book?', opts:['Friendship matters', 'Be brave', 'Keep trying', 'Hard to say!'], answer:3 },
+    { q:'Would you recommend this book to a friend?', opts:['Yes, it was great!', 'Maybe', 'Not sure', 'Yes, definitely!'], answer:3 },
+    { q:'What did the main character learn?', opts:['To be kind', 'To be brave', 'To keep going', 'Something important'], answer:3 },
+  ]
+};
+
+function showComprehensionCheck(onComplete) {
+  var qs = COMPREHENSION_QUESTIONS[activeGrade] || COMPREHENSION_QUESTIONS.default;
+  var q = qs[Math.floor(Math.random() * qs.length)];
+
+  var old = document.getElementById('comprehensionOv');
+  if (old) old.remove();
+  var ov = document.createElement('div');
+  ov.id = 'comprehensionOv';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(10,10,26,.9);display:flex;align-items:center;justify-content:center;padding:20px;';
+
+  var card = document.createElement('div');
+  card.style.cssText = 'background:white;border-radius:28px;padding:28px 24px;width:100%;max-width:380px;text-align:center;';
+
+  card.innerHTML = '<img src="bloom_happy.png" style="width:70px;height:84px;object-fit:contain;margin-bottom:8px;">'
+    + '<div style="font-family:Baloo 2,cursive;font-size:1.1rem;font-weight:800;color:#2D2D4E;margin-bottom:16px;">Quick Check! 🌟</div>'
+    + '<div style="font-size:.95rem;font-weight:700;color:#444;margin-bottom:18px;line-height:1.5;">' + q.q + '</div>';
+
+  var optsDiv = document.createElement('div');
+  optsDiv.style.cssText = 'display:flex;flex-direction:column;gap:8px;';
+  var answered = false;
+  q.opts.forEach(function(opt, i) {
+    var btn = document.createElement('button');
+    btn.textContent = opt;
+    btn.style.cssText = 'padding:11px 14px;border-radius:14px;border:2px solid #E8E4FF;background:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;text-align:left;';
+    btn.onclick = async function() {
+      if (answered) return;
+      answered = true;
+      var correct = (i === q.answer);
+      btn.style.background = '#E8FBF3';
+      btn.style.borderColor = 'var(--mint)';
+      optsDiv.querySelectorAll('button').forEach(function(b) { b.style.pointerEvents = 'none'; });
+      if (correct) {
+        playSound && playSound('correct');
+        bloomiReact && bloomiReact('correct');
+        try {
+          await sb.rpc('add_stars', {p_child_id: activeChild.id, p_amount: 10});
+          sessionData.stars += 10;
+          var el = document.getElementById('statStars');
+          if (el) el.textContent = sessionData.stars;
+          toast('Bonus! +10 Stars for comprehension! ⭐');
+        } catch(e) {}
+      }
+      setTimeout(function() { ov.remove(); if(onComplete) onComplete(); }, 1200);
+    };
+    optsDiv.appendChild(btn);
+  });
+  card.appendChild(optsDiv);
+  ov.appendChild(card);
+  document.body.appendChild(ov);
+}
+
+// ══════════════════════════════════════════════════════
+//  READING BADGES
+// ══════════════════════════════════════════════════════
+var READING_BADGES = [
+  { id:'bookworm',    min:3,  icon:'📚', label:'Bookworm',     cls:'bookworm'   },
+  { id:'explorer',   min:5,  icon:'🌟', label:'Story Explorer', cls:'explorer'  },
+  { id:'superreader',min:10, icon:'🏆', label:'Super Reader',  cls:'superreader'},
+  { id:'master',     min:20, icon:'🌺', label:'Master Reader', cls:'master'     },
+];
+
+function updateReadingBadges(booksReadCount) {
+  var strip = document.getElementById('readingBadgeStrip');
+  if (!strip) return;
+  strip.innerHTML = '';
+  var earned = READING_BADGES.filter(function(b) { return booksReadCount >= b.min; });
+  if (earned.length === 0) {
+    var next = READING_BADGES[0];
+    strip.innerHTML = '<div style="font-size:.75rem;color:var(--muted);font-weight:600;">Read ' + next.min + ' books to earn your first badge! 📚</div>';
+    return;
+  }
+  earned.forEach(function(b) {
+    var badge = document.createElement('span');
+    badge.className = 'reading-badge ' + b.cls;
+    badge.innerHTML = b.icon + ' ' + b.label;
+    strip.appendChild(badge);
+  });
+  // Check for newly earned badge
+  var topBadge = earned[earned.length - 1];
+  var key = 'bloomi_badge_' + (activeChild ? activeChild.id : 'guest');
+  var prev = localStorage.getItem(key) || '0';
+  if (booksReadCount >= topBadge.min && parseInt(prev) < topBadge.min) {
+    localStorage.setItem(key, booksReadCount);
+    setTimeout(function() {
+      toast(topBadge.icon + ' New badge: ' + topBadge.label + '!');
+      bloomiDance();
+    }, 800);
+  }
+}
+
 async function updateStreak() {
   try {
     if (!activeChild) return;
@@ -2886,6 +3208,8 @@ async function selectChild(child) {
     updateBloomiStreak(sessionData.streak || 0);
     updateBloomLevel(sessionData.stars || 0);
     updateDailyMission();
+    updateContinueCard();
+    if (typeof askNotificationPermission === 'function') askNotificationPermission();
   }, 500);
   // Show CC alignment note
   var ccNote = document.getElementById('ccAlignNote');
@@ -3326,6 +3650,7 @@ function renderBookShelf(books) {
   const completed=books.filter(b=>b.completed||(b.pages_read>=b.total_pages)).length;
   const totalPages=books.reduce((s,b)=>s+(b.pages_read||b.read||0),0);
   document.getElementById('booksRead').textContent =completed;
+  if (typeof updateReadingBadges === 'function') updateReadingBadges(completed);
   document.getElementById('totalPages').textContent=totalPages;
   const mPct=Math.min(100,Math.round(completed/4*100));
   document.getElementById('monthlyReadBar').style.width=mPct+'%';
@@ -4215,6 +4540,10 @@ async function deleteChild() {
 }
 
 function switchTab(tab) {
+  // Track last activity for "continue where you left off"
+  var tabIcons = {learn:'🧠', yoga:'🧘', stories:'📚', art:'🎨'};
+  var tabLabels = {learn:'Learning', yoga:'Yoga', stories:'Reading', art:'Art'};
+  if (tabIcons[tab]) saveLastActivity(tab, tabLabels[tab], tabIcons[tab], tab);
   // Pause music when leaving yoga tab
   if (tab !== 'yoga') {
     if (typeof stopBreathMusic === 'function') stopBreathMusic();
@@ -5298,15 +5627,17 @@ function openInAppVideo(title, videoId) {
   var doneBtn = document.createElement('button');
   doneBtn.textContent = '📖 I Read This! +10 Stars';
   doneBtn.style.cssText = 'flex:1;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;border:none;border-radius:40px;padding:12px;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;';
-  doneBtn.onclick = async function() {
+  doneBtn.onclick = function() {
     ov.remove();
-    try {
-      await upsertDailyActivity({minutes_reading:10});
-      await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:10});
-      sessionData.stars+=10;
-      var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;
-      toast('Great reading! +10 Stars ⭐');
-    } catch(e){}
+    showComprehensionCheck(async function() {
+      try {
+        await upsertDailyActivity({minutes_reading:10});
+        await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:10});
+        sessionData.stars+=10;
+        var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;
+        toast('Great reading! +10 Stars ⭐'); completeMission('book');
+      } catch(e){}
+    });
   };
   ftr.appendChild(doneBtn);
   ov.appendChild(ftr);
@@ -5429,15 +5760,17 @@ function openStorylineReader(title, slug) {
   var doneBtn = document.createElement('button');
   doneBtn.textContent = 'I Read This! +15 Stars';
   doneBtn.style.cssText = 'flex:1;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;border:none;border-radius:40px;padding:12px;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;';
-  doneBtn.onclick = async function() {
+  doneBtn.onclick = function() {
     ov.remove();
-    try {
-      await upsertDailyActivity({minutes_reading:15});
-      await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:15});
-      sessionData.stars+=15;
-      var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;
-      toast('Great reading! +15 Stars'); completeMission('book');
-    } catch(e){}
+    showComprehensionCheck(async function() {
+      try {
+        await upsertDailyActivity({minutes_reading:15});
+        await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:15});
+        sessionData.stars+=15;
+        var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;
+        toast('Great reading! +15 Stars'); completeMission('book');
+      } catch(e){}
+    });
   };
   ftr.appendChild(doneBtn);
   ov.appendChild(ftr);
