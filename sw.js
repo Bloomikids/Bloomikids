@@ -1,48 +1,47 @@
-// BloomiKids Service Worker v105 - AGGRESSIVE CACHE BUST
-const CACHE_NAME = 'bloomikids-v105';
-const NEVER_CACHE = ['/app.html', '/', '/index.html'];
+// BloomiKids Service Worker v201 — cache bust
+const CACHE_VERSION = 'bloomikids-v201';
 
-self.addEventListener('install', event => {
-  console.log('[SW] Installing v105');
+// On install — skip waiting so new SW activates immediately
+self.addEventListener('install', function(e) {
   self.skipWaiting();
 });
 
-self.addEventListener('activate', event => {
-  console.log('[SW] Activating v105 - clearing all caches');
-  event.waitUntil(
-    caches.keys().then(keys => {
+// On activate — delete ALL old caches, claim all clients
+self.addEventListener('activate', function(e) {
+  e.waitUntil(
+    caches.keys().then(function(keys) {
       return Promise.all(
-        keys.map(key => {
+        keys.map(function(key) {
           console.log('[SW] Deleting cache:', key);
           return caches.delete(key);
         })
       );
-    }).then(() => self.clients.claim())
+    }).then(function() {
+      return self.clients.claim();
+    })
   );
 });
 
-self.addEventListener('fetch', event => {
-  const url = new URL(event.request.url);
-  
-  // NEVER cache the main HTML file - always get fresh
-  if (NEVER_CACHE.some(path => url.pathname === path || url.pathname.endsWith('/app.html'))) {
-    event.respondWith(
-      fetch(event.request, { cache: 'no-store' })
-        .catch(() => caches.match(event.request))
+// On fetch — NEVER cache app.html, always fetch fresh
+self.addEventListener('fetch', function(e) {
+  var url = e.request.url;
+
+  // Always bypass cache for the main app file
+  if (url.includes('app.html') || url.includes('sw.js')) {
+    e.respondWith(
+      fetch(e.request, { cache: 'no-store' }).catch(function() {
+        return caches.match(e.request);
+      })
     );
     return;
   }
-  
-  // For everything else: network first, fall back to cache
-  event.respondWith(
-    fetch(event.request, { cache: 'no-store' })
-      .then(response => {
-        if (response && response.status === 200) {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
-        }
-        return response;
-      })
-      .catch(() => caches.match(event.request))
+
+  // For everything else — network first, cache as fallback
+  e.respondWith(
+    fetch(e.request, { cache: 'no-store' }).then(function(response) {
+      return response;
+    }).catch(function() {
+      return caches.match(e.request);
+    })
   );
 });
