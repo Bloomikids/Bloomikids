@@ -1796,7 +1796,15 @@ const GRADE_DATA = {
       { emoji:'⚔', name:'Warrior II', tip:'Arms stretched wide, look over your front hand!', secs:90, level:'Medium' },
       { emoji:'🧱', name:'Plank Pose', tip:'Hands down, body straight like a board — hold it!', secs:30, level:'Medium' },
       { emoji:'🐕', name:'Three-Legged Dog', tip:'Downward dog then kick one leg up high!', secs:45, level:'Medium' },
-    ],
+    ,
+      {q:'Which word should have a capital letter?',opts:['cat','monday','apple','run'],answer:1,subject:'Writing'},
+      {q:'Which sentence ends correctly?',opts:['I like cats','I like cats.','i like cats','i like cats.'],answer:1,subject:'Writing'},
+      {q:'What punctuation ends a question?',opts:['.','!','?',','],answer:2,subject:'Writing'},
+      {q:'Which is a complete sentence?',opts:['The big dog.','Ran fast.','The dog ran fast.','Fast dog running.'],answer:2,subject:'Writing'},
+      {q:'Which word is spelled correctly?',opts:['frend','friand','friend','freind'],answer:2,subject:'Writing'},
+      {q:'What goes at the START of every sentence?',opts:['A period','A capital letter','A comma','An exclamation mark'],answer:1,subject:'Writing'},
+      {q:'Which is a naming word (noun)?',opts:['run','jump','cat','fast'],answer:2,subject:'Writing'},
+      {q:'Which word describes (adjective)?',opts:['dog','run','big','ate'],answer:2,subject:'Writing'}],
     books:[
       { title:'Thank You Mr Falker',             author:'P. Polacco',     pages:48,  read:0,  emoji:'📚' },
       { title:'Each Kindness',                   author:'J. Woodson',     pages:32,  read:0,  emoji:'💙' },
@@ -2318,8 +2326,9 @@ async function handleSignup() {
   toast('✅ Account created! Check your email, then sign in.'); showAuthTab('login');
 }
 async function handleLogout() {
-  await sb.auth.signOut(); currentUser=null; activeChild=null;
-  window.location.href = 'index.html';
+  try { await sb.auth.signOut(); } catch(e) {}
+  currentUser=null; activeChild=null; gradeContent=null;
+  showScreen('auth');
 }
 let _authHandled = false;
 sb.auth.onAuthStateChange(async(event,session)=>{
@@ -4915,7 +4924,7 @@ async function startSubject(name) {
   if(langNames.indexOf(name)>=0){openLangGame(activeGrade);return;}
 
   var allQ=gradeContent.questions||[];
-  var SUBJ_ALIASES={'abc time':['language arts','letters','phonics','reading'],'numbers fun':['numbers','counting','math'],'colors & art':['colors','shapes','art'],'animals & nature':['animals','nature','science'],'counting':['counting','numbers','math'],'letters':['letters','language arts','phonics','reading'],'colors & shapes':['colors','shapes'],'my world':['my world','social studies','science','nature'],'math':['math','counting','numbers'],'language arts':['language arts','letters','reading','phonics'],'science':['science','nature'],'social studies':['social studies','my world','community'],'community':['community','social studies']};
+  var SUBJ_ALIASES={'writing':['writing','language arts','grammar'],'abc time':['language arts','letters','phonics','reading'],'numbers fun':['numbers','counting','math'],'colors & art':['colors','shapes','art'],'animals & nature':['animals','nature','science'],'counting':['counting','numbers','math'],'letters':['letters','language arts','phonics','reading'],'colors & shapes':['colors','shapes'],'my world':['my world','social studies','science','nature'],'math':['math','counting','numbers'],'language arts':['language arts','letters','reading','phonics'],'science':['science','nature'],'social studies':['social studies','my world','community'],'community':['community','social studies']};
   var nameLow=name.toLowerCase().trim();
   var aliases=SUBJ_ALIASES[nameLow]||[nameLow];
   var filtered=allQ.filter(function(q){
@@ -5535,22 +5544,23 @@ function openInAppVideo(title, videoId) {
 // LibriVox public domain audiobooks — direct MP3 from archive.org
 // 100% free, public domain, legal for commercial use
 const LIBRIVOX_AUDIO = {
-  'Alice in Wonderland':         'https://archive.org/download/alicesadventuresinwonderland_librivox/alicesadventuresinwonderland_01_carroll.mp3',
-  'The Wizard of Oz':            'https://archive.org/download/wonderfulwizardofoz_librivox/wonderfulwizardofoz_01_baum.mp3',
-  'The Jungle Book':             'https://archive.org/download/junglebook_librivox/junglebook_01_kipling.mp3',
-  'Pinocchio':                   'https://archive.org/download/pinocchio_librivox/pinocchio_01_collodi.mp3',
-  'Aesops Fables':               'https://archive.org/download/aesopsfables_librivox/aesopsfables_01_aesop.mp3',
-  'The Wind in the Willows':     'https://archive.org/download/windinthewillows_librivox/windinthewillows_01_grahame.mp3',
-  'Treasure Island':             'https://archive.org/download/treasureisland_librivox/treasureisland_01_stevenson.mp3',
-  'Black Beauty':                'https://archive.org/download/blackbeauty_librivox/blackbeauty_01_sewell.mp3',
-  'The Secret Garden':           'https://archive.org/download/secretgarden_librivox/secretgarden_01_burnett.mp3',
-  'Little Women':                'https://archive.org/download/littlewomen_librivox/littlewomen_01_alcott.mp3',
-  'A Little Princess':           'https://archive.org/download/alittleprincess_librivox/alittleprincess_01_burnett.mp3',
-  'Robinson Crusoe':             'https://archive.org/download/robinson_crusoe_librivox/robinson_crusoe_01_defoe.mp3',
-  'Around the World in 80 Days': 'https://archive.org/download/around_the_world_80_days_librivox/aroundtheworldin80days_01_verne.mp3',
-  'Frankenstein':                'https://archive.org/download/frankenstein_librivox/frankenstein_01_shelley.mp3',
-  'Jane Eyre':                   'https://archive.org/download/jane_eyre_librivox/janeeyre_01_bronte.mp3',
-  'The Time Machine':            'https://archive.org/download/time_machine_librivox/thetimemachine_01_wells.mp3',
+  // Verified archive.org LibriVox identifiers + real MP3 filenames
+  'Alice in Wonderland':         'https://archive.org/download/alices_adventures_in_wonderland_librivox/alicesadventuresinwonderland_01_carroll_64kb.mp3',
+  'The Wizard of Oz':            'https://archive.org/download/the_wonderful_wizard_of_oz_librivox/thewonderfulwizardofoz_01_baum_64kb.mp3',
+  'The Jungle Book':             'https://archive.org/download/the_jungle_book_librivox/thejunglebook_01_kipling_64kb.mp3',
+  'Pinocchio':                   'https://archive.org/download/pinocchio_librivox/pinocchio_01_collodi_64kb.mp3',
+  'Aesops Fables':               'https://archive.org/download/aesops_fables_librivox/aesopsfables_01_64kb.mp3',
+  'The Wind in the Willows':     'https://archive.org/download/wind_in_the_willows_librivox/windinthewillows_01_grahame_64kb.mp3',
+  'Treasure Island':             'https://archive.org/download/treasure_island_librivox/treasureisland_01_stevenson_64kb.mp3',
+  'Black Beauty':                'https://archive.org/download/black_beauty_librivox/blackbeauty_01_sewell_64kb.mp3',
+  'The Secret Garden':           'https://archive.org/download/the_secret_garden_librivox/thesecretgarden_01_burnett_64kb.mp3',
+  'Little Women':                'https://archive.org/download/little_women_librivox/littlewomen_01_alcott_64kb.mp3',
+  'A Little Princess':           'https://archive.org/download/a_little_princess_librivox/alittleprincess_01_burnett_64kb.mp3',
+  'Robinson Crusoe':             'https://archive.org/download/robinson_crusoe_librivox/robinsoncrusoe_01_defoe_64kb.mp3',
+  'Around the World in 80 Days': 'https://archive.org/download/around_the_world_in_80_days_librivox/aroundtheworldin80days_01_verne_64kb.mp3',
+  'Frankenstein':                'https://archive.org/download/frankenstein_librivox/frankenstein_01_shelley_64kb.mp3',
+  'Jane Eyre':                   'https://archive.org/download/jane_eyre_librivox/janeeyre_01_bronte_64kb.mp3',
+  'The Time Machine':            'https://archive.org/download/the_time_machine_librivox/thetimemachine_01_wells_64kb.mp3',
 };
 
 // Short original fairy-tale snippets for TTS (grade-appropriate)
@@ -6220,71 +6230,6 @@ window.addEventListener('appinstalled', function() {
 })();
 
 
-function  openStorylineReader(title, slug) {
-  // Look up YouTube ID for this book
-  var entry = STORYLINE_SLUGS[title] || {};
-  var ytId = entry.yt || null;
-
-  var old = document.getElementById('storylineOv'); if (old) old.remove();
-  var ov = document.createElement('div');
-  ov.id = 'storylineOv';
-  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(10,10,26,.93);display:flex;align-items:center;justify-content:center;padding:20px;';
-
-  var card = document.createElement('div');
-  card.style.cssText = 'background:white;border-radius:28px;overflow:hidden;width:100%;max-width:380px;';
-
-  var hdr = document.createElement('div');
-  hdr.style.cssText = 'background:linear-gradient(135deg,#2D1A4E,#5ECDA0);padding:24px 20px;text-align:center;color:white;';
-  hdr.innerHTML = '<div style="font-size:2.5rem;margin-bottom:8px;">📖</div>'
-    + '<div style="font-family:Baloo 2,cursive;font-size:1.1rem;font-weight:800;margin-bottom:4px;">' + title + '</div>'
-    + '<div style="font-size:.8rem;opacity:.85;">Celebrity Read-Aloud · Storyline Online</div>';
-  card.appendChild(hdr);
-
-  var body = document.createElement('div');
-  body.style.cssText = 'padding:20px;text-align:center;';
-  body.innerHTML = '<div style="font-size:.88rem;color:#555;line-height:1.6;margin-bottom:16px;">'
-    + '🎬 A celebrity reads this book aloud!<br>'
-    + 'Tap <b>Watch Now</b> — it will open in YouTube.<br>'
-    + '<span style="font-size:.78rem;color:#888;">Tap back when done to mark it complete.</span></div>';
-
-  // Primary button: open YouTube video (or Storyline page)
-  var watchBtn = document.createElement('button');
-  watchBtn.textContent = '🎬 Watch Read-Aloud';
-  watchBtn.style.cssText = 'width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#5ECDA0,#4ECDC4);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;margin-bottom:10px;';
-  watchBtn.onclick = function() {
-    var url = ytId
-      ? 'https://www.youtube.com/watch?v=' + ytId
-      : 'https://storylineonline.net/books/' + slug + '/';
-    window.open(url, '_blank');
-  };
-
-  var doneBtn = document.createElement('button');
-  doneBtn.textContent = 'I Read This! +15 Stars';
-  doneBtn.style.cssText = 'width:100%;padding:12px;border-radius:40px;border:none;background:#F0EEFF;color:#6B44CC;font-family:Nunito,sans-serif;font-weight:800;font-size:.88rem;cursor:pointer;margin-bottom:8px;';
-  doneBtn.onclick = function() {
-    ov.remove();
-    showComprehensionCheck(async function() {
-      try {
-        await upsertDailyActivity({minutes_reading:15});
-        await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:15});
-        sessionData.stars+=15;
-        var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;
-        toast('Great reading! +15 Stars'); completeMission('book');
-      } catch(e){}
-    });
-  };
-
-  var closeBtn = document.createElement('button');
-  closeBtn.textContent = 'Back';
-  closeBtn.style.cssText = 'width:100%;padding:10px;border-radius:40px;border:none;background:transparent;color:#999;font-family:Nunito,sans-serif;font-weight:700;cursor:pointer;font-size:.85rem;';
-  closeBtn.onclick = function() { ov.remove(); };
-
-  body.appendChild(watchBtn); body.appendChild(doneBtn); body.appendChild(closeBtn);
-  card.appendChild(body); ov.appendChild(card);
-  ov.onclick = function(e) { if(e.target===ov) ov.remove(); };
-  document.body.appendChild(ov);
-}
-
 function openStorylineSearch(title) {
   // Open Storyline Online search in-app - child stays in app
   var old = document.getElementById('storylineOv'); if (old) old.remove();
@@ -6717,4 +6662,30 @@ window.addEventListener('appinstalled', function() {
 
 </script>
 </body>
-</html>
+</htmlconst STORYLINE_SLUGS = {
+  'Harry the Dirty Dog': { slug:'harry-the-dirty-dog', yt:'BGTQ6F_ZGnk' },
+  'Chicka Chicka Boom Boom': { slug:'chicka-chicka-boom-boom', yt:'pjLPNM0ZSPY' },
+  'Corduroy': { slug:'corduroy', yt:'eUDpVF5m7TU' },
+  'The Snowy Day': { slug:'the-snowy-day', yt:'V2MzJkFSjhk' },
+  'Enemy Pie': { slug:'enemy-pie', yt:'FS7prmcPJ04' },
+  'Knuffle Bunny': { slug:'knuffle-bunny', yt:'A7pGhEeNh0o' },
+  'The Rainbow Fish': { slug:'the-rainbow-fish', yt:'xaJn0D5SXoA' },
+  'Last Stop on Market Street': { slug:'last-stop-on-market-street', yt:'pDL_Tg9HCmo' },
+  'The Dot': { slug:'the-dot', yt:'RaO-i2dAV9E' },
+  'Fancy Nancy': { slug:'fancy-nancy', yt:'I2MdXtJi-qs' },
+  'Pete the Cat: I Love My White Shoes': { slug:'pete-the-cat-i-love-my-white-shoes', yt:'SfzPVE4RFVo' },
+  "Don't Let the Pigeon Drive the Bus": { slug:'dont-let-the-pigeon-drive-the-bus', yt:'g6jKFJuYj0s' },
+  'Tops and Bottoms': { slug:'tops-and-bottoms', yt:'kAnhToH3IEI' },
+  'Each Kindness': { slug:'each-kindness', yt:'5V_EFKLt6-Y' },
+  'Thank You Mr Falker': { slug:'thank-you-mr-falker', yt:'oiLvlSE78Qo' },
+  'Stellaluna': { slug:'stellaluna', yt:'a6kBKuCNPBw' },
+  'Brave Irene': { slug:'brave-irene', yt:'VsxFDKj6v8c' },
+  'Frog and Toad Together': { slug:'frog-and-toad-together', yt:'cwAWiqiRVVw' },
+  'Crown': { slug:'crown', yt:'M04MqYEFPOU' },
+  'The Recess Queen': { slug:'the-recess-queen', yt:'QpNMbMrJLMk' },
+  'Elephant and Piggie': { slug:'elephant-and-piggie', yt:'cAiqeFk5ANM' },
+  'Separate is Never Equal': { slug:'separate-is-never-equal', yt:'7gAnUAVIVdc' },
+  'Ish': { slug:'ish', yt:'qBkAFdl9TRY' },
+};
+
+>
