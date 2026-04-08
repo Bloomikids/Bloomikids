@@ -2271,23 +2271,7 @@ let artTabBuilt = false;  // ✅ FIX 4: only build art tab once per child sessio
 
 // -- PWA -----------------------------------------------
 if ('serviceWorker' in navigator) {
-  // Unregister all old SWs, then register fresh — forces cache bust
-  navigator.serviceWorker.getRegistrations().then(function(regs) {
-    var hadOld = regs.some(r => !r.active || !r.active.scriptURL.includes('sw.js'));
-    regs.forEach(r => r.unregister());
-    navigator.serviceWorker.register('/sw.js?v=301').then(function(reg) {
-      reg.addEventListener('updatefound', function() {
-        var newSW = reg.installing;
-        newSW.addEventListener('statechange', function() {
-          if (newSW.state === 'activated') {
-            window.location.reload();
-          }
-        });
-      });
-    }).catch(function(){});
-  }).catch(function(){
-    navigator.serviceWorker.register('/sw.js?v=301').catch(function(){});
-  });
+  navigator.serviceWorker.register('/sw.js').catch(function(){});
 }
 
 // -- Offline -------------------------------------------
