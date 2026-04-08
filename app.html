@@ -709,7 +709,7 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
 <div id="welcomeScreen" class="hidden">
   <div class="welcome-wrap">
     <div class="welcome-logo-ring">
-      <img src="logo.png" alt="BloomiKids">
+      <img src="bloom_happy.png" alt="BloomiKids" style="width:100px;height:100px;object-fit:contain;">
     </div>
     <div class="welcome-confetti">🌟✨🌱🎉💫</div>
     <h1 class="welcome-h1">Welcome to<br>BloomiKids! 🎉</h1>
@@ -3408,13 +3408,17 @@ function renderQuestion() {
   answered=false;
   const questions = gradeContent.questions;
   const q = questions[qIdx % questions.length];
-  document.getElementById('quizQuestion').textContent = q.q;
-  const opts = document.getElementById('quizOptions');
-  opts.innerHTML = q.opts.map((o,i)=>
+  var qqEl=document.getElementById('quizQuestion');
+  var qoEl=document.getElementById('quizOptions');
+  var qfEl=document.getElementById('quizFeedback');
+  var nbEl=document.getElementById('nextBtn');
+  qqEl.style.display='block'; qoEl.style.display='block'; qfEl.style.display='block';
+  if(nbEl){nbEl.style.display='none'; nbEl.className='next-btn';}
+  qqEl.textContent = q.q;
+  qoEl.innerHTML = q.opts.map((o,i)=>
     `<button class="quiz-opt" onclick="checkAnswer(this,${i===q.answer})">${o}</button>`
   ).join('');
-  document.getElementById('quizFeedback').className='quiz-feedback';
-  var _nb=document.getElementById('nextBtn'); _nb.className='next-btn'; _nb.style.display='none';
+  qfEl.className='quiz-feedback';
 }
 
 const feedbackMessages = {
@@ -3438,7 +3442,7 @@ async function checkAnswer(btn, correct) {
   const fb   = document.getElementById('quizFeedback');
   fb.textContent = msg;
   fb.className   = `quiz-feedback show ${correct?'correct':'wrong'}`;
-  var _nb2=document.getElementById('nextBtn'); _nb2.className='next-btn show'; _nb2.style.display='block';
+  var _nb2=document.getElementById('nextBtn'); if(_nb2){ _nb2.className='next-btn show'; _nb2.style.display='block'; }
   const stars = correct?10:2;
   setSyncState('syncing');
   try {
@@ -4767,7 +4771,7 @@ function startSmartSession(title, icon, questions, onComplete) {
 
   var ov = document.createElement('div');
   ov.id = 'smartSessionOv';
-  ov.style.cssText = 'position:fixed;inset:0;z-index:9998;background:linear-gradient(135deg,#F4F1FF,#FFF0F8);display:flex;flex-direction:column;overflow:hidden;';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9998;background:linear-gradient(135deg,#F4F1FF,#FFF0F8);display:flex;flex-direction:column;';
 
   function buildHeader() {
     var hdr = document.createElement('div');
@@ -4936,7 +4940,7 @@ function startSmartSession(title, icon, questions, onComplete) {
   ov.appendChild(buildHeader());
   var body = document.createElement('div');
   body.id = 'sessionBody';
-  body.style.cssText = 'flex:1;overflow-y:auto;padding:20px;max-width:520px;margin:0 auto;width:100%;display:flex;flex-direction:column;';
+  body.style.cssText = 'flex:1;overflow-y:auto;padding:20px 20px 100px;max-width:520px;margin:0 auto;width:100%;display:flex;flex-direction:column;';
   ov.appendChild(body);
   document.body.appendChild(ov);
 
@@ -5576,23 +5580,22 @@ function openInAppVideo(title, videoId) {
 // LibriVox public domain audiobooks — direct MP3 from archive.org
 // 100% free, public domain, legal for commercial use
 const LIBRIVOX_AUDIO = {
-  // Verified archive.org LibriVox identifiers + real MP3 filenames
-  'Alice in Wonderland':         'https://archive.org/download/alices_adventures_in_wonderland_librivox/alicesadventuresinwonderland_01_carroll_64kb.mp3',
-  'The Wizard of Oz':            'https://archive.org/download/the_wonderful_wizard_of_oz_librivox/thewonderfulwizardofoz_01_baum_64kb.mp3',
-  'The Jungle Book':             'https://archive.org/download/the_jungle_book_librivox/thejunglebook_01_kipling_64kb.mp3',
-  'Pinocchio':                   'https://archive.org/download/pinocchio_librivox/pinocchio_01_collodi_64kb.mp3',
-  'Aesops Fables':               'https://archive.org/download/aesops_fables_librivox/aesopsfables_01_64kb.mp3',
-  'The Wind in the Willows':     'https://archive.org/download/wind_in_the_willows_librivox/windinthewillows_01_grahame_64kb.mp3',
-  'Treasure Island':             'https://archive.org/download/treasure_island_librivox/treasureisland_01_stevenson_64kb.mp3',
-  'Black Beauty':                'https://archive.org/download/black_beauty_librivox/blackbeauty_01_sewell_64kb.mp3',
-  'The Secret Garden':           'https://archive.org/download/the_secret_garden_librivox/thesecretgarden_01_burnett_64kb.mp3',
-  'Little Women':                'https://archive.org/download/little_women_librivox/littlewomen_01_alcott_64kb.mp3',
-  'A Little Princess':           'https://archive.org/download/a_little_princess_librivox/alittleprincess_01_burnett_64kb.mp3',
-  'Robinson Crusoe':             'https://archive.org/download/robinson_crusoe_librivox/robinsoncrusoe_01_defoe_64kb.mp3',
-  'Around the World in 80 Days': 'https://archive.org/download/around_the_world_in_80_days_librivox/aroundtheworldin80days_01_verne_64kb.mp3',
-  'Frankenstein':                'https://archive.org/download/frankenstein_librivox/frankenstein_01_shelley_64kb.mp3',
-  'Jane Eyre':                   'https://archive.org/download/jane_eyre_librivox/janeeyre_01_bronte_64kb.mp3',
-  'The Time Machine':            'https://archive.org/download/the_time_machine_librivox/thetimemachine_01_wells_64kb.mp3',
+  'Alice in Wonderland':         'https://archive.org/download/alicesadventuresinwonderland_librivox/alicesadventuresinwonderland_01_carroll.mp3',
+  'The Wizard of Oz':            'https://archive.org/download/wonderfulwizardofoz_librivox/wonderfulwizardofoz_01_baum.mp3',
+  'The Jungle Book':             'https://archive.org/download/jungle_book_mh_0808_librivox/01_-_Mowglis_Brothers_part_1_mh.mp3',
+  'Pinocchio':                   'https://archive.org/download/pinocchio_librivox/pinocchio_01_collodi.mp3',
+  'Aesops Fables':               'https://archive.org/download/aesopsfables_librivox/aesopsfables_01.mp3',
+  'The Wind in the Willows':     'https://archive.org/download/windinthewillows_librivox/windinthewillows_01_grahame.mp3',
+  'Treasure Island':             'https://archive.org/download/treasureisland_librivox/treasureisland_01_stevenson.mp3',
+  'Black Beauty':                'https://archive.org/download/blackbeauty_librivox/blackbeauty_01_sewell.mp3',
+  'The Secret Garden':           'https://archive.org/download/secretgarden_librivox/secretgarden_01_burnett.mp3',
+  'Little Women':                'https://archive.org/download/littlewomen_librivox/littlewomen_01_alcott.mp3',
+  'A Little Princess':           'https://archive.org/download/alittleprincess_librivox/alittleprincess_01_burnett.mp3',
+  'Robinson Crusoe':             'https://archive.org/download/robinsoncrusoe_librivox/robinsoncrusoe_01_defoe.mp3',
+  'Around the World in 80 Days': 'https://archive.org/download/aroundtheworldin80days_librivox/aroundtheworldin80days_01_verne.mp3',
+  'Frankenstein':                'https://archive.org/download/frankenstein_librivox/frankenstein_01_shelley.mp3',
+  'Jane Eyre':                   'https://archive.org/download/jane_eyre_librivox/janeeyre_01_bronte.mp3',
+  'The Time Machine':            'https://archive.org/download/thetimemachine_librivox/thetimemachine_01_wells.mp3',
 };
 
 // Short original fairy-tale snippets for TTS (grade-appropriate)
@@ -5623,7 +5626,7 @@ const STORY_TEXTS = {
 // ── Main entry point ──
 const STORYLINE_SLUGS = {
   'Harry the Dirty Dog': { slug:'harry-the-dirty-dog', yt:'BGTQ6F_ZGnk' },
-  'Chicka Chicka Boom Boom': { slug:'chicka-chicka-boom-boom', yt:'pjLPNM0ZSPY' },
+  'Chicka Chicka Boom Boom': { slug:'chicka-chicka-boom-boom', yt:null },
   'Corduroy': { slug:'corduroy', yt:'eUDpVF5m7TU' },
   'The Snowy Day': { slug:'the-snowy-day', yt:'V2MzJkFSjhk' },
   'Enemy Pie': { slug:'enemy-pie', yt:'FS7prmcPJ04' },
