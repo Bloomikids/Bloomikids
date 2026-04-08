@@ -193,7 +193,7 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .subtitle { color:var(--muted); font-size:var(--font-body); margin-bottom:24px; font-weight:600; }
 
 .bloomi-mascot-row { display:flex; align-items:center; gap:14px; margin-bottom:20px; min-height:110px; }
-.bloomi-mascot { width:80px; height:96px; object-fit:contain; cursor:pointer; filter:drop-shadow(0 4px 8px rgba(139,111,232,.25)); transition:transform .2s; }
+.bloomi-mascot { width:72px; height:88px; object-fit:contain; object-position:center bottom; cursor:pointer; filter:drop-shadow(0 4px 8px rgba(139,111,232,.2)); transition:transform .2s; }
 .bloomi-streak-card { flex:1; background:linear-gradient(135deg,#FF6B6B,#FFD166); border-radius:18px; padding:12px 16px; color:white; }
 .bloomi-streak-num { font-family:'Baloo 2',cursive; font-size:2rem; font-weight:800; line-height:1; }
 .bloomi-streak-label { font-size:.72rem; font-weight:800; opacity:.9; margin-top:2px; }
@@ -1602,76 +1602,105 @@ const GRADE_DATA = {
     ],
   },
 
+
   1: {
     label: 'Grade 1', gradeNum: 1,
     ui: {
-      subtitle:    "You're going to learn awesome things today! 🌟",
-      streakTitle: 'Super Streak!', streakSub: 'Keep it going every day!',
+      subtitle:    "You're a star learner! Let's go! ⭐",
+      streakTitle: 'Keep It Up!', streakSub: 'Every day makes you smarter!',
       tabLearn:'Learn', tabMove:'Move', tabRead:'Read', tabArt:'Art',
-      subjectsTitle:'📖 Today\'s Learning',
-      quizTitle:'🧠 Quiz Time!',
-      posesTitle:'🌟 Yoga Moves', breathSub:'Follow the flower. In when it grows, out when it shrinks!',
-      bookshelfTitle:'📚 My Books', timerTopLabel:'Hold this yoga pose!'
+      subjectsTitle:'📚 Today\'s Subjects',
+      quizTitle:'🌟 Quiz Time!',
+      posesTitle:'🧘 Yoga Poses',
+      breathSub:'Breathe in... breathe out...',
+      timerTopLabel:'Pose Timer',
+      bookshelfTitle:'📖 My Books',
     },
-    subjects:[
-      { icon:'🔢', title:'Numbers & Adding', desc:'Add numbers up to 20 and count on!', badge:'Let\'s add!', color:'mint' },
-      { icon:'📝', title:'Reading & Writing', desc:'Sound out words and write sentences!', badge:'Sound it out!', color:'coral' },
-      { icon:'🔬', title:'Science Fun', desc:'Plants, animals, and how things work!', badge:'Explore!', color:'lavender' },
-      { icon:'🌍', title:'Our Community', desc:'Families, helpers, and our neighborhood!', badge:'Learn more!', color:'sun' },
+    subjects_progress:['Math','Language Arts','Writing'],
+    poses:[
+      { emoji:'🌳', name:'Tree Pose',     tip:'Stand tall on one foot like a tree!', secs:20, level:'Easy' },
+      { emoji:'🐍', name:'Baby Cobra',    tip:'Lie on your tummy and push up gently!', secs:20, level:'Easy' },
+      { emoji:'🐸', name:'Frog',          tip:'Squat down low and jump like a frog!', secs:20, level:'Easy' },
+      { emoji:'🦋', name:'Butterfly',     tip:'Sit and gently flap your wings!', secs:30, level:'Easy' },
+      { emoji:'🌙', name:'Moon Pose',     tip:'Stretch side to side like the moon!', secs:20, level:'Easy' },
+      { emoji:'🏔', name:'Mountain Pose', tip:'Stand super tall like a mountain!', secs:15, level:'Easy' },
+      { emoji:'🙏', name:"Child's Pose",  tip:'Curl up small like a little seed!', secs:25, level:'Easy' },
+      { emoji:'🍼', name:'Happy Baby',    tip:'Lie on your back and grab your feet!', secs:20, level:'Easy' },
+      { emoji:'🦅', name:'Bird Dog',      tip:'Reach one arm and one leg out!', secs:20, level:'Medium' },
+      { emoji:'🌟', name:'Star Pose',     tip:'Spread arms and legs wide like a star!', secs:20, level:'Easy' },
+    ],
+    books:[
+      { title:'Harry the Dirty Dog',         author:'G. Zion',      pages:32,  read:0, emoji:'🐶' },
+      { title:'Chicka Chicka Boom Boom',     author:'B. Martin Jr', pages:40,  read:0, emoji:'🌴' },
+      { title:'Corduroy',                    author:'Don Freeman',  pages:32,  read:0, emoji:'🐻' },
+      { title:'The Snowy Day',               author:'E.J. Keats',   pages:40,  read:0, emoji:'❄️' },
+      { title:'Enemy Pie',                   author:'D. Munson',    pages:40,  read:0, emoji:'🥧' },
+      { title:'The Dot',                     author:'P. Reynolds',  pages:32,  read:0, emoji:'🔵' },
+      { title:'Knuffle Bunny',               author:'M. Willems',   pages:36,  read:0, emoji:'🐰' },
+      { title:'The Rainbow Fish',            author:'M. Pfister',   pages:32,  read:0, emoji:'🐟' },
+      { title:'Tops and Bottoms',            author:'J. Stevens',   pages:32,  read:0, emoji:'🐰' },
+      { title:'Alice in Wonderland',         author:'L. Carroll',   pages:96,  read:0, emoji:'🐇' },
+      { title:'The Wizard of Oz',            author:'L.F. Baum',    pages:120, read:0, emoji:'🌈' },
+      { title:'Pinocchio',                   author:'C. Collodi',   pages:80,  read:0, emoji:'🪆' },
+      { title:'Aesops Fables',               author:'Aesop',        pages:60,  read:0, emoji:'🦁' },
     ],
     questions:[
+      {q:'What is 5 + 3?',opts:['7','8','9','6'],answer:1,subject:'Math'},
+      {q:'What is 9 - 4?',opts:['4','5','6','3'],answer:1,subject:'Math'},
+      {q:'What is 7 + 6?',opts:['12','13','14','11'],answer:1,subject:'Math'},
+      {q:'What is 15 - 8?',opts:['6','7','8','9'],answer:1,subject:'Math'},
+      {q:'What is 6 + 7?',opts:['12','13','14','11'],answer:1,subject:'Math'},
+      {q:'What is 10 - 3?',opts:['6','7','8','9'],answer:1,subject:'Math'},
+      {q:'What is 8 + 5?',opts:['12','13','14','11'],answer:1,subject:'Math'},
+      {q:'What is 14 - 6?',opts:['7','8','9','6'],answer:1,subject:'Math'},
+      {q:'What is 9 + 9?',opts:['16','17','18','15'],answer:2,subject:'Math'},
+      {q:'What is 11 - 4?',opts:['6','7','8','5'],answer:1,subject:'Math'},
+      {q:'What is 6 + 8?',opts:['13','14','15','12'],answer:1,subject:'Math'},
+      {q:'What is 12 - 5?',opts:['6','7','8','9'],answer:1,subject:'Math'},
+      {q:'Count by 2s: 2, 4, 6, 8, __?',opts:['9','10','11','12'],answer:1,subject:'Math'},
+      {q:'Count by 5s: 5, 10, 15, __?',opts:['18','19','20','21'],answer:2,subject:'Math'},
+      {q:'Count by 10s: 10, 20, 30, __?',opts:['35','40','45','50'],answer:1,subject:'Math'},
+      {q:'How many ones in 13?',opts:['1','3','13','0'],answer:1,subject:'Math'},
+      {q:'How many tens in 30?',opts:['0','3','30','13'],answer:1,subject:'Math'},
+      {q:'What is 10 + 7?',opts:['16','17','18','15'],answer:1,subject:'Math'},
+      {q:'What is 20 - 10?',opts:['5','10','15','20'],answer:1,subject:'Math'},
+      {q:'Which number is bigger: 14 or 9?',opts:['9','14','Equal','Cannot tell'],answer:1,subject:'Math'},
+      {q:'What is 4 + 4?',opts:['6','7','8','9'],answer:2,subject:'Math'},
+      {q:'What is 16 - 7?',opts:['8','9','10','7'],answer:1,subject:'Math'},
+      {q:'What comes after 19?',opts:['18','20','21','17'],answer:1,subject:'Math'},
+      {q:'What is 3 + 9?',opts:['11','12','13','10'],answer:1,subject:'Math'},
+      {q:'What is 18 - 9?',opts:['8','9','10','7'],answer:1,subject:'Math'},
+      {q:'What is 7 + 7?',opts:['13','14','15','12'],answer:1,subject:'Math'},
+      {q:'Which number is less: 11 or 17?',opts:['17','11','Equal','Cannot tell'],answer:1,subject:'Math'},
+      {q:'What is 5 + 8?',opts:['12','13','14','11'],answer:1,subject:'Math'},
+      {q:'What is 20 - 5?',opts:['14','15','16','13'],answer:1,subject:'Math'},
+      {q:'What is 6 + 6?',opts:['11','12','13','10'],answer:1,subject:'Math'},
       {q:'What is a noun?',opts:['An action word','A describing word','A person place or thing','A connecting word'],answer:2,subject:'Language Arts'},
-      {q:'A word describing a noun is called a?',opts:['Verb','Noun','Adjective','Adverb'],answer:2,subject:'Language Arts'},
-      {q:'Which word has a silent E?',opts:['cat','hat','cake','man'],answer:2,subject:'Language Arts'},
-      {q:'What is a compound word?',opts:['A very long word','Two words joined together','A rhyming word','A plural word'],answer:1,subject:'Language Arts'},
-      {q:'What is the root word of RUNNING?',opts:['runn','run','runnin','running'],answer:1,subject:'Language Arts'},
-      {q:'Which rhymes with NIGHT?',opts:['Day','Light','Dark','Sun'],answer:1,subject:'Language Arts'},
-      {q:'What is a synonym?',opts:['A word with the opposite meaning','A word with a similar meaning','A rhyming word','A plural word'],answer:1,subject:'Language Arts'},
-      {q:'What is an antonym?',opts:['A word with a similar meaning','A word with the opposite meaning','A compound word','A suffix'],answer:1,subject:'Language Arts'},
-      {q:'What does the suffix -ful mean?',opts:['Without','Full of or having','Not','Before'],answer:1,subject:'Language Arts'},
-      {q:'Which is a proper noun?',opts:['dog','park','Sarah','school'],answer:2,subject:'Language Arts'},
-      {q:'A story has a beginning middle and?',opts:['Problem','Character','End','Setting'],answer:2,subject:'Language Arts'},
-      {q:'What is a prefix?',opts:['A word ending','Letters added to the beginning of a word','A root word','A type of noun'],answer:1,subject:'Language Arts'},
-      {q:'What does un- mean?',opts:['Again','Before','Not or opposite','After'],answer:2,subject:'Language Arts'},
-      {q:'What is the main idea?',opts:['A supporting detail','The most important point the author makes','A type of noun','The ending'],answer:1,subject:'Language Arts'},
-      {q:'What is matter?',opts:['Anything you can see','Anything that has mass and takes up space','Only solid things','Only liquids'],answer:1,subject:'Science'},
-      {q:'What is a food web?',opts:['A spider web for food','Multiple interconnected food chains in an ecosystem','A type of plant','A fishing net'],answer:1,subject:'Science'},
-      {q:'What is a living thing?',opts:['A rock','Anything that grows reproduces and responds to environment','A machine','A building'],answer:1,subject:'Science'},
-      {q:'What is the difference between living and non-living?',opts:['Living things eat only','Living things grow and respond - non-living do not','Non-living things move too','There is no difference'],answer:1,subject:'Science'},
-      {q:'What is a solid?',opts:['Has no definite shape','Has definite shape and volume','Takes the shape of its container','Has no definite volume'],answer:1,subject:'Science'},
-      {q:'What is the purpose of a law?',opts:['To make things boring','To keep people safe and treat everyone fairly','To give leaders power','To take money from people'],answer:1,subject:'Social Studies'},
-      {q:'What is culture?',opts:['A type of food only','The shared beliefs customs and traditions of a group','A kind of music only','A language only'],answer:1,subject:'Social Studies'},
-      {q:'What is 5 + 3?', opts:['7','8','9','6'], answer:1, subject:'Math'},
-      {q:'What is 9 - 4?', opts:['4','5','6','3'], answer:1, subject:'Math'},
-      {q:'What is 7 + 6?', opts:['12','13','14','11'], answer:1, subject:'Math'},
-      {q:'What is 15 - 8?', opts:['6','7','8','9'], answer:1, subject:'Math'},
-      {q:'What is 6 + 7?', opts:['12','13','14','11'], answer:1, subject:'Math'},
-      {q:'What is 10 - 3?', opts:['6','7','8','9'], answer:1, subject:'Math'},
-      {q:'What is 8 + 5?', opts:['12','13','14','11'], answer:1, subject:'Math'},
-      {q:'What is 14 - 6?', opts:['7','8','9','6'], answer:1, subject:'Math'},
-      {q:'What is 9 + 9?', opts:['16','17','18','15'], answer:2, subject:'Math'},
-      {q:'What is 11 - 4?', opts:['6','7','8','5'], answer:1, subject:'Math'},
-      {q:'What is 6 + 8?', opts:['13','14','15','12'], answer:1, subject:'Math'},
-      {q:'What is 12 - 5?', opts:['6','7','8','9'], answer:1, subject:'Math'},
-      {q:'Count by 2s: 2, 4, 6, 8, __?', opts:['9','10','11','12'], answer:1, subject:'Math'},
-      {q:'Count by 5s: 5, 10, 15, __?', opts:['18','19','20','21'], answer:2, subject:'Math'},
-      {q:'Count by 10s: 10, 20, 30, __?', opts:['35','40','45','50'], answer:1, subject:'Math'},
-      {q:'How many ones in 13?', opts:['1','3','13','0'], answer:1, subject:'Math'},
-      {q:'How many tens in 30?', opts:['0','3','30','13'], answer:1, subject:'Math'},
-      {q:'What is 10 + 7?', opts:['16','17','18','15'], answer:1, subject:'Math'},
-      {q:'What is 20 - 10?', opts:['5','10','15','20'], answer:1, subject:'Math'},
-      {q:'Which number is bigger: 14 or 9?', opts:['9','14','They are equal','Cannot tell'], answer:1, subject:'Math'},
-      {q:'What is 4 + 4?', opts:['6','7','8','9'], answer:2, subject:'Math'},
-      {q:'What is 16 - 7?', opts:['8','9','10','7'], answer:1, subject:'Math'},
-      {q:'What comes after 19?', opts:['18','20','21','17'], answer:1, subject:'Math'},
-      {q:'What is 3 + 9?', opts:['11','12','13','10'], answer:1, subject:'Math'},
-      {q:'What is 18 - 9?', opts:['8','9','10','7'], answer:1, subject:'Math'},
-      {q:'What is 7 + 7?', opts:['13','14','15','12'], answer:1, subject:'Math'},
-      {q:'Which number is less: 11 or 17?', opts:['17','11','They are equal','Cannot tell'], answer:1, subject:'Math'},
-      {q:'What is 5 + 8?', opts:['12','13','14','11'], answer:1, subject:'Math'},
-      {q:'What is 20 - 5?', opts:['14','15','16','13'], answer:1, subject:'Math'},
-      {q:'What is 6 + 6?', opts:['11','12','13','10'], answer:1, subject:'Math'}
-    ]
+      {q:'Which word is a verb (action word)?',opts:['cat','happy','run','blue'],answer:2,subject:'Language Arts'},
+      {q:'Which word rhymes with TREE?',opts:['far','see','big','run'],answer:1,subject:'Language Arts'},
+      {q:'What is the opposite of BIG?',opts:['huge','tall','small','wide'],answer:2,subject:'Language Arts'},
+      {q:'Which word starts with the letter P?',opts:['apple','ball','pig','dog'],answer:2,subject:'Language Arts'},
+      {q:'Which word is a color?',opts:['run','blue','jump','tall'],answer:1,subject:'Language Arts'},
+      {q:'What letter comes after M?',opts:['L','K','N','O'],answer:2,subject:'Language Arts'},
+      {q:'How many letters in DOG?',opts:['2','3','4','5'],answer:1,subject:'Language Arts'},
+      {q:'Which word is an animal?',opts:['run','happy','dog','blue'],answer:2,subject:'Language Arts'},
+      {q:'What letter starts "sun"?',opts:['T','R','S','P'],answer:2,subject:'Language Arts'},
+      {q:'Which word needs a capital letter?',opts:['cat','monday','apple','run'],answer:1,subject:'Writing'},
+      {q:'Which sentence is correct?',opts:['i like dogs.','I like dogs.','I like dogs','i Like Dogs'],answer:1,subject:'Writing'},
+      {q:'What mark ends a question?',opts:['.','!','?',','],answer:2,subject:'Writing'},
+      {q:'Which is a complete sentence?',opts:['The big dog.','Ran fast.','The dog ran.','Fast!'],answer:2,subject:'Writing'},
+      {q:'Which word is spelled correctly?',opts:['frend','freind','friend','friand'],answer:2,subject:'Writing'},
+      {q:'Every sentence starts with a ...',opts:['period','capital letter','comma','question mark'],answer:1,subject:'Writing'},
+      {q:'Which word is a noun?',opts:['run','jump','cat','fast'],answer:2,subject:'Writing'},
+      {q:'Which word is an adjective?',opts:['dog','run','big','ate'],answer:2,subject:'Writing'},
+    ],
+    words:[
+      { w:'Learn',   d:'To find out something new! 📚' },
+      { w:'Grow',    d:'To get bigger and better! 🌱' },
+      { w:'Try',     d:'To give something a go! 💪' },
+      { w:'Friend',  d:'Someone you like to play with! 🤝' },
+      { w:'Bright',  d:'Smart and full of light! ☀' },
+    ],
   },
 
   2: {
@@ -5592,6 +5621,47 @@ const STORY_TEXTS = {
 };
 
 // ── Main entry point ──
+const STORYLINE_SLUGS = {
+  'Harry the Dirty Dog': { slug:'harry-the-dirty-dog', yt:'BGTQ6F_ZGnk' },
+  'Chicka Chicka Boom Boom': { slug:'chicka-chicka-boom-boom', yt:'pjLPNM0ZSPY' },
+  'Corduroy': { slug:'corduroy', yt:'eUDpVF5m7TU' },
+  'The Snowy Day': { slug:'the-snowy-day', yt:'V2MzJkFSjhk' },
+  'Enemy Pie': { slug:'enemy-pie', yt:'FS7prmcPJ04' },
+  'Knuffle Bunny': { slug:'knuffle-bunny', yt:'A7pGhEeNh0o' },
+  'The Rainbow Fish': { slug:'the-rainbow-fish', yt:'xaJn0D5SXoA' },
+  'Last Stop on Market Street': { slug:'last-stop-on-market-street', yt:'pDL_Tg9HCmo' },
+  'The Dot': { slug:'the-dot', yt:'RaO-i2dAV9E' },
+  'Fancy Nancy': { slug:'fancy-nancy', yt:'I2MdXtJi-qs' },
+  'Pete the Cat: I Love My White Shoes': { slug:'pete-the-cat-i-love-my-white-shoes', yt:'SfzPVE4RFVo' },
+  "Don't Let the Pigeon Drive the Bus": { slug:'dont-let-the-pigeon-drive-the-bus', yt:'g6jKFJuYj0s' },
+  'Tops and Bottoms': { slug:'tops-and-bottoms', yt:'kAnhToH3IEI' },
+  'Each Kindness': { slug:'each-kindness', yt:'5V_EFKLt6-Y' },
+  'Thank You Mr Falker': { slug:'thank-you-mr-falker', yt:'oiLvlSE78Qo' },
+  'Stellaluna': { slug:'stellaluna', yt:'a6kBKuCNPBw' },
+  'Brave Irene': { slug:'brave-irene', yt:'VsxFDKj6v8c' },
+  'Frog and Toad Together': { slug:'frog-and-toad-together', yt:'cwAWiqiRVVw' },
+  'Crown': { slug:'crown', yt:'M04MqYEFPOU' },
+  'The Recess Queen': { slug:'the-recess-queen', yt:'QpNMbMrJLMk' },
+  'Elephant and Piggie': { slug:'elephant-and-piggie', yt:'cAiqeFk5ANM' },
+  'Separate is Never Equal': { slug:'separate-is-never-equal', yt:'7gAnUAVIVdc' },
+  'Ish': { slug:'ish', yt:'qBkAFdl9TRY' },
+};
+
+function getStorylineSlug(title) {
+  if (!title || typeof STORYLINE_SLUGS === 'undefined') return null;
+  var t = title.trim();
+  if (STORYLINE_SLUGS[t]) return STORYLINE_SLUGS[t];
+  // Fuzzy match
+  var keys = Object.keys(STORYLINE_SLUGS);
+  for (var i = 0; i < keys.length; i++) {
+    if (t.toLowerCase().includes(keys[i].toLowerCase()) ||
+        keys[i].toLowerCase().includes(t.toLowerCase())) {
+      return STORYLINE_SLUGS[keys[i]];
+    }
+  }
+  return null;
+}
+
 function openBookReader(title, readAloudUrl) {
   var t = (title || '').trim();
 
@@ -6798,33 +6868,6 @@ window.addEventListener('appinstalled', function() {
   }
 })();
 
-
-
-const STORYLINE_SLUGS = {
-  'Harry the Dirty Dog': { slug:'harry-the-dirty-dog', yt:'BGTQ6F_ZGnk' },
-  'Chicka Chicka Boom Boom': { slug:'chicka-chicka-boom-boom', yt:'pjLPNM0ZSPY' },
-  'Corduroy': { slug:'corduroy', yt:'eUDpVF5m7TU' },
-  'The Snowy Day': { slug:'the-snowy-day', yt:'V2MzJkFSjhk' },
-  'Enemy Pie': { slug:'enemy-pie', yt:'FS7prmcPJ04' },
-  'Knuffle Bunny': { slug:'knuffle-bunny', yt:'A7pGhEeNh0o' },
-  'The Rainbow Fish': { slug:'the-rainbow-fish', yt:'xaJn0D5SXoA' },
-  'Last Stop on Market Street': { slug:'last-stop-on-market-street', yt:'pDL_Tg9HCmo' },
-  'The Dot': { slug:'the-dot', yt:'RaO-i2dAV9E' },
-  'Fancy Nancy': { slug:'fancy-nancy', yt:'I2MdXtJi-qs' },
-  'Pete the Cat: I Love My White Shoes': { slug:'pete-the-cat-i-love-my-white-shoes', yt:'SfzPVE4RFVo' },
-  "Don't Let the Pigeon Drive the Bus": { slug:'dont-let-the-pigeon-drive-the-bus', yt:'g6jKFJuYj0s' },
-  'Tops and Bottoms': { slug:'tops-and-bottoms', yt:'kAnhToH3IEI' },
-  'Each Kindness': { slug:'each-kindness', yt:'5V_EFKLt6-Y' },
-  'Thank You Mr Falker': { slug:'thank-you-mr-falker', yt:'oiLvlSE78Qo' },
-  'Stellaluna': { slug:'stellaluna', yt:'a6kBKuCNPBw' },
-  'Brave Irene': { slug:'brave-irene', yt:'VsxFDKj6v8c' },
-  'Frog and Toad Together': { slug:'frog-and-toad-together', yt:'cwAWiqiRVVw' },
-  'Crown': { slug:'crown', yt:'M04MqYEFPOU' },
-  'The Recess Queen': { slug:'the-recess-queen', yt:'QpNMbMrJLMk' },
-  'Elephant and Piggie': { slug:'elephant-and-piggie', yt:'cAiqeFk5ANM' },
-  'Separate is Never Equal': { slug:'separate-is-never-equal', yt:'7gAnUAVIVdc' },
-  'Ish': { slug:'ish', yt:'qBkAFdl9TRY' },
-};
 
 </script>
 </body>
