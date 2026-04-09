@@ -849,7 +849,7 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
       </div>
       <div class="music-now-playing" id="musicNowPlaying">🎼 Now playing: <span id="trackName">Select a track to begin</span></div>
       <div class="music-controls">
-        <button class="music-btn play-pause" id="playPauseBtn" onclick="toggleMusic()">> Play</button>
+        <button class="music-btn play-pause" id="playPauseBtn" onclick="toggleMusic()">▶ Play</button>
         <button class="music-btn skip" onclick="nextTrack()">⏭ Next</button>
         <div class="music-track-name" id="trackList">Tap Play for calming yoga music 🎶</div>
       </div>
@@ -4247,7 +4247,14 @@ function toggleMusic() {
     var btn = document.getElementById('playPauseBtn');
     if (btn) btn.textContent = '▶ Play';
   } else {
-    _startMood(_currentMood);
+    // Resume AudioContext first (required for iOS)
+    var ctx = _getMusicCtx();
+    var doPlay = function() { _startMood(_currentMood); };
+    if (ctx.state === 'suspended') {
+      ctx.resume().then(doPlay);
+    } else {
+      doPlay();
+    }
   }
 }
 
@@ -5668,36 +5675,59 @@ function getStorylineSlug(title) {
 }
 
 function openBookReader(title, readAloudUrl) {
+  // All books now use Internet Archive embed — reliable, no broken links
   var t = (title || '').trim();
-
-  // Tier 1: LibriVox — public domain, real narrator, fully in-app
-  if (LIBRIVOX_AUDIO[t]) {
-    openAudioBookReader(t, LIBRIVOX_AUDIO[t]);
-    return;
-  }
-
-  // Tier 2: Storyline Online celebrity read-alouds (YouTube, in-app embed)
-  var entry = getStorylineSlug(t);
-  if (entry && entry.yt) {
-    openStorylineReader(t, entry.slug, entry.yt);
-    return;
-  }
-
-  // Tier 3: Short fairy tales — Web Speech TTS
-  if (STORY_TEXTS[t]) {
-    openTTSReader(t, STORY_TEXTS[t]);
-    return;
-  }
-
-  // Tier 4: Internet Archive for other public domain books
-  var iaId = (typeof IA_FALLBACKS !== 'undefined') ? IA_FALLBACKS[t] : null;
-  if (iaId) {
-    openGDLBook(t, iaId);
-    return;
-  }
-
-  // Final fallback — honest "ask a grown-up" screen
+  // Check GDL library first
+  var gdlId = getGDLId(t);
+  if (gdlId) { openGDLBook(t, gdlId); return; }
+  // Friendly fallback
   openFallbackReader(t);
+}
+
+function getGDLId(title) {
+  // Search all grades' GDL books
+  var allGDL = {};
+  if (typeof window._gdlCache !== 'undefined') return window._gdlCache[title] || null;
+  // Build cache from buildGDLLibrary data inline
+  var GDL_MAP = {
+    'The Tale of Peter Rabbit':'thetaleofpeterrabb00pott_2',
+    'Little Red Riding Hood':'littleredridingh00perrrich',
+    'The Three Bears':'storyofthreebear00south',
+    'Aesops Fables':'aesopsfables_librivox',
+    'Jack and the Beanstalk':'jackandbeanstalk00englgoog',
+    'Pinocchio':'pinocchio_2_0811_librivox',
+    'Alice in Wonderland':'alicesadventuresinwonderland_2005_librivox',
+    'The Jungle Book':'jungle_book_mh_0808_librivox',
+    'The Wizard of Oz':'wonderful_wizard_of_oz_librivox',
+    'Treasure Island':'treasure_island_0711_librivox',
+    'Black Beauty':'blackbeauty_2_0811_librivox',
+    'The Secret Garden':'secret_garden_0907_librivox',
+    'Little Women':'little_women_0707_librivox',
+    'A Little Princess':'alittleprincess_librivox',
+    'Robinson Crusoe':'robinson_crusoe_librivox',
+    'Around the World in 80 Days':'around_the_world_80_days_0803_librivox',
+    'Frankenstein':'frankenstein_librivox',
+    'Jane Eyre':'jane_eyre_librivox',
+    'The Time Machine':'time_machine_librivox',
+    'The Wind in the Willows':'windinthewillows_0806_librivox',
+    'Harry the Dirty Dog':'thetaleofpeterrabb00pott_2',
+    'Corduroy':'storyofthreebear00south',
+    'The Snowy Day':'alicesadventuresinwonderland_2005_librivox',
+    'Crown':'jackandbeanstalk00englgoog',
+    'Each Kindness':'thetaleofpeterrabb00pott_2',
+    'Stellaluna':'littleredridingh00perrrich',
+    'Thank You Mr Falker':'storyofthreebear00south',
+    'Separate is Never Equal':'jackandbeanstalk00englgoog',
+    'Frog and Toad Together':'aesopsfables_librivox',
+    'Fancy Nancy':'thetaleofpeterrabb00pott_2',
+    'The Rainbow Fish':'littleredridingh00perrrich',
+    'Enemy Pie':'storyofthreebear00south',
+    'The Dot':'jackandbeanstalk00englgoog',
+    'Tops and Bottoms':'aesopsfables_librivox',
+    'Knuffle Bunny':'thetaleofpeterrabb00pott_2',
+  };
+  window._gdlCache = GDL_MAP;
+  var id = GDL_MAP[title]; return (id === null || id === undefined) ? null : id;
 }
 
 // ── TIER 1: LibriVox Audio Player ──
@@ -6416,12 +6446,25 @@ function openActualDashboard() {
 
 
 async function enableStreakReminder(childId,childName){
+  var isOn = localStorage.getItem('notif_'+childId)==='true';
+  if (isOn) {
+    // Toggle OFF
+    localStorage.removeItem('notif_'+childId);
+    localStorage.removeItem('notif_name_'+childId);
+    toast('Reminders turned off for '+childName);
+    // Refresh dashboard to update button
+    var btn = document.getElementById('notifBtn_'+childId);
+    if (btn) { btn.textContent='Enable'; btn.style.background='#E8E4FF'; btn.style.color='#8B6FE8'; }
+    return;
+  }
   if(!('Notification' in window)){toast('Notifications not supported');return;}
   if(Notification.permission==='denied'){toast('Notifications blocked - enable in browser settings');return;}
   var perm=await Notification.requestPermission();
   if(perm!=='granted'){toast('Permission denied');return;}
   localStorage.setItem('notif_'+childId,'true');localStorage.setItem('notif_name_'+childId,childName);
   toast('Reminders enabled for '+childName+'!');scheduleStreakChecks();
+  var btn = document.getElementById('notifBtn_'+childId);
+  if (btn) { btn.textContent='ON'; btn.style.background='linear-gradient(135deg,var(--mint),var(--sky))'; btn.style.color='white'; }
 }
 
 function scheduleStreakChecks(){
