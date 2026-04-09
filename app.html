@@ -97,13 +97,10 @@ body::after  { content:''; position:fixed; width:600px; height:600px; background
 }
 @keyframes welcomePop{from{opacity:0;transform:scale(.8) translateY(30px)}to{opacity:1;transform:scale(1) translateY(0)}}
 .welcome-logo-ring{
-  width:120px;height:120px;
-  border-radius:50%;
-  overflow:hidden;
+  width:160px;height:160px;
   margin:0 auto 16px;
-  border:4px solid rgba(94,205,160,.3);
-  box-shadow:0 0 0 8px rgba(94,205,160,.1), 0 20px 60px rgba(94,205,160,.2);
   animation:float 4s ease-in-out infinite;
+  display:flex;align-items:center;justify-content:center;
 }
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 .welcome-logo-ring img{width:100%;height:100%;object-fit:contain;}
@@ -217,7 +214,7 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .continue-card-title { font-family:'Baloo 2',cursive; font-size:.85rem; font-weight:800; color:#2D2D4E; }
 .continue-card-sub { font-size:.75rem; color:var(--muted); font-weight:600; margin-top:2px; }
 .continue-card-arrow { font-size:1.2rem; color:var(--muted); flex-shrink:0; }
-.bloom-level-sprite { width:60px; height:76px; flex-shrink:0; object-fit:contain; }
+.bloom-level-sprite { width:80px; height:96px; flex-shrink:0; object-fit:contain; }
 .bloom-level-info { flex:1; }
 .bloom-level-name { font-family:'Baloo 2',cursive; font-size:.85rem; font-weight:800; color:#2D2D4E; }
 .bloom-level-bar { height:6px; background:#F0EEFF; border-radius:10px; margin-top:4px; overflow:hidden; }
@@ -606,8 +603,9 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
 /* -- MODAL OVERLAY (grade + avatar pickers) ------------ */
 .modal-overlay {
   position:fixed; inset:0; z-index:9000;
-  background:rgba(45,45,78,.7); backdrop-filter:blur(4px);
+  background:#F4F1FF;
   display:flex; align-items:center; justify-content:center; padding:24px;
+  overflow-y:auto;
 }
 .modal-card {
   background:white; border-radius:28px; padding:32px;
@@ -709,7 +707,7 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
 <div id="welcomeScreen" class="hidden">
   <div class="welcome-wrap">
     <div class="welcome-logo-ring">
-      <img src="bloom_happy.png" alt="BloomiKids" style="width:100px;height:100px;object-fit:contain;">
+      <img src="bloom_happy.png" alt="BloomiKids" style="width:150px;height:150px;object-fit:contain;display:block;">
     </div>
     <div class="welcome-confetti">🌟✨🌱🎉💫</div>
     <h1 class="welcome-h1">Welcome to<br>BloomiKids! 🎉</h1>
@@ -5178,7 +5176,7 @@ function openMathGame(grade) {
       +'<button onclick="document.getElementById(\'mathGameOv\').remove();" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:30px;height:30px;cursor:pointer;font-weight:800;">X</button>'
       +'</div>'
       +'<div style="flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;">'
-      +'<div id="mathDisplay" style="font-size:2rem;font-weight:800;text-align:center;white-space:pre-line;color:#2D2D4E;margin-bottom:12px;line-height:1.4;">'+q.display+'</div>'
+      +'<div id="mathDisplay" style="font-size:2rem;font-weight:800;text-align:center;color:#2D2D4E;margin-bottom:12px;line-height:1.4;">'+q.display+'</div>'
       +(q.question?'<div style="font-size:1.1rem;font-weight:800;color:#8B6FE8;margin-bottom:16px;">'+q.question+'</div>':'')
       +(grade==='PreK'||grade==='K'||grade==='1'?'<div style="text-align:center;margin-bottom:8px;"><button onclick="window._readMathQ&&window._readMathQ()" style="padding:7px 16px;border-radius:30px;border:none;background:linear-gradient(135deg,var(--sky),var(--mint));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.82rem;cursor:pointer;">🔈 Read to Me</button></div>':'')
       +'<div id="mathOpts" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:320px;">'
@@ -5718,7 +5716,7 @@ function getGDLId(title) {
     'Stellaluna':'littleredridingh00perrrich',
     'Thank You Mr Falker':'storyofthreebear00south',
     'Separate is Never Equal':'jackandbeanstalk00englgoog',
-    'Frog and Toad Together':'aesopsfables_librivox',
+    'Frog and Toad Together':null,
     'Fancy Nancy':'thetaleofpeterrabb00pott_2',
     'The Rainbow Fish':'littleredridingh00perrrich',
     'Enemy Pie':'storyofthreebear00south',
@@ -6222,227 +6220,172 @@ function openActualDashboard() {
   var old = document.getElementById('parentDashOv'); if (old) old.remove();
   var ov = document.createElement('div');
   ov.id = 'parentDashOv';
-  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#F0EEFF;overflow-y:auto;font-family:Nunito,sans-serif;';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#4B2D8B 0%,#7B52C8 50%,#9B6FE8 100%);overflow-y:auto;font-family:Nunito,sans-serif;';
 
   // ── HEADER ──
   var hdr = document.createElement('div');
-  hdr.style.cssText = 'background:linear-gradient(135deg,#2D1A4E 0%,#8B6FE8 100%);padding:24px 20px 20px;color:white;position:sticky;top:0;z-index:2;';
-  hdr.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:flex-start;">'
-    + '<div>'
-    + '<div style="font-family:Baloo 2,cursive;font-size:1.4rem;font-weight:800;letter-spacing:-.3px;">Parent Settings</div>'
-    + '<div style="font-size:.8rem;opacity:.75;margin-top:2px;">BloomiKids · Track, manage, and grow</div>'
-    + '</div>'
-    + '<button onclick="document.getElementById(\'parentDashOv\').remove()" style="background:rgba(255,255,255,.18);border:none;color:white;border-radius:50%;width:36px;height:36px;font-size:1.1rem;cursor:pointer;font-weight:800;display:flex;align-items:center;justify-content:center;">✕</button>'
-    + '</div>';
+  hdr.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:20px 20px 10px;';
+  var closeBtn = document.createElement('button');
+  closeBtn.innerHTML = '&times;';
+  closeBtn.style.cssText = 'background:rgba(255,255,255,.2);border:none;color:white;width:36px;height:36px;border-radius:50%;font-size:1.4rem;cursor:pointer;font-weight:800;display:flex;align-items:center;justify-content:center;';
+  closeBtn.onclick = function(){ ov.remove(); };
+  hdr.innerHTML = '<div style="font-family:Baloo 2,cursive;font-size:1.3rem;font-weight:800;color:white;letter-spacing:-.3px;">Parent Settings</div>';
+  hdr.appendChild(closeBtn);
   ov.appendChild(hdr);
 
-  // ── QUICK ACTIONS GRID (Homer-inspired) ──
-  var gridSection = document.createElement('div');
-  gridSection.style.cssText = 'padding:20px;max-width:480px;margin:0 auto;';
+  // ── GEAR GRID (Homer-style) ──
+  var grid = document.createElement('div');
+  grid.style.cssText = 'display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:16px 20px 24px;max-width:480px;margin:0 auto;';
 
-  var gridTitle = document.createElement('div');
-  gridTitle.style.cssText = 'font-family:Baloo 2,cursive;font-size:.85rem;font-weight:800;color:#8B6FE8;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;';
-  gridTitle.textContent = 'Quick Settings';
-  gridSection.appendChild(gridTitle);
-
-  var actions = [
-    { icon:'👶', label:'Manage Children', color:'#8B6FE8', bg:'#EDE9FF', fn:'showManageChildren()' },
-    { icon:'🔔', label:'Streak Reminders', color:'#FF6B6B', bg:'#FFEEEE', fn:'showReminderSettings()' },
-    { icon:'📊', label:'Progress Report', color:'#5ECDA0', bg:'#E8FBF3', fn:'showProgressSection()' },
-    { icon:'🎯', label:'Learning Goals', color:'#FFB347', bg:'#FFF4E0', fn:'showGoalsSection()' },
-    { icon:'📋', label:'Common Core', color:'#5B8DEF', bg:'#E8F0FF', fn:'showStandardsSection()' },
-    { icon:'🔒', label:'Privacy Policy', color:'#888', bg:'#F5F5F5', fn:'window.open(\'privacy.html\',\'_blank\')' },
+  var tiles = [
+    { icon:'👶', label:'Manage Children',   color:'#5ECDA0', fn: function(){ showManageChildrenPanel(content); } },
+    { icon:'🔔', label:'Streak Reminders',  color:'#FFD166', fn: function(){ showReminderPanel(content); } },
+    { icon:'📊', label:'Progress Report',   color:'#5B8DEF', fn: function(){ showProgressPanel(content); } },
+    { icon:'🎯', label:'Learning Goals',    color:'#FF6B6B', fn: function(){ showGoalsPanel(content); } },
+    { icon:'📋', label:'Common Core',       color:'#C9B8FF', fn: function(){ showStandardsPanel(content); } },
+    { icon:'🔒', label:'Privacy Policy',    color:'#aaa',    fn: function(){ window.open('privacy.html','_blank'); } },
   ];
 
-  var grid = document.createElement('div');
-  grid.style.cssText = 'display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px;';
-  actions.forEach(function(a) {
+  tiles.forEach(function(tile) {
     var cell = document.createElement('div');
-    cell.style.cssText = 'background:white;border-radius:18px;padding:16px 8px;text-align:center;cursor:pointer;box-shadow:0 2px 12px rgba(45,45,78,.08);transition:transform .15s,box-shadow .15s;';
-    cell.innerHTML = '<div style="width:44px;height:44px;border-radius:14px;background:'+a.bg+';display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin:0 auto 8px;">'+a.icon+'</div>'
-      + '<div style="font-size:.72rem;font-weight:800;color:#2D2D4E;line-height:1.2;">'+a.label+'</div>';
-    cell.addEventListener('mouseenter', function() { this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(45,45,78,.14)'; });
-    cell.addEventListener('mouseleave', function() { this.style.transform=''; this.style.boxShadow='0 2px 12px rgba(45,45,78,.08)'; });
-    cell.onclick = new Function(a.fn);
-    gridSection.appendChild ? null : null;
+    cell.style.cssText = 'background:rgba(255,255,255,.12);border-radius:20px;padding:18px 8px 14px;text-align:center;cursor:pointer;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);transition:transform .15s,background .15s;';
+    // Gear ring
+    cell.innerHTML = '<div style="width:54px;height:54px;margin:0 auto 10px;background:rgba(255,255,255,.15);border-radius:50%;border:3px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:1.6rem;">' + tile.icon + '</div>'
+      + '<div style="font-size:.72rem;font-weight:800;color:white;line-height:1.3;white-space:pre-line;">' + tile.label + '</div>';
+    cell.addEventListener('touchstart', function(){ this.style.transform='scale(.95)'; this.style.background='rgba(255,255,255,.22)'; });
+    cell.addEventListener('touchend', function(){ this.style.transform=''; this.style.background='rgba(255,255,255,.12)'; });
+    cell.addEventListener('mouseenter', function(){ this.style.transform='scale(.97)'; this.style.background='rgba(255,255,255,.2)'; });
+    cell.addEventListener('mouseleave', function(){ this.style.transform=''; this.style.background='rgba(255,255,255,.12)'; });
+    cell.onclick = tile.fn;
     grid.appendChild(cell);
   });
-  gridSection.appendChild(grid);
-  ov.appendChild(gridSection);
+  ov.appendChild(grid);
 
-  // ── CONTENT AREA — changes based on which section is active ──
-  var contentArea = document.createElement('div');
-  contentArea.id = 'parentContentArea';
-  contentArea.style.cssText = 'padding:0 20px 20px;max-width:480px;margin:0 auto;';
-  ov.appendChild(contentArea);
+  // ── CONTENT AREA ──
+  var content = document.createElement('div');
+  content.style.cssText = 'background:white;border-radius:28px 28px 0 0;min-height:50vh;padding:24px 20px;max-width:480px;margin:0 auto;width:100%;';
+  content.innerHTML = '<div style="text-align:center;color:#aaa;padding:40px 0;font-size:.9rem;">Tap a tile above to get started</div>';
+  ov.appendChild(content);
   document.body.appendChild(ov);
 
-  // Default: show progress section
-  showProgressSection();
-
-  // ─── SECTION FUNCTIONS ───
-
-  function sectionHeader(title, subtitle) {
-    return '<div style="font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:#2D2D4E;margin-bottom:2px;">'+title+'</div>'
-      + (subtitle ? '<div style="font-size:.72rem;color:#aaa;margin-bottom:14px;">'+subtitle+'</div>' : '<div style="margin-bottom:14px;"></div>');
+  // ── PANEL FUNCTIONS ──
+  function showProgressPanel(c) {
+    c.innerHTML = '<div style="font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:#2D2D4E;margin-bottom:14px;">📊 Progress Report</div><div style="text-align:center;color:#aaa;padding:20px 0;">Loading...</div>';
+    loadProgressData(c);
   }
 
-  function card(inner, extraStyle) {
-    var d = document.createElement('div');
-    d.style.cssText = 'background:white;border-radius:20px;padding:18px;margin-bottom:12px;box-shadow:0 4px 16px rgba(45,45,78,.07);' + (extraStyle||'');
-    d.innerHTML = inner;
-    return d;
-  }
-
-  window.showProgressSection = async function() {
-    var area = document.getElementById('parentContentArea');
-    if (!area) return;
-    area.innerHTML = '<div style="text-align:center;padding:20px;color:#aaa;font-size:.85rem;">Loading...</div>';
+  async function loadProgressData(c) {
     try {
       var res = await sb.from('children').select('*').eq('parent_id', currentUser.id);
       var children = res.data || [];
-      area.innerHTML = sectionHeader('📊 Progress Report', 'Last 7 days of learning activity');
       if (!children.length) {
-        area.innerHTML += '<div style="text-align:center;padding:24px;color:#aaa;">No children added yet. Use Manage Children to get started!</div>';
+        c.innerHTML = '<div style="font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:#2D2D4E;margin-bottom:14px;">📊 Progress Report</div><div style="text-align:center;color:#aaa;padding:20px;">No children added yet.</div>';
         return;
       }
-      for (var ci = 0; ci < children.length; ci++) {
-        var child = children[ci];
+      var html = '<div style="font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:#2D2D4E;margin-bottom:14px;">📊 Progress Report</div>';
+      for (var i = 0; i < children.length; i++) {
+        var child = children[i];
         var sevenAgo = new Date(); sevenAgo.setDate(sevenAgo.getDate()-7);
         var actRes = await sb.from('daily_activity').select('*').eq('child_id',child.id).gte('activity_date',sevenAgo.toISOString().split('T')[0]);
         var acts = actRes.data || [];
-        var qRes = await sb.from('quiz_results').select('*').eq('child_id',child.id).limit(20);
+        var qRes = await sb.from('quiz_results').select('*').eq('child_id',child.id).limit(50);
         var quizzes = qRes.data || [];
         var totalMins = acts.reduce(function(s,a){return s+(a.minutes_academic||0)+(a.minutes_reading||0)+(a.minutes_yoga||0);},0);
-        var totalTasks = acts.reduce(function(s,a){return s+(a.tasks_done||0);},0);
-        var activeDays = new Set(acts.map(function(a){return a.activity_date;})).size;
         var correct = quizzes.filter(function(q){return q.correct;}).length;
         var accuracy = quizzes.length ? Math.round(correct/quizzes.length*100) : 0;
-
-        var c = card(
-          '<div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:12px;border-bottom:2px solid #F4F1FF;">'
-          + '<div style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);display:flex;align-items:center;justify-content:center;font-size:1.5rem;">'+(child.avatar||'⭐')+'</div>'
-          + '<div><div style="font-family:Baloo 2,cursive;font-size:1.05rem;font-weight:800;color:#2D2D4E;">'+child.name+'</div>'
-          + '<div style="font-size:.72rem;color:#aaa;">'+child.grade+' Grade</div></div>'
-          + '</div>'
-          + '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">'
-          + statPill(activeDays+'d','Days Active','#8B6FE8')
-          + statPill(totalMins+'m','Learn Time','#FF6B6B')
-          + statPill(totalTasks,'Activities','#5ECDA0')
-          + statPill(accuracy+'%','Accuracy','#FFB347')
-          + '</div>'
-        );
-        area.appendChild(c);
-
-        // Standards progress if quizzes exist
-        if (quizzes.length > 0) {
-          var stdSummary = getStandardsSummary(child.grade||'K', quizzes);
-          if (stdSummary.length > 0) {
-            var stdInner = '<div style="font-family:Baloo 2,cursive;font-size:.88rem;font-weight:800;color:#2D2D4E;margin-bottom:10px;">📋 Standards Practiced</div>';
-            stdSummary.slice(0,5).forEach(function(s) {
-              var pct = s.total>0 ? Math.round(s.correct/s.total*100) : 0;
-              var col = pct>=80?'#5ECDA0':pct>=50?'#FFB347':'#FF6B6B';
-              stdInner += '<div style="margin-bottom:10px;">'
-                + '<div style="display:flex;justify-content:space-between;margin-bottom:3px;">'
-                + '<div><span style="background:#EDE9FF;color:#8B6FE8;font-size:.63rem;font-weight:800;padding:2px 7px;border-radius:8px;margin-right:6px;">'+s.code+'</span>'
-                + '<span style="font-size:.73rem;font-weight:700;color:#2D2D4E;">'+s.domain+'</span></div>'
-                + '<span style="font-size:.72rem;font-weight:800;color:'+col+';">'+pct+'%</span></div>'
-                + '<div style="height:5px;background:#F0EEFF;border-radius:10px;overflow:hidden;">'
-                + '<div style="height:100%;width:'+pct+'%;background:'+col+';border-radius:10px;transition:width .6s ease;"></div></div></div>';
-            });
-            area.appendChild(card(stdInner));
-          }
-        }
+        var activeDays = new Set(acts.map(function(a){return a.activity_date;})).size;
+        html += '<div style="background:#F8F6FF;border-radius:16px;padding:16px;margin-bottom:12px;">'
+          + '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">'
+          + '<div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);display:flex;align-items:center;justify-content:center;font-size:1.3rem;">' + (child.avatar||'⭐') + '</div>'
+          + '<div><div style="font-weight:800;color:#2D2D4E;">' + child.name + '</div><div style="font-size:.72rem;color:#aaa;">' + (child.grade||'K') + ' Grade</div></div></div>'
+          + '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;">'
+          + statPill(activeDays+'d','Days','#8B6FE8')
+          + statPill(totalMins+'m','Time','#FF6B6B')
+          + statPill(correct,'Correct','#5ECDA0')
+          + statPill(accuracy+'%','Accuracy','#FFD166')
+          + '</div>';
+        // Streak reminder toggle
+        var notifOn = localStorage.getItem('notif_'+child.id)==='true';
+        var cid = child.id; var cname = child.name;
+        html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid #EDE9FF;">'
+          + '<div style="font-size:.78rem;font-weight:700;color:#2D2D4E;">🔔 Daily Reminder</div>'
+          + '<button id="notifBtn_' + child.id + '" data-cid="' + child.id + '" data-cname="' + child.name + '" class="notif-toggle-btn" '
+          + 'style="padding:6px 14px;border-radius:20px;border:none;font-family:Nunito,sans-serif;font-weight:800;font-size:.75rem;cursor:pointer;background:' + (notifOn?'linear-gradient(135deg,#5ECDA0,#4ECDC4)':'#E8E4FF') + ';color:' + (notifOn?'white':'#8B6FE8') + ';">'
+          + (notifOn?'ON':'Enable') + '</button></div>'
+          + '</div>';
       }
+      c.innerHTML = html;
+      // Wire up notif toggle buttons via event delegation
+      c.querySelectorAll('.notif-toggle-btn').forEach(function(btn) {
+        btn.onclick = function() {
+          enableStreakReminder(btn.getAttribute('data-cid'), btn.getAttribute('data-cname'));
+        };
+      });
     } catch(e) {
-      area.innerHTML = '<div style="padding:20px;text-align:center;color:#aaa;">Could not load data.</div>';
+      c.innerHTML = '<div style="color:#aaa;padding:20px;text-align:center;">Could not load data.</div>';
     }
-  };
+  }
 
-  window.showManageChildren = function() {
-    var area = document.getElementById('parentContentArea');
-    if (!area) return;
-    area.innerHTML = sectionHeader('👶 Manage Children', 'Add, edit or remove child profiles');
-    var addBtn = card(
-      '<div style="display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="document.getElementById(\'parentDashOv\').remove(); setTimeout(function(){showScreen(\'children\');},100);">'
-      + '<div style="width:44px;height:44px;border-radius:14px;background:#EDE9FF;display:flex;align-items:center;justify-content:center;font-size:1.4rem;">➕</div>'
-      + '<div><div style="font-weight:800;color:#8B6FE8;font-size:.9rem;">Add a Child</div>'
-      + '<div style="font-size:.72rem;color:#aaa;">Set up a new profile</div></div></div>',
-      'cursor:pointer;'
-    );
-    area.appendChild(addBtn);
-    var deleteBtn = card(
-      '<div style="display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="document.getElementById(\'parentDashOv\').remove(); setTimeout(deleteChild,100);">'
-      + '<div style="width:44px;height:44px;border-radius:14px;background:#FFEEEE;display:flex;align-items:center;justify-content:center;font-size:1.4rem;">🗑️</div>'
-      + '<div><div style="font-weight:800;color:#FF6B6B;font-size:.9rem;">Remove Current Child</div>'
-      + '<div style="font-size:.72rem;color:#aaa;">Delete '+((activeChild&&activeChild.name)||'child')+'\'s profile</div></div></div>',
-      'cursor:pointer;'
-    );
-    area.appendChild(deleteBtn);
-  };
+  function statPill(val, lbl, col) {
+    return '<div style="text-align:center;padding:8px 4px;background:white;border-radius:10px;">'
+      + '<div style="font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:'+col+';">'+val+'</div>'
+      + '<div style="font-size:.6rem;color:#aaa;">'+lbl+'</div></div>';
+  }
 
-  window.showReminderSettings = function() {
-    var area = document.getElementById('parentContentArea');
-    if (!area) return;
-    area.innerHTML = sectionHeader('🔔 Streak Reminders', 'Daily nudges to keep learning going');
-    var info = card(
-      '<div style="font-size:.85rem;color:#555;line-height:1.7;">'
-      + 'Enable daily reminders and BloomiKids will send a notification each day to keep your child\'s streak alive. '
-      + 'You can enable this per child from the progress section.'
-      + '</div>'
-      + '<div style="margin-top:12px;padding:12px;background:#EDE9FF;border-radius:12px;font-size:.78rem;color:#8B6FE8;font-weight:700;">'
-      + '🔔 Tip: Streaks motivate kids! Even 5 minutes a day builds habit and confidence.'
-      + '</div>'
-    );
-    area.appendChild(info);
-  };
+  function showManageChildrenPanel(c) {
+    // Build manage children panel with proper DOM (no inline onclick with quotes)
+    c.innerHTML = '';
+    var mHdr = document.createElement('div');
+    mHdr.style.cssText = 'font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:#2D2D4E;margin-bottom:14px;';
+    mHdr.textContent = '👶 Manage Children';
+    c.appendChild(mHdr);
+    var addRow = document.createElement('div');
+    addRow.style.cssText = 'background:#EDE9FF;border-radius:14px;padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:10px;';
+    addRow.innerHTML = '<div style="font-size:1.6rem;">➕</div><div><div style="font-weight:800;color:#8B6FE8;">Add a Child</div><div style="font-size:.72rem;color:#aaa;">Create a new profile</div></div>';
+    addRow.onclick = function(){ ov.remove(); setTimeout(function(){ showScreen('children'); }, 100); };
+    c.appendChild(addRow);
+    var delRow = document.createElement('div');
+    delRow.style.cssText = 'background:#FFEEEE;border-radius:14px;padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer;';
+    delRow.innerHTML = '<div style="font-size:1.6rem;">🗑️</div><div><div style="font-weight:800;color:#FF6B6B;">Remove Child</div><div style="font-size:.72rem;color:#aaa;">Delete current profile</div></div>';
+    delRow.onclick = function(){ ov.remove(); setTimeout(deleteChild, 100); };
+    c.appendChild(delRow);
+  }
 
-  window.showGoalsSection = function() {
-    var area = document.getElementById('parentContentArea');
-    if (!area) return;
-    area.innerHTML = sectionHeader('🎯 Learning Goals', 'What BloomiKids covers for your child');
+  function showReminderPanel(c) {
+    c.innerHTML = '<div style="font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:#2D2D4E;margin-bottom:14px;">🔔 Streak Reminders</div>'
+      + '<div style="background:#FFF9E6;border-radius:14px;padding:16px;font-size:.85rem;color:#555;line-height:1.7;">'
+      + 'Enable daily reminders to keep your childs streak going. Tap Progress Report to toggle reminders per child.'
+      + '</div><div style="margin-top:12px;background:#EDE9FF;border-radius:12px;padding:12px;font-size:.78rem;color:#8B6FE8;font-weight:700;">'
+      + '🔔 Streaks motivate kids — even 5 minutes a day builds real learning habits!</div>';
+  }
+
+  function showGoalsPanel(c) {
     var goals = [
-      { icon:'📐', subject:'Math', desc:'Number sense, operations, patterns — built to Common Core standards' },
-      { icon:'📖', subject:'Language Arts', desc:'Reading, writing, phonics, grammar and vocabulary' },
-      { icon:'🔬', subject:'Science', desc:'Life, earth and physical science — curiosity-first approach' },
-      { icon:'🌍', subject:'Social Studies', desc:'Community, culture, history and geography concepts' },
-      { icon:'🧘', subject:'Yoga & Movement', desc:'10 calming yoga poses with breathing and mindfulness' },
-      { icon:'🎨', subject:'Art & Drawing', desc:'Creative expression through drawing and coloring activities' },
+      {i:'📐',s:'Math',d:'Number sense, operations & patterns'},
+      {i:'📖',s:'Language Arts',d:'Reading, phonics & vocabulary'},
+      {i:'✍️',s:'Writing',d:'Sentences, spelling & grammar'},
+      {i:'🔬',s:'Science',d:'Life, earth & physical science'},
+      {i:'🌍',s:'Social Studies',d:'Community, culture & history'},
+      {i:'🧘',s:'Yoga & Movement',d:'10 calming yoga poses with breathing'},
+      {i:'🎨',s:'Art & Drawing',d:'Creative expression & coloring'},
     ];
-    goals.forEach(function(g) {
-      area.appendChild(card(
-        '<div style="display:flex;align-items:center;gap:12px;">'
-        + '<div style="font-size:1.8rem;width:40px;text-align:center;">'+g.icon+'</div>'
-        + '<div><div style="font-weight:800;color:#2D2D4E;font-size:.88rem;">'+g.subject+'</div>'
-        + '<div style="font-size:.72rem;color:#888;line-height:1.4;">'+g.desc+'</div></div></div>'
-      ));
+    var html = '<div style="font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:#2D2D4E;margin-bottom:14px;">🎯 Learning Goals</div>';
+    goals.forEach(function(g){
+      html += '<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #F4F1FF;">'
+        + '<div style="font-size:1.6rem;width:36px;text-align:center;">'+g.i+'</div>'
+        + '<div><div style="font-weight:800;color:#2D2D4E;font-size:.88rem;">'+g.s+'</div>'
+        + '<div style="font-size:.72rem;color:#888;">'+g.d+'</div></div></div>';
     });
-  };
+    c.innerHTML = html;
+  }
 
-  window.showStandardsSection = function() {
-    var area = document.getElementById('parentContentArea');
-    if (!area) return;
-    area.innerHTML = sectionHeader('📋 Common Core Alignment', 'How BloomiKids meets learning standards');
-    area.appendChild(card(
-      '<div style="font-size:.82rem;color:#555;line-height:1.7;margin-bottom:10px;">'
-      + 'Every quiz question in BloomiKids is mapped to Common Core State Standards (CCSS) for Math and ELA, '
-      + 'and Next Generation Science Standards (NGSS). As your child completes quizzes, their progress report '
-      + 'shows exactly which standards they\'ve practiced.'
-      + '</div>'
-      + '<div style="padding:10px 14px;background:linear-gradient(135deg,#F0EEFF,#E8F8FF);border-radius:12px;border-left:3px solid #8B6FE8;font-size:.72rem;color:#8B6FE8;font-weight:700;">'
-      + '✅ Common Core · NGSS · Head Start Early Learning Outcomes Framework'
-      + '</div>'
-    ));
-  };
-
-  function statPill(value, label, color) {
-    return '<div style="text-align:center;padding:10px 4px;background:#F8F6FF;border-radius:12px;">'
-      + '<div style="font-family:Baloo 2,cursive;font-size:1.1rem;font-weight:800;color:'+color+';">'+value+'</div>'
-      + '<div style="font-size:.6rem;color:#aaa;">'+label+'</div>'
-      + '</div>';
+  function showStandardsPanel(c) {
+    c.innerHTML = '<div style="font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:#2D2D4E;margin-bottom:14px;">📋 Common Core Alignment</div>'
+      + '<div style="font-size:.82rem;color:#555;line-height:1.7;margin-bottom:12px;">Every quiz question is mapped to Common Core State Standards (CCSS) and Next Generation Science Standards (NGSS). As your child completes quizzes, their Progress Report shows exactly which standards have been practiced.</div>'
+      + '<div style="padding:12px 14px;background:linear-gradient(135deg,#EDE9FF,#E8F8FF);border-radius:12px;border-left:3px solid #8B6FE8;font-size:.75rem;color:#8B6FE8;font-weight:700;">✅ Common Core · NGSS · Head Start Early Learning Outcomes Framework</div>'
+      + '<div style="margin-top:12px;text-align:center;"><a href="privacy.html" target="_blank" style="font-size:.72rem;color:#aaa;text-decoration:none;">🔒 Privacy Policy</a></div>';
   }
 }
-
 
 
 async function enableStreakReminder(childId,childName){
