@@ -847,7 +847,7 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
       </div>
       <div class="music-now-playing" id="musicNowPlaying">🎼 Now playing: <span id="trackName">Select a track to begin</span></div>
       <div class="music-controls">
-        <button class="music-btn play-pause" id="playPauseBtn" onclick="toggleMusic()">▶ Play</button>
+        <button class="music-btn play-pause" id="playPauseBtn" onclick="toggleMusic()">▶ Play Music</button>
         <button class="music-btn skip" onclick="nextTrack()">⏭ Next</button>
         <div class="music-track-name" id="trackList">Tap Play for calming yoga music 🎶</div>
       </div>
@@ -4259,15 +4259,22 @@ function toggleMusic() {
     } else { _stopAllNodes(); }
     musicPlaying = false;
     var btn = document.getElementById('playPauseBtn');
-    if (btn) btn.textContent = '▶ Play';
+    if (btn) btn.textContent = '▶ Play Music';
   } else {
-    // Resume AudioContext first (required for iOS)
-    var ctx = _getMusicCtx();
-    var doPlay = function() { _startMood(_currentMood); };
-    if (ctx.state === 'suspended') {
-      ctx.resume().then(doPlay);
-    } else {
-      doPlay();
+    // iOS: create AudioContext directly in user gesture, then start immediately
+    try {
+      if (!_musicCtx) {
+        _musicCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (_musicCtx.state === 'suspended') {
+        _musicCtx.resume().then(function() { _startMood(_currentMood); });
+      } else if (_musicCtx.state === 'running') {
+        _startMood(_currentMood);
+      } else {
+        _startMood(_currentMood);
+      }
+    } catch(e) {
+      toast('Music not supported on this device');
     }
   }
 }
@@ -4771,8 +4778,8 @@ var sessionEngine = {
     notSeen.sort(function(){return Math.random()-.5;}).forEach(function(q){if(pool.length<sessionSize)pool.push(q);});
     // Fill remainder with review
     review.sort(function(){return Math.random()-.5;}).forEach(function(q){if(pool.length<sessionSize)pool.push(q);});
-    // If still short, add any question
-    allQuestions.sort(function(){return Math.random()-.5;}).forEach(function(q){if(pool.length<sessionSize)pool.push(q);});
+    // If still short, add any question from same subject pool only
+    allQuestions.filter(function(q){return pool.indexOf(q)<0;}).sort(function(){return Math.random()-.5;}).forEach(function(q){if(pool.length<sessionSize)pool.push(q);});
 
     return pool.slice(0, sessionSize);
   }
@@ -4996,7 +5003,13 @@ async function startSubject(name) {
     var qs=(q.subject||'').toLowerCase().trim();
     return aliases.some(function(a){return qs===a||qs.includes(a)||a.includes(qs);});
   });
-  var pool=filtered.length>=2?filtered:allQ;
+  // NEVER fall back to allQ — that would mix subjects
+  // If no questions found for this subject, show what we have or a placeholder
+  var pool = filtered.length >= 1 ? filtered : [];
+  if (pool.length === 0) {
+    toast('No ' + name + ' questions yet for ' + (GRADE_DATA[activeGrade]&&GRADE_DATA[activeGrade].label||activeGrade) + ' — coming soon!');
+    return;
+  }
   // Route through smart session engine
   var sessionLimit = activeGrade==='PreK'||activeGrade==='K' ? 8 : activeGrade==='1'||activeGrade==='2' ? 10 : 12;
   var ICONS2={Math:'🔢',Science:'🔬','Language Arts':'📝','Social Studies':'🌍','Community':'🏘️','Colors':'🎨','Shapes':'🔷','Animals':'🐾','Nature':'🌿','Letters':'🔤','My World':'🌍','Counting':'🔢','Numbers Fun':'🔢','ABC Time':'🔤','Colors & Art':'🎨','Animals & Nature':'🐾'};
