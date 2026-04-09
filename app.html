@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"><!-- build v312 -->
 <head>
 <meta charset="UTF-8">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -2299,7 +2299,7 @@ let artTabBuilt = false;  // ✅ FIX 4: only build art tab once per child sessio
 
 // -- PWA -----------------------------------------------
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js').catch(function(){});
+  navigator.serviceWorker.register('/sw.js?v=312').catch(function(){});
 }
 
 // -- Offline -------------------------------------------
@@ -4259,21 +4259,21 @@ function initMusicPlayer() {
 // ── Simple MP3 music player — no WebAudio needed ──
 var _mp3Player = null;
 var _mp3Tracks = [
-  'https://cdn.pixabay.com/audio/2024/02/28/audio_c0cf2d8ac7.mp3',
-  'https://cdn.pixabay.com/audio/2023/10/31/audio_840a74a9f3.mp3',
-  'https://cdn.pixabay.com/audio/2024/01/15/audio_5b1d2fa2f7.mp3',
-  'https://cdn.pixabay.com/audio/2023/09/05/audio_92a7ec1de0.mp3',
-  'https://cdn.pixabay.com/audio/2024/03/10/audio_d35e8b6c43.mp3',
-  'https://cdn.pixabay.com/audio/2023/11/20/audio_7c2e3f8a15.mp3',
-  'https://cdn.pixabay.com/audio/2024/04/02/audio_9b5c1d7e82.mp3',
-  'https://cdn.pixabay.com/audio/2023/08/14/audio_6a3f2c9b17.mp3',
-  'https://cdn.pixabay.com/audio/2024/01/28/audio_4e8d5c2a96.mp3',
-  'https://cdn.pixabay.com/audio/2023/12/05/audio_1f7b3e9c24.mp3',
+  'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+  'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+  'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
+  'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3',
+  'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3',
+  'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3',
+  'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3',
+  'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3',
+  'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3',
+  'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3',
 ];
 var _mp3TrackNames = [
-  'Gentle Rain', 'Peaceful Meadow', 'Soft Breeze', 'Ocean Calm',
-  'Forest Whisper', 'Starlight Rest', 'Morning Dew', 'Quiet Garden',
-  'Floating Clouds', 'Bedtime Peace'
+  'Gentle Flow', 'Soft Morning', 'Calm Breeze', 'Peaceful Garden',
+  'Ocean Rest', 'Forest Calm', 'Starlight', 'Meadow Song',
+  'Breathing Space', 'Quiet Mind'
 ];
 
 function toggleMusic() {
@@ -4315,7 +4315,10 @@ function _playMp3Track(idx) {
       var listEl = document.getElementById('trackList');
       if (listEl) listEl.textContent = 'Now playing: ' + _mp3TrackNames[idx % _mp3TrackNames.length] + ' 🎵';
     }).catch(function(e) {
-      toast('Tap Play again to start music');
+      // Silently retry on next user interaction - no toast to avoid disrupting quiz
+      musicPlaying = false;
+      var btn = document.getElementById('playPauseBtn');
+      if (btn) btn.textContent = '▶ Play Music';
     });
   }
 }

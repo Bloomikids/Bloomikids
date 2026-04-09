@@ -1,8 +1,6 @@
-// BloomiKids SW v301 - nuclear cache bust
-const V = 'bk-v301';
-self.addEventListener('install', e => {
-  self.skipWaiting();
-});
+// BloomiKids SW v312 - force cache bust
+const V = 'bk-v312';
+self.addEventListener('install', e => { self.skipWaiting(); });
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys()
@@ -13,10 +11,14 @@ self.addEventListener('activate', e => {
   );
 });
 self.addEventListener('fetch', e => {
-  // Never cache - always fresh
   if (e.request.method !== 'GET') return;
+  // Never cache app.html
+  if (e.request.url.includes('app.html')) {
+    e.respondWith(fetch(e.request, {cache:'no-store'}));
+    return;
+  }
   e.respondWith(
-    fetch(e.request, {cache:'no-store', credentials:'same-origin'})
+    fetch(e.request, {cache:'no-store'})
       .catch(() => caches.match(e.request))
   );
 });
