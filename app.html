@@ -832,7 +832,7 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
     <div id="quizQuestion" style="display:none"></div>
     <div id="quizOptions" style="display:none"></div>
     <div id="quizFeedback" style="display:none"></div>
-    <!-- nextBtn removed — quiz auto-advances -->
+    <button id="nextBtn" class="next-btn" onclick="nextQuestion()" style="display:none;margin-top:16px;width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Next ➡</button>
 
     <div class="section-title">📈 My Progress</div>
     <div class="progress-section" id="progressSection"></div>
@@ -1811,7 +1811,7 @@ const GRADE_DATA = {
       {q:'What is a budget?',opts:['A type of tax','A plan for how to spend money','A bank account','A type of investment'],answer:1,subject:'Social Studies'},
       {q:'What is the equator?',opts:['A line dividing east and west','An imaginary line dividing Earth into Northern and Southern hemispheres','The Prime Meridian','The North Pole'],answer:1,subject:'Social Studies'},
     ],
-    subjects_progress:['Math','Science','Writing'],
+    subjects_progress:['Math','Science','Social Studies','Writing'],
     poses:[
       { emoji:'🏔', name:'Mountain Pose', tip:'Stand tall, feet together, arms stretched high!', secs:60, level:'Easy' },
       { emoji:'🌳', name:'Tree Pose', tip:'Balance on one foot and breathe for 1 minute!', secs:60, level:'Easy' },
@@ -1966,7 +1966,7 @@ const GRADE_DATA = {
       {q:'How many amendments are in the Bill of Rights?',opts:['5','8','10','12'],answer:2,subject:'Social Studies'},
       {q:'What is natural resources?',opts:['Things made in factories','Materials from nature that people use like water trees and minerals','A type of manufactured good','Only water and air'],answer:1,subject:'Social Studies'},
     ],
-    subjects_progress:['Mathematics','Science','Language Arts'],
+    subjects_progress:['Mathematics','Science','Social Studies','Language Arts'],
     poses:[
       { emoji:'🌳', name:'Tree Pose',     tip:'Balance & breathe for 2 minutes!', secs:120, level:'Easy' },
       { emoji:'🦋', name:'Butterfly',     tip:'Gentle hip stretch -- sit tall!', secs:120, level:'Easy' },
@@ -2105,7 +2105,7 @@ const GRADE_DATA = {
       {q:'What is an analogy?',opts:['A type of metaphor only','A comparison showing how two things are alike in a specific way','A rhyme scheme','A type of alliteration'],answer:1,subject:'Language Arts'},
       {q:'What is mood in literature?',opts:['The authors feelings','The feeling or atmosphere a piece of writing creates in the reader','The topic','The setting'],answer:1,subject:'Language Arts'},
     ],
-    subjects_progress:['Mathematics','Science','Language Arts'],
+    subjects_progress:['Mathematics','Science','Social Studies','Language Arts'],
     poses:[
       { emoji:'🌳', name:'Tree Pose',     tip:'2.5 min balance -- switch sides!', secs:150, level:'Easy' },
       { emoji:'⚔', name:'Warrior I',     tip:'Lunge deep, reach high, breathe!', secs:150, level:'Medium' },
@@ -2242,7 +2242,7 @@ const GRADE_DATA = {
       {q:'What is syntax in writing?',opts:['Vocabulary choice','The arrangement of words and phrases to create well-formed sentences','A type of paragraph','A writing format'],answer:1,subject:'Language Arts'},
       {q:'What is diction?',opts:['A type of metaphor','The choice and use of words and phrases in writing or speech','A grammar rule','A punctuation rule'],answer:1,subject:'Language Arts'},
     ],
-    subjects_progress:['Mathematics','Science','Language Arts'],
+    subjects_progress:['Mathematics','Science','Social Studies','Language Arts'],
     poses:[
       { emoji:'🏔', name:'Mountain Pose', tip:'Stand grounded for 3 min. Focus on breath.', secs:180, level:'Easy' },
       { emoji:'🌳', name:'Tree Pose',     tip:'Balance on each side for 2 min. Find stillness.', secs:120, level:'Easy' },
@@ -3469,10 +3469,16 @@ async function checkAnswer(btn, correct) {
     setSyncState('');
     if (correct) { toast('+'+stars+' stars!'); completeMission('quiz'); }
   } catch(e) { setSyncState('error'); }
-  // Auto-advance after 1.2 seconds — no Next button needed
-  setTimeout(function() { qIdx++; renderQuestion(); }, 1200);
+  // Show Next button
+  var nb = document.getElementById('nextBtn');
+  if (nb) { nb.style.display='block'; }
 }
-function nextQuestion() { qIdx++; renderQuestion(); }
+function nextQuestion() {
+  var nb = document.getElementById('nextBtn');
+  if (nb) nb.style.display='none';
+  qIdx++;
+  renderQuestion();
+}
 
 // ══════════════════════════════════════════════════════
 //  YOGA TIMER
@@ -3630,7 +3636,19 @@ function renderBookShelf(books) {
   document.getElementById('monthlyReadBar').style.width=mPct+'%';
   document.getElementById('monthlyReadPct').textContent=`${completed}/4 books`;
 
-  // Free book section removed — kept grade bookshelf only
+  // Free classic books — Grade 1 and up only
+  var currentGrade = activeGrade;
+  var gradeNum = gradeContent ? (gradeContent.gradeNum || 0) : 0;
+  if (gradeNum >= 1) {
+    var gdlEl = document.getElementById('gdlBooksSection');
+    if (!gdlEl) {
+      var gdlWrap = buildGDLLibrary(currentGrade);
+      if (gdlWrap) {
+        gdlWrap.id = 'gdlBooksSection';
+        shelf.parentElement.appendChild(gdlWrap);
+      }
+    }
+  }
 }
 
 function renderComingSoon() {
@@ -4241,15 +4259,21 @@ function initMusicPlayer() {
 // ── Simple MP3 music player — no WebAudio needed ──
 var _mp3Player = null;
 var _mp3Tracks = [
-  'https://cdn.pixabay.com/audio/2022/10/30/audio_94ba7e9b71.mp3',
-  'https://cdn.pixabay.com/audio/2023/01/09/audio_8c68ad0f3b.mp3',
-  'https://cdn.pixabay.com/audio/2022/08/04/audio_2dde668d05.mp3',
-  'https://cdn.pixabay.com/audio/2023/03/15/audio_c1b3e0b5c2.mp3',
-  'https://cdn.pixabay.com/audio/2022/11/22/audio_febc508520.mp3',
+  'https://cdn.pixabay.com/audio/2024/02/28/audio_c0cf2d8ac7.mp3',
+  'https://cdn.pixabay.com/audio/2023/10/31/audio_840a74a9f3.mp3',
+  'https://cdn.pixabay.com/audio/2024/01/15/audio_5b1d2fa2f7.mp3',
+  'https://cdn.pixabay.com/audio/2023/09/05/audio_92a7ec1de0.mp3',
+  'https://cdn.pixabay.com/audio/2024/03/10/audio_d35e8b6c43.mp3',
+  'https://cdn.pixabay.com/audio/2023/11/20/audio_7c2e3f8a15.mp3',
+  'https://cdn.pixabay.com/audio/2024/04/02/audio_9b5c1d7e82.mp3',
+  'https://cdn.pixabay.com/audio/2023/08/14/audio_6a3f2c9b17.mp3',
+  'https://cdn.pixabay.com/audio/2024/01/28/audio_4e8d5c2a96.mp3',
+  'https://cdn.pixabay.com/audio/2023/12/05/audio_1f7b3e9c24.mp3',
 ];
 var _mp3TrackNames = [
-  'Gentle Morning', 'Peaceful Garden', 'Calm Breeze',
-  'Soft Waves', 'Quiet Forest'
+  'Gentle Rain', 'Peaceful Meadow', 'Soft Breeze', 'Ocean Calm',
+  'Forest Whisper', 'Starlight Rest', 'Morning Dew', 'Quiet Garden',
+  'Floating Clouds', 'Bedtime Peace'
 ];
 
 function toggleMusic() {
