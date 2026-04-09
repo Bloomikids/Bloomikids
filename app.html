@@ -288,9 +288,9 @@ body.grade-1 .quiz-opt { padding:18px; font-size:1.1rem; }
 .quiz-feedback.show { display:block; }
 .quiz-feedback.correct { background:#E8FBF3; color:var(--mint); }
 .quiz-feedback.wrong   { background:#FFF0F0; color:var(--coral); }
-.next-btn { margin-top:16px; padding:16px 32px; border-radius:40px; border:none; background:linear-gradient(135deg,#5ECDA0,#4ECDC4); color:white; font-weight:800; font-size:1.05rem; cursor:pointer; display:none; font-family:'Nunito',sans-serif; width:100%; box-shadow:0 6px 20px rgba(78,205,196,.35); transition:transform .1s; }
+.next-btn { display:none !important; }
 .next-btn:active { transform:scale(.97); }
-.next-btn.show { display:block; animation:correctPulse .4s ease; }
+.next-btn.show { display:none !important; }
 
 /* -- PROGRESS ------------------------------------------ */
 .progress-section { background:white; border-radius:24px; padding:24px; box-shadow:var(--shadow); margin-bottom:28px; }
@@ -832,7 +832,7 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
     <div id="quizQuestion" style="display:none"></div>
     <div id="quizOptions" style="display:none"></div>
     <div id="quizFeedback" style="display:none"></div>
-    <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Next Question ➡</button>
+    <!-- nextBtn removed — quiz auto-advances -->
 
     <div class="section-title">📈 My Progress</div>
     <div class="progress-section" id="progressSection"></div>
@@ -3409,14 +3409,13 @@ function renderQuestion() {
   var qqEl=document.getElementById('quizQuestion');
   var qoEl=document.getElementById('quizOptions');
   var qfEl=document.getElementById('quizFeedback');
-  var nbEl=document.getElementById('nextBtn');
-  qqEl.style.display='block'; qoEl.style.display='block'; qfEl.style.display='block';
-  if(nbEl){nbEl.style.display='none'; nbEl.className='next-btn';}
+  if(!qqEl||!qoEl) return;
+  qqEl.style.display='block'; qoEl.style.display='block';
+  if(qfEl) { qfEl.style.display='none'; qfEl.className='quiz-feedback'; }
   qqEl.textContent = q.q;
   qoEl.innerHTML = q.opts.map((o,i)=>
-    `<button class="quiz-opt" onclick="checkAnswer(this,${i===q.answer})">${o}</button>`
+    `<button class="quiz-opt" style="transition:all .2s;" onclick="checkAnswer(this,${i===q.answer})">${o}</button>`
   ).join('');
-  qfEl.className='quiz-feedback';
 }
 
 const feedbackMessages = {
@@ -3432,15 +3431,28 @@ const feedbackMessages = {
 async function checkAnswer(btn, correct) {
   if (answered) return;
   answered=true;
-  btn.classList.add(correct?'correct':'wrong');
-  if (correct) showStarBurst(btn);
-  const msgs = feedbackMessages[activeGrade]||feedbackMessages[5];
-  const pool = correct?msgs.correct:msgs.wrong;
-  const msg  = pool[Math.floor(Math.random()*pool.length)];
-  const fb   = document.getElementById('quizFeedback');
-  fb.textContent = msg;
-  fb.className   = `quiz-feedback show ${correct?'correct':'wrong'}`;
-  var _nb2=document.getElementById('nextBtn'); if(_nb2){ _nb2.className='next-btn show'; _nb2.style.display='block'; }
+  // Visual feedback — green correct, red wrong
+  btn.style.background = correct ? 'linear-gradient(135deg,#5ECDA0,#4ECDC4)' : 'linear-gradient(135deg,#FF6B6B,#FF8E53)';
+  btn.style.color = 'white';
+  btn.style.transform = correct ? 'scale(1.04)' : 'scale(.98)';
+  if (correct) {
+    showStarBurst(btn);
+    bloomiReact('correct');
+    playSound('correct');
+  } else {
+    // Show correct answer in green
+    var opts = document.getElementById('quizOptions');
+    if (opts) {
+      var allBtns = opts.querySelectorAll('button');
+      var q = gradeContent.questions[qIdx%gradeContent.questions.length];
+      if (allBtns[q.answer]) {
+        allBtns[q.answer].style.background = 'linear-gradient(135deg,#5ECDA0,#4ECDC4)';
+        allBtns[q.answer].style.color = 'white';
+      }
+    }
+    bloomiReact('wrong');
+    playSound('wrong');
+  }
   const stars = correct?10:2;
   setSyncState('syncing');
   try {
@@ -3452,8 +3464,10 @@ async function checkAnswer(btn, correct) {
     document.getElementById('statTasks').textContent=sessionData.tasks;
     document.getElementById('statStars').textContent=sessionData.stars;
     setSyncState('');
-    if (correct) { playSound('correct'); toast(`+${stars} stars!`); bloomiReact('correct'); completeMission('quiz'); } else { playSound('wrong'); bloomiReact('wrong'); }
+    if (correct) { toast('+'+stars+' stars!'); completeMission('quiz'); }
   } catch(e) { setSyncState('error'); }
+  // Auto-advance after 1.2 seconds — no Next button needed
+  setTimeout(function() { qIdx++; renderQuestion(); }, 1200);
 }
 function nextQuestion() { qIdx++; renderQuestion(); }
 
@@ -4891,18 +4905,18 @@ function startSmartSession(title, icon, questions, onComplete) {
         fb.textContent = msgs[Math.floor(Math.random()*msgs.length)];
         body.appendChild(fb);
 
-        var nextBtn = document.createElement('button');
-        nextBtn.textContent = qIdx < pool.length - 1 ? 'Next →' : wrongQueue.length > 0 ? 'Try the tricky ones! 💪' : 'Finish! 🎉';
-        nextBtn.style.cssText = 'margin-top:16px;width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';
-        nextBtn.onclick = function() {
+        // Auto-advance after 1.2 seconds — no Next button
+        setTimeout(function() {
           qIdx++;
-          if (qIdx >= pool.length && wrongQueue.length > 0) {
-            // Add wrong answers back for a second try
+          if (qIdx < pool.length) {
+            showQ();
+          } else if (wrongQueue.length > 0) {
             pool = pool.concat(wrongQueue.splice(0, Math.min(3, wrongQueue.length)));
+            showQ();
+          } else {
+            onComplete(score, pool.length);
           }
-          showQ();
-        };
-        body.appendChild(nextBtn);
+        }, 1200);
       };
       optsDiv.appendChild(btn);
     });
