@@ -3630,20 +3630,7 @@ function renderBookShelf(books) {
   document.getElementById('monthlyReadBar').style.width=mPct+'%';
   document.getElementById('monthlyReadPct').textContent=`${completed}/4 books`;
 
-  // Free classic books from Internet Archive
-  var gdlEl = document.getElementById('gdlBooksSection');
-  if (!gdlEl) {
-    var gdlWrap = buildGDLLibrary(activeGrade);
-    gdlWrap.id = 'gdlBooksSection';
-    shelf.parentElement.appendChild(gdlWrap);
-  }
-  // Online library links
-  var libEl = document.getElementById('onlineLibSection');
-  if (!libEl) {
-    var libWrap = buildOnlineLibrary();
-    libWrap.id = 'onlineLibSection';
-    shelf.parentElement.appendChild(libWrap);
-  }
+  // Free book section removed — kept grade bookshelf only
 }
 
 function renderComingSoon() {
@@ -4246,43 +4233,72 @@ function _startMood(moodIdx) {
 }
 
 function initMusicPlayer() {
-  // Pre-warm the display — don't start audio until user taps (iOS requirement)
-  updateTrackDisplay();
+  // Music player ready — user taps Play to start
+  var nameEl = document.getElementById('trackName');
+  if (nameEl) nameEl.textContent = 'Tap Play for calming yoga music';
 }
 
+// ── Simple MP3 music player — no WebAudio needed ──
+var _mp3Player = null;
+var _mp3Tracks = [
+  'https://cdn.pixabay.com/audio/2022/10/30/audio_94ba7e9b71.mp3',
+  'https://cdn.pixabay.com/audio/2023/01/09/audio_8c68ad0f3b.mp3',
+  'https://cdn.pixabay.com/audio/2022/08/04/audio_2dde668d05.mp3',
+  'https://cdn.pixabay.com/audio/2023/03/15/audio_c1b3e0b5c2.mp3',
+  'https://cdn.pixabay.com/audio/2022/11/22/audio_febc508520.mp3',
+];
+var _mp3TrackNames = [
+  'Gentle Morning', 'Peaceful Garden', 'Calm Breeze',
+  'Soft Waves', 'Quiet Forest'
+];
+
 function toggleMusic() {
+  if (!_mp3Player) {
+    _mp3Player = document.createElement('audio');
+    _mp3Player.loop = false;
+    _mp3Player.volume = 0.5;
+    _mp3Player.addEventListener('ended', function() {
+      _currentMood = (_currentMood + 1) % _mp3Tracks.length;
+      _playMp3Track(_currentMood);
+    });
+    _mp3Player.addEventListener('error', function() {
+      // Track failed - try next one
+      _currentMood = (_currentMood + 1) % _mp3Tracks.length;
+      _playMp3Track(_currentMood);
+    });
+  }
   if (musicPlaying) {
-    if (_musicGain && _musicCtx) {
-      _musicGain.gain.setValueAtTime(_musicGain.gain.value, _musicCtx.currentTime);
-      _musicGain.gain.exponentialRampToValueAtTime(0.001, _musicCtx.currentTime + 0.8);
-      setTimeout(_stopAllNodes, 900);
-    } else { _stopAllNodes(); }
+    _mp3Player.pause();
     musicPlaying = false;
     var btn = document.getElementById('playPauseBtn');
     if (btn) btn.textContent = '▶ Play Music';
   } else {
-    // iOS: create AudioContext directly in user gesture, then start immediately
-    try {
-      if (!_musicCtx) {
-        _musicCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (_musicCtx.state === 'suspended') {
-        _musicCtx.resume().then(function() { _startMood(_currentMood); });
-      } else if (_musicCtx.state === 'running') {
-        _startMood(_currentMood);
-      } else {
-        _startMood(_currentMood);
-      }
-    } catch(e) {
-      toast('Music not supported on this device');
-    }
+    _playMp3Track(_currentMood);
+  }
+}
+
+function _playMp3Track(idx) {
+  if (!_mp3Player) return;
+  _mp3Player.src = _mp3Tracks[idx % _mp3Tracks.length];
+  var playPromise = _mp3Player.play();
+  if (playPromise !== undefined) {
+    playPromise.then(function() {
+      musicPlaying = true;
+      var btn = document.getElementById('playPauseBtn');
+      if (btn) btn.textContent = '⏸ Pause';
+      var nameEl = document.getElementById('trackName');
+      if (nameEl) nameEl.textContent = _mp3TrackNames[idx % _mp3TrackNames.length];
+      var listEl = document.getElementById('trackList');
+      if (listEl) listEl.textContent = 'Now playing: ' + _mp3TrackNames[idx % _mp3TrackNames.length] + ' 🎵';
+    }).catch(function(e) {
+      toast('Tap Play again to start music');
+    });
   }
 }
 
 function nextTrack() {
-  _currentMood = (_currentMood + 1) % MUSIC_MOODS.length;
-  if (musicPlaying) { _startMood(_currentMood); }
-  else { updateTrackDisplay(); }
+  _currentMood = (_currentMood + 1) % _mp3Tracks.length;
+  _playMp3Track(_currentMood);
 }
 
 function setVolume(val) {
