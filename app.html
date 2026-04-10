@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><!-- build v317 -->
+<html lang="en"><!-- build v318 -->
 <head>
 <meta charset="UTF-8">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -2299,7 +2299,7 @@ let artTabBuilt = false;  // ✅ FIX 4: only build art tab once per child sessio
 
 // -- PWA -----------------------------------------------
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js?v=317').catch(function(){});
+  navigator.serviceWorker.register('/sw.js?v=318').catch(function(){});
 }
 
 // -- Offline -------------------------------------------
@@ -4291,12 +4291,17 @@ function toggleMusic() {
     var btn = document.getElementById('playPauseBtn');
     if (btn) btn.textContent = '▶ Play Music';
   } else {
-    // Must create AudioContext in direct user tap (iOS requirement)
-    if (!_musicCtx) {
-      try { _musicCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { return; }
-    }
-    var resume = (_musicCtx.state === 'suspended') ? _musicCtx.resume() : Promise.resolve();
-    resume.then(function() { _playMp3Track(_currentMood); }).catch(function() { _playMp3Track(_currentMood); });
+    // Create AudioContext synchronously inside user gesture — no async gap for iOS
+    try {
+      if (!_musicCtx) {
+        _musicCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      // resume() if suspended, but also call play synchronously regardless
+      if (_musicCtx.state === 'suspended') {
+        _musicCtx.resume(); // fire and forget — nodes will play once resumed
+      }
+      _playMp3Track(_currentMood); // synchronous call inside user gesture
+    } catch(e) {}
   }
 }
 
