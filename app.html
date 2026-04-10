@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><!-- build v320 -->
+<html lang="en"><!-- build v321 -->
 <head>
 <meta charset="UTF-8">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -2299,7 +2299,7 @@ let artTabBuilt = false;  // ✅ FIX 4: only build art tab once per child sessio
 
 // -- PWA -----------------------------------------------
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js?v=320').catch(function(){});
+  navigator.serviceWorker.register('/sw.js?v=321').catch(function(){});
 }
 
 // -- Offline -------------------------------------------
@@ -3300,57 +3300,55 @@ const POSE_COLORS = {
 
 // Photo map — falls back to SVG via onerror if files not in repo
 const POSE_PHOTOS = {
-  'Tree':          { src:'IMG_0857.PNG', pos:'center 15%' },
-  'Tree Pose':     { src:'IMG_0857.PNG', pos:'center 15%' },
-  'Snake':         { src:'IMG_0855.PNG', pos:'center 55%' },
-  'Cobra':         { src:'IMG_0855.PNG', pos:'center 55%' },
-  'Cobra Pose':    { src:'IMG_0855.PNG', pos:'center 55%' },
-  'Butterfly':     { src:'IMG_0856.PNG', pos:'center 40%' },
-  'Butterfly Pose':{ src:'IMG_0856.PNG', pos:'center 40%' },
-  'Star':          { src:'IMG_0858.PNG', pos:'center center'},
-  'Warrior I':     { src:'IMG_0859.PNG', pos:'center center'},
-  'Warrior II':    { src:'IMG_0862.PNG', pos:'center center'},
-  'Warrior Pose':  { src:'IMG_0861.PNG', pos:'center center'},
-  'Eagle Pose':    { src:'IMG_0863.PNG', pos:'center center'},
-  'Bridge Pose':   { src:'IMG_0864.PNG', pos:'center 60%' },
-  'Cat Stretch':   { src:'IMG_0865.PNG', pos:'center 50%' },
-  'Cat-Cow':       { src:'IMG_0865.PNG', pos:'center 50%' },
-  "Child's Pose":  { src:'IMG_0860.PNG', pos:'center 60%' },
-  'Mountain':      { src:'IMG_0861.PNG', pos:'center center'},
-  'Mountain Pose': { src:'IMG_0861.PNG', pos:'center center'},
-  'Moon':          { src:'IMG_0860.PNG', pos:'center 60%' },
-  'Warrior III':   { src:'pose_warrior3.png', pos:'center 20%' },
-  'Three-Legged Dog': { src:'pose_threelegged.png', pos:'center 30%' },
-  'Plank Pose':    { src:'pose_plank.png', pos:'center 40%' },
-  'Happy Baby':    { src:'pose_happybaby.png', pos:'center 40%' },
-  'Knee Hug':      { src:'pose_happybaby.png', pos:'center 40%' },
-  'Goddess Pose':  { src:'pose_goddess.jpg', pos:'center 20%' },
-  'Goddess':       { src:'pose_goddess.jpg', pos:'center 20%' },
-  'Dancer':        { src:'IMG_1349.jpeg', pos:'center 20%' },
-  'Dancer Pose':   { src:'IMG_1349.jpeg', pos:'center 20%' },
-  'Crow':          { src:'IMG_1345.jpeg', pos:'center 50%' },
-  'Crow Pose':     { src:'IMG_1345.jpeg', pos:'center 50%' },
-  'Upward Dog':    { src:'IMG_1347.jpeg', pos:'center 30%' },
-  'Updog':         { src:'IMG_1347.jpeg', pos:'center 30%' },
-  'Side Plank':    { src:'IMG_1348.jpeg', pos:'center 30%' },
-  'Bow Pose':      { src:'IMG_1351.jpeg', pos:'center 40%' },
-  'Bow':           { src:'IMG_1351.jpeg', pos:'center 40%' },
-  'Bird Dog':      { src:'IMG_1350.jpeg', pos:'center 40%' },
-  'Superman':      { src:'IMG_1350.jpeg', pos:'center 40%' },
-  'Side Bend':     { src:'IMG_1358.PNG',  pos:'center 30%' },
-  'Moon Stretch':  { src:'IMG_1358.PNG',  pos:'center 30%' },
-  'Seated Hug':    { src:'IMG_1356.PNG',  pos:'center 50%' },
-  'Knee Hug':      { src:'IMG_1356.PNG',  pos:'center 50%' },
-  'Baby Cobra':    { src:'IMG_1355.PNG',  pos:'center 40%' },
-  'Low Cobra':     { src:'IMG_1355.PNG',  pos:'center 40%' },
-  // PreK poses using best-match existing photos
-  'Turtle':        { src:'IMG_1356.PNG',  pos:'center 60%' },  // seated folded = turtle
-  'Lion':          { src:'IMG_0861.PNG',  pos:'center 30%' },  // standing = lion
-  'Rainbow':       { src:'IMG_1358.PNG',  pos:'center 20%' },  // side bend = rainbow arc
-  'Frog':          { src:'IMG_0856.PNG',  pos:'center 50%' },  // squat = frog
-  'Rocket':        { src:'IMG_0858.PNG',  pos:'center center'},// star = rocket arms up
-  'Wave':          { src:'IMG_1358.PNG',  pos:'center 40%' },  // side bend = wave
-  "Child's Pose":  { src:'IMG_0860.PNG',  pos:'center 60%' },
+  'Tree':           { src:'pose_warrior3.png',    pos:'center 20%' },
+  'Tree Pose':      { src:'pose_warrior3.png',    pos:'center 20%' },
+  'Snake':          { src:'pose_plank.png',        pos:'center 50%' },
+  'Cobra':          { src:'pose_plank.png',        pos:'center 50%' },
+  'Cobra Pose':     { src:'pose_plank.png',        pos:'center 50%' },
+  'Baby Cobra':     { src:'pose_plank.png',        pos:'center 50%' },
+  'Low Cobra':      { src:'pose_plank.png',        pos:'center 50%' },
+  'Butterfly':      { src:'pose_happybaby.png',    pos:'center 40%' },
+  'Butterfly Pose': { src:'pose_happybaby.png',    pos:'center 40%' },
+  'Happy Baby':     { src:'pose_happybaby.png',    pos:'center 50%' },
+  'Warrior I':      { src:'pose_warrior3.png',     pos:'center 30%' },
+  'Warrior II':     { src:'pose_warrior3.png',     pos:'center 30%' },
+  'Warrior III':    { src:'pose_warrior3.png',     pos:'center 20%' },
+  'Warrior Pose':   { src:'pose_warrior3.png',     pos:'center 30%' },
+  'Three-Legged Dog':{ src:'pose_threelegged.PNG', pos:'center 40%' },
+  'Plank Pose':     { src:'pose_plank.png',        pos:'center 50%' },
+  'Plank':          { src:'pose_plank.png',        pos:'center 50%' },
+  'Goddess Pose':   { src:'pose_goddess.jpg',      pos:'center 40%' },
+  'Goddess':        { src:'pose_goddess.jpg',      pos:'center 40%' },
+  'Star':           { src:'pose_warrior3.png',     pos:'center 20%' },
+  'Mountain':       { src:'pose_warrior3.png',     pos:'center 15%' },
+  'Mountain Pose':  { src:'pose_warrior3.png',     pos:'center 15%' },
+  'Moon':           { src:'pose_warrior3.png',     pos:'center 15%' },
+  'Moon Stretch':   { src:'pose_warrior3.png',     pos:'center 15%' },
+  'Moon Pose':      { src:'pose_warrior3.png',     pos:'center 15%' },
+  'Cat Stretch':    { src:'pose_plank.png',        pos:'center 50%' },
+  'Cat-Cow':        { src:'pose_plank.png',        pos:'center 50%' },
+  'Bird Dog':       { src:'pose_threelegged.PNG',  pos:'center 40%' },
+  'Turtle':         { src:'pose_happybaby.png',    pos:'center 50%' },
+  'Frog':           { src:'pose_happybaby.png',    pos:'center 60%' },
+  'Knee Hug':       { src:'pose_happybaby.png',    pos:'center 50%' },
+  'Seated Hug':     { src:'pose_happybaby.png',    pos:'center 50%' },
+  'Superman':       { src:'pose_plank.png',        pos:'center 50%' },
+  'Side Plank':     { src:'pose_plank.png',        pos:'center 50%' },
+  'Bow Pose':       { src:'pose_plank.png',        pos:'center 50%' },
+  'Bow':            { src:'pose_plank.png',        pos:'center 50%' },
+  'Upward Dog':     { src:'pose_plank.png',        pos:'center 50%' },
+  'Updog':          { src:'pose_plank.png',        pos:'center 50%' },
+  'Bridge Pose':    { src:'pose_happybaby.png',    pos:'center 50%' },
+  'Eagle Pose':     { src:'pose_warrior3.png',     pos:'center 30%' },
+  'Dancer':         { src:'pose_warrior3.png',     pos:'center 30%' },
+  'Dancer Pose':    { src:'pose_warrior3.png',     pos:'center 30%' },
+  'Crow':           { src:'pose_plank.png',        pos:'center 40%' },
+  'Crow Pose':      { src:'pose_plank.png',        pos:'center 40%' },
+  'Side Bend':      { src:'pose_warrior3.png',     pos:'center 20%' },
+  'Rainbow':        { src:'pose_warrior3.png',     pos:'center 20%' },
+  'Lion':           { src:'pose_happybaby.png',    pos:'center 50%' },
+  'Rocket':         { src:'pose_warrior3.png',     pos:'center 10%' },
+  'Wave':           { src:'pose_warrior3.png',     pos:'center 20%' },
 };
 
 function buildYogaGrid() {
@@ -3370,12 +3368,18 @@ function buildYogaGrid() {
       img.src = photo.src;
       img.alt = p.name;
       img.style.cssText = 'object-fit:cover;border-radius:14px;object-position:'+photo.pos+';width:100%;height:150px;display:block;margin-bottom:8px;';
-      img.onerror = function(){ this.style.display='none'; };
+      img.onerror = function(){ 
+        this.style.display='none'; 
+        // Show large emoji when image fails
+        var fallbackEmoji = card.querySelector('.pose-emoji-fallback');
+        if (fallbackEmoji) fallbackEmoji.style.fontSize = '4rem';
+      };
       card.appendChild(img);
     }
 
     var emoji = document.createElement('div');
-    emoji.style.cssText = 'font-size:2rem;margin-bottom:6px;line-height:1;';
+    emoji.style.cssText = 'font-size:2.5rem;margin-bottom:8px;line-height:1;';
+    emoji.className = 'pose-emoji-fallback';
     // Use emoji if available, otherwise show pose name initial in colored circle
     var emojiChar = p.emoji || '';
     if (emojiChar) {
@@ -4296,9 +4300,10 @@ function _playMp3Track(idx) {
   _musicAudio = new Audio(_CALM_TONES[_musicTrackIdx]);
   _musicAudio.volume = 0.5;
   _musicAudio.loop = false;
+  var _thisIdx = _musicTrackIdx;
   _musicAudio.onended = function() {
-    _musicTrackIdx = (_musicTrackIdx + 1) % _CALM_TONES.length;
-    _playMp3Track(_musicTrackIdx);
+    var nextIdx = (_thisIdx + 1) % _CALM_TONES.length;
+    _playMp3Track(nextIdx);
   };
   var playPromise = _musicAudio.play();
   if (playPromise) {
@@ -6580,9 +6585,15 @@ function showInstallButton(){
 
 // Back navigation handler
 window.addEventListener('visibilitychange', async function() {
-  if (document.visibilityState !== 'visible') return;
+  // Stop music when app goes to background
+  if (document.visibilityState !== 'visible') {
+    if (musicPlaying && typeof toggleMusic === 'function') {
+      try { toggleMusic(); } catch(e) {}
+    }
+    return;
+  }
   try {
-    // Re-validate Supabase session when app comes back into focus
+    // Re-validate Supabase session when app comes// Re-validate Supabase session when app comes back into focus
     var { data: sessionData2 } = await sb.auth.getSession();
     if (!sessionData2 || !sessionData2.session) {
       // Session expired - go back to auth
