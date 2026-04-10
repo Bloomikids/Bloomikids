@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><!-- build v315 -->
+<html lang="en"><!-- build v316 -->
 <head>
 <meta charset="UTF-8">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -2299,7 +2299,7 @@ let artTabBuilt = false;  // ✅ FIX 4: only build art tab once per child sessio
 
 // -- PWA -----------------------------------------------
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js?v=315').catch(function(){});
+  navigator.serviceWorker.register('/sw.js?v=316').catch(function(){});
 }
 
 // -- Offline -------------------------------------------
@@ -3056,7 +3056,7 @@ async function loadDashboardStats() {
   try {
     if (!activeChild) return;
     const today=new Date().toISOString().split('T')[0];
-    const {data:act}=await sb.from('daily_activity').select('*').eq('child_id',activeChild.id).eq('activity_date',today).single();
+    const {data:act}=await sb.from('daily_activity').select('*').eq('child_id',activeChild.id).eq('activity_date',today).maybeSingle();
     if(act){sessionData.tasks=act.tasks_done||0;sessionData.minutes=(act.minutes_academic||0)+(act.minutes_yoga||0)+(act.minutes_reading||0);}
     // Stars are tracked in sessionData only - no stars column in children table
     const t=document.getElementById('statTasks');if(t)t.textContent=sessionData.tasks;
@@ -3375,8 +3375,15 @@ function buildYogaGrid() {
     }
 
     var emoji = document.createElement('div');
-    emoji.style.cssText = 'font-size:1.8rem;margin-bottom:4px;';
-    emoji.textContent = p.emoji || 'yoga';
+    emoji.style.cssText = 'font-size:2rem;margin-bottom:6px;line-height:1;';
+    // Use emoji if available, otherwise show pose name initial in colored circle
+    var emojiChar = p.emoji || '';
+    if (emojiChar) {
+      emoji.textContent = emojiChar;
+    } else {
+      emoji.style.cssText = 'width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:white;font-weight:800;font-size:1.3rem;display:flex;align-items:center;justify-content:center;margin:0 auto 6px;';
+      emoji.textContent = (p.name||'Y').charAt(0);
+    }
     card.appendChild(emoji);
 
     var name = document.createElement('div');
@@ -4176,20 +4183,25 @@ function _getMusicCtx() {
   return _musicCtx;
 }
 
+var _musicGen = 0; // generation counter prevents race conditions
 function _stopAllNodes() {
-  // Fade out before stopping to avoid the "skip/click" artifact
+  _musicGen++; // invalidate any pending stop callbacks
+  var gen = _musicGen;
   if (_musicGain && _musicCtx) {
     try {
       _musicGain.gain.setValueAtTime(_musicGain.gain.value, _musicCtx.currentTime);
-      _musicGain.gain.linearRampToValueAtTime(0.0001, _musicCtx.currentTime + 0.3);
+      _musicGain.gain.linearRampToValueAtTime(0.0001, _musicCtx.currentTime + 0.2);
     } catch(e) {}
   }
   var nodes = _musicNodes.slice();
+  var gain = _musicGain;
   _musicNodes = [];
+  _musicGain = null;
   setTimeout(function() {
+    if (gen !== _musicGen) return; // new music started — don't stop it
     nodes.forEach(function(n) { try { n.stop(0); } catch(e) {} });
-    if (_musicGain) { try { _musicGain.disconnect(); } catch(e) {} _musicGain = null; }
-  }, 320);
+    if (gain) { try { gain.disconnect(); } catch(e) {} }
+  }, 250);
 }
 
 function _startMood(moodIdx) {
@@ -6546,7 +6558,7 @@ async function sendStreakReminders(){
   for(var i=0;i<keys.length;i++){
     var cid=keys[i].replace('notif_','');var name=localStorage.getItem('notif_name_'+cid)||'your child';
     var today=new Date().toISOString().split('T')[0];
-    try{var r=await sb.from('daily_activity').select('id').eq('child_id',cid).eq('activity_date',today).single();
+    try{var r=await sb.from('daily_activity').select('id').eq('child_id',cid).eq('activity_date',today).maybeSingle();
       if(!r.data)new Notification('BloomiKids - Keep the streak going!',{body:name+' has not learned today yet!',icon:'/logo.png',tag:'streak-'+cid});}
     catch(e){new Notification('Time to learn!',{body:name+' is waiting!',icon:'/logo.png',tag:'streak-'+cid});}
   }
@@ -6982,7 +6994,7 @@ async function sendStreakReminders(){
   for(var i=0;i<keys.length;i++){
     var cid=keys[i].replace('notif_','');var name=localStorage.getItem('notif_name_'+cid)||'your child';
     var today=new Date().toISOString().split('T')[0];
-    try{var r=await sb.from('daily_activity').select('id').eq('child_id',cid).eq('activity_date',today).single();
+    try{var r=await sb.from('daily_activity').select('id').eq('child_id',cid).eq('activity_date',today).maybeSingle();
       if(!r.data)new Notification('BloomiKids - Keep the streak going!',{body:name+' has not learned today yet!',icon:'/logo.png',tag:'streak-'+cid});}
     catch(e){new Notification('Time to learn!',{body:name+' is waiting!',icon:'/logo.png',tag:'streak-'+cid});}
   }
