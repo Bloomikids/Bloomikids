@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><!-- build v318 -->
+<html lang="en"><!-- build v319 -->
 <head>
 <meta charset="UTF-8">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -2299,7 +2299,7 @@ let artTabBuilt = false;  // ✅ FIX 4: only build art tab once per child sessio
 
 // -- PWA -----------------------------------------------
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js?v=318').catch(function(){});
+  navigator.serviceWorker.register('/sw.js?v=319').catch(function(){});
 }
 
 // -- Offline -------------------------------------------
@@ -4310,51 +4310,49 @@ function _playMp3Track(idx) {
     if (!_musicCtx) {
       _musicCtx = new (window.AudioContext || window.webkitAudioContext)();
     }
-    // Stop old nodes immediately (no setTimeout — avoids race condition)
     _musicNodes.forEach(function(n) { try { n.stop(0); } catch(e) {} });
     _musicNodes = [];
     if (_musicGain) { try { _musicGain.disconnect(); } catch(e) {} _musicGain = null; }
-
-    if (_musicCtx.state === 'suspended') { _musicCtx.resume(); }
-
-    var freqs = _toneFreqs[idx % _toneFreqs.length];
-    _musicGain = _musicCtx.createGain();
-    _musicGain.gain.setValueAtTime(0.001, _musicCtx.currentTime);
-    _musicGain.gain.exponentialRampToValueAtTime(0.06, _musicCtx.currentTime + 2.5);
-    _musicGain.connect(_musicCtx.destination);
-
-    freqs.forEach(function(freq, i) {
-      var osc = _musicCtx.createOscillator();
-      var gainNode = _musicCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.value = i === 2 ? freq * 0.5 : freq;
-      gainNode.gain.value = 0.05 - i * 0.008;
-      osc.connect(gainNode);
-      gainNode.connect(_musicGain);
-      osc.start();
-      _musicNodes.push(osc);
-      // Gentle LFO for warm tone
-      var lfo = _musicCtx.createOscillator();
-      var lfoGain = _musicCtx.createGain();
-      lfo.frequency.value = 0.2 + i * 0.1;
-      lfoGain.gain.value = 1.2;
-      lfo.connect(lfoGain);
-      lfoGain.connect(osc.frequency);
-      lfo.start();
-      _musicNodes.push(lfo);
-    });
-
-    musicPlaying = true;
-    var name = _mp3TrackNames[idx % _mp3TrackNames.length];
-    var btn = document.getElementById('playPauseBtn');
-    if (btn) btn.textContent = '⏸ Pause';
-    var nameEl = document.getElementById('trackName');
-    if (nameEl) nameEl.textContent = name;
-    var listEl = document.getElementById('trackList');
-    if (listEl) listEl.textContent = 'Now playing: ' + name + ' 🎵';
-  } catch(e) {
-    musicPlaying = false;
-  }
+    
+    var doPlay = function() {
+      try {
+        var freqs = _toneFreqs[idx % _toneFreqs.length];
+        _musicGain = _musicCtx.createGain();
+        _musicGain.gain.setValueAtTime(0.001, _musicCtx.currentTime);
+        _musicGain.gain.exponentialRampToValueAtTime(0.08, _musicCtx.currentTime + 3.0);
+        _musicGain.connect(_musicCtx.destination);
+        freqs.forEach(function(freq, i) {
+          var osc = _musicCtx.createOscillator();
+          var g = _musicCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = i === 2 ? freq * 0.5 : freq;
+          g.gain.value = 0.04 - i * 0.005;
+          osc.connect(g); g.connect(_musicGain); osc.start();
+          _musicNodes.push(osc);
+          var lfo = _musicCtx.createOscillator();
+          var lg = _musicCtx.createGain();
+          lfo.frequency.value = 0.15 + i * 0.08;
+          lg.gain.value = 0.8;
+          lfo.connect(lg); lg.connect(osc.frequency); lfo.start();
+          _musicNodes.push(lfo);
+        });
+        musicPlaying = true;
+        var name = _mp3TrackNames[idx % _mp3TrackNames.length];
+        var btn = document.getElementById('playPauseBtn');
+        if (btn) btn.textContent = '⏸ Pause';
+        var nameEl = document.getElementById('trackName');
+        if (nameEl) nameEl.textContent = name;
+        var listEl = document.getElementById('trackList');
+        if (listEl) listEl.textContent = 'Now playing: ' + name + ' 🎵';
+      } catch(e2) { musicPlaying = false; }
+    };
+    
+    if (_musicCtx.state === 'suspended') {
+      _musicCtx.resume().then(doPlay).catch(doPlay);
+    } else {
+      doPlay();
+    }
+  } catch(e) { musicPlaying = false; }
 }
 
 function nextTrack() {
@@ -4527,7 +4525,10 @@ function switchTab(tab) {
   }
   if (tab !== 'yoga' && musicPlaying) { try { toggleMusic(); } catch(e) {} }
   if (tab === 'yoga') {
-    setTimeout(() => { initMusicPlayer(); }, 100);
+    setTimeout(() => { 
+      initMusicPlayer();
+      buildYogaGrid(); // rebuild poses every time yoga tab is opened
+    }, 100);
   }
   // ✅ FIX 4: Only build art tab once per child session
   if (tab === 'art' && !artTabBuilt) {
