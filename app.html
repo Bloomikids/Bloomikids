@@ -4258,68 +4258,99 @@ function initMusicPlayer() {
 
 // ── Simple MP3 music player — no WebAudio needed ──
 var _mp3Player = null;
-var _mp3Tracks = [
-  'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-  'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
-  'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
-  'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3',
-  'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3',
-  'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3',
-  'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3',
-  'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3',
-  'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3',
-  'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3',
-];
+// Music generated with Web Audio — calming tones, no external URLs needed
+var _mp3Tracks = []; // Not used — audio generated below
 var _mp3TrackNames = [
-  'Gentle Flow', 'Soft Morning', 'Calm Breeze', 'Peaceful Garden',
-  'Ocean Rest', 'Forest Calm', 'Starlight', 'Meadow Song',
-  'Breathing Space', 'Quiet Mind'
+  'Breathing Space', 'Ocean Calm', 'Garden Peace', 'Starlight Rest',
+  'Morning Mist', 'Forest Hum', 'Gentle Rain', 'Meadow Dawn',
+  'Soft Glow', 'Night Calm'
+];
+var _toneFreqs = [
+  [261.6, 329.6, 392.0],  // C major - very calm
+  [293.7, 370.0, 440.0],  // D major - peaceful
+  [246.9, 311.1, 392.0],  // B minor - reflective
+  [220.0, 277.2, 349.2],  // A minor - gentle
+  [261.6, 311.1, 392.0],  // C minor - soft
+  [293.7, 349.2, 440.0],  // D mix - warm
+  [261.6, 349.2, 523.3],  // C - bright calm
+  [220.0, 261.6, 329.6],  // A - deep calm
+  [196.0, 246.9, 293.7],  // G - low peaceful
+  [261.6, 392.0, 523.3],  // C octave - open
 ];
 
 function toggleMusic() {
-  if (!_mp3Player) {
-    _mp3Player = document.createElement('audio');
-    _mp3Player.loop = false;
-    _mp3Player.volume = 0.5;
-    _mp3Player.addEventListener('ended', function() {
-      _currentMood = (_currentMood + 1) % _mp3Tracks.length;
-      _playMp3Track(_currentMood);
-    });
-    _mp3Player.addEventListener('error', function() {
-      // Track failed - try next one
-      _currentMood = (_currentMood + 1) % _mp3Tracks.length;
-      _playMp3Track(_currentMood);
-    });
-  }
   if (musicPlaying) {
-    _mp3Player.pause();
+    if (_musicGain && _musicCtx) {
+      _musicGain.gain.setValueAtTime(_musicGain.gain.value, _musicCtx.currentTime);
+      _musicGain.gain.exponentialRampToValueAtTime(0.001, _musicCtx.currentTime + 1.0);
+      setTimeout(_stopAllNodes, 1100);
+    } else { _stopAllNodes(); }
     musicPlaying = false;
     var btn = document.getElementById('playPauseBtn');
     if (btn) btn.textContent = '▶ Play Music';
   } else {
-    _playMp3Track(_currentMood);
+    // Create AudioContext directly in user gesture (required for iOS)
+    try {
+      if (!_musicCtx) {
+        _musicCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (_musicCtx.state === 'suspended') {
+        _musicCtx.resume().then(function() { _playMp3Track(_currentMood); });
+      } else {
+        _playMp3Track(_currentMood);
+      }
+    } catch(e) {}
   }
 }
 
 function _playMp3Track(idx) {
-  if (!_mp3Player) return;
-  _mp3Player.src = _mp3Tracks[idx % _mp3Tracks.length];
-  var playPromise = _mp3Player.play();
-  if (playPromise !== undefined) {
-    playPromise.then(function() {
-      musicPlaying = true;
-      var btn = document.getElementById('playPauseBtn');
-      if (btn) btn.textContent = '⏸ Pause';
-      var nameEl = document.getElementById('trackName');
-      if (nameEl) nameEl.textContent = _mp3TrackNames[idx % _mp3TrackNames.length];
-      var listEl = document.getElementById('trackList');
-      if (listEl) listEl.textContent = 'Now playing: ' + _mp3TrackNames[idx % _mp3TrackNames.length] + ' 🎵';
-    }).catch(function(e) {
-      // Silently retry on next user interaction - no toast to avoid disrupting quiz
-      musicPlaying = false;
-      var btn = document.getElementById('playPauseBtn');
-      if (btn) btn.textContent = '▶ Play Music';
+  // Generate calming tones with Web Audio — no external files needed
+  try {
+    if (!_musicCtx) {
+      _musicCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (_musicCtx.state === 'suspended') {
+      _musicCtx.resume();
+    }
+    _stopAllNodes();
+    var freqs = _toneFreqs[idx % _toneFreqs.length];
+    _musicGain = _musicCtx.createGain();
+    _musicGain.gain.setValueAtTime(0.001, _musicCtx.currentTime);
+    _musicGain.gain.exponentialRampToValueAtTime(0.07, _musicCtx.currentTime + 3.0);
+    _musicGain.connect(_musicCtx.destination);
+
+    freqs.forEach(function(freq, i) {
+      var osc = _musicCtx.createOscillator();
+      var g = _musicCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq * (i === 2 ? 0.5 : 1); // lower octave on 3rd
+      g.gain.value = 0.06 - i * 0.01;
+      osc.connect(g);
+      g.connect(_musicGain);
+      osc.start();
+      _musicNodes.push(osc);
+
+      // Add gentle vibrato via LFO
+      var lfo = _musicCtx.createOscillator();
+      var lfoG = _musicCtx.createGain();
+      lfo.frequency.value = 0.3 + i * 0.1; // very slow wobble
+      lfoG.gain.value = 1.5;
+      lfo.connect(lfoG);
+      lfoG.connect(osc.frequency);
+      lfo.start();
+      _musicNodes.push(lfo);
     });
+
+    musicPlaying = true;
+    var name = _mp3TrackNames[idx % _mp3TrackNames.length];
+    var btn = document.getElementById('playPauseBtn');
+    if (btn) btn.textContent = '⏸ Pause';
+    var nameEl = document.getElementById('trackName');
+    if (nameEl) nameEl.textContent = name;
+    var listEl = document.getElementById('trackList');
+    if (listEl) listEl.textContent = 'Now playing: ' + name + ' 🎵';
+  } catch(e) {
+    musicPlaying = false;
   }
 }
 
@@ -5288,11 +5319,17 @@ function openMathGame(grade) {
     var correct=(chosen===String(ans));
     document.querySelectorAll('#mathOpts button').forEach(function(b){
       b.style.pointerEvents='none';
-      if(b.textContent===String(ans)){b.style.background='#E8FBF3';b.style.borderColor='#5ECDA0';}
+      if(b.textContent===String(ans)){b.style.background='linear-gradient(135deg,#5ECDA0,#4ECDC4)';b.style.color='white';b.style.borderColor='#5ECDA0';}
     });
-    if(correct){btn.style.background='#E8FBF3';score++;toast('Correct! +8 Stars');}
-    else{btn.style.background='#FFF0EE';btn.style.borderColor='var(--coral)';toast('The answer is '+ans+'!');}
-    setTimeout(function(){qNum++;render();},900);
+    if(correct){btn.style.background='linear-gradient(135deg,#5ECDA0,#4ECDC4)';btn.style.color='white';score++;}
+    else{btn.style.background='linear-gradient(135deg,#FF6B6B,#FF8E53)';btn.style.color='white';}
+    // Add Next button
+    var nb=document.createElement('button');
+    nb.textContent=qNum>=total-1?'Finish! 🎉':'Next ➡';
+    nb.style.cssText='margin-top:16px;width:100%;max-width:320px;padding:15px;border-radius:40px;border:none;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';
+    nb.onclick=function(){qNum++;render();};
+    var optsEl=document.getElementById('mathOpts');
+    if(optsEl&&optsEl.parentElement){optsEl.parentElement.appendChild(nb);nb.scrollIntoView({behavior:'smooth',block:'nearest'});}
   };
 
   var ov=document.createElement('div');ov.id='mathGameOv';
@@ -5382,11 +5419,17 @@ function openLangGame(grade) {
     var correct=(chosen===ans);
     document.querySelectorAll('#langOpts button').forEach(function(b,bi){
       b.style.pointerEvents='none';
-      if(bi===ans){b.style.background='#E8FBF3';b.style.borderColor='#5ECDA0';}
+      if(bi===ans){b.style.background='linear-gradient(135deg,#5ECDA0,#4ECDC4)';b.style.color='white';b.style.borderColor='#5ECDA0';}
     });
-    if(correct){btn.style.background='#E8FBF3';score++;toast('Correct! +8 Stars');}
-    else{btn.style.background='#FFF0EE';btn.style.borderColor='var(--coral)';toast('Not quite!');}
-    setTimeout(function(){qIdx++;render();},900);
+    if(correct){btn.style.background='linear-gradient(135deg,#5ECDA0,#4ECDC4)';btn.style.color='white';score++;}
+    else{btn.style.background='linear-gradient(135deg,#FF6B6B,#FF8E53)';btn.style.color='white';}
+    // Add Next button
+    var nb=document.createElement('button');
+    nb.textContent=qIdx>=questions.length-1?'Finish! 🎉':'Next ➡';
+    nb.style.cssText='margin-top:16px;width:100%;max-width:340px;padding:15px;border-radius:40px;border:none;background:linear-gradient(135deg,#FF6B6B,#FFD166);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';
+    nb.onclick=function(){qIdx++;render();};
+    var optsEl=document.getElementById('langOpts');
+    if(optsEl&&optsEl.parentElement){optsEl.parentElement.appendChild(nb);nb.scrollIntoView({behavior:'smooth',block:'nearest'});}
   };
 
   var ov=document.createElement('div');ov.id='langGameOv';
