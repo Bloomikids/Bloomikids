@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><!-- build v321 -->
+<html lang="en"><!-- build v322 -->
 <head>
 <meta charset="UTF-8">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -2299,7 +2299,7 @@ let artTabBuilt = false;  // ✅ FIX 4: only build art tab once per child sessio
 
 // -- PWA -----------------------------------------------
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js?v=321').catch(function(){});
+  navigator.serviceWorker.register('/sw.js?v=322').catch(function(){});
 }
 
 // -- Offline -------------------------------------------
@@ -3513,9 +3513,11 @@ function resetTimer() {
   updateTimerDisplay(); document.getElementById('timerBtn').textContent=activeGrade==='PreK'||activeGrade==='K'||activeGrade==='1'?'> Go!':'> Start';
 }
 function updateTimerDisplay() {
-  const m=Math.floor(timerSecs/60).toString().padStart(2,'0');
-  const s=(timerSecs%60).toString().padStart(2,'0');
-  document.getElementById('timerDisplay').textContent=`${m}:${s}`;
+  var secs = parseInt(timerSecs) || 60;
+  var m = Math.floor(secs/60).toString().padStart(2,'0');
+  var s = (secs%60).toString().padStart(2,'0');
+  var el = document.getElementById('timerDisplay');
+  if (el) el.textContent = m + ':' + s;
 }
 function selectPose(el,name,secs) {
   document.querySelectorAll('.pose-card').forEach(p=>p.classList.remove('active-pose'));
@@ -4844,6 +4846,9 @@ function startSmartSession(title, icon, questions, onComplete) {
   var qIdx = 0, score = 0, wrongQueue = [];
   var startTime = Date.now();
   var timerInterval = null;
+var timerSecs = 60;
+var timerRunning = false;
+var currentPoseName = '';
 
   var ov = document.createElement('div');
   ov.id = 'smartSessionOv';
