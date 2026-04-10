@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><!-- build v312 -->
+<html lang="en"><!-- build v315 -->
 <head>
 <meta charset="UTF-8">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -2299,7 +2299,7 @@ let artTabBuilt = false;  // ✅ FIX 4: only build art tab once per child sessio
 
 // -- PWA -----------------------------------------------
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js?v=312').catch(function(){});
+  navigator.serviceWorker.register('/sw.js?v=315').catch(function(){});
 }
 
 // -- Offline -------------------------------------------
@@ -3162,7 +3162,7 @@ async function selectChild(child) {
     updateBloomLevel(sessionData.stars || 0);
     updateDailyMission();
     updateContinueCard();
-    if (typeof askNotificationPermission === 'function') askNotificationPermission();
+    // Notification permission only requested when user taps reminder button
   }, 500);
   // Show CC alignment note
   var ccNote = document.getElementById('ccAlignNote');
