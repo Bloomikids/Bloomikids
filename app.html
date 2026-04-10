@@ -1,4 +1,3 @@
-<!-- BloomiKids app v331 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -3320,8 +3319,6 @@ const POSE_PHOTOS = {
   'Mountain':      { src:'IMG_0861.PNG', pos:'center center'},
   'Mountain Pose': { src:'IMG_0861.PNG', pos:'center center'},
   'Moon':          { src:'IMG_0860.PNG', pos:'center 60%' },
-  'Moon Pose':     { src:'IMG_0860.PNG', pos:'center 60%' },
-  'Star Pose':     { src:'IMG_0858.PNG', pos:'center center'},
   'Warrior III':   { src:'pose_warrior3.png', pos:'center 20%' },
   'Three-Legged Dog': { src:'pose_threelegged.png', pos:'center 30%' },
   'Plank Pose':    { src:'pose_plank.png', pos:'center 40%' },
@@ -4261,18 +4258,7 @@ function initMusicPlayer() {
 
 // ── Simple MP3 music player — no WebAudio needed ──
 var _mp3Player = null;
-var _mp3Tracks = [
-  'https://cdn.pixabay.com/audio/2024/02/28/audio_c0cf2d8ac7.mp3',
-  'https://cdn.pixabay.com/audio/2023/10/31/audio_840a74a9f3.mp3',
-  'https://cdn.pixabay.com/audio/2024/01/15/audio_5b1d2fa2f7.mp3',
-  'https://cdn.pixabay.com/audio/2023/09/05/audio_92a7ec1de0.mp3',
-  'https://cdn.pixabay.com/audio/2024/03/10/audio_d35e8b6c43.mp3',
-  'https://cdn.pixabay.com/audio/2023/11/20/audio_7c2e3f8a15.mp3',
-  'https://cdn.pixabay.com/audio/2024/04/02/audio_9b5c1d7e82.mp3',
-  'https://cdn.pixabay.com/audio/2023/08/14/audio_6a3f2c9b17.mp3',
-  'https://cdn.pixabay.com/audio/2024/01/28/audio_4e8d5c2a96.mp3',
-  'https://cdn.pixabay.com/audio/2023/12/05/audio_1f7b3e9c24.mp3',
-];
+var _mp3Tracks = [];
 var _mp3TrackNames = [
   'Gentle Rain', 'Peaceful Meadow', 'Soft Breeze', 'Ocean Calm',
   'Forest Whisper', 'Starlight Rest', 'Morning Dew', 'Quiet Garden',
@@ -4280,30 +4266,27 @@ var _mp3TrackNames = [
 ];
 
 function toggleMusic() {
-  if (!_mp3Player) {
-    _mp3Player = document.createElement('audio');
-    _mp3Player.loop = false;
-    _mp3Player.volume = 0.5;
-    _mp3Player.addEventListener('ended', function() {
-      _currentMood = (_currentMood + 1) % _mp3Tracks.length;
-      _playMp3Track(_currentMood);
-    });
-    _mp3Player.addEventListener('error', function() {
-      // Track failed - try next one
-      _currentMood = (_currentMood + 1) % _mp3Tracks.length;
-      _playMp3Track(_currentMood);
-    });
-  }
+  var btn = document.getElementById('playPauseBtn');
+  var nameEl = document.getElementById('trackList') || document.getElementById('trackName');
   if (musicPlaying) {
-    _mp3Player.pause();
+    _stopAllNodes();
     musicPlaying = false;
-    var btn = document.getElementById('playPauseBtn');
     if (btn) btn.textContent = '▶ Play Music';
   } else {
-    _playMp3Track(_currentMood);
+    var ctx = _getMusicCtx();
+    function doPlay() {
+      _startMood(_currentMood);
+      musicPlaying = true;
+      if (btn) btn.textContent = '⏸ Pause';
+      if (nameEl) nameEl.textContent = MUSIC_MOODS[_currentMood % MUSIC_MOODS.length].name + ' 🎵';
+    }
+    if (ctx.state === 'suspended') {
+      ctx.resume().then(doPlay);
+    } else {
+      doPlay();
+    }
   }
 }
-
 function _playMp3Track(idx) {
   if (!_mp3Player) return;
   _mp3Player.src = _mp3Tracks[idx % _mp3Tracks.length];
@@ -4327,11 +4310,10 @@ function nextTrack() {
   if (musicPlaying) {
     _currentMood = (_currentMood + 1) % MUSIC_MOODS.length;
     _startMood(_currentMood);
-    var btn = document.getElementById('playPauseBtn');
-    if (btn) btn.textContent = '⏸ Pause';
+    var nameEl = document.getElementById('trackList') || document.getElementById('trackName');
+    if (nameEl) nameEl.textContent = MUSIC_MOODS[_currentMood % MUSIC_MOODS.length].name + ' 🎵';
   }
 }
-
 function setVolume(val) {
   if (_musicGain && _musicCtx) {
     var v = Math.max(0.001, (parseInt(val) / 100) * 0.35);
@@ -6293,16 +6275,16 @@ function showParentPinEntry(storedPin) {
             openActualDashboard();
           } else {
             wrongAttempts = (wrongAttempts||0) + 1;
+            var errEl = ov.querySelector('#pinError');
             if (wrongAttempts >= 3) {
-              var errEl = ov.querySelector('#pinError');
-              errEl.textContent = 'Wrong PIN. ';
-              var resetSpan = document.createElement('span');
-              resetSpan.textContent = 'Reset PIN?';
-              resetSpan.style.cssText = 'text-decoration:underline;cursor:pointer;';
-              resetSpan.onclick = function(){ localStorage.removeItem('bloomi_parent_pin'); ov.remove(); };
-              errEl.appendChild(resetSpan);
+              errEl.textContent = 'Tap to reset PIN and re-enter. ';
+              var rst = document.createElement('span');
+              rst.textContent = 'Reset';
+              rst.style.cssText = 'text-decoration:underline;cursor:pointer;color:#FFD700;';
+              rst.onclick = function(){ localStorage.removeItem('bloomi_parent_pin'); ov.remove(); };
+              errEl.appendChild(rst);
             } else {
-              ov.querySelector('#pinError').textContent = 'Wrong PIN. Try again!';
+              errEl.textContent = 'Wrong PIN. Try again!';
             }
             pin = '';
             updateDots();
