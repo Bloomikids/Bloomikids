@@ -3460,7 +3460,7 @@ async function checkAnswer(btn, correct) {
   setSyncState('syncing');
   try {
     const q = gradeContent.questions[qIdx%gradeContent.questions.length];
-    await sb.from('quiz_results').insert({child_id:activeChild.id,subject:q.subject,question:q.q,correct,stars_earned:stars});
+    await sb.from('quiz_results').insert({child_id:activeChild.id,subject:q.subject,question:q.q,correct}).catch(function(){});
     await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:stars});
     await upsertDailyActivity({tasks_done:sessionData.tasks+1});
     sessionData.tasks++; sessionData.stars+=stars;
@@ -3636,17 +3636,13 @@ function renderBookShelf(books) {
   document.getElementById('monthlyReadBar').style.width=mPct+'%';
   document.getElementById('monthlyReadPct').textContent=`${completed}/4 books`;
 
-  // Free classic books — Grade 1 and up only
-  var currentGrade = activeGrade;
-  var gradeNum = gradeContent ? (gradeContent.gradeNum || 0) : 0;
-  if (gradeNum >= 1) {
-    var gdlEl = document.getElementById('gdlBooksSection');
-    if (!gdlEl) {
-      var gdlWrap = buildGDLLibrary(currentGrade);
-      if (gdlWrap) {
-        gdlWrap.id = 'gdlBooksSection';
-        shelf.parentElement.appendChild(gdlWrap);
-      }
+  // Free online libraries — all grades
+  var libEl = document.getElementById('onlineLibSection');
+  if (!libEl) {
+    var libWrap = buildOnlineLibrary();
+    if (libWrap) {
+      libWrap.id = 'onlineLibSection';
+      shelf.parentElement.appendChild(libWrap);
     }
   }
 }
@@ -4280,26 +4276,17 @@ var _toneFreqs = [
 
 function toggleMusic() {
   if (musicPlaying) {
-    if (_musicGain && _musicCtx) {
-      _musicGain.gain.setValueAtTime(_musicGain.gain.value, _musicCtx.currentTime);
-      _musicGain.gain.exponentialRampToValueAtTime(0.001, _musicCtx.currentTime + 1.0);
-      setTimeout(_stopAllNodes, 1100);
-    } else { _stopAllNodes(); }
+    _stopAllNodes();
     musicPlaying = false;
     var btn = document.getElementById('playPauseBtn');
     if (btn) btn.textContent = '▶ Play Music';
   } else {
-    // Create AudioContext directly in user gesture (required for iOS)
-    try {
-      if (!_musicCtx) {
-        _musicCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (_musicCtx.state === 'suspended') {
-        _musicCtx.resume().then(function() { _playMp3Track(_currentMood); });
-      } else {
-        _playMp3Track(_currentMood);
-      }
-    } catch(e) {}
+    // Must create AudioContext in direct user tap (iOS requirement)
+    if (!_musicCtx) {
+      try { _musicCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { return; }
+    }
+    var resume = (_musicCtx.state === 'suspended') ? _musicCtx.resume() : Promise.resolve();
+    resume.then(function() { _playMp3Track(_currentMood); }).catch(function() { _playMp3Track(_currentMood); });
   }
 }
 
@@ -4545,7 +4532,7 @@ function switchTab(tab) {
 
 async function upsertDailyActivity(updates) {
   const today=new Date().toISOString().split('T')[0];
-  const {data:ex}=await sb.from('daily_activity').select('*').eq('child_id',activeChild.id).eq('activity_date',today).single();
+  const {data:ex,error:_daErr}=await sb.from('daily_activity').select('*').eq('child_id',activeChild.id).eq('activity_date',today).maybeSingle();
   if (ex) {
     const merged={};
     Object.keys(updates).forEach(k=>{ merged[k]=(ex[k]||0)+(updates[k]||0); });
@@ -4966,6 +4953,7 @@ function startSmartSession(title, icon, questions, onComplete) {
       var btn = document.createElement('button');
       btn.textContent = opt;
       btn.style.cssText = 'width:100%;padding:14px 18px;border-radius:16px;border:2.5px solid #E0DAFF;background:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;color:#2D2D4E;cursor:pointer;text-align:left;transition:all .15s;';
+      btn.setAttribute('data-correct', isCorrect ? 'true' : 'false');
       btn.onclick = function() {
         if (answered) return;
         answered = true;
@@ -4980,9 +4968,14 @@ function startSmartSession(title, icon, questions, onComplete) {
         } else {
           btn.style.background = 'linear-gradient(135deg,#FF6B6B,#FF8E53)';
           btn.style.color = 'white'; btn.style.borderColor = '#FF6B6B';
-          // Show correct answer
-          optsDiv.querySelectorAll('button')[q.answer].style.background = 'linear-gradient(135deg,#5ECDA0,#4ECDC4)';
-          optsDiv.querySelectorAll('button')[q.answer].style.color = 'white';
+          // Show correct answer — find by isCorrect flag stored in data attribute
+          optsDiv.querySelectorAll('button').forEach(function(b) {
+            if (b.getAttribute('data-correct') === 'true') {
+              b.style.background = 'linear-gradient(135deg,#5ECDA0,#4ECDC4)';
+              b.style.color = 'white';
+              b.style.borderColor = '#5ECDA0';
+            }
+          });
           sessionEngine.markWrong(childId, qKey);
           // Re-queue for end of session
           wrongQueue.push(q);
