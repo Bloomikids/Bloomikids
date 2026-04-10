@@ -1,5 +1,5 @@
 // BloomiKids SW v312 - force cache bust
-const V = 'bk-v316';
+const V = 'bk-v317';
 self.addEventListener('install', e => { self.skipWaiting(); });
 self.addEventListener('activate', e => {
   e.waitUntil(
