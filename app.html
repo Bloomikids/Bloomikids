@@ -1823,16 +1823,8 @@ const GRADE_DATA = {
       { emoji:'⚔', name:'Warrior I', tip:'Lunge one foot forward and reach both arms up high!', secs:90, level:'Medium' },
       { emoji:'⚔', name:'Warrior II', tip:'Arms stretched wide, look over your front hand!', secs:90, level:'Medium' },
       { emoji:'🧱', name:'Plank Pose', tip:'Hands down, body straight like a board — hold it!', secs:30, level:'Medium' },
-      { emoji:'🐕', name:'Three-Legged Dog', tip:'Downward dog then kick one leg up high!', secs:45, level:'Medium' },
-    ,
-      {q:'Which word should have a capital letter?',opts:['cat','monday','apple','run'],answer:1,subject:'Writing'},
-      {q:'Which sentence ends correctly?',opts:['I like cats','I like cats.','i like cats','i like cats.'],answer:1,subject:'Writing'},
-      {q:'What punctuation ends a question?',opts:['.','!','?',','],answer:2,subject:'Writing'},
-      {q:'Which is a complete sentence?',opts:['The big dog.','Ran fast.','The dog ran fast.','Fast dog running.'],answer:2,subject:'Writing'},
-      {q:'Which word is spelled correctly?',opts:['frend','friand','friend','freind'],answer:2,subject:'Writing'},
-      {q:'What goes at the START of every sentence?',opts:['A period','A capital letter','A comma','An exclamation mark'],answer:1,subject:'Writing'},
-      {q:'Which is a naming word (noun)?',opts:['run','jump','cat','fast'],answer:2,subject:'Writing'},
-      {q:'Which word describes (adjective)?',opts:['dog','run','big','ate'],answer:2,subject:'Writing'}],
+      { emoji:'🐕', name:'Three-Legged Dog', tip:'Downward dog then kick one leg up high!', secs:45, level:'Medium' }
+    ],
     books:[
       { title:'Thank You Mr Falker',             author:'P. Polacco',     pages:48,  read:0,  emoji:'📚' },
       { title:'Each Kindness',                   author:'J. Woodson',     pages:32,  read:0,  emoji:'💙' },
@@ -3351,21 +3343,6 @@ const POSE_PHOTOS = {
   'Rocket':        { src:'IMG_0858.PNG',  pos:'center center'},// star = rocket arms up
   'Wave':          { src:'IMG_1358.PNG',  pos:'center 40%' },  // side bend = wave
   "Child's Pose":  { src:'IMG_0860.PNG',  pos:'center 60%' },
-  'Side Plank':         { src:'IMG_1348.jpeg', pos:'center 30%' },
-  'Side Plank Pose':    { src:'IMG_1348.jpeg', pos:'center 30%' },
-  'Dancer':             { src:'IMG_1349.jpeg', pos:'center 20%' },
-  'Dancer Pose':        { src:'IMG_1349.jpeg', pos:'center 20%' },
-  'Balancing Table Top':{ src:'IMG_1350.jpeg', pos:'center 40%' },
-  'Reverse Table Top':  { src:'IMG_1350.jpeg', pos:'center 40%' },
-  'Bird Dog':           { src:'IMG_1350.jpeg', pos:'center 40%' },
-  'Bridge':             { src:'IMG_0864.PNG',  pos:'center 40%' },
-  'Bridge Pose':        { src:'IMG_0864.PNG',  pos:'center 40%' },
-  'Crow':               { src:'IMG_1345.jpeg', pos:'center 30%' },
-  'Crow Pose':          { src:'IMG_1345.jpeg', pos:'center 30%' },
-  'Frog':               { src:'IMG_1355.PNG',  pos:'center 50%' },
-  'Frog Pose':          { src:'IMG_1355.PNG',  pos:'center 50%' },
-  'Goddess Pose':       { src:'pose_goddess.jpg', pos:'center 20%' },
-  'Goddess':            { src:'pose_goddess.jpg', pos:'center 20%' },
 };
 
 function buildYogaGrid() {
@@ -4178,15 +4155,16 @@ var musicPlaying = false;
 var _currentMood = 0;
 
 var MUSIC_MOODS = [
-  { name: 'Morning Calm',    freqs: [523.25, 659.25, 783.99, 1046.5], bass: 261.63, lfo: 0.3  },
-  { name: 'Ocean Breeze',    freqs: [440.00, 554.37, 659.25, 880.00], bass: 220.00, lfo: 0.2  },
-  { name: 'Garden Peace',    freqs: [493.88, 622.25, 739.99, 987.77], bass: 246.94, lfo: 0.25 },
-  { name: 'Starlight',       freqs: [392.00, 493.88, 587.33, 783.99], bass: 196.00, lfo: 0.4  },
-  { name: 'Lotus Dream',     freqs: [349.23, 440.00, 523.25, 698.46], bass: 174.61, lfo: 0.35 },
-  { name: 'Soft Rain',       freqs: [466.16, 587.33, 698.46, 932.33], bass: 233.08, lfo: 0.15 },
-  { name: 'Meadow Song',     freqs: [415.30, 523.25, 622.25, 830.61], bass: 207.65, lfo: 0.3  },
-  { name: 'Moonlight',       freqs: [369.99, 466.16, 554.37, 739.99], bass: 185.00, lfo: 0.45 },
-  { name: 'Sunrise Flow',    freqs: [554.37, 698.46, 830.61, 1108.7], bass: 277.18, lfo: 0.2  },
+  { name: 'Breathing Space', freqs: [261.6, 329.6, 392.0, 523.3], bass: 130.8, lfo: 0.4  },
+  { name: 'Ocean Calm',      freqs: [293.7, 370.0, 440.0, 554.4], bass: 146.8, lfo: 0.25 },
+  { name: 'Garden Peace',    freqs: [246.9, 311.1, 392.0, 493.9], bass: 123.5, lfo: 0.35 },
+  { name: 'Starlight Rest',  freqs: [220.0, 277.2, 349.2, 440.0], bass: 110.0, lfo: 0.5  },
+  { name: 'Mountain Still',  freqs: [196.0, 246.9, 329.6, 415.3], bass:  98.0, lfo: 0.3  },
+  { name: 'Soft Rain',       freqs: [233.1, 293.7, 369.9, 466.2], bass: 116.5, lfo: 0.45 },
+  { name: 'Meadow Float',    freqs: [277.2, 349.2, 415.3, 523.3], bass: 138.6, lfo: 0.55 },
+  { name: 'Moonlight Yoga',  freqs: [207.7, 261.6, 311.1, 392.0], bass: 103.8, lfo: 0.2  },
+  { name: 'Morning Glow',    freqs: [261.6, 311.1, 392.0, 523.3], bass: 130.8, lfo: 0.4  },
+  { name: 'Zen Flow',        freqs: [220.0, 293.7, 369.9, 440.0], bass: 110.0, lfo: 0.3  },
 ];
 
 function _getMusicCtx() {
@@ -4219,66 +4197,41 @@ function _startMood(moodIdx) {
 
   _musicGain = ctx.createGain();
   _musicGain.gain.setValueAtTime(0.001, ctx.currentTime);
-  _musicGain.gain.exponentialRampToValueAtTime(Math.max(0.001, vol * 0.7), ctx.currentTime + 1.5);
+  _musicGain.gain.exponentialRampToValueAtTime(Math.max(0.001, vol * 0.35), ctx.currentTime + 2.0);
   _musicGain.connect(ctx.destination);
 
-  // Reverb-like effect using delay
-  var delay = ctx.createDelay(2.0);
-  delay.delayTime.value = 0.3;
-  var delayGain = ctx.createGain();
-  delayGain.gain.value = 0.25;
-  delay.connect(delayGain);
-  delayGain.connect(delay);
-  delayGain.connect(_musicGain);
+  var lfo = ctx.createOscillator();
+  var lfoGain = ctx.createGain();
+  lfo.frequency.value = mood.lfo;
+  lfoGain.gain.value = 0.04;
+  lfo.connect(lfoGain);
+  lfo.start();
+  _musicNodes.push(lfo);
 
-  // Piano-style plucked notes - repeating arpeggio pattern
-  var noteInterval = 1.8; // seconds between notes
-  var now = ctx.currentTime;
+  mood.freqs.forEach(function(freq, i) {
+    var osc = ctx.createOscillator(); var oscGain = ctx.createGain();
+    osc.type = 'sine'; osc.frequency.value = freq;
+    oscGain.gain.value = 0.10 - i * 0.015;
+    osc.detune.value = (i % 2 === 0 ? 2 : -2);
+    lfoGain.connect(oscGain.gain);
+    osc.connect(oscGain); oscGain.connect(_musicGain);
+    osc.start(); _musicNodes.push(osc);
+    var osc2 = ctx.createOscillator(); var osc2Gain = ctx.createGain();
+    osc2.type = 'triangle'; osc2.frequency.value = freq * 0.5;
+    osc2Gain.gain.value = 0.05;
+    osc2.connect(osc2Gain); osc2Gain.connect(_musicGain);
+    osc2.start(); _musicNodes.push(osc2);
+  });
 
-  function playNote(freq, time, dur) {
-    var osc = ctx.createOscillator();
-    var gain = ctx.createGain();
-    osc.type = 'triangle';
-    osc.frequency.value = freq;
-    // Piano attack-decay envelope
-    gain.gain.setValueAtTime(0.001, time);
-    gain.gain.exponentialRampToValueAtTime(0.3, time + 0.02);
-    gain.gain.exponentialRampToValueAtTime(0.001, time + dur);
-    osc.connect(gain);
-    gain.connect(delay);
-    gain.connect(_musicGain);
-    osc.start(time);
-    osc.stop(time + dur + 0.1);
-    _musicNodes.push(osc);
+  var bass = ctx.createOscillator(); var bassGain = ctx.createGain();
+  bass.type = 'triangle'; bass.frequency.value = mood.bass;
+  bassGain.gain.value = 0.12;
+  bass.connect(bassGain); bassGain.connect(_musicGain); bass.start(); _musicNodes.push(bass);
 
-    // Add harmonics for richness
-    var osc2 = ctx.createOscillator();
-    var gain2 = ctx.createGain();
-    osc2.type = 'sine';
-    osc2.frequency.value = freq * 2;
-    gain2.gain.setValueAtTime(0.001, time);
-    gain2.gain.exponentialRampToValueAtTime(0.08, time + 0.01);
-    gain2.gain.exponentialRampToValueAtTime(0.001, time + dur * 0.5);
-    osc2.connect(gain2);
-    gain2.connect(_musicGain);
-    osc2.start(time);
-    osc2.stop(time + dur);
-    _musicNodes.push(osc2);
-  }
-
-  // Schedule repeating arpeggio (16 bars)
-  var freqs = mood.freqs;
-  var patterns = [0,1,2,3,2,1,0,2,1,3,0,2];
-  for (var bar = 0; bar < 20; bar++) {
-    patterns.forEach(function(fi, ni) {
-      var t = now + bar * (noteInterval * 4) + ni * (noteInterval * 0.33);
-      playNote(freqs[fi % freqs.length], t, noteInterval * 0.8);
-      // Bass note on beat 1
-      if (ni === 0) {
-        playNote(mood.bass, t, noteInterval * 1.2);
-      }
-    });
-  }
+  var shimmer = ctx.createOscillator(); var shimGain = ctx.createGain();
+  shimmer.type = 'sine'; shimmer.frequency.value = mood.freqs[0] * 4;
+  shimGain.gain.value = 0.03;
+  shimmer.connect(shimGain); shimGain.connect(_musicGain); shimmer.start(); _musicNodes.push(shimmer);
 
   musicPlaying = true;
   var btn = document.getElementById('playPauseBtn');
@@ -4316,27 +4269,30 @@ var _mp3TrackNames = [
 ];
 
 function toggleMusic() {
-  var btn = document.getElementById('playPauseBtn');
-  var listEl = document.getElementById('trackList');
+  if (!_mp3Player) {
+    _mp3Player = document.createElement('audio');
+    _mp3Player.loop = false;
+    _mp3Player.volume = 0.5;
+    _mp3Player.addEventListener('ended', function() {
+      _currentMood = (_currentMood + 1) % _mp3Tracks.length;
+      _playMp3Track(_currentMood);
+    });
+    _mp3Player.addEventListener('error', function() {
+      // Track failed - try next one
+      _currentMood = (_currentMood + 1) % _mp3Tracks.length;
+      _playMp3Track(_currentMood);
+    });
+  }
   if (musicPlaying) {
-    _stopAllNodes();
-    // Also stop YouTube if present
-    var yt = document.getElementById('ytMusicFrame');
-    if (yt) yt.src = '';
+    _mp3Player.pause();
     musicPlaying = false;
+    var btn = document.getElementById('playPauseBtn');
     if (btn) btn.textContent = '▶ Play Music';
   } else {
-    var ctx = _getMusicCtx();
-    function doPlay() {
-      _startMood(_currentMood);
-    }
-    if (ctx.state === 'suspended') {
-      ctx.resume().then(doPlay).catch(doPlay);
-    } else {
-      doPlay();
-    }
+    _playMp3Track(_currentMood);
   }
 }
+
 function _playMp3Track(idx) {
   if (!_mp3Player) return;
   _mp3Player.src = _mp3Tracks[idx % _mp3Tracks.length];
@@ -4357,18 +4313,10 @@ function _playMp3Track(idx) {
 }
 
 function nextTrack() {
-  _currentMood = (_currentMood + 1) % MUSIC_MOODS.length;
-  if (musicPlaying) {
-    _stopAllNodes();
-    var ctx = _getMusicCtx();
-    function doNext() { _startMood(_currentMood); }
-    if (ctx.state === 'suspended') {
-      ctx.resume().then(doNext).catch(doNext);
-    } else {
-      doNext();
-    }
-  }
+  _currentMood = (_currentMood + 1) % _mp3Tracks.length;
+  _playMp3Track(_currentMood);
 }
+
 function setVolume(val) {
   if (_musicGain && _musicCtx) {
     var v = Math.max(0.001, (parseInt(val) / 100) * 0.35);
@@ -6350,126 +6298,196 @@ function openActualDashboard() {
   var old = document.getElementById('parentDashOv'); if (old) old.remove();
   var ov = document.createElement('div');
   ov.id = 'parentDashOv';
-  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#F8F6FF;overflow-y:auto;font-family:Nunito,sans-serif;';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#4B2D8B 0%,#7B52C8 50%,#9B6FE8 100%);overflow-y:auto;font-family:Nunito,sans-serif;';
 
-  var child = (typeof currentChild !== 'undefined' && currentChild) ? currentChild : {name:'Your Child', grade:'', avatar:'🦄'};
-  var gradeName = '';
-  if (typeof gradeContent !== 'undefined' && gradeContent && gradeContent.label) gradeName = gradeContent.label;
+  // ── HEADER ──
+  var hdr = document.createElement('div');
+  hdr.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:20px 20px 10px;';
+  var closeBtn = document.createElement('button');
+  closeBtn.innerHTML = '&times;';
+  closeBtn.style.cssText = 'background:rgba(255,255,255,.2);border:none;color:white;width:36px;height:36px;border-radius:50%;font-size:1.4rem;cursor:pointer;font-weight:800;display:flex;align-items:center;justify-content:center;';
+  closeBtn.onclick = function(){ ov.remove(); };
+  hdr.innerHTML = '<div style="font-family:Baloo 2,cursive;font-size:1.3rem;font-weight:800;color:white;letter-spacing:-.3px;">Parent Settings</div>';
+  hdr.appendChild(closeBtn);
+  ov.appendChild(hdr);
 
-  ov.innerHTML = `
-    <div style="background:linear-gradient(135deg,#6B4EFF,#8B6FE8);padding:20px;position:relative;">
-      <button onclick="document.getElementById('parentDashOv').remove()" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,.2);border:none;color:white;width:36px;height:36px;border-radius:50%;font-size:1.3rem;cursor:pointer;font-weight:800;">×</button>
-      <div style="font-family:'Baloo 2',cursive;font-size:1.4rem;font-weight:800;color:white;margin-bottom:4px;">Parent Dashboard</div>
-      <div style="color:rgba(255,255,255,.8);font-size:.85rem;">Track your child's learning</div>
-    </div>
+  // ── GEAR GRID (Homer-style) ──
+  var grid = document.createElement('div');
+  grid.style.cssText = 'display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:16px 20px 24px;max-width:480px;margin:0 auto;';
 
-    <div style="padding:16px;">
+  var tiles = [
+    { icon:'👶', label:'Manage Children',   color:'#5ECDA0', fn: function(){ showManageChildrenPanel(content); } },
+    { icon:'🔔', label:'Streak Reminders',  color:'#FFD166', fn: function(){ showReminderPanel(content); } },
+    { icon:'📊', label:'Progress Report',   color:'#5B8DEF', fn: function(){ showProgressPanel(content); } },
+    { icon:'🎯', label:'Learning Goals',    color:'#FF6B6B', fn: function(){ showGoalsPanel(content); } },
+    { icon:'📋', label:'Common Core',       color:'#C9B8FF', fn: function(){ showStandardsPanel(content); } },
+    { icon:'🔒', label:'Privacy Policy',    color:'#aaa',    fn: function(){ window.open('privacy.html','_blank'); } },
+  ];
 
-      <!-- Child Card -->
-      <div style="background:white;border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 2px 12px rgba(107,78,255,.1);">
-        <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid #F0EEFF;">
-          <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#6B4EFF,#C084FC);display:flex;align-items:center;justify-content:center;font-size:1.6rem;">${child.avatar||'🦄'}</div>
-          <div>
-            <div style="font-weight:800;font-size:1.1rem;color:#2D1A4E;">${child.name||'Your Child'}</div>
-            <div style="color:#888;font-size:.82rem;">${gradeName||'Grade'}</div>
-          </div>
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;text-align:center;">
-          <div style="background:#F8F6FF;border-radius:14px;padding:12px 6px;">
-            <div style="font-size:1.3rem;font-weight:800;color:#6B4EFF;" id="pd-days">0d</div>
-            <div style="font-size:.68rem;color:#888;margin-top:2px;">Days Active</div>
-          </div>
-          <div style="background:#F8F6FF;border-radius:14px;padding:12px 6px;">
-            <div style="font-size:1.3rem;font-weight:800;color:#E05BFF;" id="pd-time">0m</div>
-            <div style="font-size:.68rem;color:#888;margin-top:2px;">Learn Time</div>
-          </div>
-          <div style="background:#F8F6FF;border-radius:14px;padding:12px 6px;">
-            <div style="font-size:1.3rem;font-weight:800;color:#00BFA5;" id="pd-acts">0</div>
-            <div style="font-size:.68rem;color:#888;margin-top:2px;">Activities</div>
-          </div>
-          <div style="background:#F8F6FF;border-radius:14px;padding:12px 6px;">
-            <div style="font-size:1.3rem;font-weight:800;color:#FF8A00;" id="pd-correct">0</div>
-            <div style="font-size:.68rem;color:#888;margin-top:2px;">Correct</div>
-          </div>
-        </div>
-        <div style="margin-top:14px;background:#F8F6FF;border-radius:14px;padding:14px;display:flex;align-items:center;justify-content:space-between;">
-          <div>
-            <div style="font-weight:800;font-size:.9rem;color:#2D1A4E;">Streak Reminders</div>
-            <div style="font-size:.75rem;color:#888;">Daily nudge for ${child.name||'your child'}</div>
-          </div>
-          <button onclick="alert('Reminders coming soon!')" style="background:#6B4EFF;color:white;border:none;border-radius:20px;padding:8px 18px;font-weight:700;font-size:.8rem;cursor:pointer;">Enable</button>
-        </div>
-      </div>
+  tiles.forEach(function(tile) {
+    var cell = document.createElement('div');
+    cell.style.cssText = 'background:rgba(255,255,255,.12);border-radius:20px;padding:18px 8px 14px;text-align:center;cursor:pointer;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);transition:transform .15s,background .15s;';
+    // Gear ring
+    cell.innerHTML = '<div style="width:60px;height:60px;margin:0 auto 8px;border-radius:50%;background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:1.7rem;box-shadow:0 4px 12px rgba(0,0,0,.2);">' + tile.icon + '</div>'
+      + '<div style="font-size:.7rem;font-weight:800;color:white;line-height:1.3;">' + tile.label + '</div>';
+    cell.addEventListener('touchstart', function(){ this.style.transform='scale(.95)'; this.style.background='rgba(255,255,255,.22)'; });
+    cell.addEventListener('touchend', function(){ this.style.transform=''; this.style.background='rgba(255,255,255,.12)'; });
+    cell.addEventListener('mouseenter', function(){ this.style.transform='scale(.97)'; this.style.background='rgba(255,255,255,.2)'; });
+    cell.addEventListener('mouseleave', function(){ this.style.transform=''; this.style.background='rgba(255,255,255,.12)'; });
+    cell.onclick = tile.fn;
+    grid.appendChild(cell);
+  });
+  ov.appendChild(grid);
 
-      <!-- Standards Roadmap -->
-      <div style="background:white;border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 2px 12px rgba(107,78,255,.1);" id="pd-standards">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
-          <span style="font-size:1.3rem;">📋</span>
-          <div>
-            <div style="font-weight:800;color:#2D1A4E;" id="pd-grade-title">Standards Roadmap</div>
-            <div style="font-size:.75rem;color:#888;">Standards your child will practice in BloomiKids</div>
-          </div>
-        </div>
-        <div id="pd-standards-list"></div>
-        <div style="margin-top:12px;background:#E8F5E9;border-radius:10px;padding:10px;display:flex;align-items:center;gap:8px;">
-          <span style="color:#4CAF50;">✅</span>
-          <span style="font-size:.78rem;color:#2E7D32;font-weight:700;">All activities aligned to Common Core State Standards</span>
-        </div>
-      </div>
-
-      <!-- Settings Tiles -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
-        <div onclick="localStorage.removeItem('bloomi_parent_pin');document.getElementById('parentDashOv').remove();alert('PIN reset. Set a new PIN next time you open the dashboard.');" style="background:white;border-radius:16px;padding:16px;box-shadow:0 2px 12px rgba(107,78,255,.1);cursor:pointer;text-align:center;">
-          <div style="font-size:1.6rem;margin-bottom:6px;">🔒</div>
-          <div style="font-weight:800;font-size:.85rem;color:#2D1A4E;">Reset PIN</div>
-          <div style="font-size:.72rem;color:#888;margin-top:2px;">Change parent PIN</div>
-        </div>
-        <div onclick="alert('Privacy Policy: BloomiKids does not sell or share your data. All learning data stays on your device.')" style="background:white;border-radius:16px;padding:16px;box-shadow:0 2px 12px rgba(107,78,255,.1);cursor:pointer;text-align:center;">
-          <div style="font-size:1.6rem;margin-bottom:6px;">🛡️</div>
-          <div style="font-weight:800;font-size:.85rem;color:#2D1A4E;">Privacy</div>
-          <div style="font-size:.72rem;color:#888;margin-top:2px;">COPPA Safe • No Ads</div>
-        </div>
-      </div>
-
-    </div>`;
-
+  // ── CONTENT AREA ──
+  var content = document.createElement('div');
+  content.style.cssText = 'background:white;border-radius:28px 28px 0 0;min-height:50vh;padding:24px 20px;max-width:480px;margin:0 auto;width:100%;';
+  content.innerHTML = '<div style="text-align:center;color:#aaa;padding:40px 0;font-size:.9rem;">Tap a tile above to get started</div>';
+  ov.appendChild(content);
   document.body.appendChild(ov);
 
-  // Populate standards based on grade
-  var gradeNum = (typeof gradeContent !== 'undefined' && gradeContent) ? gradeContent.gradeNum : -1;
-  var standards = {
-    '-1': [{code:'PK.CC',title:'Counting & Cardinality',desc:'Numbers, counting, basic shapes'},{code:'PK.RF',title:'Reading Foundations',desc:'Phonological awareness, print concepts'},{code:'PK-SS',title:'Social Studies',desc:'Self, family, community basics'}],
-    '0':  [{code:'K.CC.A',title:'Counting & Numbers',desc:'Count to 100, compare numbers'},{code:'K.RF.2',title:'Phonics & Reading',desc:'Letter sounds, sight words, decoding'},{code:'K-SS.1',title:'Social Studies',desc:'Community helpers, maps, traditions'}],
-    '1':  [{code:'1.OA.A.1',title:'Operations',desc:'Add/subtract within 20'},{code:'1.RF.3',title:'Reading & Phonics',desc:'Decode words, fluency, comprehension'},{code:'1-SS.1',title:'Social Studies',desc:'Families, neighborhoods, civic life'}],
-    '2':  [{code:'2.OA.A.1',title:'Operations & Algebraic Thinking',desc:'Add/subtract within 100, place value, measurement'},{code:'2.RF.3',title:'Reading & Language Arts',desc:'Phonics, fluency, reading comprehension, language conventions'},{code:'2-PS1-1',title:'Science',desc:'Matter properties, biodiversity, Earth changes'},{code:'2.SS.1',title:'Social Studies',desc:'Communities, government, geography, economics'}],
-    '3':  [{code:'3.OA.A.1',title:'Multiplication & Division',desc:'Multiply/divide within 100, fractions'},{code:'3.RI.1',title:'Reading Informational Text',desc:'Ask/answer questions, main idea, vocabulary'},{code:'3-LS1-1',title:'Life Science',desc:'Life cycles, ecosystems, inherited traits'},{code:'3.SS.1',title:'Social Studies',desc:'State history, regions, economics, government'}],
-    '4':  [{code:'4.NBT.A.1',title:'Number & Operations',desc:'Multi-digit arithmetic, fractions, decimals'},{code:'4.RI.1',title:'Reading & Writing',desc:'Informational text, opinion writing, grammar'},{code:'4-ESS2-1',title:'Earth Science',desc:'Weathering, erosion, natural resources'},{code:'4.SS.1',title:'Social Studies',desc:'US regions, government, economics, geography'}],
-    '5':  [{code:'5.NBT.A.1',title:'Number Systems',desc:'Decimals, fractions, volume, graphing'},{code:'5.RI.1',title:'Literacy & Writing',desc:'Informational text, research, argument writing'},{code:'5-PS1-1',title:'Physical Science',desc:'Matter, energy, forces, ecosystems'},{code:'5.SS.1',title:'Social Studies',desc:'US history, civics, economics, world cultures'}],
-  };
-
-  var key = String(gradeNum);
-  var stds = standards[key] || standards['2'];
-  var gradeLabel = (typeof gradeContent !== 'undefined' && gradeContent && gradeContent.label) ? gradeContent.label : 'Grade';
-  var titleEl = document.getElementById('pd-grade-title');
-  if (titleEl) titleEl.textContent = gradeLabel + ' Standards Roadmap';
-  var listEl = document.getElementById('pd-standards-list');
-  if (listEl) {
-    listEl.innerHTML = stds.map(function(s) {
-      return '<div style="display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid #F0EEFF;">'
-        + '<span style="background:#EDE9FF;color:#6B4EFF;border-radius:8px;padding:4px 8px;font-size:.7rem;font-weight:800;white-space:nowrap;margin-top:2px;">' + s.code + '</span>'
-        + '<div><div style="font-weight:800;font-size:.85rem;color:#2D1A4E;">' + s.title + '</div>'
-        + '<div style="font-size:.75rem;color:#888;margin-top:2px;">' + s.desc + '</div></div></div>';
-    }).join('');
+  // ── PANEL FUNCTIONS ──
+  function showProgressPanel(c) {
+    c.innerHTML = '<div style="font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:#2D2D4E;margin-bottom:14px;">📊 Progress Report</div><div style="text-align:center;color:#aaa;padding:20px 0;">Loading...</div>';
+    loadProgressData(c);
   }
 
-  // Load real stats if available
-  if (typeof sessionData !== 'undefined') {
-    var d = document.getElementById('pd-days'); if(d) d.textContent = (sessionData.streak||0)+'d';
-    var t = document.getElementById('pd-time'); if(t) t.textContent = (sessionData.minutes||0)+'m';
-    var a = document.getElementById('pd-acts'); if(a) a.textContent = sessionData.tasks||0;
-    var c = document.getElementById('pd-correct'); if(c) c.textContent = sessionData.stars||0;
+  async function loadProgressData(c) {
+    try {
+      var res = await sb.from('children').select('*').eq('parent_id', currentUser.id);
+      var children = res.data || [];
+      if (!children.length) {
+        c.innerHTML = '<div style="font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:#2D2D4E;margin-bottom:14px;">📊 Progress Report</div><div style="text-align:center;color:#aaa;padding:20px;">No children added yet.</div>';
+        return;
+      }
+      var html = '<div style="font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:#2D2D4E;margin-bottom:14px;">📊 Progress Report</div>';
+      for (var i = 0; i < children.length; i++) {
+        var child = children[i];
+        var sevenAgo = new Date(); sevenAgo.setDate(sevenAgo.getDate()-7);
+        var actRes = await sb.from('daily_activity').select('*').eq('child_id',child.id).gte('activity_date',sevenAgo.toISOString().split('T')[0]);
+        var acts = actRes.data || [];
+        var qRes = await sb.from('quiz_results').select('*').eq('child_id',child.id).limit(50);
+        var quizzes = qRes.data || [];
+        var totalMins = acts.reduce(function(s,a){return s+(a.minutes_academic||0)+(a.minutes_reading||0)+(a.minutes_yoga||0);},0);
+        var correct = quizzes.filter(function(q){return q.correct;}).length;
+        var accuracy = quizzes.length ? Math.round(correct/quizzes.length*100) : 0;
+        var activeDays = new Set(acts.map(function(a){return a.activity_date;})).size;
+        html += '<div style="background:#F8F6FF;border-radius:16px;padding:16px;margin-bottom:12px;">'
+          + '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">'
+          + '<div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);display:flex;align-items:center;justify-content:center;font-size:1.3rem;">' + (child.avatar||'⭐') + '</div>'
+          + '<div><div style="font-weight:800;color:#2D2D4E;">' + child.name + '</div><div style="font-size:.72rem;color:#aaa;">' + (child.grade||'K') + ' Grade</div></div></div>'
+          + '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;">'
+          + statPill(activeDays+'d','Days','#8B6FE8')
+          + statPill(totalMins+'m','Time','#FF6B6B')
+          + statPill(correct,'Correct','#5ECDA0')
+          + statPill(accuracy+'%','Accuracy','#FFD166')
+          + '</div>';
+        // Streak reminder toggle
+        var notifOn = localStorage.getItem('notif_'+child.id)==='true';
+        var cid = child.id; var cname = child.name;
+        html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid #EDE9FF;">'
+          + '<div style="font-size:.78rem;font-weight:700;color:#2D2D4E;">🔔 Daily Reminder</div>'
+          + '<button id="notifBtn_' + child.id + '" data-cid="' + child.id + '" data-cname="' + child.name + '" class="notif-toggle-btn" '
+          + 'style="padding:6px 14px;border-radius:20px;border:none;font-family:Nunito,sans-serif;font-weight:800;font-size:.75rem;cursor:pointer;background:' + (notifOn?'linear-gradient(135deg,#5ECDA0,#4ECDC4)':'#E8E4FF') + ';color:' + (notifOn?'white':'#8B6FE8') + ';">'
+          + (notifOn?'ON':'Enable') + '</button></div>'
+          + '</div>';
+      }
+      c.innerHTML = html;
+      // Wire up notif toggle buttons via event delegation
+      c.querySelectorAll('.notif-toggle-btn').forEach(function(btn) {
+        btn.onclick = function() {
+          enableStreakReminder(btn.getAttribute('data-cid'), btn.getAttribute('data-cname'));
+        };
+      });
+    } catch(e) {
+      c.innerHTML = '<div style="color:#aaa;padding:20px;text-align:center;">Could not load data.</div>';
+    }
+  }
+
+  function statPill(val, lbl, col) {
+    return '<div style="text-align:center;padding:8px 4px;background:white;border-radius:10px;">'
+      + '<div style="font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:'+col+';">'+val+'</div>'
+      + '<div style="font-size:.6rem;color:#aaa;">'+lbl+'</div></div>';
+  }
+
+  function showManageChildrenPanel(c) {
+    // Build manage children panel with proper DOM (no inline onclick with quotes)
+    c.innerHTML = '';
+    var mHdr = document.createElement('div');
+    mHdr.style.cssText = 'font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:#2D2D4E;margin-bottom:14px;';
+    mHdr.textContent = '👶 Manage Children';
+    c.appendChild(mHdr);
+    var addRow = document.createElement('div');
+    addRow.style.cssText = 'background:#EDE9FF;border-radius:14px;padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:10px;';
+    addRow.innerHTML = '<div style="font-size:1.6rem;">➕</div><div><div style="font-weight:800;color:#8B6FE8;">Add a Child</div><div style="font-size:.72rem;color:#aaa;">Create a new profile</div></div>';
+    addRow.onclick = function(){ ov.remove(); setTimeout(function(){ showScreen('children'); }, 100); };
+    c.appendChild(addRow);
+    var delRow = document.createElement('div');
+    delRow.style.cssText = 'background:#FFEEEE;border-radius:14px;padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer;';
+    delRow.innerHTML = '<div style="font-size:1.6rem;">🗑️</div><div><div style="font-weight:800;color:#FF6B6B;">Remove Child</div><div style="font-size:.72rem;color:#aaa;">Delete current profile</div></div>';
+    delRow.onclick = function(){ ov.remove(); setTimeout(deleteChild, 100); };
+    c.appendChild(delRow);
+  }
+
+  function showReminderPanel(c) {
+    c.innerHTML = '<div style="font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:#2D2D4E;margin-bottom:14px;">🔔 Streak Reminders</div>'
+      + '<div style="background:#FFF9E6;border-radius:14px;padding:16px;font-size:.85rem;color:#555;line-height:1.7;">'
+      + 'Enable daily reminders to keep your childs streak going. Tap Progress Report to toggle reminders per child.'
+      + '</div><div style="margin-top:12px;background:#EDE9FF;border-radius:12px;padding:12px;font-size:.78rem;color:#8B6FE8;font-weight:700;">'
+      + '🔔 Streaks motivate kids — even 5 minutes a day builds real learning habits!</div>';
+  }
+
+  function showGoalsPanel(c) {
+    var goals = [
+      {i:'📐',s:'Math',d:'Number sense, operations & patterns'},
+      {i:'📖',s:'Language Arts',d:'Reading, phonics & vocabulary'},
+      {i:'✍️',s:'Writing',d:'Sentences, spelling & grammar'},
+      {i:'🔬',s:'Science',d:'Life, earth & physical science'},
+      {i:'🌍',s:'Social Studies',d:'Community, culture & history'},
+      {i:'🧘',s:'Yoga & Movement',d:'10 calming yoga poses with breathing'},
+      {i:'🎨',s:'Art & Drawing',d:'Creative expression & coloring'},
+    ];
+    var html = '<div style="font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:#2D2D4E;margin-bottom:14px;">🎯 Learning Goals</div>';
+    goals.forEach(function(g){
+      html += '<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #F4F1FF;">'
+        + '<div style="font-size:1.6rem;width:36px;text-align:center;">'+g.i+'</div>'
+        + '<div><div style="font-weight:800;color:#2D2D4E;font-size:.88rem;">'+g.s+'</div>'
+        + '<div style="font-size:.72rem;color:#888;">'+g.d+'</div></div></div>';
+    });
+    c.innerHTML = html;
+  }
+
+  function showStandardsPanel(c) {
+    c.innerHTML = '<div style="font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:#2D2D4E;margin-bottom:14px;">📋 Common Core Alignment</div>'
+      + '<div style="font-size:.82rem;color:#555;line-height:1.7;margin-bottom:12px;">Every quiz question is mapped to Common Core State Standards (CCSS) and Next Generation Science Standards (NGSS). As your child completes quizzes, their Progress Report shows exactly which standards have been practiced.</div>'
+      + '<div style="padding:12px 14px;background:linear-gradient(135deg,#EDE9FF,#E8F8FF);border-radius:12px;border-left:3px solid #8B6FE8;font-size:.75rem;color:#8B6FE8;font-weight:700;">✅ Common Core · NGSS · Head Start Early Learning Outcomes Framework</div>'
+      + '<div style="margin-top:12px;text-align:center;"><a href="privacy.html" target="_blank" style="font-size:.72rem;color:#aaa;text-decoration:none;">🔒 Privacy Policy</a></div>';
   }
 }
+
+
+async function enableStreakReminder(childId,childName){
+  var isOn = localStorage.getItem('notif_'+childId)==='true';
+  if (isOn) {
+    // Toggle OFF
+    localStorage.removeItem('notif_'+childId);
+    localStorage.removeItem('notif_name_'+childId);
+    toast('Reminders turned off for '+childName);
+    // Refresh dashboard to update button
+    var btn = document.getElementById('notifBtn_'+childId);
+    if (btn) { btn.textContent='Enable'; btn.style.background='#E8E4FF'; btn.style.color='#8B6FE8'; }
+    return;
+  }
+  if(!('Notification' in window)){toast('Notifications not supported');return;}
+  if(Notification.permission==='denied'){toast('Notifications blocked - enable in browser settings');return;}
+  var perm=await Notification.requestPermission();
+  if(perm!=='granted'){toast('Permission denied');return;}
+  localStorage.setItem('notif_'+childId,'true');localStorage.setItem('notif_name_'+childId,childName);
+  toast('Reminders enabled for '+childName+'!');scheduleStreakChecks();
+  var btn = document.getElementById('notifBtn_'+childId);
+  if (btn) { btn.textContent='ON'; btn.style.background='linear-gradient(135deg,var(--mint),var(--sky))'; btn.style.color='white'; }
+}
+
 function scheduleStreakChecks(){
   if(window._streakCheck)clearInterval(window._streakCheck);
   window._streakCheck=setInterval(function(){var h=new Date().getHours();if(h===15||h===17||h===19)sendStreakReminders();},3600000);
