@@ -4258,91 +4258,66 @@ function initMusicPlayer() {
 
 // ── Simple MP3 music player — no WebAudio needed ──
 var _mp3Player = null;
-var _mp3Tracks = [
-  'https://cdn.pixabay.com/audio/2024/02/28/audio_c0cf2d8ac7.mp3',
-  'https://cdn.pixabay.com/audio/2023/10/31/audio_840a74a9f3.mp3',
-  'https://cdn.pixabay.com/audio/2024/01/15/audio_5b1d2fa2f7.mp3',
-  'https://cdn.pixabay.com/audio/2023/09/05/audio_92a7ec1de0.mp3',
-  'https://cdn.pixabay.com/audio/2024/03/10/audio_d35e8b6c43.mp3',
-  'https://cdn.pixabay.com/audio/2023/11/20/audio_7c2e3f8a15.mp3',
-  'https://cdn.pixabay.com/audio/2024/04/02/audio_9b5c1d7e82.mp3',
-  'https://cdn.pixabay.com/audio/2023/08/14/audio_6a3f2c9b17.mp3',
-  'https://cdn.pixabay.com/audio/2024/01/28/audio_4e8d5c2a96.mp3',
-  'https://cdn.pixabay.com/audio/2023/12/05/audio_1f7b3e9c24.mp3',
-];
+var _mp3Tracks = [];
 var _mp3TrackNames = [
   'Gentle Rain', 'Peaceful Meadow', 'Soft Breeze', 'Ocean Calm',
   'Forest Whisper', 'Starlight Rest', 'Morning Dew', 'Quiet Garden',
   'Floating Clouds', 'Bedtime Peace'
 ];
 
-function _getYTPlayer() {
-  var yt = document.getElementById('ytMusicFrame');
-  if (!yt) {
-    yt = document.createElement('iframe');
-    yt.id = 'ytMusicFrame';
-    yt.style.cssText = 'display:none;width:0;height:0;border:0;';
-    yt.allow = 'autoplay';
-    document.body.appendChild(yt);
-  }
-  return yt;
-}
-
-var _ytTracks = [
-  {name:'Calm Yoga Music', id:'inpok4MKVLM'},
-  {name:'Peaceful Kids Music', id:'77ZozI0rw7w'},
-  {name:'Yoga for Kids', id:'Rb4cFl6PZgQ'},
-  {name:'Breathing Space', id:'lFcSrYw2tBY'},
-  {name:'Garden Peace', id:'hlWiI4xVXKY'}
-];
-
 function toggleMusic() {
   var btn = document.getElementById('playPauseBtn');
-  var nameEl = document.getElementById('trackList') || document.getElementById('trackName');
   var nowEl = document.getElementById('trackName');
+  var listEl = document.getElementById('trackList');
   if (musicPlaying) {
     var yt = document.getElementById('ytMusicFrame');
     if (yt) yt.src = '';
-    _stopAllNodes();
     musicPlaying = false;
     if (btn) btn.textContent = '▶ Play Music';
   } else {
-    var track = _ytTracks[_currentMood % _ytTracks.length];
-    var yt = _getYTPlayer();
+    var ytTracks = [
+      {name:'Calm Yoga Music', id:'inpok4MKVLM'},
+      {name:'Peaceful Kids Music', id:'77ZozI0rw7w'},
+      {name:'Yoga for Kids', id:'Rb4cFl6PZgQ'},
+      {name:'Breathing Space', id:'lFcSrYw2tBY'},
+      {name:'Garden Peace', id:'hlWiI4xVXKY'}
+    ];
+    var track = ytTracks[_currentMood % ytTracks.length];
+    var yt = document.getElementById('ytMusicFrame');
+    if (!yt) {
+      yt = document.createElement('iframe');
+      yt.id = 'ytMusicFrame';
+      yt.style.cssText = 'display:none;width:0;height:0;border:0;';
+      yt.allow = 'autoplay';
+      document.body.appendChild(yt);
+    }
     yt.src = 'https://www.youtube-nocookie.com/embed/' + track.id + '?autoplay=1&controls=0&loop=1&playlist=' + track.id;
     musicPlaying = true;
     if (btn) btn.textContent = '⏸ Pause';
     if (nowEl) nowEl.textContent = track.name;
-    if (nameEl && nameEl.id === 'trackList') nameEl.textContent = 'Now playing: ' + track.name + ' 🎵';
+    if (listEl) listEl.textContent = 'Now playing: ' + track.name + ' 🎵';
   }
 }
-function _playMp3Track(idx) {
-  if (!_mp3Player) return;
-  _mp3Player.src = _mp3Tracks[idx % _mp3Tracks.length];
-  var playPromise = _mp3Player.play();
-  if (playPromise !== undefined) {
-    playPromise.then(function() {
-      musicPlaying = true;
-      var btn = document.getElementById('playPauseBtn');
-      if (btn) btn.textContent = '⏸ Pause';
-      var nameEl = document.getElementById('trackName');
-      if (nameEl) nameEl.textContent = _mp3TrackNames[idx % _mp3TrackNames.length];
-      var listEl = document.getElementById('trackList');
-      if (listEl) listEl.textContent = 'Now playing: ' + _mp3TrackNames[idx % _mp3TrackNames.length] + ' 🎵';
-    }).catch(function(e) {
-      toast('Tap Play again to start music');
-    });
-  }
-}
-
+function _playMp3Track(idx) { /* disabled - using YouTube */ }
 function nextTrack() {
-  if (musicPlaying) {
-    var yt = document.getElementById('ytMusicFrame');
-    if (yt) yt.src = '';
-    musicPlaying = false;
-  }
-  _currentMood = (_currentMood + 1) % _ytTracks.length;
-  toggleMusic();
+  var ytTracks = [
+    {name:'Calm Yoga Music', id:'inpok4MKVLM'},
+    {name:'Peaceful Kids Music', id:'77ZozI0rw7w'},
+    {name:'Yoga for Kids', id:'Rb4cFl6PZgQ'},
+    {name:'Breathing Space', id:'lFcSrYw2tBY'},
+    {name:'Garden Peace', id:'hlWiI4xVXKY'}
+  ];
+  _currentMood = (_currentMood + 1) % ytTracks.length;
+  var track = ytTracks[_currentMood];
+  var yt = document.getElementById('ytMusicFrame');
+  if (yt) yt.src = 'https://www.youtube-nocookie.com/embed/' + track.id + '?autoplay=1&controls=0&loop=1&playlist=' + track.id;
+  var nowEl = document.getElementById('trackName');
+  var listEl = document.getElementById('trackList');
+  if (nowEl) nowEl.textContent = track.name;
+  if (listEl) listEl.textContent = 'Now playing: ' + track.name + ' 🎵';
+  musicPlaying = true;
+  var btn = document.getElementById('playPauseBtn');
+  if (btn) btn.textContent = '⏸ Pause';
 }
 function setVolume(val) {
   if (_musicGain && _musicCtx) {
