@@ -862,7 +862,7 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
       <div class="breath-circle" id="breathCircle">🌸</div>
       <div class="breath-instruction" id="breathInstruction">Tap the circle to start!</div>
       <div class="breath-sub" id="breathSub">Watch the circle! Breathe in when it gets big, out when it gets small.</div>
-      <button onclick="startBreathingWithSound()" style="margin-top:12px;padding:10px 28px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--lavender),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;">🌬 Start Breathing</button>
+      <button onclick="initBreathing()" style="margin-top:12px;padding:10px 28px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--lavender),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;">🌬 Start Breathing</button>
     </div>
 
     <div class="section-title">⏱ Pose Timer</div>
@@ -3596,7 +3596,7 @@ function initBreathing() {
   el._breathInterval=setInterval(()=>{ bIdx=(bIdx+1)%phrases.length; el.textContent=phrases[bIdx]; },2000);
 }
 
-function startBreathingWithSound() {
+function initBreathing() {
   initBreathing();
   startBreathMusic();
 }
@@ -4205,7 +4205,7 @@ function _startMood(moodIdx) {
 
   _musicGain = ctx.createGain();
   _musicGain.gain.setValueAtTime(0.001, ctx.currentTime);
-  _musicGain.gain.exponentialRampToValueAtTime(Math.max(0.001, vol * 0.8), ctx.currentTime + 2.0);
+  _musicGain.gain.exponentialRampToValueAtTime(Math.max(0.001, vol * 0.35), ctx.currentTime + 2.0);
   _musicGain.connect(ctx.destination);
 
   var lfo = ctx.createOscillator();
@@ -4219,26 +4219,26 @@ function _startMood(moodIdx) {
   mood.freqs.forEach(function(freq, i) {
     var osc = ctx.createOscillator(); var oscGain = ctx.createGain();
     osc.type = 'sine'; osc.frequency.value = freq;
-    oscGain.gain.value = 0.22 - i * 0.02;
+    oscGain.gain.value = 0.10 - i * 0.015;
     osc.detune.value = (i % 2 === 0 ? 2 : -2);
     lfoGain.connect(oscGain.gain);
     osc.connect(oscGain); oscGain.connect(_musicGain);
     osc.start(); _musicNodes.push(osc);
     var osc2 = ctx.createOscillator(); var osc2Gain = ctx.createGain();
     osc2.type = 'triangle'; osc2.frequency.value = freq * 0.5;
-    osc2Gain.gain.value = 0.12;
+    osc2Gain.gain.value = 0.05;
     osc2.connect(osc2Gain); osc2Gain.connect(_musicGain);
     osc2.start(); _musicNodes.push(osc2);
   });
 
   var bass = ctx.createOscillator(); var bassGain = ctx.createGain();
   bass.type = 'triangle'; bass.frequency.value = mood.bass;
-  bassGain.gain.value = 0.25;
+  bassGain.gain.value = 0.12;
   bass.connect(bassGain); bassGain.connect(_musicGain); bass.start(); _musicNodes.push(bass);
 
   var shimmer = ctx.createOscillator(); var shimGain = ctx.createGain();
   shimmer.type = 'sine'; shimmer.frequency.value = mood.freqs[0] * 4;
-  shimGain.gain.value = 0.06;
+  shimGain.gain.value = 0.03;
   shimmer.connect(shimGain); shimGain.connect(_musicGain); shimmer.start(); _musicNodes.push(shimmer);
 
   musicPlaying = true;
@@ -4276,25 +4276,44 @@ var _mp3TrackNames = [
   'Floating Clouds', 'Bedtime Peace'
 ];
 
+function _getYTPlayer() {
+  var yt = document.getElementById('ytMusicFrame');
+  if (!yt) {
+    yt = document.createElement('iframe');
+    yt.id = 'ytMusicFrame';
+    yt.style.cssText = 'display:none;width:0;height:0;border:0;';
+    yt.allow = 'autoplay';
+    document.body.appendChild(yt);
+  }
+  return yt;
+}
+
+var _ytTracks = [
+  {name:'Calm Yoga Music', id:'inpok4MKVLM'},
+  {name:'Peaceful Kids Music', id:'77ZozI0rw7w'},
+  {name:'Yoga for Kids', id:'Rb4cFl6PZgQ'},
+  {name:'Breathing Space', id:'lFcSrYw2tBY'},
+  {name:'Garden Peace', id:'hlWiI4xVXKY'}
+];
+
 function toggleMusic() {
   var btn = document.getElementById('playPauseBtn');
   var nameEl = document.getElementById('trackList') || document.getElementById('trackName');
+  var nowEl = document.getElementById('trackName');
   if (musicPlaying) {
+    var yt = document.getElementById('ytMusicFrame');
+    if (yt) yt.src = '';
     _stopAllNodes();
     musicPlaying = false;
     if (btn) btn.textContent = '▶ Play Music';
   } else {
-    var ctx = _getMusicCtx();
-    function doPlay() {
-      if (ctx.state === 'suspended') {
-        if (btn) { btn.textContent = '🔇 Tap Again'; btn.style.background = '#e74c3c'; }
-        return;
-      }
-      _startMood(_currentMood);
-      if (btn) { btn.textContent = '⏸ Pause'; btn.style.background = ''; }
-      if (nameEl) nameEl.textContent = MUSIC_MOODS[_currentMood % MUSIC_MOODS.length].name + ' 🎵';
-    }
-    ctx.resume().then(doPlay).catch(function(){ doPlay(); });
+    var track = _ytTracks[_currentMood % _ytTracks.length];
+    var yt = _getYTPlayer();
+    yt.src = 'https://www.youtube-nocookie.com/embed/' + track.id + '?autoplay=1&controls=0&loop=1&playlist=' + track.id;
+    musicPlaying = true;
+    if (btn) btn.textContent = '⏸ Pause';
+    if (nowEl) nowEl.textContent = track.name;
+    if (nameEl && nameEl.id === 'trackList') nameEl.textContent = 'Now playing: ' + track.name + ' 🎵';
   }
 }
 function _playMp3Track(idx) {
@@ -4317,10 +4336,14 @@ function _playMp3Track(idx) {
 }
 
 function nextTrack() {
-  _currentMood = (_currentMood + 1) % _mp3Tracks.length;
-  _playMp3Track(_currentMood);
+  if (musicPlaying) {
+    var yt = document.getElementById('ytMusicFrame');
+    if (yt) yt.src = '';
+    musicPlaying = false;
+  }
+  _currentMood = (_currentMood + 1) % _ytTracks.length;
+  toggleMusic();
 }
-
 function setVolume(val) {
   if (_musicGain && _musicCtx) {
     var v = Math.max(0.001, (parseInt(val) / 100) * 0.35);
