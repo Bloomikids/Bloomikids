@@ -4205,7 +4205,7 @@ function _startMood(moodIdx) {
 
   _musicGain = ctx.createGain();
   _musicGain.gain.setValueAtTime(0.001, ctx.currentTime);
-  _musicGain.gain.exponentialRampToValueAtTime(Math.max(0.001, vol * 0.35), ctx.currentTime + 2.0);
+  _musicGain.gain.exponentialRampToValueAtTime(Math.max(0.001, vol * 0.8), ctx.currentTime + 2.0);
   _musicGain.connect(ctx.destination);
 
   var lfo = ctx.createOscillator();
@@ -4219,26 +4219,26 @@ function _startMood(moodIdx) {
   mood.freqs.forEach(function(freq, i) {
     var osc = ctx.createOscillator(); var oscGain = ctx.createGain();
     osc.type = 'sine'; osc.frequency.value = freq;
-    oscGain.gain.value = 0.10 - i * 0.015;
+    oscGain.gain.value = 0.22 - i * 0.02;
     osc.detune.value = (i % 2 === 0 ? 2 : -2);
     lfoGain.connect(oscGain.gain);
     osc.connect(oscGain); oscGain.connect(_musicGain);
     osc.start(); _musicNodes.push(osc);
     var osc2 = ctx.createOscillator(); var osc2Gain = ctx.createGain();
     osc2.type = 'triangle'; osc2.frequency.value = freq * 0.5;
-    osc2Gain.gain.value = 0.05;
+    osc2Gain.gain.value = 0.12;
     osc2.connect(osc2Gain); osc2Gain.connect(_musicGain);
     osc2.start(); _musicNodes.push(osc2);
   });
 
   var bass = ctx.createOscillator(); var bassGain = ctx.createGain();
   bass.type = 'triangle'; bass.frequency.value = mood.bass;
-  bassGain.gain.value = 0.12;
+  bassGain.gain.value = 0.25;
   bass.connect(bassGain); bassGain.connect(_musicGain); bass.start(); _musicNodes.push(bass);
 
   var shimmer = ctx.createOscillator(); var shimGain = ctx.createGain();
   shimmer.type = 'sine'; shimmer.frequency.value = mood.freqs[0] * 4;
-  shimGain.gain.value = 0.03;
+  shimGain.gain.value = 0.06;
   shimmer.connect(shimGain); shimGain.connect(_musicGain); shimmer.start(); _musicNodes.push(shimmer);
 
   musicPlaying = true;
@@ -4258,7 +4258,18 @@ function initMusicPlayer() {
 
 // ── Simple MP3 music player — no WebAudio needed ──
 var _mp3Player = null;
-var _mp3Tracks = [];
+var _mp3Tracks = [
+  'https://cdn.pixabay.com/audio/2024/02/28/audio_c0cf2d8ac7.mp3',
+  'https://cdn.pixabay.com/audio/2023/10/31/audio_840a74a9f3.mp3',
+  'https://cdn.pixabay.com/audio/2024/01/15/audio_5b1d2fa2f7.mp3',
+  'https://cdn.pixabay.com/audio/2023/09/05/audio_92a7ec1de0.mp3',
+  'https://cdn.pixabay.com/audio/2024/03/10/audio_d35e8b6c43.mp3',
+  'https://cdn.pixabay.com/audio/2023/11/20/audio_7c2e3f8a15.mp3',
+  'https://cdn.pixabay.com/audio/2024/04/02/audio_9b5c1d7e82.mp3',
+  'https://cdn.pixabay.com/audio/2023/08/14/audio_6a3f2c9b17.mp3',
+  'https://cdn.pixabay.com/audio/2024/01/28/audio_4e8d5c2a96.mp3',
+  'https://cdn.pixabay.com/audio/2023/12/05/audio_1f7b3e9c24.mp3',
+];
 var _mp3TrackNames = [
   'Gentle Rain', 'Peaceful Meadow', 'Soft Breeze', 'Ocean Calm',
   'Forest Whisper', 'Starlight Rest', 'Morning Dew', 'Quiet Garden',
@@ -4275,16 +4286,15 @@ function toggleMusic() {
   } else {
     var ctx = _getMusicCtx();
     function doPlay() {
+      if (ctx.state === 'suspended') {
+        if (btn) { btn.textContent = '🔇 Tap Again'; btn.style.background = '#e74c3c'; }
+        return;
+      }
       _startMood(_currentMood);
-      musicPlaying = true;
-      if (btn) btn.textContent = '⏸ Pause';
+      if (btn) { btn.textContent = '⏸ Pause'; btn.style.background = ''; }
       if (nameEl) nameEl.textContent = MUSIC_MOODS[_currentMood % MUSIC_MOODS.length].name + ' 🎵';
     }
-    if (ctx.state === 'suspended') {
-      ctx.resume().then(doPlay);
-    } else {
-      doPlay();
-    }
+    ctx.resume().then(doPlay).catch(function(){ doPlay(); });
   }
 }
 function _playMp3Track(idx) {
@@ -4307,13 +4317,10 @@ function _playMp3Track(idx) {
 }
 
 function nextTrack() {
-  if (musicPlaying) {
-    _currentMood = (_currentMood + 1) % MUSIC_MOODS.length;
-    _startMood(_currentMood);
-    var nameEl = document.getElementById('trackList') || document.getElementById('trackName');
-    if (nameEl) nameEl.textContent = MUSIC_MOODS[_currentMood % MUSIC_MOODS.length].name + ' 🎵';
-  }
+  _currentMood = (_currentMood + 1) % _mp3Tracks.length;
+  _playMp3Track(_currentMood);
 }
+
 function setVolume(val) {
   if (_musicGain && _musicCtx) {
     var v = Math.max(0.001, (parseInt(val) / 100) * 0.35);
@@ -6209,7 +6216,6 @@ function showParentPinSetup() {
     + '<button id="pinCancelBtn" style="margin-top:24px;background:rgba(255,255,255,.15);border:none;color:white;border-radius:20px;padding:10px 24px;font-family:Nunito,sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;">Cancel</button>';
 
   var pin = '';
-  var wrongAttempts = 0;
   function buildPad() {
     var pad = ov.querySelector('#pinPad');
     pad.innerHTML = '';
@@ -6256,7 +6262,6 @@ function showParentPinEntry(storedPin) {
     + '<button id="pinCancelBtn2" style="margin-top:24px;background:rgba(255,255,255,.15);border:none;color:white;border-radius:20px;padding:10px 24px;font-family:Nunito,sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;">Cancel</button>';
 
   var pin = '';
-  var wrongAttempts = 0;
   function buildPad() {
     var pad = ov.querySelector('#pinPad');
     pad.innerHTML = '';
@@ -6274,18 +6279,7 @@ function showParentPinEntry(storedPin) {
             ov.remove();
             openActualDashboard();
           } else {
-            wrongAttempts = (wrongAttempts||0) + 1;
-            var errEl = ov.querySelector('#pinError');
-            if (wrongAttempts >= 3) {
-              errEl.textContent = 'Tap to reset PIN and re-enter. ';
-              var rst = document.createElement('span');
-              rst.textContent = 'Reset';
-              rst.style.cssText = 'text-decoration:underline;cursor:pointer;color:#FFD700;';
-              rst.onclick = function(){ localStorage.removeItem('bloomi_parent_pin'); ov.remove(); };
-              errEl.appendChild(rst);
-            } else {
-              errEl.textContent = 'Wrong PIN. Try again!';
-            }
+            ov.querySelector('#pinError').textContent = 'Wrong PIN. Try again!';
             pin = '';
             updateDots();
           }
