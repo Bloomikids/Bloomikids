@@ -4187,7 +4187,7 @@ function _stopAllNodes() {
   _musicNodes = [];
   setTimeout(function() {
     nodes.forEach(function(n) { try { n.stop(0); } catch(e) {} });
-    if (_musicGain) { try { _musicGain.disconnect(); } catch(e) {} _musicGain = null; }
+    if (_musicGain) { try { _musicGain.disconnect(); } catch(e) {} }
   }, 320);
 }
 
@@ -4281,11 +4281,8 @@ function toggleMusic() {
   } else {
     var ctx = _getMusicCtx();
     function doPlay() {
-      // Delay start by 400ms so _stopAllNodes setTimeout clears first
-      setTimeout(function() {
-        _startMood(_currentMood);
-        if (listEl) listEl.textContent = 'Now playing: ' + MUSIC_MOODS[_currentMood % MUSIC_MOODS.length].name + ' 🎵';
-      }, 400);
+      _startMood(_currentMood);
+      if (listEl) listEl.textContent = 'Now playing: ' + MUSIC_MOODS[_currentMood % MUSIC_MOODS.length].name + ' 🎵';
     }
     if (ctx.state === 'suspended') {
       ctx.resume().then(doPlay).catch(doPlay);
