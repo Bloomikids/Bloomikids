@@ -4281,8 +4281,11 @@ function toggleMusic() {
   } else {
     var ctx = _getMusicCtx();
     function doPlay() {
-      _startMood(_currentMood);
-      if (listEl) listEl.textContent = 'Now playing: ' + MUSIC_MOODS[_currentMood % MUSIC_MOODS.length].name + ' 🎵';
+      // Delay start by 400ms so _stopAllNodes setTimeout clears first
+      setTimeout(function() {
+        _startMood(_currentMood);
+        if (listEl) listEl.textContent = 'Now playing: ' + MUSIC_MOODS[_currentMood % MUSIC_MOODS.length].name + ' 🎵';
+      }, 400);
     }
     if (ctx.state === 'suspended') {
       ctx.resume().then(doPlay).catch(doPlay);
@@ -4312,10 +4315,16 @@ function nextTrack() {
   _currentMood = (_currentMood + 1) % MUSIC_MOODS.length;
   if (musicPlaying) {
     _stopAllNodes();
+    musicPlaying = false;
     var ctx = _getMusicCtx();
-    if (ctx.state === 'suspended') {
-      ctx.resume().then(function(){ _startMood(_currentMood); });
-    } else { _startMood(_currentMood); }
+    setTimeout(function() {
+      _startMood(_currentMood);
+      musicPlaying = true;
+      var btn = document.getElementById('playPauseBtn');
+      if (btn) btn.textContent = '⏸ Pause';
+      var listEl = document.getElementById('trackList');
+      if (listEl) listEl.textContent = 'Now playing: ' + MUSIC_MOODS[_currentMood % MUSIC_MOODS.length].name + ' 🎵';
+    }, 400);
   }
 }
 function setVolume(val) {
