@@ -4279,30 +4279,23 @@ var _mp3TrackNames = [
 ];
 
 function toggleMusic() {
-  if (!_mp3Player) {
-    _mp3Player = document.createElement('audio');
-    _mp3Player.loop = false;
-    _mp3Player.volume = 0.5;
-    _mp3Player.addEventListener('ended', function() {
-      _currentMood = (_currentMood + 1) % _mp3Tracks.length;
-      _playMp3Track(_currentMood);
-    });
-    _mp3Player.addEventListener('error', function() {
-      // Track failed - try next one
-      _currentMood = (_currentMood + 1) % _mp3Tracks.length;
-      _playMp3Track(_currentMood);
-    });
-  }
+  var btn = document.getElementById('playPauseBtn');
+  var listEl = document.getElementById('trackList');
   if (musicPlaying) {
-    _mp3Player.pause();
+    _stopAllNodes();
     musicPlaying = false;
-    var btn = document.getElementById('playPauseBtn');
     if (btn) btn.textContent = '▶ Play Music';
   } else {
-    _playMp3Track(_currentMood);
+    var ctx = _getMusicCtx();
+    function doPlay() {
+      _startMood(_currentMood);
+      if (listEl) listEl.textContent = 'Now playing: ' + MUSIC_MOODS[_currentMood % MUSIC_MOODS.length].name + ' 🎵';
+    }
+    if (ctx.state === 'suspended') {
+      ctx.resume().then(doPlay).catch(doPlay);
+    } else { doPlay(); }
   }
 }
-
 function _playMp3Track(idx) {
   if (!_mp3Player) return;
   _mp3Player.src = _mp3Tracks[idx % _mp3Tracks.length];
