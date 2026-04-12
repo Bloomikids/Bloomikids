@@ -4265,11 +4265,16 @@ function toggleMusic() {
     document.body.appendChild(yt);
   }
   var tracks = [
-    {name:'Calm Kids Yoga', id:'inpok4MKVLM'},
-    {name:'Peaceful Music', id:'77ZozI0rw7w'},
-    {name:'Relaxing Kids', id:'Rb4cFl6PZgQ'},
-    {name:'Breathing Space', id:'lFcSrYw2tBY'},
-    {name:'Garden Peace',   id:'hlWiI4xVXKY'},
+    {name:'Relaxing Kids Music',     id:'iNySCnrB4Co'},
+    {name:'Calm Yoga Music',         id:'pWTBChXgwXQ'},
+    {name:'Kids Meditation Music',   id:'9-sJIBrpBuA'},
+    {name:'Peaceful Piano',          id:'lCOF9LN_Zxs'},
+    {name:'Nature Sounds Calm',      id:'eKFTSSKCzWA'},
+    {name:'Soft Kids Lullaby',       id:'mBBMhB_NCII'},
+    {name:'Yoga Breathing Music',    id:'O29B_SCHjMk'},
+    {name:'Calming Ocean Waves',     id:'bn9F19Hi1Lk'},
+    {name:'Morning Meditation',      id:'1ZYbU82GVz4'},
+    {name:'Garden of Peace',         id:'sGNGjYhGFEw'},
   ];
   if (musicPlaying) {
     yt.src = '';
@@ -4304,11 +4309,16 @@ function _playMp3Track(idx) {
 
 function nextTrack() {
   var tracks = [
-    {name:'Calm Kids Yoga', id:'inpok4MKVLM'},
-    {name:'Peaceful Music', id:'77ZozI0rw7w'},
-    {name:'Relaxing Kids', id:'Rb4cFl6PZgQ'},
-    {name:'Breathing Space', id:'lFcSrYw2tBY'},
-    {name:'Garden Peace',   id:'hlWiI4xVXKY'},
+    {name:'Relaxing Kids Music',     id:'iNySCnrB4Co'},
+    {name:'Calm Yoga Music',         id:'pWTBChXgwXQ'},
+    {name:'Kids Meditation Music',   id:'9-sJIBrpBuA'},
+    {name:'Peaceful Piano',          id:'lCOF9LN_Zxs'},
+    {name:'Nature Sounds Calm',      id:'eKFTSSKCzWA'},
+    {name:'Soft Kids Lullaby',       id:'mBBMhB_NCII'},
+    {name:'Yoga Breathing Music',    id:'O29B_SCHjMk'},
+    {name:'Calming Ocean Waves',     id:'bn9F19Hi1Lk'},
+    {name:'Morning Meditation',      id:'1ZYbU82GVz4'},
+    {name:'Garden of Peace',         id:'sGNGjYhGFEw'},
   ];
   _currentMood = (_currentMood + 1) % tracks.length;
   var yt = document.getElementById('ytMusic');
