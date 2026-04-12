@@ -5284,10 +5284,19 @@ function openMathGame(grade) {
     });
     if(correct){btn.style.background='#E8FBF3';score++;toast('Correct! +8 Stars');}
     else{btn.style.background='#FFF0EE';btn.style.borderColor='var(--coral)';toast('The answer is '+ans+'!');}
-    setTimeout(function(){qNum++;render();},900);
+    // Show Next button instead of auto-advancing
+    var mathNext = document.getElementById('mathNextBtn');
+    if (mathNext) { mathNext.style.display='block'; }
   };
 
   var ov=document.createElement('div');ov.id='mathGameOv';
+  // Add Next button to math overlay
+  var mathNextBtn = document.createElement('button');
+  mathNextBtn.id = 'mathNextBtn';
+  mathNextBtn.textContent = 'Next Question →';
+  mathNextBtn.style.cssText = 'display:none;position:fixed;bottom:100px;left:50%;transform:translateX(-50%);padding:14px 40px;border-radius:40px;border:none;background:linear-gradient(135deg,#5ECDA0,#4ECDC4);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;z-index:10001;box-shadow:0 4px 16px rgba(0,0,0,.2);';
+  mathNextBtn.onclick = function(){ mathNextBtn.style.display='none'; qNum++; render(); };
+  ov.appendChild(mathNextBtn);
   document.body.appendChild(ov);render();
 }
 
@@ -5382,6 +5391,13 @@ function openLangGame(grade) {
   };
 
   var ov=document.createElement('div');ov.id='langGameOv';
+  // Add Next button to math overlay
+  var mathNextBtn = document.createElement('button');
+  mathNextBtn.id = 'mathNextBtn';
+  mathNextBtn.textContent = 'Next Question →';
+  mathNextBtn.style.cssText = 'display:none;position:fixed;bottom:100px;left:50%;transform:translateX(-50%);padding:14px 40px;border-radius:40px;border:none;background:linear-gradient(135deg,#5ECDA0,#4ECDC4);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;z-index:10001;box-shadow:0 4px 16px rgba(0,0,0,.2);';
+  mathNextBtn.onclick = function(){ mathNextBtn.style.display='none'; qNum++; render(); };
+  ov.appendChild(mathNextBtn);
   document.body.appendChild(ov);render();
 }
 
