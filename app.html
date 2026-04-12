@@ -4192,59 +4192,43 @@ function _stopAllNodes() {
 }
 
 function _startMood(moodIdx) {
-  _stopAllNodes();
   var ctx = _getMusicCtx();
   var mood = MUSIC_MOODS[moodIdx % MUSIC_MOODS.length];
   var volSlider = document.getElementById('volumeSlider');
   var vol = parseInt(volSlider ? volSlider.value : 60) / 100;
 
   _musicGain = ctx.createGain();
-  _musicGain.gain.setValueAtTime(0.001, ctx.currentTime);
-  _musicGain.gain.exponentialRampToValueAtTime(Math.max(0.001, vol * 0.35), ctx.currentTime + 2.0);
+  _musicGain.gain.value = Math.max(0.1, vol * 0.7);
   _musicGain.connect(ctx.destination);
 
-  var lfo = ctx.createOscillator();
-  var lfoGain = ctx.createGain();
-  lfo.frequency.value = mood.lfo;
-  lfoGain.gain.value = 0.04;
-  lfo.connect(lfoGain);
-  lfo.start();
-  _musicNodes.push(lfo);
-
   mood.freqs.forEach(function(freq, i) {
-    var osc = ctx.createOscillator(); var oscGain = ctx.createGain();
-    osc.type = 'sine'; osc.frequency.value = freq;
-    oscGain.gain.value = 0.10 - i * 0.015;
-    osc.detune.value = (i % 2 === 0 ? 2 : -2);
-    lfoGain.connect(oscGain.gain);
-    osc.connect(oscGain); oscGain.connect(_musicGain);
-    osc.start(); _musicNodes.push(osc);
-    var osc2 = ctx.createOscillator(); var osc2Gain = ctx.createGain();
-    osc2.type = 'triangle'; osc2.frequency.value = freq * 0.5;
-    osc2Gain.gain.value = 0.05;
-    osc2.connect(osc2Gain); osc2Gain.connect(_musicGain);
-    osc2.start(); _musicNodes.push(osc2);
+    var osc = ctx.createOscillator();
+    var g = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    g.gain.value = 0.15 - i * 0.02;
+    osc.connect(g);
+    g.connect(_musicGain);
+    osc.start();
+    _musicNodes.push(osc);
   });
 
-  var bass = ctx.createOscillator(); var bassGain = ctx.createGain();
-  bass.type = 'triangle'; bass.frequency.value = mood.bass;
-  bassGain.gain.value = 0.12;
-  bass.connect(bassGain); bassGain.connect(_musicGain); bass.start(); _musicNodes.push(bass);
-
-  var shimmer = ctx.createOscillator(); var shimGain = ctx.createGain();
-  shimmer.type = 'sine'; shimmer.frequency.value = mood.freqs[0] * 4;
-  shimGain.gain.value = 0.03;
-  shimmer.connect(shimGain); shimGain.connect(_musicGain); shimmer.start(); _musicNodes.push(shimmer);
+  var bass = ctx.createOscillator();
+  var bassG = ctx.createGain();
+  bass.type = 'sine';
+  bass.frequency.value = mood.bass;
+  bassG.gain.value = 0.2;
+  bass.connect(bassG);
+  bassG.connect(_musicGain);
+  bass.start();
+  _musicNodes.push(bass);
 
   musicPlaying = true;
   var btn = document.getElementById('playPauseBtn');
   if (btn) btn.textContent = '⏸ Pause';
-  var nameEl = document.getElementById('trackName');
-  if (nameEl) nameEl.textContent = mood.name;
   var listEl = document.getElementById('trackList');
   if (listEl) listEl.textContent = 'Now playing: ' + mood.name + ' 🎵';
 }
-
 function initMusicPlayer() {
   // Music player ready — user taps Play to start
   var nameEl = document.getElementById('trackName');
