@@ -4256,19 +4256,31 @@ var _mp3TrackNames = [
 function toggleMusic() {
   var btn = document.getElementById('playPauseBtn');
   var listEl = document.getElementById('trackList');
+  var yt = document.getElementById('ytMusic');
+  if (!yt) {
+    yt = document.createElement('iframe');
+    yt.id = 'ytMusic';
+    yt.style.cssText = 'position:fixed;bottom:-100px;width:1px;height:1px;';
+    yt.allow = 'autoplay';
+    document.body.appendChild(yt);
+  }
+  var tracks = [
+    {name:'Calm Kids Yoga', id:'inpok4MKVLM'},
+    {name:'Peaceful Music', id:'77ZozI0rw7w'},
+    {name:'Relaxing Kids', id:'Rb4cFl6PZgQ'},
+    {name:'Breathing Space', id:'lFcSrYw2tBY'},
+    {name:'Garden Peace',   id:'hlWiI4xVXKY'},
+  ];
   if (musicPlaying) {
-    _stopAllNodes();
+    yt.src = '';
     musicPlaying = false;
     if (btn) btn.textContent = '▶ Play Music';
   } else {
-    var ctx = _getMusicCtx();
-    function doPlay() {
-      _startMood(_currentMood);
-      if (listEl) listEl.textContent = 'Now playing: ' + MUSIC_MOODS[_currentMood % MUSIC_MOODS.length].name + ' 🎵';
-    }
-    if (ctx.state === 'suspended') {
-      ctx.resume().then(doPlay).catch(doPlay);
-    } else { doPlay(); }
+    var t = tracks[_currentMood % tracks.length];
+    yt.src = 'https://www.youtube-nocookie.com/embed/' + t.id + '?autoplay=1&controls=0&loop=1&playlist=' + t.id + '&enablejsapi=1';
+    musicPlaying = true;
+    if (btn) btn.textContent = '⏸ Pause';
+    if (listEl) listEl.textContent = 'Now playing: ' + t.name + ' 🎵';
   }
 }
 function _playMp3Track(idx) {
@@ -4291,19 +4303,20 @@ function _playMp3Track(idx) {
 }
 
 function nextTrack() {
-  _currentMood = (_currentMood + 1) % MUSIC_MOODS.length;
-  if (musicPlaying) {
-    _stopAllNodes();
-    musicPlaying = false;
-    var ctx = _getMusicCtx();
-    setTimeout(function() {
-      _startMood(_currentMood);
-      musicPlaying = true;
-      var btn = document.getElementById('playPauseBtn');
-      if (btn) btn.textContent = '⏸ Pause';
-      var listEl = document.getElementById('trackList');
-      if (listEl) listEl.textContent = 'Now playing: ' + MUSIC_MOODS[_currentMood % MUSIC_MOODS.length].name + ' 🎵';
-    }, 400);
+  var tracks = [
+    {name:'Calm Kids Yoga', id:'inpok4MKVLM'},
+    {name:'Peaceful Music', id:'77ZozI0rw7w'},
+    {name:'Relaxing Kids', id:'Rb4cFl6PZgQ'},
+    {name:'Breathing Space', id:'lFcSrYw2tBY'},
+    {name:'Garden Peace',   id:'hlWiI4xVXKY'},
+  ];
+  _currentMood = (_currentMood + 1) % tracks.length;
+  var yt = document.getElementById('ytMusic');
+  if (yt) {
+    var t = tracks[_currentMood];
+    yt.src = 'https://www.youtube-nocookie.com/embed/' + t.id + '?autoplay=1&controls=0&loop=1&playlist=' + t.id;
+    var listEl = document.getElementById('trackList');
+    if (listEl) listEl.textContent = 'Now playing: ' + t.name + ' 🎵';
   }
 }
 function setVolume(val) {
