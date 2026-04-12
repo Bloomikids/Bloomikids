@@ -3598,14 +3598,7 @@ function initBreathing() {
   el._breathInterval=setInterval(()=>{ bIdx=(bIdx+1)%phrases.length; el.textContent=phrases[bIdx]; },2000);
 }
 
-function initBreathing() {
-  initBreathing();
-  startBreathMusic();
-}
 
-// ══════════════════════════════════════════════════════
-//  READING
-// ══════════════════════════════════════════════════════
 function renderBookShelf(books) {
   const shelf=document.getElementById('bookShelf');
   shelf.innerHTML=books.map((b,i)=>{
