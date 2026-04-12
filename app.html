@@ -4315,9 +4315,7 @@ function nextTrack() {
     var ctx = _getMusicCtx();
     if (ctx.state === 'suspended') {
       ctx.resume().then(function(){ _startMood(_currentMood); });
-    } else {
-      _startMood(_currentMood);
-    }
+    } else { _startMood(_currentMood); }
   }
 }
 function setVolume(val) {
