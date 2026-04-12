@@ -4185,10 +4185,8 @@ function _stopAllNodes() {
   }
   var nodes = _musicNodes.slice();
   _musicNodes = [];
-  setTimeout(function() {
-    nodes.forEach(function(n) { try { n.stop(0); } catch(e) {} });
-    if (_musicGain) { try { _musicGain.disconnect(); } catch(e) {} }
-  }, 320);
+  nodes.forEach(function(n) { try { n.stop(0); } catch(e) {} });
+  if (_musicGain) { try { _musicGain.disconnect(); } catch(e) {} _musicGain = null; }
 }
 
 function _startMood(moodIdx) {
