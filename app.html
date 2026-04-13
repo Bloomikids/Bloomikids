@@ -4307,16 +4307,16 @@ function toggleMusic() {
     document.body.appendChild(yt);
   }
   var tracks = [
-    {name:'Relaxing Kids Music',   id:'iNySCnrB4Co'},
-    {name:'Calm Yoga Music',       id:'pWTBChXgwXQ'},
-    {name:'Kids Meditation',       id:'9-sJIBrpBuA'},
+    {name:'Calm Kids Yoga',        id:'sTANio_2E0Q'},
     {name:'Peaceful Piano',        id:'lCOF9LN_Zxs'},
-    {name:'Nature Sounds',         id:'eKFTSSKCzWA'},
-    {name:'Soft Lullaby',          id:'mBBMhB_NCII'},
-    {name:'Yoga Breathing',        id:'O29B_SCHjMk'},
     {name:'Ocean Waves',           id:'bn9F19Hi1Lk'},
-    {name:'Morning Meditation',    id:'1ZYbU82GVz4'},
-    {name:'Garden of Peace',       id:'sGNGjYhGFEw'},
+    {name:'Soft Lullaby',          id:'mBBMhB_NCII'},
+    {name:'Kids Meditation',       id:'9-sJIBrpBuA'},
+    {name:'Relaxing Nature',       id:'xNN7iTA57jM'},
+    {name:'Gentle Morning',        id:'2OEL4LyGG1k'},
+    {name:'Breathing Space',       id:'hlWiI4xVXKY'},
+    {name:'Yoga Flow',             id:'O29B_SCHjMk'},
+    {name:'Garden Peace',          id:'77ZozI0rw7w'},
   ];
   if (musicPlaying) {
     yt.src = '';
@@ -4351,16 +4351,16 @@ function _playMp3Track(idx) {
 
 function nextTrack() {
   var tracks = [
-    {name:'Relaxing Kids Music',   id:'iNySCnrB4Co'},
-    {name:'Calm Yoga Music',       id:'pWTBChXgwXQ'},
-    {name:'Kids Meditation',       id:'9-sJIBrpBuA'},
+    {name:'Calm Kids Yoga',        id:'sTANio_2E0Q'},
     {name:'Peaceful Piano',        id:'lCOF9LN_Zxs'},
-    {name:'Nature Sounds',         id:'eKFTSSKCzWA'},
-    {name:'Soft Lullaby',          id:'mBBMhB_NCII'},
-    {name:'Yoga Breathing',        id:'O29B_SCHjMk'},
     {name:'Ocean Waves',           id:'bn9F19Hi1Lk'},
-    {name:'Morning Meditation',    id:'1ZYbU82GVz4'},
-    {name:'Garden of Peace',       id:'sGNGjYhGFEw'},
+    {name:'Soft Lullaby',          id:'mBBMhB_NCII'},
+    {name:'Kids Meditation',       id:'9-sJIBrpBuA'},
+    {name:'Relaxing Nature',       id:'xNN7iTA57jM'},
+    {name:'Gentle Morning',        id:'2OEL4LyGG1k'},
+    {name:'Breathing Space',       id:'hlWiI4xVXKY'},
+    {name:'Yoga Flow',             id:'O29B_SCHjMk'},
+    {name:'Garden Peace',          id:'77ZozI0rw7w'},
   ];
   _currentMood = (_currentMood + 1) % tracks.length;
   var yt = document.getElementById('ytMusic');
