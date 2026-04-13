@@ -5430,8 +5430,10 @@ function openLangGame(grade) {
       +'<div style="font-size:1.1rem;font-weight:800;color:#2D2D4E;text-align:center;margin-bottom:20px;line-height:1.5;">'+q.q+'</div>'
       +'<div id="langOpts" style="display:flex;flex-direction:column;gap:8px;width:100%;max-width:340px;">'
       +q.opts.map(function(o,i){return '<button onclick="langAnswer(this,'+i+','+q.ans+','+qIdx+')" style="padding:12px 16px;border-radius:14px;border:2px solid #FFE0CC;background:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;text-align:left;">'+o+'</button>';}).join('')
-      +'</div></div></div>';
+      +'</div>'      +'<div style="padding:16px;text-align:center;"><button id="langNextQ" onclick="window._langNext&&window._langNext()" style="display:none;padding:14px 40px;border-radius:40px;border:none;background:linear-gradient(135deg,#5ECDA0,#4ECDC4);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.15);">Next Question →</button></div>'      +'</div></div>';
   }
+
+  window._langNext = function(){ qIdx++; render(); };
 
   window.langAnswer=function(btn,chosen,ans,n){
     if(n!==qIdx)return;
@@ -5442,7 +5444,8 @@ function openLangGame(grade) {
     });
     if(correct){btn.style.background='#E8FBF3';score++;toast('Correct! +8 Stars');}
     else{btn.style.background='#FFF0EE';btn.style.borderColor='var(--coral)';toast('Not quite!');}
-    setTimeout(function(){qIdx++;render();},900);
+    var nb = document.getElementById('langNextQ');
+    if (nb) { nb.style.display='inline-block'; }
   };
 
   var ov=document.createElement('div');ov.id='langGameOv';
