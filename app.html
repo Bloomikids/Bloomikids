@@ -6089,6 +6089,8 @@ function openTTSReader(title, story) {
 
 // ── TIER 4: Honest fallback for copyrighted books ──
 function openFallbackReader(title) {
+  openGDLBook(title, '');
+  return;
   var old = document.getElementById('fallbackBookOv'); if (old) old.remove();
   var ov = document.createElement('div');
   ov.id = 'fallbackBookOv';
