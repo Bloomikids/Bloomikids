@@ -6651,7 +6651,7 @@ function openGDLBook(title, iaId) {
     rb.onclick=function(){
       if(!window.speechSynthesis)return;
       if(sp){window.speechSynthesis.cancel();sp=false;rb.textContent='🔈 Read to Me';return;}
-      var u=new SpeechSynthesisUtterance(story.pages[pageIdx]);u.rate=0.82;u.pitch=1.1;u.volume=1;
+      var u=new SpeechSynthesisUtterance(story.pages[pageIdx]);u.rate=0.78;u.pitch=1.0;u.volume=1;
       var vs=window.speechSynthesis.getVoices();
       var pk=vs.find(function(v){return v.name==='Samantha'||v.name==='Karen';});
       if(!pk)pk=vs.find(function(v){return v.lang&&v.lang.startsWith('en');});
