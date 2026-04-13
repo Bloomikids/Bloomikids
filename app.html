@@ -6618,24 +6618,120 @@ function openStorylineSearch(title) {
 }
 
 function openGDLBook(title, iaId) {
-  var embedUrl='https://archive.org/embed/'+iaId+'?view=theater';
-  var ov=document.createElement('div');ov.id='gdlBookOv';
-  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:#1A0A2E;display:flex;flex-direction:column;';
-  var hdr=document.createElement('div');hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#1A1A2E;flex-shrink:0;';
-  var ht=document.createElement('div');ht.style.cssText='font-family:Baloo 2,cursive;font-size:.95rem;font-weight:800;color:white;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:80%;';ht.textContent=title;
-  var hc=document.createElement('button');hc.textContent='X';hc.style.cssText='background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:34px;height:34px;font-size:1rem;cursor:pointer;font-weight:800;flex-shrink:0;';
-  hc.onclick=function(){ov.remove();if(currentUser&&activeChild)showScreen('app');};
-  hdr.appendChild(ht);hdr.appendChild(hc);ov.appendChild(hdr);
-  var body=document.createElement('div');body.style.cssText='flex:1;min-height:0;position:relative;';
-  var ifr=document.createElement('iframe');ifr.src=embedUrl;ifr.style.cssText='width:100%;height:100%;border:none;display:block;';ifr.setAttribute('allowfullscreen','');
-  body.appendChild(ifr);ov.appendChild(body);
-  var ftr=document.createElement('div');ftr.style.cssText='display:flex;gap:8px;padding:10px 16px;background:#1A1A2E;flex-shrink:0;';
-  var doneBtn=document.createElement('button');doneBtn.textContent='I Read This! +15 Stars';
-  doneBtn.style.cssText='flex:1;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;border:none;border-radius:40px;padding:12px;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;';
-  doneBtn.onclick=async function(){ov.remove();if(currentUser&&activeChild)showScreen('app');try{await upsertDailyActivity({minutes_reading:15});await sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:15});sessionData.stars+=15;document.getElementById('statStars').textContent=sessionData.stars;toast('Great reading! +15 Stars');}catch(e){}};
-  ftr.appendChild(doneBtn);ov.appendChild(ftr);document.body.appendChild(ov);
-}
+  // Built-in TTS story reader - works on all devices
+  var STORIES = {
+    'Harry the Dirty Dog': {emoji:'🐶', pages:['Harry was a white dog with black spots who loved everything, except baths.','One day when he saw a bath being prepared, he took the scrubbing brush and buried it in the garden.','Then Harry ran away from home. He played where they were unloading coal and got very dirty.','He went back home but no one recognized him. They thought he was a strange dog.','Finally Harry went and dug up the scrubbing brush and brought it to someone.','They gave Harry a bath and scrubbed him until he was white again with black spots.','Then everyone knew it was Harry! He was so tired he fell asleep in his favorite spot. The End.']},
+    'The Snowy Day': {emoji:'❄️', pages:['One winter morning Peter woke up and saw that snow had fallen during the night.','He put on his snowsuit and went outside. Crunch, crunch, crunch went his feet in the snow.','He walked with his toes pointing out, then with his toes pointing in.','He found a stick and smacked a snow-covered tree. Down fell the snow on top of his head!','He made a snowman. He made snow angels. He tried to join the big boys having a snowball fight.','He packed a snowball in his pocket to save for tomorrow. Then he went inside, all warm.','That night he dreamed the snow had melted away. But when he woke up, more snow was falling! The End.']},
+    'Corduroy': {emoji:'🐻', pages:['Corduroy was a teddy bear who lived in the toy department of a store.','Every day shoppers would walk by, but nobody ever bought him.','One day a little girl named Lisa saw him. She loved him at first sight.','But her mother said no — he had a button missing from his shoulder strap.','That night Corduroy explored the store looking for his button. He had quite an adventure!','In the morning Lisa came back. She had saved her own money to buy him.','She took him home and sewed on a button. "I like you just the way you are," she said. The End.']},
+    'The Tortoise and the Hare': {emoji:'🐢', pages:['Once there was a very fast hare who loved to boast. "No one is faster than me!" he said.','A slow tortoise challenged him to a race. The hare laughed but agreed.','When the race started, the hare zoomed ahead and left the tortoise far behind.','The hare was so far ahead he decided to take a nap under a tree.','Meanwhile the tortoise kept going — slow and steady, one step at a time.','The hare woke up and ran as fast as he could but it was too late!','The tortoise had already crossed the finish line! Slow and steady wins the race. The End.']},
+    'The Lion and the Mouse': {emoji:'🦁', pages:['Once a great lion was sleeping in the forest. A tiny mouse ran across his paw and woke him.','The lion roared and caught the mouse. "I will eat you!" he growled.','The little mouse begged for mercy. "Please let me go! One day I might help you!"','The lion laughed. How could such a tiny mouse help a mighty lion? But he let him go.','Some time later, the lion was caught in a hunter's net. He roared and struggled but could not escape.','The little mouse heard the roaring. He ran to help and chewed through the ropes with his sharp teeth.','The lion was free! "You were right," he said. "Even a tiny friend can be a great friend." The End.']},
+    'The Three Billy Goats Gruff': {emoji:'🐐', pages:['Once upon a time three billy goats named Gruff wanted to cross a bridge to eat the green grass.','Under the bridge lived a terrible ugly Troll with eyes as big as saucers.','The littlest goat went first. Trip trap, trip trap over the bridge! "Who's that?" roared the Troll.','The littlest goat said "Wait for my big brother, he is much tastier!" The Troll agreed.','The middle goat crossed next. Trip trap, trip trap! The troll threatened to eat him too.','"Wait for my biggest brother," said the middle goat. "He is much bigger!" The Troll waited.','Then the big billy goat crossed. The Troll charged but the big goat tossed him far away! The three goats ate the sweet green grass happily ever after. The End.']},
+    'Aesop's Fables - The Fox and the Grapes': {emoji:'🦊', pages:['One hot summer day a fox was walking through the forest when he spotted a bunch of grapes.','The grapes were large and ripe and looked absolutely delicious.','The fox jumped up to grab them, but they were too high. He tried again and again.','After many attempts, he still could not reach the grapes.','The fox sat down and looked up at the grapes one last time.','"Those grapes are probably sour anyway," he said with a sniff.','He walked away with his nose in the air. But deep down, he really wanted those grapes. The End. Moral: It is easy to hate what you cannot have.']},
+    'The Boy Who Cried Wolf': {emoji:'🐺', pages:['Once there was a shepherd boy who watched over his village's flock of sheep.','One day he was bored, so he cried out "Wolf! Wolf! A wolf is chasing the sheep!"','The villagers came running to help, but found no wolf. The boy laughed.','The next day he did it again. "Wolf! Wolf!" The villagers came running. Still no wolf.','They were not happy, but they went back to the village.','Then one day a real wolf appeared! "Wolf! Wolf!" the boy cried with all his might.','But the villagers thought he was tricking them again and did not come. The wolf ate the sheep. The End. Moral: Nobody believes a liar, even when telling the truth.']},
+    'Cinderella': {emoji:'👑', pages:['Once upon a time a kind girl named Cinderella lived with her cruel stepmother and stepsisters.','She did all the hard work while her stepsisters went to parties and balls.','One day an invitation arrived — the prince was hosting a royal ball!','Her stepsisters laughed at Cinderella. "You cannot come!" they said.','But Cinderella's fairy godmother appeared! She gave her a beautiful gown and glass slippers.','At the ball, the prince danced only with Cinderella. But she had to leave by midnight!','She ran out at midnight and lost one glass slipper. The prince searched the whole kingdom.','When he found Cinderella, the slipper fit perfectly. They married and lived happily ever after. The End.']},
+    'Jack and the Beanstalk': {emoji:'🌱', pages:['Once a boy named Jack lived with his poor mother. They had only one cow.','One day Jack's mother sent him to sell the cow. He traded it for magic beans.','His mother was angry and threw the beans out the window.','The next morning, a giant beanstalk had grown up into the clouds!','Jack climbed and climbed until he reached a castle in the sky.','Inside lived a giant who had stolen treasure from Jack's family long ago.','Jack grabbed the golden harp and a bag of gold and climbed down fast.','The giant followed yelling Fee Fi Fo Fum! Jack chopped down the beanstalk. The giant fell. The End.']},
+  };
 
+  var story = STORIES[title];
+  if (!story) {
+    // Fallback to Internet Archive
+    var embedUrl = 'https://archive.org/embed/' + iaId + '?view=theater';
+    var ov2 = document.createElement('div'); ov2.id = 'gdlBookOv';
+    ov2.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#1A0A2E;display:flex;flex-direction:column;';
+    ov2.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#1A1A2E;">'
+      + '<div style="color:white;font-weight:800;">' + title + '</div>'
+      + '<button onclick="document.getElementById('gdlBookOv').remove()" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;">X</button></div>'
+      + '<iframe src="' + embedUrl + '" style="flex:1;border:none;" allowfullscreen></iframe>';
+    document.body.appendChild(ov2);
+    return;
+  }
+
+  var pageIdx = 0;
+  var speaking = false;
+
+  var ov = document.createElement('div'); ov.id = 'gdlBookOv';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#1A0A2E,#2D1052);display:flex;flex-direction:column;font-family:Nunito,sans-serif;';
+
+  function render() {
+    window.speechSynthesis && window.speechSynthesis.cancel();
+    speaking = false;
+    ov.innerHTML = '';
+
+    var hdr = document.createElement('div');
+    hdr.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:rgba(0,0,0,.3);flex-shrink:0;';
+    hdr.innerHTML = '<div style="color:white;font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;">' + story.emoji + ' ' + title + '</div>'
+      + '<div style="color:rgba(255,255,255,.6);font-size:.8rem;">Page ' + (pageIdx+1) + ' of ' + story.pages.length + '</div>';
+    var closeBtn = document.createElement('button');
+    closeBtn.textContent = 'X';
+    closeBtn.style.cssText = 'background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;';
+    closeBtn.onclick = function(){ window.speechSynthesis && window.speechSynthesis.cancel(); ov.remove(); };
+    hdr.appendChild(closeBtn);
+    ov.appendChild(hdr);
+
+    var body = document.createElement('div');
+    body.style.cssText = 'flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;';
+
+    var emoji = document.createElement('div');
+    emoji.style.cssText = 'font-size:4rem;margin-bottom:20px;';
+    emoji.textContent = story.emoji;
+    body.appendChild(emoji);
+
+    var text = document.createElement('div');
+    text.style.cssText = 'font-size:1.2rem;color:white;text-align:center;line-height:1.8;max-width:500px;font-weight:600;';
+    text.textContent = story.pages[pageIdx];
+    body.appendChild(text);
+    ov.appendChild(body);
+
+    var ftr = document.createElement('div');
+    ftr.style.cssText = 'padding:16px;display:flex;gap:10px;justify-content:center;flex-shrink:0;';
+
+    var readBtn = document.createElement('button');
+    readBtn.id = 'ttsBtn';
+    readBtn.textContent = '🔈 Read to Me';
+    readBtn.style.cssText = 'padding:12px 24px;border-radius:40px;border:none;background:linear-gradient(135deg,#8B6FE8,#C084FC);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;';
+    readBtn.onclick = function() {
+      if (!window.speechSynthesis) return;
+      if (speaking) { window.speechSynthesis.cancel(); speaking=false; readBtn.textContent='🔈 Read to Me'; return; }
+      var u = new SpeechSynthesisUtterance(story.pages[pageIdx]);
+      u.rate=0.85; u.pitch=1.1; u.volume=1;
+      var voices=window.speechSynthesis.getVoices();
+      var pick=voices.find(function(v){return v.name==='Samantha'||v.name==='Karen';});
+      if(!pick) pick=voices.find(function(v){return v.lang&&v.lang.startsWith('en');});
+      if(pick) u.voice=pick;
+      u.onend=function(){ speaking=false; readBtn.textContent='🔈 Read to Me'; };
+      window.speechSynthesis.speak(u);
+      speaking=true; readBtn.textContent='⏹ Stop';
+    };
+    ftr.appendChild(readBtn);
+
+    if (pageIdx > 0) {
+      var prevBtn = document.createElement('button');
+      prevBtn.textContent = '← Back';
+      prevBtn.style.cssText = 'padding:12px 20px;border-radius:40px;border:2px solid rgba(255,255,255,.3);background:transparent;color:white;font-family:Nunito,sans-serif;font-weight:700;cursor:pointer;';
+      prevBtn.onclick = function(){ pageIdx--; render(); };
+      ftr.appendChild(prevBtn);
+    }
+
+    if (pageIdx < story.pages.length - 1) {
+      var nextBtn = document.createElement('button');
+      nextBtn.textContent = 'Next Page →';
+      nextBtn.style.cssText = 'padding:12px 24px;border-radius:40px;border:none;background:linear-gradient(135deg,#5ECDA0,#4ECDC4);color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';
+      nextBtn.onclick = function(){ pageIdx++; render(); };
+      ftr.appendChild(nextBtn);
+    } else {
+      var doneBtn = document.createElement('button');
+      doneBtn.textContent = '🌟 Finished!';
+      doneBtn.style.cssText = 'padding:12px 24px;border-radius:40px;border:none;background:linear-gradient(135deg,#FFD700,#FFA500);color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';
+      doneBtn.onclick = function(){ window.speechSynthesis && window.speechSynthesis.cancel(); ov.remove(); toast('+20 Stars for reading!'); if(typeof sb!=='undefined' && typeof activeChild!=='undefined'){sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:20}).catch(function(){});} };
+      ftr.appendChild(doneBtn);
+    }
+
+    ov.appendChild(ftr);
+  }
+
+  document.body.appendChild(ov);
+  render();
+}
 function buildGDLLibrary(grade) {
   var BOOKS={
     PreK:[
