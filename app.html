@@ -957,6 +957,13 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
       <div class="stat-chip"><div class="stat-num num-sun"  id="readingStreak">0</div><div class="stat-lbl">Day Streak</div></div>
     </div>
 
+    <div style="margin-bottom:16px;">
+      <button onclick="openDinoStories(activeGrade)" style="width:100%;padding:16px;border-radius:20px;border:none;background:linear-gradient(135deg,#1a472a,#2d8a4e);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(0,0,0,.2);">
+        <span style="font-size:1.5rem;">🦕</span>
+        <span>Dino Decodable Stories</span>
+        <span style="font-size:.75rem;background:rgba(255,255,255,.2);padding:3px 8px;border-radius:10px;">NEW!</span>
+      </button>
+    </div>
     <div class="section-title" id="bookshelfTitle">📚 My Bookshelf</div>
     <div style="font-size:.82rem;font-weight:700;color:#A89880;margin:-16px 0 18px;display:flex;align-items:center;gap:7px;">
       <span style="background:linear-gradient(135deg,#5ECDA0,#4ECDC4);color:white;font-size:.65rem;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:20px;">Educator Curated</span>
@@ -1643,7 +1650,6 @@ const GRADE_DATA = {
       { emoji:'💃', name:'Dancer',      tip:'Balance on one foot, reach back gracefully!', secs:25, level:'Medium' },
     ],
     books:[
-      { title:'Harry the Dirty Dog',         author:'G. Zion',      pages:32,  read:0, emoji:'🐶' },
       { title:'Chicka Chicka Boom Boom',     author:'B. Martin Jr', pages:40,  read:0, emoji:'🌴' },
       { title:'Corduroy',                    author:'Don Freeman',  pages:32,  read:0, emoji:'🐻' },
       { title:'The Snowy Day',               author:'E.J. Keats',   pages:40,  read:0, emoji:'❄️' },
@@ -6368,88 +6374,41 @@ function openActualDashboard() {
   var ov = document.createElement('div');
   ov.id = 'parentDashOv';
   ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#3D1A78 0%,#6B3FA0 40%,#9B6FD8 100%);display:flex;flex-direction:column;align-items:center;padding:24px 16px;font-family:Nunito,sans-serif;overflow-y:auto;';
-
-  var child = (typeof activeChild !== 'undefined' && activeChild) ? activeChild : {name:'Your Child', grade:'', avatar:'🦄'};
-  var gradeName = (typeof gradeContent !== 'undefined' && gradeContent && gradeContent.label) ? gradeContent.label : 'Grade';
-  var stars = (typeof sessionData !== 'undefined') ? (sessionData.stars||0) : 0;
-  var tasks = (typeof sessionData !== 'undefined') ? (sessionData.tasks||0) : 0;
-  var streak = (typeof sessionData !== 'undefined') ? (sessionData.streak||0) : 0;
-  var mins = (typeof sessionData !== 'undefined') ? (sessionData.minutes||0) : 0;
-
   var wrap = document.createElement('div');
   wrap.style.cssText = 'width:100%;max-width:420px;';
-
-  // Header
   var hdr = document.createElement('div');
-  hdr.style.cssText = 'display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;width:100%;';
-  hdr.innerHTML = '<div style="font-family:Baloo 2,cursive;font-size:1.4rem;font-weight:800;color:white;">Parent Dashboard</div>';
+  hdr.style.cssText = 'display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;';
+  hdr.innerHTML = '<div style="font-family:Baloo 2,cursive;font-size:1.4rem;font-weight:800;color:white;">Parent Settings</div>';
   var xBtn = document.createElement('button');
   xBtn.textContent = 'X';
   xBtn.style.cssText = 'background:rgba(255,255,255,.18);border:none;color:white;width:38px;height:38px;border-radius:50%;font-size:1.1rem;font-weight:800;cursor:pointer;';
   xBtn.onclick = function(){ ov.remove(); };
   hdr.appendChild(xBtn);
   wrap.appendChild(hdr);
-
-  // Child card
-  var card = document.createElement('div');
-  card.style.cssText = 'background:rgba(255,255,255,.15);border-radius:20px;padding:16px;margin-bottom:16px;';
-  card.innerHTML = '<div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">'
-    + '<div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.6rem;">' + (child.avatar||'🦄') + '</div>'
-    + '<div><div style="font-weight:800;color:white;font-size:1rem;">' + (child.name||'Your Child') + '</div>'
-    + '<div style="color:rgba(255,255,255,.75);font-size:.8rem;">' + gradeName + '</div></div></div>'
-    + '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center;">'
-    + '<div style="background:rgba(255,255,255,.1);border-radius:12px;padding:10px 4px;"><div style="font-size:1.1rem;font-weight:800;color:white;">' + streak + 'd</div><div style="font-size:.65rem;color:rgba(255,255,255,.7);">Streak</div></div>'
-    + '<div style="background:rgba(255,255,255,.1);border-radius:12px;padding:10px 4px;"><div style="font-size:1.1rem;font-weight:800;color:white;">' + mins + 'm</div><div style="font-size:.65rem;color:rgba(255,255,255,.7);">Time</div></div>'
-    + '<div style="background:rgba(255,255,255,.1);border-radius:12px;padding:10px 4px;"><div style="font-size:1.1rem;font-weight:800;color:white;">' + tasks + '</div><div style="font-size:.65rem;color:rgba(255,255,255,.7);">Activities</div></div>'
-    + '<div style="background:rgba(255,255,255,.1);border-radius:12px;padding:10px 4px;"><div style="font-size:1.1rem;font-weight:800;color:white;">⭐' + stars + '</div><div style="font-size:.65rem;color:rgba(255,255,255,.7);">Stars</div></div>'
-    + '</div>';
-  wrap.appendChild(card);
-
-  // Grade standards
-  var standards = {
-    'Pre-Kindergarten': [{code:'PK.CC',s:'Counting & Numbers'},{code:'PK.RF',s:'Reading Foundations'},{code:'PK.SS',s:'My Community'}],
-    'Kindergarten':     [{code:'K.CC',s:'Count to 100'},{code:'K.RF',s:'Phonics & Letters'},{code:'K.SS',s:'Families & Maps'}],
-    'Grade 1':          [{code:'1.OA',s:'Add & Subtract to 20'},{code:'1.RF',s:'Reading & Phonics'},{code:'1.SS',s:'Neighborhoods'}],
-    'Grade 2':          [{code:'2.OA',s:'Add/Subtract to 100'},{code:'2.RF',s:'Fluency & Comprehension'},{code:'2.SC',s:'Matter & Earth'}],
-    'Grade 3':          [{code:'3.OA',s:'Multiply & Divide'},{code:'3.RI',s:'Informational Text'},{code:'3.LS',s:'Life Cycles'}],
-    'Grade 4':          [{code:'4.NBT',s:'Multi-digit Math'},{code:'4.RI',s:'Reading & Writing'},{code:'4.ESS',s:'Earth Science'}],
-    'Grade 5':          [{code:'5.NBT',s:'Decimals & Fractions'},{code:'5.RI',s:'Research & Argument'},{code:'5.PS',s:'Physical Science'}],
-  };
-  var stds = standards[gradeName] || standards['Grade 2'];
-  var stdCard = document.createElement('div');
-  stdCard.style.cssText = 'background:rgba(255,255,255,.15);border-radius:20px;padding:16px;margin-bottom:16px;';
-  stdCard.innerHTML = '<div style="font-weight:800;color:white;margin-bottom:10px;">📋 ' + gradeName + ' Standards</div>'
-    + stds.map(function(s){ return '<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.15);">'
-      + '<span style="background:rgba(255,255,255,.2);color:white;border-radius:8px;padding:3px 8px;font-size:.7rem;font-weight:800;">' + s.code + '</span>'
-      + '<span style="color:rgba(255,255,255,.9);font-size:.82rem;">' + s.s + '</span></div>'; }).join('')
-    + '<div style="margin-top:10px;font-size:.75rem;color:rgba(255,255,255,.75);">✅ All activities aligned to Common Core</div>';
-  wrap.appendChild(stdCard);
-
-  // Action tiles
   var grid = document.createElement('div');
-  grid.style.cssText = 'display:grid;grid-template-columns:repeat(3,1fr);gap:14px;';
+  grid.style.cssText = 'display:grid;grid-template-columns:repeat(3,1fr);gap:20px;';
   var tiles = [
-    {icon:'📊', label:'Progress'},
-    {icon:'👶', label:'Children'},
-    {icon:'🎯', label:'Goals'},
-    {icon:'📚', label:'Standards'},
-    {icon:'🔒', label:'Reset PIN'},
-    {icon:'🛡️', label:'Privacy'},
+    {icon:'📊',label:'Progress'},
+    {icon:'👶',label:'My Children'},
+    {icon:'🎯',label:'Goals'},
+    {icon:'📚',label:'Standards'},
+    {icon:'🔒',label:'Reset PIN'},
+    {icon:'🛡️',label:'Privacy'},
   ];
-  tiles.forEach(function(t, i) {
-    var tile = document.createElement('div');
-    tile.style.cssText = 'display:flex;flex-direction:column;align-items:center;cursor:pointer;';
-    var circle = document.createElement('div');
-    circle.style.cssText = 'width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin-bottom:6px;';
-    circle.textContent = t.icon;
-    var lbl = document.createElement('div');
-    lbl.style.cssText = 'font-size:.72rem;font-weight:700;color:rgba(255,255,255,.9);text-align:center;';
-    lbl.textContent = t.label;
-    tile.appendChild(circle); tile.appendChild(lbl);
-    tile.onclick = (function(idx){ return function(){
-      if(idx===4){localStorage.removeItem('bloomi_parent_pin');ov.remove();alert('PIN reset!');}
-      else if(idx===5){alert('BloomiKids is COPPA compliant. No ads, no data selling.');}
-      else{alert(t.label + ' — full feature coming soon!');}
+  tiles.forEach(function(t,i){
+    var tile=document.createElement('div');
+    tile.style.cssText='display:flex;flex-direction:column;align-items:center;cursor:pointer;';
+    var circle=document.createElement('div');
+    circle.style.cssText='width:76px;height:76px;border-radius:50%;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:8px;box-shadow:0 4px 16px rgba(0,0,0,.2);';
+    circle.textContent=t.icon;
+    var lbl=document.createElement('div');
+    lbl.style.cssText='font-size:.72rem;font-weight:700;color:rgba(255,255,255,.9);text-align:center;';
+    lbl.textContent=t.label;
+    tile.appendChild(circle);tile.appendChild(lbl);
+    tile.onclick=(function(idx){return function(){
+      if(idx===4){localStorage.removeItem('bloomi_parent_pin');ov.remove();alert('PIN reset! Set a new one next time.');}
+      else if(idx===5){alert('BloomiKids is COPPA compliant. No ads. No data selling. All learning data is private.');}
+      else{alert(t.label+' — full feature coming soon!');}
     };})(i);
     grid.appendChild(tile);
   });
@@ -6615,6 +6574,114 @@ function openStorylineSearch(title) {
   ftr.appendChild(doneBtn);
   ov.appendChild(ftr);
   document.body.appendChild(ov);
+}
+
+
+function openDinoStories(grade) {
+  var DINO_STORIES = [{"grade": "PreK", "skill": "Rhyming", "title": "Dino Rhyme", "text": "Dino sat on mat. Cat sat on hat. Dino had a bat. Bat hit the hat.", "q": "Which sat on mat?", "a": "Dino", "opts": ["Dino", "Cat", "Bat", "Hat"]}, {"grade": "PreK", "skill": "Syllables", "title": "Dino Claps", "text": "Dino had ba-na-na. Ba-na-na has 3 claps. Dino had ap-ple. Ap-ple has 2 claps.", "q": "How many claps for banana?", "a": "3", "opts": ["1", "2", "3", "4"]}, {"grade": "K", "skill": "CVC Words", "title": "Dino CVC", "text": "Dino had a cat. Cat sat on mat. Dino had a hat. Cat had a bat.", "q": "Where did cat sit?", "a": "mat", "opts": ["hat", "mat", "bat", "sat"]}, {"grade": "K", "skill": "Blending", "title": "Dino Blend", "text": "Dino ran. D-i-n-o. Di-no ran fast. R-a-n. Ran to the sun.", "q": "What did Dino do?", "a": "ran", "opts": ["sat", "ran", "slept", "hopped"]}, {"grade": "1", "skill": "Digraphs", "title": "Ship Dino", "text": "Ship had a fish. Fish swam with sh. Ship sank. Fish swam fast. Sh-sh-sh!", "q": "What sound does ship start with?", "a": "sh", "opts": ["ch", "sh", "th", "wh"]}, {"grade": "1", "skill": "Blends", "title": "Dino Black", "text": "Black dino ran. Black dino had a crab. Crab had a flag. Black crab ran.", "q": "What color was the dino?", "a": "black", "opts": ["red", "blue", "black", "green"]}, {"grade": "2", "skill": "Multisyllabic", "title": "Basket Dino", "text": "Dino had bas-ket-ball. Basket-ball is big. Pen-cil in basket. Ta-ble has basket-ball.", "q": "Where is the pencil?", "a": "basket", "opts": ["table", "floor", "basket", "shelf"]}, {"grade": "3", "skill": "Cause & Effect", "title": "Dino Rain", "text": "Rain fell on dino. Dino got wet. Dino ran fast. Wet dino ran home.", "q": "Why did dino run home?", "a": "rain", "opts": ["tired", "hungry", "rain", "scared"]}, {"grade": "4", "skill": "Inference", "title": "Dino Sad", "text": "Dino smiled. Dino eyes wet. Dino waved bye. Dino moving far away.", "q": "How does dino feel?", "a": "sad", "opts": ["happy", "angry", "sad", "excited"]}, {"grade": "5", "skill": "Theme", "title": "Dino Share", "text": "Dino had last egg. Dino gave egg to friend. Friend gave egg back. Both dinos happy.", "q": "What did the story teach?", "a": "sharing", "opts": ["running", "sharing", "hiding", "eating"]}];
+  var stories = DINO_STORIES.filter(function(s){ return s.grade === grade; });
+  if (!stories.length) stories = DINO_STORIES;
+  
+  var idx = 0;
+  var score = 0;
+  var ov = document.createElement('div'); ov.id = 'dinoOv';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#1a472a,#2d8a4e);display:flex;flex-direction:column;font-family:Nunito,sans-serif;';
+  
+  function render() {
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    ov.innerHTML = '';
+    if (idx >= stories.length) {
+      ov.innerHTML = '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:white;text-align:center;padding:32px;">'
+        + '<div style="font-size:5rem;margin-bottom:16px;">🦕</div>'
+        + '<div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;margin-bottom:8px;">Amazing Reading!</div>'
+        + '<div style="font-size:1.1rem;opacity:.85;margin-bottom:24px;">You got ' + score + ' of ' + stories.length + ' correct!</div>'
+        + '<button onclick="document.getElementById('dinoOv').remove();toast('+' + (score*15) + ' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#1a472a;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Done! 🌟</button></div>';
+      if (typeof sb !== 'undefined' && typeof activeChild !== 'undefined') {
+        sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:score*15}).catch(function(){});
+      }
+      return;
+    }
+    var story = stories[idx];
+    var hdr = document.createElement('div');
+    hdr.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:rgba(0,0,0,.2);flex-shrink:0;';
+    hdr.innerHTML = '<div style="color:white;font-family:Baloo 2,cursive;font-weight:800;">🦕 Dino Stories</div>'
+      + '<div style="color:rgba(255,255,255,.7);font-size:.8rem;">' + story.skill + ' • Story ' + (idx+1) + '/' + stories.length + '</div>';
+    var xb = document.createElement('button'); xb.textContent='X';
+    xb.style.cssText='background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;';
+    xb.onclick=function(){if(window.speechSynthesis)window.speechSynthesis.cancel();ov.remove();};
+    hdr.appendChild(xb); ov.appendChild(hdr);
+    
+    var body = document.createElement('div');
+    body.style.cssText = 'flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;';
+    
+    var dinoEmoji = document.createElement('div');
+    dinoEmoji.style.cssText = 'font-size:4rem;margin-bottom:12px;';
+    dinoEmoji.textContent = '🦕';
+    
+    var titleDiv = document.createElement('div');
+    titleDiv.style.cssText = 'font-family:Baloo 2,cursive;font-size:1.2rem;font-weight:800;color:white;margin-bottom:12px;';
+    titleDiv.textContent = story.title;
+    
+    var storyText = document.createElement('div');
+    storyText.style.cssText = 'background:rgba(255,255,255,.15);border-radius:16px;padding:16px;font-size:1.1rem;color:white;text-align:center;line-height:1.8;margin-bottom:20px;max-width:440px;font-weight:600;';
+    storyText.textContent = story.text;
+    
+    var readBtn = document.createElement('button');
+    readBtn.textContent = '🔈 Read Story';
+    readBtn.style.cssText = 'padding:10px 20px;border-radius:30px;border:none;background:rgba(255,255,255,.2);color:white;font-family:Nunito,sans-serif;font-weight:700;cursor:pointer;margin-bottom:20px;';
+    var sp = false;
+    readBtn.onclick = function(){
+      if(!window.speechSynthesis)return;
+      if(sp){window.speechSynthesis.cancel();sp=false;readBtn.textContent='🔈 Read Story';return;}
+      var u=new SpeechSynthesisUtterance(story.text);u.rate=0.8;u.pitch=1.1;
+      var vs=window.speechSynthesis.getVoices();var pk=vs.find(function(v){return v.name==='Samantha';});
+      if(!pk)pk=vs.find(function(v){return v.lang&&v.lang.startsWith('en');});if(pk)u.voice=pk;
+      u.onend=function(){sp=false;readBtn.textContent='🔈 Read Story';};
+      window.speechSynthesis.speak(u);sp=true;readBtn.textContent='⏹ Stop';
+    };
+    
+    var qDiv = document.createElement('div');
+    qDiv.style.cssText = 'font-size:1rem;font-weight:800;color:white;margin-bottom:16px;text-align:center;max-width:400px;';
+    qDiv.textContent = '❓ ' + story.q;
+    
+    var optsDiv = document.createElement('div');
+    optsDiv.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:380px;width:100%;';
+    
+    var answered = false;
+    story.opts.forEach(function(opt){
+      var btn = document.createElement('button');
+      btn.textContent = opt;
+      btn.style.cssText = 'padding:14px;border-radius:14px;border:none;background:rgba(255,255,255,.15);color:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;';
+      btn.onclick = function(){
+        if(answered) return; answered = true;
+        if(opt === story.a){
+          btn.style.background='rgba(94,205,160,.8)';
+          score++;
+          toast('Correct! Great reading! 🦕');
+        } else {
+          btn.style.background='rgba(255,107,107,.7)';
+          optsDiv.querySelectorAll('button').forEach(function(b){
+            if(b.textContent===story.a) b.style.background='rgba(94,205,160,.8)';
+          });
+          toast('Not quite! The answer is: ' + story.a);
+        }
+        setTimeout(function(){idx++;render();},1500);
+      };
+      optsDiv.appendChild(btn);
+    });
+    
+    body.appendChild(dinoEmoji);body.appendChild(titleDiv);body.appendChild(storyText);
+    body.appendChild(readBtn);body.appendChild(qDiv);body.appendChild(optsDiv);
+    ov.appendChild(body);
+    
+    // Auto-read for young grades
+    setTimeout(function(){
+      if(typeof activeGrade!=='undefined'&&(activeGrade==='PreK'||activeGrade==='K'||activeGrade==='1')) readBtn.click();
+    },600);
+  }
+  
+  document.body.appendChild(ov);
+  render();
 }
 
 function openGDLBook(title, iaId) {
