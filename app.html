@@ -964,6 +964,13 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
         <span style="font-size:.75rem;background:rgba(255,255,255,.2);padding:3px 8px;border-radius:10px;">NEW!</span>
       </button>
     </div>
+    <div style="margin-bottom:16px;">
+      <button onclick="openPassageReader(activeGrade)" style="width:100%;padding:16px;border-radius:20px;border:none;background:linear-gradient(135deg,#1a2a4a,#2d4a8a);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(0,0,0,.2);">
+        <span style="font-size:1.5rem;">📖</span>
+        <span>Reading Comprehension</span>
+        <span style="font-size:.75rem;background:rgba(255,255,255,.2);padding:3px 8px;border-radius:10px;">Gr 3-5</span>
+      </button>
+    </div>
     <div class="section-title" id="bookshelfTitle">📚 My Bookshelf</div>
     <div style="font-size:.82rem;font-weight:700;color:#A89880;margin:-16px 0 18px;display:flex;align-items:center;gap:7px;">
       <span style="background:linear-gradient(135deg,#5ECDA0,#4ECDC4);color:white;font-size:.65rem;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:20px;">Educator Curated</span>
@@ -6576,6 +6583,126 @@ function openStorylineSearch(title) {
   document.body.appendChild(ov);
 }
 
+
+
+function openPassageReader(grade) {
+  var PASSAGES = [{"grade": "3", "skill": "Main Idea", "title": "The Library", "passage": "Maya loved the library. She visited every Saturday. She read books about animals, space, and history. The librarian helped her find new books each week. Maya said the library was her favorite place in the whole world.", "q": "What is the main idea?", "opts": ["Maya likes animals", "Maya loves the library", "Libraries have many books"], "a": "Maya loves the library", "explain": "The whole story is about how much Maya loves the library. All the details support this main idea."}, {"grade": "3", "skill": "Cause & Effect", "title": "The Rain", "passage": "Lena looked outside. Dark clouds covered the sky. She grabbed her umbrella and left for school. On the way, rain started falling. Lena stayed dry while her friends got wet.", "q": "Why did Lena grab her umbrella?", "opts": ["It was sunny", "It looked like rain", "She wanted to play"], "a": "It looked like rain", "explain": "Lena saw dark clouds and knew it would rain. She used clues from the sky to make a smart decision."}, {"grade": "3", "skill": "Sequence", "title": "Making Bread", "passage": "First, mix flour, water, and yeast. Next, knead the dough for ten minutes. Then, let it rise for one hour. After that, bake it in the oven. Finally, let it cool before eating.", "q": "What happens right after kneading?", "opts": ["Mix ingredients", "Let it rise", "Bake in oven"], "a": "Let it rise", "explain": "The word \"Then\" tells us letting it rise comes after kneading. Signal words like first, next, then help us understand sequence."}, {"grade": "3", "skill": "Vocabulary", "title": "The Desert", "passage": "The desert is an arid place. Very little rain falls there. Animals that live in arid places must find clever ways to store water. The camel stores water in its hump to survive long journeys.", "q": "What does arid mean?", "opts": ["Very wet", "Very dry", "Very cold"], "a": "Very dry", "explain": "The story tells us very little rain falls in arid places. This clue helps us figure out that arid means very dry."}, {"grade": "4", "skill": "Inference", "title": "The Contest", "passage": "Tom practiced piano every day for a month. His fingers flew across the keys. On contest day, his hands shook as he walked to the stage. He took a deep breath and began to play.", "q": "How does Tom feel before playing?", "opts": ["Bored", "Nervous", "Angry"], "a": "Nervous", "explain": "Tom practiced hard and his hands shook. Shaking hands is a clue that someone feels nervous. The author never says it directly but gives us clues."}, {"grade": "4", "skill": "Theme", "title": "The Gift", "passage": "Max gave his snack to his friend who forgot lunch. His friend smiled and later shared his juice with Max. Both boys went home happy that day.", "q": "What theme does this story show?", "opts": ["Sharing is kind", "Dogs are funny", "School is hard"], "a": "Sharing is kind", "explain": "The story shows that when Max shared his snack, his friend shared back. The lesson is that kindness and sharing make everyone happy."}, {"grade": "4", "skill": "Character Traits", "title": "The New Student", "passage": "When Zoe saw the new student sitting alone, she walked over and said hello. She showed him around the school and invited him to eat lunch with her friends. The new student smiled for the first time all day.", "q": "Which word best describes Zoe?", "opts": ["Shy", "Selfish", "Kind"], "a": "Kind", "explain": "Zoe noticed someone who needed help and did something about it. Her actions \u2014 saying hello, showing him around, including him \u2014 show she is kind."}, {"grade": "4", "skill": "Compare & Contrast", "title": "City and Country", "passage": "In the city, buildings tower over busy streets. Cars honk and people rush. In the country, open fields stretch for miles. Birds sing and the air smells fresh. Both places have families, schools, and stores.", "q": "What do city and country have in common?", "opts": ["Tall buildings", "Busy streets", "Families and schools"], "a": "Families and schools", "explain": "The story says BOTH places have families, schools, and stores. When comparing, look for what things share, not just how they differ."}, {"grade": "5", "skill": "Author's Purpose", "title": "Phones in School", "passage": "Some people think phones help students learn better. Others think phones are distracting. Students who use phones in class get lower grades in some studies. Schools that banned phones saw test scores improve.", "q": "What is the author doing?", "opts": ["Telling a story", "Presenting an argument", "Giving directions"], "a": "Presenting an argument", "explain": "The author presents both sides and includes evidence (studies, test scores). This is persuasive writing \u2014 the author wants you to think about the issue."}, {"grade": "5", "skill": "Evidence", "title": "Climate Change", "passage": "Scientists have measured Earth's temperature for over 100 years. Their data shows the planet is getting warmer. Ice caps are melting and sea levels are rising. Most scientists agree that human activities are causing these changes.", "q": "What evidence supports Earth getting warmer?", "opts": ["People disagree", "Ice caps are melting", "Scientists take measurements"], "a": "Ice caps are melting", "explain": "Melting ice caps and rising sea levels are direct evidence of warming. Scientific evidence must be observable and measurable, not just opinions."}, {"grade": "5", "skill": "Point of View", "title": "The Forest", "passage": "The logger thought the forest was a resource to be used. The scientist thought it was an ecosystem to be studied. The child thought it was a place to play and explore. All three stood at the edge of the same forest.", "q": "Why do the three people see the forest differently?", "opts": ["They have different jobs and experiences", "The forest looks different each day", "They are standing in different places"], "a": "They have different jobs and experiences", "explain": "A logger, scientist, and child each have different backgrounds and purposes. Our experiences and roles shape how we see the same thing \u2014 this is point of view."}];
+  var stories = PASSAGES.filter(function(p){ 
+    return p.grade === String(grade).replace('Grade ','').replace('PreK','-1').replace('K','0');
+  });
+  if (!stories.length) {
+    // Show all if no grade match
+    stories = PASSAGES.slice(0,3);
+  }
+  
+  var idx = 0;
+  var score = 0;
+  var ov = document.createElement('div'); ov.id = 'passageOv';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#1a2a4a,#2d4a8a);display:flex;flex-direction:column;font-family:Nunito,sans-serif;';
+  
+  function render() {
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    ov.innerHTML = '';
+    
+    if (idx >= stories.length) {
+      ov.innerHTML = '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:white;text-align:center;padding:32px;">'
+        + '<div style="font-size:4rem;margin-bottom:16px;">📖</div>'
+        + '<div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;margin-bottom:8px;">Amazing Reader!</div>'
+        + '<div style="font-size:1.1rem;opacity:.85;margin-bottom:24px;">You got ' + score + ' of ' + stories.length + ' correct!</div>'
+        + '<button onclick="document.getElementById('passageOv').remove();toast('+' + (score*20) + ' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#1a2a4a;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Done! ⭐</button></div>';
+      if (typeof sb !== 'undefined' && typeof activeChild !== 'undefined') {
+        sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:score*20}).catch(function(){});
+      }
+      return;
+    }
+    
+    var story = stories[idx];
+    
+    // Header
+    var hdr = document.createElement('div');
+    hdr.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:rgba(0,0,0,.2);flex-shrink:0;';
+    hdr.innerHTML = '<div style="color:white;font-family:Baloo 2,cursive;font-weight:800;">📖 Reading Comprehension</div>'
+      + '<div style="color:rgba(255,255,255,.7);font-size:.8rem;">' + story.skill + ' • ' + (idx+1) + '/' + stories.length + '</div>';
+    var xb = document.createElement('button'); xb.textContent='X';
+    xb.style.cssText='background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;';
+    xb.onclick=function(){if(window.speechSynthesis)window.speechSynthesis.cancel();ov.remove();};
+    hdr.appendChild(xb); ov.appendChild(hdr);
+    
+    var body = document.createElement('div');
+    body.style.cssText = 'flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px;';
+    
+    // Passage box
+    var passageBox = document.createElement('div');
+    passageBox.style.cssText = 'background:rgba(255,255,255,.12);border-radius:16px;padding:16px;border-left:4px solid #5ECDA0;';
+    passageBox.innerHTML = '<div style="color:rgba(255,255,255,.6);font-size:.72rem;font-weight:800;text-transform:uppercase;margin-bottom:8px;">📄 ' + story.title + '</div>'
+      + '<div style="color:white;font-size:1rem;line-height:1.8;font-weight:600;">' + story.passage + '</div>';
+    body.appendChild(passageBox);
+    
+    // Read button
+    var readBtn = document.createElement('button');
+    readBtn.textContent = '🔈 Read Passage Aloud';
+    readBtn.style.cssText = 'padding:10px 20px;border-radius:30px;border:none;background:rgba(94,205,160,.3);color:white;font-family:Nunito,sans-serif;font-weight:700;cursor:pointer;align-self:flex-start;';
+    var sp = false;
+    readBtn.onclick = function(){
+      if(!window.speechSynthesis)return;
+      if(sp){window.speechSynthesis.cancel();sp=false;readBtn.textContent='🔈 Read Passage Aloud';return;}
+      var u=new SpeechSynthesisUtterance(story.passage);u.rate=0.85;u.pitch=1.0;
+      var vs=window.speechSynthesis.getVoices();var pk=vs.find(function(v){return v.name==='Samantha'||v.name==='Daniel';});
+      if(!pk)pk=vs.find(function(v){return v.lang&&v.lang.startsWith('en');});if(pk)u.voice=pk;
+      u.onend=function(){sp=false;readBtn.textContent='🔈 Read Passage Aloud';};
+      window.speechSynthesis.speak(u);sp=true;readBtn.textContent='⏹ Stop';
+    };
+    body.appendChild(readBtn);
+    
+    // Question
+    var qDiv = document.createElement('div');
+    qDiv.style.cssText = 'color:white;font-size:1rem;font-weight:800;background:rgba(255,255,255,.1);border-radius:12px;padding:14px;';
+    qDiv.textContent = '❓ ' + story.q;
+    body.appendChild(qDiv);
+    
+    // Answer options
+    var answered = false;
+    story.opts.forEach(function(opt){
+      var btn = document.createElement('button');
+      btn.textContent = opt;
+      btn.style.cssText = 'padding:14px 16px;border-radius:14px;border:2px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;text-align:left;width:100%;';
+      btn.onclick = function(){
+        if(answered) return; answered = true;
+        var correct = (opt === story.a);
+        // Show all answers
+        body.querySelectorAll('button').forEach(function(b){
+          if(b.textContent===story.a){b.style.background='rgba(94,205,160,.5)';b.style.borderColor='#5ECDA0';}
+          b.style.cursor='default';b.style.pointerEvents='none';
+        });
+        if(correct){btn.style.background='rgba(94,205,160,.6)';score++;toast('Correct! Great thinking! 📖');}
+        else{btn.style.background='rgba(255,107,107,.4)';btn.style.borderColor='#FF6B6B';toast('Good try!');}
+        
+        // Show explanation
+        var expDiv = document.createElement('div');
+        expDiv.style.cssText = 'background:rgba(255,255,255,.12);border-radius:12px;padding:14px;border-left:3px solid #FFD700;';
+        expDiv.innerHTML = '<div style="color:#FFD700;font-weight:800;font-size:.8rem;margin-bottom:6px;">💡 WHY?</div>'
+          + '<div style="color:white;font-size:.9rem;line-height:1.6;">' + story.explain + '</div>';
+        body.appendChild(expDiv);
+        
+        // Next button
+        var nb = document.createElement('button');
+        nb.textContent = idx < stories.length-1 ? 'Next Passage →' : 'See Results 🎉';
+        nb.style.cssText = 'padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#5ECDA0,#4ECDC4);color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;width:100%;margin-top:8px;';
+        nb.onclick = function(){ idx++; render(); };
+        body.appendChild(nb);
+        
+        // Scroll to show explanation
+        setTimeout(function(){ expDiv.scrollIntoView({behavior:'smooth',block:'nearest'}); }, 100);
+      };
+      body.appendChild(btn);
+    });
+    
+    ov.appendChild(body);
+  }
+  
+  document.body.appendChild(ov);
+  render();
+}
 
 function openDinoStories(grade) {
   var DINO_STORIES = [{"grade": "PreK", "skill": "Rhyming", "title": "Dino Rhyme", "text": "Dino sat on mat. Cat sat on hat. Dino had a bat. Bat hit the hat.", "q": "Which sat on mat?", "a": "Dino", "opts": ["Dino", "Cat", "Bat", "Hat"]}, {"grade": "PreK", "skill": "Syllables", "title": "Dino Claps", "text": "Dino had ba-na-na. Ba-na-na has 3 claps. Dino had ap-ple. Ap-ple has 2 claps.", "q": "How many claps for banana?", "a": "3", "opts": ["1", "2", "3", "4"]}, {"grade": "K", "skill": "CVC Words", "title": "Dino CVC", "text": "Dino had a cat. Cat sat on mat. Dino had a hat. Cat had a bat.", "q": "Where did cat sit?", "a": "mat", "opts": ["hat", "mat", "bat", "sat"]}, {"grade": "K", "skill": "Blending", "title": "Dino Blend", "text": "Dino ran. D-i-n-o. Di-no ran fast. R-a-n. Ran to the sun.", "q": "What did Dino do?", "a": "ran", "opts": ["sat", "ran", "slept", "hopped"]}, {"grade": "1", "skill": "Digraphs", "title": "Ship Dino", "text": "Ship had a fish. Fish swam with sh. Ship sank. Fish swam fast. Sh-sh-sh!", "q": "What sound does ship start with?", "a": "sh", "opts": ["ch", "sh", "th", "wh"]}, {"grade": "1", "skill": "Blends", "title": "Dino Black", "text": "Black dino ran. Black dino had a crab. Crab had a flag. Black crab ran.", "q": "What color was the dino?", "a": "black", "opts": ["red", "blue", "black", "green"]}, {"grade": "2", "skill": "Multisyllabic", "title": "Basket Dino", "text": "Dino had bas-ket-ball. Basket-ball is big. Pen-cil in basket. Ta-ble has basket-ball.", "q": "Where is the pencil?", "a": "basket", "opts": ["table", "floor", "basket", "shelf"]}, {"grade": "3", "skill": "Cause & Effect", "title": "Dino Rain", "text": "Rain fell on dino. Dino got wet. Dino ran fast. Wet dino ran home.", "q": "Why did dino run home?", "a": "rain", "opts": ["tired", "hungry", "rain", "scared"]}, {"grade": "4", "skill": "Inference", "title": "Dino Sad", "text": "Dino smiled. Dino eyes wet. Dino waved bye. Dino moving far away.", "q": "How does dino feel?", "a": "sad", "opts": ["happy", "angry", "sad", "excited"]}, {"grade": "5", "skill": "Theme", "title": "Dino Share", "text": "Dino had last egg. Dino gave egg to friend. Friend gave egg back. Both dinos happy.", "q": "What did the story teach?", "a": "sharing", "opts": ["running", "sharing", "hiding", "eating"]}];
