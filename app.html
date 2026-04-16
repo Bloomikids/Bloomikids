@@ -232,6 +232,7 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .tab-btn[data-tab="academics"].active { background:linear-gradient(135deg,#5ECDA0,#4ECDC4); }
 .tab-btn[data-tab="yoga"].active      { background:linear-gradient(135deg,#C9B8FF,#FF6B6B); }
 .tab-btn[data-tab="reading"].active   { background:linear-gradient(135deg,#FFD166,#FF6B6B); }
+.tab-btn[data-tab="games"].active     { background:linear-gradient(135deg,#FF6B6B,#FF8E53); }
 
 .panel { display:none; opacity:0; }
 .panel.active { display:block; animation:slideUp .3s cubic-bezier(.4,0,.2,1) both; }
@@ -783,6 +784,75 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
     <button class="tab-btn" data-tab="yoga" onclick="switchTab('yoga')">🧘 <span id="tabMove">Move</span></button>
     <button class="tab-btn" data-tab="reading" onclick="switchTab('reading')">📖 <span id="tabRead">Read</span></button>
     <button class="tab-btn" data-tab="art" onclick="switchTab('art')">🎨 <span id="tabArt">Art</span></button>
+    <button class="tab-btn" data-tab="games" onclick="switchTab('games')">🎮 <span id="tabGames">Games</span></button>
+  </div>
+
+  <!-- -- GAMES -- -->
+  <div class="panel" id="panel-games">
+    <div class="section-title">🎮 Games with Bloomy</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:4px 0 20px;">
+
+      <div onclick="openWordMatch()" style="background:linear-gradient(135deg,#FF6B6B,#FF8E53);border-radius:20px;padding:20px 14px;text-align:center;cursor:pointer;box-shadow:0 4px 16px rgba(255,107,107,.3);">
+        <div style="font-size:2.2rem;margin-bottom:8px;">🔤</div>
+        <div style="font-family:'Baloo 2',cursive;font-weight:800;color:white;font-size:.95rem;">Word Match</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.8);margin-top:4px;">Match words to pictures</div>
+      </div>
+
+      <div onclick="openFlashCards()" style="background:linear-gradient(135deg,#5ECDA0,#4ECDC4);border-radius:20px;padding:20px 14px;text-align:center;cursor:pointer;box-shadow:0 4px 16px rgba(94,205,160,.3);">
+        <div style="font-size:2.2rem;margin-bottom:8px;">🃏</div>
+        <div style="font-family:'Baloo 2',cursive;font-weight:800;color:white;font-size:.95rem;">Flash Cards</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.8);margin-top:4px;">Sight word practice</div>
+      </div>
+
+      <div onclick="openMemoryMatch()" style="background:linear-gradient(135deg,#C9B8FF,#8B6FE8);border-radius:20px;padding:20px 14px;text-align:center;cursor:pointer;box-shadow:0 4px 16px rgba(139,111,232,.3);">
+        <div style="font-size:2.2rem;margin-bottom:8px;">🧠</div>
+        <div style="font-family:'Baloo 2',cursive;font-weight:800;color:white;font-size:.95rem;">Memory Match</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.8);margin-top:4px;">Find the pairs</div>
+      </div>
+
+      <div onclick="openSpellingBee()" style="background:linear-gradient(135deg,#FFD166,#FF6B6B);border-radius:20px;padding:20px 14px;text-align:center;cursor:pointer;box-shadow:0 4px 16px rgba(255,209,102,.3);">
+        <div style="font-size:2.2rem;margin-bottom:8px;">🐝</div>
+        <div style="font-family:'Baloo 2',cursive;font-weight:800;color:white;font-size:.95rem;">Spelling Bee</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.8);margin-top:4px;">Tap the letters</div>
+      </div>
+
+      <div onclick="openNumberBonds()" style="background:linear-gradient(135deg,#4ECDC4,#2D8A8A);border-radius:20px;padding:20px 14px;text-align:center;cursor:pointer;box-shadow:0 4px 16px rgba(78,205,196,.3);">
+        <div style="font-size:2.2rem;margin-bottom:8px;">🔢</div>
+        <div style="font-family:'Baloo 2',cursive;font-weight:800;color:white;font-size:.95rem;">Number Bonds</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.8);margin-top:4px;">Make the number!</div>
+      </div>
+
+      <div onclick="openSoundMatch()" style="background:linear-gradient(135deg,#FF8E53,#FF6B6B);border-radius:20px;padding:20px 14px;text-align:center;cursor:pointer;box-shadow:0 4px 16px rgba(255,142,83,.3);">
+        <div style="font-size:2.2rem;margin-bottom:8px;">🔊</div>
+        <div style="font-family:'Baloo 2',cursive;font-weight:800;color:white;font-size:.95rem;">Sound Match</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.8);margin-top:4px;">Match sound to letter</div>
+      </div>
+
+      <div onclick="openRhyming()" style="background:linear-gradient(135deg,#8B6FE8,#C084FC);border-radius:20px;padding:20px 14px;text-align:center;cursor:pointer;box-shadow:0 4px 16px rgba(139,111,232,.3);">
+        <div style="font-size:2.2rem;margin-bottom:8px;">🎵</div>
+        <div style="font-family:'Baloo 2',cursive;font-weight:800;color:white;font-size:.95rem;">Rhyming</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.8);margin-top:4px;">Find the rhyme</div>
+      </div>
+
+      <div onclick="openWordBuilder()" style="background:linear-gradient(135deg,#5ECDA0,#2D8A4E);border-radius:20px;padding:20px 14px;text-align:center;cursor:pointer;box-shadow:0 4px 16px rgba(94,205,160,.3);">
+        <div style="font-size:2.2rem;margin-bottom:8px;">🏗️</div>
+        <div style="font-family:'Baloo 2',cursive;font-weight:800;color:white;font-size:.95rem;">Word Builder</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.8);margin-top:4px;">Drag sounds to build words</div>
+      </div>
+
+      <div onclick="openCountingGame()" style="background:linear-gradient(135deg,#FFD166,#5ECDA0);border-radius:20px;padding:20px 14px;text-align:center;cursor:pointer;box-shadow:0 4px 16px rgba(255,209,102,.3);">
+        <div style="font-size:2.2rem;margin-bottom:8px;">🍎</div>
+        <div style="font-family:'Baloo 2',cursive;font-weight:800;color:white;font-size:.95rem;">Counting</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.8);margin-top:4px;">Tap and count with Bloomy</div>
+      </div>
+
+      <div onclick="openReadingChallenge()" style="background:linear-gradient(135deg,#1a2a4a,#2d4a8a);border-radius:20px;padding:20px 14px;text-align:center;cursor:pointer;box-shadow:0 4px 16px rgba(26,42,74,.3);">
+        <div style="font-size:2.2rem;margin-bottom:8px;">📖</div>
+        <div style="font-family:'Baloo 2',cursive;font-weight:800;color:white;font-size:.95rem;">Reading Challenge</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.8);margin-top:4px;">Read and answer</div>
+      </div>
+
+    </div>
   </div>
 
   <!-- -- ACADEMICS -- -->
@@ -6941,6 +7011,434 @@ function openMasterLessons(gradeIn) {
     setTimeout(function(){if(typeof activeGrade!=='undefined'&&(activeGrade==='PreK'||activeGrade==='K'||activeGrade==='1'))rb.click();},500);
   }
   document.body.appendChild(ov);render();
+}
+
+
+// ═══════════════════════════════════════════════
+// GAMES ENGINE - Bloomy guides all games
+// ═══════════════════════════════════════════════
+
+function gameOverlay(title, color) {
+  var old = document.getElementById('gameOv'); if(old) old.remove();
+  var ov = document.createElement('div'); ov.id='gameOv';
+  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:'+color+';display:flex;flex-direction:column;font-family:Nunito,sans-serif;';
+  var hdr = document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:rgba(0,0,0,.2);flex-shrink:0;';
+  hdr.innerHTML='<div style="display:flex;align-items:center;gap:10px;"><img src="/bloomy_happy.png" style="width:36px;height:36px;object-fit:contain;"><span style="color:white;font-family:Baloo 2,cursive;font-weight:800;">'+title+'</span></div>';
+  var xb=document.createElement('button');xb.textContent='X';xb.style.cssText='background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;';
+  xb.onclick=function(){if(window.speechSynthesis)window.speechSynthesis.cancel();ov.remove();};
+  hdr.appendChild(xb);ov.appendChild(hdr);
+  document.body.appendChild(ov);
+  return ov;
+}
+
+function bloomySay(text, cb) {
+  if(!window.speechSynthesis){if(cb)cb();return;}
+  window.speechSynthesis.cancel();
+  var u=new SpeechSynthesisUtterance(text);u.rate=0.85;u.pitch=1.1;
+  var vs=window.speechSynthesis.getVoices();
+  var pk=vs.find(function(v){return v.name==='Samantha'||v.name==='Karen';});
+  if(!pk)pk=vs.find(function(v){return v.lang&&v.lang.startsWith('en');});
+  if(pk)u.voice=pk;
+  if(cb)u.onend=cb;
+  window.speechSynthesis.speak(u);
+}
+
+function addStarsFromGame(n) {
+  if(typeof sessionData!=='undefined'){sessionData.stars=(sessionData.stars||0)+n;var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;}
+  if(typeof sb!=='undefined'&&typeof activeChild!=='undefined'){sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:n}).catch(function(){});}
+}
+
+// ── 1. WORD MATCH ──
+function openWordMatch() {
+  var pairs = [
+    {word:'cat',emoji:'🐱'},{word:'dog',emoji:'🐶'},{word:'sun',emoji:'☀️'},
+    {word:'hat',emoji:'🎩'},{word:'fish',emoji:'🐟'},{word:'tree',emoji:'🌳'},
+    {word:'ball',emoji:'⚽'},{word:'bird',emoji:'🐦'},{word:'book',emoji:'📚'},
+    {word:'frog',emoji:'🐸'},{word:'star',emoji:'⭐'},{word:'cake',emoji:'🎂'},
+  ];
+  var ov=gameOverlay('Word Match','linear-gradient(160deg,#FF6B6B,#FF8E53)');
+  var score=0, round=0;
+  function nextRound(){
+    var body=document.createElement('div');body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:20px;';
+    var old=ov.querySelector('.game-body');if(old)old.remove();
+    body.className='game-body';
+    if(round>=6){
+      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">Amazing! '+score+'/6</div><button onclick="document.getElementById('gameOv').remove();addStarsFromGame('+(score*10)+');toast('+'+'+(score*10)+'+' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#FF6B6B;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;font-size:1rem;">Done! 🌟</button>';
+      ov.appendChild(body);return;
+    }
+    var shuffled=pairs.slice().sort(function(){return Math.random()-.5;});
+    var current=shuffled[0];
+    var options=[current].concat(shuffled.slice(1,3)).sort(function(){return Math.random()-.5;});
+    var wordDiv=document.createElement('div');wordDiv.style.cssText='font-family:Baloo 2,cursive;font-size:2.5rem;font-weight:800;color:white;background:rgba(255,255,255,.2);padding:16px 32px;border-radius:20px;';wordDiv.textContent=current.word;
+    var inst=document.createElement('div');inst.style.cssText='color:rgba(255,255,255,.9);font-size:.9rem;font-weight:700;';inst.textContent='Bloomy says: Tap the picture that matches the word!';
+    var grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;max-width:360px;';
+    options.forEach(function(opt){
+      var btn=document.createElement('button');
+      btn.style.cssText='padding:20px;border-radius:16px;border:none;background:rgba(255,255,255,.2);font-size:2.5rem;cursor:pointer;';
+      btn.textContent=opt.emoji;
+      btn.onclick=function(){
+        if(opt.word===current.word){btn.style.background='rgba(94,205,160,.6)';score++;showBloomy('celebrate');bloomySay('Great job!');}
+        else{btn.style.background='rgba(255,107,107,.5)';showBloomy('think');bloomySay('Try again next time!');}
+        grid.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});
+        setTimeout(function(){round++;nextRound();},1200);
+      };
+      grid.appendChild(btn);
+    });
+    body.appendChild(wordDiv);body.appendChild(inst);body.appendChild(grid);
+    ov.appendChild(body);
+    bloomySay('Find the picture for the word: '+current.word);
+  }
+  nextRound();
+}
+
+// ── 2. FLASH CARDS ──
+function openFlashCards() {
+  var words=['the','and','is','it','in','at','he','she','we','to','do','go','see','can','run','jump','play','big','little','like'];
+  var ov=gameOverlay('Sight Word Flash Cards','linear-gradient(160deg,#5ECDA0,#4ECDC4)');
+  var idx=0,flipped=false,score=0;
+  function showCard(){
+    var body=document.createElement('div');body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:20px;';
+    var old=ov.querySelector('.game-body');if(old)old.remove();body.className='game-body';
+    if(idx>=words.length){
+      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">You know '+score+' words!</div><button onclick="document.getElementById('gameOv').remove();addStarsFromGame('+(score*5)+');toast('+'+'+(score*5)+'+' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#5ECDA0;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
+      ov.appendChild(body);return;
+    }
+    var word=words[idx];
+    var inst=document.createElement('div');inst.style.cssText='color:rgba(255,255,255,.9);font-weight:700;font-size:.9rem;display:flex;align-items:center;gap:8px;';inst.innerHTML='<img src="/bloomy_happy.png" style="width:32px;"> Bloomy says: Say this word out loud!';
+    var card=document.createElement('div');card.style.cssText='background:white;border-radius:24px;padding:40px 60px;font-family:Baloo 2,cursive;font-size:3rem;font-weight:800;color:#2D2D4E;cursor:pointer;box-shadow:0 8px 32px rgba(0,0,0,.15);';card.textContent=word;
+    var readBtn=document.createElement('button');readBtn.textContent='🔊 Hear it';readBtn.style.cssText='padding:10px 20px;border-radius:30px;border:none;background:rgba(255,255,255,.3);color:white;font-family:Nunito,sans-serif;font-weight:700;cursor:pointer;';readBtn.onclick=function(){bloomySay(word);};
+    var btns=document.createElement('div');btns.style.cssText='display:flex;gap:12px;';
+    var yBtn=document.createElement('button');yBtn.textContent='✅ I know it!';yBtn.style.cssText='padding:12px 22px;border-radius:40px;border:none;background:white;color:#5ECDA0;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;';yBtn.onclick=function(){score++;showBloomy('celebrate');idx++;showCard();};
+    var nBtn=document.createElement('button');nBtn.textContent='🔄 Practice more';nBtn.style.cssText='padding:12px 22px;border-radius:40px;border:none;background:rgba(255,255,255,.2);color:white;font-weight:700;cursor:pointer;font-family:Nunito,sans-serif;';nBtn.onclick=function(){words.push(words[idx]);idx++;showCard();};
+    btns.appendChild(yBtn);btns.appendChild(nBtn);
+    var prog=document.createElement('div');prog.style.cssText='color:rgba(255,255,255,.7);font-size:.8rem;';prog.textContent=(idx+1)+' of '+words.length;
+    body.appendChild(inst);body.appendChild(card);body.appendChild(readBtn);body.appendChild(btns);body.appendChild(prog);
+    ov.appendChild(body);
+    bloomySay(word);
+  }
+  showCard();
+}
+
+// ── 3. MEMORY MATCH ──
+function openMemoryMatch() {
+  var items=[{emoji:'🐱',label:'cat'},{emoji:'🐶',label:'dog'},{emoji:'☀️',label:'sun'},{emoji:'🌙',label:'moon'},{emoji:'⭐',label:'star'},{emoji:'🌈',label:'rainbow'},{emoji:'🎈',label:'balloon'},{emoji:'🍎',label:'apple'}];
+  var cards=[];items.forEach(function(it){cards.push({...it,id:it.label+'A'});cards.push({...it,id:it.label+'B'});});
+  cards.sort(function(){return Math.random()-.5;});
+  var ov=gameOverlay('Memory Match','linear-gradient(160deg,#C9B8FF,#8B6FE8)');
+  var flipped=[],matched=[],moves=0;
+  var body=document.createElement('div');body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;padding:16px;gap:12px;';
+  var inst=document.createElement('div');inst.style.cssText='color:white;font-weight:700;font-size:.9rem;display:flex;align-items:center;gap:8px;';inst.innerHTML='<img src="/bloomy_think.png" style="width:32px;">Bloomy says: Find the matching pairs!';
+  var movesDiv=document.createElement('div');movesDiv.style.cssText='color:rgba(255,255,255,.8);font-size:.8rem;';movesDiv.textContent='Moves: 0';
+  var grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:340px;';
+  cards.forEach(function(card){
+    var btn=document.createElement('button');btn.dataset.id=card.id;btn.dataset.label=card.label;
+    btn.style.cssText='aspect-ratio:1;border-radius:12px;border:none;background:rgba(255,255,255,.2);font-size:1.8rem;cursor:pointer;transition:all .2s;';
+    btn.textContent='❓';
+    btn.onclick=function(){
+      if(flipped.length===2||matched.includes(card.label)||flipped.find(function(f){return f.dataset.id===btn.dataset.id;}))return;
+      btn.textContent=card.emoji;btn.style.background='rgba(255,255,255,.4)';
+      flipped.push(btn);
+      if(flipped.length===2){
+        moves++;movesDiv.textContent='Moves: '+moves;
+        if(flipped[0].dataset.label===flipped[1].dataset.label){
+          matched.push(card.label);
+          flipped[0].style.background='rgba(94,205,160,.6)';flipped[1].style.background='rgba(94,205,160,.6)';
+          flipped=[];showBloomy('celebrate');
+          if(matched.length===items.length){
+            setTimeout(function(){
+              grid.innerHTML='';
+              body.innerHTML='';
+              body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;margin:auto;"><div style="font-family:Baloo 2,cursive;font-size:1.6rem;font-weight:800;color:white;text-align:center;">All matched in '+moves+' moves!</div><button onclick="document.getElementById('gameOv').remove();addStarsFromGame(50);toast('+50 Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#8B6FE8;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
+            },800);
+          }
+        } else {
+          setTimeout(function(){flipped[0].textContent='❓';flipped[0].style.background='rgba(255,255,255,.2)';flipped[1].textContent='❓';flipped[1].style.background='rgba(255,255,255,.2)';flipped=[];},900);
+        }
+      }
+    };
+    grid.appendChild(btn);
+  });
+  body.appendChild(inst);body.appendChild(movesDiv);body.appendChild(grid);ov.appendChild(body);
+  bloomySay('Find the matching pairs! Tap two cards to flip them.');
+}
+
+// ── 4. SPELLING BEE ──
+function openSpellingBee() {
+  var words=[{word:'cat',hint:'🐱'},{word:'dog',hint:'🐶'},{word:'sun',hint:'☀️'},{word:'hat',hint:'🎩'},{word:'big',hint:'🐘'},{word:'run',hint:'🏃'},{word:'map',hint:'🗺️'},{word:'hen',hint:'🐔'},{word:'web',hint:'🕷️'},{word:'jam',hint:'🍓'}];
+  words.sort(function(){return Math.random()-.5;});
+  var ov=gameOverlay('Spelling Bee 🐝','linear-gradient(160deg,#FFD166,#FF6B6B)');
+  var idx=0,score=0;
+  function nextWord(){
+    var body=document.createElement('div');body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:16px;';
+    var old=ov.querySelector('.game-body');if(old)old.remove();body.className='game-body';
+    if(idx>=words.length){
+      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">'+score+'/'+words.length+' words spelled!</div><button onclick="document.getElementById('gameOv').remove();addStarsFromGame('+(score*15)+');toast('+'+'+(score*15)+'+' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#FF6B6B;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
+      ov.appendChild(body);return;
+    }
+    var w=words[idx];
+    var inst=document.createElement('div');inst.style.cssText='color:rgba(255,255,255,.9);font-weight:700;font-size:.9rem;display:flex;align-items:center;gap:8px;';inst.innerHTML='<img src="/bloomy_happy.png" style="width:32px;">Spell the word for this picture!';
+    var hintDiv=document.createElement('div');hintDiv.style.cssText='font-size:5rem;';hintDiv.textContent=w.hint;
+    var blanks=document.createElement('div');blanks.style.cssText='display:flex;gap:8px;';
+    var filled=[];
+    w.word.split('').forEach(function(){var b=document.createElement('div');b.style.cssText='width:44px;height:44px;border-radius:10px;background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:800;color:white;font-family:Baloo 2,cursive;';b.textContent='_';blanks.appendChild(b);filled.push('');});
+    var letters=w.word.split('').concat('aeiourstln'.split('').slice(0,6)).sort(function(){return Math.random()-.5;}).slice(0,w.word.length+3);
+    letters.sort(function(){return Math.random()-.5;});
+    var letterGrid=document.createElement('div');letterGrid.style.cssText='display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:300px;';
+    var currentIdx=0;
+    letters.forEach(function(letter){
+      var btn=document.createElement('button');btn.textContent=letter.toUpperCase();
+      btn.style.cssText='width:44px;height:44px;border-radius:10px;border:none;background:rgba(255,255,255,.25);color:white;font-family:Baloo 2,cursive;font-size:1.2rem;font-weight:800;cursor:pointer;';
+      btn.onclick=function(){
+        if(currentIdx>=w.word.length)return;
+        if(letter===w.word[currentIdx]){
+          blanks.children[currentIdx].textContent=letter.toUpperCase();
+          blanks.children[currentIdx].style.background='rgba(94,205,160,.5)';
+          btn.style.opacity='0.3';btn.disabled=true;
+          filled[currentIdx]=letter;currentIdx++;
+          if(currentIdx===w.word.length){
+            score++;showBloomy('celebrate');bloomySay('Amazing! You spelled '+w.word+'!');
+            setTimeout(function(){idx++;nextWord();},1500);
+          }
+        } else {
+          btn.style.background='rgba(255,107,107,.5)';
+          setTimeout(function(){btn.style.background='rgba(255,255,255,.25)';},600);
+          showBloomy('think');
+        }
+      };
+      letterGrid.appendChild(btn);
+    });
+    var hearBtn=document.createElement('button');hearBtn.textContent='🔊 Hear word';hearBtn.style.cssText='padding:8px 16px;border-radius:20px;border:none;background:rgba(255,255,255,.2);color:white;font-family:Nunito,sans-serif;font-weight:700;cursor:pointer;font-size:.85rem;';hearBtn.onclick=function(){bloomySay(w.word);};
+    body.appendChild(inst);body.appendChild(hintDiv);body.appendChild(blanks);body.appendChild(letterGrid);body.appendChild(hearBtn);
+    ov.appendChild(body);
+    bloomySay('Spell the word you see!');
+  }
+  nextWord();
+}
+
+// ── 5. NUMBER BONDS ──
+function openNumberBonds() {
+  var ov=gameOverlay('Number Bonds 🔢','linear-gradient(160deg,#4ECDC4,#2D8A8A)');
+  var score=0,round=0;
+  function nextRound(){
+    var body=document.createElement('div');body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:16px;';
+    var old=ov.querySelector('.game-body');if(old)old.remove();body.className='game-body';
+    if(round>=8){
+      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">'+score+'/8 correct!</div><button onclick="document.getElementById('gameOv').remove();addStarsFromGame('+(score*10)+');toast('+'+'+(score*10)+'+' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#2D8A8A;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
+      ov.appendChild(body);return;
+    }
+    var target=Math.floor(Math.random()*8)+3;
+    var a=Math.floor(Math.random()*(target-1))+1;var b=target-a;
+    var wrong1=b+(Math.random()>.5?1:-1);if(wrong1<0)wrong1=b+2;
+    var wrong2=b+(Math.random()>.5?2:-2);if(wrong2<0)wrong2=b+3;if(wrong2===wrong1)wrong2++;
+    var opts=[b,wrong1,wrong2].sort(function(){return Math.random()-.5;});
+    var inst=document.createElement('div');inst.style.cssText='color:rgba(255,255,255,.9);font-weight:700;font-size:.9rem;display:flex;align-items:center;gap:8px;';inst.innerHTML='<img src="/bloomy_happy.png" style="width:32px;">Bloomy needs help! Make the number!';
+    var bondDiv=document.createElement('div');bondDiv.style.cssText='background:rgba(255,255,255,.15);border-radius:20px;padding:20px 30px;text-align:center;';
+    bondDiv.innerHTML='<div style="font-size:.85rem;color:rgba(255,255,255,.8);margin-bottom:8px;">Make this number:</div><div style="font-family:Baloo 2,cursive;font-size:3.5rem;font-weight:800;color:white;">'+target+'</div><div style="color:rgba(255,255,255,.8);font-size:1rem;margin-top:8px;">'+a+' + ? = '+target+'</div>';
+    var grid=document.createElement('div');grid.style.cssText='display:flex;gap:12px;';
+    opts.forEach(function(opt){
+      var btn=document.createElement('button');btn.textContent=opt;
+      btn.style.cssText='width:70px;height:70px;border-radius:16px;border:none;background:rgba(255,255,255,.2);color:white;font-family:Baloo 2,cursive;font-size:2rem;font-weight:800;cursor:pointer;';
+      btn.onclick=function(){
+        grid.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});
+        if(opt===b){btn.style.background='rgba(94,205,160,.7)';score++;showBloomy('celebrate');bloomySay('Yes! '+a+' plus '+b+' equals '+target+'!');}
+        else{btn.style.background='rgba(255,107,107,.6)';grid.querySelectorAll('button').forEach(function(gb){if(parseInt(gb.textContent)===b)gb.style.background='rgba(94,205,160,.6)';});showBloomy('think');bloomySay('The answer was '+b+'!');}
+        setTimeout(function(){round++;nextRound();},1500);
+      };
+      grid.appendChild(btn);
+    });
+    body.appendChild(inst);body.appendChild(bondDiv);body.appendChild(grid);ov.appendChild(body);
+    bloomySay(a+' plus what equals '+target+'?');
+  }
+  nextRound();
+}
+
+// ── 6. SOUND MATCH ──
+function openSoundMatch() {
+  var sounds=[
+    {letter:'M',words:['mouse','mop','sun'],answer:'mouse',sound:'m'},
+    {letter:'S',words:['cat','sun','dog'],answer:'sun',sound:'s'},
+    {letter:'B',words:['ball','cat','fish'],answer:'ball',sound:'b'},
+    {letter:'C',words:['dog','bird','cat'],answer:'cat',sound:'c'},
+    {letter:'F',words:['fish','hat','sun'],answer:'fish',sound:'f'},
+    {letter:'H',words:['dog','hat','cup'],answer:'hat',sound:'h'},
+    {letter:'D',words:['dog','sun','map'],answer:'dog',sound:'d'},
+    {letter:'T',words:['cat','tree','ball'],answer:'tree',sound:'t'},
+  ];
+  sounds.sort(function(){return Math.random()-.5;});
+  var ov=gameOverlay('Sound Match 🔊','linear-gradient(160deg,#FF8E53,#FF6B6B)');
+  var idx=0,score=0;
+  function nextRound(){
+    var body=document.createElement('div');body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:16px;';
+    var old=ov.querySelector('.game-body');if(old)old.remove();body.className='game-body';
+    if(idx>=sounds.length){
+      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">'+score+'/'+sounds.length+'!</div><button onclick="document.getElementById('gameOv').remove();addStarsFromGame('+(score*10)+');toast('+'+'+(score*10)+'+' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#FF6B6B;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
+      ov.appendChild(body);return;
+    }
+    var s=sounds[idx];
+    var inst=document.createElement('div');inst.style.cssText='color:rgba(255,255,255,.9);font-weight:700;text-align:center;display:flex;align-items:center;gap:8px;';inst.innerHTML='<img src="/bloomy_happy.png" style="width:32px;">Which word starts with this sound?';
+    var letterBox=document.createElement('div');letterBox.style.cssText='background:rgba(255,255,255,.2);border-radius:20px;padding:20px 30px;text-align:center;cursor:pointer;';
+    letterBox.innerHTML='<div style="font-family:Baloo 2,cursive;font-size:4rem;font-weight:800;color:white;">'+s.letter+'</div><div style="font-size:.8rem;color:rgba(255,255,255,.8);">Tap to hear the sound</div>';
+    letterBox.onclick=function(){bloomySay(s.sound+' '+s.sound+' '+s.sound);};
+    var grid=document.createElement('div');grid.style.cssText='display:flex;gap:12px;flex-wrap:wrap;justify-content:center;';
+    s.words.forEach(function(word){
+      var btn=document.createElement('button');btn.textContent=word;
+      btn.style.cssText='padding:14px 22px;border-radius:14px;border:none;background:rgba(255,255,255,.2);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';
+      btn.onclick=function(){
+        grid.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});
+        if(word===s.answer){btn.style.background='rgba(94,205,160,.7)';score++;showBloomy('celebrate');bloomySay('Yes! '+word+' starts with '+s.sound+'!');}
+        else{btn.style.background='rgba(255,107,107,.6)';showBloomy('think');bloomySay(s.answer+' starts with '+s.sound+'!');}
+        setTimeout(function(){idx++;nextRound();},1400);
+      };
+      grid.appendChild(btn);
+    });
+    body.appendChild(inst);body.appendChild(letterBox);body.appendChild(grid);ov.appendChild(body);
+    bloomySay('Listen to the sound and find the matching word. '+s.sound+' '+s.sound+' '+s.sound);
+  }
+  nextRound();
+}
+
+// ── 7. RHYMING ──
+function openRhyming() {
+  var pairs=[
+    {word:'cat',opts:['hat','dog','sun'],answer:'hat'},
+    {word:'dog',opts:['log','cat','map'],answer:'log'},
+    {word:'sun',opts:['hat','fun','dog'],answer:'fun'},
+    {word:'mat',opts:['bat','sun','log'],answer:'bat'},
+    {word:'big',opts:['pig','cat','run'],answer:'pig'},
+    {word:'hop',opts:['map','mop','sun'],answer:'mop'},
+    {word:'bug',opts:['rug','hat','dog'],answer:'rug'},
+    {word:'see',opts:['run','tree','map'],answer:'tree'},
+  ];
+  pairs.sort(function(){return Math.random()-.5;});
+  var ov=gameOverlay('Rhyming 🎵','linear-gradient(160deg,#8B6FE8,#C084FC)');
+  var idx=0,score=0;
+  function nextRound(){
+    var body=document.createElement('div');body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:16px;';
+    var old=ov.querySelector('.game-body');if(old)old.remove();body.className='game-body';
+    if(idx>=pairs.length){
+      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">'+score+'/'+pairs.length+'!</div><button onclick="document.getElementById('gameOv').remove();addStarsFromGame('+(score*10)+');toast('+'+'+(score*10)+'+' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#8B6FE8;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
+      ov.appendChild(body);return;
+    }
+    var p=pairs[idx];
+    var inst=document.createElement('div');inst.style.cssText='color:rgba(255,255,255,.9);font-weight:700;display:flex;align-items:center;gap:8px;';inst.innerHTML='<img src="/bloomy_happy.png" style="width:32px;">Which word rhymes?';
+    var wordBox=document.createElement('div');wordBox.style.cssText='background:rgba(255,255,255,.2);border-radius:20px;padding:16px 32px;font-family:Baloo 2,cursive;font-size:3rem;font-weight:800;color:white;cursor:pointer;';
+    wordBox.textContent=p.word;wordBox.onclick=function(){bloomySay(p.word);};
+    var grid=document.createElement('div');grid.style.cssText='display:flex;gap:12px;';
+    p.opts.forEach(function(opt){
+      var btn=document.createElement('button');btn.textContent=opt;
+      btn.style.cssText='padding:16px 24px;border-radius:14px;border:none;background:rgba(255,255,255,.2);color:white;font-family:Baloo 2,cursive;font-weight:800;font-size:1.2rem;cursor:pointer;';
+      btn.onclick=function(){
+        grid.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});
+        if(opt===p.answer){btn.style.background='rgba(94,205,160,.7)';score++;showBloomy('celebrate');bloomySay(p.word+' and '+opt+' rhyme! Great job!');}
+        else{btn.style.background='rgba(255,107,107,.6)';showBloomy('think');bloomySay(p.word+' rhymes with '+p.answer+'!');}
+        setTimeout(function(){idx++;nextRound();},1400);
+      };
+      grid.appendChild(btn);
+    });
+    body.appendChild(inst);body.appendChild(wordBox);body.appendChild(grid);ov.appendChild(body);
+    bloomySay('Which word rhymes with '+p.word+'?');
+  }
+  nextRound();
+}
+
+// ── 8. WORD BUILDER ──
+function openWordBuilder() {
+  var words=[
+    {sounds:['c','a','t'],word:'cat',emoji:'🐱'},
+    {sounds:['d','o','g'],word:'dog',emoji:'🐶'},
+    {sounds:['s','u','n'],word:'sun',emoji:'☀️'},
+    {sounds:['h','a','t'],word:'hat',emoji:'🎩'},
+    {sounds:['m','a','p'],word:'map',emoji:'🗺️'},
+    {sounds:['b','i','g'],word:'big',emoji:'🐘'},
+  ];
+  words.sort(function(){return Math.random()-.5;});
+  var ov=gameOverlay('Word Builder 🏗️','linear-gradient(160deg,#5ECDA0,#2D8A4E)');
+  var idx=0,score=0;
+  function nextWord(){
+    var body=document.createElement('div');body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:16px;';
+    var old=ov.querySelector('.game-body');if(old)old.remove();body.className='game-body';
+    if(idx>=words.length){
+      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">'+score+' words built!</div><button onclick="document.getElementById('gameOv').remove();addStarsFromGame('+(score*15)+');toast('+'+'+(score*15)+'+' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#2D8A4E;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
+      ov.appendChild(body);return;
+    }
+    var w=words[idx];
+    var inst=document.createElement('div');inst.style.cssText='color:rgba(255,255,255,.9);font-weight:700;display:flex;align-items:center;gap:8px;';inst.innerHTML='<img src="/bloomy_happy.png" style="width:32px;">Drag the sounds to build the word!';
+    var hintDiv=document.createElement('div');hintDiv.style.cssText='font-size:4rem;';hintDiv.textContent=w.emoji;
+    var box=document.createElement('div');box.style.cssText='display:flex;gap:8px;min-width:180px;justify-content:center;';
+    var slots=w.sounds.map(function(){var s=document.createElement('div');s.style.cssText='width:50px;height:50px;border-radius:12px;border:2px dashed rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-family:Baloo 2,cursive;font-size:1.5rem;font-weight:800;color:white;';box.appendChild(s);return s;});
+    var filled=0;
+    var tiles=document.createElement('div');tiles.style.cssText='display:flex;gap:10px;';
+    var shuffled=w.sounds.slice().sort(function(){return Math.random()-.5;});
+    shuffled.forEach(function(sound,si){
+      var tile=document.createElement('button');tile.textContent=sound.toUpperCase();
+      tile.style.cssText='width:50px;height:50px;border-radius:12px;border:none;background:rgba(255,255,255,.25);color:white;font-family:Baloo 2,cursive;font-size:1.5rem;font-weight:800;cursor:pointer;';
+      tile.onclick=function(){
+        if(tile.disabled)return;
+        if(filled<slots.length){
+          slots[filled].textContent=sound.toUpperCase();
+          slots[filled].style.borderStyle='solid';
+          tile.disabled=true;tile.style.opacity='0.4';filled++;
+          if(filled===slots.length){
+            var built=slots.map(function(s){return s.textContent.toLowerCase();}).join('');
+            if(built===w.word){score++;showBloomy('celebrate');bloomySay('You built '+w.word+'! Great job!');slots.forEach(function(s){s.style.background='rgba(94,205,160,.5)';});}
+            else{bloomySay('Try again!');slots.forEach(function(s){s.style.background='rgba(255,107,107,.4)';});}
+            setTimeout(function(){idx++;nextWord();},1600);
+          }
+        }
+      };
+      tiles.appendChild(tile);
+    });
+    body.appendChild(inst);body.appendChild(hintDiv);body.appendChild(box);body.appendChild(tiles);ov.appendChild(body);
+    bloomySay('Use the sounds to build the word for this picture!');
+  }
+  nextWord();
+}
+
+// ── 9. COUNTING ──
+function openCountingGame() {
+  var rounds=[
+    {emoji:'🍎',count:3},{emoji:'⭐',count:5},{emoji:'🐶',count:2},{emoji:'🌸',count:4},
+    {emoji:'🦋',count:6},{emoji:'🎈',count:3},{emoji:'🐟',count:7},{emoji:'🍕',count:4},
+  ];
+  rounds.sort(function(){return Math.random()-.5;});
+  var ov=gameOverlay('Counting with Bloomy 🍎','linear-gradient(160deg,#FFD166,#5ECDA0)');
+  var idx=0,score=0;
+  function nextRound(){
+    var body=document.createElement('div');body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:16px;';
+    var old=ov.querySelector('.game-body');if(old)old.remove();body.className='game-body';
+    if(idx>=rounds.length){
+      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">'+score+'/'+rounds.length+' correct!</div><button onclick="document.getElementById('gameOv').remove();addStarsFromGame('+(score*10)+');toast('+'+'+(score*10)+'+' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#FFD166;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
+      ov.appendChild(body);return;
+    }
+    var r=rounds[idx];
+    var wrong1=r.count+(Math.random()>.5?1:-1);if(wrong1<1)wrong1=r.count+2;
+    var wrong2=r.count+(Math.random()>.5?2:-2);if(wrong2<1||wrong2===wrong1)wrong2=r.count+3;
+    var opts=[r.count,wrong1,wrong2].sort(function(){return Math.random()-.5;});
+    var inst=document.createElement('div');inst.style.cssText='color:rgba(255,255,255,.9);font-weight:700;display:flex;align-items:center;gap:8px;';inst.innerHTML='<img src="/bloomy_happy.png" style="width:32px;">Bloomy says: Count and tap the number!';
+    var emojis=document.createElement('div');emojis.style.cssText='font-size:2.2rem;letter-spacing:4px;background:rgba(255,255,255,.15);padding:16px;border-radius:16px;text-align:center;max-width:300px;line-height:1.6;';
+    emojis.textContent=Array(r.count).fill(r.emoji).join(' ');
+    var grid=document.createElement('div');grid.style.cssText='display:flex;gap:12px;';
+    opts.forEach(function(n){
+      var btn=document.createElement('button');btn.textContent=n;
+      btn.style.cssText='width:64px;height:64px;border-radius:16px;border:none;background:rgba(255,255,255,.2);color:white;font-family:Baloo 2,cursive;font-size:2rem;font-weight:800;cursor:pointer;';
+      btn.onclick=function(){
+        grid.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});
+        if(n===r.count){btn.style.background='rgba(94,205,160,.7)';score++;showBloomy('celebrate');bloomySay('Yes! You counted '+r.count+'!');}
+        else{btn.style.background='rgba(255,107,107,.6)';grid.querySelectorAll('button').forEach(function(gb){if(parseInt(gb.textContent)===r.count)gb.style.background='rgba(94,205,160,.6)';});showBloomy('think');bloomySay('There are '+r.count+'!');}
+        setTimeout(function(){idx++;nextRound();},1400);
+      };
+      grid.appendChild(btn);
+    });
+    body.appendChild(inst);body.appendChild(emojis);body.appendChild(grid);ov.appendChild(body);
+    bloomySay('Count the '+r.emoji+' and tap the right number!');
+  }
+  nextRound();
+}
+
+// ── 10. READING CHALLENGE ──
+function openReadingChallenge() {
+  openPassageReader(typeof activeGrade!=='undefined'?activeGrade:'3');
 }
 
 function openGDLBook(title, iaId) {
