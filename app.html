@@ -5389,7 +5389,7 @@ function openMathGame(grade) {
     var correct=(chosen===String(ans));
     document.querySelectorAll('#mathOpts button').forEach(function(b){
       b.style.pointerEvents='none';
-      if(b.textContent===String(ans)){b.style.background='#E8FBF3';b.style.borderColor='#5ECDA0'; showBloomy('celebrate');}
+      if(b.textContent===String(ans)){b.style.background='#E8FBF3';b.style.borderColor='#5ECDA0'; showBloomy('celebrate'); showBloomy('celebrate');}
     });
     if(correct){btn.style.background='#E8FBF3';score++;showBloomy('celebrate');toast('Correct! +8 Stars');}
     else{btn.style.background='#FFF0EE';btn.style.borderColor='var(--coral)';toast('The answer is '+ans+'!');}
@@ -6717,7 +6717,7 @@ function openPassageReader(grade) {
           if(b.textContent===story.a){b.style.background='rgba(94,205,160,.5)';b.style.borderColor='#5ECDA0';}
           b.style.cursor='default';b.style.pointerEvents='none';
         });
-        if(correct){btn.style.background='rgba(94,205,160,.6)';score++;showBloomy('celebrate');toast('Correct! Great thinking! 📖'); showBloomy('celebrate');}
+        if(correct){btn.style.background='rgba(94,205,160,.6)';score++;showBloomy('celebrate');toast('Correct! Great thinking! 📖'); showBloomy('celebrate'); showBloomy('celebrate');}
         else{btn.style.background='rgba(255,107,107,.4)';btn.style.borderColor='#FF6B6B';toast('Good try!');}
         
         // Show explanation
@@ -6848,7 +6848,7 @@ function openDinoStories(grade) {
         if(opt === story.a){
           btn.style.background='rgba(94,205,160,.8)';
           score++;
-          toast('Correct! Great reading! 🦕'); showBloomy('celebrate');
+          toast('Correct! Great reading! 🦕'); showBloomy('celebrate'); showBloomy('celebrate');
         } else {
           btn.style.background='rgba(255,107,107,.7)';
           optsDiv.querySelectorAll('button').forEach(function(b){
