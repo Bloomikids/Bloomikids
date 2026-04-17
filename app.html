@@ -3302,8 +3302,8 @@ async function selectChild(child) {
   // Apply grade CSS class to body
   document.body.className = `grade-${activeGrade.toLowerCase()}`;
 
-  showIntroVideo();
   showScreen('app');
+  setTimeout(showIntroVideo, 500);
   applyGradeUI();
   buildSubjectCards();
   buildYogaGrid();
