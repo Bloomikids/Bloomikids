@@ -6935,6 +6935,8 @@ function showBloomyVideo() {
   video.onended = done;
   video.onerror = done;
   ov.onclick = done;
+  video.onclick = done;
+  video.style.cursor = "pointer";
   setTimeout(done, 4000);
   ov.onclick = done;
   ov.appendChild(video);
