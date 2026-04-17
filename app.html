@@ -6499,63 +6499,52 @@ function showParentPinEntry(storedPin) {
 
 
 function openPremiumUpgrade() {
-  var old = document.getElementById('premiumOv'); if(old) old.remove();
+  var old = document.getElementById('premiumOv');
+  if (old) old.remove();
   var ov = document.createElement('div');
   ov.id = 'premiumOv';
   ov.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:24px;font-family:Nunito,sans-serif;';
-
   var card = document.createElement('div');
   card.style.cssText = 'background:linear-gradient(160deg,#2D1A4E,#6B3FA0);border-radius:28px;padding:28px 22px;max-width:380px;width:100%;text-align:center;';
-
-  card.innerHTML = '<img src="/bloomy_celebrate.png" style="width:80px;object-fit:contain;margin-bottom:12px;">'
-    + '<div style="font-family:Baloo 2,cursive;font-size:1.6rem;font-weight:800;color:white;margin-bottom:6px;">BloomiKids Premium</div>'
-    + '<div style="color:rgba(255,255,255,.8);font-size:.9rem;margin-bottom:20px;">Unlock everything for all your children</div>'
-    + '<div style="background:rgba(255,255,255,.1);border-radius:16px;padding:16px;margin-bottom:20px;text-align:left;">'
-    + '<div style="color:white;font-weight:700;margin-bottom:10px;">Everything included:</div>'
-    + ['✅ All grades PreK–Grade 5',
-       '✅ All 10 games with Bloomy',
-       '✅ Unlimited reading lessons',
-       '✅ Dino decodable stories',
-       '✅ Reading comprehension',
-       '✅ All yoga poses & breathing',
-       '✅ Stars, streaks & rewards',
-       '✅ Parent dashboard',
-       '✅ No ads. Ever.'].map(function(f){return '<div style="color:rgba(255,255,255,.9);font-size:.85rem;margin-bottom:6px;">'+f+'</div>';}).join('')
-    + '</div>'
-    + '<div style="display:flex;gap:10px;margin-bottom:16px;">'
-    + '<div onclick="selectPlan('monthly')" id="planMonthly" style="flex:1;border:2px solid rgba(255,255,255,.5);border-radius:14px;padding:14px;cursor:pointer;background:rgba(255,255,255,.1);">'
-    + '<div style="color:white;font-weight:800;font-size:1.1rem;">$9.99</div>'
-    + '<div style="color:rgba(255,255,255,.7);font-size:.75rem;">per month</div>'
-    + '</div>'
-    + '<div onclick="selectPlan('annual')" id="planAnnual" style="flex:1;border:2px solid #FFD700;border-radius:14px;padding:14px;cursor:pointer;background:rgba(255,215,0,.15);position:relative;">'
-    + '<div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#FFD700;color:#2D1A4E;font-size:.65rem;font-weight:900;padding:2px 8px;border-radius:10px;">BEST VALUE</div>'
-    + '<div style="color:white;font-weight:800;font-size:1.1rem;">$64.99</div>'
-    + '<div style="color:rgba(255,255,255,.7);font-size:.75rem;">per year ($5.41/mo)</div>'
-    + '</div>'
-    + '</div>';
-
+  var img = document.createElement('img');
+  img.src = '/bloomy_celebrate.png';
+  img.style.cssText = 'width:80px;object-fit:contain;margin-bottom:12px;';
+  var title = document.createElement('div');
+  title.style.cssText = 'font-family:Baloo 2,cursive;font-size:1.6rem;font-weight:800;color:white;margin-bottom:6px;';
+  title.textContent = 'BloomiKids Premium';
+  var sub = document.createElement('div');
+  sub.style.cssText = 'color:rgba(255,255,255,.8);font-size:.9rem;margin-bottom:20px;';
+  sub.textContent = 'Unlock everything for all your children';
+  var features = ['All grades PreK to Grade 5','10 games with Bloomy','Unlimited reading lessons','Dino decodable stories','Yoga and breathing exercises','No ads ever'];
+  var fList = document.createElement('div');
+  fList.style.cssText = 'background:rgba(255,255,255,.1);border-radius:16px;padding:16px;margin-bottom:20px;text-align:left;';
+  features.forEach(function(f) {
+    var item = document.createElement('div');
+    item.style.cssText = 'color:rgba(255,255,255,.9);font-size:.85rem;margin-bottom:6px;';
+    item.textContent = '✅ ' + f;
+    fList.appendChild(item);
+  });
+  var price = document.createElement('div');
+  price.style.cssText = 'color:white;font-size:1.1rem;font-weight:800;margin-bottom:16px;';
+  price.textContent = '$9.99/month or $64.99/year';
   var startBtn = document.createElement('button');
-  startBtn.id = 'premiumStartBtn';
-  startBtn.textContent = 'Start with Annual Plan →';
+  startBtn.textContent = 'Get Premium Now';
   startBtn.style.cssText = 'width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,#FFD700,#FFA500);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;margin-bottom:10px;';
-  startBtn.onclick = function(){
-    // When Stripe is configured, replace this with actual Stripe checkout
-    alert('Payment processing coming soon! Email bloomikids21@gmail.com to get early bird pricing.');
+  startBtn.onclick = function() {
+    alert('Payment coming soon! Email bloomikids21@gmail.com for early bird pricing.');
   };
-
   var closeBtn = document.createElement('button');
   closeBtn.textContent = 'Maybe later';
   closeBtn.style.cssText = 'width:100%;padding:10px;border-radius:40px;border:none;background:transparent;color:rgba(255,255,255,.6);font-family:Nunito,sans-serif;font-weight:600;cursor:pointer;';
-  closeBtn.onclick = function(){ ov.remove(); };
-
-  card.appendChild(startBtn);
-  card.appendChild(closeBtn);
+  closeBtn.onclick = function() { ov.remove(); };
+  card.appendChild(img); card.appendChild(title); card.appendChild(sub);
+  card.appendChild(fList); card.appendChild(price);
+  card.appendChild(startBtn); card.appendChild(closeBtn);
   ov.appendChild(card);
   document.body.appendChild(ov);
-
-  // Track selected plan
-  window._selectedPlan = 'annual';
 }
+
+function selectPlan(plan) { }
 
 function selectPlan(plan) {
   window._selectedPlan = plan;
