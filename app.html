@@ -1098,6 +1098,7 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
 
 <script>
 function closeOv(id){var e=document.getElementById(id);if(e)e.remove();}
+function gameDone(ovId,stars){closeOv(ovId);if(stars>0){addStarsFromGame(stars);toast("+"+stars+" Stars! Great job! ⭐");}showBloomy("celebrate");showBloomyVideo();}
 
 // ══════════════════════════════════════════════════════
 //  SUPABASE
@@ -3644,7 +3645,7 @@ async function checkAnswer(btn, correct) {
     document.getElementById('statTasks').textContent=sessionData.tasks;
     document.getElementById('statStars').textContent=sessionData.stars;
     setSyncState('');
-    if (correct) { toast('+'+stars+' stars!'); completeMission('quiz'); }
+    if (correct) { toast("+"+stars+' stars!'); completeMission('quiz'); }
   } catch(e) { setSyncState('error'); }
   // Show Next button
   var nb = document.getElementById('nextBtn');
@@ -6994,7 +6995,7 @@ function openDinoStories(grade) {
         + '<div style="font-size:5rem;margin-bottom:16px;">🦕</div>'
         + '<div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;margin-bottom:8px;">Amazing Reading!</div>'
         + '<div style="font-size:1.1rem;opacity:.85;margin-bottom:24px;">You got ' + score + ' of ' + stories.length + ' correct!</div>'
-        + '<button onclick="closeOv("dinoOv");toast('+' + (score*15) + ' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#1a472a;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Done! 🌟</button></div>';
+        + '<button onclick="closeOv("dinoOv");toast("+" + (score*15) + ' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#1a472a;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Done! 🌟</button></div>';
       if (typeof sb !== 'undefined' && typeof activeChild !== 'undefined') {
         sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:score*15}).catch(function(){});
       }
@@ -7173,7 +7174,7 @@ function openWordMatch() {
     var old=ov.querySelector('.game-body');if(old)old.remove();
     body.className='game-body';
     if(round>=6){
-      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">Amazing! '+score+'/6</div><button onclick="closeOv("gameOv");addStarsFromGame('+(score*10)+');toast('+'+'+(score*10)+'+' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#FF6B6B;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;font-size:1rem;">Done! 🌟</button>';
+      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">Amazing! '+score+'/6</div><button onclick="closeOv("gameOv");addStarsFromGame('+(score*10)+');toast("+"+'+(score*10)+'+' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#FF6B6B;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;font-size:1rem;">Done! 🌟</button>';
       ov.appendChild(body);return;
     }
     var shuffled=pairs.slice().sort(function(){return Math.random()-.5;});
@@ -7210,7 +7211,7 @@ function openFlashCards() {
     var body=document.createElement('div');body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:20px;';
     var old=ov.querySelector('.game-body');if(old)old.remove();body.className='game-body';
     if(idx>=words.length){
-      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">You know '+score+' words!</div><button onclick="closeOv("gameOv");addStarsFromGame('+(score*5)+');toast('+'+'+(score*5)+'+' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#5ECDA0;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
+      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">You know '+score+' words!</div><button onclick="closeOv("gameOv");addStarsFromGame('+(score*5)+');toast("+"+'+(score*5)+'+' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#5ECDA0;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
       ov.appendChild(body);return;
     }
     var word=words[idx];
@@ -7282,7 +7283,7 @@ function openSpellingBee() {
     var body=document.createElement('div');body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:16px;';
     var old=ov.querySelector('.game-body');if(old)old.remove();body.className='game-body';
     if(idx>=words.length){
-      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">'+score+'/'+words.length+' words spelled!</div><button onclick="closeOv("gameOv");addStarsFromGame('+(score*15)+');toast('+'+'+(score*15)+'+' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#FF6B6B;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
+      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">'+score+'/'+words.length+' words spelled!</div><button onclick="closeOv("gameOv");addStarsFromGame('+(score*15)+');toast("+"+'+(score*15)+'+' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#FF6B6B;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
       ov.appendChild(body);return;
     }
     var w=words[idx];
@@ -7333,7 +7334,7 @@ function openNumberBonds() {
     var body=document.createElement('div');body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:16px;';
     var old=ov.querySelector('.game-body');if(old)old.remove();body.className='game-body';
     if(round>=8){
-      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">'+score+'/8 correct!</div><button onclick="closeOv("gameOv");addStarsFromGame('+(score*10)+');toast('+'+'+(score*10)+'+' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#2D8A8A;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
+      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">'+score+'/8 correct!</div><button onclick="closeOv("gameOv");addStarsFromGame('+(score*10)+');toast("+"+'+(score*10)+'+' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#2D8A8A;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
       ov.appendChild(body);return;
     }
     var target=Math.floor(Math.random()*8)+3;
@@ -7381,7 +7382,7 @@ function openSoundMatch() {
     var body=document.createElement('div');body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:16px;';
     var old=ov.querySelector('.game-body');if(old)old.remove();body.className='game-body';
     if(idx>=sounds.length){
-      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">'+score+'/'+sounds.length+'!</div><button onclick="closeOv("gameOv");addStarsFromGame('+(score*10)+');toast('+'+'+(score*10)+'+' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#FF6B6B;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
+      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">'+score+'/'+sounds.length+'!</div><button onclick="closeOv("gameOv");addStarsFromGame('+(score*10)+');toast("+"+'+(score*10)+'+' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#FF6B6B;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
       ov.appendChild(body);return;
     }
     var s=sounds[idx];
@@ -7426,7 +7427,7 @@ function openRhyming() {
     var body=document.createElement('div');body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:16px;';
     var old=ov.querySelector('.game-body');if(old)old.remove();body.className='game-body';
     if(idx>=pairs.length){
-      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">'+score+'/'+pairs.length+'!</div><button onclick="closeOv("gameOv");addStarsFromGame('+(score*10)+');toast('+'+'+(score*10)+'+' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#8B6FE8;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
+      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">'+score+'/'+pairs.length+'!</div><button onclick="closeOv("gameOv");addStarsFromGame('+(score*10)+');toast("+"+'+(score*10)+'+' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#8B6FE8;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
       ov.appendChild(body);return;
     }
     var p=pairs[idx];
@@ -7468,7 +7469,7 @@ function openWordBuilder() {
     var body=document.createElement('div');body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:16px;';
     var old=ov.querySelector('.game-body');if(old)old.remove();body.className='game-body';
     if(idx>=words.length){
-      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">'+score+' words built!</div><button onclick="closeOv("gameOv");addStarsFromGame('+(score*15)+');toast('+'+'+(score*15)+'+' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#2D8A4E;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
+      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">'+score+' words built!</div><button onclick="closeOv("gameOv");addStarsFromGame('+(score*15)+');toast("+"+'+(score*15)+'+' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#2D8A4E;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
       ov.appendChild(body);return;
     }
     var w=words[idx];
@@ -7517,7 +7518,7 @@ function openCountingGame() {
     var body=document.createElement('div');body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:16px;';
     var old=ov.querySelector('.game-body');if(old)old.remove();body.className='game-body';
     if(idx>=rounds.length){
-      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">'+score+'/'+rounds.length+' correct!</div><button onclick="closeOv("gameOv");addStarsFromGame('+(score*10)+');toast('+'+'+(score*10)+'+' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#FFD166;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
+      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">'+score+'/'+rounds.length+' correct!</div><button onclick="closeOv("gameOv");addStarsFromGame('+(score*10)+');toast("+"+'+(score*10)+'+' Stars!');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#FFD166;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
       ov.appendChild(body);return;
     }
     var r=rounds[idx];
