@@ -3002,7 +3002,7 @@ function showPricingModal() {
           <div class="price-note">Just $6.67/month · Save 33%</div>
         </div>
 
-        <div class="price-option" id="planMonthly" onclick="selectPlan('monthly')">
+        <div class="price-option" id="planMonthly" onclick="selectPlan(\"monthly\")">
           <div class="price-label">Monthly Plan</div>
           <div class="price-amount">$9.99<span style="font-size:1rem;color:#888;">/month</span></div>
           <div class="price-note">Billed monthly · Cancel anytime</div>
@@ -6523,11 +6523,11 @@ function openPremiumUpgrade() {
        '✅ No ads. Ever.'].map(function(f){return '<div style="color:rgba(255,255,255,.9);font-size:.85rem;margin-bottom:6px;">'+f+'</div>';}).join('')
     + '</div>'
     + '<div style="display:flex;gap:10px;margin-bottom:16px;">'
-    + '<div onclick="selectPlan('monthly')" id="planMonthly" style="flex:1;border:2px solid rgba(255,255,255,.5);border-radius:14px;padding:14px;cursor:pointer;background:rgba(255,255,255,.1);">'
+    + '<div onclick="selectPlan(\"monthly\")" id="planMonthly" style="flex:1;border:2px solid rgba(255,255,255,.5);border-radius:14px;padding:14px;cursor:pointer;background:rgba(255,255,255,.1);">'
     + '<div style="color:white;font-weight:800;font-size:1.1rem;">$9.99</div>'
     + '<div style="color:rgba(255,255,255,.7);font-size:.75rem;">per month</div>'
     + '</div>'
-    + '<div onclick="selectPlan('annual')" id="planAnnual" style="flex:1;border:2px solid #FFD700;border-radius:14px;padding:14px;cursor:pointer;background:rgba(255,215,0,.15);position:relative;">'
+    + '<div onclick="selectPlan(\"annual\")" id="planAnnual" style="flex:1;border:2px solid #FFD700;border-radius:14px;padding:14px;cursor:pointer;background:rgba(255,215,0,.15);position:relative;">'
     + '<div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#FFD700;color:#2D1A4E;font-size:.65rem;font-weight:900;padding:2px 8px;border-radius:10px;">BEST VALUE</div>'
     + '<div style="color:white;font-weight:800;font-size:1.1rem;">$64.99</div>'
     + '<div style="color:rgba(255,255,255,.7);font-size:.75rem;">per year ($5.41/mo)</div>'
