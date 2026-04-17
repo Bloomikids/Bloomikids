@@ -4904,7 +4904,7 @@ function openLetterQuiz() {
               '💪 Good try! Keep practicing!';
     ov.innerHTML = '<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;">'
       + '<div style="font-size:4rem;margin-bottom:16px;">' + (score===pool.length?'🏆':'⭐') + '</div>'
-      + '<div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:#2D2D4E;margin-bottom:8px;">' + score + ' of ' + pool.length + ' correct!</div>'
+      + "<div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:#2D2D4E;margin-bottom:8px;">" + score + " of ' + pool.length + ' correct!</div>'
       + '<div style="font-family:Baloo 2,cursive;font-size:1.1rem;color:#8B6FE8;margin-bottom:8px;">+' + stars + ' Stars earned! 🌟</div>'
       + '<div style="font-size:1rem;color:#666;margin-bottom:32px;line-height:1.5;">' + msg + '</div>'
       + '<button onclick="openLetterQuiz()" style="padding:14px 32px;border-radius:40px;border:none;background:linear-gradient(135deg,#FF6B6B,#FFD166);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;margin-bottom:12px;display:block;width:220px;">Play Again! 🔤</button>'
@@ -5173,7 +5173,7 @@ function startSmartSession(title, icon, questions, onComplete) {
     
     ov.innerHTML = '<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;background:linear-gradient(135deg,#F4F1FF,#FFF0F8);">'
       + '<div style="font-size:5rem;margin-bottom:12px;animation:bounce .6s ease infinite alternate;">' + emoji + '</div>'
-      + '<div style="font-family:Baloo 2,cursive;font-size:2rem;font-weight:800;color:#2D2D4E;margin-bottom:6px;">' + score + ' of ' + pool.length + ' correct!</div>'
+      + "<div style="font-family:Baloo 2,cursive;font-size:2rem;font-weight:800;color:#2D2D4E;margin-bottom:6px;">" + score + " of ' + pool.length + ' correct!</div>'
       + '<div style="font-size:1.1rem;font-weight:700;color:#8B6FE8;margin-bottom:6px;">+' + stars + ' Stars! 🌟</div>'
       + '<div style="font-size:.95rem;color:#666;margin-bottom:28px;line-height:1.6;">' + msg + '</div>'
       + '<div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:280px;">'
@@ -6838,7 +6838,7 @@ function openPassageReader(grade) {
       ov.innerHTML = '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:white;text-align:center;padding:32px;">'
         + '<div style="font-size:4rem;margin-bottom:16px;">📖</div>'
         + '<div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;margin-bottom:8px;">Amazing Reader!</div>'
-        + '<div style="font-size:1.1rem;opacity:.85;margin-bottom:24px;">You got ' + score + ' of ' + stories.length + ' correct!</div>'
+        + "<div style="font-size:1.1rem;opacity:.85;margin-bottom:24px;">You got " + score + " of ' + stories.length + ' correct!</div>'
         + '<button onclick="var e=document.getElementById(\"passageOv\");if(e)e.remove();toast(\'+' + (score*20) + '\ Stars!\');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#1a2a4a;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Done! ⭐</button></div>';
       if (typeof sb !== 'undefined' && typeof activeChild !== 'undefined') {
         sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:score*20}).catch(function(){});
@@ -6852,7 +6852,7 @@ function openPassageReader(grade) {
     var hdr = document.createElement('div');
     hdr.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:rgba(0,0,0,.2);flex-shrink:0;';
     hdr.innerHTML = '<div style="color:white;font-family:Baloo 2,cursive;font-weight:800;">📖 Reading Comprehension</div>'
-      + '<div style="color:rgba(255,255,255,.7);font-size:.8rem;">' + story.skill + ' • ' + (idx+1) + '/' + stories.length + '</div>';
+      + "<div style="color:rgba(255,255,255,.7);font-size:.8rem;">" + story.skill + " • ' + (idx+1) + "/" + stories.length + "</div>';
     var xb = document.createElement('button'); xb.textContent='X';
     xb.style.cssText='background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;';
     xb.onclick=function(){if(window.speechSynthesis)window.speechSynthesis.cancel();ov.remove();};
@@ -6994,7 +6994,7 @@ function openDinoStories(grade) {
       ov.innerHTML = '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:white;text-align:center;padding:32px;">'
         + '<div style="font-size:5rem;margin-bottom:16px;">🦕</div>'
         + '<div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;margin-bottom:8px;">Amazing Reading!</div>'
-        + '<div style="font-size:1.1rem;opacity:.85;margin-bottom:24px;">You got ' + score + ' of ' + stories.length + ' correct!</div>'
+        + "<div style="font-size:1.1rem;opacity:.85;margin-bottom:24px;">You got " + score + " of ' + stories.length + ' correct!</div>'
         + '<button onclick="closeOv("dinoOv");toast("+" + (score*15) + " Stars!");" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#1a472a;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Done! 🌟</button></div>';
       if (typeof sb !== 'undefined' && typeof activeChild !== 'undefined') {
         sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:score*15}).catch(function(){});
@@ -7005,7 +7005,7 @@ function openDinoStories(grade) {
     var hdr = document.createElement('div');
     hdr.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:rgba(0,0,0,.2);flex-shrink:0;';
     hdr.innerHTML = '<div style="color:white;font-family:Baloo 2,cursive;font-weight:800;">🦕 Dino Stories</div>'
-      + '<div style="color:rgba(255,255,255,.7);font-size:.8rem;">' + story.skill + ' • Story ' + (idx+1) + '/' + stories.length + '</div>';
+      + "<div style="color:rgba(255,255,255,.7);font-size:.8rem;">" + story.skill + " • Story ' + (idx+1) + "/" + stories.length + "</div>';
     var xb = document.createElement('button'); xb.textContent='X';
     xb.style.cssText='background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;';
     xb.onclick=function(){if(window.speechSynthesis)window.speechSynthesis.cancel();ov.remove();};
