@@ -663,6 +663,11 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
   70% { transform: scale(1.2) translateY(-5px); opacity:1; }
   100% { transform: scale(1) translateY(0); opacity:1; }
 }
+
+img[src*="bloomy_"] {
+  background: transparent !important;
+  mix-blend-mode: multiply;
+}
 </style>
   <link rel="icon" href="favicon.ico" sizes="32x32">
   <link rel="icon" href="favicon.png" type="image/png">
@@ -1053,6 +1058,9 @@ body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
         <span>Reading Lessons</span>
         <span style="font-size:.75rem;background:rgba(255,255,255,.2);padding:3px 8px;border-radius:10px;">All Grades</span>
       </button>
+    </div>
+    <div id="gradeGamesSection" style="margin-bottom:16px;">
+      <!-- Games populated by buildGradeGames() -->
     </div>
     <div class="section-title" id="bookshelfTitle">📚 My Bookshelf</div>
     <div style="font-size:.82rem;font-weight:700;color:#A89880;margin:-16px 0 18px;display:flex;align-items:center;gap:7px;">
@@ -4436,16 +4444,16 @@ function toggleMusic() {
     document.body.appendChild(yt);
   }
   var tracks = [
-    {name:'Calm Piano',        id:'lCOF9LN_Zxs'},
-    {name:'Peaceful Piano',        id:'lCOF9LN_Zxs'},
-    {name:'Ocean Waves',           id:'bn9F19Hi1Lk'},
-    {name:'Soft Kids Music',          id:'77ZozI0rw7w'},
-    {name:'Nature Sounds',       id:'xNN7iTA57jM'},
-    {name:'Relaxing Nature',       id:'xNN7iTA57jM'},
-    {name:'Relaxing Music',        id:'hlWiI4xVXKY'},
-    {name:'Breathing Space',       id:'hlWiI4xVXKY'},
-    {name:'Gentle Lullaby',             id:'pWTBChXgwXQ'},
-    {name:'Garden Peace',          id:'77ZozI0rw7w'},
+    {name:'Calm Piano',     id:'lCOF9LN_Zxs'},
+    {name:'Ocean Waves',    id:'bn9F19Hi1Lk'},
+    {name:'Soft Kids Music',id:'77ZozI0rw7w'},
+    {name:'Nature Sounds',  id:'xNN7iTA57jM'},
+    {name:'Peaceful Kids',  id:'iNySCnrB4Co'},
+    {name:'Gentle Lullaby', id:'RqzGzwTY-6w'},
+    {name:'Starlight Music',id:'hHW1oY26kxQ'},
+    {name:'Kids Meditation',id:'Rb4cFl6PZgQ'},
+    {name:'Morning Music',  id:'lFcSrYw2tBY'},
+    {name:'Yoga for Kids',  id:'UoFOgBVcTLU'},
   ];
   if (musicPlaying) {
     yt.src = '';
@@ -4480,16 +4488,16 @@ function _playMp3Track(idx) {
 
 function nextTrack() {
   var tracks = [
-    {name:'Calm Piano',        id:'lCOF9LN_Zxs'},
-    {name:'Peaceful Piano',        id:'lCOF9LN_Zxs'},
-    {name:'Ocean Waves',           id:'bn9F19Hi1Lk'},
-    {name:'Soft Kids Music',          id:'77ZozI0rw7w'},
-    {name:'Nature Sounds',       id:'xNN7iTA57jM'},
-    {name:'Relaxing Nature',       id:'xNN7iTA57jM'},
-    {name:'Relaxing Music',        id:'hlWiI4xVXKY'},
-    {name:'Breathing Space',       id:'hlWiI4xVXKY'},
-    {name:'Gentle Lullaby',             id:'pWTBChXgwXQ'},
-    {name:'Garden Peace',          id:'77ZozI0rw7w'},
+    {name:'Calm Piano',     id:'lCOF9LN_Zxs'},
+    {name:'Ocean Waves',    id:'bn9F19Hi1Lk'},
+    {name:'Soft Kids Music',id:'77ZozI0rw7w'},
+    {name:'Nature Sounds',  id:'xNN7iTA57jM'},
+    {name:'Peaceful Kids',  id:'iNySCnrB4Co'},
+    {name:'Gentle Lullaby', id:'RqzGzwTY-6w'},
+    {name:'Starlight Music',id:'hHW1oY26kxQ'},
+    {name:'Kids Meditation',id:'Rb4cFl6PZgQ'},
+    {name:'Morning Music',  id:'lFcSrYw2tBY'},
+    {name:'Yoga for Kids',  id:'UoFOgBVcTLU'},
   ];
   _currentMood = (_currentMood + 1) % tracks.length;
   var yt = document.getElementById('ytMusic');
@@ -7536,6 +7544,60 @@ function openCountingGame() {
 // ── 10. READING CHALLENGE ──
 function openReadingChallenge() {
   openPassageReader(typeof activeGrade!=='undefined'?activeGrade:'3');
+}
+
+
+function buildGradeGames() {
+  var section = document.getElementById('gradeGamesSection');
+  if (!section || typeof activeGrade === 'undefined') return;
+  section.innerHTML = '';
+  
+  var grade = activeGrade;
+  var games = [];
+  
+  // Age-appropriate games by grade
+  if (grade === 'PreK' || grade === 'K') {
+    games = [
+      {icon:'🔊', name:'Sound Match', fn:'openSoundMatch()', color:'#FF8E53', desc:'Match sounds to letters'},
+      {icon:'🎵', name:'Rhyming', fn:'openRhyming()', color:'#8B6FE8', desc:'Find the rhyme'},
+      {icon:'🍎', name:'Counting', fn:'openCountingGame()', color:'#FFD166', desc:'Count with Bloomy'},
+      {icon:'🃏', name:'Flash Cards', fn:'openFlashCards()', color:'#5ECDA0', desc:'Sight words'},
+    ];
+  } else if (grade === '1' || grade === '2') {
+    games = [
+      {icon:'🔤', name:'Word Match', fn:'openWordMatch()', color:'#FF6B6B', desc:'Match words to pictures'},
+      {icon:'🏗️', name:'Word Builder', fn:'openWordBuilder()', color:'#5ECDA0', desc:'Build words'},
+      {icon:'🐝', name:'Spelling Bee', fn:'openSpellingBee()', color:'#FFD166', desc:'Spell the word'},
+      {icon:'🧠', name:'Memory Match', fn:'openMemoryMatch()', color:'#C9B8FF', desc:'Find the pairs'},
+      {icon:'🔢', name:'Number Bonds', fn:'openNumberBonds()', color:'#4ECDC4', desc:'Math facts'},
+    ];
+  } else {
+    games = [
+      {icon:'📖', name:'Reading Challenge', fn:'openReadingChallenge()', color:'#1a2a4a', desc:'Read and answer'},
+      {icon:'🧠', name:'Memory Match', fn:'openMemoryMatch()', color:'#C9B8FF', desc:'Find the pairs'},
+      {icon:'🐝', name:'Spelling Bee', fn:'openSpellingBee()', color:'#FFD166', desc:'Spell the word'},
+      {icon:'🔢', name:'Number Bonds', fn:'openNumberBonds()', color:'#4ECDC4', desc:'Math facts'},
+    ];
+  }
+  
+  var title = document.createElement('div');
+  title.className = 'section-title';
+  title.textContent = '🎮 Games for ' + (typeof gradeContent !== 'undefined' ? gradeContent.label : 'You') + '!';
+  section.appendChild(title);
+  
+  var grid = document.createElement('div');
+  grid.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;';
+  
+  games.forEach(function(g) {
+    var card = document.createElement('div');
+    card.style.cssText = 'background:linear-gradient(135deg,' + g.color + ','+g.color+'cc);border-radius:20px;padding:16px;text-align:center;cursor:pointer;';
+    card.innerHTML = '<div style="font-size:2rem;margin-bottom:6px;">' + g.icon + '</div>' +
+      '<div style="font-family:Baloo 2,cursive;font-weight:800;color:white;font-size:.9rem;">' + g.name + '</div>' +
+      '<div style="font-size:.7rem;color:rgba(255,255,255,.8);margin-top:4px;">' + g.desc + '</div>';
+    card.onclick = new Function(g.fn);
+    grid.appendChild(card);
+  });
+  section.appendChild(grid);
 }
 
 function openGDLBook(title, iaId) {
