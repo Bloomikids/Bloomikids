@@ -1,4 +1,4 @@
-<!-- BloomiKids v331 - games + gloss + music fix -->
+<!-- BloomiKids v332 -->
 <!DOCTYPE html>
 <!-- BloomiKids v331 - games + gloss + music fix -->
 <html lang="en">
@@ -24,10 +24,10 @@
   --sunshine: #FFD166;
   --coral:    #FF6B6B;
   --lavender: #C9B8FF;
-  --bg:       #FAF7FF;
+  --bg:       #F2EFFF;
   --text:     #2D2D4E;
   --muted:    #8888AA;
-  --shadow:   0 8px 32px rgba(45,45,78,0.10);
+  --shadow:   0 8px 32px rgba(45,45,78,0.13), 0 2px 8px rgba(45,45,78,0.07);
   --font-body: 1rem;
   --font-heading: 1.5rem;
   --font-big: 2.4rem;
@@ -243,15 +243,16 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .section-title { font-family:'Baloo 2',cursive; font-size:var(--font-heading); font-weight:800; margin-bottom:18px; display:flex; align-items:center; gap:10px; }
 
 .cards-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-bottom:28px; }
-.card { background:white; border-radius:28px; padding:20px 12px; box-shadow:0 4px 20px rgba(45,45,78,.10); cursor:pointer; transition:all .3s; position:relative; overflow:hidden; min-height:150px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
-.card:hover { transform:translateY(-6px) scale(1.02); box-shadow:0 16px 40px rgba(45,45,78,.18); }
+.card { background:white; border-radius:28px; padding:20px 12px; box-shadow:0 8px 24px rgba(45,45,78,.14), 0 2px 6px rgba(45,45,78,.07); cursor:pointer; transition:all .3s; position:relative; overflow:hidden; min-height:150px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.card:hover { transform:translateY(-6px) scale(1.02); box-shadow:0 20px 48px rgba(45,45,78,.22), 0 4px 12px rgba(45,45,78,.10); }
 .card::before { display:none; }
-.card.mint     { background:linear-gradient(145deg,#E8FFF6,#C5F0E0); }
-.card.coral    { background:linear-gradient(145deg,#FFF0ED,#FFD5CC); }
-.card.lavender { background:linear-gradient(145deg,#F3EFFF,#E0D5FF); }
-.card.sun      { background:linear-gradient(145deg,#FFFAE8,#FFE9A0); }
+.card::after { content:''; position:absolute; top:0; left:0; right:0; height:52%; background:linear-gradient(180deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,0) 100%); border-radius:28px 28px 60% 60% / 28px 28px 40px 40px; pointer-events:none; z-index:1; }
+.card.mint     { background:linear-gradient(155deg,#AAFCE0,#5ECDA0 60%,#3AB87A); box-shadow:0 8px 28px rgba(94,205,160,.35), 0 2px 8px rgba(94,205,160,.2); }
+.card.coral    { background:linear-gradient(155deg,#FFCFC7,#FF7A6B 60%,#E55545); box-shadow:0 8px 28px rgba(255,122,107,.35), 0 2px 8px rgba(255,122,107,.2); }
+.card.lavender { background:linear-gradient(155deg,#E0D8FF,#A78BFA 60%,#7C5CDB); box-shadow:0 8px 28px rgba(167,139,250,.40), 0 2px 8px rgba(139,111,232,.2); }
+.card.sun      { background:linear-gradient(155deg,#FFE88A,#FFCC00 60%,#E5A800); box-shadow:0 8px 28px rgba(255,204,0,.40), 0 2px 8px rgba(212,160,23,.2); }
 .card-icon  { font-size:3.8rem; margin-bottom:10px; filter:drop-shadow(0 4px 8px rgba(0,0,0,.10)); }
-.card-title { font-family:'Baloo 2',cursive; font-size:1rem; font-weight:800; margin-bottom:0; text-align:center; color:#2D2D4E; padding:0 8px; line-height:1.3; }
+.card-title { font-family:'Baloo 2',cursive; font-size:1rem; font-weight:800; margin-bottom:0; text-align:center; color:rgba(255,255,255,.95); padding:0 8px; line-height:1.3; text-shadow:0 1px 4px rgba(0,0,0,.25); }
 .card-desc  { display:none; }
 .card-badge { display:none; }
 .badge-mint    { background:#E8FBF3; color:var(--mint); }
@@ -263,7 +264,7 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 body.grade-prek .card-icon, body.grade-k .card-icon, body.grade-1 .card-icon { font-size:4.2rem; }
 
 .stats-row { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:28px; }
-.stat-chip { background:white; border-radius:16px; padding:14px 20px; box-shadow:var(--shadow); flex:1; min-width:90px; text-align:center; }
+.stat-chip { background:linear-gradient(160deg,#FFFFFF,#F0EEFF); border-radius:16px; padding:14px 20px; box-shadow:0 6px 20px rgba(45,45,78,.12), inset 0 1px 0 rgba(255,255,255,.9); flex:1; min-width:90px; text-align:center; }
 .stat-num { font-family:'Baloo 2',cursive; font-size:2rem; font-weight:800; }
 .stat-lbl { color:var(--muted); font-size:.78rem; font-weight:700; text-transform:uppercase; letter-spacing:.5px; }
 .num-mint{ color:var(--mint); } .num-coral{ color:var(--coral); } .num-sun{ color:#D4A017; } .num-lav{ color:#8B6FE8; }
@@ -275,8 +276,8 @@ body.grade-prek .stat-num, body.grade-k .stat-num, body.grade-1 .stat-num { font
 .quiz-box { background:white; border-radius:24px; padding:28px; box-shadow:var(--shadow); margin-bottom:28px; }
 .quiz-question { font-family:'Baloo 2',cursive; font-size:var(--font-heading); font-weight:800; margin-bottom:20px; line-height:1.4; }
 .quiz-options { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-.quiz-opt { padding:16px 18px; border-radius:20px; border:3px solid #F0F0F8; background:#FAF9FF; cursor:pointer; font-weight:700; font-size:var(--font-body); transition:all .2s; text-align:center; line-height:1.3; }
-.quiz-opt:hover { border-color:var(--lavender); background:#F3EFFF; transform:scale(1.03); }
+.quiz-opt { padding:16px 18px; border-radius:20px; border:2.5px solid rgba(167,139,250,.25); background:linear-gradient(160deg,#FFFFFF,#F4F0FF); cursor:pointer; font-weight:700; font-size:var(--font-body); transition:all .2s; text-align:center; line-height:1.3; box-shadow:0 3px 12px rgba(45,45,78,.08), inset 0 1px 0 rgba(255,255,255,.9); }
+.quiz-opt:hover { border-color:var(--lavender); background:linear-gradient(160deg,#F3EFFF,#E8DEFF); transform:scale(1.03); box-shadow:0 6px 20px rgba(139,111,232,.20), inset 0 1px 0 rgba(255,255,255,.9); }
 .quiz-opt.correct { border-color:var(--mint); background:#E8FBF3; color:var(--mint); }
 .quiz-opt.wrong   { border-color:var(--coral); background:#FFF0F0; color:var(--coral); }
 
@@ -308,7 +309,7 @@ body.grade-1 .quiz-opt { padding:18px; font-size:1.1rem; }
 
 /* -- YOGA ---------------------------------------------- */
 .yoga-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:16px; margin-bottom:28px; }
-.pose-card { background:white; border-radius:24px; padding:16px 16px 18px; text-align:center; box-shadow:var(--shadow); cursor:pointer; transition:all .3s; position:relative; overflow:hidden; }
+.pose-card { background:linear-gradient(160deg,#FFFFFF,#F0EEFF); border-radius:24px; padding:16px 16px 18px; text-align:center; box-shadow:0 8px 24px rgba(45,45,78,.13), inset 0 1px 0 rgba(255,255,255,.9); cursor:pointer; transition:all .3s; position:relative; overflow:hidden; }
 .pose-card:hover { transform:translateY(-4px) scale(1.02); box-shadow:0 16px 40px rgba(45,45,78,0.15); }
 .pose-card.active-pose { border:3px solid var(--lavender); background:linear-gradient(135deg,#FAF8FF,#F0EEFF); }
 .pose-card::before { content:''; position:absolute; top:0; left:0; right:0; height:90px; border-radius:20px 20px 60% 60%; opacity:.08; z-index:0; }
@@ -5000,9 +5001,14 @@ function startSmartSession(title, icon, questions, onComplete) {
 async function startSubject(name) {
   if(name==='Letter Tracing'){showLetterTracing();return;}
   var mathNames=['Math','Mathematics','Numbers','Counting','Numbers Fun'];
-  var langNames=['Language Arts','Reading','Letters','ABC Time'];
+  var langNames=['Language Arts','Reading','Letters','ABC Time','Writing'];
+  var sciNames=['Science','Animals & Nature','Animals','Nature'];
+  var ssNames=['Social Studies','My World','Community'];
+  var colorNames=['Colors & Art','Colors & Shapes','Colors','Shapes'];
   if(mathNames.indexOf(name)>=0){openMathGame(activeGrade);return;}
-  // PreK and K get the interactive letter quiz for ABC Time
+  if(sciNames.indexOf(name)>=0){openScienceGame(activeGrade);return;}
+  if(ssNames.indexOf(name)>=0){openSocialStudiesGame(activeGrade);return;}
+  if(colorNames.indexOf(name)>=0){openColorsGame(activeGrade);return;}
   if(name==='ABC Time' && (activeGrade==='PreK'||activeGrade==='K')){openLetterQuiz();return;}
   if(langNames.indexOf(name)>=0){openLangGame(activeGrade);return;}
 
@@ -5158,208 +5164,820 @@ async function startSubject(name) {
 // ══════════════════════════════════════════════════════
 //  VISUAL MATH GAME
 // ══════════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════════════════════════
+//  SHARED GAME UTILITIES
+// ══════════════════════════════════════════════════════════════════════
+function gameOverlay(id, bgColor) {
+  var ov = document.createElement('div');
+  ov.id = id;
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:' + bgColor + ';display:flex;flex-direction:column;overflow:hidden;';
+  return ov;
+}
+function gameHeader(title, emoji, colorA, colorB, ovId) {
+  return '<div style="background:linear-gradient(135deg,'+colorA+','+colorB+');padding:14px 20px;color:white;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;box-shadow:0 4px 16px rgba(0,0,0,.15);">'
+    +'<div style="font-size:1.4rem;">'+emoji+'</div>'
+    +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.05rem;font-weight:800;letter-spacing:.3px;">'+title+'</div>'
+    +'<button onclick="document.getElementById(\''+ovId+'\').remove();" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;font-size:1rem;line-height:1;">✕</button>'
+    +'</div>';
+}
+function gameScoreBar(score, total, colorA, colorB) {
+  var pct = total > 0 ? Math.round(score/total*100) : 0;
+  return '<div style="background:rgba(255,255,255,.15);height:6px;border-radius:3px;margin:0 20px 0;">'
+    +'<div style="background:linear-gradient(90deg,'+colorA+','+colorB+');height:6px;border-radius:3px;width:'+pct+'%;transition:width .4s;"></div>'
+    +'</div>';
+}
+function gameWinScreen(score, total, colorA, colorB, ovId) {
+  var pct = total > 0 ? Math.round(score/total*100) : 0;
+  var trophy = pct >= 80 ? '🏆' : pct >= 50 ? '🌟' : '💪';
+  var msg = pct >= 80 ? 'Amazing work!' : pct >= 50 ? 'Great job!' : 'Keep practicing!';
+  var ov = document.getElementById(ovId); if(!ov) return;
+  ov.innerHTML = '<div style="position:absolute;inset:0;background:linear-gradient(135deg,'+colorA+','+colorB+');display:flex;flex-direction:column;align-items:center;justify-content:center;color:white;padding:32px;text-align:center;">'
+    +'<div style="font-size:5rem;margin-bottom:8px;animation:bounceIn .5s;">'+trophy+'</div>'
+    +'<div style="font-family:\'Baloo 2\',cursive;font-size:2rem;font-weight:800;margin-bottom:6px;">'+score+' / '+total+'</div>'
+    +'<div style="font-size:1.1rem;opacity:.9;margin-bottom:28px;">'+msg+'</div>'
+    +'<div style="display:flex;gap:12px;">'
+    +'<button onclick="document.getElementById(\''+ovId+'\').remove();showScreen(\'app\');" style="padding:14px 28px;border-radius:40px;border:none;background:white;color:'+colorA+';font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.2);">🏠 Home</button>'
+    +'</div></div>';
+  if(activeChild) { try { sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:score*10}).catch(function(){}); sessionData.stars+=score*10; var el=document.getElementById('statStars'); if(el) el.textContent=sessionData.stars; if(score>0) toast('+'+score*10+' Stars! ⭐'); } catch(e){} }
+}
+
+// ══════════════════════════════════════════════════════════════════════
+//  1. MATH GAME — DRAG-AND-DROP NUMBER ORDERING + VISUAL MATH
+// ══════════════════════════════════════════════════════════════════════
 function openMathGame(grade) {
-  var gd = {
-    PreK:{type:'count',label:'Count!'},K:{type:'add',label:'Add!'},
-    1:{type:'add',label:'Add!'},2:{type:'mult',label:'Multiply!'},
-    3:{type:'mult',label:'Multiply!'},4:{type:'div',label:'Divide!'},5:{type:'div',label:'Divide!'}
-  };
-  var gInfo=gd[grade]||gd['K'];
-  var score=0,total=30,qNum=0;
-  var EMOJI_SETS=[
-    ['dog','cat','rabbit','bear','fox','panda','koala','tiger','lion','sheep'],
-    ['apple','orange','lemon','grape','strawberry','cherry','peach','mango'],
-    ['ball','star','heart','moon','sun','flower','car','rocket'],
-    ['fish','bird','turtle','frog','bug','bee','butterfly','duck']
-  ];
-  var EMOJI_DISPLAY={
-    dog:'🐶',cat:'🐱',rabbit:'🐰',bear:'🐻',fox:'🦊',
-    panda:'🐼',koala:'🐨',tiger:'🐯',lion:'🦁',sheep:'🐑',
-    apple:'🍎',orange:'🍊',lemon:'🍋',grape:'🍇',strawberry:'🍓',
-    cherry:'🍒',peach:'🍑',mango:'🥭',ball:'⚽',star:'⭐',
-    heart:'❤',moon:'🌙',sun:'☀️',flower:'🌸',car:'🚗',
-    rocket:'🚀',fish:'🐟',bird:'🐦',turtle:'🐢',frog:'🐸',
-    bug:'🐛',bee:'🐝',butterfly:'🦋',duck:'🦆'
-  };
-  function getEmoji(){var s=EMOJI_SETS[Math.floor(Math.random()*EMOJI_SETS.length)];var k=s[Math.floor(Math.random()*s.length)];return EMOJI_DISPLAY[k]||k;}
-  function emojiPics(em,n){var r='';for(var i=0;i<n;i++){r+=em;if((i+1)%5===0&&i<n-1)r+='\n';}return r;}
-  function shuffle(a){return a.slice().sort(function(){return Math.random()-.5;});}
+  var CA='#6C3FC5', CB='#A78BFA';
+  var ov = gameOverlay('mathGameOv','#F2EFFF');
+  document.body.appendChild(ov);
 
-  function makeQ(){
-    var type=gInfo.type,a,b,ans,display,useVis=grade==='PreK'||grade==='K'||grade==='1'||grade==='2';
-    if(type==='count'){
-      a=Math.floor(Math.random()*9)+1;var em=getEmoji();
-      display=emojiPics(em,a);ans=a;
-      return{display:display,question:'How many '+em+'?',ans:ans,opts:shuffle([ans,ans+1,ans-1<1?ans+2:ans-1,ans+2].filter(function(x){return x>0;})).slice(0,4).map(String),isVisual:true};
-    }else if(type==='add'){
-      var max=grade==='K'?5:grade==='1'?8:grade==='2'?12:20;
-      a=Math.floor(Math.random()*max)+1;b=Math.floor(Math.random()*max)+1;ans=a+b;
-      if(useVis&&a<=8&&b<=8){var em2=getEmoji(),em3=getEmoji();
-        display=emojiPics(em2,a)+'  +  '+emojiPics(em3,b);
-      }else{display=a+' + '+b+' = ?';}
-    }else if(type==='mult'){a=Math.floor(Math.random()*9)+2;b=Math.floor(Math.random()*9)+2;ans=a*b;display=a+' × '+b+' = ?';
-    }else{b=Math.floor(Math.random()*9)+2;a=b*(Math.floor(Math.random()*9)+1);ans=a/b;display=a+' ÷ '+b+' = ?';}
-    var wrong=[ans+1,ans-1<0?ans+3:ans-1,ans+2,ans-2<0?ans+4:ans-2].filter(function(x){return x!==ans&&x>0;});
-    return{display:display,question:'',ans:ans,opts:shuffle([ans].concat(wrong.slice(0,3))).map(String),isVisual:false};
-  }
+  // Grade-based config
+  var cfg = {
+    PreK:  { type:'order', min:1,  max:5,  count:4, label:'Put the numbers in order! ⬆️' },
+    K:     { type:'order', min:1,  max:10, count:5, label:'Put the numbers in order! ⬆️' },
+    1:     { type:'order', min:5,  max:30, count:5, label:'Order from smallest to biggest!' },
+    2:     { type:'order', min:10, max:100,count:5, label:'Order from smallest to biggest!' },
+    3:     { type:'order', min:50, max:500,count:5, label:'Order from smallest to biggest!' },
+    4:     { type:'order', min:100,max:1000,count:5,label:'Order from smallest to biggest!' },
+    5:     { type:'order', min:500,max:10000,count:5,label:'Order from smallest to biggest!' }
+  };
+  var c = cfg[grade] || cfg['3'];
+  var round = 0, score = 0, ROUNDS = 7;
+  var dragSrc = null;
 
-  function render(){
-    var ov=document.getElementById('mathGameOv');
-    if(!ov)return;
-    if(qNum>=total){
-      ov.innerHTML='<div style="position:fixed;inset:0;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);display:flex;align-items:center;justify-content:center;flex-direction:column;color:white;z-index:9999;">'+
-        '<div style="font-size:4rem;margin-bottom:12px;">'+(score>=total*.8?'🏆':score>=total*.5?'🌟':'💪')+'</div>'+
-        '<div style="font-family:Baloo 2,cursive;font-size:1.6rem;font-weight:800;">'+score+'/'+total+' Correct!</div>'+
-        '<button onclick="document.getElementById(\'mathGameOv\').remove();showScreen(\'app\');" style="margin-top:24px;padding:14px 32px;border-radius:40px;border:none;background:white;color:#8B6FE8;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Done!</button>'+
-        '</div>';
-      sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:score*8}).catch(function(){});
-      sessionData.stars+=score*8;document.getElementById('statStars').textContent=sessionData.stars;
-      return;
+  function makeRound() {
+    // Generate unique random numbers
+    var nums = [];
+    while(nums.length < c.count) {
+      var n = Math.floor(Math.random()*(c.max-c.min+1))+c.min;
+      if(nums.indexOf(n)<0) nums.push(n);
     }
-    var q=makeQ();
-    ov.innerHTML='<div style="position:fixed;inset:0;z-index:9999;background:#F8F6FF;display:flex;flex-direction:column;">'
-      +'<div style="background:linear-gradient(135deg,#8B6FE8,#C9B8FF);padding:14px 20px;color:white;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;">'
-      +'<div style="font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;">Math Game</div>'
-      +'<div style="font-size:.85rem;opacity:.9;">'+qNum+' / '+total+'</div>'
-      +'<button onclick="document.getElementById(\'mathGameOv\').remove();" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:30px;height:30px;cursor:pointer;font-weight:800;">X</button>'
-      +'</div>'
-      +'<div style="flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;">'
-      +'<div id="mathDisplay" style="font-size:2rem;font-weight:800;text-align:center;color:#2D2D4E;margin-bottom:12px;line-height:1.4;">'+q.display+'</div>'
-      +(q.question?'<div style="font-size:1.1rem;font-weight:800;color:#8B6FE8;margin-bottom:16px;">'+q.question+'</div>':'')
-      +(grade==='PreK'||grade==='K'||grade==='1'?'<div style="text-align:center;margin-bottom:8px;"><button onclick="window._readMathQ&&window._readMathQ()" style="padding:7px 16px;border-radius:30px;border:none;background:linear-gradient(135deg,var(--sky),var(--mint));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.82rem;cursor:pointer;">🔈 Read to Me</button></div>':'')
-      +'<div id="mathOpts" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:320px;">'
-      +q.opts.map(function(o){return '<button onclick="mathAnswer(this,\''+o+'\',\''+q.ans+'\','+qNum+')" style="padding:18px;border-radius:16px;border:2px solid #E8E4FF;background:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1.3rem;cursor:pointer;">'+o+'</button>';}).join('')
-      +'</div></div></div>';
+    var sorted = nums.slice().sort(function(a,b){return a-b;});
+    var shuffled = nums.slice().sort(function(){return Math.random()-.5;});
+    return { nums:shuffled, sorted:sorted };
   }
 
-  // TTS helper for young grades
-  if(grade==='PreK'||grade==='K'||grade==='1'){
-    window._mathSpeak=function(text){
-      if('speechSynthesis' in window){
-        window.speechSynthesis.cancel();
-        var u=new SpeechSynthesisUtterance(text);
-        u.rate=0.85;u.pitch=1.1;u.volume=1;
-        window.speechSynthesis.speak(u);
-      }
+  function renderRound() {
+    if(round >= ROUNDS) { gameWinScreen(score, ROUNDS, CA, CB, 'mathGameOv'); return; }
+    var r = makeRound();
+    ov.innerHTML = gameHeader('Number Order', '🔢', CA, CB, 'mathGameOv')
+      + '<div style="flex:1;overflow-y:auto;padding:24px 20px;display:flex;flex-direction:column;align-items:center;">'
+      + '<div style="background:white;border-radius:20px;padding:16px 20px;margin-bottom:20px;text-align:center;box-shadow:0 4px 16px rgba(108,63,197,.15);width:100%;max-width:420px;">'
+      + '<div style="font-family:\'Baloo 2\',cursive;font-size:1.05rem;font-weight:800;color:#6C3FC5;margin-bottom:4px;">Round '+(round+1)+' of '+ROUNDS+'</div>'
+      + '<div style="font-size:.95rem;color:#666;font-weight:600;">'+c.label+'</div>'
+      + '</div>'
+      + '<div id="mathSlots" style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:24px;min-height:70px;background:rgba(108,63,197,.07);border-radius:18px;padding:16px;width:100%;max-width:420px;border:2px dashed rgba(108,63,197,.25);">'
+      + '<div style="color:#aaa;font-size:.85rem;font-weight:600;align-self:center;">Drag numbers here in order →</div>'
+      + '</div>'
+      + '<div id="mathNumbers" style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%;max-width:420px;">'
+      + r.nums.map(function(n){
+          return '<div draggable="true" data-num="'+n+'" '
+            +'style="width:66px;height:66px;border-radius:18px;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:\'Baloo 2\',cursive;font-size:1.5rem;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:grab;box-shadow:0 6px 18px rgba(108,63,197,.35);user-select:none;transition:transform .15s;position:relative;"'
+            +' ondragstart="window._mathDragStart(this)"'
+            +' ontouchstart="window._mathTouchStart(event,this)"'
+            +'>'+n+'</div>';
+        }).join('')
+      + '</div>'
+      + '<div id="mathCheckWrap" style="margin-top:24px;display:none;">'
+      + '<button onclick="window._mathCheck()" style="padding:16px 40px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1.1rem;cursor:pointer;box-shadow:0 6px 20px rgba(108,63,197,.4);">✅ Check My Order!</button>'
+      + '</div>'
+      + '</div>';
+
+    window._mathCurrentSorted = r.sorted;
+
+    // drag-and-drop
+    var slots = document.getElementById('mathSlots');
+    var numBank = document.getElementById('mathNumbers');
+
+    window._mathDragStart = function(el) { dragSrc = el; };
+
+    slots.addEventListener('dragover', function(e){ e.preventDefault(); });
+    slots.addEventListener('drop', function(e){
+      e.preventDefault();
+      if(!dragSrc) return;
+      dragSrc.parentNode.removeChild(dragSrc);
+      slots.appendChild(dragSrc);
+      dragSrc.style.cursor='grab';
+      checkShowBtn();
+    });
+    numBank.addEventListener('dragover', function(e){ e.preventDefault(); });
+    numBank.addEventListener('drop', function(e){
+      e.preventDefault();
+      if(!dragSrc) return;
+      dragSrc.parentNode.removeChild(dragSrc);
+      numBank.appendChild(dragSrc);
+      checkShowBtn();
+    });
+
+    // Touch support
+    var touchEl=null, touchClone=null;
+    window._mathTouchStart = function(e, el) {
+      touchEl=el;
+      var r=el.getBoundingClientRect();
+      touchClone=el.cloneNode(true);
+      touchClone.style.cssText='position:fixed;width:66px;height:66px;border-radius:18px;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:\'Baloo 2\',cursive;font-size:1.5rem;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:99999;pointer-events:none;opacity:.85;box-shadow:0 8px 24px rgba(0,0,0,.3);';
+      touchClone.style.left=(r.left)+'px'; touchClone.style.top=(r.top)+'px';
+      document.body.appendChild(touchClone);
+      e.preventDefault();
     };
-    // Auto-read question for PreK
-    if(grade==='PreK'){
-      setTimeout(function(){
-        var qEl=document.querySelector('#mathDisplay');
-        if(qEl){var txt=qEl.textContent.replace(/[^a-zA-Z0-9 ?,!.]/g,'');if(txt.trim()) window._mathSpeak(txt);}
-      },700);
+    document.addEventListener('touchmove', function(e){
+      if(!touchClone) return;
+      var t=e.touches[0];
+      touchClone.style.left=(t.clientX-33)+'px';
+      touchClone.style.top=(t.clientY-33)+'px';
+    },{passive:false});
+    document.addEventListener('touchend', function(e){
+      if(!touchClone||!touchEl) return;
+      var t=e.changedTouches[0];
+      var under=document.elementFromPoint(t.clientX,t.clientY);
+      var sl=document.getElementById('mathSlots');
+      var nb=document.getElementById('mathNumbers');
+      touchClone.remove(); touchClone=null;
+      if(sl&&sl.contains(under)||sl===under){ sl.appendChild(touchEl); }
+      else if(nb&&nb.contains(under)||nb===under){ nb.appendChild(touchEl); }
+      else { sl&&sl.appendChild(touchEl); }
+      touchEl=null;
+      checkShowBtn();
+    });
+
+    function checkShowBtn() {
+      var sl=document.getElementById('mathSlots');
+      var btn=document.getElementById('mathCheckWrap');
+      if(!sl||!btn) return;
+      var placed=sl.querySelectorAll('[data-num]');
+      if(placed.length===window._mathCurrentSorted.length){
+        btn.style.display='block';
+        // Remove drag placeholder text
+        var ph=sl.querySelector('div:not([data-num])');
+        if(ph) ph.remove();
+      } else { btn.style.display='none'; }
     }
+
+    window._mathCheck = function() {
+      var sl=document.getElementById('mathSlots');
+      var placed=Array.from(sl.querySelectorAll('[data-num]')).map(function(el){return parseInt(el.dataset.num);});
+      var correct=JSON.stringify(placed)===JSON.stringify(window._mathCurrentSorted);
+      placed.forEach(function(n,i){
+        var el=sl.querySelectorAll('[data-num]')[i];
+        if(correct||n===window._mathCurrentSorted[i]){
+          el.style.background='linear-gradient(135deg,#22c55e,#4ade80)';
+          el.style.boxShadow='0 6px 18px rgba(34,197,94,.4)';
+        } else {
+          el.style.background='linear-gradient(135deg,#ef4444,#f87171)';
+          el.style.boxShadow='0 6px 18px rgba(239,68,68,.4)';
+        }
+      });
+      if(correct){ score++; toast('Perfect order! 🌟'); }
+      else { toast('Almost! The right order was: '+window._mathCurrentSorted.join(' → ')); }
+      round++;
+      setTimeout(renderRound, 1400);
+    };
   }
 
-  window.mathAnswer=function(btn,chosen,ans,n){
-    if(n!==qNum)return;
-    var correct=(chosen===String(ans));
-    document.querySelectorAll('#mathOpts button').forEach(function(b){
-      b.style.pointerEvents='none';
-      if(b.textContent===String(ans)){b.style.background='#E8FBF3';b.style.borderColor='#5ECDA0';}
-    });
-    if(correct){btn.style.background='#E8FBF3';score++;toast('Correct! +8 Stars');}
-    else{btn.style.background='#FFF0EE';btn.style.borderColor='var(--coral)';toast('The answer is '+ans+'!');}
-    setTimeout(function(){qNum++;render();},900);
-  };
-
-  var ov=document.createElement('div');ov.id='mathGameOv';
-  document.body.appendChild(ov);render();
+  renderRound();
 }
 
-// ══════════════════════════════════════════════════════
-//  LANGUAGE ARTS GAME
-// ══════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
+//  2. LANGUAGE ARTS — WORD BUILDER + FILL-IN-THE-BLANK STORIES
+// ══════════════════════════════════════════════════════════════════════
 function openLangGame(grade) {
-  var allQ={
-    PreK:[
-      {q:'Which letter comes first?',opts:['B','A','C','D'],ans:1},
-      {q:'What sound does "B" make?',opts:['Aah','Buh','Cuh','Duh'],ans:1},
-      {q:'Which word has 3 letters?',opts:['cat','elephant','butterfly','hippopotamus'],ans:0},
-      {q:'Which is a real word?',opts:['zorp','dog','flim','blag'],ans:1},
-      {q:'What letter starts "apple"?',opts:['B','C','A','D'],ans:2},
-      {q:'Which word rhymes with CAT?',opts:['dog','bat','fish','bird'],ans:1},
-      {q:'What letter starts "sun"?',opts:['T','R','S','P'],ans:2},
-      {q:'Which word is an animal?',opts:['run','happy','dog','blue'],ans:2},
+  var CA='#E55C6C', CB='#FF9A8B';
+  var ov = gameOverlay('langGameOv','#FFF5F5');
+  document.body.appendChild(ov);
+
+  var WORD_DATA = {
+    PreK: [
+      {word:'CAT',  hint:'🐱 Meows!',    letters:['C','A','T','X','S']},
+      {word:'DOG',  hint:'🐶 Woofs!',    letters:['D','O','G','P','A']},
+      {word:'SUN',  hint:'☀️ Shines!',   letters:['S','U','N','T','R']},
+      {word:'BEE',  hint:'🐝 Buzzes!',   letters:['B','E','E','A','Z']},
+      {word:'HEN',  hint:'🐔 Clucks!',   letters:['H','E','N','A','T']},
+      {word:'ANT',  hint:'🐜 Marches!',  letters:['A','N','T','B','S']},
+      {word:'PIG',  hint:'🐷 Oinks!',    letters:['P','I','G','D','N']},
+      {word:'COW',  hint:'🐄 Moos!',     letters:['C','O','W','B','X']},
     ],
-    K:[
-      {q:'Which word rhymes with TREE?',opts:['far','see','big','run'],ans:1},
-      {q:'What is the opposite of BIG?',opts:['huge','tall','small','wide'],ans:2},
-      {q:'How many letters in DOG?',opts:['2','3','4','5'],ans:1},
-      {q:'Which word starts with the letter P?',opts:['apple','ball','pig','dog'],ans:2},
-      {q:'What is a noun?',opts:['action word','describing word','person place or thing','connecting word'],ans:2},
-      {q:'Which word is a color?',opts:['run','blue','jump','tall'],ans:1},
-      {q:'What letter comes after M?',opts:['L','K','N','O'],ans:2},
-      {q:'Which sentence ends with a period?',opts:['Where are you?','Stop!','I like cats.','Watch out!'],ans:2},
+    K: [
+      {word:'FROG',  hint:'🐸 Hops!',     letters:['F','R','O','G','T','X']},
+      {word:'BIRD',  hint:'🐦 Flies!',    letters:['B','I','R','D','S','N']},
+      {word:'CAKE',  hint:'🎂 Yummy!',    letters:['C','A','K','E','T','L']},
+      {word:'RAIN',  hint:'🌧️ Falls down!',letters:['R','A','I','N','T','S']},
+      {word:'STAR',  hint:'⭐ Twinkles!', letters:['S','T','A','R','N','M']},
+      {word:'FISH',  hint:'🐟 Swims!',    letters:['F','I','S','H','B','T']},
+      {word:'JUMP',  hint:'🏃 Bounces!',  letters:['J','U','M','P','D','K']},
+      {word:'DUCK',  hint:'🦆 Quacks!',   letters:['D','U','C','K','T','P']},
     ],
-    _default:[
-      {q:'What is a synonym for HAPPY?',opts:['Sad','Angry','Joyful','Tired'],ans:2},
-      {q:'What is an antonym for HOT?',opts:['Warm','Cold','Cool','Burning'],ans:1},
-      {q:'What does a verb show?',opts:['A thing','A place','An action','A color'],ans:2},
-      {q:'Which word is an adjective?',opts:['Run','Quickly','Happy','Jump'],ans:2},
-      {q:'What is a compound word?',opts:['A very long word','Two words joined together','A rhyming word','A plural word'],ans:1},
-      {q:'What is a simile?',opts:['A direct comparison','A comparison using like or as','A type of noun','A verb tense'],ans:1},
-      {q:'What is a metaphor?',opts:['Comparison using like or as','A direct comparison without like or as','A type of verb','A punctuation mark'],ans:1},
-      {q:'What is a prefix?',opts:['A word ending','Letters added to the beginning','A root word','A type of noun'],ans:1},
-      {q:'What does the prefix un- mean?',opts:['Again','Before','Not or opposite','After'],ans:2},
-      {q:'What is the theme of a story?',opts:['The main character','The setting','The central message or lesson','The problem'],ans:2},
-      {q:'What is alliteration?',opts:['Rhyming words','Repetition of the same beginning consonant sound','A type of metaphor','Exaggeration'],ans:1},
-      {q:'What is personification?',opts:['Describing a setting','Giving human qualities to non-human things','Comparing two things','Repeating sounds'],ans:1},
-      {q:'What is point of view?',opts:['The setting','The perspective from which a story is told','The authors age','The problem'],ans:1},
-      {q:'What is foreshadowing?',opts:['Explaining the past','Hinting at future events','Describing the setting','Ending the story'],ans:1},
-      {q:'What is the climax?',opts:['The beginning','The most exciting or important moment','The ending','The setting'],ans:1},
-      {q:'What is active voice?',opts:['When subject receives the action','When the subject performs the action','A type of verb tense','A type of question'],ans:1},
-      {q:'What is textual evidence?',opts:['The authors opinion','Specific details from a text to support a claim','A summary','A personal connection'],ans:1},
-      {q:'What is tone in writing?',opts:['The topic','The authors attitude conveyed through word choice','The volume','The speed'],ans:1},
-      {q:'What is a topic sentence?',opts:['The last sentence','The sentence that states the main idea','Any sentence','A question'],ans:1},
-      {q:'What is a thesis statement?',opts:['The last sentence','The main argument of an essay','A supporting detail','A conclusion'],ans:1},
-    ]
+    1: [
+      {word:'PLANT',  hint:'🌱 Grows in dirt!',   letters:['P','L','A','N','T','B','S']},
+      {word:'BRAVE',  hint:'💪 Not scared!',       letters:['B','R','A','V','E','T','S']},
+      {word:'CLOUD',  hint:'☁️ Floats in sky!',   letters:['C','L','O','U','D','P','N']},
+      {word:'SHAKE',  hint:'🤝 Wobbles!',          letters:['S','H','A','K','E','T','N']},
+      {word:'TIGER',  hint:'🐯 Big stripy cat!',   letters:['T','I','G','E','R','S','N']},
+      {word:'GLOBE',  hint:'🌍 Round world!',      letters:['G','L','O','B','E','S','T']},
+      {word:'FLAME',  hint:'🔥 Hot and bright!',   letters:['F','L','A','M','E','T','B']},
+      {word:'CRISP',  hint:'🍂 Crunchy!',          letters:['C','R','I','S','P','T','N']},
+    ],
+    2: [
+      {word:'BRIDGE',  hint:'🌉 Crosses water!',   letters:['B','R','I','D','G','E','T','S']},
+      {word:'FROZEN',  hint:'🧊 Really cold!',     letters:['F','R','O','Z','E','N','T','S']},
+      {word:'PLANET',  hint:'🪐 Orbits a star!',   letters:['P','L','A','N','E','T','B','S']},
+      {word:'JUNGLE',  hint:'🌿 Dense forest!',    letters:['J','U','N','G','L','E','T','S']},
+      {word:'CASTLE',  hint:'🏰 Knight lives here!',letters:['C','A','S','T','L','E','B','R']},
+      {word:'FLOWER',  hint:'🌸 Pretty bloom!',    letters:['F','L','O','W','E','R','T','S']},
+      {word:'ROCKET',  hint:'🚀 Goes to space!',   letters:['R','O','C','K','E','T','S','N']},
+      {word:'SILVER',  hint:'🥈 Shiny metal!',     letters:['S','I','L','V','E','R','T','N']},
+    ],
+    3: [
+      {word:'SHELTER',  hint:'🏠 Keeps you safe!',  letters:['S','H','E','L','T','E','R','N','B']},
+      {word:'KINGDOM',  hint:'👑 Where kings rule!',letters:['K','I','N','G','D','O','M','T','S']},
+      {word:'THUNDER',  hint:'⛈️ Loud storm sound!',letters:['T','H','U','N','D','E','R','S','B']},
+      {word:'CAPTAIN',  hint:'⚓ Ship leader!',     letters:['C','A','P','T','A','I','N','S','R']},
+      {word:'JOURNEY',  hint:'🗺️ Long trip!',      letters:['J','O','U','R','N','E','Y','S','T']},
+      {word:'HARVEST',  hint:'🌾 Gathering crops!', letters:['H','A','R','V','E','S','T','N','B']},
+    ],
+    4: [
+      {word:'ABSOLUTE',  hint:'💯 Complete and total!',   letters:['A','B','S','O','L','U','T','E','R','N']},
+      {word:'CONFLICT',  hint:'⚔️ A disagreement!',      letters:['C','O','N','F','L','I','C','T','S','R']},
+      {word:'DISCOVER',  hint:'🔍 Find something new!',  letters:['D','I','S','C','O','V','E','R','T','N']},
+      {word:'FRACTION',  hint:'½ Part of a whole!',      letters:['F','R','A','C','T','I','O','N','S','B']},
+      {word:'MAGNETIC',  hint:'🧲 Attracts metal!',      letters:['M','A','G','N','E','T','I','C','S','R']},
+      {word:'PARALLEL',  hint:'║ Lines that never meet!',letters:['P','A','R','A','L','L','E','L','T','S']},
+    ],
+    5: [
+      {word:'DEMOCRACY',  hint:'🗳️ People vote!',       letters:['D','E','M','O','C','R','A','C','Y','T','S']},
+      {word:'CALCULATE',  hint:'🔢 Figure out math!',   letters:['C','A','L','C','U','L','A','T','E','S','R']},
+      {word:'ADVENTURE',  hint:'🗺️ Exciting journey!',  letters:['A','D','V','E','N','T','U','R','E','S','B']},
+      {word:'PRINCIPAL',  hint:'🏫 School leader!',     letters:['P','R','I','N','C','I','P','A','L','T','S']},
+      {word:'ECOSYSTEM',  hint:'🌿 Living community!',  letters:['E','C','O','S','Y','S','T','E','M','R','N']},
+      {word:'MIGRATION',  hint:'🦅 Animals moving!',    letters:['M','I','G','R','A','T','I','O','N','S','C']},
+    ],
   };
-  var pool=allQ[grade]||allQ._default;
-  var questions=pool.slice().sort(function(){return Math.random()-.5;}).slice(0,Math.min(30,pool.length));
-  var qIdx=0,score=0;
+
+  var STORY_DATA = {
+    PreK: [
+      {story:'The little ____ sat in the sun.', blanks:['cat','dog','bug','hen'], answer:0, pic:'☀️'},
+      {story:'I see a big ____ in the sky.', blanks:['cloud','pizza','shoe','desk'], answer:0, pic:'🌤️'},
+      {story:'The ____ jumped over the fence.', blanks:['frog','book','chair','lamp'], answer:0, pic:'🐸'},
+      {story:'She ate a yummy ____.', blanks:['apple','rock','sock','cloud'], answer:0, pic:'🍎'},
+    ],
+    K: [
+      {story:'The baby bird learned how to ____.', blanks:['fly','sleep','moo','bark'], answer:0, pic:'🐦'},
+      {story:'We planted a seed and it started to ____.', blanks:['grow','swim','bark','fly'], answer:0, pic:'🌱'},
+      {story:'The puppy wagged its ____ when it was happy.', blanks:['tail','nose','wing','shell'], answer:0, pic:'🐶'},
+      {story:'On a rainy day we see a ____ in the sky.', blanks:['rainbow','sandwich','ladder','pillow'], answer:0, pic:'🌈'},
+    ],
+    1: [
+      {story:'The explorer used a map to find her way through the dark ____.', blanks:['jungle','kitchen','classroom','bedroom'], answer:0, pic:'🗺️'},
+      {story:'Scientists study the ____ to learn how the universe began.', blanks:['stars','cookies','furniture','playground'], answer:0, pic:'🌌'},
+      {story:'The caterpillar built a ____ before becoming a butterfly.', blanks:['chrysalis','sandwich','tower','puddle'], answer:0, pic:'🐛'},
+      {story:'Without ____, plants cannot make their own food.', blanks:['sunlight','music','laughter','homework'], answer:0, pic:'🌿'},
+    ],
+    2: [
+      {story:'The ancient ____ were built as tombs for Egyptian rulers.', blanks:['pyramids','libraries','gardens','bridges'], answer:0, pic:'🏺'},
+      {story:'Electricity flows through a circuit like water through a ____.', blanks:['pipe','book','cloud','mountain'], answer:0, pic:'⚡'},
+      {story:'During the water cycle, water evaporates and forms ____ in the sky.', blanks:['clouds','rainbows','stars','shadows'], answer:0, pic:'💧'},
+      {story:'A democracy lets citizens choose their leaders through a ____.', blanks:['vote','parade','festival','debate'], answer:0, pic:'🗳️'},
+    ],
+    3: [
+      {story:'The moon\'s gravitational pull causes ocean ____ on Earth.', blanks:['tides','quakes','winds','storms'], answer:0, pic:'🌊'},
+      {story:'Photosynthesis converts sunlight and CO₂ into food and ____.', blanks:['oxygen','water','soil','pollen'], answer:0, pic:'🌿'},
+      {story:'The Renaissance was a period of great artistic and scientific ____.', blanks:['discovery','decline','conflict','isolation'], answer:0, pic:'🎨'},
+      {story:'An ecosystem includes both living organisms and their ____ environment.', blanks:['physical','imaginary','painted','musical'], answer:0, pic:'🌍'},
+    ],
+    4: [
+      {story:'The mitochondria is often called the ____ of the cell.', blanks:['powerhouse','library','factory','recycler'], answer:0, pic:'🔬'},
+      {story:'Ancient civilizations developed near rivers because of the fertile ____.', blanks:['soil','mountains','deserts','oceans'], answer:0, pic:'🏺'},
+      {story:'In a fraction, the denominator tells us the total number of equal ____.', blanks:['parts','numbers','fractions','decimals'], answer:0, pic:'½'},
+      {story:'The water cycle is driven by energy from the ____.', blanks:['sun','moon','wind','gravity'], answer:0, pic:'☀️'},
+    ],
+    5: [
+      {story:'In an argument, evidence from the text is used to support your ____.', blanks:['claim','story','poem','chapter'], answer:0, pic:'📝'},
+      {story:'Natural selection favors traits that improve an organism\'s chance of ____.', blanks:['survival','reproduction','both A and B','hibernation'], answer:2, pic:'🦕'},
+      {story:'The Constitution divides government power among three ____.', blanks:['branches','parties','states','courts'], answer:0, pic:'🏛️'},
+      {story:'A ratio compares two quantities, similar to a ____.', blanks:['fraction','percent','decimal','all of these'], answer:3, pic:'📊'},
+    ],
+  };
+
+  var words = (WORD_DATA[grade] || WORD_DATA['3']).slice();
+  var stories = (STORY_DATA[grade] || STORY_DATA['3']).slice();
+  words.sort(function(){return Math.random()-.5;});
+  stories.sort(function(){return Math.random()-.5;});
+
+  // Interleave: word, word, story, word, word, story...
+  var queue = [];
+  var wi=0, si=0;
+  while(wi<words.length || si<stories.length){
+    if(wi<words.length){queue.push({type:'word', data:words[wi++]});}
+    if(wi<words.length){queue.push({type:'word', data:words[wi++]});}
+    if(si<stories.length){queue.push({type:'story', data:stories[si++]});}
+  }
+  queue = queue.slice(0,10);
+
+  var idx=0, score=0;
+  var built=[], wordLetters=[];
 
   function render(){
-    var ov=document.getElementById('langGameOv');if(!ov)return;
-    if(qIdx>=questions.length){
-      ov.innerHTML='<div style="position:fixed;inset:0;background:linear-gradient(135deg,var(--coral),var(--sunshine));display:flex;align-items:center;justify-content:center;flex-direction:column;color:white;z-index:9999;">'+
-        '<div style="font-size:3rem;margin-bottom:12px;">'+(score>=questions.length*.8?'🏆':'🌟')+'</div>'+
-        '<div style="font-family:Baloo 2,cursive;font-size:1.4rem;font-weight:800;">'+score+'/'+questions.length+' Correct!</div>'+
-        '<button onclick="document.getElementById(\'langGameOv\').remove();showScreen(\'app\');" style="margin-top:20px;padding:14px 32px;border-radius:40px;border:none;background:white;color:var(--coral);font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;">Done!</button>'+
-        '</div>';
-      sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:score*8}).catch(function(){});
-      sessionData.stars+=score*8;document.getElementById('statStars').textContent=sessionData.stars;
-      return;
-    }
-    var q=questions[qIdx];
-    ov.innerHTML='<div style="position:fixed;inset:0;z-index:9999;background:#FFF8F0;display:flex;flex-direction:column;">'
-      +'<div style="background:linear-gradient(135deg,var(--coral),var(--sunshine));padding:14px 20px;color:white;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;">'
-      +'<div style="font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;">Language Arts</div>'
-      +'<div style="font-size:.85rem;opacity:.9;">'+qIdx+' / '+questions.length+'</div>'
-      +'<button onclick="document.getElementById(\'langGameOv\').remove();" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:30px;height:30px;cursor:pointer;font-weight:800;">X</button>'
-      +'</div>'
-      +'<div style="flex:1;overflow-y:auto;padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;">'
-      +'<div style="font-size:1.1rem;font-weight:800;color:#2D2D4E;text-align:center;margin-bottom:20px;line-height:1.5;">'+q.q+'</div>'
-      +'<div id="langOpts" style="display:flex;flex-direction:column;gap:8px;width:100%;max-width:340px;">'
-      +q.opts.map(function(o,i){return '<button onclick="langAnswer(this,'+i+','+q.ans+','+qIdx+')" style="padding:12px 16px;border-radius:14px;border:2px solid #FFE0CC;background:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;text-align:left;">'+o+'</button>';}).join('')
-      +'</div></div></div>';
+    if(idx>=queue.length){ gameWinScreen(score,queue.length,CA,CB,'langGameOv'); return; }
+    var item=queue[idx];
+    if(item.type==='word') renderWord(item.data);
+    else renderStory(item.data);
   }
 
-  window.langAnswer=function(btn,chosen,ans,n){
-    if(n!==qIdx)return;
-    var correct=(chosen===ans);
-    document.querySelectorAll('#langOpts button').forEach(function(b,bi){
-      b.style.pointerEvents='none';
-      if(bi===ans){b.style.background='#E8FBF3';b.style.borderColor='#5ECDA0';}
-    });
-    if(correct){btn.style.background='#E8FBF3';score++;toast('Correct! +8 Stars');}
-    else{btn.style.background='#FFF0EE';btn.style.borderColor='var(--coral)';toast('Not quite!');}
-    setTimeout(function(){qIdx++;render();},900);
+  function renderWord(d){
+    built=[];
+    var shuffled=d.letters.slice().sort(function(){return Math.random()-.5;});
+    wordLetters=shuffled;
+    ov.innerHTML = gameHeader('Word Builder','✏️',CA,CB,'langGameOv')
+      +'<div style="flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;align-items:center;max-width:480px;margin:0 auto;width:100%;">'
+      +'<div style="background:white;border-radius:20px;padding:18px;margin-bottom:16px;text-align:center;box-shadow:0 4px 16px rgba(229,92,108,.15);width:100%;">'
+      +'<div style="font-size:2.5rem;margin-bottom:6px;">'+d.hint+'</div>'
+      +'<div style="font-family:\'Baloo 2\',cursive;font-size:1rem;font-weight:800;color:'+CA+';">Build the word!</div>'
+      +'<div style="color:#888;font-size:.85rem;">'+d.word.length+' letters</div>'
+      +'</div>'
+      +'<div id="builtRow" style="display:flex;gap:8px;justify-content:center;min-height:58px;background:rgba(229,92,108,.06);border-radius:16px;padding:10px 14px;margin-bottom:16px;width:100%;flex-wrap:wrap;">'
+      +Array(d.word.length).fill('<div style="width:48px;height:48px;border-radius:12px;background:#F5F3FF;border:2px dashed #DDD;display:flex;align-items:center;justify-content:center;font-family:\'Baloo 2\',cursive;font-size:1.4rem;font-weight:800;color:#CCC;">_</div>').join('')
+      +'</div>'
+      +'<div id="letterBank" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:20px;">'
+      +shuffled.map(function(l,i){
+        return '<button onclick="window._pickLetter(\''+l+'\','+i+')" id="lbtn'+i+'" style="width:48px;height:48px;border-radius:12px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:\'Baloo 2\',cursive;font-size:1.4rem;font-weight:800;cursor:pointer;box-shadow:0 4px 14px rgba(229,92,108,.35);transition:all .15s;">'+l+'</button>';
+      }).join('')
+      +'</div>'
+      +'<button onclick="window._clearWord()" style="padding:10px 24px;border-radius:30px;border:none;background:#F0F0F8;color:#888;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;">↩️ Clear</button>'
+      +'</div>';
+
+    window._pickLetter = function(l, i){
+      if(built.length>=d.word.length) return;
+      built.push({l:l,i:i});
+      var btn=document.getElementById('lbtn'+i);
+      if(btn){btn.style.opacity='0.3';btn.style.pointerEvents='none';}
+      updateBuiltRow(d);
+    };
+
+    window._clearWord = function(){
+      built=[];
+      wordLetters.forEach(function(l,i){
+        var b=document.getElementById('lbtn'+i);
+        if(b){b.style.opacity='1';b.style.pointerEvents='auto';}
+      });
+      updateBuiltRow(d);
+    };
+  }
+
+  function updateBuiltRow(d){
+    var row=document.getElementById('builtRow');
+    if(!row) return;
+    var slots='';
+    for(var i=0;i<d.word.length;i++){
+      if(built[i]){
+        slots+='<div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:\'Baloo 2\',cursive;font-size:1.4rem;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(229,92,108,.3);">'+built[i].l+'</div>';
+      } else {
+        slots+='<div style="width:48px;height:48px;border-radius:12px;background:#F5F3FF;border:2px dashed #DDD;display:flex;align-items:center;justify-content:center;font-family:\'Baloo 2\',cursive;font-size:1.4rem;font-weight:800;color:#CCC;">_</div>';
+      }
+    }
+    row.innerHTML=slots;
+    if(built.length===d.word.length){
+      var guess=built.map(function(b){return b.l;}).join('');
+      setTimeout(function(){
+        if(guess===d.word){ score++; flashBuilt(true,d); }
+        else { flashBuilt(false,d); }
+        setTimeout(function(){ idx++; render(); },1200);
+      },300);
+    }
+  }
+
+  function flashBuilt(correct, d){
+    var row=document.getElementById('builtRow');
+    if(!row) return;
+    var bg=correct?'linear-gradient(135deg,#22c55e,#4ade80)':'linear-gradient(135deg,#ef4444,#f87171)';
+    var msg=correct?'🌟 '+d.word+'!':'The word was: '+d.word;
+    row.innerHTML='<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">'
+      +d.word.split('').map(function(l){
+        return '<div style="width:48px;height:48px;border-radius:12px;background:'+bg+';color:white;font-family:\'Baloo 2\',cursive;font-size:1.4rem;font-weight:800;display:flex;align-items:center;justify-content:center;">'+l+'</div>';
+      }).join('')+'</div>';
+    toast(msg);
+  }
+
+  function renderStory(d){
+    ov.innerHTML = gameHeader('Fill the Blank','📖',CA,CB,'langGameOv')
+      +'<div style="flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;align-items:center;max-width:480px;margin:0 auto;width:100%;">'
+      +'<div style="background:white;border-radius:20px;padding:24px;margin-bottom:20px;text-align:center;box-shadow:0 4px 16px rgba(229,92,108,.15);width:100%;">'
+      +'<div style="font-size:2.5rem;margin-bottom:12px;">'+d.pic+'</div>'
+      +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.1rem;font-weight:800;color:#2D2D4E;line-height:1.6;">'
+      +d.story.replace('____','<span style="background:linear-gradient(135deg,'+CA+','+CB+');color:white;padding:2px 14px;border-radius:20px;display:inline-block;min-width:80px;">____</span>')
+      +'</div>'
+      +'</div>'
+      +'<div style="display:flex;flex-direction:column;gap:10px;width:100%;">'
+      +d.blanks.map(function(opt,i){
+        return '<button onclick="window._storyAnswer('+i+','+d.answer+')" style="padding:16px 20px;border-radius:18px;border:2px solid rgba(229,92,108,.2);background:white;font-family:Nunito,sans-serif;font-weight:700;font-size:1rem;cursor:pointer;text-align:left;box-shadow:0 3px 10px rgba(229,92,108,.1);transition:all .2s;">'+opt+'</button>';
+      }).join('')
+      +'</div>'
+      +'</div>';
+
+    window._storyAnswer=function(chosen, ans){
+      document.querySelectorAll('[onclick^="window._storyAnswer"]').forEach(function(b){b.style.pointerEvents='none';});
+      var btns=document.querySelectorAll('[onclick^="window._storyAnswer"]');
+      btns[ans].style.background='#E8FBF3'; btns[ans].style.borderColor='#22c55e'; btns[ans].style.color='#22c55e';
+      if(chosen===ans){ score++; toast('Correct! 🌟'); btns[chosen].style.background='#E8FBF3'; }
+      else { btns[chosen].style.background='#FFF0EE'; btns[chosen].style.borderColor='#ef4444'; btns[chosen].style.color='#ef4444'; toast('The answer was: '+d.blanks[ans]); }
+      idx++;
+      setTimeout(render, 1000);
+    };
+  }
+
+  render();
+}
+
+// ══════════════════════════════════════════════════════════════════════
+//  3. SCIENCE SORT GAME
+// ══════════════════════════════════════════════════════════════════════
+function openScienceGame(grade) {
+  var CA='#0EA5E9', CB='#38BDF8';
+  var ov = gameOverlay('sciGameOv','#F0FAFF');
+  document.body.appendChild(ov);
+
+  var ROUNDS_DATA = {
+    PreK: [
+      { title:'Living or Non-Living?', cats:['🌱 Living','🪨 Non-Living'],
+        items:[
+          {label:'🐶 Dog',cat:0},{label:'🌸 Flower',cat:0},{label:'🐟 Fish',cat:0},{label:'🌳 Tree',cat:0},
+          {label:'🪨 Rock',cat:1},{label:'🚗 Car',cat:1},{label:'📚 Book',cat:1},{label:'🪑 Chair',cat:1}
+        ]},
+      { title:'Animals or Plants?', cats:['🐾 Animal','🌿 Plant'],
+        items:[
+          {label:'🐱 Cat',cat:0},{label:'🦁 Lion',cat:0},{label:'🐠 Fish',cat:0},{label:'🦋 Butterfly',cat:0},
+          {label:'🌹 Rose',cat:1},{label:'🌲 Pine',cat:1},{label:'🌻 Sunflower',cat:1},{label:'🍀 Clover',cat:1}
+        ]},
+    ],
+    K: [
+      { title:'Solid, Liquid, or Gas?', cats:['🧱 Solid','💧 Liquid','💨 Gas'],
+        items:[
+          {label:'🪨 Rock',cat:0},{label:'🧊 Ice cube',cat:0},{label:'📚 Book',cat:0},
+          {label:'🌊 Water',cat:1},{label:'🥛 Milk',cat:1},{label:'🍵 Tea',cat:1},
+          {label:'💨 Air',cat:2},{label:'🎈 Balloon gas',cat:2}
+        ]},
+      { title:'Living or Non-Living?', cats:['🌱 Living','🪨 Non-Living'],
+        items:[
+          {label:'🐸 Frog',cat:0},{label:'🌺 Hibiscus',cat:0},{label:'🐦 Bird',cat:0},{label:'🐛 Caterpillar',cat:0},
+          {label:'🚌 Bus',cat:1},{label:'🏠 House',cat:1},{label:'🪞 Mirror',cat:1},{label:'⌚ Watch',cat:1}
+        ]},
+    ],
+    1: [
+      { title:'Solid, Liquid, or Gas?', cats:['🧱 Solid','💧 Liquid','💨 Gas'],
+        items:[
+          {label:'🌙 Moon rock',cat:0},{label:'🪵 Wood',cat:0},{label:'🥚 Egg',cat:0},
+          {label:'🧪 Mercury',cat:1},{label:'🫗 Orange juice',cat:1},{label:'🌧️ Rain',cat:1},
+          {label:'☁️ Steam',cat:2},{label:'🌬️ Wind',cat:2},{label:'💭 Breath',cat:2}
+        ]},
+      { title:'Needs sunlight or not?', cats:['☀️ Needs sun','🌑 No sun needed'],
+        items:[
+          {label:'🌱 Plant',cat:0},{label:'🌻 Sunflower',cat:0},{label:'🍃 Fern',cat:0},{label:'🌲 Tree',cat:0},
+          {label:'🐍 Snake',cat:1},{label:'🐟 Deepfish',cat:1},{label:'🍄 Mushroom',cat:1},{label:'🦠 Bacteria',cat:1}
+        ]},
+    ],
+    2: [
+      { title:'Vertebrate or Invertebrate?', cats:['🦴 Vertebrate','🐛 Invertebrate'],
+        items:[
+          {label:'🐕 Dog',cat:0},{label:'🐠 Clownfish',cat:0},{label:'🐊 Crocodile',cat:0},{label:'🦅 Eagle',cat:0},
+          {label:'🐙 Octopus',cat:1},{label:'🦀 Crab',cat:1},{label:'🕷️ Spider',cat:1},{label:'🐌 Snail',cat:1}
+        ]},
+      { title:'Renewable or Non-Renewable?', cats:['♻️ Renewable','⛽ Non-Renewable'],
+        items:[
+          {label:'☀️ Sunlight',cat:0},{label:'💨 Wind',cat:0},{label:'🌊 Water power',cat:0},{label:'🌱 Biomass',cat:0},
+          {label:'🛢️ Oil',cat:1},{label:'⛽ Natural gas',cat:1},{label:'🪨 Coal',cat:1},{label:'⚛️ Uranium',cat:1}
+        ]},
+    ],
+    3: [
+      { title:'Physical or Chemical Change?', cats:['🔨 Physical','⚗️ Chemical'],
+        items:[
+          {label:'✂️ Cutting paper',cat:0},{label:'🧊 Ice melting',cat:0},{label:'🧲 Bending metal',cat:0},
+          {label:'🔥 Wood burning',cat:1},{label:'🍞 Baking bread',cat:1},{label:'🟤 Iron rusting',cat:1},{label:'💥 Fireworks',cat:1},{label:'🧪 Acid+base',cat:1}
+        ]},
+      { title:'Producer, Consumer, or Decomposer?', cats:['🌱 Producer','🐾 Consumer','🍄 Decomposer'],
+        items:[
+          {label:'🌿 Grass',cat:0},{label:'🌳 Oak tree',cat:0},
+          {label:'🦊 Fox',cat:1},{label:'🐛 Caterpillar',cat:1},{label:'🐄 Cow',cat:1},
+          {label:'🍄 Mushroom',cat:2},{label:'🪱 Earthworm',cat:2},{label:'🦠 Bacteria',cat:2}
+        ]},
+    ],
+    4: [
+      { title:'Inherited or Learned Trait?', cats:['🧬 Inherited','📚 Learned'],
+        items:[
+          {label:'👁️ Eye color',cat:0},{label:'🦮 Dog fur',cat:0},{label:'🐆 Spots',cat:0},{label:'🩸 Blood type',cat:0},
+          {label:'🚲 Riding a bike',cat:1},{label:'📖 Reading',cat:1},{label:'🎵 Playing guitar',cat:1},{label:'🗣️ Speaking',cat:1}
+        ]},
+      { title:'Force or Energy?', cats:['⚡ Energy','💪 Force'],
+        items:[
+          {label:'🔥 Heat',cat:0},{label:'💡 Light',cat:0},{label:'🔊 Sound',cat:0},{label:'⚡ Electrical',cat:0},
+          {label:'🏋️ Lift',cat:1},{label:'🧲 Magnetic pull',cat:1},{label:'💨 Air push',cat:1},{label:'🤸 Friction',cat:1}
+        ]},
+    ],
+    5: [
+      { title:'Mitosis or Meiosis?', cats:['🔬 Mitosis','🧬 Meiosis'],
+        items:[
+          {label:'🩹 Healing skin',cat:0},{label:'🌱 Plant growth',cat:0},{label:'🔄 Body repair',cat:0},
+          {label:'🥚 Egg cell',cat:1},{label:'🐟 Sperm cell',cat:1},{label:'🌸 Pollen',cat:1},{label:'🌰 Seed',cat:1},{label:'👶 Fertilization',cat:1}
+        ]},
+      { title:'Element, Compound, or Mixture?', cats:['⚛️ Element','🧪 Compound','🥗 Mixture'],
+        items:[
+          {label:'🥇 Gold',cat:0},{label:'💧 H₂O',cat:1},{label:'🧂 NaCl',cat:1},
+          {label:'🍎 Oxygen',cat:0},{label:'🥗 Salad',cat:2},{label:'🌊 Salt water',cat:2},{label:'🫧 CO₂',cat:1}
+        ]},
+    ],
   };
 
-  var ov=document.createElement('div');ov.id='langGameOv';
-  document.body.appendChild(ov);render();
+  var rounds = (ROUNDS_DATA[grade] || ROUNDS_DATA['3']).slice();
+  rounds.sort(function(){return Math.random()-.5;});
+  var rIdx=0, score=0, TOTAL_ROUNDS=rounds.length;
+
+  function renderRound(){
+    if(rIdx>=TOTAL_ROUNDS){ gameWinScreen(score,TOTAL_ROUNDS,CA,CB,'sciGameOv'); return; }
+    var r=rounds[rIdx];
+    var items=r.items.slice().sort(function(){return Math.random()-.5;});
+
+    ov.innerHTML = gameHeader('Science Sort','🔬',CA,CB,'sciGameOv')
+      +'<div style="flex:1;overflow-y:auto;padding:16px;max-width:500px;margin:0 auto;width:100%;">'
+      +'<div style="background:white;border-radius:18px;padding:14px 18px;margin-bottom:14px;text-align:center;box-shadow:0 4px 14px rgba(14,165,233,.15);">'
+      +'<div style="font-family:\'Baloo 2\',cursine;font-size:1.05rem;font-weight:800;color:#0EA5E9;">'+r.title+'</div>'
+      +'<div style="font-size:.85rem;color:#888;margin-top:2px;">Tap each item to sort it!</div>'
+      +'</div>'
+      +'<div id="itemBelt" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px;">'
+      +items.map(function(item,i){
+        return '<div id="sci'+i+'" data-cat="'+item.cat+'" onclick="window._sciTap(this)" '
+          +'style="padding:10px 14px;border-radius:14px;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-weight:700;font-size:.9rem;cursor:pointer;box-shadow:0 4px 12px rgba(14,165,233,.3);transition:all .2s;user-select:none;">'+item.label+'</div>';
+      }).join('')
+      +'</div>'
+      +'<div style="display:grid;grid-template-columns:'+Array(r.cats.length).fill('1fr').join(' ')+';gap:10px;">'
+      +r.cats.map(function(cat,ci){
+        return '<div id="sciCat'+ci+'" data-catidx="'+ci+'" '
+          +'style="min-height:90px;border-radius:16px;background:rgba(14,165,233,.08);border:2px dashed rgba(14,165,233,.3);padding:10px;display:flex;flex-direction:column;gap:6px;">'
+          +'<div style="font-weight:800;font-size:.85rem;color:#0EA5E9;text-align:center;margin-bottom:4px;">'+cat+'</div>'
+          +'</div>';
+      }).join('')
+      +'</div>'
+      +'<div id="sciCheckWrap" style="text-align:center;margin-top:16px;display:none;">'
+      +'<button onclick="window._sciCheck('+JSON.stringify(items)+')" style="padding:14px 36px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(14,165,233,.4);">✅ Check Answers!</button>'
+      +'</div>'
+      +'</div>';
+
+    var sorted={};
+    window._sciTap=function(el){
+      var ci=parseInt(el.dataset.cat);
+      var catEl=document.getElementById('sciCat'+ci);
+      if(!catEl) return;
+      el.style.background='white';
+      el.style.color='#0EA5E9';
+      el.style.border='2px solid #0EA5E9';
+      el.dataset.placed=ci;
+      catEl.appendChild(el);
+      // Check if all placed
+      var allItems=document.querySelectorAll('[id^="sci"][data-cat]');
+      var belt=document.getElementById('itemBelt');
+      var remaining=belt?belt.querySelectorAll('[data-cat]').length:0;
+      if(remaining===0){ var cw=document.getElementById('sciCheckWrap'); if(cw) cw.style.display='block'; }
+    };
+
+    window._sciCheck=function(items){
+      var correct=0;
+      items.forEach(function(item,i){
+        var el=document.getElementById('sci'+i);
+        if(!el) return;
+        var placed=parseInt(el.dataset.placed||'-1');
+        if(placed===item.cat){ correct++; el.style.background='linear-gradient(135deg,#22c55e,#4ade80)'; el.style.border='none'; el.style.color='white'; }
+        else { el.style.background='linear-gradient(135deg,#ef4444,#f87171)'; el.style.border='none'; el.style.color='white'; }
+      });
+      var all=items.length;
+      if(correct===all) score++;
+      toast(correct+'/'+all+' correct!');
+      rIdx++;
+      setTimeout(renderRound,1400);
+    };
+  }
+
+  renderRound();
 }
+
+// ══════════════════════════════════════════════════════════════════════
+//  4. SOCIAL STUDIES — COMMUNITY MAP MATCH
+// ══════════════════════════════════════════════════════════════════════
+function openSocialStudiesGame(grade) {
+  var CA='#F59E0B', CB='#FCD34D';
+  var ov = gameOverlay('ssGameOv','#FFFBF0');
+  document.body.appendChild(ov);
+
+  var ROUNDS = {
+    PreK: [
+      { q:'Where do you go to borrow books?', emoji:'📚', opts:['🏥 Hospital','📚 Library','🏪 Store','🏫 School'], answer:1 },
+      { q:'Who helps put out fires?', emoji:'🔥', opts:['👨‍⚕️ Doctor','👮 Police','🧑‍🚒 Firefighter','👨‍🍳 Chef'], answer:2 },
+      { q:'Where do you buy food?', emoji:'🛒', opts:['📚 Library','🏥 Hospital','🏪 Grocery store','🏤 Post office'], answer:2 },
+      { q:'Who teaches you at school?', emoji:'🏫', opts:['👨‍🍳 Chef','👨‍🏫 Teacher','👮 Police','🧑‍🚒 Firefighter'], answer:1 },
+      { q:'Where do sick people go?', emoji:'🤒', opts:['🏥 Hospital','📚 Library','🏪 Store','🏫 School'], answer:0 },
+    ],
+    K: [
+      { q:'What do we call a group of people living together?', emoji:'🏘️', opts:['A forest','A community','A country','A planet'], answer:1 },
+      { q:'What is a map used for?', emoji:'🗺️', opts:['Writing stories','Showing locations','Drawing pictures','Making music'], answer:1 },
+      { q:'Who is the leader of our country?', emoji:'🇺🇸', opts:['Mayor','Governor','President','Principal'], answer:2 },
+      { q:'What does a mail carrier do?', emoji:'📬', opts:['Cooks food','Delivers letters','Fights fires','Teaches kids'], answer:1 },
+      { q:'Why do we have rules?', emoji:'📋', opts:['To be mean','To keep everyone safe and fair','To stop fun','To confuse people'], answer:1 },
+    ],
+    1: [
+      { q:'What does a mayor do?', emoji:'🏛️', opts:['Leads a school','Leads a city','Leads a country','Leads a team'], answer:1 },
+      { q:'What is a law?', emoji:'⚖️', opts:['A suggestion','A rule everyone must follow','A wish','A story'], answer:1 },
+      { q:'What is a responsibility?', emoji:'✅', opts:['Something you must do or take care of','A hobby','A kind of game','A vacation'], answer:0 },
+      { q:'What is a continent?', emoji:'🌍', opts:['A small island','A large landmass','A country','An ocean'], answer:1 },
+      { q:'What does a governor do?', emoji:'🗺️', opts:['Leads a city','Leads a state','Leads a country','Leads a school'], answer:1 },
+    ],
+    2: [
+      { q:'What is a democracy?', emoji:'🗳️', opts:['One person rules','Citizens vote for leaders','No rules at all','Leaders are born into power'], answer:1 },
+      { q:'What is the economy?', emoji:'💰', opts:['A type of government','How money and goods are made and used','A weather system','A type of landform'], answer:1 },
+      { q:'What is a constitution?', emoji:'📜', opts:['A type of recipe','A set of basic laws for a country','A kind of map','A trade agreement'], answer:1 },
+      { q:'What is immigration?', emoji:'🌎', opts:['Moving within your country','Moving to a new country to live','Going on vacation','A type of trade'], answer:1 },
+      { q:'What are the three branches of US government?', emoji:'🏛️', opts:['City, state, country','Legislative, executive, judicial','Police, army, navy','President, mayor, governor'], answer:1 },
+    ],
+    3: [
+      { q:'What was the purpose of the Transcontinental Railroad?', emoji:'🚂', opts:['To go to war','To connect the East and West coasts','To import goods','To drain the Great Lakes'], answer:1 },
+      { q:'What is a primary source?', emoji:'📜', opts:['A summary of events','A firsthand account or original artifact','An encyclopedia article','A textbook summary'], answer:1 },
+      { q:'What is supply and demand?', emoji:'📊', opts:['A type of law','How prices are determined by availability and need','A government program','A type of tax'], answer:1 },
+      { q:'What was the main cause of the Civil War?', emoji:'⚔️', opts:['Territory disputes only','Slavery and states rights','Economic inequality only','Foreign invasion'], answer:1 },
+      { q:'What is a trade route?', emoji:'🗺️', opts:['A type of road','A path used to exchange goods between regions','A railway line','A military road'], answer:1 },
+    ],
+    4: [
+      { q:'What is manifest destiny?', emoji:'🌎', opts:['Protection of Native lands','The belief that the US should expand across the continent','A type of law','A foreign policy'], answer:1 },
+      { q:'What is a checks and balances system?', emoji:'⚖️', opts:['A banking system','How each branch of government limits the others','A type of tax','A voting system'], answer:1 },
+      { q:'What caused the Great Depression?', emoji:'📉', opts:['A world war','Stock market crash and bank failures','A natural disaster','A drought only'], answer:1 },
+      { q:'What is the Bill of Rights?', emoji:'📜', opts:['A tax document','The first 10 amendments protecting citizens rights','A trade agreement','A list of laws'], answer:1 },
+      { q:'What is globalization?', emoji:'🌐', opts:['Local trade only','The increasing interconnection of world economies and cultures','A type of government','Isolationism'], answer:1 },
+    ],
+    5: [
+      { q:'What is the significance of the Emancipation Proclamation?', emoji:'🗽', opts:['Ended WWI','Declared freedom for enslaved people in Confederate states','Created the Constitution','Ended the Mexican War'], answer:1 },
+      { q:'What is a filibuster in government?', emoji:'🏛️', opts:['A type of vote','A tactic to delay legislation through prolonged debate','A presidential veto','A court ruling'], answer:1 },
+      { q:'What does GDP measure?', emoji:'📊', opts:['Population size','Total value of goods and services produced in a country','Government spending only','Trade deficit'], answer:1 },
+      { q:'What was the purpose of the Marshall Plan?', emoji:'🌍', opts:['To rebuild Europe after WWII','To expand US territory','To fight communism directly','To establish the UN'], answer:0 },
+      { q:'What is the electoral college?', emoji:'🗳️', opts:['A school for politicians','A system where electors chosen by states vote for the president','A popular vote system','A congressional committee'], answer:1 },
+    ],
+  };
+
+  var pool = (ROUNDS[grade]||ROUNDS['2']).slice().sort(function(){return Math.random()-.5;});
+  var qIdx=0, score=0, TOTAL=pool.length;
+
+  function renderQ(){
+    if(qIdx>=TOTAL){ gameWinScreen(score,TOTAL,CA,CB,'ssGameOv'); return; }
+    var q=pool[qIdx];
+    ov.innerHTML = gameHeader('Community & World','🌍',CA,CB,'ssGameOv')
+      +'<div style="flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;align-items:center;max-width:480px;margin:0 auto;width:100%;">'
+      +'<div style="background:white;border-radius:20px;padding:24px;margin-bottom:20px;text-align:center;box-shadow:0 4px 16px rgba(245,158,11,.2);width:100%;">'
+      +'<div style="font-size:3rem;margin-bottom:10px;">'+q.emoji+'</div>'
+      +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.1rem;font-weight:800;color:#2D2D4E;line-height:1.5;">'+q.q+'</div>'
+      +'<div style="font-size:.8rem;color:#aaa;margin-top:6px;">Question '+(qIdx+1)+' of '+TOTAL+'</div>'
+      +'</div>'
+      +'<div style="display:flex;flex-direction:column;gap:10px;width:100%;">'
+      +q.opts.map(function(opt,i){
+        return '<button onclick="window._ssAnswer('+i+','+q.answer+')" '
+          +'style="padding:16px 20px;border-radius:18px;border:2px solid rgba(245,158,11,.25);background:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;text-align:left;box-shadow:0 3px 10px rgba(245,158,11,.12);transition:all .2s;">'+opt+'</button>';
+      }).join('')
+      +'</div>'
+      +'</div>';
+
+    window._ssAnswer=function(chosen,ans){
+      document.querySelectorAll('[onclick^="window._ssAnswer"]').forEach(function(b){b.style.pointerEvents='none';});
+      var btns=document.querySelectorAll('[onclick^="window._ssAnswer"]');
+      btns[ans].style.background='#E8FBF3'; btns[ans].style.borderColor='#22c55e'; btns[ans].style.color='#22c55e';
+      if(chosen===ans){ score++; toast('Correct! 🌟'); }
+      else { btns[chosen].style.background='#FFF0EE'; btns[chosen].style.borderColor='#ef4444'; btns[chosen].style.color='#ef4444'; toast('Not quite!'); }
+      qIdx++;
+      setTimeout(renderQ, 900);
+    };
+  }
+
+  renderQ();
+}
+
+// ══════════════════════════════════════════════════════════════════════
+//  5. COLORS/SHAPES SORT + ANIMALS & NATURE — use science sort engine
+// ══════════════════════════════════════════════════════════════════════
+function openColorsGame(grade) {
+  var CA='#EC4899', CB='#F472B6';
+  var ov = gameOverlay('colorsGameOv','#FFF0F8');
+  document.body.appendChild(ov);
+
+  var ROUNDS = {
+    PreK: [
+      { title:'What color is it?', cats:['🔴 Red','🔵 Blue','🟡 Yellow'],
+        items:[{label:'🍎 Apple',cat:0},{label:'🌊 Ocean',cat:1},{label:'🍋 Lemon',cat:2},{label:'🚒 Fire truck',cat:0},{label:'☁️ Sky',cat:1},{label:'🌻 Sunflower',cat:2}]},
+      { title:'Sort the shapes!', cats:['⭕ Circle','⬛ Square','🔺 Triangle'],
+        items:[{label:'🍕 Pizza',cat:0},{label:'🎲 Dice face',cat:1},{label:'🎄 Tree top',cat:2},{label:'🔘 Button',cat:0},{label:'🗺️ Window',cat:1},{label:'⚠️ Warning sign',cat:2}]},
+    ],
+    K: [
+      { title:'Primary or Secondary color?', cats:['🎨 Primary','🌈 Secondary'],
+        items:[{label:'🔴 Red',cat:0},{label:'🔵 Blue',cat:0},{label:'🟡 Yellow',cat:0},{label:'🟠 Orange',cat:1},{label:'🟢 Green',cat:1},{label:'🟣 Purple',cat:1}]},
+      { title:'2D or 3D shape?', cats:['📐 2D Flat','📦 3D Solid'],
+        items:[{label:'⭕ Circle',cat:0},{label:'⬛ Square',cat:0},{label:'🔺 Triangle',cat:0},{label:'⬡ Hexagon',cat:0},{label:'🎲 Cube',cat:1},{label:'🔮 Sphere',cat:1},{label:'🎉 Cone',cat:1},{label:'🥫 Cylinder',cat:1}]},
+    ],
+    1: [
+      { title:'Warm or Cool color?', cats:['🔥 Warm','🧊 Cool'],
+        items:[{label:'🔴 Red',cat:0},{label:'🟠 Orange',cat:0},{label:'🟡 Yellow',cat:0},{label:'🩷 Pink',cat:0},{label:'🔵 Blue',cat:1},{label:'🟢 Green',cat:1},{label:'🟣 Purple',cat:1},{label:'🩵 Teal',cat:1}]},
+    ],
+    2: [
+      { title:'Has symmetry or not?', cats:['⚖️ Symmetrical','💔 Asymmetrical'],
+        items:[{label:'⭕ Circle',cat:0},{label:'⬛ Square',cat:0},{label:'🔺 Equilateral triangle',cat:0},{label:'💎 Diamond',cat:0},{label:'🫸 Irregular shape',cat:1},{label:'🗝️ Key',cat:1},{label:'🦄 Random blob',cat:1}]},
+    ],
+    3: [
+      { title:'Polygon or Not a Polygon?', cats:['📐 Polygon','🚫 Not Polygon'],
+        items:[{label:'⬛ Square',cat:0},{label:'🔺 Triangle',cat:0},{label:'⬡ Hexagon',cat:0},{label:'▬ Rectangle',cat:0},{label:'⭕ Circle',cat:1},{label:'🔮 Oval',cat:1},{label:'⭐ Heart',cat:1}]},
+    ],
+    4: [
+      { title:'Acute, Right, or Obtuse angle?', cats:['🔹 Acute <90°','📐 Right =90°','🔶 Obtuse >90°'],
+        items:[{label:'30° angle',cat:0},{label:'45° angle',cat:0},{label:'90° corner',cat:1},{label:'L-shape',cat:1},{label:'120° angle',cat:2},{label:'150° angle',cat:2},{label:'170° angle',cat:2}]},
+    ],
+    5: [
+      { title:'Area or Perimeter problem?', cats:['📏 Perimeter (distance around)','⬜ Area (space inside)'],
+        items:[{label:'Fencing a yard',cat:0},{label:'Border of a picture',cat:0},{label:'Paint for a floor',cat:1},{label:'Carpet for a room',cat:1},{label:'Trim around a window',cat:0},{label:'Tiles to cover a table',cat:1}]},
+    ],
+  };
+
+  var rounds=(ROUNDS[grade]||ROUNDS['1']).slice();
+  rounds.sort(function(){return Math.random()-.5;});
+  var rIdx=0,score=0,TOTAL=rounds.length;
+
+  function renderRound(){
+    if(rIdx>=TOTAL){ gameWinScreen(score,TOTAL,CA,CB,'colorsGameOv'); return; }
+    var r=rounds[rIdx];
+    var items=r.items.slice().sort(function(){return Math.random()-.5;});
+
+    ov.innerHTML = gameHeader('Colors & Shapes','🎨',CA,CB,'colorsGameOv')
+      +'<div style="flex:1;overflow-y:auto;padding:16px;max-width:500px;margin:0 auto;width:100%;">'
+      +'<div style="background:white;border-radius:18px;padding:14px 18px;margin-bottom:14px;text-align:center;box-shadow:0 4px 14px rgba(236,72,153,.15);">'
+      +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.05rem;font-weight:800;color:'+CA+';">'+r.title+'</div>'
+      +'<div style="font-size:.85rem;color:#888;margin-top:2px;">Tap to sort!</div>'
+      +'</div>'
+      +'<div id="csItems" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px;">'
+      +items.map(function(item,i){
+        return '<div id="csi'+i+'" data-cat="'+item.cat+'" onclick="window._csTap(this,'+r.cats.length+')" '
+          +'style="padding:10px 14px;border-radius:14px;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-weight:700;font-size:.9rem;cursor:pointer;box-shadow:0 4px 12px rgba(236,72,153,.3);transition:all .2s;">'+item.label+'</div>';
+      }).join('')
+      +'</div>'
+      +'<div style="display:grid;grid-template-columns:'+Array(r.cats.length).fill('1fr').join(' ')+';gap:10px;">'
+      +r.cats.map(function(cat,ci){
+        return '<div id="csCat'+ci+'" data-catidx="'+ci+'" '
+          +'style="min-height:80px;border-radius:16px;background:rgba(236,72,153,.07);border:2px dashed rgba(236,72,153,.3);padding:10px;display:flex;flex-direction:column;gap:6px;">'
+          +'<div style="font-weight:800;font-size:.82rem;color:'+CA+';text-align:center;margin-bottom:2px;">'+cat+'</div>'
+          +'</div>';
+      }).join('')
+      +'</div>'
+      +'<div id="csCheckWrap" style="text-align:center;margin-top:16px;display:none;">'
+      +'<button onclick="window._csCheck('+JSON.stringify(items)+')" style="padding:14px 36px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(236,72,153,.4);">✅ Check!</button>'
+      +'</div>'
+      +'</div>';
+
+    window._csTap=function(el,numCats){
+      var ci=parseInt(el.dataset.cat);
+      var catEl=document.getElementById('csCat'+ci);
+      if(!catEl) return;
+      el.style.background='white'; el.style.color=CA; el.style.border='2px solid '+CA;
+      el.dataset.placed=ci;
+      catEl.appendChild(el);
+      var belt=document.getElementById('csItems');
+      if(belt&&belt.querySelectorAll('[data-cat]').length===0){ var cw=document.getElementById('csCheckWrap'); if(cw) cw.style.display='block'; }
+    };
+
+    window._csCheck=function(items){
+      var correct=0;
+      items.forEach(function(item,i){
+        var el=document.getElementById('csi'+i);
+        if(!el) return;
+        var placed=parseInt(el.dataset.placed||'-1');
+        if(placed===item.cat){ correct++; el.style.background='linear-gradient(135deg,#22c55e,#4ade80)'; el.style.border='none'; el.style.color='white'; }
+        else { el.style.background='linear-gradient(135deg,#ef4444,#f87171)'; el.style.border='none'; el.style.color='white'; }
+      });
+      if(correct===items.length) score++;
+      toast(correct+'/'+items.length+' correct!');
+      rIdx++;
+      setTimeout(renderRound,1400);
+    };
+  }
+  renderRound();
+}
+
+// ══════════════════════════════════════════════════════════════════════
+//  UPDATED startSubject ROUTER
+// ══════════════════════════════════════════════════════════════════════
 
 // ══════════════════════════════════════════════════════
 //  DRAWING CANVAS
