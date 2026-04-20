@@ -1,6 +1,6 @@
-<!-- BloomiKids v349 -->
+<!-- BloomiKids v350 -->
 <!DOCTYPE html>
-<!-- BloomiKids v331 - games + gloss + music fix -->
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -24,10 +24,10 @@
   --sunshine: #FFD166;
   --coral:    #FF6B6B;
   --lavender: #C9B8FF;
-  --bg:       #F2EFFF;
+  --bg:       #FAF7FF;
   --text:     #2D2D4E;
   --muted:    #8888AA;
-  --shadow:   0 8px 32px rgba(45,45,78,0.13), 0 2px 8px rgba(45,45,78,0.07);
+  --shadow:   0 8px 32px rgba(45,45,78,0.10);
   --font-body: 1rem;
   --font-heading: 1.5rem;
   --font-big: 2.4rem;
@@ -243,16 +243,15 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .section-title { font-family:'Baloo 2',cursive; font-size:var(--font-heading); font-weight:800; margin-bottom:18px; display:flex; align-items:center; gap:10px; }
 
 .cards-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-bottom:28px; }
-.card { background:white; border-radius:28px; padding:20px 12px; box-shadow:0 8px 24px rgba(45,45,78,.14), 0 2px 6px rgba(45,45,78,.07); cursor:pointer; transition:all .3s; position:relative; overflow:hidden; min-height:150px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
-.card:hover { transform:translateY(-6px) scale(1.02); box-shadow:0 20px 48px rgba(45,45,78,.22), 0 4px 12px rgba(45,45,78,.10); }
+.card { background:white; border-radius:28px; padding:20px 12px; box-shadow:0 4px 20px rgba(45,45,78,.10); cursor:pointer; transition:all .3s; position:relative; overflow:hidden; min-height:150px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.card:hover { transform:translateY(-6px) scale(1.02); box-shadow:0 16px 40px rgba(45,45,78,.18); }
 .card::before { display:none; }
-.card::after { content:''; position:absolute; top:0; left:0; right:0; height:52%; background:linear-gradient(180deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,0) 100%); border-radius:28px 28px 60% 60% / 28px 28px 40px 40px; pointer-events:none; z-index:1; }
-.card.mint     { background:linear-gradient(155deg,#AAFCE0,#5ECDA0 60%,#3AB87A); box-shadow:0 8px 28px rgba(94,205,160,.35), 0 2px 8px rgba(94,205,160,.2); }
-.card.coral    { background:linear-gradient(155deg,#FFCFC7,#FF7A6B 60%,#E55545); box-shadow:0 8px 28px rgba(255,122,107,.35), 0 2px 8px rgba(255,122,107,.2); }
-.card.lavender { background:linear-gradient(155deg,#E0D8FF,#A78BFA 60%,#7C5CDB); box-shadow:0 8px 28px rgba(167,139,250,.40), 0 2px 8px rgba(139,111,232,.2); }
-.card.sun      { background:linear-gradient(155deg,#FFE88A,#FFCC00 60%,#E5A800); box-shadow:0 8px 28px rgba(255,204,0,.40), 0 2px 8px rgba(212,160,23,.2); }
-.card-icon  { font-size:3.8rem; margin-bottom:10px; filter:drop-shadow(0 4px 8px rgba(0,0,0,.10)); position:relative; z-index:2; }
-.card-title { font-family:'Baloo 2',cursive; font-size:1rem; font-weight:800; margin-bottom:0; text-align:center; color:rgba(255,255,255,.95); padding:0 8px; line-height:1.3; text-shadow:0 1px 4px rgba(0,0,0,.25); position:relative; z-index:2; }
+.card.mint     { background:linear-gradient(145deg,#E8FFF6,#C5F0E0); }
+.card.coral    { background:linear-gradient(145deg,#FFF0ED,#FFD5CC); }
+.card.lavender { background:linear-gradient(145deg,#F3EFFF,#E0D5FF); }
+.card.sun      { background:linear-gradient(145deg,#FFFAE8,#FFE9A0); }
+.card-icon  { font-size:3.8rem; margin-bottom:10px; filter:drop-shadow(0 4px 8px rgba(0,0,0,.10)); }
+.card-title { font-family:'Baloo 2',cursive; font-size:1rem; font-weight:800; margin-bottom:0; text-align:center; color:#2D2D4E; padding:0 8px; line-height:1.3; }
 .card-desc  { display:none; }
 .card-badge { display:none; }
 .badge-mint    { background:#E8FBF3; color:var(--mint); }
@@ -264,7 +263,7 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 body.grade-prek .card-icon, body.grade-k .card-icon, body.grade-1 .card-icon { font-size:4.2rem; }
 
 .stats-row { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:28px; }
-.stat-chip { background:linear-gradient(160deg,#FFFFFF,#F0EEFF); border-radius:16px; padding:14px 20px; box-shadow:0 6px 20px rgba(45,45,78,.12), inset 0 1px 0 rgba(255,255,255,.9); flex:1; min-width:90px; text-align:center; }
+.stat-chip { background:white; border-radius:16px; padding:14px 20px; box-shadow:var(--shadow); flex:1; min-width:90px; text-align:center; }
 .stat-num { font-family:'Baloo 2',cursive; font-size:2rem; font-weight:800; }
 .stat-lbl { color:var(--muted); font-size:.78rem; font-weight:700; text-transform:uppercase; letter-spacing:.5px; }
 .num-mint{ color:var(--mint); } .num-coral{ color:var(--coral); } .num-sun{ color:#D4A017; } .num-lav{ color:#8B6FE8; }
@@ -276,8 +275,8 @@ body.grade-prek .stat-num, body.grade-k .stat-num, body.grade-1 .stat-num { font
 .quiz-box { background:white; border-radius:24px; padding:28px; box-shadow:var(--shadow); margin-bottom:28px; }
 .quiz-question { font-family:'Baloo 2',cursive; font-size:var(--font-heading); font-weight:800; margin-bottom:20px; line-height:1.4; }
 .quiz-options { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-.quiz-opt { padding:16px 18px; border-radius:20px; border:2.5px solid rgba(167,139,250,.25); background:linear-gradient(160deg,#FFFFFF,#F4F0FF); cursor:pointer; font-weight:700; font-size:var(--font-body); transition:all .2s; text-align:center; line-height:1.3; box-shadow:0 3px 12px rgba(45,45,78,.08), inset 0 1px 0 rgba(255,255,255,.9); }
-.quiz-opt:hover { border-color:var(--lavender); background:linear-gradient(160deg,#F3EFFF,#E8DEFF); transform:scale(1.03); box-shadow:0 6px 20px rgba(139,111,232,.20), inset 0 1px 0 rgba(255,255,255,.9); }
+.quiz-opt { padding:16px 18px; border-radius:20px; border:3px solid #F0F0F8; background:#FAF9FF; cursor:pointer; font-weight:700; font-size:var(--font-body); transition:all .2s; text-align:center; line-height:1.3; }
+.quiz-opt:hover { border-color:var(--lavender); background:#F3EFFF; transform:scale(1.03); }
 .quiz-opt.correct { border-color:var(--mint); background:#E8FBF3; color:var(--mint); }
 .quiz-opt.wrong   { border-color:var(--coral); background:#FFF0F0; color:var(--coral); }
 
@@ -309,7 +308,7 @@ body.grade-1 .quiz-opt { padding:18px; font-size:1.1rem; }
 
 /* -- YOGA ---------------------------------------------- */
 .yoga-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:16px; margin-bottom:28px; }
-.pose-card { background:linear-gradient(160deg,#FFFFFF,#F0EEFF); border-radius:24px; padding:16px 16px 18px; text-align:center; box-shadow:0 8px 24px rgba(45,45,78,.13), inset 0 1px 0 rgba(255,255,255,.9); cursor:pointer; transition:all .3s; position:relative; overflow:hidden; }
+.pose-card { background:white; border-radius:24px; padding:16px 16px 18px; text-align:center; box-shadow:var(--shadow); cursor:pointer; transition:all .3s; position:relative; overflow:hidden; }
 .pose-card:hover { transform:translateY(-4px) scale(1.02); box-shadow:0 16px 40px rgba(45,45,78,0.15); }
 .pose-card.active-pose { border:3px solid var(--lavender); background:linear-gradient(135deg,#FAF8FF,#F0EEFF); }
 .pose-card::before { content:''; position:absolute; top:0; left:0; right:0; height:90px; border-radius:20px 20px 60% 60%; opacity:.08; z-index:0; }
@@ -5205,47 +5204,6 @@ function gameWinScreen(score, total, colorA, colorB, ovId) {
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 //  1. MATH GAME â€” DRAG-AND-DROP NUMBER ORDERING + VISUAL MATH
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-//  SHARED GAME UTILITIES
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-function gameOverlay(id, bgColor) {
-  var ov = document.createElement('div');
-  ov.id = id;
-  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:' + bgColor + ';display:flex;flex-direction:column;overflow:hidden;';
-  return ov;
-}
-function gameHeader(title, emoji, colorA, colorB, ovId) {
-  return '<div style="background:linear-gradient(135deg,'+colorA+','+colorB+');padding:14px 20px;color:white;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;box-shadow:0 4px 16px rgba(0,0,0,.15);">'
-    +'<div style="font-size:1.4rem;">'+emoji+'</div>'
-    +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.05rem;font-weight:800;letter-spacing:.3px;">'+title+'</div>'
-    +'<button onclick="document.getElementById(\''+ovId+'\').remove();" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;font-size:1rem;line-height:1;">âœ•</button>'
-    +'</div>';
-}
-function gameScoreBar(score, total, colorA, colorB) {
-  var pct = total > 0 ? Math.round(score/total*100) : 0;
-  return '<div style="background:rgba(255,255,255,.15);height:6px;border-radius:3px;margin:0 20px 0;">'
-    +'<div style="background:linear-gradient(90deg,'+colorA+','+colorB+');height:6px;border-radius:3px;width:'+pct+'%;transition:width .4s;"></div>'
-    +'</div>';
-}
-function gameWinScreen(score, total, colorA, colorB, ovId) {
-  var pct = total > 0 ? Math.round(score/total*100) : 0;
-  var trophy = pct >= 80 ? 'í ¼í¿†' : pct >= 50 ? 'í ¼í¼Ÿ' : 'í ½í²ª';
-  var msg = pct >= 80 ? 'Amazing work!' : pct >= 50 ? 'Great job!' : 'Keep practicing!';
-  var ov = document.getElementById(ovId); if(!ov) return;
-  ov.innerHTML = '<div style="position:absolute;inset:0;background:linear-gradient(135deg,'+colorA+','+colorB+');display:flex;flex-direction:column;align-items:center;justify-content:center;color:white;padding:32px;text-align:center;">'
-    +'<div style="font-size:5rem;margin-bottom:8px;animation:bounceIn .5s;">'+trophy+'</div>'
-    +'<div style="font-family:\'Baloo 2\',cursive;font-size:2rem;font-weight:800;margin-bottom:6px;">'+score+' / '+total+'</div>'
-    +'<div style="font-size:1.1rem;opacity:.9;margin-bottom:28px;">'+msg+'</div>'
-    +'<div style="display:flex;gap:12px;">'
-    +'<button onclick="document.getElementById(\''+ovId+'\').remove();showScreen(\'app\');" style="padding:14px 28px;border-radius:40px;border:none;background:white;color:'+colorA+';font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.2);">í ¼í¿  Home</button>'
-    +'</div></div>';
-  if(activeChild) { try { sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:score*10}).catch(function(){}); sessionData.stars+=score*10; var el=document.getElementById('statStars'); if(el) el.textContent=sessionData.stars; if(score>0) toast('+'+score*10+' Stars! â­'); } catch(e){} }
-}
-
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-//  1. MATH GAME â€” DRAG-AND-DROP NUMBER ORDERING + VISUAL MATH
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function openMathGame(grade) {
   var CA='#6C3FC5', CB='#A78BFA';
   var ov = gameOverlay('mathGameOv','#F2EFFF');
@@ -5280,7 +5238,7 @@ function openMathGame(grade) {
   function renderRound() {
     if(round >= ROUNDS) { gameWinScreen(score, ROUNDS, CA, CB, 'mathGameOv'); return; }
     var r = makeRound();
-    ov.innerHTML = gameHeader('Number Order', 'í ½í´¢', CA, CB, 'mathGameOv')
+    ov.innerHTML = gameHeader('Number Order', 'ğŸ”¢', CA, CB, 'mathGameOv')
       + '<div style="flex:1;overflow-y:auto;padding:24px 20px;display:flex;flex-direction:column;align-items:center;">'
       + '<div style="background:white;border-radius:20px;padding:16px 20px;margin-bottom:20px;text-align:center;box-shadow:0 4px 16px rgba(108,63,197,.15);width:100%;max-width:420px;">'
       + '<div style="font-family:\'Baloo 2\',cursive;font-size:1.05rem;font-weight:800;color:#6C3FC5;margin-bottom:4px;">Round '+(round+1)+' of '+ROUNDS+'</div>'
@@ -5387,7 +5345,7 @@ function openMathGame(grade) {
           el.style.boxShadow='0 6px 18px rgba(239,68,68,.4)';
         }
       });
-      if(correct){ score++; toast('Perfect order! í ¼í¼Ÿ'); }
+      if(correct){ score++; toast('Perfect order! ğŸŒŸ'); }
       else { toast('Almost! The right order was: '+window._mathCurrentSorted.join(' â†’ ')); }
       round++;
       setTimeout(renderRound, 1400);
@@ -5407,113 +5365,113 @@ function openLangGame(grade) {
 
   var WORD_DATA = {
     PreK: [
-      {word:'CAT',  hint:'í ½í°± Meows!',    letters:['C','A','T','X','S']},
-      {word:'DOG',  hint:'í ½í°¶ Woofs!',    letters:['D','O','G','P','A']},
+      {word:'CAT',  hint:'ğŸ± Meows!',    letters:['C','A','T','X','S']},
+      {word:'DOG',  hint:'ğŸ¶ Woofs!',    letters:['D','O','G','P','A']},
       {word:'SUN',  hint:'â˜€ï¸ Shines!',   letters:['S','U','N','T','R']},
-      {word:'BEE',  hint:'í ½í° Buzzes!',   letters:['B','E','E','A','Z']},
-      {word:'HEN',  hint:'í ½í°” Clucks!',   letters:['H','E','N','A','T']},
-      {word:'ANT',  hint:'í ½í°œ Marches!',  letters:['A','N','T','B','S']},
-      {word:'PIG',  hint:'í ½í°· Oinks!',    letters:['P','I','G','D','N']},
-      {word:'COW',  hint:'í ½í°„ Moos!',     letters:['C','O','W','B','X']},
+      {word:'BEE',  hint:'ğŸ Buzzes!',   letters:['B','E','E','A','Z']},
+      {word:'HEN',  hint:'ğŸ” Clucks!',   letters:['H','E','N','A','T']},
+      {word:'ANT',  hint:'ğŸœ Marches!',  letters:['A','N','T','B','S']},
+      {word:'PIG',  hint:'ğŸ· Oinks!',    letters:['P','I','G','D','N']},
+      {word:'COW',  hint:'ğŸ„ Moos!',     letters:['C','O','W','B','X']},
     ],
     K: [
-      {word:'FROG',  hint:'í ½í°¸ Hops!',     letters:['F','R','O','G','T','X']},
-      {word:'BIRD',  hint:'í ½í°¦ Flies!',    letters:['B','I','R','D','S','N']},
-      {word:'CAKE',  hint:'í ¼í¾‚ Yummy!',    letters:['C','A','K','E','T','L']},
-      {word:'RAIN',  hint:'í ¼í¼§ï¸ Falls down!',letters:['R','A','I','N','T','S']},
+      {word:'FROG',  hint:'ğŸ¸ Hops!',     letters:['F','R','O','G','T','X']},
+      {word:'BIRD',  hint:'ğŸ¦ Flies!',    letters:['B','I','R','D','S','N']},
+      {word:'CAKE',  hint:'ğŸ‚ Yummy!',    letters:['C','A','K','E','T','L']},
+      {word:'RAIN',  hint:'ğŸŒ§ï¸ Falls down!',letters:['R','A','I','N','T','S']},
       {word:'STAR',  hint:'â­ Twinkles!', letters:['S','T','A','R','N','M']},
-      {word:'FISH',  hint:'í ½í°Ÿ Swims!',    letters:['F','I','S','H','B','T']},
-      {word:'JUMP',  hint:'í ¼í¿ƒ Bounces!',  letters:['J','U','M','P','D','K']},
-      {word:'DUCK',  hint:'í ¾í¶† Quacks!',   letters:['D','U','C','K','T','P']},
+      {word:'FISH',  hint:'ğŸŸ Swims!',    letters:['F','I','S','H','B','T']},
+      {word:'JUMP',  hint:'ğŸƒ Bounces!',  letters:['J','U','M','P','D','K']},
+      {word:'DUCK',  hint:'ğŸ¦† Quacks!',   letters:['D','U','C','K','T','P']},
     ],
     1: [
-      {word:'PLANT',  hint:'í ¼í¼± Grows in dirt!',   letters:['P','L','A','N','T','B','S']},
-      {word:'BRAVE',  hint:'í ½í²ª Not scared!',       letters:['B','R','A','V','E','T','S']},
+      {word:'PLANT',  hint:'ğŸŒ± Grows in dirt!',   letters:['P','L','A','N','T','B','S']},
+      {word:'BRAVE',  hint:'ğŸ’ª Not scared!',       letters:['B','R','A','V','E','T','S']},
       {word:'CLOUD',  hint:'â˜ï¸ Floats in sky!',   letters:['C','L','O','U','D','P','N']},
-      {word:'SHAKE',  hint:'í ¾í´ Wobbles!',          letters:['S','H','A','K','E','T','N']},
-      {word:'TIGER',  hint:'í ½í°¯ Big stripy cat!',   letters:['T','I','G','E','R','S','N']},
-      {word:'GLOBE',  hint:'í ¼í¼ Round world!',      letters:['G','L','O','B','E','S','T']},
-      {word:'FLAME',  hint:'í ½í´¥ Hot and bright!',   letters:['F','L','A','M','E','T','B']},
-      {word:'CRISP',  hint:'í ¼í½‚ Crunchy!',          letters:['C','R','I','S','P','T','N']},
+      {word:'SHAKE',  hint:'ğŸ¤ Wobbles!',          letters:['S','H','A','K','E','T','N']},
+      {word:'TIGER',  hint:'ğŸ¯ Big stripy cat!',   letters:['T','I','G','E','R','S','N']},
+      {word:'GLOBE',  hint:'ğŸŒ Round world!',      letters:['G','L','O','B','E','S','T']},
+      {word:'FLAME',  hint:'ğŸ”¥ Hot and bright!',   letters:['F','L','A','M','E','T','B']},
+      {word:'CRISP',  hint:'ğŸ‚ Crunchy!',          letters:['C','R','I','S','P','T','N']},
     ],
     2: [
-      {word:'BRIDGE',  hint:'í ¼í¼‰ Crosses water!',   letters:['B','R','I','D','G','E','T','S']},
-      {word:'FROZEN',  hint:'í ¾í·Š Really cold!',     letters:['F','R','O','Z','E','N','T','S']},
-      {word:'PLANET',  hint:'í ¾íº Orbits a star!',   letters:['P','L','A','N','E','T','B','S']},
-      {word:'JUNGLE',  hint:'í ¼í¼¿ Dense forest!',    letters:['J','U','N','G','L','E','T','S']},
-      {word:'CASTLE',  hint:'í ¼í¿° Knight lives here!',letters:['C','A','S','T','L','E','B','R']},
-      {word:'FLOWER',  hint:'í ¼í¼¸ Pretty bloom!',    letters:['F','L','O','W','E','R','T','S']},
-      {word:'ROCKET',  hint:'í ½íº€ Goes to space!',   letters:['R','O','C','K','E','T','S','N']},
-      {word:'SILVER',  hint:'í ¾íµˆ Shiny metal!',     letters:['S','I','L','V','E','R','T','N']},
+      {word:'BRIDGE',  hint:'ğŸŒ‰ Crosses water!',   letters:['B','R','I','D','G','E','T','S']},
+      {word:'FROZEN',  hint:'ğŸ§Š Really cold!',     letters:['F','R','O','Z','E','N','T','S']},
+      {word:'PLANET',  hint:'ğŸª Orbits a star!',   letters:['P','L','A','N','E','T','B','S']},
+      {word:'JUNGLE',  hint:'ğŸŒ¿ Dense forest!',    letters:['J','U','N','G','L','E','T','S']},
+      {word:'CASTLE',  hint:'ğŸ° Knight lives here!',letters:['C','A','S','T','L','E','B','R']},
+      {word:'FLOWER',  hint:'ğŸŒ¸ Pretty bloom!',    letters:['F','L','O','W','E','R','T','S']},
+      {word:'ROCKET',  hint:'ğŸš€ Goes to space!',   letters:['R','O','C','K','E','T','S','N']},
+      {word:'SILVER',  hint:'ğŸ¥ˆ Shiny metal!',     letters:['S','I','L','V','E','R','T','N']},
     ],
     3: [
-      {word:'SHELTER',  hint:'í ¼í¿  Keeps you safe!',  letters:['S','H','E','L','T','E','R','N','B']},
-      {word:'KINGDOM',  hint:'í ½í±‘ Where kings rule!',letters:['K','I','N','G','D','O','M','T','S']},
+      {word:'SHELTER',  hint:'ğŸ  Keeps you safe!',  letters:['S','H','E','L','T','E','R','N','B']},
+      {word:'KINGDOM',  hint:'ğŸ‘‘ Where kings rule!',letters:['K','I','N','G','D','O','M','T','S']},
       {word:'THUNDER',  hint:'â›ˆï¸ Loud storm sound!',letters:['T','H','U','N','D','E','R','S','B']},
       {word:'CAPTAIN',  hint:'âš“ Ship leader!',     letters:['C','A','P','T','A','I','N','S','R']},
-      {word:'JOURNEY',  hint:'í ½í·ºï¸ Long trip!',      letters:['J','O','U','R','N','E','Y','S','T']},
-      {word:'HARVEST',  hint:'í ¼í¼¾ Gathering crops!', letters:['H','A','R','V','E','S','T','N','B']},
+      {word:'JOURNEY',  hint:'ğŸ—ºï¸ Long trip!',      letters:['J','O','U','R','N','E','Y','S','T']},
+      {word:'HARVEST',  hint:'ğŸŒ¾ Gathering crops!', letters:['H','A','R','V','E','S','T','N','B']},
     ],
     4: [
-      {word:'ABSOLUTE',  hint:'í ½í²¯ Complete and total!',   letters:['A','B','S','O','L','U','T','E','R','N']},
+      {word:'ABSOLUTE',  hint:'ğŸ’¯ Complete and total!',   letters:['A','B','S','O','L','U','T','E','R','N']},
       {word:'CONFLICT',  hint:'âš”ï¸ A disagreement!',      letters:['C','O','N','F','L','I','C','T','S','R']},
-      {word:'DISCOVER',  hint:'í ½í´ Find something new!',  letters:['D','I','S','C','O','V','E','R','T','N']},
+      {word:'DISCOVER',  hint:'ğŸ” Find something new!',  letters:['D','I','S','C','O','V','E','R','T','N']},
       {word:'FRACTION',  hint:'Â½ Part of a whole!',      letters:['F','R','A','C','T','I','O','N','S','B']},
-      {word:'MAGNETIC',  hint:'í ¾í·² Attracts metal!',      letters:['M','A','G','N','E','T','I','C','S','R']},
+      {word:'MAGNETIC',  hint:'ğŸ§² Attracts metal!',      letters:['M','A','G','N','E','T','I','C','S','R']},
       {word:'PARALLEL',  hint:'â•‘ Lines that never meet!',letters:['P','A','R','A','L','L','E','L','T','S']},
     ],
     5: [
-      {word:'DEMOCRACY',  hint:'í ½í·³ï¸ People vote!',       letters:['D','E','M','O','C','R','A','C','Y','T','S']},
-      {word:'CALCULATE',  hint:'í ½í´¢ Figure out math!',   letters:['C','A','L','C','U','L','A','T','E','S','R']},
-      {word:'ADVENTURE',  hint:'í ½í·ºï¸ Exciting journey!',  letters:['A','D','V','E','N','T','U','R','E','S','B']},
-      {word:'PRINCIPAL',  hint:'í ¼í¿« School leader!',     letters:['P','R','I','N','C','I','P','A','L','T','S']},
-      {word:'ECOSYSTEM',  hint:'í ¼í¼¿ Living community!',  letters:['E','C','O','S','Y','S','T','E','M','R','N']},
-      {word:'MIGRATION',  hint:'í ¾í¶… Animals moving!',    letters:['M','I','G','R','A','T','I','O','N','S','C']},
+      {word:'DEMOCRACY',  hint:'ğŸ—³ï¸ People vote!',       letters:['D','E','M','O','C','R','A','C','Y','T','S']},
+      {word:'CALCULATE',  hint:'ğŸ”¢ Figure out math!',   letters:['C','A','L','C','U','L','A','T','E','S','R']},
+      {word:'ADVENTURE',  hint:'ğŸ—ºï¸ Exciting journey!',  letters:['A','D','V','E','N','T','U','R','E','S','B']},
+      {word:'PRINCIPAL',  hint:'ğŸ« School leader!',     letters:['P','R','I','N','C','I','P','A','L','T','S']},
+      {word:'ECOSYSTEM',  hint:'ğŸŒ¿ Living community!',  letters:['E','C','O','S','Y','S','T','E','M','R','N']},
+      {word:'MIGRATION',  hint:'ğŸ¦… Animals moving!',    letters:['M','I','G','R','A','T','I','O','N','S','C']},
     ],
   };
 
   var STORY_DATA = {
     PreK: [
       {story:'The little ____ sat in the sun.', blanks:['cat','dog','bug','hen'], answer:0, pic:'â˜€ï¸'},
-      {story:'I see a big ____ in the sky.', blanks:['cloud','pizza','shoe','desk'], answer:0, pic:'í ¼í¼¤ï¸'},
-      {story:'The ____ jumped over the fence.', blanks:['frog','book','chair','lamp'], answer:0, pic:'í ½í°¸'},
-      {story:'She ate a yummy ____.', blanks:['apple','rock','sock','cloud'], answer:0, pic:'í ¼í½'},
+      {story:'I see a big ____ in the sky.', blanks:['cloud','pizza','shoe','desk'], answer:0, pic:'ğŸŒ¤ï¸'},
+      {story:'The ____ jumped over the fence.', blanks:['frog','book','chair','lamp'], answer:0, pic:'ğŸ¸'},
+      {story:'She ate a yummy ____.', blanks:['apple','rock','sock','cloud'], answer:0, pic:'ğŸ'},
     ],
     K: [
-      {story:'The baby bird learned how to ____.', blanks:['fly','sleep','moo','bark'], answer:0, pic:'í ½í°¦'},
-      {story:'We planted a seed and it started to ____.', blanks:['grow','swim','bark','fly'], answer:0, pic:'í ¼í¼±'},
-      {story:'The puppy wagged its ____ when it was happy.', blanks:['tail','nose','wing','shell'], answer:0, pic:'í ½í°¶'},
-      {story:'On a rainy day we see a ____ in the sky.', blanks:['rainbow','sandwich','ladder','pillow'], answer:0, pic:'í ¼í¼ˆ'},
+      {story:'The baby bird learned how to ____.', blanks:['fly','sleep','moo','bark'], answer:0, pic:'ğŸ¦'},
+      {story:'We planted a seed and it started to ____.', blanks:['grow','swim','bark','fly'], answer:0, pic:'ğŸŒ±'},
+      {story:'The puppy wagged its ____ when it was happy.', blanks:['tail','nose','wing','shell'], answer:0, pic:'ğŸ¶'},
+      {story:'On a rainy day we see a ____ in the sky.', blanks:['rainbow','sandwich','ladder','pillow'], answer:0, pic:'ğŸŒˆ'},
     ],
     1: [
-      {story:'The explorer used a map to find her way through the dark ____.', blanks:['jungle','kitchen','classroom','bedroom'], answer:0, pic:'í ½í·ºï¸'},
-      {story:'Scientists study the ____ to learn how the universe began.', blanks:['stars','cookies','furniture','playground'], answer:0, pic:'í ¼í¼Œ'},
-      {story:'The caterpillar built a ____ before becoming a butterfly.', blanks:['chrysalis','sandwich','tower','puddle'], answer:0, pic:'í ½í°›'},
-      {story:'Without ____, plants cannot make their own food.', blanks:['sunlight','music','laughter','homework'], answer:0, pic:'í ¼í¼¿'},
+      {story:'The explorer used a map to find her way through the dark ____.', blanks:['jungle','kitchen','classroom','bedroom'], answer:0, pic:'ğŸ—ºï¸'},
+      {story:'Scientists study the ____ to learn how the universe began.', blanks:['stars','cookies','furniture','playground'], answer:0, pic:'ğŸŒŒ'},
+      {story:'The caterpillar built a ____ before becoming a butterfly.', blanks:['chrysalis','sandwich','tower','puddle'], answer:0, pic:'ğŸ›'},
+      {story:'Without ____, plants cannot make their own food.', blanks:['sunlight','music','laughter','homework'], answer:0, pic:'ğŸŒ¿'},
     ],
     2: [
-      {story:'The ancient ____ were built as tombs for Egyptian rulers.', blanks:['pyramids','libraries','gardens','bridges'], answer:0, pic:'í ¼í¿º'},
+      {story:'The ancient ____ were built as tombs for Egyptian rulers.', blanks:['pyramids','libraries','gardens','bridges'], answer:0, pic:'ğŸº'},
       {story:'Electricity flows through a circuit like water through a ____.', blanks:['pipe','book','cloud','mountain'], answer:0, pic:'âš¡'},
-      {story:'During the water cycle, water evaporates and forms ____ in the sky.', blanks:['clouds','rainbows','stars','shadows'], answer:0, pic:'í ½í²§'},
-      {story:'A democracy lets citizens choose their leaders through a ____.', blanks:['vote','parade','festival','debate'], answer:0, pic:'í ½í·³ï¸'},
+      {story:'During the water cycle, water evaporates and forms ____ in the sky.', blanks:['clouds','rainbows','stars','shadows'], answer:0, pic:'ğŸ’§'},
+      {story:'A democracy lets citizens choose their leaders through a ____.', blanks:['vote','parade','festival','debate'], answer:0, pic:'ğŸ—³ï¸'},
     ],
     3: [
-      {story:'The moon\'s gravitational pull causes ocean ____ on Earth.', blanks:['tides','quakes','winds','storms'], answer:0, pic:'í ¼í¼Š'},
-      {story:'Photosynthesis converts sunlight and COâ‚‚ into food and ____.', blanks:['oxygen','water','soil','pollen'], answer:0, pic:'í ¼í¼¿'},
-      {story:'The Renaissance was a period of great artistic and scientific ____.', blanks:['discovery','decline','conflict','isolation'], answer:0, pic:'í ¼í¾¨'},
-      {story:'An ecosystem includes both living organisms and their ____ environment.', blanks:['physical','imaginary','painted','musical'], answer:0, pic:'í ¼í¼'},
+      {story:'The moon\'s gravitational pull causes ocean ____ on Earth.', blanks:['tides','quakes','winds','storms'], answer:0, pic:'ğŸŒŠ'},
+      {story:'Photosynthesis converts sunlight and COâ‚‚ into food and ____.', blanks:['oxygen','water','soil','pollen'], answer:0, pic:'ğŸŒ¿'},
+      {story:'The Renaissance was a period of great artistic and scientific ____.', blanks:['discovery','decline','conflict','isolation'], answer:0, pic:'ğŸ¨'},
+      {story:'An ecosystem includes both living organisms and their ____ environment.', blanks:['physical','imaginary','painted','musical'], answer:0, pic:'ğŸŒ'},
     ],
     4: [
-      {story:'The mitochondria is often called the ____ of the cell.', blanks:['powerhouse','library','factory','recycler'], answer:0, pic:'í ½í´¬'},
-      {story:'Ancient civilizations developed near rivers because of the fertile ____.', blanks:['soil','mountains','deserts','oceans'], answer:0, pic:'í ¼í¿º'},
+      {story:'The mitochondria is often called the ____ of the cell.', blanks:['powerhouse','library','factory','recycler'], answer:0, pic:'ğŸ”¬'},
+      {story:'Ancient civilizations developed near rivers because of the fertile ____.', blanks:['soil','mountains','deserts','oceans'], answer:0, pic:'ğŸº'},
       {story:'In a fraction, the denominator tells us the total number of equal ____.', blanks:['parts','numbers','fractions','decimals'], answer:0, pic:'Â½'},
       {story:'The water cycle is driven by energy from the ____.', blanks:['sun','moon','wind','gravity'], answer:0, pic:'â˜€ï¸'},
     ],
     5: [
-      {story:'In an argument, evidence from the text is used to support your ____.', blanks:['claim','story','poem','chapter'], answer:0, pic:'í ½í³'},
-      {story:'Natural selection favors traits that improve an organism\'s chance of ____.', blanks:['survival','reproduction','both A and B','hibernation'], answer:2, pic:'í ¾í¶•'},
-      {story:'The Constitution divides government power among three ____.', blanks:['branches','parties','states','courts'], answer:0, pic:'í ¼í¿›ï¸'},
-      {story:'A ratio compares two quantities, similar to a ____.', blanks:['fraction','percent','decimal','all of these'], answer:3, pic:'í ½í³Š'},
+      {story:'In an argument, evidence from the text is used to support your ____.', blanks:['claim','story','poem','chapter'], answer:0, pic:'ğŸ“'},
+      {story:'Natural selection favors traits that improve an organism\'s chance of ____.', blanks:['survival','reproduction','both A and B','hibernation'], answer:2, pic:'ğŸ¦•'},
+      {story:'The Constitution divides government power among three ____.', blanks:['branches','parties','states','courts'], answer:0, pic:'ğŸ›ï¸'},
+      {story:'A ratio compares two quantities, similar to a ____.', blanks:['fraction','percent','decimal','all of these'], answer:3, pic:'ğŸ“Š'},
     ],
   };
 
@@ -5608,7 +5566,7 @@ function openLangGame(grade) {
     var row=document.getElementById('builtRow');
     if(!row) return;
     var bg=correct?'linear-gradient(135deg,#22c55e,#4ade80)':'linear-gradient(135deg,#ef4444,#f87171)';
-    var msg=correct?'í ¼í¼Ÿ '+d.word+'!':'The word was: '+d.word;
+    var msg=correct?'ğŸŒŸ '+d.word+'!':'The word was: '+d.word;
     row.innerHTML='<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">'
       +d.word.split('').map(function(l){
         return '<div style="width:48px;height:48px;border-radius:12px;background:'+bg+';color:white;font-family:\'Baloo 2\',cursive;font-size:1.4rem;font-weight:800;display:flex;align-items:center;justify-content:center;">'+l+'</div>';
@@ -5617,7 +5575,7 @@ function openLangGame(grade) {
   }
 
   function renderStory(d){
-    ov.innerHTML = gameHeader('Fill the Blank','í ½í³–',CA,CB,'langGameOv')
+    ov.innerHTML = gameHeader('Fill the Blank','ğŸ“–',CA,CB,'langGameOv')
       +'<div style="flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;align-items:center;max-width:480px;margin:0 auto;width:100%;">'
       +'<div style="background:white;border-radius:20px;padding:24px;margin-bottom:20px;text-align:center;box-shadow:0 4px 16px rgba(229,92,108,.15);width:100%;">'
       +'<div style="font-size:2.5rem;margin-bottom:12px;">'+d.pic+'</div>'
@@ -5636,7 +5594,7 @@ function openLangGame(grade) {
       document.querySelectorAll('[onclick^="window._storyAnswer"]').forEach(function(b){b.style.pointerEvents='none';});
       var btns=document.querySelectorAll('[onclick^="window._storyAnswer"]');
       btns[ans].style.background='#E8FBF3'; btns[ans].style.borderColor='#22c55e'; btns[ans].style.color='#22c55e';
-      if(chosen===ans){ score++; toast('Correct! í ¼í¼Ÿ'); btns[chosen].style.background='#E8FBF3'; }
+      if(chosen===ans){ score++; toast('Correct! ğŸŒŸ'); btns[chosen].style.background='#E8FBF3'; }
       else { btns[chosen].style.background='#FFF0EE'; btns[chosen].style.borderColor='#ef4444'; btns[chosen].style.color='#ef4444'; toast('The answer was: '+d.blanks[ans]); }
       idx++;
       setTimeout(render, 1000);
@@ -5656,90 +5614,90 @@ function openScienceGame(grade) {
 
   var ROUNDS_DATA = {
     PreK: [
-      { title:'Living or Non-Living?', cats:['í ¼í¼± Living','í ¾íº¨ Non-Living'],
+      { title:'Living or Non-Living?', cats:['ğŸŒ± Living','ğŸª¨ Non-Living'],
         items:[
-          {label:'í ½í°¶ Dog',cat:0},{label:'í ¼í¼¸ Flower',cat:0},{label:'í ½í°Ÿ Fish',cat:0},{label:'í ¼í¼³ Tree',cat:0},
-          {label:'í ¾íº¨ Rock',cat:1},{label:'í ½íº— Car',cat:1},{label:'í ½í³š Book',cat:1},{label:'í ¾íº‘ Chair',cat:1}
+          {label:'ğŸ¶ Dog',cat:0},{label:'ğŸŒ¸ Flower',cat:0},{label:'ğŸŸ Fish',cat:0},{label:'ğŸŒ³ Tree',cat:0},
+          {label:'ğŸª¨ Rock',cat:1},{label:'ğŸš— Car',cat:1},{label:'ğŸ“š Book',cat:1},{label:'ğŸª‘ Chair',cat:1}
         ]},
-      { title:'Animals or Plants?', cats:['í ½í°¾ Animal','í ¼í¼¿ Plant'],
+      { title:'Animals or Plants?', cats:['ğŸ¾ Animal','ğŸŒ¿ Plant'],
         items:[
-          {label:'í ½í°± Cat',cat:0},{label:'í ¾í¶ Lion',cat:0},{label:'í ½í°  Fish',cat:0},{label:'í ¾í¶‹ Butterfly',cat:0},
-          {label:'í ¼í¼¹ Rose',cat:1},{label:'í ¼í¼² Pine',cat:1},{label:'í ¼í¼» Sunflower',cat:1},{label:'í ¼í½€ Clover',cat:1}
+          {label:'ğŸ± Cat',cat:0},{label:'ğŸ¦ Lion',cat:0},{label:'ğŸ  Fish',cat:0},{label:'ğŸ¦‹ Butterfly',cat:0},
+          {label:'ğŸŒ¹ Rose',cat:1},{label:'ğŸŒ² Pine',cat:1},{label:'ğŸŒ» Sunflower',cat:1},{label:'ğŸ€ Clover',cat:1}
         ]},
     ],
     K: [
-      { title:'Solid, Liquid, or Gas?', cats:['í ¾í·± Solid','í ½í²§ Liquid','í ½í²¨ Gas'],
+      { title:'Solid, Liquid, or Gas?', cats:['ğŸ§± Solid','ğŸ’§ Liquid','ğŸ’¨ Gas'],
         items:[
-          {label:'í ¾íº¨ Rock',cat:0},{label:'í ¾í·Š Ice cube',cat:0},{label:'í ½í³š Book',cat:0},
-          {label:'í ¼í¼Š Water',cat:1},{label:'í ¾íµ› Milk',cat:1},{label:'í ¼í½µ Tea',cat:1},
-          {label:'í ½í²¨ Air',cat:2},{label:'í ¼í¾ˆ Balloon gas',cat:2}
+          {label:'ğŸª¨ Rock',cat:0},{label:'ğŸ§Š Ice cube',cat:0},{label:'ğŸ“š Book',cat:0},
+          {label:'ğŸŒŠ Water',cat:1},{label:'ğŸ¥› Milk',cat:1},{label:'ğŸµ Tea',cat:1},
+          {label:'ğŸ’¨ Air',cat:2},{label:'ğŸˆ Balloon gas',cat:2}
         ]},
-      { title:'Living or Non-Living?', cats:['í ¼í¼± Living','í ¾íº¨ Non-Living'],
+      { title:'Living or Non-Living?', cats:['ğŸŒ± Living','ğŸª¨ Non-Living'],
         items:[
-          {label:'í ½í°¸ Frog',cat:0},{label:'í ¼í¼º Hibiscus',cat:0},{label:'í ½í°¦ Bird',cat:0},{label:'í ½í°› Caterpillar',cat:0},
-          {label:'í ½íºŒ Bus',cat:1},{label:'í ¼í¿  House',cat:1},{label:'í ¾íº Mirror',cat:1},{label:'âŒš Watch',cat:1}
+          {label:'ğŸ¸ Frog',cat:0},{label:'ğŸŒº Hibiscus',cat:0},{label:'ğŸ¦ Bird',cat:0},{label:'ğŸ› Caterpillar',cat:0},
+          {label:'ğŸšŒ Bus',cat:1},{label:'ğŸ  House',cat:1},{label:'ğŸª Mirror',cat:1},{label:'âŒš Watch',cat:1}
         ]},
     ],
     1: [
-      { title:'Solid, Liquid, or Gas?', cats:['í ¾í·± Solid','í ½í²§ Liquid','í ½í²¨ Gas'],
+      { title:'Solid, Liquid, or Gas?', cats:['ğŸ§± Solid','ğŸ’§ Liquid','ğŸ’¨ Gas'],
         items:[
-          {label:'í ¼í¼™ Moon rock',cat:0},{label:'í ¾íºµ Wood',cat:0},{label:'í ¾íµš Egg',cat:0},
-          {label:'í ¾í·ª Mercury',cat:1},{label:'í ¾í»— Orange juice',cat:1},{label:'í ¼í¼§ï¸ Rain',cat:1},
-          {label:'â˜ï¸ Steam',cat:2},{label:'í ¼í¼¬ï¸ Wind',cat:2},{label:'í ½í²­ Breath',cat:2}
+          {label:'ğŸŒ™ Moon rock',cat:0},{label:'ğŸªµ Wood',cat:0},{label:'ğŸ¥š Egg',cat:0},
+          {label:'ğŸ§ª Mercury',cat:1},{label:'ğŸ«— Orange juice',cat:1},{label:'ğŸŒ§ï¸ Rain',cat:1},
+          {label:'â˜ï¸ Steam',cat:2},{label:'ğŸŒ¬ï¸ Wind',cat:2},{label:'ğŸ’­ Breath',cat:2}
         ]},
-      { title:'Needs sunlight or not?', cats:['â˜€ï¸ Needs sun','í ¼í¼‘ No sun needed'],
+      { title:'Needs sunlight or not?', cats:['â˜€ï¸ Needs sun','ğŸŒ‘ No sun needed'],
         items:[
-          {label:'í ¼í¼± Plant',cat:0},{label:'í ¼í¼» Sunflower',cat:0},{label:'í ¼í½ƒ Fern',cat:0},{label:'í ¼í¼² Tree',cat:0},
-          {label:'í ½í° Snake',cat:1},{label:'í ½í°Ÿ Deepfish',cat:1},{label:'í ¼í½„ Mushroom',cat:1},{label:'í ¾í¶  Bacteria',cat:1}
+          {label:'ğŸŒ± Plant',cat:0},{label:'ğŸŒ» Sunflower',cat:0},{label:'ğŸƒ Fern',cat:0},{label:'ğŸŒ² Tree',cat:0},
+          {label:'ğŸ Snake',cat:1},{label:'ğŸŸ Deepfish',cat:1},{label:'ğŸ„ Mushroom',cat:1},{label:'ğŸ¦  Bacteria',cat:1}
         ]},
     ],
     2: [
-      { title:'Vertebrate or Invertebrate?', cats:['í ¾í¶´ Vertebrate','í ½í°› Invertebrate'],
+      { title:'Vertebrate or Invertebrate?', cats:['ğŸ¦´ Vertebrate','ğŸ› Invertebrate'],
         items:[
-          {label:'í ½í°• Dog',cat:0},{label:'í ½í°  Clownfish',cat:0},{label:'í ½í°Š Crocodile',cat:0},{label:'í ¾í¶… Eagle',cat:0},
-          {label:'í ½í°™ Octopus',cat:1},{label:'í ¾í¶€ Crab',cat:1},{label:'í ½íµ·ï¸ Spider',cat:1},{label:'í ½í°Œ Snail',cat:1}
+          {label:'ğŸ• Dog',cat:0},{label:'ğŸ  Clownfish',cat:0},{label:'ğŸŠ Crocodile',cat:0},{label:'ğŸ¦… Eagle',cat:0},
+          {label:'ğŸ™ Octopus',cat:1},{label:'ğŸ¦€ Crab',cat:1},{label:'ğŸ•·ï¸ Spider',cat:1},{label:'ğŸŒ Snail',cat:1}
         ]},
       { title:'Renewable or Non-Renewable?', cats:['â™»ï¸ Renewable','â›½ Non-Renewable'],
         items:[
-          {label:'â˜€ï¸ Sunlight',cat:0},{label:'í ½í²¨ Wind',cat:0},{label:'í ¼í¼Š Water power',cat:0},{label:'í ¼í¼± Biomass',cat:0},
-          {label:'í ½í»¢ï¸ Oil',cat:1},{label:'â›½ Natural gas',cat:1},{label:'í ¾íº¨ Coal',cat:1},{label:'âš›ï¸ Uranium',cat:1}
+          {label:'â˜€ï¸ Sunlight',cat:0},{label:'ğŸ’¨ Wind',cat:0},{label:'ğŸŒŠ Water power',cat:0},{label:'ğŸŒ± Biomass',cat:0},
+          {label:'ğŸ›¢ï¸ Oil',cat:1},{label:'â›½ Natural gas',cat:1},{label:'ğŸª¨ Coal',cat:1},{label:'âš›ï¸ Uranium',cat:1}
         ]},
     ],
     3: [
-      { title:'Physical or Chemical Change?', cats:['í ½í´¨ Physical','âš—ï¸ Chemical'],
+      { title:'Physical or Chemical Change?', cats:['ğŸ”¨ Physical','âš—ï¸ Chemical'],
         items:[
-          {label:'âœ‚ï¸ Cutting paper',cat:0},{label:'í ¾í·Š Ice melting',cat:0},{label:'í ¾í·² Bending metal',cat:0},
-          {label:'í ½í´¥ Wood burning',cat:1},{label:'í ¼í½ Baking bread',cat:1},{label:'í ½í¿¤ Iron rusting',cat:1},{label:'í ½í²¥ Fireworks',cat:1},{label:'í ¾í·ª Acid+base',cat:1}
+          {label:'âœ‚ï¸ Cutting paper',cat:0},{label:'ğŸ§Š Ice melting',cat:0},{label:'ğŸ§² Bending metal',cat:0},
+          {label:'ğŸ”¥ Wood burning',cat:1},{label:'ğŸ Baking bread',cat:1},{label:'ğŸŸ¤ Iron rusting',cat:1},{label:'ğŸ’¥ Fireworks',cat:1},{label:'ğŸ§ª Acid+base',cat:1}
         ]},
-      { title:'Producer, Consumer, or Decomposer?', cats:['í ¼í¼± Producer','í ½í°¾ Consumer','í ¼í½„ Decomposer'],
+      { title:'Producer, Consumer, or Decomposer?', cats:['ğŸŒ± Producer','ğŸ¾ Consumer','ğŸ„ Decomposer'],
         items:[
-          {label:'í ¼í¼¿ Grass',cat:0},{label:'í ¼í¼³ Oak tree',cat:0},
-          {label:'í ¾í¶Š Fox',cat:1},{label:'í ½í°› Caterpillar',cat:1},{label:'í ½í°„ Cow',cat:1},
-          {label:'í ¼í½„ Mushroom',cat:2},{label:'í ¾íº± Earthworm',cat:2},{label:'í ¾í¶  Bacteria',cat:2}
+          {label:'ğŸŒ¿ Grass',cat:0},{label:'ğŸŒ³ Oak tree',cat:0},
+          {label:'ğŸ¦Š Fox',cat:1},{label:'ğŸ› Caterpillar',cat:1},{label:'ğŸ„ Cow',cat:1},
+          {label:'ğŸ„ Mushroom',cat:2},{label:'ğŸª± Earthworm',cat:2},{label:'ğŸ¦  Bacteria',cat:2}
         ]},
     ],
     4: [
-      { title:'Inherited or Learned Trait?', cats:['í ¾í·¬ Inherited','í ½í³š Learned'],
+      { title:'Inherited or Learned Trait?', cats:['ğŸ§¬ Inherited','ğŸ“š Learned'],
         items:[
-          {label:'í ½í±ï¸ Eye color',cat:0},{label:'í ¾í¶® Dog fur',cat:0},{label:'í ½í°† Spots',cat:0},{label:'í ¾í¹¸ Blood type',cat:0},
-          {label:'í ½íº² Riding a bike',cat:1},{label:'í ½í³– Reading',cat:1},{label:'í ¼í¾µ Playing guitar',cat:1},{label:'í ½í·£ï¸ Speaking',cat:1}
+          {label:'ğŸ‘ï¸ Eye color',cat:0},{label:'ğŸ¦® Dog fur',cat:0},{label:'ğŸ† Spots',cat:0},{label:'ğŸ©¸ Blood type',cat:0},
+          {label:'ğŸš² Riding a bike',cat:1},{label:'ğŸ“– Reading',cat:1},{label:'ğŸµ Playing guitar',cat:1},{label:'ğŸ—£ï¸ Speaking',cat:1}
         ]},
-      { title:'Force or Energy?', cats:['âš¡ Energy','í ½í²ª Force'],
+      { title:'Force or Energy?', cats:['âš¡ Energy','ğŸ’ª Force'],
         items:[
-          {label:'í ½í´¥ Heat',cat:0},{label:'í ½í²¡ Light',cat:0},{label:'í ½í´Š Sound',cat:0},{label:'âš¡ Electrical',cat:0},
-          {label:'í ¼í¿‹ï¸ Lift',cat:1},{label:'í ¾í·² Magnetic pull',cat:1},{label:'í ½í²¨ Air push',cat:1},{label:'í ¾í´¸ Friction',cat:1}
+          {label:'ğŸ”¥ Heat',cat:0},{label:'ğŸ’¡ Light',cat:0},{label:'ğŸ”Š Sound',cat:0},{label:'âš¡ Electrical',cat:0},
+          {label:'ğŸ‹ï¸ Lift',cat:1},{label:'ğŸ§² Magnetic pull',cat:1},{label:'ğŸ’¨ Air push',cat:1},{label:'ğŸ¤¸ Friction',cat:1}
         ]},
     ],
     5: [
-      { title:'Mitosis or Meiosis?', cats:['í ½í´¬ Mitosis','í ¾í·¬ Meiosis'],
+      { title:'Mitosis or Meiosis?', cats:['ğŸ”¬ Mitosis','ğŸ§¬ Meiosis'],
         items:[
-          {label:'í ¾í¹¹ Healing skin',cat:0},{label:'í ¼í¼± Plant growth',cat:0},{label:'í ½í´„ Body repair',cat:0},
-          {label:'í ¾íµš Egg cell',cat:1},{label:'í ½í°Ÿ Sperm cell',cat:1},{label:'í ¼í¼¸ Pollen',cat:1},{label:'í ¼í¼° Seed',cat:1},{label:'í ½í±¶ Fertilization',cat:1}
+          {label:'ğŸ©¹ Healing skin',cat:0},{label:'ğŸŒ± Plant growth',cat:0},{label:'ğŸ”„ Body repair',cat:0},
+          {label:'ğŸ¥š Egg cell',cat:1},{label:'ğŸŸ Sperm cell',cat:1},{label:'ğŸŒ¸ Pollen',cat:1},{label:'ğŸŒ° Seed',cat:1},{label:'ğŸ‘¶ Fertilization',cat:1}
         ]},
-      { title:'Element, Compound, or Mixture?', cats:['âš›ï¸ Element','í ¾í·ª Compound','í ¾íµ— Mixture'],
+      { title:'Element, Compound, or Mixture?', cats:['âš›ï¸ Element','ğŸ§ª Compound','ğŸ¥— Mixture'],
         items:[
-          {label:'í ¾íµ‡ Gold',cat:0},{label:'í ½í²§ Hâ‚‚O',cat:1},{label:'í ¾í·‚ NaCl',cat:1},
-          {label:'í ¼í½ Oxygen',cat:0},{label:'í ¾íµ— Salad',cat:2},{label:'í ¼í¼Š Salt water',cat:2},{label:'í ¾í»§ COâ‚‚',cat:1}
+          {label:'ğŸ¥‡ Gold',cat:0},{label:'ğŸ’§ Hâ‚‚O',cat:1},{label:'ğŸ§‚ NaCl',cat:1},
+          {label:'ğŸ Oxygen',cat:0},{label:'ğŸ¥— Salad',cat:2},{label:'ğŸŒŠ Salt water',cat:2},{label:'ğŸ«§ COâ‚‚',cat:1}
         ]},
     ],
   };
@@ -5753,7 +5711,7 @@ function openScienceGame(grade) {
     var r=rounds[rIdx];
     var items=r.items.slice().sort(function(){return Math.random()-.5;});
 
-    ov.innerHTML = gameHeader('Science Sort','í ½í´¬',CA,CB,'sciGameOv')
+    ov.innerHTML = gameHeader('Science Sort','ğŸ”¬',CA,CB,'sciGameOv')
       +'<div style="flex:1;overflow-y:auto;padding:16px;max-width:500px;margin:0 auto;width:100%;">'
       +'<div style="background:white;border-radius:18px;padding:14px 18px;margin-bottom:14px;text-align:center;box-shadow:0 4px 14px rgba(14,165,233,.15);">'
       +'<div style="font-family:\'Baloo 2\',cursine;font-size:1.05rem;font-weight:800;color:#0EA5E9;">'+r.title+'</div>'
@@ -5825,53 +5783,53 @@ function openSocialStudiesGame(grade) {
 
   var ROUNDS = {
     PreK: [
-      { q:'Where do you go to borrow books?', emoji:'í ½í³š', opts:['í ¼í¿¥ Hospital','í ½í³š Library','í ¼í¿ª Store','í ¼í¿« School'], answer:1 },
-      { q:'Who helps put out fires?', emoji:'í ½í´¥', opts:['í ½í±¨â€âš•ï¸ Doctor','í ½í±® Police','í ¾í·‘â€í ½íº’ Firefighter','í ½í±¨â€í ¼í½³ Chef'], answer:2 },
-      { q:'Where do you buy food?', emoji:'í ½í»’', opts:['í ½í³š Library','í ¼í¿¥ Hospital','í ¼í¿ª Grocery store','í ¼í¿¤ Post office'], answer:2 },
-      { q:'Who teaches you at school?', emoji:'í ¼í¿«', opts:['í ½í±¨â€í ¼í½³ Chef','í ½í±¨â€í ¼í¿« Teacher','í ½í±® Police','í ¾í·‘â€í ½íº’ Firefighter'], answer:1 },
-      { q:'Where do sick people go?', emoji:'í ¾í´’', opts:['í ¼í¿¥ Hospital','í ½í³š Library','í ¼í¿ª Store','í ¼í¿« School'], answer:0 },
+      { q:'Where do you go to borrow books?', emoji:'ğŸ“š', opts:['ğŸ¥ Hospital','ğŸ“š Library','ğŸª Store','ğŸ« School'], answer:1 },
+      { q:'Who helps put out fires?', emoji:'ğŸ”¥', opts:['ğŸ‘¨â€âš•ï¸ Doctor','ğŸ‘® Police','ğŸ§‘â€ğŸš’ Firefighter','ğŸ‘¨â€ğŸ³ Chef'], answer:2 },
+      { q:'Where do you buy food?', emoji:'ğŸ›’', opts:['ğŸ“š Library','ğŸ¥ Hospital','ğŸª Grocery store','ğŸ¤ Post office'], answer:2 },
+      { q:'Who teaches you at school?', emoji:'ğŸ«', opts:['ğŸ‘¨â€ğŸ³ Chef','ğŸ‘¨â€ğŸ« Teacher','ğŸ‘® Police','ğŸ§‘â€ğŸš’ Firefighter'], answer:1 },
+      { q:'Where do sick people go?', emoji:'ğŸ¤’', opts:['ğŸ¥ Hospital','ğŸ“š Library','ğŸª Store','ğŸ« School'], answer:0 },
     ],
     K: [
-      { q:'What do we call a group of people living together?', emoji:'í ¼í¿˜ï¸', opts:['A forest','A community','A country','A planet'], answer:1 },
-      { q:'What is a map used for?', emoji:'í ½í·ºï¸', opts:['Writing stories','Showing locations','Drawing pictures','Making music'], answer:1 },
-      { q:'Who is the leader of our country?', emoji:'í ¼í·ºí ¼í·¸', opts:['Mayor','Governor','President','Principal'], answer:2 },
-      { q:'What does a mail carrier do?', emoji:'í ½í³¬', opts:['Cooks food','Delivers letters','Fights fires','Teaches kids'], answer:1 },
-      { q:'Why do we have rules?', emoji:'í ½í³‹', opts:['To be mean','To keep everyone safe and fair','To stop fun','To confuse people'], answer:1 },
+      { q:'What do we call a group of people living together?', emoji:'ğŸ˜ï¸', opts:['A forest','A community','A country','A planet'], answer:1 },
+      { q:'What is a map used for?', emoji:'ğŸ—ºï¸', opts:['Writing stories','Showing locations','Drawing pictures','Making music'], answer:1 },
+      { q:'Who is the leader of our country?', emoji:'ğŸ‡ºğŸ‡¸', opts:['Mayor','Governor','President','Principal'], answer:2 },
+      { q:'What does a mail carrier do?', emoji:'ğŸ“¬', opts:['Cooks food','Delivers letters','Fights fires','Teaches kids'], answer:1 },
+      { q:'Why do we have rules?', emoji:'ğŸ“‹', opts:['To be mean','To keep everyone safe and fair','To stop fun','To confuse people'], answer:1 },
     ],
     1: [
-      { q:'What does a mayor do?', emoji:'í ¼í¿›ï¸', opts:['Leads a school','Leads a city','Leads a country','Leads a team'], answer:1 },
+      { q:'What does a mayor do?', emoji:'ğŸ›ï¸', opts:['Leads a school','Leads a city','Leads a country','Leads a team'], answer:1 },
       { q:'What is a law?', emoji:'âš–ï¸', opts:['A suggestion','A rule everyone must follow','A wish','A story'], answer:1 },
       { q:'What is a responsibility?', emoji:'âœ…', opts:['Something you must do or take care of','A hobby','A kind of game','A vacation'], answer:0 },
-      { q:'What is a continent?', emoji:'í ¼í¼', opts:['A small island','A large landmass','A country','An ocean'], answer:1 },
-      { q:'What does a governor do?', emoji:'í ½í·ºï¸', opts:['Leads a city','Leads a state','Leads a country','Leads a school'], answer:1 },
+      { q:'What is a continent?', emoji:'ğŸŒ', opts:['A small island','A large landmass','A country','An ocean'], answer:1 },
+      { q:'What does a governor do?', emoji:'ğŸ—ºï¸', opts:['Leads a city','Leads a state','Leads a country','Leads a school'], answer:1 },
     ],
     2: [
-      { q:'What is a democracy?', emoji:'í ½í·³ï¸', opts:['One person rules','Citizens vote for leaders','No rules at all','Leaders are born into power'], answer:1 },
-      { q:'What is the economy?', emoji:'í ½í²°', opts:['A type of government','How money and goods are made and used','A weather system','A type of landform'], answer:1 },
-      { q:'What is a constitution?', emoji:'í ½í³œ', opts:['A type of recipe','A set of basic laws for a country','A kind of map','A trade agreement'], answer:1 },
-      { q:'What is immigration?', emoji:'í ¼í¼', opts:['Moving within your country','Moving to a new country to live','Going on vacation','A type of trade'], answer:1 },
-      { q:'What are the three branches of US government?', emoji:'í ¼í¿›ï¸', opts:['City, state, country','Legislative, executive, judicial','Police, army, navy','President, mayor, governor'], answer:1 },
+      { q:'What is a democracy?', emoji:'ğŸ—³ï¸', opts:['One person rules','Citizens vote for leaders','No rules at all','Leaders are born into power'], answer:1 },
+      { q:'What is the economy?', emoji:'ğŸ’°', opts:['A type of government','How money and goods are made and used','A weather system','A type of landform'], answer:1 },
+      { q:'What is a constitution?', emoji:'ğŸ“œ', opts:['A type of recipe','A set of basic laws for a country','A kind of map','A trade agreement'], answer:1 },
+      { q:'What is immigration?', emoji:'ğŸŒ', opts:['Moving within your country','Moving to a new country to live','Going on vacation','A type of trade'], answer:1 },
+      { q:'What are the three branches of US government?', emoji:'ğŸ›ï¸', opts:['City, state, country','Legislative, executive, judicial','Police, army, navy','President, mayor, governor'], answer:1 },
     ],
     3: [
-      { q:'What was the purpose of the Transcontinental Railroad?', emoji:'í ½íº‚', opts:['To go to war','To connect the East and West coasts','To import goods','To drain the Great Lakes'], answer:1 },
-      { q:'What is a primary source?', emoji:'í ½í³œ', opts:['A summary of events','A firsthand account or original artifact','An encyclopedia article','A textbook summary'], answer:1 },
-      { q:'What is supply and demand?', emoji:'í ½í³Š', opts:['A type of law','How prices are determined by availability and need','A government program','A type of tax'], answer:1 },
+      { q:'What was the purpose of the Transcontinental Railroad?', emoji:'ğŸš‚', opts:['To go to war','To connect the East and West coasts','To import goods','To drain the Great Lakes'], answer:1 },
+      { q:'What is a primary source?', emoji:'ğŸ“œ', opts:['A summary of events','A firsthand account or original artifact','An encyclopedia article','A textbook summary'], answer:1 },
+      { q:'What is supply and demand?', emoji:'ğŸ“Š', opts:['A type of law','How prices are determined by availability and need','A government program','A type of tax'], answer:1 },
       { q:'What was the main cause of the Civil War?', emoji:'âš”ï¸', opts:['Territory disputes only','Slavery and states rights','Economic inequality only','Foreign invasion'], answer:1 },
-      { q:'What is a trade route?', emoji:'í ½í·ºï¸', opts:['A type of road','A path used to exchange goods between regions','A railway line','A military road'], answer:1 },
+      { q:'What is a trade route?', emoji:'ğŸ—ºï¸', opts:['A type of road','A path used to exchange goods between regions','A railway line','A military road'], answer:1 },
     ],
     4: [
-      { q:'What is manifest destiny?', emoji:'í ¼í¼', opts:['Protection of Native lands','The belief that the US should expand across the continent','A type of law','A foreign policy'], answer:1 },
+      { q:'What is manifest destiny?', emoji:'ğŸŒ', opts:['Protection of Native lands','The belief that the US should expand across the continent','A type of law','A foreign policy'], answer:1 },
       { q:'What is a checks and balances system?', emoji:'âš–ï¸', opts:['A banking system','How each branch of government limits the others','A type of tax','A voting system'], answer:1 },
-      { q:'What caused the Great Depression?', emoji:'í ½í³‰', opts:['A world war','Stock market crash and bank failures','A natural disaster','A drought only'], answer:1 },
-      { q:'What is the Bill of Rights?', emoji:'í ½í³œ', opts:['A tax document','The first 10 amendments protecting citizens rights','A trade agreement','A list of laws'], answer:1 },
-      { q:'What is globalization?', emoji:'í ¼í¼', opts:['Local trade only','The increasing interconnection of world economies and cultures','A type of government','Isolationism'], answer:1 },
+      { q:'What caused the Great Depression?', emoji:'ğŸ“‰', opts:['A world war','Stock market crash and bank failures','A natural disaster','A drought only'], answer:1 },
+      { q:'What is the Bill of Rights?', emoji:'ğŸ“œ', opts:['A tax document','The first 10 amendments protecting citizens rights','A trade agreement','A list of laws'], answer:1 },
+      { q:'What is globalization?', emoji:'ğŸŒ', opts:['Local trade only','The increasing interconnection of world economies and cultures','A type of government','Isolationism'], answer:1 },
     ],
     5: [
-      { q:'What is the significance of the Emancipation Proclamation?', emoji:'í ½í·½', opts:['Ended WWI','Declared freedom for enslaved people in Confederate states','Created the Constitution','Ended the Mexican War'], answer:1 },
-      { q:'What is a filibuster in government?', emoji:'í ¼í¿›ï¸', opts:['A type of vote','A tactic to delay legislation through prolonged debate','A presidential veto','A court ruling'], answer:1 },
-      { q:'What does GDP measure?', emoji:'í ½í³Š', opts:['Population size','Total value of goods and services produced in a country','Government spending only','Trade deficit'], answer:1 },
-      { q:'What was the purpose of the Marshall Plan?', emoji:'í ¼í¼', opts:['To rebuild Europe after WWII','To expand US territory','To fight communism directly','To establish the UN'], answer:0 },
-      { q:'What is the electoral college?', emoji:'í ½í·³ï¸', opts:['A school for politicians','A system where electors chosen by states vote for the president','A popular vote system','A congressional committee'], answer:1 },
+      { q:'What is the significance of the Emancipation Proclamation?', emoji:'ğŸ—½', opts:['Ended WWI','Declared freedom for enslaved people in Confederate states','Created the Constitution','Ended the Mexican War'], answer:1 },
+      { q:'What is a filibuster in government?', emoji:'ğŸ›ï¸', opts:['A type of vote','A tactic to delay legislation through prolonged debate','A presidential veto','A court ruling'], answer:1 },
+      { q:'What does GDP measure?', emoji:'ğŸ“Š', opts:['Population size','Total value of goods and services produced in a country','Government spending only','Trade deficit'], answer:1 },
+      { q:'What was the purpose of the Marshall Plan?', emoji:'ğŸŒ', opts:['To rebuild Europe after WWII','To expand US territory','To fight communism directly','To establish the UN'], answer:0 },
+      { q:'What is the electoral college?', emoji:'ğŸ—³ï¸', opts:['A school for politicians','A system where electors chosen by states vote for the president','A popular vote system','A congressional committee'], answer:1 },
     ],
   };
 
@@ -5881,7 +5839,7 @@ function openSocialStudiesGame(grade) {
   function renderQ(){
     if(qIdx>=TOTAL){ gameWinScreen(score,TOTAL,CA,CB,'ssGameOv'); return; }
     var q=pool[qIdx];
-    ov.innerHTML = gameHeader('Community & World','í ¼í¼',CA,CB,'ssGameOv')
+    ov.innerHTML = gameHeader('Community & World','ğŸŒ',CA,CB,'ssGameOv')
       +'<div style="flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;align-items:center;max-width:480px;margin:0 auto;width:100%;">'
       +'<div style="background:white;border-radius:20px;padding:24px;margin-bottom:20px;text-align:center;box-shadow:0 4px 16px rgba(245,158,11,.2);width:100%;">'
       +'<div style="font-size:3rem;margin-bottom:10px;">'+q.emoji+'</div>'
@@ -5900,7 +5858,7 @@ function openSocialStudiesGame(grade) {
       document.querySelectorAll('[onclick^="window._ssAnswer"]').forEach(function(b){b.style.pointerEvents='none';});
       var btns=document.querySelectorAll('[onclick^="window._ssAnswer"]');
       btns[ans].style.background='#E8FBF3'; btns[ans].style.borderColor='#22c55e'; btns[ans].style.color='#22c55e';
-      if(chosen===ans){ score++; toast('Correct! í ¼í¼Ÿ'); }
+      if(chosen===ans){ score++; toast('Correct! ğŸŒŸ'); }
       else { btns[chosen].style.background='#FFF0EE'; btns[chosen].style.borderColor='#ef4444'; btns[chosen].style.color='#ef4444'; toast('Not quite!'); }
       qIdx++;
       setTimeout(renderQ, 900);
@@ -5920,35 +5878,35 @@ function openColorsGame(grade) {
 
   var ROUNDS = {
     PreK: [
-      { title:'What color is it?', cats:['í ½í´´ Red','í ½í´µ Blue','í ½í¿¡ Yellow'],
-        items:[{label:'í ¼í½ Apple',cat:0},{label:'í ¼í¼Š Ocean',cat:1},{label:'í ¼í½‹ Lemon',cat:2},{label:'í ½íº’ Fire truck',cat:0},{label:'â˜ï¸ Sky',cat:1},{label:'í ¼í¼» Sunflower',cat:2}]},
-      { title:'Sort the shapes!', cats:['â­• Circle','â¬› Square','í ½í´º Triangle'],
-        items:[{label:'í ¼í½• Pizza',cat:0},{label:'í ¼í¾² Dice face',cat:1},{label:'í ¼í¾„ Tree top',cat:2},{label:'í ½í´˜ Button',cat:0},{label:'í ½í·ºï¸ Window',cat:1},{label:'âš ï¸ Warning sign',cat:2}]},
+      { title:'What color is it?', cats:['ğŸ”´ Red','ğŸ”µ Blue','ğŸŸ¡ Yellow'],
+        items:[{label:'ğŸ Apple',cat:0},{label:'ğŸŒŠ Ocean',cat:1},{label:'ğŸ‹ Lemon',cat:2},{label:'ğŸš’ Fire truck',cat:0},{label:'â˜ï¸ Sky',cat:1},{label:'ğŸŒ» Sunflower',cat:2}]},
+      { title:'Sort the shapes!', cats:['â­• Circle','â¬› Square','ğŸ”º Triangle'],
+        items:[{label:'ğŸ• Pizza',cat:0},{label:'ğŸ² Dice face',cat:1},{label:'ğŸ„ Tree top',cat:2},{label:'ğŸ”˜ Button',cat:0},{label:'ğŸ—ºï¸ Window',cat:1},{label:'âš ï¸ Warning sign',cat:2}]},
     ],
     K: [
-      { title:'Primary or Secondary color?', cats:['í ¼í¾¨ Primary','í ¼í¼ˆ Secondary'],
-        items:[{label:'í ½í´´ Red',cat:0},{label:'í ½í´µ Blue',cat:0},{label:'í ½í¿¡ Yellow',cat:0},{label:'í ½í¿  Orange',cat:1},{label:'í ½í¿¢ Green',cat:1},{label:'í ½í¿£ Purple',cat:1}]},
-      { title:'2D or 3D shape?', cats:['í ½í³ 2D Flat','í ½í³¦ 3D Solid'],
-        items:[{label:'â­• Circle',cat:0},{label:'â¬› Square',cat:0},{label:'í ½í´º Triangle',cat:0},{label:'â¬¡ Hexagon',cat:0},{label:'í ¼í¾² Cube',cat:1},{label:'í ½í´® Sphere',cat:1},{label:'í ¼í¾‰ Cone',cat:1},{label:'í ¾íµ« Cylinder',cat:1}]},
+      { title:'Primary or Secondary color?', cats:['ğŸ¨ Primary','ğŸŒˆ Secondary'],
+        items:[{label:'ğŸ”´ Red',cat:0},{label:'ğŸ”µ Blue',cat:0},{label:'ğŸŸ¡ Yellow',cat:0},{label:'ğŸŸ  Orange',cat:1},{label:'ğŸŸ¢ Green',cat:1},{label:'ğŸŸ£ Purple',cat:1}]},
+      { title:'2D or 3D shape?', cats:['ğŸ“ 2D Flat','ğŸ“¦ 3D Solid'],
+        items:[{label:'â­• Circle',cat:0},{label:'â¬› Square',cat:0},{label:'ğŸ”º Triangle',cat:0},{label:'â¬¡ Hexagon',cat:0},{label:'ğŸ² Cube',cat:1},{label:'ğŸ”® Sphere',cat:1},{label:'ğŸ‰ Cone',cat:1},{label:'ğŸ¥« Cylinder',cat:1}]},
     ],
     1: [
-      { title:'Warm or Cool color?', cats:['í ½í´¥ Warm','í ¾í·Š Cool'],
-        items:[{label:'í ½í´´ Red',cat:0},{label:'í ½í¿  Orange',cat:0},{label:'í ½í¿¡ Yellow',cat:0},{label:'í ¾í¹· Pink',cat:0},{label:'í ½í´µ Blue',cat:1},{label:'í ½í¿¢ Green',cat:1},{label:'í ½í¿£ Purple',cat:1},{label:'í ¾í¹µ Teal',cat:1}]},
+      { title:'Warm or Cool color?', cats:['ğŸ”¥ Warm','ğŸ§Š Cool'],
+        items:[{label:'ğŸ”´ Red',cat:0},{label:'ğŸŸ  Orange',cat:0},{label:'ğŸŸ¡ Yellow',cat:0},{label:'ğŸ©· Pink',cat:0},{label:'ğŸ”µ Blue',cat:1},{label:'ğŸŸ¢ Green',cat:1},{label:'ğŸŸ£ Purple',cat:1},{label:'ğŸ©µ Teal',cat:1}]},
     ],
     2: [
-      { title:'Has symmetry or not?', cats:['âš–ï¸ Symmetrical','í ½í²” Asymmetrical'],
-        items:[{label:'â­• Circle',cat:0},{label:'â¬› Square',cat:0},{label:'í ½í´º Equilateral triangle',cat:0},{label:'í ½í² Diamond',cat:0},{label:'í ¾í»¸ Irregular shape',cat:1},{label:'í ½í·ï¸ Key',cat:1},{label:'í ¾í¶„ Random blob',cat:1}]},
+      { title:'Has symmetry or not?', cats:['âš–ï¸ Symmetrical','ğŸ’” Asymmetrical'],
+        items:[{label:'â­• Circle',cat:0},{label:'â¬› Square',cat:0},{label:'ğŸ”º Equilateral triangle',cat:0},{label:'ğŸ’ Diamond',cat:0},{label:'ğŸ«¸ Irregular shape',cat:1},{label:'ğŸ—ï¸ Key',cat:1},{label:'ğŸ¦„ Random blob',cat:1}]},
     ],
     3: [
-      { title:'Polygon or Not a Polygon?', cats:['í ½í³ Polygon','í ½íº« Not Polygon'],
-        items:[{label:'â¬› Square',cat:0},{label:'í ½í´º Triangle',cat:0},{label:'â¬¡ Hexagon',cat:0},{label:'â–¬ Rectangle',cat:0},{label:'â­• Circle',cat:1},{label:'í ½í´® Oval',cat:1},{label:'â­ Heart',cat:1}]},
+      { title:'Polygon or Not a Polygon?', cats:['ğŸ“ Polygon','ğŸš« Not Polygon'],
+        items:[{label:'â¬› Square',cat:0},{label:'ğŸ”º Triangle',cat:0},{label:'â¬¡ Hexagon',cat:0},{label:'â–¬ Rectangle',cat:0},{label:'â­• Circle',cat:1},{label:'ğŸ”® Oval',cat:1},{label:'â­ Heart',cat:1}]},
     ],
     4: [
-      { title:'Acute, Right, or Obtuse angle?', cats:['í ½í´¹ Acute <90Â°','í ½í³ Right =90Â°','í ½í´¶ Obtuse >90Â°'],
+      { title:'Acute, Right, or Obtuse angle?', cats:['ğŸ”¹ Acute <90Â°','ğŸ“ Right =90Â°','ğŸ”¶ Obtuse >90Â°'],
         items:[{label:'30Â° angle',cat:0},{label:'45Â° angle',cat:0},{label:'90Â° corner',cat:1},{label:'L-shape',cat:1},{label:'120Â° angle',cat:2},{label:'150Â° angle',cat:2},{label:'170Â° angle',cat:2}]},
     ],
     5: [
-      { title:'Area or Perimeter problem?', cats:['í ½í³ Perimeter (distance around)','â¬œ Area (space inside)'],
+      { title:'Area or Perimeter problem?', cats:['ğŸ“ Perimeter (distance around)','â¬œ Area (space inside)'],
         items:[{label:'Fencing a yard',cat:0},{label:'Border of a picture',cat:0},{label:'Paint for a floor',cat:1},{label:'Carpet for a room',cat:1},{label:'Trim around a window',cat:0},{label:'Tiles to cover a table',cat:1}]},
     ],
   };
@@ -5962,7 +5920,7 @@ function openColorsGame(grade) {
     var r=rounds[rIdx];
     var items=r.items.slice().sort(function(){return Math.random()-.5;});
 
-    ov.innerHTML = gameHeader('Colors & Shapes','í ¼í¾¨',CA,CB,'colorsGameOv')
+    ov.innerHTML = gameHeader('Colors & Shapes','ğŸ¨',CA,CB,'colorsGameOv')
       +'<div style="flex:1;overflow-y:auto;padding:16px;max-width:500px;margin:0 auto;width:100%;">'
       +'<div style="background:white;border-radius:18px;padding:14px 18px;margin-bottom:14px;text-align:center;box-shadow:0 4px 14px rgba(236,72,153,.15);">'
       +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.05rem;font-weight:800;color:'+CA+';">'+r.title+'</div>'
