@@ -1,4 +1,4 @@
-<!-- BloomiKids v354 -->
+<!-- BloomiKids v355 -->
 <!DOCTYPE html>
 <html lang="en"><!-- v369 -->
 <head>
@@ -64,7 +64,7 @@ body::after  { content:''; position:fixed; width:600px; height:600px; background
 @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
 .auth-logo { font-family:'Baloo 2',cursive; font-size:2.2rem; font-weight:800; text-align:center; margin-bottom:6px; background:linear-gradient(135deg,var(--coral),var(--sunshine)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
 .auth-logo span { -webkit-text-fill-color:var(--mint); }
-.auth-tagline { text-align:center; color:var(--muted); font-size:.95rem; font-weight:600; margin-bottom:28px; }
+.auth-tagline { text-align:center; color:rgba(255,255,255,.9); font-size:.95rem; font-weight:600; margin-bottom:28px; }
 .auth-tabs { display:flex; gap:8px; margin-bottom:24px; }
 .auth-tab { flex:1; padding:10px; border-radius:40px; border:none; cursor:pointer; font-family:'Nunito',sans-serif; font-size:.9rem; font-weight:700; background:#F0F0F8; color:var(--muted); transition:all .2s; }
 .auth-tab.active { background:var(--mint); color:white; }
@@ -146,7 +146,7 @@ body::after  { content:''; position:fixed; width:600px; height:600px; background
   color:#AAA;margin-bottom:4px;
   animation:fadeUp .6s ease both .5s;
 }
-.picker-sub { color:var(--muted); font-weight:600; margin-bottom:32px; text-align:center; }
+.picker-sub { color:rgba(255,255,255,.85); font-weight:600; margin-bottom:32px; text-align:center; }
 .children-grid { display:flex; flex-wrap:wrap; gap:16px; justify-content:center; max-width:520px; }
 .child-btn { background:white; border-radius:24px; padding:20px 24px; border:none; cursor:pointer; box-shadow:var(--shadow); transition:all .25s; text-align:center; min-width:120px; }
 .child-btn:hover { transform:translateY(-4px); box-shadow:0 16px 36px rgba(45,45,78,.15); }
@@ -736,8 +736,8 @@ img[src*="bloomy_"] {
 
 <!-- ══ CHILD PICKER ══════════════════════════════════════════ -->
 <div id="childPicker" class="hidden">
-  <div class="picker-title">👋 Who's learning today?</div>
-  <div class="picker-sub">Pick a profile or add a new child</div>
+  <div class="picker-title" style="color:white;text-shadow:0 2px 8px rgba(0,0,0,.3);">👋 Who's learning today?</div>
+  <div class="picker-sub" style="color:rgba(255,255,255,.85);">Pick a profile or add a new child</div>
   <div class="children-grid" id="childrenGrid"><div class="spinner"></div></div>
   <button class="logout-link" onclick="handleLogout()">← Switch account</button>
 </div>
@@ -1039,27 +1039,10 @@ img[src*="bloomy_"] {
       <div class="stat-chip"><div class="stat-num num-sun"  id="readingStreak">0</div><div class="stat-lbl">Day Streak</div></div>
     </div>
 
-    <div style="margin-bottom:16px;">
-      <button onclick="openPhonicsGame(activeGrade)" style="width:100%;padding:16px;border-radius:20px;border:none;background:linear-gradient(135deg,#0EA5E9,#38BDF8);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(14,165,233,.35);margin-bottom:12px;"><span style='font-size:1.3rem;'>📖</span> Phonics & Sight Words</button><button onclick="openDinoStories(activeGrade)" style="width:100%;padding:16px;border-radius:20px;border:none;background:linear-gradient(135deg,#1a472a,#2d8a4e);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(0,0,0,.2);">
-        <span style="font-size:1.5rem;">🦕</span>
-        <span>Dino Decodable Stories</span>
-        <span style="font-size:.75rem;background:rgba(255,255,255,.2);padding:3px 8px;border-radius:10px;">NEW!</span>
-      </button>
+    <div id="readingButtonsArea" style="margin-bottom:16px;">
+      <!-- Populated by buildReadingButtons() based on grade -->
     </div>
-    <div style="margin-bottom:16px;">
-      <button onclick="openPassageReader(activeGrade)" style="width:100%;padding:16px;border-radius:20px;border:none;background:linear-gradient(135deg,#1a2a4a,#2d4a8a);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(0,0,0,.2);">
-        <span style="font-size:1.5rem;">📖</span>
-        <span>Reading Comprehension</span>
-        <span style="font-size:.75rem;background:rgba(255,255,255,.2);padding:3px 8px;border-radius:10px;">Gr 3-5</span>
-      </button>
-    </div>
-    <div style="margin-bottom:16px;">
-      <button onclick="openMasterLessons(activeGrade)" style="width:100%;padding:16px;border-radius:20px;border:none;background:linear-gradient(135deg,#2D1A4E,#6B3FA0);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(0,0,0,.2);">
-        <span style="font-size:1.5rem;">🎓</span>
-        <span>Reading Lessons</span>
-        <span style="font-size:.75rem;background:rgba(255,255,255,.2);padding:3px 8px;border-radius:10px;">All Grades</span>
-      </button>
-    </div>
+
     <div id="gradeGamesSection" style="margin-bottom:16px;">
       <!-- Games populated by buildGradeGames() -->
     </div>
@@ -1135,7 +1118,8 @@ const GRADE_DATA = {
       { icon:'🎨', title:'Colors & Art', desc:'Paint, draw, and make things!', badge:'Create!', color:'lavender' },
       { icon:'🐾', title:'Animals & Nature', desc:'Bugs, birds, dogs, and trees!', badge:'Explore!', color:'sun' },
           { icon:'✏', title:'Letter Tracing', desc:'Trace every letter with your finger!', badge:'Trace!', color:'lavender' },
-    ],
+
+      { icon:'🔢', title:'Number Tracing', desc:'Trace numbers 0 to 9!', badge:'Trace!', color:'mint' },    ],
     questions:[
       // Numbers (30)
       {q:'How many apples?',pic:'🍎🍎🍎',opts:['1','2','3','4'],answer:2,subject:'Numbers'},
@@ -1452,7 +1436,8 @@ const GRADE_DATA = {
       { icon:'🎨', title:'Colors & Shapes', desc:'Circles, squares, and all the colors!', badge:'So colorful!', color:'lavender' },
       { icon:'🌤', title:'My World', desc:'Weather, animals, and nature!', badge:'Explore!', color:'sun' },
           { icon:'✏', title:'Letter Tracing', desc:'Trace every letter A to Z!', badge:'Trace!', color:'coral' },
-    ],
+
+      { icon:'🔢', title:'Number Tracing', desc:'Trace numbers 0 to 9!', badge:'Trace!', color:'mint' },    ],
     questions:[
       {q:'What is 3 + 3?',opts:['4','5','6','7'],answer:2,subject:'Counting'},
       {q:'Count by 2s: 2 4 __',pic:'2️⃣ 4️⃣ ❓',opts:['5','6','7','8'],answer:1,subject:'Counting'},
@@ -3322,6 +3307,7 @@ async function selectChild(child) {
   setTimeout(showIntroVideo, 500);
   applyGradeUI();
   buildSubjectCards();
+  buildReadingButtons();
   buildYogaGrid();
   buildProgressSection();
   // Header
@@ -3391,6 +3377,34 @@ function applyGradeUI() {
   ['tabMove', 'tabMove2' ].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=ui.tabMove; });
   ['tabRead', 'tabRead2' ].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=ui.tabRead; });
   ['tabArt',  'tabArt2'  ].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=ui.tabArt||'Art'; });
+}
+
+function buildReadingButtons() {
+  var container = document.getElementById('readingButtonsArea');
+  if (!container) return;
+  var earlyGrades = ['PreK','K','1','2'];
+  var olderGrades = ['3','4','5'];
+  var isEarly = earlyGrades.indexOf(activeGrade) >= 0;
+  var isOlder = olderGrades.indexOf(activeGrade) >= 0;
+  var btns = '';
+
+  if (isEarly) {
+    btns += '<button onclick="openPhonicsGame(activeGrade)" style="width:100%;padding:16px;border-radius:20px;border:none;background:linear-gradient(135deg,#0EA5E9,#38BDF8);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(14,165,233,.35);margin-bottom:12px;">'
+      + '<span style="font-size:1.3rem;">📖</span> Phonics &amp; Sight Words</button>';
+    btns += '<button onclick="openDinoStories(activeGrade)" style="width:100%;padding:16px;border-radius:20px;border:none;background:linear-gradient(135deg,#1a472a,#2d8a4e);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(0,0,0,.2);margin-bottom:12px;">'
+      + '<span style="font-size:1.5rem;">🦕</span><span>Dino Decodable Stories</span></button>';
+  }
+
+  if (isOlder) {
+    btns += '<button onclick="openPassageReader(activeGrade)" style="width:100%;padding:16px;border-radius:20px;border:none;background:linear-gradient(135deg,#1a2a4a,#2d4a8a);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(0,0,0,.2);margin-bottom:12px;">'
+      + '<span style="font-size:1.5rem;">📖</span><span>Reading Comprehension</span></button>';
+  }
+
+  // Reading Lessons for all grades
+  btns += '<button onclick="openMasterLessons(activeGrade)" style="width:100%;padding:16px;border-radius:20px;border:none;background:linear-gradient(135deg,#2D1A4E,#6B3FA0);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(0,0,0,.2);margin-bottom:12px;">'
+    + '<span style="font-size:1.5rem;">🎓</span><span>Reading Lessons</span></button>';
+
+  container.innerHTML = btns;
 }
 
 function buildSubjectCards() {
@@ -4377,68 +4391,86 @@ function _stopAllNodes() {
 }
 
 function _startMood(moodIdx) {
+  _stopAllNodes();
   var ctx = _getMusicCtx();
   var mood = MUSIC_MOODS[moodIdx % MUSIC_MOODS.length];
   var volSlider = document.getElementById('volumeSlider');
   var vol = parseInt(volSlider ? volSlider.value : 60) / 100;
 
   _musicGain = ctx.createGain();
-  _musicGain.gain.value = Math.max(0.1, vol * 0.7);
+  _musicGain.gain.setValueAtTime(0.001, ctx.currentTime);
+  _musicGain.gain.linearRampToValueAtTime(Math.max(0.05, vol * 0.4), ctx.currentTime + 0.5);
   _musicGain.connect(ctx.destination);
 
-  mood.freqs.forEach(function(freq, i) {
-    var osc = ctx.createOscillator();
-    var g = ctx.createGain();
-    osc.type = 'sine';
-    osc.frequency.value = freq;
-    g.gain.value = 0.15 - i * 0.02;
-    osc.connect(g);
-    g.connect(_musicGain);
-    osc.start();
-    _musicNodes.push(osc);
-  });
+  // Pentatonic notes for this mood
+  var penta = [mood.freqs[0], mood.freqs[1], mood.freqs[2], mood.freqs[3], mood.freqs[2], mood.freqs[1]];
+  var bpm = 52;
+  var beat = 60 / bpm;
+  var now = ctx.currentTime + 0.1;
 
+  // Schedule 12 bars of gentle arpeggios
+  for (var bar = 0; bar < 12; bar++) {
+    penta.forEach(function(freq, ni) {
+      var t = now + bar * penta.length * beat + ni * beat;
+      var osc = ctx.createOscillator();
+      var env = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      env.gain.setValueAtTime(0.001, t);
+      env.gain.linearRampToValueAtTime(0.22, t + 0.04);
+      env.gain.exponentialRampToValueAtTime(0.001, t + beat * 0.9);
+      osc.connect(env); env.connect(_musicGain);
+      osc.start(t); osc.stop(t + beat);
+      _musicNodes.push(osc);
+      // Soft octave harmony
+      var osc2 = ctx.createOscillator();
+      var env2 = ctx.createGain();
+      osc2.type = 'triangle';
+      osc2.frequency.value = freq * 2;
+      env2.gain.setValueAtTime(0.001, t);
+      env2.gain.linearRampToValueAtTime(0.06, t + 0.04);
+      env2.gain.exponentialRampToValueAtTime(0.001, t + beat * 0.7);
+      osc2.connect(env2); env2.connect(_musicGain);
+      osc2.start(t); osc2.stop(t + beat);
+      _musicNodes.push(osc2);
+    });
+  }
+
+  // Continuous soft bass pad
   var bass = ctx.createOscillator();
-  var bassG = ctx.createGain();
-  bass.type = 'sine';
+  var bassEnv = ctx.createGain();
+  bass.type = 'triangle';
   bass.frequency.value = mood.bass;
-  bassG.gain.value = 0.2;
-  bass.connect(bassG);
-  bassG.connect(_musicGain);
-  bass.start();
+  bassEnv.gain.setValueAtTime(0.001, now);
+  bassEnv.gain.linearRampToValueAtTime(0.08, now + 1);
+  bass.connect(bassEnv); bassEnv.connect(_musicGain);
+  bass.start(now);
   _musicNodes.push(bass);
+
+  // Auto-restart after 12 bars
+  var totalDur = 12 * penta.length * beat;
+  var restartTimer = setTimeout(function() {
+    if (musicPlaying) { _startMood(moodIdx); }
+  }, (totalDur + 0.5) * 1000);
+  _musicNodes.push({ stop: function() { clearTimeout(restartTimer); } });
 
   musicPlaying = true;
   var btn = document.getElementById('playPauseBtn');
-  if (btn) btn.textContent = '⏸ Pause';
+  if (btn) btn.textContent = '\u23f8 Pause';
+  var nameEl = document.getElementById('trackName');
+  if (nameEl) nameEl.textContent = mood.name;
   var listEl = document.getElementById('trackList');
-  if (listEl) listEl.textContent = 'Now playing: ' + mood.name + ' 🎵';
+  if (listEl) listEl.textContent = 'Now playing: ' + mood.name + ' \U0001f3b5';
 }
+
 function initMusicPlayer() {
   // Music player ready — user taps Play to start
   var nameEl = document.getElementById('trackName');
   if (nameEl) nameEl.textContent = 'Tap Play for calming yoga music';
 }
 
-// ── Simple MP3 music player — no WebAudio needed ──
+// Music uses WebAudio synthesizer
 var _mp3Player = null;
-var _mp3Tracks = [
-  'https://cdn.pixabay.com/audio/2024/02/28/audio_c0cf2d8ac7.mp3',
-  'https://cdn.pixabay.com/audio/2023/10/31/audio_840a74a9f3.mp3',
-  'https://cdn.pixabay.com/audio/2024/01/15/audio_5b1d2fa2f7.mp3',
-  'https://cdn.pixabay.com/audio/2023/09/05/audio_92a7ec1de0.mp3',
-  'https://cdn.pixabay.com/audio/2024/03/10/audio_d35e8b6c43.mp3',
-  'https://cdn.pixabay.com/audio/2023/11/20/audio_7c2e3f8a15.mp3',
-  'https://cdn.pixabay.com/audio/2024/04/02/audio_9b5c1d7e82.mp3',
-  'https://cdn.pixabay.com/audio/2023/08/14/audio_6a3f2c9b17.mp3',
-  'https://cdn.pixabay.com/audio/2024/01/28/audio_4e8d5c2a96.mp3',
-  'https://cdn.pixabay.com/audio/2023/12/05/audio_1f7b3e9c24.mp3',
-];
-var _mp3TrackNames = [
-  'Gentle Rain', 'Peaceful Meadow', 'Soft Breeze', 'Ocean Calm',
-  'Forest Whisper', 'Starlight Rest', 'Morning Dew', 'Quiet Garden',
-  'Floating Clouds', 'Bedtime Peace'
-];
 
 function toggleMusic() {
   var ctx = _getMusicCtx();
@@ -4677,6 +4709,9 @@ function switchTab(tab) {
   if (tab !== 'yoga' && musicPlaying) { try { toggleMusic(); } catch(e) {} }
   if (tab === 'yoga') {
     setTimeout(() => { initMusicPlayer(); }, 100);
+  }
+  if (tab === 'reading') {
+    setTimeout(function(){ buildReadingButtons(); }, 50);
   }
   // ✅ FIX 4: Only build art tab once per child session
   if (tab === 'art' && !artTabBuilt) {
@@ -5609,10 +5644,14 @@ function openMathGame(grade) {
       // Show next button instead of auto-advancing
       var nextWrap = document.getElementById('mathCheckWrap');
       if(nextWrap){
-        nextWrap.innerHTML = '<button onclick="window._mathNextRound()" style="padding:16px 40px;border-radius:40px;border:none;background:linear-gradient(135deg,#6C3FC5,#A78BFA);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1.1rem;cursor:pointer;box-shadow:0 6px 20px rgba(108,63,197,.4);">'+(round<ROUNDS?'Next Round ➡️':'See Results 🏆')+'</button>';
+        nextWrap.innerHTML = '<button onclick="window._mathNextRound()" style="padding:16px 40px;border-radius:40px;border:none;background:linear-gradient(135deg,#6C3FC5,#A78BFA);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1.1rem;cursor:pointer;box-shadow:0 6px 20px rgba(108,63,197,.4);">'+(round<ROUNDS?'Next Round ➡️':'See My Results 🏆')+'</button>';
         nextWrap.style.display='block';
       }
-      window._mathNextRound = function(){ renderRound(); };
+      window._mathNextRound = function(){
+        var nw=document.getElementById('mathCheckWrap');
+        if(nw){nw.innerHTML='';nw.style.display='none';}
+        renderRound();
+      };
     };
   }
 
