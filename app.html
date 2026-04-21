@@ -1,4 +1,4 @@
-<!-- BloomiKids v352 -->
+<!-- BloomiKids v354 -->
 <!DOCTYPE html>
 <html lang="en"><!-- v369 -->
 <head>
@@ -23,7 +23,7 @@
   --sunshine: #FFD166;
   --coral:    #FF6B6B;
   --lavender: #C9B8FF;
-  --bg:       #FAF7FF;
+  --bg:       #EEE8FF;
   --text:     #2D2D4E;
   --muted:    #8888AA;
   --shadow:   0 8px 32px rgba(45,45,78,0.10);
@@ -58,9 +58,9 @@ body::after  { content:''; position:fixed; width:600px; height:600px; background
 @keyframes confettiFall { 0%{transform:translateY(-30px) rotate(0deg);opacity:1} 100%{transform:translateY(520px) rotate(720deg);opacity:0} }
 
 /* -- AUTH ---------------------------------------------- */
-#authScreen { position:fixed; inset:0; z-index:1000; background:var(--bg); display:flex; align-items:center; justify-content:center; flex-direction:column; padding:24px; }
+#authScreen { position:fixed; inset:0; z-index:1000; background:linear-gradient(160deg,#2D1B69 0%,#5B2D8E 40%,#8B5CF6 100%); display:flex; align-items:center; justify-content:center; flex-direction:column; padding:24px; }
 #authScreen.hidden { display:none; }
-.auth-card { background:white; border-radius:28px; padding:36px; box-shadow:var(--shadow); width:100%; max-width:420px; animation:fadeUp .5s ease; }
+.auth-card { background:rgba(255,255,255,.95); backdrop-filter:blur(20px); border-radius:28px; padding:36px; box-shadow:0 20px 60px rgba(0,0,0,.3); width:100%; max-width:420px; animation:fadeUp .5s ease; border:1px solid rgba(255,255,255,.5); }
 @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
 .auth-logo { font-family:'Baloo 2',cursive; font-size:2.2rem; font-weight:800; text-align:center; margin-bottom:6px; background:linear-gradient(135deg,var(--coral),var(--sunshine)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
 .auth-logo span { -webkit-text-fill-color:var(--mint); }
@@ -79,7 +79,7 @@ body::after  { content:''; position:fixed; width:600px; height:600px; background
 .auth-error.show { display:block; }
 
 /* -- CHILD PICKER -------------------------------------- */
-#childPicker { position:fixed; inset:0; z-index:900; background:var(--bg); display:flex; align-items:center; justify-content:center; flex-direction:column; padding:24px; }
+#childPicker { position:fixed; inset:0; z-index:900; background:linear-gradient(160deg,#2D1B69 0%,#5B2D8E 40%,#8B5CF6 100%); display:flex; align-items:center; justify-content:center; flex-direction:column; padding:24px; }
 #childPicker.hidden { display:none; }
 .picker-title { font-family:'Baloo 2',cursive; font-size:2rem; font-weight:800; margin-bottom:8px; text-align:center; }
 
@@ -1728,6 +1728,12 @@ const GRADE_DATA = {
       timerTopLabel:'Pose Timer',
       bookshelfTitle:'📖 My Books',
     },
+    subjects:[
+      { icon:'\U0001f522', title:'Math', desc:'Addition, subtraction and more!', badge:'Practice!', color:'mint' },
+      { icon:'\U0001f4dd', title:'Language Arts', desc:'Reading, writing and words!', badge:'Learn!', color:'coral' },
+      { icon:'\u270F', title:'Writing', desc:'Sentences, grammar and more!', badge:'Write!', color:'lavender' },
+      { icon:'\U0001f522', title:'Number Tracing', desc:'Trace numbers 0 to 9!', badge:'Trace!', color:'sun' },
+    ],
     subjects_progress:['Math','Language Arts','Writing'],
     poses:[
       { emoji:'🌳', name:'Tree Pose',     tip:'Stand tall on one foot like a tree!', secs:20, level:'Easy' },
@@ -1837,6 +1843,7 @@ const GRADE_DATA = {
       { icon:'🔬', title:'Science', desc:'Animals, plants, weather and experiments!', badge:'Explore!', color:'coral' },
       { icon:'✏', title:'Writing', desc:'Write sentences with describing words!', badge:'1 assignment', color:'lavender' },
       { icon:'🌍', title:'Social Studies', desc:'Maps, communities, and our world!', badge:'Explore!', color:'sun' },
+      { icon:'\U0001f522', title:'Number Tracing', desc:'Trace numbers 0 to 9!', badge:'Trace!', color:'sun' },
     ],
     questions:[
       {q:'What is 9 x 4?',opts:['32','34','36','38'],answer:2,subject:'Math'},
@@ -5471,7 +5478,7 @@ function openMathGame(grade) {
     5:     { type:'order', min:500,max:10000,count:5,label:'Order from smallest to biggest!' }
   };
   var c = cfg[grade] || cfg['3'];
-  var round = 0, score = 0, ROUNDS = 7;
+  var round = 0, score = 0, ROUNDS = 4;
   var dragSrc = null;
 
   function makeRound() {
@@ -5597,9 +5604,15 @@ function openMathGame(grade) {
         }
       });
       if(correct){ score++; toast('Perfect order! 🌟'); }
-      else { toast('Almost! The right order was: '+window._mathCurrentSorted.join(' → ')); }
+      else { toast('The right order: '+window._mathCurrentSorted.join(' → ')); }
       round++;
-      setTimeout(renderRound, 1400);
+      // Show next button instead of auto-advancing
+      var nextWrap = document.getElementById('mathCheckWrap');
+      if(nextWrap){
+        nextWrap.innerHTML = '<button onclick="window._mathNextRound()" style="padding:16px 40px;border-radius:40px;border:none;background:linear-gradient(135deg,#6C3FC5,#A78BFA);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1.1rem;cursor:pointer;box-shadow:0 6px 20px rgba(108,63,197,.4);">'+(round<ROUNDS?'Next Round ➡️':'See Results 🏆')+'</button>';
+        nextWrap.style.display='block';
+      }
+      window._mathNextRound = function(){ renderRound(); };
     };
   }
 
@@ -5683,16 +5696,20 @@ function openLangGame(grade) {
 
   var STORY_DATA = {
     PreK: [
-      {story:'The little ____ sat in the sun.', blanks:['cat','dog','bug','hen'], answer:0, pic:'☀️'},
-      {story:'I see a big ____ in the sky.', blanks:['cloud','pizza','shoe','desk'], answer:0, pic:'🌤️'},
-      {story:'The ____ jumped over the fence.', blanks:['frog','book','chair','lamp'], answer:0, pic:'🐸'},
-      {story:'She ate a yummy ____.', blanks:['apple','rock','sock','cloud'], answer:0, pic:'🍎'},
+      {story:'The little ____ says woof!', blanks:['dog','sun','book','shoe'], answer:0, pic:'🐶'},
+      {story:'I see a big red ____.', blanks:['apple','cloud','chair','lamp'], answer:0, pic:'🍎'},
+      {story:'The ____ is yellow like the sun.', blanks:['banana','cloud','frog','milk'], answer:0, pic:'🍌'},
+      {story:'The ____ hops up and down.', blanks:['bunny','rock','table','sock'], answer:0, pic:'🐰'},
+      {story:'I drink cold ____ every day.', blanks:['milk','rock','sand','leaf'], answer:0, pic:'🥛'},
+      {story:'The big ____ lights up the sky.', blanks:['sun','rock','book','shoe'], answer:0, pic:'☀️'},
     ],
     K: [
-      {story:'The baby bird learned how to ____.', blanks:['fly','sleep','moo','bark'], answer:0, pic:'🐦'},
-      {story:'We planted a seed and it started to ____.', blanks:['grow','swim','bark','fly'], answer:0, pic:'🌱'},
-      {story:'The puppy wagged its ____ when it was happy.', blanks:['tail','nose','wing','shell'], answer:0, pic:'🐶'},
-      {story:'On a rainy day we see a ____ in the sky.', blanks:['rainbow','sandwich','ladder','pillow'], answer:0, pic:'🌈'},
+      {story:'The baby bird learned how to ____.', blanks:['fly','sleep','bark','moo'], answer:0, pic:'🐦'},
+      {story:'We planted a seed and it started to ____.', blanks:['grow','run','bark','fly'], answer:0, pic:'🌱'},
+      {story:'The puppy wagged its ____ when happy.', blanks:['tail','nose','wing','ear'], answer:0, pic:'🐶'},
+      {story:'After the rain we see a ____ in the sky.', blanks:['rainbow','cloud','bird','kite'], answer:0, pic:'🌈'},
+      {story:'Fish live in the ____ and can swim.', blanks:['water','sky','grass','sand'], answer:0, pic:'🐟'},
+      {story:'We use an ____ to clean our teeth.', blanks:['toothbrush','shoe','spoon','book'], answer:0, pic:'🪥'},
     ],
     1: [
       {story:'The explorer used a map to find her way through the dark ____.', blanks:['jungle','kitchen','classroom','bedroom'], answer:0, pic:'🗺️'},
@@ -6017,7 +6034,10 @@ function openScienceGame(grade) {
       if(correct===all) score++;
       toast(correct+'/'+all+' correct!');
       rIdx++;
-      setTimeout(renderRound,1400);
+      // Show next button
+      var cw=document.getElementById('sciCheckWrap');
+      if(cw){ cw.innerHTML='<button onclick="window._sciNext()" style="padding:14px 36px;border-radius:40px;border:none;background:linear-gradient(135deg,#0EA5E9,#38BDF8);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(14,165,233,.4);">'+(rIdx<TOTAL_ROUNDS?'Next ➡️':'Results 🏆')+'</button>'; cw.style.display='block'; }
+      window._sciNext=function(){ renderRound(); };
     };
   }
 
@@ -6219,7 +6239,9 @@ function openColorsGame(grade) {
       if(correct===items.length) score++;
       toast(correct+'/'+items.length+' correct!');
       rIdx++;
-      setTimeout(renderRound,1400);
+      var cw=document.getElementById('csCheckWrap');
+      if(cw){ cw.innerHTML='<button onclick="window._csNext()" style="padding:14px 36px;border-radius:40px;border:none;background:linear-gradient(135deg,#EC4899,#F472B6);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(236,72,153,.4);">'+(rIdx<TOTAL?'Next ➡️':'Results 🏆')+'</button>'; cw.style.display='block'; }
+      window._csNext=function(){ renderRound(); };
     };
   }
   renderRound();
@@ -7497,14 +7519,25 @@ function openActualDashboard() {
     +'<button onclick="if(confirm(&quot;Sign out?&quot;))signOut();" style="width:100%;padding:14px;border-radius:16px;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);font-family:Nunito,sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;">Sign Out</button>'
     +'</div>';
 
-  // Stub functions for menu items
-  function showParentProgress(){toast("Progress coming soon!");}
-  function showStarsHistory(){toast("Stars history coming soon!");}
-  function showSchedule(){toast("Schedule coming soon!");}
-  function manageChildren(){ov.remove();setTimeout(function(){showScreen('children');loadChildren();},100);}
-  function showReminders(){toast("Reminders coming soon!");}
-  function showParentSettings(){toast("Settings coming soon!");}
 }
+
+// Parent dashboard tile functions (global scope)
+function showParentProgress(){
+  var ov=document.getElementById('parentDashOv');
+  var stars=typeof sessionData!=='undefined'?sessionData.stars||0:0;
+  var tasks=typeof sessionData!=='undefined'?sessionData.tasks||0:0;
+  var mins=typeof sessionData!=='undefined'?sessionData.minutes||0:0;
+  toast('⭐ Stars: '+stars+' | 📚 Activities: '+tasks+' | ⏱ Mins: '+mins);
+}
+function showStarsHistory(){toast('⭐ Total stars: '+(typeof sessionData!=='undefined'?sessionData.stars||0:0));}
+function showSchedule(){toast('📅 Schedule feature coming soon!');}
+function manageChildren(){
+  var ov=document.getElementById('parentDashOv');
+  if(ov)ov.remove();
+  setTimeout(function(){showScreen('children');loadChildren();},100);
+}
+function showReminders(){toast('🔔 Reminders feature coming soon!');}
+function showParentSettings(){toast('⚙️ Settings feature coming soon!');}
 
 
 function scheduleStreakChecks(){
