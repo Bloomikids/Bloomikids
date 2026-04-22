@@ -1,4 +1,4 @@
-<!-- BloomiKids v355 -->
+<!-- BloomiKids v356 -->
 <!DOCTYPE html>
 <html lang="en"><!-- v369 -->
 <head>
@@ -233,8 +233,6 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .tab-btn[data-tab="academics"].active { background:linear-gradient(135deg,#5ECDA0,#4ECDC4); }
 .tab-btn[data-tab="yoga"].active      { background:linear-gradient(135deg,#C9B8FF,#FF6B6B); }
 .tab-btn[data-tab="reading"].active   { background:linear-gradient(135deg,#FFD166,#FF6B6B); }
-.tab-btn[data-tab="games"].active     { background:linear-gradient(135deg,#FF6B6B,#FF8E53); }
-
 .panel { display:none; opacity:0; }
 .panel.active { display:block; animation:slideUp .3s cubic-bezier(.4,0,.2,1) both; }
 @keyframes slideUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
@@ -790,13 +788,10 @@ img[src*="bloomy_"] {
     <button class="tab-btn" data-tab="yoga" onclick="switchTab('yoga')">🧘 <span id="tabMove">Move</span></button>
     <button class="tab-btn" data-tab="reading" onclick="switchTab('reading')">📖 <span id="tabRead">Read</span></button>
     <button class="tab-btn" data-tab="art" onclick="switchTab('art')">🎨 <span id="tabArt">Art</span></button>
-    <button class="tab-btn" data-tab="games" onclick="switchTab('games')">🎮 <span id="tabGames">Games</span></button>
-  </div>
+    </div>
 
   <!-- -- GAMES -- -->
-  <div class="panel" id="panel-games">
-    <div class="section-title">🎮 Games with Bloomy</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:4px 0 20px;">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:4px 0 20px;">
 
       <div onclick="openWordMatch()" style="background:linear-gradient(135deg,#FF6B6B,#FF8E53);border-radius:20px;padding:20px 14px;text-align:center;cursor:pointer;box-shadow:0 4px 16px rgba(255,107,107,.3);">
         <div style="font-size:2.2rem;margin-bottom:8px;">🔤</div>
@@ -1714,10 +1709,10 @@ const GRADE_DATA = {
       bookshelfTitle:'📖 My Books',
     },
     subjects:[
-      { icon:'\U0001f522', title:'Math', desc:'Addition, subtraction and more!', badge:'Practice!', color:'mint' },
-      { icon:'\U0001f4dd', title:'Language Arts', desc:'Reading, writing and words!', badge:'Learn!', color:'coral' },
+      { icon:'🔢', title:'Math', desc:'Addition, subtraction and more!', badge:'Practice!', color:'mint' },
+      { icon:'📝', title:'Language Arts', desc:'Reading, writing and words!', badge:'Learn!', color:'coral' },
       { icon:'\u270F', title:'Writing', desc:'Sentences, grammar and more!', badge:'Write!', color:'lavender' },
-      { icon:'\U0001f522', title:'Number Tracing', desc:'Trace numbers 0 to 9!', badge:'Trace!', color:'sun' },
+      { icon:'🔢', title:'Number Tracing', desc:'Trace numbers 0 to 9!', badge:'Trace!', color:'sun' },
     ],
     subjects_progress:['Math','Language Arts','Writing'],
     poses:[
@@ -1828,7 +1823,7 @@ const GRADE_DATA = {
       { icon:'🔬', title:'Science', desc:'Animals, plants, weather and experiments!', badge:'Explore!', color:'coral' },
       { icon:'✏', title:'Writing', desc:'Write sentences with describing words!', badge:'1 assignment', color:'lavender' },
       { icon:'🌍', title:'Social Studies', desc:'Maps, communities, and our world!', badge:'Explore!', color:'sun' },
-      { icon:'\U0001f522', title:'Number Tracing', desc:'Trace numbers 0 to 9!', badge:'Trace!', color:'sun' },
+      { icon:'🔢', title:'Number Tracing', desc:'Trace numbers 0 to 9!', badge:'Trace!', color:'sun' },
     ],
     questions:[
       {q:'What is 9 x 4?',opts:['32','34','36','38'],answer:2,subject:'Math'},
@@ -3902,14 +3897,8 @@ const ART_DATA = {
       { icon:'🍂', title:'Leaf Rubbing', desc:'Place a leaf under paper and rub a crayon over it to see the leaf appear like magic!', color:'sun', badge:'Magic!', badge_style:'badge-sun',
         steps:['Find a leaf outside or use a fake one.','Place it under a piece of white paper.','Rub the side of a crayon gently over the paper.','Watch the leaf appear! Try different colors! 🍃'] },
     ],
-    drawPrompts:[
-      { text:'🐱 Draw your favorite animal wearing a hat!', tip:'Use circles for the head and oval shapes for the body.' },
-      { text:'🌈 Draw a rainbow with something at each end!', tip:'Try a pot of gold, a unicorn, or your house!' },
-      { text:'🏠 Draw your home with your family outside!', tip:'Start with a big rectangle for the house, then add a triangle roof.' },
-      { text:'🌸 Draw a giant flower as big as the whole page!', tip:'Start with a circle in the middle, then add petals all around.' },
-      { text:'🐠 Draw an underwater world with fish and sea creatures!', tip:'Draw wavy lines for water, then add your sea creatures.' },
-      { text:'🚀 Draw yourself going to the moon!', tip:'Draw yourself in a spacesuit, then add a rocket ship!' },
-    ],
+    drawPrompts:[],
+
   },
   K: {
     heroClass:'k-art', heroEmoji:'🎨', heroTitle:'Art Time!', heroSub:'Paint, draw and create something amazing!',
@@ -3922,14 +3911,8 @@ const ART_DATA = {
       { icon:'🏡', title:'My Dream House', desc:'Design and draw your perfect dream house -- it can have anything you want!', color:'mint', badge:'Dream big!', badge_style:'badge-mint',
         steps:['Think about what your dream house would have -- a pool? A treehouse? A slide?','Draw the outside of the house first -- any shape you like!','Add windows, doors, and all the special features.','Color it in and add a background -- yard, sky, trees! 🌳'] },
     ],
-    drawPrompts:[
-      { text:'🦁 Draw a lion with the biggest, fluffiest mane!', tip:'Use curved lines around the face for the mane.' },
-      { text:'🍕 Draw your favorite food as big as the whole page!', tip:'Add lots of details -- toppings, steam, a plate!' },
-      { text:'🌙 Draw what you think happens while you sleep at night!', tip:'Think about dreams, stars, the moon...' },
-      { text:'🦸 Draw yourself as a superhero!', tip:'What power do you have? What does your costume look like?' },
-      { text:'🌊 Draw the ocean with a secret treasure chest!', tip:'Add fish, coral, seaweed and a mermaid!' },
-      { text:'🎪 Draw a circus with performers and animals!', tip:'Start with the big tent, then add the performers inside.' },
-    ],
+    drawPrompts:[],
+
   },
   1: {
     heroClass:'g1-art', heroEmoji:'🖌', heroTitle:'Art Studio!', heroSub:'Explore drawing, painting and creating!',
@@ -3942,14 +3925,8 @@ const ART_DATA = {
       { icon:'🏺', title:'Texture Rubbings', desc:'Go on a texture hunt around the house and create a texture collage!', color:'sun', badge:'Explore!', badge_style:'badge-sun',
         steps:['Collect leaves, coins, textured fabric.','Put each object under paper and rub with the flat side of a crayon.','Cut out your rubbings and arrange them on a new sheet.','Label each texture -- bumpy, rough, smooth! ✏'] },
     ],
-    drawPrompts:[
-      { text:'🌋 Draw an erupting volcano with a village nearby!', tip:'Draw the triangle volcano first, then add lava flowing down the sides.' },
-      { text:'🐉 Design your own dragon -- what color is it? What special powers does it have?', tip:'Think about the wings, scales, and fire breath!' },
-      { text:'🏙 Draw a city skyline at night with lit-up windows!', tip:'Use black paper and light-colored crayons or chalk.' },
-      { text:'🌿 Draw a jungle with 5 different animals hiding!', tip:'Animals can peek out from behind leaves and trees.' },
-      { text:'🧁 Design the most creative cupcake ever!', tip:'Think about wild toppings, colors, and decorations.' },
-      { text:'🚢 Draw a pirate ship on a stormy sea!', tip:'Big waves, a skull flag, and treasure chest optional!' },
-    ],
+    drawPrompts:[],
+
   },
   2: {
     heroClass:'g2-art', heroEmoji:'🎭', heroTitle:'Art Studio', heroSub:'Express yourself through color, line and design!',
@@ -3962,14 +3939,8 @@ const ART_DATA = {
       { icon:'🌀', title:'Zentangle Patterns', desc:'Fill a shape with beautiful repeating patterns!', color:'coral', badge:'Zen!', badge_style:'badge-coral',
         steps:['Draw a large simple shape -- a circle, leaf, or animal outline.','Divide the shape into sections with curved or straight lines.','Fill each section with a repeating pattern -- dots, lines, waves, spirals.','You can color it in or keep it black and white! 🖊'] },
     ],
-    drawPrompts:[
-      { text:'🌏 Draw an imaginary planet with its own plants and creatures!', tip:'What is the sky color? What do the animals eat?' },
-      { text:'🎠 Draw an old-fashioned carousel with decorated horses!', tip:'Start with a big circle for the roof, then add the horses below.' },
-      { text:'🦚 Draw a peacock with its feathers fully spread!', tip:'Each feather has an "eye" at the tip -- add lots of color!' },
-      { text:'🏔 Draw a mountain landscape with a winding path to the top!', tip:'Layer the mountains -- closest is darkest, farthest is lightest.' },
-      { text:'🎪 Design a poster for an imaginary circus act!', tip:'Big bold letters, bright colors, and a performer in action.' },
-      { text:'🌺 Draw a still life of 3 objects on a table!', tip:'Look at real objects and draw exactly what you see.' },
-    ],
+    drawPrompts:[],
+
   },
   3: {
     heroClass:'g3-art', heroEmoji:'🖼', heroTitle:'Art Studio', heroSub:'Develop your technique and artistic eye!',
@@ -4449,10 +4420,10 @@ function _startMood(moodIdx) {
 
   // Auto-restart after 12 bars
   var totalDur = 12 * penta.length * beat;
-  var restartTimer = setTimeout(function() {
+  window._musicRestartTimer = setTimeout(function() {
+    window._musicRestartTimer = null;
     if (musicPlaying) { _startMood(moodIdx); }
   }, (totalDur + 0.5) * 1000);
-  _musicNodes.push({ stop: function() { clearTimeout(restartTimer); } });
 
   musicPlaying = true;
   var btn = document.getElementById('playPauseBtn');
@@ -4460,7 +4431,7 @@ function _startMood(moodIdx) {
   var nameEl = document.getElementById('trackName');
   if (nameEl) nameEl.textContent = mood.name;
   var listEl = document.getElementById('trackList');
-  if (listEl) listEl.textContent = 'Now playing: ' + mood.name + ' \U0001f3b5';
+  if (listEl) listEl.textContent = 'Now playing: ' + mood.name + ' 🎵';
 }
 
 function initMusicPlayer() {
@@ -5497,166 +5468,456 @@ function gameWinScreen(score, total, colorA, colorB, ovId) {
 // ══════════════════════════════════════════════════════════════════════
 //  1. MATH GAME — DRAG-AND-DROP NUMBER ORDERING + VISUAL MATH
 // ══════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════════
+//  MATH GAME ENGINE — Curriculum-aligned, grade-appropriate
+//  PreK: counting, more/less, patterns, basic add/sub
+//  K: counting to 30, add/sub, teen numbers, sorting
+//  G1: counting to 100, comparing, add/sub 2-digit, time, tally
+//  G2: number lines, skip counting, even/odd, fractions
+//  G3: place value, add/sub 3-5 digit, multiplication
+//  G4-5: place value, estimation, multiplication, division
+// ══════════════════════════════════════════════════════════════════════
 function openMathGame(grade) {
   var CA='#6C3FC5', CB='#A78BFA';
-  var ov = gameOverlay('mathGameOv','#F2EFFF');
+  var ov = document.createElement('div');
+  ov.id = 'mathGameOv';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#F2EFFF;display:flex;flex-direction:column;';
   document.body.appendChild(ov);
 
-  // Grade-based config
-  var cfg = {
-    PreK:  { type:'order', min:1,  max:5,  count:4, label:'Put the numbers in order! ⬆️' },
-    K:     { type:'order', min:1,  max:10, count:5, label:'Put the numbers in order! ⬆️' },
-    1:     { type:'order', min:5,  max:30, count:5, label:'Order from smallest to biggest!' },
-    2:     { type:'order', min:10, max:100,count:5, label:'Order from smallest to biggest!' },
-    3:     { type:'order', min:50, max:500,count:5, label:'Order from smallest to biggest!' },
-    4:     { type:'order', min:100,max:1000,count:5,label:'Order from smallest to biggest!' },
-    5:     { type:'order', min:500,max:10000,count:5,label:'Order from smallest to biggest!' }
+  // Close button always works
+  function addHeader(title) {
+    var hdr = document.createElement('div');
+    hdr.style.cssText = 'background:linear-gradient(135deg,'+CA+','+CB+');padding:14px 20px;color:white;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;box-shadow:0 4px 16px rgba(0,0,0,.15);';
+    hdr.innerHTML = '<div style="font-size:1.4rem;">🔢</div>'
+      +'<div style="font-family:Baloo 2,cursive;font-size:1.05rem;font-weight:800;">'+title+'</div>'
+      +'<button id="mathCloseBtn" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:34px;height:34px;cursor:pointer;font-weight:800;font-size:1rem;">✕</button>';
+    ov.appendChild(hdr);
+    document.getElementById('mathCloseBtn').onclick = function(){ ov.remove(); };
+  }
+
+  // Pick 2 games from grade pool, let kid choose
+  var GAME_MENUS = {
+    PreK: [
+      {id:'count',  icon:'🍎', title:'Count It!',        desc:'Count the objects'},
+      {id:'moreess',icon:'🐘', title:'More or Less?',    desc:'Which group has more?'},
+      {id:'addsub', icon:'➕', title:'Add & Subtract',   desc:'Add with pictures'},
+      {id:'pattern',icon:'🔴', title:'What Comes Next?', desc:'Find the pattern'},
+    ],
+    K: [
+      {id:'count',  icon:'🍎', title:'Count to 30!',     desc:'Count objects up to 30'},
+      {id:'moreess',icon:'🐘', title:'More or Less?',    desc:'Compare groups'},
+      {id:'addsub', icon:'➕', title:'Add & Subtract',   desc:'Add and subtract'},
+      {id:'teen',   icon:'🔢', title:'Teen Numbers',     desc:'Numbers 11-19'},
+    ],
+    1: [
+      {id:'count100',icon:'💯',title:'Count to 100!',   desc:'Skip count and compare'},
+      {id:'addsub2', icon:'➕',title:'Add & Subtract',  desc:'2-digit problems'},
+      {id:'time',    icon:'🕐',title:'Tell the Time!',  desc:'Match clocks to times'},
+      {id:'tally',   icon:'✏️',title:'Tally Charts',    desc:'Read and count tallies'},
+    ],
+    2: [
+      {id:'numline', icon:'📏',title:'Number Lines',    desc:'Find numbers on a line'},
+      {id:'skipc',   icon:'⏭',title:'Skip Counting',   desc:'Count by 2s and 5s'},
+      {id:'evenodd', icon:'🎲',title:'Even or Odd?',    desc:'Even and odd numbers'},
+      {id:'frac',    icon:'½', title:'Fractions',       desc:'Halves, thirds, fourths'},
+    ],
+    3: [
+      {id:'place',   icon:'🏛',title:'Place Values',   desc:'Hundreds, tens, ones'},
+      {id:'bigadd',  icon:'➕',title:'Big Numbers',    desc:'Add and subtract 3 digits'},
+      {id:'multi',   icon:'✖',title:'Multiplication', desc:'Times tables'},
+      {id:'skipc3',  icon:'⏭',title:'Skip Sequences', desc:'Find the pattern'},
+    ],
+    4: [
+      {id:'place4',  icon:'🏛',title:'Place Values',   desc:'Up to 2000'},
+      {id:'multi4',  icon:'✖',title:'Multiply!',       desc:'Multi-digit multiplication'},
+      {id:'divide',  icon:'➗',title:'Division',        desc:'Divide numbers'},
+      {id:'estim',   icon:'🎯',title:'Estimate',        desc:'Round and estimate sums'},
+    ],
+    5: [
+      {id:'place5',  icon:'🏛',title:'Place Values',   desc:'Large numbers'},
+      {id:'multi5',  icon:'✖',title:'Multiply!',       desc:'Multi-digit'},
+      {id:'divide5', icon:'➗',title:'Division',        desc:'Long division'},
+      {id:'estim5',  icon:'🎯',title:'Estimate',        desc:'Estimate and round'},
+    ],
   };
-  var c = cfg[grade] || cfg['3'];
-  var round = 0, score = 0, ROUNDS = 4;
-  var dragSrc = null;
 
-  function makeRound() {
-    // Generate unique random numbers
-    var nums = [];
-    while(nums.length < c.count) {
-      var n = Math.floor(Math.random()*(c.max-c.min+1))+c.min;
-      if(nums.indexOf(n)<0) nums.push(n);
-    }
-    var sorted = nums.slice().sort(function(a,b){return a-b;});
-    var shuffled = nums.slice().sort(function(){return Math.random()-.5;});
-    return { nums:shuffled, sorted:sorted };
+  var menu = GAME_MENUS[grade] || GAME_MENUS['3'];
+
+  function showMenu() {
+    ov.innerHTML = '';
+    addHeader('Math — Choose a Game!');
+    var body = document.createElement('div');
+    body.style.cssText = 'flex:1;overflow-y:auto;padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:480px;margin:0 auto;width:100%;align-content:start;padding-top:24px;';
+    menu.forEach(function(g) {
+      var tile = document.createElement('div');
+      tile.style.cssText = 'background:linear-gradient(155deg,'+CA+'CC,'+CA+');border-radius:22px;padding:20px 12px;text-align:center;cursor:pointer;box-shadow:0 6px 20px rgba(108,63,197,.3);position:relative;overflow:hidden;';
+      tile.innerHTML = '<div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.3),transparent);border-radius:22px 22px 50% 50%;pointer-events:none;"></div>'
+        +'<div style="font-size:2.2rem;margin-bottom:8px;position:relative;z-index:1;">'+g.icon+'</div>'
+        +'<div style="font-family:Baloo 2,cursive;font-size:.9rem;font-weight:800;color:white;position:relative;z-index:1;line-height:1.2;">'+g.title+'</div>'
+        +'<div style="font-size:.7rem;color:rgba(255,255,255,.8);margin-top:4px;position:relative;z-index:1;">'+g.desc+'</div>';
+      tile.onclick = function(){ playGame(g.id); };
+      body.appendChild(tile);
+    });
+    ov.appendChild(body);
   }
 
-  function renderRound() {
-    if(round >= ROUNDS) { gameWinScreen(score, ROUNDS, CA, CB, 'mathGameOv'); return; }
-    var r = makeRound();
-    ov.innerHTML = gameHeader('Number Order', '🔢', CA, CB, 'mathGameOv')
-      + '<div style="flex:1;overflow-y:auto;padding:24px 20px;display:flex;flex-direction:column;align-items:center;">'
-      + '<div style="background:white;border-radius:20px;padding:16px 20px;margin-bottom:20px;text-align:center;box-shadow:0 4px 16px rgba(108,63,197,.15);width:100%;max-width:420px;">'
-      + '<div style="font-family:\'Baloo 2\',cursive;font-size:1.05rem;font-weight:800;color:#6C3FC5;margin-bottom:4px;">Round '+(round+1)+' of '+ROUNDS+'</div>'
-      + '<div style="font-size:.95rem;color:#666;font-weight:600;">'+c.label+'</div>'
-      + '</div>'
-      + '<div id="mathSlots" style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:24px;min-height:70px;background:rgba(108,63,197,.07);border-radius:18px;padding:16px;width:100%;max-width:420px;border:2px dashed rgba(108,63,197,.25);">'
-      + '<div style="color:#aaa;font-size:.85rem;font-weight:600;align-self:center;">Drag numbers here in order →</div>'
-      + '</div>'
-      + '<div id="mathNumbers" style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%;max-width:420px;">'
-      + r.nums.map(function(n){
-          return '<div draggable="true" data-num="'+n+'" '
-            +'style="width:66px;height:66px;border-radius:18px;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:\'Baloo 2\',cursive;font-size:1.5rem;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:grab;box-shadow:0 6px 18px rgba(108,63,197,.35);user-select:none;transition:transform .15s;position:relative;"'
-            +' ondragstart="window._mathDragStart(this)"'
-            +' ontouchstart="window._mathTouchStart(event,this)"'
-            +'>'+n+'</div>';
-        }).join('')
-      + '</div>'
-      + '<div id="mathCheckWrap" style="margin-top:24px;display:none;">'
-      + '<button onclick="window._mathCheck()" style="padding:16px 40px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1.1rem;cursor:pointer;box-shadow:0 6px 20px rgba(108,63,197,.4);">✅ Check My Order!</button>'
-      + '</div>'
-      + '</div>';
+  // ── GAME ENGINES ──────────────────────────────────────────────────
+  function playGame(gameId) {
+    var questions = buildQuestions(gameId, grade);
+    if(!questions || !questions.length){ toast('Coming soon!'); showMenu(); return; }
+    runQuiz(questions, gameId);
+  }
 
-    window._mathCurrentSorted = r.sorted;
+  function buildQuestions(gameId, g) {
+    var qs = [];
+    var r = function(min,max){ return Math.floor(Math.random()*(max-min+1))+min; };
+    var sh = function(a){ return a.slice().sort(function(){return Math.random()-.5;}); };
+    var EMOJIS = ['🍎','🐶','⭐','🌸','🍩','🦋','🐱','🌈','🍪','🚗','🎈','🐸'];
+    function em(n){ var e=EMOJIS[r(0,EMOJIS.length-1)]; var s=''; for(var i=0;i<n;i++)s+=e; return s; }
 
-    // drag-and-drop
-    var slots = document.getElementById('mathSlots');
-    var numBank = document.getElementById('mathNumbers');
-
-    window._mathDragStart = function(el) { dragSrc = el; };
-
-    slots.addEventListener('dragover', function(e){ e.preventDefault(); });
-    slots.addEventListener('drop', function(e){
-      e.preventDefault();
-      if(!dragSrc) return;
-      dragSrc.parentNode.removeChild(dragSrc);
-      slots.appendChild(dragSrc);
-      dragSrc.style.cursor='grab';
-      checkShowBtn();
-    });
-    numBank.addEventListener('dragover', function(e){ e.preventDefault(); });
-    numBank.addEventListener('drop', function(e){
-      e.preventDefault();
-      if(!dragSrc) return;
-      dragSrc.parentNode.removeChild(dragSrc);
-      numBank.appendChild(dragSrc);
-      checkShowBtn();
-    });
-
-    // Touch support
-    var touchEl=null, touchClone=null;
-    window._mathTouchStart = function(e, el) {
-      touchEl=el;
-      var r=el.getBoundingClientRect();
-      touchClone=el.cloneNode(true);
-      touchClone.style.cssText='position:fixed;width:66px;height:66px;border-radius:18px;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:\'Baloo 2\',cursive;font-size:1.5rem;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:99999;pointer-events:none;opacity:.85;box-shadow:0 8px 24px rgba(0,0,0,.3);';
-      touchClone.style.left=(r.left)+'px'; touchClone.style.top=(r.top)+'px';
-      document.body.appendChild(touchClone);
-      e.preventDefault();
-    };
-    document.addEventListener('touchmove', function(e){
-      if(!touchClone) return;
-      var t=e.touches[0];
-      touchClone.style.left=(t.clientX-33)+'px';
-      touchClone.style.top=(t.clientY-33)+'px';
-    },{passive:false});
-    document.addEventListener('touchend', function(e){
-      if(!touchClone||!touchEl) return;
-      var t=e.changedTouches[0];
-      var under=document.elementFromPoint(t.clientX,t.clientY);
-      var sl=document.getElementById('mathSlots');
-      var nb=document.getElementById('mathNumbers');
-      touchClone.remove(); touchClone=null;
-      if(sl&&sl.contains(under)||sl===under){ sl.appendChild(touchEl); }
-      else if(nb&&nb.contains(under)||nb===under){ nb.appendChild(touchEl); }
-      else { sl&&sl.appendChild(touchEl); }
-      touchEl=null;
-      checkShowBtn();
-    });
-
-    function checkShowBtn() {
-      var sl=document.getElementById('mathSlots');
-      var btn=document.getElementById('mathCheckWrap');
-      if(!sl||!btn) return;
-      var placed=sl.querySelectorAll('[data-num]');
-      if(placed.length===window._mathCurrentSorted.length){
-        btn.style.display='block';
-        // Remove drag placeholder text
-        var ph=sl.querySelector('div:not([data-num])');
-        if(ph) ph.remove();
-      } else { btn.style.display='none'; }
-    }
-
-    window._mathCheck = function() {
-      var sl=document.getElementById('mathSlots');
-      var placed=Array.from(sl.querySelectorAll('[data-num]')).map(function(el){return parseInt(el.dataset.num);});
-      var correct=JSON.stringify(placed)===JSON.stringify(window._mathCurrentSorted);
-      placed.forEach(function(n,i){
-        var el=sl.querySelectorAll('[data-num]')[i];
-        if(correct||n===window._mathCurrentSorted[i]){
-          el.style.background='linear-gradient(135deg,#22c55e,#4ade80)';
-          el.style.boxShadow='0 6px 18px rgba(34,197,94,.4)';
-        } else {
-          el.style.background='linear-gradient(135deg,#ef4444,#f87171)';
-          el.style.boxShadow='0 6px 18px rgba(239,68,68,.4)';
-        }
-      });
-      if(correct){ score++; toast('Perfect order! 🌟'); }
-      else { toast('The right order: '+window._mathCurrentSorted.join(' → ')); }
-      round++;
-      // Show next button instead of auto-advancing
-      var nextWrap = document.getElementById('mathCheckWrap');
-      if(nextWrap){
-        nextWrap.innerHTML = '<button onclick="window._mathNextRound()" style="padding:16px 40px;border-radius:40px;border:none;background:linear-gradient(135deg,#6C3FC5,#A78BFA);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1.1rem;cursor:pointer;box-shadow:0 6px 20px rgba(108,63,197,.4);">'+(round<ROUNDS?'Next Round ➡️':'See My Results 🏆')+'</button>';
-        nextWrap.style.display='block';
+    if(gameId==='count'||gameId==='count100') {
+      var max = (g==='PreK'||g==='K')?10:(g==='1')?20:30;
+      for(var i=0;i<6;i++){
+        var n=r(1,max); var wrong=[n+1,n-1<1?n+2:n-1,n+2,n+3].filter(function(x){return x>0&&x!==n;});
+        qs.push({type:'visual',prompt:'How many?',visual:em(n),answer:String(n),
+          choices:sh([String(n),String(wrong[0]),String(wrong[1]),String(wrong[2])].slice(0,4)),
+          hint:'Count each one carefully!',explain:'There are '+n+' '+EMOJIS[0]+'s.'});
       }
-      window._mathNextRound = function(){
-        var nw=document.getElementById('mathCheckWrap');
-        if(nw){nw.innerHTML='';nw.style.display='none';}
-        renderRound();
-      };
-    };
+    }
+    else if(gameId==='moreess') {
+      for(var i=0;i<6;i++){
+        var a=r(1,9),b; do{b=r(1,9);}while(b===a);
+        var moreAns=a>b?'Group A':'Group B';
+        qs.push({type:'compare',prompt:'Which group has MORE?',
+          groupA:em(a),groupB:em(b),answer:moreAns,
+          choices:['Group A','Group B','They are equal'],
+          hint:'Count each group first, then compare!',
+          explain:'Group A has '+a+', Group B has '+b+'. '+(a>b?'A':'B')+' is bigger.'});
+      }
+    }
+    else if(gameId==='addsub'||gameId==='addsub2') {
+      var maxN = g==='PreK'?5:g==='K'?10:g==='1'?20:50;
+      for(var i=0;i<6;i++){
+        var isAdd=Math.random()>0.3;
+        if(isAdd){
+          var a=r(1,Math.floor(maxN/2)),b=r(1,Math.floor(maxN/2)),ans=a+b;
+          var visual = (a<=8&&b<=8) ? em(a)+'  ➕  '+em(b) : '';
+          qs.push({type:'math',prompt:(g==='PreK'||g==='K')?'Count them all!':a+' + '+b+' = ?',
+            visual:visual,answer:String(ans),
+            choices:sh([String(ans),String(ans+1),String(ans-1<0?ans+2:ans-1),String(ans+2)].filter(function(x){return x>=0&&x!==ans;})).slice(0,3).concat([String(ans)]).sort(function(){return Math.random()-.5;}),
+            hint:'Add both groups together!',explain:a+' + '+b+' = '+ans});
+        } else {
+          var a=r(2,maxN),b=r(1,a-1),ans=a-b;
+          qs.push({type:'math',prompt:a+' - '+b+' = ?',
+            visual:(a<=10?em(a):''),answer:String(ans),
+            choices:sh([String(ans),String(ans+1),String(ans+2),String(ans-1<0?ans+3:ans-1)].filter(function(x){return x>=0&&x!==ans;})).slice(0,3).concat([String(ans)]).sort(function(){return Math.random()-.5;}),
+            hint:'Start with the bigger number, take away!',explain:a+' - '+b+' = '+ans});
+        }
+      }
+    }
+    else if(gameId==='pattern') {
+      var patterns = [
+        {seq:['🔴','🔵','🔴','🔵','🔴','?'],ans:'🔵',hint:'Red, Blue, Red, Blue...'},
+        {seq:['⭐','⭐','🌙','⭐','⭐','?'],ans:'🌙',hint:'Star, Star, Moon...'},
+        {seq:['🟠','🟡','🟢','🟠','🟡','?'],ans:'🟢',hint:'Orange, Yellow, Green...'},
+        {seq:['🐶','🐱','🐶','🐱','🐶','?'],ans:'🐱',hint:'Dog, Cat, Dog, Cat...'},
+        {seq:['🔺','⬛','🔺','⬛','🔺','?'],ans:'⬛',hint:'Triangle, Square...'},
+        {seq:['1','2','3','1','2','?'],ans:'3',hint:'1, 2, 3, 1, 2...'},
+      ];
+      patterns.slice(0,5).forEach(function(p){
+        var wrong = ['🟣','🔶','💫','🎯'].filter(function(x){return x!==p.ans;});
+        qs.push({type:'pattern',prompt:'What comes next?',
+          visual:p.seq.slice(0,-1).join('  '),answer:p.ans,
+          choices:sh([p.ans,wrong[0],wrong[1],wrong[2]]),
+          hint:p.hint,explain:'The pattern repeats: '+p.seq.join(' ')});
+      });
+    }
+    else if(gameId==='teen') {
+      for(var i=0;i<6;i++){
+        var n=r(11,19);
+        var tens=1,ones=n-10;
+        qs.push({type:'math',prompt:'How many tens and ones in '+n+'?',
+          visual:'🔟'.repeat(tens)+'  '+'1️⃣'.repeat(ones),
+          answer:'1 ten, '+ones+' ones',
+          choices:sh(['1 ten, '+ones+' ones','2 tens, '+ones+' ones','1 ten, '+(ones+1)+' ones','0 tens, '+n+' ones']),
+          hint:'10 makes one TEN. Count the leftover ones!',
+          explain:n+' = 1 ten + '+ones+' ones'});
+      }
+    }
+    else if(gameId==='time') {
+      var times=[{h:1,m:0},{h:2,m:30},{h:3,m:0},{h:6,m:30},{h:9,m:0},{h:12,m:30},{h:4,m:0},{h:7,m:30}];
+      sh(times).slice(0,5).forEach(function(t){
+        var ts=t.h+':'+(t.m===0?'00':'30');
+        var wrong=[(t.h===12?1:t.h+1)+':'+(t.m===0?'00':'30'),(t.h===1?12:t.h-1)+':'+(t.m===0?'00':'30'),t.h+':'+(t.m===0?'30':'00')];
+        qs.push({type:'math',prompt:'What time does the clock show?',
+          visual:drawClock(t.h,t.m),answer:ts,
+          choices:sh([ts].concat(wrong)),
+          hint:'Find the short hand (hours) and long hand (minutes)!',
+          explain:'The short hand points to '+t.h+', long hand to '+(t.m===0?'12':'6')+'. Time is '+ts});
+      });
+    }
+    else if(gameId==='tally') {
+      for(var i=0;i<5;i++){
+        var n=r(3,15);
+        var tally='';
+        var fives=Math.floor(n/5),rem=n%5;
+        for(var f=0;f<fives;f++) tally+='𝙸𝙸𝙸𝙸 ';
+        for(var r2=0;r2<rem;r2++) tally+='𝙸';
+        var wrong=[n+1,n-1<1?n+2:n-1,n+2];
+        qs.push({type:'math',prompt:'How many tallies?',visual:tally||'𝙸𝙸𝙸',
+          answer:String(n),choices:sh([String(n)].concat(wrong.map(String))),
+          hint:'Count groups of 5, then count the extras!',explain:'Each bundle = 5. '+n+' total.'});
+      }
+    }
+    else if(gameId==='numline') {
+      for(var i=0;i<5;i++){
+        var max2=r(20,100),step=r(1,5),pos=r(1,max2-1);
+        qs.push({type:'math',prompt:'Where does '+pos+' go on the number line?',
+          visual:'|—0——'+Math.floor(max2/2)+'——'+max2+'—|  → '+pos+' = ?',
+          answer:pos<max2/2?'Left side (smaller)':'Right side (bigger)',
+          choices:['Left side (smaller)','Right side (bigger)','Exactly in the middle'],
+          hint:pos+' is '+(pos<max2/2?'less':'more')+' than '+(max2/2)+'!',
+          explain:pos+(pos<max2/2?' < ':' > ')+(max2/2)+' so it goes '+(pos<max2/2?'left':'right')});
+      }
+    }
+    else if(gameId==='skipc') {
+      var seqs=[
+        {by:2,start:0,len:6},{by:2,start:10,len:5},{by:5,start:0,len:6},{by:5,start:25,len:5},{by:10,start:0,len:6}
+      ];
+      sh(seqs).slice(0,5).forEach(function(s){
+        var arr=[];for(var i=0;i<=s.len;i++)arr.push(s.start+i*s.by);
+        var ans=arr[arr.length-1];
+        var shown=arr.slice(0,-1).join(', ')+', ?';
+        var wrong=[ans+s.by,ans-s.by<0?ans+s.by*2:ans-s.by,ans+1];
+        qs.push({type:'math',prompt:'What comes next? Count by '+s.by+'s!',visual:shown,
+          answer:String(ans),choices:sh([String(ans)].concat(wrong.map(String))),
+          hint:'Add '+s.by+' each time!',explain:arr.join(' → ')});
+      });
+    }
+    else if(gameId==='evenodd') {
+      for(var i=0;i<6;i++){
+        var n=r(1,50);
+        var ans=n%2===0?'Even':'Odd';
+        qs.push({type:'math',prompt:'Is '+n+' even or odd?',
+          visual:n%2===0?em(Math.min(n,8)):em(Math.min(n,8)),
+          answer:ans,choices:['Even','Odd'],
+          hint:'Can you split it into 2 equal groups? Then it\'s EVEN!',
+          explain:n+(n%2===0?' can':' cannot')+' be split into 2 equal groups → '+ans});
+      }
+    }
+    else if(gameId==='frac') {
+      var fracs=[
+        {n:1,d:2,word:'one half',vis:'⬜⬜ → color 1'},
+        {n:1,d:3,word:'one third',vis:'⬜⬜⬜ → color 1'},
+        {n:1,d:4,word:'one fourth',vis:'⬜⬜⬜⬜ → color 1'},
+        {n:2,d:4,word:'two fourths',vis:'⬜⬜⬜⬜ → color 2'},
+        {n:2,d:3,word:'two thirds',vis:'⬜⬜⬜ → color 2'},
+      ];
+      fracs.forEach(function(f){
+        qs.push({type:'math',prompt:'What fraction is colored? ('+f.vis+')',
+          visual:'🟦'.repeat(f.n)+'⬜'.repeat(f.d-f.n),
+          answer:f.word,choices:sh([f.word,'one half','one fourth','three fourths'].filter(function(x){return x!==f.word;})).slice(0,3).concat([f.word]).sort(function(){return Math.random()-.5;}),
+          hint:'Count colored parts (top number) out of total parts (bottom)!',
+          explain:f.n+' colored out of '+f.d+' total = '+f.word});
+      });
+    }
+    else if(gameId==='place'||gameId==='place4'||gameId==='place5') {
+      for(var i=0;i<5;i++){
+        var n=g==='3'?r(100,999):r(1000,9999);
+        var digits=String(n).split('').reverse();
+        var placeNames=['ones','tens','hundreds','thousands'];
+        var placeIdx=r(0,Math.min(3,digits.length-1));
+        var ans=digits[placeIdx]+' '+placeNames[placeIdx];
+        qs.push({type:'math',prompt:'In '+n+', what is the value of the '+placeNames[placeIdx]+' place?',
+          visual:String(n),answer:ans,
+          choices:sh([ans].concat([digits[placeIdx]+'0',digits[placeIdx]+'00','0'].map(function(x){return x+' '+placeNames[placeIdx];})).filter(function(x,i){return i<4;})),
+          hint:'Find the digit in the '+placeNames[placeIdx]+' place!',
+          explain:'In '+n+', the '+placeNames[placeIdx]+' digit is '+digits[placeIdx]});
+      }
+    }
+    else if(gameId==='bigadd') {
+      for(var i=0;i<5;i++){
+        var a=r(100,999),b=r(100,999),ans=a+b;
+        var wrong=[ans+1,ans-1,ans+10,ans-10];
+        qs.push({type:'math',prompt:a+' + '+b+' = ?',visual:'',answer:String(ans),
+          choices:sh([String(ans)].concat(wrong.slice(0,3).map(String))),
+          hint:'Add ones first, then tens, then hundreds!',explain:a+' + '+b+' = '+ans});
+      }
+    }
+    else if(gameId==='multi'||gameId==='multi4'||gameId==='multi5') {
+      var maxF=g==='3'?5:g==='4'?9:12;
+      for(var i=0;i<5;i++){
+        var a=r(2,maxF),b=r(2,maxF),ans=a*b;
+        qs.push({type:'math',prompt:a+' × '+b+' = ?',
+          visual:g==='3'?em(a)+'  ×  '+b+' groups':'',answer:String(ans),
+          choices:sh([String(ans),String(ans+a),String(ans-b<0?ans+b:ans-b),String(ans+1)].filter(function(x){return x!==ans;})).slice(0,3).concat([String(ans)]).sort(function(){return Math.random()-.5;}),
+          hint:a+' × '+b+' means '+b+' groups of '+a+'!',explain:b+' groups of '+a+' = '+ans});
+      }
+    }
+    else if(gameId==='divide'||gameId==='divide5') {
+      for(var i=0;i<5;i++){
+        var b=r(2,9),ans=r(2,9),a=b*ans;
+        qs.push({type:'math',prompt:a+' ÷ '+b+' = ?',visual:'',answer:String(ans),
+          choices:sh([String(ans),String(ans+1),String(ans-1<1?ans+2:ans-1),String(ans+2)].filter(function(x){return x!==ans;})).slice(0,3).concat([String(ans)]).sort(function(){return Math.random()-.5;}),
+          hint:'How many groups of '+b+' fit in '+a+'?',explain:a+' ÷ '+b+' = '+ans+' (because '+ans+' × '+b+' = '+a+')'});
+      }
+    }
+    else if(gameId==='estim'||gameId==='estim5') {
+      for(var i=0;i<5;i++){
+        var a=r(100,900),b=r(100,900);
+        var rounded_a=Math.round(a/100)*100,rounded_b=Math.round(b/100)*100;
+        var est=rounded_a+rounded_b,exact=a+b;
+        qs.push({type:'math',prompt:'Estimate: '+a+' + '+b+' ≈ ?',visual:'Round to nearest 100 first!',
+          answer:String(est),choices:sh([String(est),String(est+100),String(est-100),String(est+200)].filter(function(x){return x!==est;})).slice(0,3).concat([String(est)]).sort(function(){return Math.random()-.5;}),
+          hint:'Round each number to nearest 100, then add!',
+          explain:'Round '+a+'→'+rounded_a+', '+b+'→'+rounded_b+'. '+rounded_a+'+'+rounded_b+'='+est});
+      }
+    }
+    else if(gameId==='skipc3') {
+      var seqs3=[{by:3},{by:4},{by:6},{by:7},{by:8},{by:9}];
+      sh(seqs3).slice(0,5).forEach(function(s){
+        var start=r(0,10)*s.by,arr=[];
+        for(var i=0;i<6;i++)arr.push(start+i*s.by);
+        var ans=arr[arr.length-1];
+        qs.push({type:'math',prompt:'Skip count by '+s.by+'s. What comes next?',
+          visual:arr.slice(0,-1).join(', ')+', ?',answer:String(ans),
+          choices:sh([String(ans),String(ans+s.by),String(ans-s.by<0?ans+1:ans-s.by),String(ans+1)].filter(function(x){return x!==ans;})).slice(0,3).concat([String(ans)]).sort(function(){return Math.random()-.5;}),
+          hint:'Each number increases by '+s.by+'!',explain:arr.join(' → ')});
+      });
+    }
+    return qs;
   }
 
-  renderRound();
+  // Draw simple SVG clock
+  function drawClock(h,m) {
+    var r=60,cx=65,cy=65;
+    var hAngle=(h%12+m/60)*30-90;
+    var mAngle=m*6-90;
+    var hx=cx+Math.cos(hAngle*Math.PI/180)*30;
+    var hy=cy+Math.sin(hAngle*Math.PI/180)*30;
+    var mx=cx+Math.cos(mAngle*Math.PI/180)*45;
+    var my=cy+Math.sin(mAngle*Math.PI/180)*45;
+    return '<svg width="130" height="130" style="margin:0 auto;display:block;">'
+      +'<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="white" stroke="#8B6FE8" stroke-width="3"/>'
+      +'<line x1="'+cx+'" y1="'+cy+'" x2="'+hx+'" y2="'+hy+'" stroke="#2D2D4E" stroke-width="4" stroke-linecap="round"/>'
+      +'<line x1="'+cx+'" y1="'+cy+'" x2="'+mx+'" y2="'+my+'" stroke="#8B6FE8" stroke-width="3" stroke-linecap="round"/>'
+      +'<circle cx="'+cx+'" cy="'+cy+'" r="3" fill="#8B6FE8"/>'
+      +'<text x="'+(cx)+'" y="'+(cy-r+16)+'" text-anchor="middle" font-size="10" fill="#666">12</text>'
+      +'<text x="'+(cx)+'" y="'+(cy+r-8)+'" text-anchor="middle" font-size="10" fill="#666">6</text>'
+      +'<text x="'+(cx+r-8)+'" y="'+(cy+4)+'" text-anchor="middle" font-size="10" fill="#666">3</text>'
+      +'<text x="'+(cx-r+8)+'" y="'+(cy+4)+'" text-anchor="middle" font-size="10" fill="#666">9</text>'
+      +'</svg>';
+  }
+
+  // ── QUIZ RUNNER ────────────────────────────────────────────────────
+  function runQuiz(questions, gameId) {
+    var qIdx=0, score=0, total=questions.length;
+
+    function showQ() {
+      if(qIdx>=total){ showResults(); return; }
+      var q=questions[qIdx];
+      ov.innerHTML='';
+      addHeader('Math — Round '+(qIdx+1)+'/'+total);
+      var body=document.createElement('div');
+      body.style.cssText='flex:1;overflow-y:auto;padding:20px;max-width:480px;margin:0 auto;width:100%;';
+      
+      // Progress bar
+      var prog=document.createElement('div');
+      prog.style.cssText='background:#EDE9FF;height:8px;border-radius:4px;margin-bottom:16px;overflow:hidden;';
+      prog.innerHTML='<div style="background:linear-gradient(90deg,'+CA+','+CB+');height:100%;width:'+Math.round(qIdx/total*100)+'%;transition:width .3s;border-radius:4px;"></div>';
+      body.appendChild(prog);
+
+      // Question card
+      var card=document.createElement('div');
+      card.style.cssText='background:white;border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 4px 16px rgba(108,63,197,.15);text-align:center;';
+      var promptEl=document.createElement('div');
+      promptEl.style.cssText='font-family:Baloo 2,cursive;font-size:1.15rem;font-weight:800;color:#2D2D4E;margin-bottom:12px;line-height:1.4;';
+      promptEl.textContent=q.prompt;
+      card.appendChild(promptEl);
+
+      if(q.visual){
+        var vis=document.createElement('div');
+        vis.style.cssText='font-size:'+(q.type==='compare'?'1.8rem':'1.5rem')+';margin:8px 0 12px;line-height:1.8;word-break:break-all;';
+        if(q.type==='compare'){
+          vis.innerHTML='<div style="display:flex;justify-content:center;gap:20px;"><div><div style="font-size:.75rem;font-weight:800;color:'+CA+';">Group A</div>'+q.groupA+'</div><div><div style="font-size:.75rem;font-weight:800;color:'+CA+';">Group B</div>'+q.groupB+'</div></div>';
+        } else {
+          vis.innerHTML=q.visual;
+        }
+        card.appendChild(vis);
+      }
+
+      // Hint button
+      var hintBtn=document.createElement('button');
+      hintBtn.textContent='💡 Hint';
+      hintBtn.style.cssText='padding:6px 16px;border-radius:20px;border:none;background:#F3EFFF;color:'+CA+';font-family:Nunito,sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;margin-bottom:4px;';
+      hintBtn.onclick=function(){ toast('💡 '+q.hint); };
+      card.appendChild(hintBtn);
+      body.appendChild(card);
+
+      // Answer choices
+      var choiceGrid=document.createElement('div');
+      var isTwoChoice=q.choices.length<=2;
+      choiceGrid.style.cssText='display:grid;grid-template-columns:'+(isTwoChoice?'1fr 1fr':'1fr 1fr')+';gap:10px;margin-bottom:16px;';
+      var answered=false;
+      q.choices.forEach(function(choice){
+        var btn=document.createElement('button');
+        btn.innerHTML=choice;
+        btn.style.cssText='padding:14px 10px;border-radius:16px;border:2.5px solid rgba(108,63,197,.2);background:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.95rem;color:#2D2D4E;cursor:pointer;transition:all .15s;line-height:1.3;';
+        btn.onclick=function(){
+          if(answered)return;
+          answered=true;
+          var correct=(choice===q.answer);
+          // Color all buttons
+          choiceGrid.querySelectorAll('button').forEach(function(b){
+            b.style.pointerEvents='none';
+            if(b.innerHTML===q.answer){b.style.background='linear-gradient(135deg,#22c55e,#4ade80)';b.style.color='white';b.style.borderColor='#22c55e';}
+          });
+          if(!correct){btn.style.background='linear-gradient(135deg,#ef4444,#f87171)';btn.style.color='white';btn.style.borderColor='#ef4444';}
+          if(correct)score++;
+          // Show explanation
+          var expl=document.createElement('div');
+          expl.style.cssText='background:'+(correct?'#E8FBF3':'#FFF0EE')+';border-radius:12px;padding:10px 14px;margin-bottom:12px;font-size:.88rem;font-weight:700;color:'+(correct?'#166534':'#991b1b')+';';
+          expl.textContent=(correct?'✅ ':'❌ ')+q.explain;
+          body.appendChild(expl);
+          // Next button
+          var nextBtn=document.createElement('button');
+          nextBtn.textContent=qIdx<total-1?'Next ➡️':'See Results 🏆';
+          nextBtn.style.cssText='width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 16px rgba(108,63,197,.35);';
+          nextBtn.onclick=function(){qIdx++;showQ();};
+          body.appendChild(nextBtn);
+        };
+        choiceGrid.appendChild(btn);
+      });
+      body.appendChild(choiceGrid);
+      ov.appendChild(body);
+    }
+
+    function showResults(){
+      ov.innerHTML='';
+      addHeader('Math Results!');
+      var pct=Math.round(score/total*100);
+      var trophy=pct>=80?'🏆':pct>=50?'🌟':'💪';
+      var msg=pct>=80?'Excellent work!':pct>=50?'Good job, keep practicing!':'Keep trying, you\'re learning!';
+      var body=document.createElement('div');
+      body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;';
+      body.innerHTML='<div style="font-size:5rem;margin-bottom:8px;">'+trophy+'</div>'
+        +'<div style="font-family:Baloo 2,cursive;font-size:2rem;font-weight:800;color:'+CA+';">'+score+'/'+total+'</div>'
+        +'<div style="font-size:1rem;color:#666;margin:8px 0 24px;">'+msg+'</div>'
+        +'<div style="display:flex;gap:12px;">'
+        +'<button onclick="showMenu()" style="padding:14px 24px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;">Play Again 🔄</button>'
+        +'<button onclick="document.getElementById(\'mathGameOv\').remove();showScreen(\'app\');" style="padding:14px 24px;border-radius:40px;border:none;background:#F3EFFF;color:'+CA+';font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;">Home 🏠</button>'
+        +'</div>';
+      ov.appendChild(body);
+      if(typeof activeChild!=='undefined'&&activeChild){try{sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:score*10}).catch(function(){});sessionData.stars+=score*10;var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;if(score>0)toast('+'+score*10+' Stars! ⭐');}catch(e){}}
+    }
+
+    showQ();
+  }
+
+  showMenu();
 }
+
+
 
 // ══════════════════════════════════════════════════════════════════════
 //  2. LANGUAGE ARTS — WORD BUILDER + FILL-IN-THE-BLANK STORIES
@@ -7540,14 +7801,14 @@ function openActualDashboard() {
     // Menu grid - 6 glossy tiles
     +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;">'
     +[
-      {icon:'📊',label:'Progress',color:'#6366F1',fn:'showParentProgress()'},
-      {icon:'⭐',label:'Stars',color:'#F59E0B',fn:'showStarsHistory()'},
-      {icon:'📅',label:'Schedule',color:'#10B981',fn:'showSchedule()'},
-      {icon:'👶',label:'Children',color:'#EC4899',fn:'manageChildren()'},
-      {icon:'🔔',label:'Reminders',color:'#8B5CF6',fn:'showReminders()'},
-      {icon:'⚙️',label:'Settings',color:'#64748B',fn:'showParentSettings()'},
-    ].map(function(item){
-      return '<div onclick="'+item.fn+'" style="background:linear-gradient(155deg,'+item.color+'CC,'+item.color+');border-radius:20px;padding:18px 10px;text-align:center;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.25);position:relative;overflow:hidden;">'
+      {icon:'📊',label:'Progress',color:'#6366F1',fn:'showParentProgress'},
+      {icon:'⭐',label:'Stars',color:'#F59E0B',fn:'showStarsHistory'},
+      {icon:'📅',label:'Schedule',color:'#10B981',fn:'showSchedule'},
+      {icon:'👶',label:'Children',color:'#EC4899',fn:'manageChildren'},
+      {icon:'🔔',label:'Reminders',color:'#8B5CF6',fn:'showReminders'},
+      {icon:'⚙️',label:'Settings',color:'#64748B',fn:'showParentSettings'},
+    ].map(function(item,ti){
+      return '<div id="pdTile'+ti+'" style="background:linear-gradient(155deg,'+item.color+'CC,'+item.color+');border-radius:20px;padding:18px 10px;text-align:center;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.25);position:relative;overflow:hidden;">'
         +'<div style="position:absolute;top:0;left:0;right:0;height:50%;background:linear-gradient(180deg,rgba(255,255,255,.25),transparent);border-radius:20px 20px 50% 50%;pointer-events:none;"></div>'
         +'<div style="font-size:2rem;margin-bottom:6px;position:relative;z-index:1;">'+item.icon+'</div>'
         +'<div style="font-size:.75rem;font-weight:800;color:white;position:relative;z-index:1;">'+item.label+'</div>'
@@ -7555,8 +7816,17 @@ function openActualDashboard() {
     }).join('')
     +'</div>'
     // Sign out
-    +'<button onclick="if(confirm(&quot;Sign out?&quot;))signOut();" style="width:100%;padding:14px;border-radius:16px;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);font-family:Nunito,sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;">Sign Out</button>'
+    +'<button id="pdSignOut" style="width:100%;padding:14px;border-radius:16px;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);font-family:Nunito,sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;">Sign Out</button>'
     +'</div>';
+
+  // Attach events after innerHTML is set
+  var tileFns = [showParentProgress,showStarsHistory,showSchedule,manageChildren,showReminders,showParentSettings];
+  tileFns.forEach(function(fn,i){
+    var el=document.getElementById('pdTile'+i);
+    if(el) el.addEventListener('click', fn);
+  });
+  var so=document.getElementById('pdSignOut');
+  if(so) so.addEventListener('click',function(){ if(confirm('Sign out?')) signOut(); });
 
 }
 
