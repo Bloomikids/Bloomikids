@@ -1,4 +1,4 @@
-<!-- BloomiKids v356 -->
+<!-- BloomiKids v357 -->
 <!DOCTYPE html>
 <html lang="en"><!-- v369 -->
 <head>
@@ -1712,7 +1712,6 @@ const GRADE_DATA = {
       { icon:'🔢', title:'Math', desc:'Addition, subtraction and more!', badge:'Practice!', color:'mint' },
       { icon:'📝', title:'Language Arts', desc:'Reading, writing and words!', badge:'Learn!', color:'coral' },
       { icon:'\u270F', title:'Writing', desc:'Sentences, grammar and more!', badge:'Write!', color:'lavender' },
-      { icon:'🔢', title:'Number Tracing', desc:'Trace numbers 0 to 9!', badge:'Trace!', color:'sun' },
     ],
     subjects_progress:['Math','Language Arts','Writing'],
     poses:[
@@ -1823,7 +1822,6 @@ const GRADE_DATA = {
       { icon:'🔬', title:'Science', desc:'Animals, plants, weather and experiments!', badge:'Explore!', color:'coral' },
       { icon:'✏', title:'Writing', desc:'Write sentences with describing words!', badge:'1 assignment', color:'lavender' },
       { icon:'🌍', title:'Social Studies', desc:'Maps, communities, and our world!', badge:'Explore!', color:'sun' },
-      { icon:'🔢', title:'Number Tracing', desc:'Trace numbers 0 to 9!', badge:'Trace!', color:'sun' },
     ],
     questions:[
       {q:'What is 9 x 4?',opts:['32','34','36','38'],answer:2,subject:'Math'},
@@ -6293,9 +6291,10 @@ function openScienceGame(grade) {
       +'</div>'
       +'<div style="display:grid;grid-template-columns:'+Array(r.cats.length).fill('1fr').join(' ')+';gap:10px;">'
       +r.cats.map(function(cat,ci){
-        return '<div id="sciCat'+ci+'" data-catidx="'+ci+'" '
-          +'style="min-height:90px;border-radius:16px;background:rgba(14,165,233,.08);border:2px dashed rgba(14,165,233,.3);padding:10px;display:flex;flex-direction:column;gap:6px;">'
+        return '<div id="sciCat'+ci+'" onclick="window._sciPlaceIn('+ci+')" data-catidx="'+ci+'" '
+          +'style="min-height:90px;border-radius:16px;background:rgba(14,165,233,.08);border:2px dashed rgba(14,165,233,.3);padding:10px;display:flex;flex-direction:column;gap:6px;cursor:pointer;">'
           +'<div style="font-weight:800;font-size:.85rem;color:#0EA5E9;text-align:center;margin-bottom:4px;">'+cat+'</div>'
+          +'<div style="font-size:.7rem;color:#aaa;text-align:center;">Tap to place here</div>'
           +'</div>';
       }).join('')
       +'</div>'
@@ -6305,17 +6304,41 @@ function openScienceGame(grade) {
       +'</div>';
 
     var sorted={};
+    var _sciSelected=null;
     window._sciTap=function(el){
-      var ci=parseInt(el.dataset.cat);
-      var catEl=document.getElementById('sciCat'+ci);
+      if(_sciSelected===el){
+        el.style.transform='scale(1)';
+        el.style.background='linear-gradient(135deg,#0EA5E9,#38BDF8)';
+        el.style.color='white';
+        el.style.boxShadow='0 4px 12px rgba(14,165,233,.3)';
+        _sciSelected=null;
+      } else {
+        if(_sciSelected){
+          _sciSelected.style.transform='scale(1)';
+          _sciSelected.style.background='linear-gradient(135deg,#0EA5E9,#38BDF8)';
+          _sciSelected.style.color='white';
+          _sciSelected.style.boxShadow='0 4px 12px rgba(14,165,233,.3)';
+        }
+        _sciSelected=el;
+        el.style.transform='scale(1.12)';
+        el.style.background='linear-gradient(135deg,#F59E0B,#FCD34D)';
+        el.style.color='#1a1a1a';
+        el.style.boxShadow='0 8px 24px rgba(245,158,11,.5)';
+        toast('Tap the column where it belongs!');
+      }
+    };
+    window._sciPlaceIn=function(colIdx){
+      if(!_sciSelected) return;
+      var catEl=document.getElementById('sciCat'+colIdx);
       if(!catEl) return;
-      el.style.background='white';
-      el.style.color='#0EA5E9';
-      el.style.border='2px solid #0EA5E9';
-      el.dataset.placed=ci;
-      catEl.appendChild(el);
-      // Check if all placed
-      var allItems=document.querySelectorAll('[id^="sci"][data-cat]');
+      _sciSelected.dataset.placed=colIdx;
+      _sciSelected.style.transform='scale(1)';
+      _sciSelected.style.background='white';
+      _sciSelected.style.color='#0EA5E9';
+      _sciSelected.style.border='2px solid #0EA5E9';
+      _sciSelected.style.boxShadow='0 2px 8px rgba(14,165,233,.2)';
+      catEl.appendChild(_sciSelected);
+      _sciSelected=null;
       var belt=document.getElementById('itemBelt');
       var remaining=belt?belt.querySelectorAll('[data-cat]').length:0;
       if(remaining===0){ var cw=document.getElementById('sciCheckWrap'); if(cw) cw.style.display='block'; }
@@ -6333,11 +6356,11 @@ function openScienceGame(grade) {
       var all=items.length;
       if(correct===all) score++;
       toast(correct+'/'+all+' correct!');
-      rIdx++;
-      // Show next button
+      // Show next button - rIdx increments when user taps Next
       var cw=document.getElementById('sciCheckWrap');
-      if(cw){ cw.innerHTML='<button onclick="window._sciNext()" style="padding:14px 36px;border-radius:40px;border:none;background:linear-gradient(135deg,#0EA5E9,#38BDF8);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(14,165,233,.4);">'+(rIdx<TOTAL_ROUNDS?'Next ➡️':'Results 🏆')+'</button>'; cw.style.display='block'; }
-      window._sciNext=function(){ renderRound(); };
+      var isLast=(rIdx+1>=TOTAL_ROUNDS);
+      if(cw){ cw.innerHTML='<button onclick="window._sciNext()" style="padding:14px 36px;border-radius:40px;border:none;background:linear-gradient(135deg,#0EA5E9,#38BDF8);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(14,165,233,.4);">'+(isLast?'See Results 🏆':'Next Round ➡️')+'</button>'; cw.style.display='block'; }
+      window._sciNext=function(){ rIdx++; renderRound(); };
     };
   }
 
@@ -6431,8 +6454,16 @@ function openSocialStudiesGame(grade) {
       btns[ans].style.background='#E8FBF3'; btns[ans].style.borderColor='#22c55e'; btns[ans].style.color='#22c55e';
       if(chosen===ans){ score++; toast('Correct! 🌟'); }
       else { btns[chosen].style.background='#FFF0EE'; btns[chosen].style.borderColor='#ef4444'; btns[chosen].style.color='#ef4444'; toast('Not quite!'); }
-      qIdx++;
-      setTimeout(renderQ, 900);
+      // Show next button
+      var nextWrap=document.createElement('div');
+      nextWrap.style.cssText='margin-top:12px;';
+      var nextBtn=document.createElement('button');
+      nextBtn.textContent=qIdx+1<TOTAL?'Next ➡':'See Results 🏆';
+      nextBtn.style.cssText='width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,#F59E0B,#FCD34D);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';
+      nextBtn.onclick=function(){qIdx++;renderQ();};
+      nextWrap.appendChild(nextBtn);
+      var ssBody=document.querySelector('#ssGameOv > div:last-child');
+      if(ssBody) ssBody.appendChild(nextWrap);
     };
   }
 
@@ -6499,7 +6530,7 @@ function openColorsGame(grade) {
       +'</div>'
       +'<div id="csItems" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px;">'
       +items.map(function(item,i){
-        return '<div id="csi'+i+'" data-cat="'+item.cat+'" onclick="window._csTap(this,'+r.cats.length+')" '
+        return '<div id="csi'+i+'" data-cat="'+item.cat+'" onclick="window._csTap(this)" '
           +'style="padding:10px 14px;border-radius:14px;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-weight:700;font-size:.9rem;cursor:pointer;box-shadow:0 4px 12px rgba(236,72,153,.3);transition:all .2s;">'+item.label+'</div>';
       }).join('')
       +'</div>'
@@ -6516,13 +6547,27 @@ function openColorsGame(grade) {
       +'</div>'
       +'</div>';
 
-    window._csTap=function(el,numCats){
-      var ci=parseInt(el.dataset.cat);
-      var catEl=document.getElementById('csCat'+ci);
-      if(!catEl) return;
-      el.style.background='white'; el.style.color=CA; el.style.border='2px solid '+CA;
-      el.dataset.placed=ci;
-      catEl.appendChild(el);
+    var _csSelected=null;
+    window._csTap=function(el){
+      if(_csSelected===el){
+        el.style.transform='scale(1)'; el.style.background='linear-gradient(135deg,#EC4899,#F472B6)';
+        el.style.color='white'; el.style.boxShadow='0 4px 12px rgba(236,72,153,.3)'; _csSelected=null;
+      } else {
+        if(_csSelected){_csSelected.style.transform='scale(1)';_csSelected.style.background='linear-gradient(135deg,#EC4899,#F472B6)';_csSelected.style.color='white';_csSelected.style.boxShadow='0 4px 12px rgba(236,72,153,.3)';}
+        _csSelected=el; el.style.transform='scale(1.12)';
+        el.style.background='linear-gradient(135deg,#F59E0B,#FCD34D)';
+        el.style.color='#1a1a1a'; el.style.boxShadow='0 8px 24px rgba(245,158,11,.5)';
+        toast('Now tap the column where it belongs!');
+      }
+    };
+    window._csPlaceIn=function(colIdx){
+      if(!_csSelected) return;
+      var catEl=document.getElementById('csCat'+colIdx); if(!catEl) return;
+      _csSelected.dataset.placed=colIdx;
+      _csSelected.style.transform='scale(1)'; _csSelected.style.background='white';
+      _csSelected.style.color='#EC4899'; _csSelected.style.border='2px solid #EC4899';
+      _csSelected.style.boxShadow='0 2px 8px rgba(236,72,153,.2)';
+      catEl.appendChild(_csSelected); _csSelected=null;
       var belt=document.getElementById('csItems');
       if(belt&&belt.querySelectorAll('[data-cat]').length===0){ var cw=document.getElementById('csCheckWrap'); if(cw) cw.style.display='block'; }
     };
@@ -6538,10 +6583,10 @@ function openColorsGame(grade) {
       });
       if(correct===items.length) score++;
       toast(correct+'/'+items.length+' correct!');
-      rIdx++;
+      var isLast=(rIdx+1>=TOTAL);
       var cw=document.getElementById('csCheckWrap');
-      if(cw){ cw.innerHTML='<button onclick="window._csNext()" style="padding:14px 36px;border-radius:40px;border:none;background:linear-gradient(135deg,#EC4899,#F472B6);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(236,72,153,.4);">'+(rIdx<TOTAL?'Next ➡️':'Results 🏆')+'</button>'; cw.style.display='block'; }
-      window._csNext=function(){ renderRound(); };
+      if(cw){ cw.innerHTML='<button onclick="window._csNext()" style="padding:14px 36px;border-radius:40px;border:none;background:linear-gradient(135deg,#EC4899,#F472B6);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(236,72,153,.4);">'+(isLast?'See Results 🏆':'Next Round ➡️')+'</button>'; cw.style.display='block'; }
+      window._csNext=function(){ rIdx++; renderRound(); };
     };
   }
   renderRound();
@@ -7821,12 +7866,14 @@ function openActualDashboard() {
 
   // Attach events after innerHTML is set
   var tileFns = [showParentProgress,showStarsHistory,showSchedule,manageChildren,showReminders,showParentSettings];
-  tileFns.forEach(function(fn,i){
-    var el=document.getElementById('pdTile'+i);
-    if(el) el.addEventListener('click', fn);
-  });
-  var so=document.getElementById('pdSignOut');
-  if(so) so.addEventListener('click',function(){ if(confirm('Sign out?')) signOut(); });
+  setTimeout(function(){
+    tileFns.forEach(function(fn,i){
+      var el=document.getElementById('pdTile'+i);
+      if(el){ el.addEventListener('click',fn); el.style.cursor='pointer'; }
+    });
+    var so=document.getElementById('pdSignOut');
+    if(so) so.addEventListener('click',function(){ if(confirm('Sign out?')) signOut(); });
+  },150);
 
 }
 
