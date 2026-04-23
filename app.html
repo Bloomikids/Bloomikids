@@ -1,4 +1,4 @@
-<!-- BloomiKids v358 -->
+<!-- BloomiKids v359 -->
 <!DOCTYPE html>
 <html lang="en"><!-- v369 -->
 <head>
@@ -49,7 +49,7 @@ body::after  { content:''; position:fixed; width:600px; height:600px; background
 
 /* -- OFFLINE / TOAST ----------------------------------- */
 #offlineBanner { position:fixed; top:0; left:0; right:0; z-index:500; background:linear-gradient(90deg,var(--coral),var(--sunshine)); color:white; text-align:center; padding:10px; font-weight:700; font-size:.9rem; display:none; }
-#toast { position:fixed; bottom:100px; left:50%; transform:translateX(-50%) translateY(20px); background:#2D2D4E; color:white; border-radius:40px; padding:12px 24px; font-weight:700; font-size:.9rem; opacity:0; transition:all .3s; z-index:9999; pointer-events:none; white-space:nowrap; max-width:90vw; text-align:center; }
+#toast { position:fixed; bottom:100px; left:50%; transform:translateX(-50%) translateY(20px); background:#2D2D4E; color:white; border-radius:40px; padding:12px 24px; font-weight:700; font-size:.9rem; opacity:0; transition:all .3s; z-index:10001; pointer-events:none; white-space:nowrap; max-width:90vw; text-align:center; }
 #toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 .spinner { width:40px; height:40px; border:4px solid #F0F0F8; border-top-color:var(--mint); border-radius:50%; animation:spin .8s linear infinite; margin:40px auto; }
 @keyframes spin { to{transform:rotate(360deg)} }
@@ -60,6 +60,11 @@ body::after  { content:''; position:fixed; width:600px; height:600px; background
 /* -- AUTH ---------------------------------------------- */
 #authScreen { position:fixed; inset:0; z-index:1000; background:linear-gradient(160deg,#2D1B69 0%,#5B2D8E 40%,#8B5CF6 100%); display:flex; align-items:center; justify-content:center; flex-direction:column; padding:24px; }
 #authScreen.hidden { display:none; }
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 40px #F8F7FF inset !important;
+  background-color: #F8F7FF !important;
+}
 .auth-card { background:rgba(255,255,255,.95); backdrop-filter:blur(20px); border-radius:28px; padding:36px; box-shadow:0 20px 60px rgba(0,0,0,.3); width:100%; max-width:420px; animation:fadeUp .5s ease; border:1px solid rgba(255,255,255,.5); }
 @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
 .auth-logo { font-family:'Baloo 2',cursive; font-size:2.2rem; font-weight:800; text-align:center; margin-bottom:6px; background:linear-gradient(135deg,var(--coral),var(--sunshine)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
@@ -252,6 +257,17 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .card-title { font-family:'Baloo 2',cursive; font-size:1rem; font-weight:800; margin-bottom:0; text-align:center; color:rgba(255,255,255,.95); text-shadow:0 1px 4px rgba(0,0,0,.25); position:relative; z-index:2; padding:0 8px; line-height:1.3; }
 .card-desc  { display:none; }
 .card-badge { display:none; }
+.card::after { content:''; position:absolute; top:0; left:0; right:0; height:44%; background:linear-gradient(180deg,rgba(255,255,255,.42),rgba(255,255,255,0)); border-radius:28px 28px 50% 50%; pointer-events:none; }
+.card.mint    { background:linear-gradient(155deg,#34D399,#059669) !important; box-shadow:0 8px 28px rgba(5,150,105,.35) !important; }
+.card.coral   { background:linear-gradient(155deg,#F87171,#DC2626) !important; box-shadow:0 8px 28px rgba(220,38,38,.35) !important; }
+.card.lavender{ background:linear-gradient(155deg,#A78BFA,#6D28D9) !important; box-shadow:0 8px 28px rgba(109,40,217,.35) !important; }
+.card.sun     { background:linear-gradient(155deg,#FBBF24,#B45309) !important; box-shadow:0 8px 28px rgba(180,83,9,.35) !important; }
+.card.sky     { background:linear-gradient(155deg,#38BDF8,#0284C7) !important; box-shadow:0 8px 28px rgba(2,132,199,.35) !important; }
+.card-title   { color:white !important; text-shadow:0 1px 3px rgba(0,0,0,.2); }
+.card-desc    { color:rgba(255,255,255,.9) !important; }
+.card-badge   { background:rgba(255,255,255,.22) !important; color:white !important; backdrop-filter:blur(4px); }
+.card-icon    { filter:drop-shadow(0 2px 6px rgba(0,0,0,.15)); }
+
 .badge-mint    { background:#E8FBF3; color:var(--mint); }
 .badge-coral   { background:#FFF0F0; color:var(--coral); }
 .badge-lavender{ background:#F3EFFF; color:#8B6FE8; }
@@ -687,7 +703,7 @@ img[src*="bloomy_"] {
 <!-- ══ AUTH ═════════════════════════════════════════════════ -->
 <div id="authScreen">
   <div class="auth-card">
-    <div class="auth-logo" style="text-align:center;"><img src="logo.png" alt="BloomiKids" style="width:120px;height:auto;object-fit:contain;display:block;margin:0 auto 8px;border-radius:50%;"></div>
+    <div class="auth-logo" style="text-align:center;"><img src="logo.png" alt="BloomiKids" style="width:120px;height:120px;object-fit:contain;display:block !important;margin:0 auto 8px;border-radius:50%;background:#EDE9FF;"></div>
     <div class="auth-tagline">Learn 📚 &nbsp;·&nbsp; Breathe 🧘 &nbsp;·&nbsp; Read 📖</div>
     <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:-16px 0 12px;">
       <span style="font-size:.62rem;font-weight:800;background:#E8FBF3;color:#2A9970;padding:3px 9px;border-radius:20px;">No Ads</span>
@@ -1668,8 +1684,8 @@ const GRADE_DATA = {
       { emoji:'🧘', name:'Side Plank',  tip:'Balance on one hand, body straight!', secs:20, level:'Medium' },
       { emoji:'🐦', name:'Crow',        tip:'Lean forward and balance on your hands!', secs:15, level:'Hard' },
       { emoji:'🌊', name:'Wave',        tip:'Flow side to side like a gentle wave!', secs:20, level:'Easy' },
-      { emoji:'🏹', name:'Floor Bow',   tip:'Lie on tummy, grab feet and pull up!', secs:20, level:'Hard' },
-      { emoji:'🏹', name:'Bow',         tip:'Lie on tummy, grab ankles and rock!', secs:20, level:'Hard' },
+      { emoji:'🏹', name:'Frog Pose',   tip:'Squat wide, press palms together like a frog!', secs:20, level:'Hard' },
+      { emoji:'🏹', name:'Bow',         tip:'Lie on tummy, grab ankles and rock like a bow!', secs:20, level:'Hard' },
       { emoji:'💃', name:'Dancer',      tip:'Balance on one foot, reach back gracefully!', secs:25, level:'Medium' },
       { emoji:'🌉', name:'Bridge',      tip:'Lie back and push your hips to the sky!', secs:25, level:'Easy' },
     ],
@@ -1729,8 +1745,8 @@ const GRADE_DATA = {
       { emoji:'🧘', name:'Side Plank',    tip:'Balance on one hand, body straight!', secs:20, level:'Medium' },
       { emoji:'🐦', name:'Crow',          tip:'Lean forward, balance on your hands!', secs:15, level:'Hard' },
       { emoji:'🌊', name:'Wave',        tip:'Flow side to side like a gentle wave!', secs:20, level:'Easy' },
-      { emoji:'🏹', name:'Floor Bow',   tip:'Lie on tummy, grab feet and pull up!', secs:20, level:'Hard' },
-      { emoji:'🏹', name:'Bow',         tip:'Lie on tummy, grab ankles and rock!', secs:20, level:'Hard' },
+      { emoji:'🏹', name:'Frog Pose',   tip:'Squat wide, press palms together like a frog!', secs:20, level:'Hard' },
+      { emoji:'🏹', name:'Bow',         tip:'Lie on tummy, grab ankles and rock like a bow!', secs:20, level:'Hard' },
       { emoji:'💃', name:'Dancer',      tip:'Balance on one foot, reach back gracefully!', secs:25, level:'Medium' },
     ],
     books:[
@@ -1932,8 +1948,8 @@ const GRADE_DATA = {
       { emoji:'🧘', name:'Side Plank',  tip:'Balance on one hand, body straight!', secs:20, level:'Medium' },
       { emoji:'🐦', name:'Crow',        tip:'Lean forward and balance on your hands!', secs:15, level:'Hard' },
       { emoji:'🌊', name:'Wave',        tip:'Flow side to side like a gentle wave!', secs:20, level:'Easy' },
-      { emoji:'🏹', name:'Floor Bow',   tip:'Lie on tummy, grab feet and pull up!', secs:20, level:'Hard' },
-      { emoji:'🏹', name:'Bow',         tip:'Lie on tummy, grab ankles and rock!', secs:20, level:'Hard' },
+      { emoji:'🏹', name:'Frog Pose',   tip:'Squat wide, press palms together like a frog!', secs:20, level:'Hard' },
+      { emoji:'🏹', name:'Bow',         tip:'Lie on tummy, grab ankles and rock like a bow!', secs:20, level:'Hard' },
       { emoji:'💃', name:'Dancer',      tip:'Balance on one foot, reach back gracefully!', secs:25, level:'Medium' },
       { emoji:'🌉', name:'Bridge',      tip:'Lie back and push your hips to the sky!', secs:25, level:'Easy' },
     ],
@@ -2088,8 +2104,8 @@ const GRADE_DATA = {
       { emoji:'🧘', name:'Side Plank',  tip:'Balance on one hand, body straight!', secs:20, level:'Medium' },
       { emoji:'🐦', name:'Crow',        tip:'Lean forward and balance on your hands!', secs:15, level:'Hard' },
       { emoji:'🌊', name:'Wave',        tip:'Flow side to side like a gentle wave!', secs:20, level:'Easy' },
-      { emoji:'🏹', name:'Floor Bow',   tip:'Lie on tummy, grab feet and pull up!', secs:20, level:'Hard' },
-      { emoji:'🏹', name:'Bow',         tip:'Lie on tummy, grab ankles and rock!', secs:20, level:'Hard' },
+      { emoji:'🏹', name:'Frog Pose',   tip:'Squat wide, press palms together like a frog!', secs:20, level:'Hard' },
+      { emoji:'🏹', name:'Bow',         tip:'Lie on tummy, grab ankles and rock like a bow!', secs:20, level:'Hard' },
       { emoji:'💃', name:'Dancer',      tip:'Balance on one foot, reach back gracefully!', secs:25, level:'Medium' },
     ],
     books:[
@@ -2233,8 +2249,8 @@ const GRADE_DATA = {
       { emoji:'🧘', name:'Side Plank',  tip:'Balance on one hand, body straight!', secs:20, level:'Medium' },
       { emoji:'🐦', name:'Crow',        tip:'Lean forward and balance on your hands!', secs:15, level:'Hard' },
       { emoji:'🌊', name:'Wave',        tip:'Flow side to side like a gentle wave!', secs:20, level:'Easy' },
-      { emoji:'🏹', name:'Floor Bow',   tip:'Lie on tummy, grab feet and pull up!', secs:20, level:'Hard' },
-      { emoji:'🏹', name:'Bow',         tip:'Lie on tummy, grab ankles and rock!', secs:20, level:'Hard' },
+      { emoji:'🏹', name:'Frog Pose',   tip:'Squat wide, press palms together like a frog!', secs:20, level:'Hard' },
+      { emoji:'🏹', name:'Bow',         tip:'Lie on tummy, grab ankles and rock like a bow!', secs:20, level:'Hard' },
       { emoji:'💃', name:'Dancer',      tip:'Balance on one foot, reach back gracefully!', secs:25, level:'Medium' },
     ],
     books:[
@@ -2377,8 +2393,8 @@ const GRADE_DATA = {
       { emoji:'🐦', name:'Crow',        tip:'Lean forward and balance on your hands!', secs:15, level:'Hard' },
       { emoji:'🙇', name:"Child's Pose", tip:'Sit back on heels, arms forward, breathe!', secs:30, level:'Easy' },
       { emoji:'🌊', name:'Wave',        tip:'Flow side to side like a gentle wave!', secs:20, level:'Easy' },
-      { emoji:'🏹', name:'Floor Bow',   tip:'Lie on tummy, grab feet and pull up!', secs:20, level:'Hard' },
-      { emoji:'🏹', name:'Bow',         tip:'Lie on tummy, grab ankles and rock!', secs:20, level:'Hard' },
+      { emoji:'🏹', name:'Frog Pose',   tip:'Squat wide, press palms together like a frog!', secs:20, level:'Hard' },
+      { emoji:'🏹', name:'Bow',         tip:'Lie on tummy, grab ankles and rock like a bow!', secs:20, level:'Hard' },
       { emoji:'💃', name:'Dancer',      tip:'Balance on one foot, reach back gracefully!', secs:25, level:'Medium' },
     ],
     books:[
@@ -4359,100 +4375,100 @@ function _stopAllNodes() {
   if (_musicGain) { try { _musicGain.disconnect(); } catch(e) {} _musicGain = null; }
 }
 
-function _startMood(moodIdx) {
-  _stopAllNodes();
-  var ctx = _getMusicCtx();
-  var mood = MUSIC_MOODS[moodIdx % MUSIC_MOODS.length];
-  var volSlider = document.getElementById('volumeSlider');
-  var vol = parseInt(volSlider ? volSlider.value : 60) / 100;
+var MUSIC_TRACKS = [
+  { name: 'Yoga Sunrise',       file: 'music/yoga_sunrise.mp3' },
+  { name: 'Mellow',             file: 'music/mellow.mp3' },
+  { name: 'Veridian Stillness', file: 'music/veridian_stillness.mp3' },
+  { name: 'Chakra Resonance',   file: 'music/chakra_resonance.mp3' },
+];
+var _currentTrack = 0;
+var _audioEl = null;
 
-  _musicGain = ctx.createGain();
-  _musicGain.gain.setValueAtTime(0.001, ctx.currentTime);
-  _musicGain.gain.linearRampToValueAtTime(Math.max(0.05, vol * 0.4), ctx.currentTime + 0.5);
-  _musicGain.connect(ctx.destination);
-
-  // Pentatonic notes for this mood
-  var penta = [mood.freqs[0], mood.freqs[1], mood.freqs[2], mood.freqs[3], mood.freqs[2], mood.freqs[1]];
-  var bpm = 52;
-  var beat = 60 / bpm;
-  var now = ctx.currentTime + 0.1;
-
-  // Schedule 12 bars of gentle arpeggios
-  for (var bar = 0; bar < 12; bar++) {
-    penta.forEach(function(freq, ni) {
-      var t = now + bar * penta.length * beat + ni * beat;
-      var osc = ctx.createOscillator();
-      var env = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.value = freq;
-      env.gain.setValueAtTime(0.001, t);
-      env.gain.linearRampToValueAtTime(0.22, t + 0.04);
-      env.gain.exponentialRampToValueAtTime(0.001, t + beat * 0.9);
-      osc.connect(env); env.connect(_musicGain);
-      osc.start(t); osc.stop(t + beat);
-      _musicNodes.push(osc);
-      // Soft octave harmony
-      var osc2 = ctx.createOscillator();
-      var env2 = ctx.createGain();
-      osc2.type = 'triangle';
-      osc2.frequency.value = freq * 2;
-      env2.gain.setValueAtTime(0.001, t);
-      env2.gain.linearRampToValueAtTime(0.06, t + 0.04);
-      env2.gain.exponentialRampToValueAtTime(0.001, t + beat * 0.7);
-      osc2.connect(env2); env2.connect(_musicGain);
-      osc2.start(t); osc2.stop(t + beat);
-      _musicNodes.push(osc2);
-    });
+function _getAudio() {
+  if (!_audioEl) {
+    _audioEl = document.createElement('audio');
+    _audioEl.loop = true;
+    _audioEl.volume = 0.6;
+    document.body.appendChild(_audioEl);
   }
+  return _audioEl;
+}
 
-  // Continuous soft bass pad
-  var bass = ctx.createOscillator();
-  var bassEnv = ctx.createGain();
-  bass.type = 'triangle';
-  bass.frequency.value = mood.bass;
-  bassEnv.gain.setValueAtTime(0.001, now);
-  bassEnv.gain.linearRampToValueAtTime(0.08, now + 1);
-  bass.connect(bassEnv); bassEnv.connect(_musicGain);
-  bass.start(now);
-  _musicNodes.push(bass);
-
-  // Auto-restart after 12 bars
-  var totalDur = 12 * penta.length * beat;
-  window._musicRestartTimer = setTimeout(function() {
-    window._musicRestartTimer = null;
-    if (musicPlaying) { _startMood(moodIdx); }
-  }, (totalDur + 0.5) * 1000);
-
+function _startMood(idx) {
+  _currentTrack = idx || 0;
+  var audio = _getAudio();
+  var track = MUSIC_TRACKS[_currentTrack % MUSIC_TRACKS.length];
+  var vol = 0.6;
+  var slider = document.getElementById('volumeSlider');
+  if (slider) vol = parseInt(slider.value) / 100;
+  audio.volume = Math.max(0.01, vol);
+  audio.src = track.file;
+  var p = audio.play();
+  if (p) p.catch(function(e){ console.warn('Audio play failed:', e); });
   musicPlaying = true;
   var btn = document.getElementById('playPauseBtn');
-  if (btn) btn.textContent = '\u23f8 Pause';
+  if (btn) btn.textContent = '⏸ Pause';
   var nameEl = document.getElementById('trackName');
-  if (nameEl) nameEl.textContent = mood.name;
+  if (nameEl) nameEl.textContent = track.name;
   var listEl = document.getElementById('trackList');
-  if (listEl) listEl.textContent = 'Now playing: ' + mood.name + ' 🎵';
+  if (listEl) listEl.textContent = 'Now playing: ' + track.name + ' 🎵';
 }
+
+function nextTrack() {
+  _currentTrack = (_currentTrack + 1) % MUSIC_TRACKS.length;
+  _startMood(_currentTrack);
+}
+
+function prevTrack() {
+  _currentTrack = (_currentTrack - 1 + MUSIC_TRACKS.length) % MUSIC_TRACKS.length;
+  _startMood(_currentTrack);
+}
+
 
 function initMusicPlayer() {
-  // Music player ready — user taps Play to start
-  var nameEl = document.getElementById('trackName');
-  if (nameEl) nameEl.textContent = 'Tap Play for calming yoga music';
+  var volSlider = document.getElementById('volumeSlider');
+  if (volSlider) {
+    volSlider.oninput = function() {
+      var audio = _getAudio();
+      audio.volume = Math.max(0.01, parseInt(this.value) / 100);
+    };
+  }
+  // Update track list display
+  var listEl = document.getElementById('trackList');
+  if (listEl) {
+    listEl.innerHTML = MUSIC_TRACKS.map(function(t, i) {
+      return '<div onclick="_currentTrack='+i+';_startMood('+i+')" style="padding:6px 10px;border-radius:10px;cursor:pointer;margin-bottom:4px;font-size:.85rem;">🎵 '+t.name+'</div>';
+    }).join('');
+  }
+  // Stop on page hide (iOS fix)
+  if (!window._visChangeBound) {
+    window._visChangeBound = true;
+    document.addEventListener('visibilitychange', function() {
+      var audio = _getAudio();
+      if (document.hidden) { if(musicPlaying) audio.pause(); }
+      else { if(musicPlaying) audio.play().catch(function(){}); }
+    });
+  }
 }
 
-// Music uses WebAudio synthesizer
-var _mp3Player = null;
 
 function toggleMusic() {
-  var ctx = _getMusicCtx();
-  var doToggle = function() {
-    if (musicPlaying) {
-      _stopAllNodes(); musicPlaying = false;
-      var btn = document.getElementById('playPauseBtn');
-      if (btn) btn.textContent = '\u25b6 Play Music';
-    } else { _startMood(_currentMood); }
-  };
-  if (ctx.state === 'suspended') { ctx.resume().then(doToggle).catch(doToggle); }
-  else { doToggle(); }
+  var audio = _getAudio();
+  if (musicPlaying) {
+    audio.pause();
+    musicPlaying = false;
+    var btn = document.getElementById('playPauseBtn');
+    if (btn) btn.textContent = '▶ Play Music';
+  } else {
+    if (!audio.src) { _startMood(0); return; }
+    var p = audio.play();
+    if (p) p.catch(function(){ _startMood(_currentTrack); });
+    musicPlaying = true;
+    var btn = document.getElementById('playPauseBtn');
+    if (btn) btn.textContent = '⏸ Pause';
+  }
 }
+
 
 function nextTrack() {
   _currentMood = (_currentMood + 1) % MUSIC_MOODS.length;
@@ -5845,7 +5861,7 @@ function openMathGame(grade) {
 
       if(q.visual){
         var vis=document.createElement('div');
-        vis.style.cssText='font-size:'+(q.type==='compare'?'1.8rem':'1.5rem')+';margin:8px 0 12px;line-height:1.8;word-break:break-all;';
+        vis.style.cssText='font-size:'+(q.type==='compare'?'2.2rem':'2.8rem')+';margin:8px 0 16px;line-height:2.2;word-break:break-word;text-align:center;';
         if(q.type==='compare'){
           vis.innerHTML='<div style="display:flex;justify-content:center;gap:20px;"><div><div style="font-size:.75rem;font-weight:800;color:'+CA+';">Group A</div>'+q.groupA+'</div><div><div style="font-size:.75rem;font-weight:800;color:'+CA+';">Group B</div>'+q.groupB+'</div></div>';
         } else {
@@ -6444,36 +6460,38 @@ function openSocialStudiesGame(grade) {
     if(qIdx>=TOTAL){ gameWinScreen(score,TOTAL,CA,CB,'ssGameOv'); return; }
     var q=pool[qIdx];
     ov.innerHTML = gameHeader('Community & World','🌍',CA,CB,'ssGameOv')
-      +'<div style="flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;align-items:center;max-width:480px;margin:0 auto;width:100%;">'
+      +'<div id="ssBody" style="flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;align-items:center;max-width:480px;margin:0 auto;width:100%;">'
       +'<div style="background:white;border-radius:20px;padding:24px;margin-bottom:20px;text-align:center;box-shadow:0 4px 16px rgba(245,158,11,.2);width:100%;">'
       +'<div style="font-size:3rem;margin-bottom:10px;">'+q.emoji+'</div>'
       +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.1rem;font-weight:800;color:#2D2D4E;line-height:1.5;">'+q.q+'</div>'
       +'<div style="font-size:.8rem;color:#aaa;margin-top:6px;">Question '+(qIdx+1)+' of '+TOTAL+'</div>'
       +'</div>'
-      +'<div style="display:flex;flex-direction:column;gap:10px;width:100%;">'
+      +'<div id="ssOpts" style="display:flex;flex-direction:column;gap:10px;width:100%;">'
       +q.opts.map(function(opt,i){
-        return '<button onclick="window._ssAnswer('+i+','+q.answer+')" '
+        return '<button id="ssOpt'+i+'" onclick="window._ssAnswer('+i+','+q.answer+')" '
           +'style="padding:16px 20px;border-radius:18px;border:2px solid rgba(245,158,11,.25);background:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;text-align:left;box-shadow:0 3px 10px rgba(245,158,11,.12);transition:all .2s;">'+opt+'</button>';
       }).join('')
       +'</div>'
       +'</div>';
 
+
     window._ssAnswer=function(chosen,ans){
-      document.querySelectorAll('[onclick^="window._ssAnswer"]').forEach(function(b){b.style.pointerEvents='none';});
-      var btns=document.querySelectorAll('[onclick^="window._ssAnswer"]');
-      btns[ans].style.background='#E8FBF3'; btns[ans].style.borderColor='#22c55e'; btns[ans].style.color='#22c55e';
-      if(chosen===ans){ score++; toast('Correct! 🌟'); }
-      else { btns[chosen].style.background='#FFF0EE'; btns[chosen].style.borderColor='#ef4444'; btns[chosen].style.color='#ef4444'; toast('Not quite!'); }
-      // Show next button
-      var nextWrap=document.createElement('div');
-      nextWrap.style.cssText='margin-top:12px;';
+      // Disable all option buttons
+      var opts=document.getElementById('ssOpts');
+      if(opts) opts.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});
+      var correct=document.getElementById('ssOpt'+ans);
+      var chosen_el=document.getElementById('ssOpt'+chosen);
+      if(correct){ correct.style.background='#E8FBF3'; correct.style.borderColor='#22c55e'; correct.style.color='#22c55e'; }
+      if(chosen!==ans && chosen_el){ chosen_el.style.background='#FFF0EE'; chosen_el.style.borderColor='#ef4444'; chosen_el.style.color='#ef4444'; }
+      if(chosen===ans){ score++; toast('Correct! 🌟'); } else { toast('The answer: '+q.opts[ans]); }
+      // Append next button to ssBody
+      var body=document.getElementById('ssBody');
+      if(!body) return;
       var nextBtn=document.createElement('button');
-      nextBtn.textContent=qIdx+1<TOTAL?'Next ➡':'See Results 🏆';
-      nextBtn.style.cssText='width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,#F59E0B,#FCD34D);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';
+      nextBtn.textContent=qIdx+1<TOTAL?'Next ➡️':'See Results 🏆';
+      nextBtn.style.cssText='width:100%;margin-top:14px;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,#F59E0B,#FCD34D);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 16px rgba(245,158,11,.4);';
       nextBtn.onclick=function(){qIdx++;renderQ();};
-      nextWrap.appendChild(nextBtn);
-      var ssBody=document.querySelector('#ssGameOv > div:last-child');
-      if(ssBody) ssBody.appendChild(nextWrap);
+      body.appendChild(nextBtn);
     };
   }
 
@@ -7863,7 +7881,7 @@ function openActualDashboard() {
       {icon:'🔔',label:'Reminders',color:'#8B5CF6',fn:'showReminders'},
       {icon:'⚙️',label:'Settings',color:'#64748B',fn:'showParentSettings'},
     ].map(function(item,ti){
-      return '<div onclick="window._pdTile('+ti+')" e="background:linear-gradient(155deg,'+item.color+'CC,'+item.color+');border-radius:20px;padding:18px 10px;text-align:center;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.25);position:relative;overflow:hidden;">'
+      return '<div onclick="window._pdTile('+ti+')" style="background:linear-gradient(155deg,'+item.color+'CC,'+item.color+');border-radius:20px;padding:18px 10px;text-align:center;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.25);position:relative;overflow:hidden;">'
         +'<div style="position:absolute;top:0;left:0;right:0;height:50%;background:linear-gradient(180deg,rgba(255,255,255,.25),transparent);border-radius:20px 20px 50% 50%;pointer-events:none;"></div>'
         +'<div style="font-size:2rem;margin-bottom:6px;position:relative;z-index:1;">'+item.icon+'</div>'
         +'<div style="font-size:.75rem;font-weight:800;color:white;position:relative;z-index:1;">'+item.label+'</div>'
@@ -8229,998 +8247,373 @@ function showBloomy(mood) {
 }
 
 function openDinoStories(grade) {
-  var DINO_STORIES = [{"grade": "PreK", "skill": "Rhyming", "title": "Dino Rhyme", "text": "Dino sat on mat. Cat sat on hat. Dino had a bat. Bat hit the hat.", "q": "Which sat on mat?", "a": "Dino", "opts": ["Dino", "Cat", "Bat", "Hat"]}, {"grade": "PreK", "skill": "Syllables", "title": "Dino Claps", "text": "Dino had ba-na-na. Ba-na-na has 3 claps. Dino had ap-ple. Ap-ple has 2 claps.", "q": "How many claps for banana?", "a": "3", "opts": ["1", "2", "3", "4"]}, {"grade": "K", "skill": "CVC Words", "title": "Dino CVC", "text": "Dino had a cat. Cat sat on mat. Dino had a hat. Cat had a bat.", "q": "Where did cat sit?", "a": "mat", "opts": ["hat", "mat", "bat", "sat"]}, {"grade": "K", "skill": "Blending", "title": "Dino Blend", "text": "Dino ran. D-i-n-o. Di-no ran fast. R-a-n. Ran to the sun.", "q": "What did Dino do?", "a": "ran", "opts": ["sat", "ran", "slept", "hopped"]}, {"grade": "1", "skill": "Digraphs", "title": "Ship Dino", "text": "Ship had a fish. Fish swam with sh. Ship sank. Fish swam fast. Sh-sh-sh!", "q": "What sound does ship start with?", "a": "sh", "opts": ["ch", "sh", "th", "wh"]}, {"grade": "1", "skill": "Blends", "title": "Dino Black", "text": "Black dino ran. Black dino had a crab. Crab had a flag. Black crab ran.", "q": "What color was the dino?", "a": "black", "opts": ["red", "blue", "black", "green"]}, {"grade": "2", "skill": "Multisyllabic", "title": "Basket Dino", "text": "Dino had bas-ket-ball. Basket-ball is big. Pen-cil in basket. Ta-ble has basket-ball.", "q": "Where is the pencil?", "a": "basket", "opts": ["table", "floor", "basket", "shelf"]}, {"grade": "3", "skill": "Cause & Effect", "title": "Dino Rain", "text": "Rain fell on dino. Dino got wet. Dino ran fast. Wet dino ran home.", "q": "Why did dino run home?", "a": "rain", "opts": ["tired", "hungry", "rain", "scared"]}, {"grade": "4", "skill": "Inference", "title": "Dino Sad", "text": "Dino smiled. Dino eyes wet. Dino waved bye. Dino moving far away.", "q": "How does dino feel?", "a": "sad", "opts": ["happy", "angry", "sad", "excited"]}, {"grade": "5", "skill": "Theme", "title": "Dino Share", "text": "Dino had last egg. Dino gave egg to friend. Friend gave egg back. Both dinos happy.", "q": "What did the story teach?", "a": "sharing", "opts": ["running", "sharing", "hiding", "eating"]}];
-  var stories = DINO_STORIES.filter(function(s){ return s.grade === grade; });
-  if (!stories.length) stories = DINO_STORIES;
-  
-  var idx = 0;
-  var score = 0;
-  var ov = document.createElement('div'); ov.id = 'dinoOv';
-  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#1a472a,#2d8a4e);display:flex;flex-direction:column;font-family:Nunito,sans-serif;';
-  
-  function render() {
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
-    ov.innerHTML = '';
-    if (idx >= stories.length) {
-      ov.innerHTML = '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:white;text-align:center;padding:32px;">'
-        + '<div style="font-size:5rem;margin-bottom:16px;">🦕</div>'
-        + '<div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;margin-bottom:8px;">Amazing Reading!</div>'
-        + '<div style="font-size:1.1rem;opacity:.85;margin-bottom:24px;">You got ' + score + ' of ' + stories.length + ' correct!</div>'
-        + '<button onclick="var o=document.getElementById(&quot;dinoOv&quot;);if(o)o.remove();addStarsFromGame(15);toast(&quot;+&quot;+(15)+&quot; Stars!&quot;);" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#1a472a;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Done! 🌟</button></div>';
-      if (typeof sb !== 'undefined' && typeof activeChild !== 'undefined') {
-        sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:score*15}).catch(function(){});
-      }
-      return;
-    }
-    var story = stories[idx];
-    var hdr = document.createElement('div');
-    hdr.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:rgba(0,0,0,.2);flex-shrink:0;';
-    hdr.innerHTML = '<div style="color:white;font-family:Baloo 2,cursive;font-weight:800;">🦕 Dino Stories</div>'
-      + '<div style="color:rgba(255,255,255,.7);font-size:.8rem;">' + story.skill + ' • Story ' + (idx+1) + '/' + stories.length + '</div>';
-    var xb = document.createElement('button'); xb.textContent='X';
-    xb.style.cssText='background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;';
-    xb.onclick=function(){if(window.speechSynthesis)window.speechSynthesis.cancel();ov.remove();};
-    hdr.appendChild(xb); ov.appendChild(hdr);
-    
-    var body = document.createElement('div');
-    body.style.cssText = 'flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;';
-    
-    var dinoEmoji = document.createElement('div');
-    dinoEmoji.style.cssText = 'font-size:4rem;margin-bottom:12px;';
-    dinoEmoji.textContent = '🦕';
-    
-    var titleDiv = document.createElement('div');
-    titleDiv.style.cssText = 'font-family:Baloo 2,cursive;font-size:1.2rem;font-weight:800;color:white;margin-bottom:12px;';
-    titleDiv.textContent = story.title;
-    
-    var storyText = document.createElement('div');
-    storyText.style.cssText = 'background:rgba(255,255,255,.15);border-radius:16px;padding:16px;font-size:1.1rem;color:white;text-align:center;line-height:1.8;margin-bottom:20px;max-width:440px;font-weight:600;';
-    storyText.textContent = story.text;
-    
-    var readBtn = document.createElement('button');
-    readBtn.textContent = '🔈 Read Story';
-    readBtn.style.cssText = 'padding:10px 20px;border-radius:30px;border:none;background:rgba(255,255,255,.2);color:white;font-family:Nunito,sans-serif;font-weight:700;cursor:pointer;margin-bottom:20px;';
-    var sp = false;
-    readBtn.onclick = function(){
-      if(!window.speechSynthesis)return;
-      if(sp){window.speechSynthesis.cancel();sp=false;readBtn.textContent='🔈 Read Story';return;}
-      var u=new SpeechSynthesisUtterance(story.text);u.rate=0.8;u.pitch=1.1;
-      var vs=window.speechSynthesis.getVoices();var pk=vs.find(function(v){return v.name==='Samantha';});
-      if(!pk)pk=vs.find(function(v){return v.lang&&v.lang.startsWith('en');});if(pk)u.voice=pk;
-      u.onend=function(){sp=false;readBtn.textContent='🔈 Read Story';};
-      window.speechSynthesis.speak(u);sp=true;readBtn.textContent='⏹ Stop';
-    };
-    
-    var qDiv = document.createElement('div');
-    qDiv.style.cssText = 'font-size:1rem;font-weight:800;color:white;margin-bottom:16px;text-align:center;max-width:400px;';
-    qDiv.textContent = '❓ ' + story.q;
-    
-    var optsDiv = document.createElement('div');
-    optsDiv.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:380px;width:100%;';
-    
-    var answered = false;
-    story.opts.forEach(function(opt){
-      var btn = document.createElement('button');
-      btn.textContent = opt;
-      btn.style.cssText = 'padding:14px;border-radius:14px;border:none;background:rgba(255,255,255,.15);color:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;';
-      btn.onclick = function(){
-        if(answered) return; answered = true;
-        if(opt === story.a){
-          btn.style.background='rgba(94,205,160,.8)';
-          score++;
-          toast('Correct! Great reading! 🦕'); showBloomy('celebrate'); showBloomy('celebrate');
-        } else {
-          btn.style.background='rgba(255,107,107,.7)';
-          optsDiv.querySelectorAll('button').forEach(function(b){
-            if(b.textContent===story.a) b.style.background='rgba(94,205,160,.8)';
-          });
-          toast('Not quite! The answer is: ' + story.a);
-        }
-        setTimeout(function(){idx++;render();},1500);
-      };
-      optsDiv.appendChild(btn);
-    });
-    
-    body.appendChild(dinoEmoji);body.appendChild(titleDiv);body.appendChild(storyText);
-    body.appendChild(readBtn);body.appendChild(qDiv);body.appendChild(optsDiv);
-    ov.appendChild(body);
-    
-    // Auto-read for young grades
-    setTimeout(function(){
-      if(typeof activeGrade!=='undefined'&&(activeGrade==='PreK'||activeGrade==='K'||activeGrade==='1')) readBtn.click();
-    },600);
-  }
-  
-  document.body.appendChild(ov);
-  render();
-}
-
-
-function openMasterLessons(gradeIn) {
-  var ALL_LESSONS = [{"id": "PK-01", "level": "Pre-K", "skill": "Rhyming", "script": "Today we are learning rhyming. Cat and hat rhyme. Dog and log rhyme. Which word rhymes with cat?", "answer": "hat", "opts": ["hat", "dog", "sun", "log"], "audio": "PK-01.mp3"}, {"id": "PK-02", "level": "Pre-K", "skill": "Syllables", "script": "Today we are learning syllables. Ba-na-na has 3 syllables. Ap-ple has 2 syllables. How many syllables are in dog?", "answer": "1", "opts": ["1", "2", "3", "4"], "audio": "PK-02.mp3"}, {"id": "PK-03", "level": "Pre-K", "skill": "Beginning sounds", "script": "Today we are learning beginning sounds. Mouse starts with m. Mop starts with m. Which word starts with m?", "answer": "mouse", "opts": ["mouse", "sun", "cat", "dog"], "audio": "PK-03.mp3"}, {"id": "PK-04", "level": "Pre-K", "skill": "Letter names", "script": "Today we are learning letter names. This is M. This is S. Which letter is M?", "answer": "M", "opts": ["M", "S", "A", "B"], "audio": "PK-04.mp3"}, {"id": "PK-05", "level": "Pre-K", "skill": "Letter sounds", "script": "Today we are learning letter sounds. M says m. S says s. Which letter says m?", "answer": "M", "opts": ["M", "S", "T", "P"], "audio": "PK-05.mp3"}, {"id": "K-01", "level": "K", "skill": "Blending", "script": "Today we are blending sounds. c a t makes cat. m a t makes mat. What word is c a t?", "answer": "cat", "opts": ["cat", "mat", "bat", "hat"], "audio": "K-01.mp3"}, {"id": "K-02", "level": "K", "skill": "CVC words", "script": "Today we are reading CVC words. Cat, hat, mat. Which word is cat?", "answer": "cat", "opts": ["cat", "hat", "mat", "bat"], "audio": "K-02.mp3"}, {"id": "K-03", "level": "K", "skill": "Sight words", "script": "Today we are learning sight words. The, and, is. Which word is the?", "answer": "the", "opts": ["the", "and", "is", "it"], "audio": "K-03.mp3"}, {"id": "K-04", "level": "K", "skill": "More blending", "script": "Today we are blending sounds. d o g makes dog. p i g makes pig. What word is d o g?", "answer": "dog", "opts": ["dog", "pig", "log", "fog"], "audio": "K-04.mp3"}, {"id": "K-05", "level": "K", "skill": "CVC review", "script": "Today we are reading more CVC words. Sun, map, net. Which word is map?", "answer": "map", "opts": ["sun", "map", "net", "bat"], "audio": "K-05.mp3"}, {"id": "G3-01", "level": "Grade 3", "skill": "Main idea", "script": "Lena looked outside. Dark clouds covered the sky. She grabbed her umbrella. What is the main idea?", "answer": "She was ready for rain.", "opts": ["She was late.", "She was ready for rain.", "She forgot her bag."], "audio": "G3-01.mp3"}, {"id": "G3-02", "level": "Grade 3", "skill": "Sequence", "script": "Tom woke up. He ate breakfast. Then he walked to school. What happened first?", "answer": "Tom woke up.", "opts": ["He ate breakfast.", "Tom woke up.", "He walked to school."], "audio": "G3-02.mp3"}, {"id": "G3-03", "level": "Grade 3", "skill": "Cause and effect", "script": "The ice cream sat in the sun. It melted fast. Why did it melt?", "answer": "It was in the sun.", "opts": ["It was in the freezer.", "It was in the sun.", "Someone ate it."], "audio": "G3-03.mp3"}, {"id": "G3-04", "level": "Grade 3", "skill": "Vocabulary", "script": "The puppy was tiny. Tiny means very small. What does tiny mean?", "answer": "very small", "opts": ["very big", "very fast", "very small"], "audio": "G3-04.mp3"}, {"id": "G3-05", "level": "Grade 3", "skill": "Fluency", "script": "The duck swam across the pond. The duck swam across the pond. Read it again.", "answer": "The duck swam across the pond.", "opts": ["The duck flew over the pond.", "The duck swam across the pond.", "The duck sat by the pond."], "audio": "G3-05.mp3"}, {"id": "G3-06", "level": "Grade 3", "skill": "Main idea", "script": "Jill packed a lunch. She grabbed her bag. She got on the bus. What is the main idea?", "answer": "Jill got ready for school.", "opts": ["Jill ate her lunch.", "Jill got ready for school.", "Jill missed the bus."], "audio": "G3-06.mp3"}, {"id": "G3-07", "level": "Grade 3", "skill": "Sequence", "script": "First the boy brushed his teeth. Next he put on shoes. Last he went outside. What happened last?", "answer": "He went outside.", "opts": ["He brushed his teeth.", "He put on shoes.", "He went outside."], "audio": "G3-07.mp3"}, {"id": "G3-08", "level": "Grade 3", "skill": "Cause and effect", "script": "The plant had no water. It drooped. Why did it droop?", "answer": "No water.", "opts": ["Too much sun.", "No water.", "Too cold."], "audio": "G3-08.mp3"}, {"id": "G3-09", "level": "Grade 3", "skill": "Vocabulary", "script": "The huge dog was enormous. Enormous means very big. What does enormous mean?", "answer": "very big", "opts": ["very small", "very fast", "very big"], "audio": "G3-09.mp3"}, {"id": "G3-10", "level": "Grade 3", "skill": "Fluency", "script": "The bird flew over the tree. The bird flew over the tree. Read it one more time.", "answer": "The bird flew over the tree.", "opts": ["The bird sat in the tree.", "The bird flew over the tree.", "The bird sang in the tree."], "audio": "G3-10.mp3"}, {"id": "G4-01", "level": "Grade 4", "skill": "Inference", "script": "Max gave his snack to his friend who forgot lunch. His friend smiled and shared his juice. What can you infer?", "answer": "Sharing is kind.", "opts": ["Max was hungry.", "Sharing is kind.", "His friend was mean."], "audio": "G4-01.mp3"}, {"id": "G4-02", "level": "Grade 4", "skill": "Theme", "script": "Ana kept trying even when the puzzle was hard. She finished at last. What lesson does this show?", "answer": "Keep trying.", "opts": ["Give up easily.", "Ask for help.", "Keep trying."], "audio": "G4-02.mp3"}, {"id": "G4-03", "level": "Grade 4", "skill": "Compare and contrast", "script": "Cats and dogs both are pets. Cats like quiet. Dogs like to run. What do they have in common?", "answer": "Both are pets.", "opts": ["Both like to run.", "Both are pets.", "Both like quiet."], "audio": "G4-03.mp3"}, {"id": "G4-04", "level": "Grade 4", "skill": "Text structure", "script": "First seeds are planted. Next they are watered. Last they grow. What text structure is this?", "answer": "Sequence.", "opts": ["Compare and contrast.", "Cause and effect.", "Sequence."], "audio": "G4-04.mp3"}, {"id": "G4-05", "level": "Grade 4", "skill": "Figurative language", "script": "The classroom was a zoo. That means it was very noisy.", "answer": "very noisy", "opts": ["very clean", "very quiet", "very noisy"], "audio": "G4-05.mp3"}, {"id": "G4-06", "level": "Grade 4", "skill": "Inference", "script": "Jade came in wet. She held an umbrella. What can you infer?", "answer": "It was raining.", "opts": ["It was sunny.", "It was raining.", "It was snowing."], "audio": "G4-06.mp3"}, {"id": "G4-07", "level": "Grade 4", "skill": "Theme", "script": "Joe worked hard every day. At the end he finished the project. What lesson does this show?", "answer": "Hard work pays off.", "opts": ["Rest is important.", "Hard work pays off.", "Ask for help."], "audio": "G4-07.mp3"}, {"id": "G4-08", "level": "Grade 4", "skill": "Compare and contrast", "script": "Fish swim. Birds fly. Both are animals. What do they have in common?", "answer": "Both are animals.", "opts": ["Both can fly.", "Both can swim.", "Both are animals."], "audio": "G4-08.mp3"}, {"id": "G4-09", "level": "Grade 4", "skill": "Text structure", "script": "First the seed was planted. Then it was watered. Last it grew. What structure is this?", "answer": "Sequence.", "opts": ["Problem and solution.", "Sequence.", "Compare and contrast."], "audio": "G4-09.mp3"}, {"id": "G4-10", "level": "Grade 4", "skill": "Figurative language", "script": "The snow was a blanket on the ground. That means the snow covered the ground.", "answer": "covered the ground", "opts": ["melted quickly", "fell from the sky", "covered the ground"], "audio": "G4-10.mp3"}, {"id": "G5-01", "level": "Grade 5", "skill": "Authors purpose", "script": "This passage tries to make you buy a toy. What is the author doing?", "answer": "Persuading.", "opts": ["Informing.", "Entertaining.", "Persuading."], "audio": "G5-01.mp3"}, {"id": "G5-02", "level": "Grade 5", "skill": "Point of view", "script": "I looked at the mountain. I felt cold. What point of view is this?", "answer": "First person.", "opts": ["Second person.", "Third person.", "First person."], "audio": "G5-02.mp3"}, {"id": "G5-03", "level": "Grade 5", "skill": "Evidence", "script": "Dogs need food. Dogs need water. Dogs need care. What evidence supports dogs as pets?", "answer": "Dogs need care.", "opts": ["Dogs are expensive.", "Dogs need care.", "Dogs are loud."], "audio": "G5-03.mp3"}, {"id": "G5-04", "level": "Grade 5", "skill": "Summary", "script": "The boy lost his ball, searched the yard, and found it by the tree. What is the summary?", "answer": "Boy found his ball.", "opts": ["Boy lost his ball.", "Boy found his ball.", "Boy bought a new ball."], "audio": "G5-04.mp3"}, {"id": "G5-05", "level": "Grade 5", "skill": "Theme", "script": "The girl told the truth even when it was hard. What theme does this show?", "answer": "Honesty.", "opts": ["Courage.", "Kindness.", "Honesty."], "audio": "G5-05.mp3"}, {"id": "G5-06", "level": "Grade 5", "skill": "Authors purpose", "script": "This story teaches you how to recycle paper. What is the authors purpose?", "answer": "To inform.", "opts": ["To persuade.", "To entertain.", "To inform."], "audio": "G5-06.mp3"}, {"id": "G5-07", "level": "Grade 5", "skill": "Point of view", "script": "I opened my book and saw a map. It was my favorite page. What point of view is this?", "answer": "First person.", "opts": ["Third person.", "Second person.", "First person."], "audio": "G5-07.mp3"}, {"id": "G5-08", "level": "Grade 5", "skill": "Evidence", "script": "Cats need food. Cats need water. Cats need care. What evidence supports cats as pets?", "answer": "Cats need care.", "opts": ["Cats are quiet.", "Cats are soft.", "Cats need care."], "audio": "G5-08.mp3"}, {"id": "G5-09", "level": "Grade 5", "skill": "Summary", "script": "The girl lost her shoe, looked under the bed, and found it. What is the summary?", "answer": "Girl found her shoe.", "opts": ["Girl lost her shoe.", "Girl found her shoe.", "Girl bought new shoes."], "audio": "G5-09.mp3"}, {"id": "G5-10", "level": "Grade 5", "skill": "Theme", "script": "The boy told the truth even when he was scared. What theme does this show?", "answer": "Honesty.", "opts": ["Bravery.", "Kindness.", "Honesty."], "audio": "G5-10.mp3"}, {"id": "G1-01", "level": "Grade 1", "skill": "Phonics", "script": "Bloomy says: The letter A makes the sound ah. Apple starts with ah. Which picture starts with A? Tap it! Great job!", "answer": "Apple", "opts": ["Apple", "Ball", "Cat", "Dog"], "audio": "G1-01.mp3"}, {"id": "G1-02", "level": "Grade 1", "skill": "Sight words", "script": "Bloomy says: Learn these sight words. Said, they, have, from. Which word is said? Tap it! Great job!", "answer": "said", "opts": ["said", "they", "have", "from"], "audio": "G1-02.mp3"}, {"id": "G1-03", "level": "Grade 1", "skill": "Word families", "script": "Bloomy says: These words are in the at family. Cat, hat, bat, mat. Which word rhymes with cat? Great job!", "answer": "hat", "opts": ["hat", "dog", "run", "big"], "audio": "G1-03.mp3"}, {"id": "G1-04", "level": "Grade 1", "skill": "Sentences", "script": "Bloomy says: A sentence starts with a capital letter. The dog ran fast. Which word starts this sentence? Great job!", "answer": "The", "opts": ["The", "dog", "ran", "fast"], "audio": "G1-04.mp3"}, {"id": "G1-05", "level": "Grade 1", "skill": "Comprehension", "script": "Bloomy says: The sun is hot. It shines in the sky. Where does the sun shine? Great job!", "answer": "in the sky", "opts": ["in the sky", "in the water", "in the house", "in the tree"], "audio": "G1-05.mp3"}, {"id": "G1-06", "level": "Grade 1", "skill": "Blending", "script": "Bloomy says: Blend these sounds. Sh makes a new sound together. Ship starts with sh. Which word starts with sh? Great job!", "answer": "ship", "opts": ["ship", "top", "ball", "cake"], "audio": "G1-06.mp3"}, {"id": "G1-07", "level": "Grade 1", "skill": "Vowels", "script": "Bloomy says: Short vowels say their sound quickly. A says ah in cat. E says eh in bed. Which word has a short a sound? Great job!", "answer": "cat", "opts": ["cat", "tree", "boat", "rain"], "audio": "G1-07.mp3"}, {"id": "G1-08", "level": "Grade 1", "skill": "Story order", "script": "Bloomy says: First the sun came up. Then the birds sang. Last the children played. What happened first? Great job!", "answer": "The sun came up.", "opts": ["The sun came up.", "The birds sang.", "Children played.", "It got dark."], "audio": "G1-08.mp3"}, {"id": "G1-09", "level": "Grade 1", "skill": "Main idea", "script": "Bloomy says: The dog ran. The dog jumped. The dog played. What is the dog doing? Great job!", "answer": "Playing", "opts": ["Sleeping", "Playing", "Eating", "Swimming"], "audio": "G1-09.mp3"}, {"id": "G1-10", "level": "Grade 1", "skill": "Prediction", "script": "Bloomy says: The sky got dark. Clouds came. It felt cold. What do you think will happen next? Great job!", "answer": "It will rain.", "opts": ["It will rain.", "The sun will shine.", "It will snow flowers.", "Birds will dance."], "audio": "G1-10.mp3"}, {"id": "G2-01", "level": "Grade 2", "skill": "Long vowels", "script": "Bloomy says: Long vowels say their name. A says ay in cake. Which word has a long a sound? Great job!", "answer": "cake", "opts": ["cake", "cat", "cup", "cod"], "audio": "G2-01.mp3"}, {"id": "G2-02", "level": "Grade 2", "skill": "Compound words", "script": "Bloomy says: Two words can join to make one new word. Sun and flower make sunflower. Rain and bow make rainbow. What do cup and cake make? Great job!", "answer": "cupcake", "opts": ["cupcake", "cupboard", "cupcup", "cakecup"], "audio": "G2-02.mp3"}, {"id": "G2-03", "level": "Grade 2", "skill": "Main idea", "script": "Bloomy says: Rosa loved to paint. She painted every day. She painted flowers, birds, and trees. What is the main idea? Great job!", "answer": "Rosa loved to paint.", "opts": ["Rosa loved to paint.", "Rosa had a dog.", "Rosa went to school.", "Rosa liked to swim."], "audio": "G2-03.mp3"}, {"id": "G2-04", "level": "Grade 2", "skill": "Sequence", "script": "Bloomy says: First Mia woke up. Next she ate breakfast. Last she went to school. What did Mia do last? Great job!", "answer": "Went to school.", "opts": ["Woke up.", "Ate breakfast.", "Went to school.", "Went to sleep."], "audio": "G2-04.mp3"}, {"id": "G2-05", "level": "Grade 2", "skill": "Adjectives", "script": "Bloomy says: Adjectives describe nouns. The big red ball. Big and red are adjectives. Which word is an adjective? Great job!", "answer": "big", "opts": ["big", "ball", "the", "rolled"], "audio": "G2-05.mp3"}, {"id": "G2-06", "level": "Grade 2", "skill": "Cause and effect", "script": "Bloomy says: It rained all day. The grass got wet. Why did the grass get wet? Great job!", "answer": "Because it rained.", "opts": ["Because it rained.", "Because it was hot.", "Because the sun shone.", "Because it was windy."], "audio": "G2-06.mp3"}, {"id": "G2-07", "level": "Grade 2", "skill": "Nouns and verbs", "script": "Bloomy says: A noun names a thing. A verb shows action. The bird flew. Bird is the noun. Flew is the verb. Which word is the verb? Great job!", "answer": "flew", "opts": ["bird", "the", "flew", "high"], "audio": "G2-07.mp3"}, {"id": "G2-08", "level": "Grade 2", "skill": "Prediction", "script": "Bloomy says: The boy saw dark clouds. He heard thunder. He saw lightning. What do you think he will do? Great job!", "answer": "Go inside.", "opts": ["Go inside.", "Go swimming.", "Start playing outside.", "Eat lunch."], "audio": "G2-08.mp3"}, {"id": "G2-09", "level": "Grade 2", "skill": "Character", "script": "Bloomy says: Lily always helped her friends. She shared her lunch. She helped them carry bags. What kind of person is Lily? Great job!", "answer": "Kind", "opts": ["Kind", "Mean", "Lazy", "Shy"], "audio": "G2-09.mp3"}, {"id": "G2-10", "level": "Grade 2", "skill": "Vocabulary", "script": "Bloomy says: The gigantic elephant walked slowly. Gigantic means very very big. What does gigantic mean? Great job!", "answer": "Very big", "opts": ["Very big", "Very fast", "Very small", "Very loud"], "audio": "G2-10.mp3"}];
-  var gradeMap = {'PreK':'Pre-K','K':'K','1':'Grade 1','2':'Grade 2','3':'Grade 3','4':'Grade 4','5':'Grade 5'};
-  var level = gradeMap[String(gradeIn)] || gradeIn;
-  var lessons = ALL_LESSONS.filter(function(l){ return l.level===level; });
-  if(!lessons.length) lessons = ALL_LESSONS.slice(0,5);
-  var idx=0, score=0;
-  var ov=document.createElement('div');ov.id='masterLessonsOv';
-  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#2D1A4E,#6B3FA0);display:flex;flex-direction:column;font-family:Nunito,sans-serif;';
-  function render(){
-    if(window.speechSynthesis)window.speechSynthesis.cancel();
-    ov.innerHTML='';
-    if(idx>=lessons.length){
-      var strs=score*15;
-      ov.innerHTML='<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:white;text-align:center;padding:32px;"><div style="font-size:4rem;margin-bottom:16px;">⭐</div><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;margin-bottom:8px;">Lesson Complete!</div><div style="font-size:1.1rem;opacity:.85;margin-bottom:24px;">'+score+' of '+lessons.length+' correct!</div><button onclick="document.getElementById(\'masterLessonsOv\').remove();toast(\'+'+strs+' Stars!\');" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#2D1A4E;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Done! 🌟</button></div>';
-      if(typeof sb!=='undefined'&&typeof activeChild!=='undefined'){sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:strs}).catch(function(){});}
-      return;
-    }
-    var lesson=lessons[idx];
-    var hdr=document.createElement('div');hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:rgba(0,0,0,.2);flex-shrink:0;';
-    hdr.innerHTML='<div style="color:white;font-family:Baloo 2,cursive;font-weight:800;">📚 '+lesson.skill+'</div><div style="color:rgba(255,255,255,.7);font-size:.8rem;">'+level+' • '+(idx+1)+'/'+lessons.length+'</div>';
-    var xb=document.createElement('button');xb.textContent='X';xb.style.cssText='background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;';xb.onclick=function(){if(window.speechSynthesis)window.speechSynthesis.cancel();ov.remove();};hdr.appendChild(xb);ov.appendChild(hdr);
-    var body=document.createElement('div');body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:16px;overflow-y:auto;';
-    var sb2=document.createElement('div');sb2.style.cssText='background:rgba(255,255,255,.12);border-radius:16px;padding:18px;max-width:480px;width:100%;font-size:1.1rem;color:white;line-height:1.8;font-weight:600;text-align:center;';sb2.textContent=lesson.script;body.appendChild(sb2);
-    var rb=document.createElement('button');rb.textContent='🔈 Read to Me';rb.style.cssText='padding:10px 20px;border-radius:30px;border:none;background:rgba(255,255,255,.2);color:white;font-family:Nunito,sans-serif;font-weight:700;cursor:pointer;';
-    var sp=false;
-    function doTTS(){if(!window.speechSynthesis)return;if(sp){window.speechSynthesis.cancel();sp=false;rb.textContent='🔈 Read to Me';return;}var u=new SpeechSynthesisUtterance(lesson.script);u.rate=0.82;u.pitch=1.1;u.volume=1;var vs=window.speechSynthesis.getVoices();var pk=vs.find(function(v){return v.name==='Samantha'||v.name==='Karen';});if(!pk)pk=vs.find(function(v){return v.lang&&v.lang.startsWith('en');});if(pk)u.voice=pk;u.onend=function(){sp=false;rb.textContent='🔈 Read to Me';};window.speechSynthesis.speak(u);sp=true;rb.textContent='⏹ Stop';}
-    rb.onclick=function(){if(lesson.audio){var a=new Audio('/'+lesson.audio);a.onerror=function(){doTTS();};a.onended=function(){rb.textContent='🔈 Read to Me';};a.play().then(function(){rb.textContent='🔊 Playing...';}).catch(function(){doTTS();});}else{doTTS();}};
-    body.appendChild(rb);
-    var answered=false;
-    var od=document.createElement('div');od.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:400px;width:100%;';
-    lesson.opts.forEach(function(opt){var btn=document.createElement('button');btn.textContent=opt;btn.style.cssText='padding:14px;border-radius:14px;border:none;background:rgba(255,255,255,.15);color:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;';btn.onclick=function(){if(answered)return;answered=true;var correct=(opt===lesson.answer);od.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';if(b.textContent===lesson.answer)b.style.background='rgba(94,205,160,.6)';});if(correct){btn.style.background='rgba(94,205,160,.7)';score++;showBloomy('celebrate');toast('Correct! ⭐');}else{btn.style.background='rgba(255,107,107,.5)';showBloomy('think');toast('Answer: '+lesson.answer);}setTimeout(function(){idx++;render();},1400);};od.appendChild(btn);});
-    body.appendChild(od);ov.appendChild(body);
-    setTimeout(function(){if(typeof activeGrade!=='undefined'&&(activeGrade==='PreK'||activeGrade==='K'||activeGrade==='1'))rb.click();},500);
-  }
-  document.body.appendChild(ov);render();
-}
-
-
-// ═══════════════════════════════════════════════
-// GAMES ENGINE - Bloomy guides all games
-// ═══════════════════════════════════════════════
-
-function gameOverlay(title, color) {
-  var old = document.getElementById('gameOv'); if(old) old.remove();
-  var ov = document.createElement('div'); ov.id='gameOv';
-  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:'+color+';display:flex;flex-direction:column;font-family:Nunito,sans-serif;';
-  var hdr = document.createElement('div');
-  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:rgba(0,0,0,.2);flex-shrink:0;';
-  hdr.innerHTML='<div style="display:flex;align-items:center;gap:10px;"><img src="/bloomy_happy.png" style="width:36px;height:36px;object-fit:contain;"><span style="color:white;font-family:Baloo 2,cursive;font-weight:800;">'+title+'</span></div>';
-  var xb=document.createElement('button');xb.textContent='X';xb.style.cssText='background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;';
-  xb.onclick=function(){if(window.speechSynthesis)window.speechSynthesis.cancel();ov.remove();};
-  hdr.appendChild(xb);ov.appendChild(hdr);
-  document.body.appendChild(ov);
-  return ov;
-}
-
-function bloomySay(text, cb) {
-  if(!window.speechSynthesis){if(cb)cb();return;}
-  window.speechSynthesis.cancel();
-  var u=new SpeechSynthesisUtterance(text);u.rate=0.85;u.pitch=1.1;
-  var vs=window.speechSynthesis.getVoices();
-  var pk=vs.find(function(v){return v.name==='Samantha'||v.name==='Karen';});
-  if(!pk)pk=vs.find(function(v){return v.lang&&v.lang.startsWith('en');});
-  if(pk)u.voice=pk;
-  if(cb)u.onend=cb;
-  window.speechSynthesis.speak(u);
-}
-
-function addStarsFromGame(n) {
-  if(typeof sessionData!=='undefined'){sessionData.stars=(sessionData.stars||0)+n;var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;}
-  if(typeof sb!=='undefined'&&typeof activeChild!=='undefined'){sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:n}).catch(function(){});}
-}
-
-// ── 1. WORD MATCH ──
-function openWordMatch() {
-  var pairs = [
-    {word:'cat',emoji:'🐱'},{word:'dog',emoji:'🐶'},{word:'sun',emoji:'☀️'},
-    {word:'hat',emoji:'🎩'},{word:'fish',emoji:'🐟'},{word:'tree',emoji:'🌳'},
-    {word:'ball',emoji:'⚽'},{word:'bird',emoji:'🐦'},{word:'book',emoji:'📚'},
-    {word:'frog',emoji:'🐸'},{word:'star',emoji:'⭐'},{word:'cake',emoji:'🎂'},
-  ];
-  var ov=gameOverlay('Word Match','linear-gradient(160deg,#FF6B6B,#FF8E53)');
-  var score=0, round=0;
-  function nextRound(){
-    var body=document.createElement('div');body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:20px;';
-    var old=ov.querySelector('.game-body');if(old)old.remove();
-    body.className='game-body';
-    if(round>=6){
-      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">Amazing! '+score+'/6</div><button onclick="var o=document.getElementById(&quot;gameOv&quot;);if(o)o.remove();addStarsFromGame(score*10);toast(&quot;+&quot;+(score*10)+&quot; Stars!&quot;);" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#FF6B6B;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;font-size:1rem;">Done! 🌟</button>';
-      ov.appendChild(body);return;
-    }
-    var shuffled=pairs.slice().sort(function(){return Math.random()-.5;});
-    var current=shuffled[0];
-    var options=[current].concat(shuffled.slice(1,3)).sort(function(){return Math.random()-.5;});
-    var wordDiv=document.createElement('div');wordDiv.style.cssText='font-family:Baloo 2,cursive;font-size:2.5rem;font-weight:800;color:white;background:rgba(255,255,255,.2);padding:16px 32px;border-radius:20px;';wordDiv.textContent=current.word;
-    var inst=document.createElement('div');inst.style.cssText='color:rgba(255,255,255,.9);font-size:.9rem;font-weight:700;';inst.textContent='Bloomy says: Tap the picture that matches the word!';
-    var grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;max-width:360px;';
-    options.forEach(function(opt){
-      var btn=document.createElement('button');
-      btn.style.cssText='padding:20px;border-radius:16px;border:none;background:rgba(255,255,255,.2);font-size:2.5rem;cursor:pointer;';
-      btn.textContent=opt.emoji;
-      btn.onclick=function(){
-        if(opt.word===current.word){btn.style.background='rgba(94,205,160,.6)';score++;showBloomy('celebrate');bloomySay('Great job!');}
-        else{btn.style.background='rgba(255,107,107,.5)';showBloomy('think');bloomySay('Try again next time!');}
-        grid.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});
-        setTimeout(function(){round++;nextRound();},1200);
-      };
-      grid.appendChild(btn);
-    });
-    body.appendChild(wordDiv);body.appendChild(inst);body.appendChild(grid);
-    ov.appendChild(body);
-    bloomySay('Find the picture for the word: '+current.word);
-  }
-  nextRound();
-}
-
-// ── 2. FLASH CARDS ──
-function openFlashCards() {
-  var words=['the','and','is','it','in','at','he','she','we','to','do','go','see','can','run','jump','play','big','little','like'];
-  var ov=gameOverlay('Sight Word Flash Cards','linear-gradient(160deg,#5ECDA0,#4ECDC4)');
-  var idx=0,flipped=false,score=0;
-  function showCard(){
-    var body=document.createElement('div');body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:20px;';
-    var old=ov.querySelector('.game-body');if(old)old.remove();body.className='game-body';
-    if(idx>=words.length){
-      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">You know '+score+' words!</div><button onclick="var o=document.getElementById(&quot;gameOv&quot;);if(o)o.remove();addStarsFromGame(score*5);toast(&quot;+&quot;+(score*5)+&quot; Stars!&quot;);" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#5ECDA0;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
-      ov.appendChild(body);return;
-    }
-    var word=words[idx];
-    var inst=document.createElement('div');inst.style.cssText='color:rgba(255,255,255,.9);font-weight:700;font-size:.9rem;display:flex;align-items:center;gap:8px;';inst.innerHTML='<img src="/bloomy_happy.png" style="width:32px;"> Bloomy says: Say this word out loud!';
-    var card=document.createElement('div');card.style.cssText='background:white;border-radius:24px;padding:40px 60px;font-family:Baloo 2,cursive;font-size:3rem;font-weight:800;color:#2D2D4E;cursor:pointer;box-shadow:0 8px 32px rgba(0,0,0,.15);';card.textContent=word;
-    var readBtn=document.createElement('button');readBtn.textContent='🔊 Hear it';readBtn.style.cssText='padding:10px 20px;border-radius:30px;border:none;background:rgba(255,255,255,.3);color:white;font-family:Nunito,sans-serif;font-weight:700;cursor:pointer;';readBtn.onclick=function(){bloomySay(word);};
-    var btns=document.createElement('div');btns.style.cssText='display:flex;gap:12px;';
-    var yBtn=document.createElement('button');yBtn.textContent='✅ I know it!';yBtn.style.cssText='padding:12px 22px;border-radius:40px;border:none;background:white;color:#5ECDA0;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;';yBtn.onclick=function(){score++;showBloomy('celebrate');idx++;showCard();};
-    var nBtn=document.createElement('button');nBtn.textContent='🔄 Practice more';nBtn.style.cssText='padding:12px 22px;border-radius:40px;border:none;background:rgba(255,255,255,.2);color:white;font-weight:700;cursor:pointer;font-family:Nunito,sans-serif;';nBtn.onclick=function(){words.push(words[idx]);idx++;showCard();};
-    btns.appendChild(yBtn);btns.appendChild(nBtn);
-    var prog=document.createElement('div');prog.style.cssText='color:rgba(255,255,255,.7);font-size:.8rem;';prog.textContent=(idx+1)+' of '+words.length;
-    body.appendChild(inst);body.appendChild(card);body.appendChild(readBtn);body.appendChild(btns);body.appendChild(prog);
-    ov.appendChild(body);
-    bloomySay(word);
-  }
-  showCard();
-}
-
-// ── 3. MEMORY MATCH ──
-function openMemoryMatch() {
-  var items=[{emoji:'🐱',label:'cat'},{emoji:'🐶',label:'dog'},{emoji:'☀️',label:'sun'},{emoji:'🌙',label:'moon'},{emoji:'⭐',label:'star'},{emoji:'🌈',label:'rainbow'},{emoji:'🎈',label:'balloon'},{emoji:'🍎',label:'apple'}];
-  var cards=[];items.forEach(function(it){cards.push({...it,id:it.label+'A'});cards.push({...it,id:it.label+'B'});});
-  cards.sort(function(){return Math.random()-.5;});
-  var ov=gameOverlay('Memory Match','linear-gradient(160deg,#C9B8FF,#8B6FE8)');
-  var flipped=[],matched=[],moves=0;
-  var body=document.createElement('div');body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;padding:16px;gap:12px;';
-  var inst=document.createElement('div');inst.style.cssText='color:white;font-weight:700;font-size:.9rem;display:flex;align-items:center;gap:8px;';inst.innerHTML='<img src="/bloomy_think.png" style="width:32px;">Bloomy says: Find the matching pairs!';
-  var movesDiv=document.createElement('div');movesDiv.style.cssText='color:rgba(255,255,255,.8);font-size:.8rem;';movesDiv.textContent='Moves: 0';
-  var grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:340px;';
-  cards.forEach(function(card){
-    var btn=document.createElement('button');btn.dataset.id=card.id;btn.dataset.label=card.label;
-    btn.style.cssText='aspect-ratio:1;border-radius:12px;border:none;background:rgba(255,255,255,.2);font-size:1.8rem;cursor:pointer;transition:all .2s;';
-    btn.textContent='❓';
-    btn.onclick=function(){
-      if(flipped.length===2||matched.includes(card.label)||flipped.find(function(f){return f.dataset.id===btn.dataset.id;}))return;
-      btn.textContent=card.emoji;btn.style.background='rgba(255,255,255,.4)';
-      flipped.push(btn);
-      if(flipped.length===2){
-        moves++;movesDiv.textContent='Moves: '+moves;
-        if(flipped[0].dataset.label===flipped[1].dataset.label){
-          matched.push(card.label);
-          flipped[0].style.background='rgba(94,205,160,.6)';flipped[1].style.background='rgba(94,205,160,.6)';
-          flipped=[];showBloomy('celebrate');
-          if(matched.length===items.length){
-            setTimeout(function(){
-              grid.innerHTML='';
-              body.innerHTML='';
-              body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;margin:auto;"><div style="font-family:Baloo 2,cursive;font-size:1.6rem;font-weight:800;color:white;text-align:center;">All matched in '+moves+' moves!</div><button onclick="var o=document.getElementById(&quot;gameOv&quot;);if(o)o.remove();addStarsFromGame(50);toast(&quot;+&quot;+(50)+&quot; Stars!&quot;);"style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#8B6FE8;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
-            },800);
-          }
-        } else {
-          setTimeout(function(){flipped[0].textContent='❓';flipped[0].style.background='rgba(255,255,255,.2)';flipped[1].textContent='❓';flipped[1].style.background='rgba(255,255,255,.2)';flipped=[];},900);
-        }
-      }
-    };
-    grid.appendChild(btn);
-  });
-  body.appendChild(inst);body.appendChild(movesDiv);body.appendChild(grid);ov.appendChild(body);
-  bloomySay('Find the matching pairs! Tap two cards to flip them.');
-}
-
-// ── 4. SPELLING BEE ──
-function openSpellingBee() {
-  var words=[{word:'cat',hint:'🐱'},{word:'dog',hint:'🐶'},{word:'sun',hint:'☀️'},{word:'hat',hint:'🎩'},{word:'big',hint:'🐘'},{word:'run',hint:'🏃'},{word:'map',hint:'🗺️'},{word:'hen',hint:'🐔'},{word:'web',hint:'🕷️'},{word:'jam',hint:'🍓'}];
-  words.sort(function(){return Math.random()-.5;});
-  var ov=gameOverlay('Spelling Bee 🐝','linear-gradient(160deg,#FFD166,#FF6B6B)');
-  var idx=0,score=0;
-  function nextWord(){
-    var body=document.createElement('div');body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:16px;';
-    var old=ov.querySelector('.game-body');if(old)old.remove();body.className='game-body';
-    if(idx>=words.length){
-      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">'+score+'/'+words.length+' words spelled!</div><button onclick="var o=document.getElementById(&quot;gameOv&quot;);if(o)o.remove();addStarsFromGame(score*15);toast(&quot;+&quot;+(score*15)+&quot; Stars!&quot;);" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#FF6B6B;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
-      ov.appendChild(body);return;
-    }
-    var w=words[idx];
-    var inst=document.createElement('div');inst.style.cssText='color:rgba(255,255,255,.9);font-weight:700;font-size:.9rem;display:flex;align-items:center;gap:8px;';inst.innerHTML='<img src="/bloomy_happy.png" style="width:32px;">Spell the word for this picture!';
-    var hintDiv=document.createElement('div');hintDiv.style.cssText='font-size:5rem;';hintDiv.textContent=w.hint;
-    var blanks=document.createElement('div');blanks.style.cssText='display:flex;gap:8px;';
-    var filled=[];
-    w.word.split('').forEach(function(){var b=document.createElement('div');b.style.cssText='width:44px;height:44px;border-radius:10px;background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:800;color:white;font-family:Baloo 2,cursive;';b.textContent='_';blanks.appendChild(b);filled.push('');});
-    var letters=w.word.split('').concat('aeiourstln'.split('').slice(0,6)).sort(function(){return Math.random()-.5;}).slice(0,w.word.length+3);
-    letters.sort(function(){return Math.random()-.5;});
-    var letterGrid=document.createElement('div');letterGrid.style.cssText='display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:300px;';
-    var currentIdx=0;
-    letters.forEach(function(letter){
-      var btn=document.createElement('button');btn.textContent=letter.toUpperCase();
-      btn.style.cssText='width:44px;height:44px;border-radius:10px;border:none;background:rgba(255,255,255,.25);color:white;font-family:Baloo 2,cursive;font-size:1.2rem;font-weight:800;cursor:pointer;';
-      btn.onclick=function(){
-        if(currentIdx>=w.word.length)return;
-        if(letter===w.word[currentIdx]){
-          blanks.children[currentIdx].textContent=letter.toUpperCase();
-          blanks.children[currentIdx].style.background='rgba(94,205,160,.5)';
-          btn.style.opacity='0.3';btn.disabled=true;
-          filled[currentIdx]=letter;currentIdx++;
-          if(currentIdx===w.word.length){
-            score++;showBloomy('celebrate');bloomySay('Amazing! You spelled '+w.word+'!');
-            setTimeout(function(){idx++;nextWord();},1500);
-          }
-        } else {
-          btn.style.background='rgba(255,107,107,.5)';
-          setTimeout(function(){btn.style.background='rgba(255,255,255,.25)';},600);
-          showBloomy('think');
-        }
-      };
-      letterGrid.appendChild(btn);
-    });
-    var hearBtn=document.createElement('button');hearBtn.textContent='🔊 Hear word';hearBtn.style.cssText='padding:8px 16px;border-radius:20px;border:none;background:rgba(255,255,255,.2);color:white;font-family:Nunito,sans-serif;font-weight:700;cursor:pointer;font-size:.85rem;';hearBtn.onclick=function(){bloomySay(w.word);};
-    body.appendChild(inst);body.appendChild(hintDiv);body.appendChild(blanks);body.appendChild(letterGrid);body.appendChild(hearBtn);
-    ov.appendChild(body);
-    bloomySay('Spell the word you see!');
-  }
-  nextWord();
-}
-
-// ── 5. NUMBER BONDS ──
-function openNumberBonds() {
-  var ov=gameOverlay('Number Bonds 🔢','linear-gradient(160deg,#4ECDC4,#2D8A8A)');
-  var score=0,round=0;
-  function nextRound(){
-    var body=document.createElement('div');body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:16px;';
-    var old=ov.querySelector('.game-body');if(old)old.remove();body.className='game-body';
-    if(round>=8){
-      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">'+score+'/8 correct!</div><button onclick="var o=document.getElementById(&quot;gameOv&quot;);if(o)o.remove();addStarsFromGame(score*10);toast(&quot;+&quot;+(score*10)+&quot; Stars!&quot;);" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#2D8A8A;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
-      ov.appendChild(body);return;
-    }
-    var target=Math.floor(Math.random()*8)+3;
-    var a=Math.floor(Math.random()*(target-1))+1;var b=target-a;
-    var wrong1=b+(Math.random()>.5?1:-1);if(wrong1<0)wrong1=b+2;
-    var wrong2=b+(Math.random()>.5?2:-2);if(wrong2<0)wrong2=b+3;if(wrong2===wrong1)wrong2++;
-    var opts=[b,wrong1,wrong2].sort(function(){return Math.random()-.5;});
-    var inst=document.createElement('div');inst.style.cssText='color:rgba(255,255,255,.9);font-weight:700;font-size:.9rem;display:flex;align-items:center;gap:8px;';inst.innerHTML='<img src="/bloomy_happy.png" style="width:32px;">Bloomy needs help! Make the number!';
-    var bondDiv=document.createElement('div');bondDiv.style.cssText='background:rgba(255,255,255,.15);border-radius:20px;padding:20px 30px;text-align:center;';
-    bondDiv.innerHTML='<div style="font-size:.85rem;color:rgba(255,255,255,.8);margin-bottom:8px;">Make this number:</div><div style="font-family:Baloo 2,cursive;font-size:3.5rem;font-weight:800;color:white;">'+target+'</div><div style="color:rgba(255,255,255,.8);font-size:1rem;margin-top:8px;">'+a+' + ? = '+target+'</div>';
-    var grid=document.createElement('div');grid.style.cssText='display:flex;gap:12px;';
-    opts.forEach(function(opt){
-      var btn=document.createElement('button');btn.textContent=opt;
-      btn.style.cssText='width:70px;height:70px;border-radius:16px;border:none;background:rgba(255,255,255,.2);color:white;font-family:Baloo 2,cursive;font-size:2rem;font-weight:800;cursor:pointer;';
-      btn.onclick=function(){
-        grid.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});
-        if(opt===b){btn.style.background='rgba(94,205,160,.7)';score++;showBloomy('celebrate');bloomySay('Yes! '+a+' plus '+b+' equals '+target+'!');}
-        else{btn.style.background='rgba(255,107,107,.6)';grid.querySelectorAll('button').forEach(function(gb){if(parseInt(gb.textContent)===b)gb.style.background='rgba(94,205,160,.6)';});showBloomy('think');bloomySay('The answer was '+b+'!');}
-        setTimeout(function(){round++;nextRound();},1500);
-      };
-      grid.appendChild(btn);
-    });
-    body.appendChild(inst);body.appendChild(bondDiv);body.appendChild(grid);ov.appendChild(body);
-    bloomySay(a+' plus what equals '+target+'?');
-  }
-  nextRound();
-}
-
-// ── 6. SOUND MATCH ──
-function openSoundMatch() {
-  var sounds=[
-    {letter:'M',words:['mouse','mop','sun'],answer:'mouse',sound:'m'},
-    {letter:'S',words:['cat','sun','dog'],answer:'sun',sound:'s'},
-    {letter:'B',words:['ball','cat','fish'],answer:'ball',sound:'b'},
-    {letter:'C',words:['dog','bird','cat'],answer:'cat',sound:'c'},
-    {letter:'F',words:['fish','hat','sun'],answer:'fish',sound:'f'},
-    {letter:'H',words:['dog','hat','cup'],answer:'hat',sound:'h'},
-    {letter:'D',words:['dog','sun','map'],answer:'dog',sound:'d'},
-    {letter:'T',words:['cat','tree','ball'],answer:'tree',sound:'t'},
-  ];
-  sounds.sort(function(){return Math.random()-.5;});
-  var ov=gameOverlay('Sound Match 🔊','linear-gradient(160deg,#FF8E53,#FF6B6B)');
-  var idx=0,score=0;
-  function nextRound(){
-    var body=document.createElement('div');body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:16px;';
-    var old=ov.querySelector('.game-body');if(old)old.remove();body.className='game-body';
-    if(idx>=sounds.length){
-      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">'+score+'/'+sounds.length+'!</div><button onclick="var o=document.getElementById(&quot;gameOv&quot;);if(o)o.remove();addStarsFromGame(score*10);toast(&quot;+&quot;+(score*10)+&quot; Stars!&quot;);" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#FF6B6B;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
-      ov.appendChild(body);return;
-    }
-    var s=sounds[idx];
-    var inst=document.createElement('div');inst.style.cssText='color:rgba(255,255,255,.9);font-weight:700;text-align:center;display:flex;align-items:center;gap:8px;';inst.innerHTML='<img src="/bloomy_happy.png" style="width:32px;">Which word starts with this sound?';
-    var letterBox=document.createElement('div');letterBox.style.cssText='background:rgba(255,255,255,.2);border-radius:20px;padding:20px 30px;text-align:center;cursor:pointer;';
-    letterBox.innerHTML='<div style="font-family:Baloo 2,cursive;font-size:4rem;font-weight:800;color:white;">'+s.letter+'</div><div style="font-size:.8rem;color:rgba(255,255,255,.8);">Tap to hear the sound</div>';
-    letterBox.onclick=function(){bloomySay(s.sound+' '+s.sound+' '+s.sound);};
-    var grid=document.createElement('div');grid.style.cssText='display:flex;gap:12px;flex-wrap:wrap;justify-content:center;';
-    s.words.forEach(function(word){
-      var btn=document.createElement('button');btn.textContent=word;
-      btn.style.cssText='padding:14px 22px;border-radius:14px;border:none;background:rgba(255,255,255,.2);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';
-      btn.onclick=function(){
-        grid.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});
-        if(word===s.answer){btn.style.background='rgba(94,205,160,.7)';score++;showBloomy('celebrate');bloomySay('Yes! '+word+' starts with '+s.sound+'!');}
-        else{btn.style.background='rgba(255,107,107,.6)';showBloomy('think');bloomySay(s.answer+' starts with '+s.sound+'!');}
-        setTimeout(function(){idx++;nextRound();},1400);
-      };
-      grid.appendChild(btn);
-    });
-    body.appendChild(inst);body.appendChild(letterBox);body.appendChild(grid);ov.appendChild(body);
-    bloomySay('Listen to the sound and find the matching word. '+s.sound+' '+s.sound+' '+s.sound);
-  }
-  nextRound();
-}
-
-// ── 7. RHYMING ──
-function openRhyming() {
-  var pairs=[
-    {word:'cat',opts:['hat','dog','sun'],answer:'hat'},
-    {word:'dog',opts:['log','cat','map'],answer:'log'},
-    {word:'sun',opts:['hat','fun','dog'],answer:'fun'},
-    {word:'mat',opts:['bat','sun','log'],answer:'bat'},
-    {word:'big',opts:['pig','cat','run'],answer:'pig'},
-    {word:'hop',opts:['map','mop','sun'],answer:'mop'},
-    {word:'bug',opts:['rug','hat','dog'],answer:'rug'},
-    {word:'see',opts:['run','tree','map'],answer:'tree'},
-  ];
-  pairs.sort(function(){return Math.random()-.5;});
-  var ov=gameOverlay('Rhyming 🎵','linear-gradient(160deg,#8B6FE8,#C084FC)');
-  var idx=0,score=0;
-  function nextRound(){
-    var body=document.createElement('div');body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:16px;';
-    var old=ov.querySelector('.game-body');if(old)old.remove();body.className='game-body';
-    if(idx>=pairs.length){
-      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">'+score+'/'+pairs.length+'!</div><button onclick="var o=document.getElementById(&quot;gameOv&quot;);if(o)o.remove();addStarsFromGame(score*10);toast(&quot;+&quot;+(score*10)+&quot; Stars!&quot;);" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#8B6FE8;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
-      ov.appendChild(body);return;
-    }
-    var p=pairs[idx];
-    var inst=document.createElement('div');inst.style.cssText='color:rgba(255,255,255,.9);font-weight:700;display:flex;align-items:center;gap:8px;';inst.innerHTML='<img src="/bloomy_happy.png" style="width:32px;">Which word rhymes?';
-    var wordBox=document.createElement('div');wordBox.style.cssText='background:rgba(255,255,255,.2);border-radius:20px;padding:16px 32px;font-family:Baloo 2,cursive;font-size:3rem;font-weight:800;color:white;cursor:pointer;';
-    wordBox.textContent=p.word;wordBox.onclick=function(){bloomySay(p.word);};
-    var grid=document.createElement('div');grid.style.cssText='display:flex;gap:12px;';
-    p.opts.forEach(function(opt){
-      var btn=document.createElement('button');btn.textContent=opt;
-      btn.style.cssText='padding:16px 24px;border-radius:14px;border:none;background:rgba(255,255,255,.2);color:white;font-family:Baloo 2,cursive;font-weight:800;font-size:1.2rem;cursor:pointer;';
-      btn.onclick=function(){
-        grid.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});
-        if(opt===p.answer){btn.style.background='rgba(94,205,160,.7)';score++;showBloomy('celebrate');bloomySay(p.word+' and '+opt+' rhyme! Great job!');}
-        else{btn.style.background='rgba(255,107,107,.6)';showBloomy('think');bloomySay(p.word+' rhymes with '+p.answer+'!');}
-        setTimeout(function(){idx++;nextRound();},1400);
-      };
-      grid.appendChild(btn);
-    });
-    body.appendChild(inst);body.appendChild(wordBox);body.appendChild(grid);ov.appendChild(body);
-    bloomySay('Which word rhymes with '+p.word+'?');
-  }
-  nextRound();
-}
-
-// ── 8. WORD BUILDER ──
-function openWordBuilder() {
-  var words=[
-    {sounds:['c','a','t'],word:'cat',emoji:'🐱'},
-    {sounds:['d','o','g'],word:'dog',emoji:'🐶'},
-    {sounds:['s','u','n'],word:'sun',emoji:'☀️'},
-    {sounds:['h','a','t'],word:'hat',emoji:'🎩'},
-    {sounds:['m','a','p'],word:'map',emoji:'🗺️'},
-    {sounds:['b','i','g'],word:'big',emoji:'🐘'},
-  ];
-  words.sort(function(){return Math.random()-.5;});
-  var ov=gameOverlay('Word Builder 🏗️','linear-gradient(160deg,#5ECDA0,#2D8A4E)');
-  var idx=0,score=0;
-  function nextWord(){
-    var body=document.createElement('div');body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:16px;';
-    var old=ov.querySelector('.game-body');if(old)old.remove();body.className='game-body';
-    if(idx>=words.length){
-      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">'+score+' words built!</div><button onclick="var o=document.getElementById(&quot;gameOv&quot;);if(o)o.remove();addStarsFromGame(score*15);toast(&quot;+&quot;+(score*15)+&quot; Stars!&quot;);" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#2D8A4E;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
-      ov.appendChild(body);return;
-    }
-    var w=words[idx];
-    var inst=document.createElement('div');inst.style.cssText='color:rgba(255,255,255,.9);font-weight:700;display:flex;align-items:center;gap:8px;';inst.innerHTML='<img src="/bloomy_happy.png" style="width:32px;">Drag the sounds to build the word!';
-    var hintDiv=document.createElement('div');hintDiv.style.cssText='font-size:4rem;';hintDiv.textContent=w.emoji;
-    var box=document.createElement('div');box.style.cssText='display:flex;gap:8px;min-width:180px;justify-content:center;';
-    var slots=w.sounds.map(function(){var s=document.createElement('div');s.style.cssText='width:50px;height:50px;border-radius:12px;border:2px dashed rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-family:Baloo 2,cursive;font-size:1.5rem;font-weight:800;color:white;';box.appendChild(s);return s;});
-    var filled=0;
-    var tiles=document.createElement('div');tiles.style.cssText='display:flex;gap:10px;';
-    var shuffled=w.sounds.slice().sort(function(){return Math.random()-.5;});
-    shuffled.forEach(function(sound,si){
-      var tile=document.createElement('button');tile.textContent=sound.toUpperCase();
-      tile.style.cssText='width:50px;height:50px;border-radius:12px;border:none;background:rgba(255,255,255,.25);color:white;font-family:Baloo 2,cursive;font-size:1.5rem;font-weight:800;cursor:pointer;';
-      tile.onclick=function(){
-        if(tile.disabled)return;
-        if(filled<slots.length){
-          slots[filled].textContent=sound.toUpperCase();
-          slots[filled].style.borderStyle='solid';
-          tile.disabled=true;tile.style.opacity='0.4';filled++;
-          if(filled===slots.length){
-            var built=slots.map(function(s){return s.textContent.toLowerCase();}).join('');
-            if(built===w.word){score++;showBloomy('celebrate');bloomySay('You built '+w.word+'! Great job!');slots.forEach(function(s){s.style.background='rgba(94,205,160,.5)';});}
-            else{bloomySay('Try again!');slots.forEach(function(s){s.style.background='rgba(255,107,107,.4)';});}
-            setTimeout(function(){idx++;nextWord();},1600);
-          }
-        }
-      };
-      tiles.appendChild(tile);
-    });
-    body.appendChild(inst);body.appendChild(hintDiv);body.appendChild(box);body.appendChild(tiles);ov.appendChild(body);
-    bloomySay('Use the sounds to build the word for this picture!');
-  }
-  nextWord();
-}
-
-// ── 9. COUNTING ──
-function openCountingGame() {
-  var rounds=[
-    {emoji:'🍎',count:3},{emoji:'⭐',count:5},{emoji:'🐶',count:2},{emoji:'🌸',count:4},
-    {emoji:'🦋',count:6},{emoji:'🎈',count:3},{emoji:'🐟',count:7},{emoji:'🍕',count:4},
-  ];
-  rounds.sort(function(){return Math.random()-.5;});
-  var ov=gameOverlay('Counting with Bloomy 🍎','linear-gradient(160deg,#FFD166,#5ECDA0)');
-  var idx=0,score=0;
-  function nextRound(){
-    var body=document.createElement('div');body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:16px;';
-    var old=ov.querySelector('.game-body');if(old)old.remove();body.className='game-body';
-    if(idx>=rounds.length){
-      body.innerHTML='<img src="/bloomy_celebrate.png" style="width:120px;object-fit:contain;"><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:white;">'+score+'/'+rounds.length+' correct!</div><button onclick="var o=document.getElementById(&quot;gameOv&quot;);if(o)o.remove();addStarsFromGame(score*10);toast(&quot;+&quot;+(score*10)+&quot; Stars!&quot;);" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#FFD166;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Done! 🌟</button>';
-      ov.appendChild(body);return;
-    }
-    var r=rounds[idx];
-    var wrong1=r.count+(Math.random()>.5?1:-1);if(wrong1<1)wrong1=r.count+2;
-    var wrong2=r.count+(Math.random()>.5?2:-2);if(wrong2<1||wrong2===wrong1)wrong2=r.count+3;
-    var opts=[r.count,wrong1,wrong2].sort(function(){return Math.random()-.5;});
-    var inst=document.createElement('div');inst.style.cssText='color:rgba(255,255,255,.9);font-weight:700;display:flex;align-items:center;gap:8px;';inst.innerHTML='<img src="/bloomy_happy.png" style="width:32px;">Bloomy says: Count and tap the number!';
-    var emojis=document.createElement('div');emojis.style.cssText='font-size:2.2rem;letter-spacing:4px;background:rgba(255,255,255,.15);padding:16px;border-radius:16px;text-align:center;max-width:300px;line-height:1.6;';
-    emojis.textContent=Array(r.count).fill(r.emoji).join(' ');
-    var grid=document.createElement('div');grid.style.cssText='display:flex;gap:12px;';
-    opts.forEach(function(n){
-      var btn=document.createElement('button');btn.textContent=n;
-      btn.style.cssText='width:64px;height:64px;border-radius:16px;border:none;background:rgba(255,255,255,.2);color:white;font-family:Baloo 2,cursive;font-size:2rem;font-weight:800;cursor:pointer;';
-      btn.onclick=function(){
-        grid.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});
-        if(n===r.count){btn.style.background='rgba(94,205,160,.7)';score++;showBloomy('celebrate');bloomySay('Yes! You counted '+r.count+'!');}
-        else{btn.style.background='rgba(255,107,107,.6)';grid.querySelectorAll('button').forEach(function(gb){if(parseInt(gb.textContent)===r.count)gb.style.background='rgba(94,205,160,.6)';});showBloomy('think');bloomySay('There are '+r.count+'!');}
-        setTimeout(function(){idx++;nextRound();},1400);
-      };
-      grid.appendChild(btn);
-    });
-    body.appendChild(inst);body.appendChild(emojis);body.appendChild(grid);ov.appendChild(body);
-    bloomySay('Count the '+r.emoji+' and tap the right number!');
-  }
-  nextRound();
-}
-
-// ── 10. READING CHALLENGE ──
-function openReadingChallenge() {
-  openPassageReader(typeof activeGrade!=='undefined'?activeGrade:'3');
-}
-
-
-function buildGradeGames() {
-  var section = document.getElementById('gradeGamesSection');
-  if (!section || typeof activeGrade === 'undefined') return;
-  section.innerHTML = '';
-  
-  var grade = activeGrade;
-  var games = [];
-  
-  // Age-appropriate games by grade
-  if (grade === 'PreK' || grade === 'K') {
-    games = [
-      {icon:'🔊', name:'Sound Match', fn:'openSoundMatch()', color:'#FF8E53', desc:'Match sounds to letters'},
-      {icon:'🎵', name:'Rhyming', fn:'openRhyming()', color:'#8B6FE8', desc:'Find the rhyme'},
-      {icon:'🍎', name:'Counting', fn:'openCountingGame()', color:'#FFD166', desc:'Count with Bloomy'},
-      {icon:'🃏', name:'Flash Cards', fn:'openFlashCards()', color:'#5ECDA0', desc:'Sight words'},
-    ];
-  } else if (grade === '1' || grade === '2') {
-    games = [
-      {icon:'🔤', name:'Word Match', fn:'openWordMatch()', color:'#FF6B6B', desc:'Match words to pictures'},
-      {icon:'🏗️', name:'Word Builder', fn:'openWordBuilder()', color:'#5ECDA0', desc:'Build words'},
-      {icon:'🐝', name:'Spelling Bee', fn:'openSpellingBee()', color:'#FFD166', desc:'Spell the word'},
-      {icon:'🧠', name:'Memory Match', fn:'openMemoryMatch()', color:'#C9B8FF', desc:'Find the pairs'},
-      {icon:'🔢', name:'Number Bonds', fn:'openNumberBonds()', color:'#4ECDC4', desc:'Math facts'},
-    ];
-  } else {
-    games = [
-      {icon:'📖', name:'Reading Challenge', fn:'openReadingChallenge()', color:'#1a2a4a', desc:'Read and answer'},
-      {icon:'🧠', name:'Memory Match', fn:'openMemoryMatch()', color:'#C9B8FF', desc:'Find the pairs'},
-      {icon:'🐝', name:'Spelling Bee', fn:'openSpellingBee()', color:'#FFD166', desc:'Spell the word'},
-      {icon:'🔢', name:'Number Bonds', fn:'openNumberBonds()', color:'#4ECDC4', desc:'Math facts'},
-    ];
-  }
-  
-  var title = document.createElement('div');
-  title.className = 'section-title';
-  title.textContent = '🎮 Games for ' + (typeof gradeContent !== 'undefined' ? gradeContent.label : 'You') + '!';
-  section.appendChild(title);
-  
-  var grid = document.createElement('div');
-  grid.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;';
-  
-  games.forEach(function(g) {
-    var card = document.createElement('div');
-    card.style.cssText = 'background:linear-gradient(135deg,' + g.color + ','+g.color+'cc);border-radius:20px;padding:16px;text-align:center;cursor:pointer;';
-    card.innerHTML = '<div style="font-size:2rem;margin-bottom:6px;">' + g.icon + '</div>' +
-      '<div style="font-family:Baloo 2,cursive;font-weight:800;color:white;font-size:.9rem;">' + g.name + '</div>' +
-      '<div style="font-size:.7rem;color:rgba(255,255,255,.8);margin-top:4px;">' + g.desc + '</div>';
-    card.onclick = new Function(g.fn);
-    grid.appendChild(card);
-  });
-  section.appendChild(grid);
-}
-
-function openGDLBook(title, iaId) {
-  var BLOOMISTORIES_DATA = {"Harry the Dirty Dog": {"emoji": "\ud83d\udc36", "pages": ["Harry was a white dog with black spots who hated baths more than anything.", "He buried the scrubbing brush and ran away from home to play!", "He played until he was so dirty he became a black dog with white spots.", "He went home but nobody recognized him. They thought he was a stranger!", "Harry found the scrubbing brush and brought it to the family.", "They gave him a bath and scrubbed until he was white with black spots again.", "Everyone knew it was Harry! He was so tired he fell fast asleep. The End!"]}, "The Snowy Day": {"emoji": "\u2744\ufe0f", "pages": ["Peter woke up one winter morning and saw that snow had fallen overnight.", "He put on his snowsuit and went outside. Crunch crunch crunch!", "He walked with toes pointing out. Then with toes pointing in.", "He smacked a snow tree and snow fell right on his head!", "He made a snowman, snow angels, and tried to save a snowball in his pocket.", "Inside he told his mother all about his wonderful snowy day.", "He woke up the next morning to find even more snow had fallen! The End!"]}, "Corduroy": {"emoji": "\ud83d\udc3b", "pages": ["Corduroy was a little teddy bear who lived in a toy store waiting to be bought.", "One day a girl named Lisa saw him and loved him right away.", "Her mother said no because Corduroy was missing a button on his strap.", "That night Corduroy explored the whole store looking for his missing button.", "He had a big adventure but could not find the button anywhere.", "The next morning Lisa came back with her very own saved-up money.", "She took Corduroy home and sewed on a button herself. The End!"]}, "The Three Bears": {"emoji": "\ud83d\udc3b", "pages": ["Three bears lived in the woods. Papa Bear, Mama Bear, and little Baby Bear.", "Their porridge was too hot so the bears went for a walk in the woods.", "A girl named Goldilocks came in and tried the porridge. Baby Bears was just right!", "She tried the chairs. Baby Bears was just right but it broke!", "She tried the beds. Baby Bears was just right and she fell asleep.", "The bears came home and found someone had eaten their porridge and broken a chair!", "Goldilocks woke up, screamed, and ran all the way home. The End!"]}, "Frog and Toad Together": {"emoji": "\ud83d\udc38", "pages": ["Frog and Toad were the very best of friends who loved spending time together.", "One morning Toad made a list of everything he needed to do that day.", "The list said: wake up, eat breakfast, get dressed, go see Frog, take a walk.", "A big gust of wind blew the list right out of his hands!", "Now I cannot do anything because I lost my list said Toad sadly.", "But Frog helped him remember everything that was on the list.", "They spent a wonderful day together. Go to sleep said Toad and they did. The End!"]}, "The Tortoise and the Hare": {"emoji": "\ud83d\udc22", "pages": ["Once upon a time a very fast hare loved to brag about how quickly he could run.", "A slow old tortoise heard the bragging and said I challenge you to a race!", "All the animals came to watch. Ready set go!", "The hare zoomed ahead so fast he was out of sight in seconds.", "He was so far ahead he decided to take a little nap under a tree.", "Meanwhile the tortoise walked slowly and steadily. One step then another.", "The tortoise crossed the finish line while the hare was still sleeping! The End!"]},
-  "Aesops Fables": {"emoji": "\ud83e\udd8a", "pages": ["The Fox and the Grapes: A fox saw beautiful grapes high on a vine.", "He jumped and jumped but could not reach them no matter how hard he tried.", "After many attempts the fox gave up and walked away.", "Those grapes are probably sour anyway, he said with a sniff.", "But deep down he really wanted those grapes!", "Moral: It is easy to dislike what you cannot have.", "The Tortoise and the Eagle: Be happy with who you are! The End."]},
-  "The Jungle Book": {"emoji": "\ud83d\udc2f", "pages": ["Little Mowgli was a boy who grew up in the jungle with wolves.", "His wolf family loved him and kept him safe from danger.", "Baloo the bear and Bagheera the black panther were his teachers.", "They taught him the Laws of the Jungle and how to survive.", "But Shere Khan the tiger wanted to hurt Mowgli!", "With help from his friends Mowgli used fire to frighten the tiger away.", "Mowgli was brave, kind, and loved by all the jungle animals. The End."]},
-  "The Wind in the Willows": {"emoji": "\ud83d\udc2d", "pages": ["Mole was tired of spring cleaning and popped up out of the ground.", "He met Rat who lived by the river and loved it with all his heart.", "Would you like to come on the river with me? asked Rat.", "Oh yes please! said Mole, and they set off in a little boat.", "They met Toad who was very rich, very foolish, and very lovable.", "Badger was wise and gruff but kind to all his friends.", "Together the four friends had wonderful adventures. The End."]},
-  "Alice in Wonderland": {"emoji": "\ud83d\udc07", "pages": ["Alice was sitting with her sister when a White Rabbit ran past.", "Oh dear! Oh dear! I shall be too late! said the Rabbit.", "Alice followed him down a rabbit hole and fell for a long long time.", "She landed in a strange hall with tiny doors and a tiny key.", "She drank a bottle that said DRINK ME and became very small.", "She met a caterpillar, a grinning cat, and a Mad Hatter having tea!", "Then she woke up under the tree. It was all a dream! The End."]},
-  "Pinocchio": {"emoji": "\ud83e\udd25", "pages": ["Geppetto was a kind old woodcarver who made a puppet he called Pinocchio.", "That night a fairy made Pinocchio come alive and move and talk!", "Geppetto was so happy. You can go to school tomorrow, he said.", "But Pinocchio got tricked and skipped school to join a puppet show.", "Every time Pinocchio told a lie, his nose grew longer and longer!", "He learned that lying only causes trouble for yourself and others.", "At last the fairy turned him into a real boy. The End."]},
-  "Treasure Island": {"emoji": "\ud83c\udff4", "pages": ["Young Jim Hawkins found a treasure map hidden in an old sea chest.", "The map showed where the pirate Flint had buried his gold.", "Jim joined brave Captain Smollett and sailed to find the treasure.", "But the cook Long John Silver was secretly a sneaky pirate!", "There were battles and adventures on the wild island.", "Jim was brave and clever even when things were dangerous.", "They found the gold and sailed safely home. The End."]},
-  "Little Women": {"emoji": "\ud83d\udcd6", "pages": ["The four March sisters lived with their mother while Father was at war.", "Meg was gentle, Jo was wild and loved to write, Beth was shy, Amy was artistic.", "Though they were poor they had each other and plenty of love.", "Jo wanted to be a writer more than anything in the whole world.", "She worked hard and wrote a book that made people very happy.", "The sisters grew up learning to be kind, brave, and true to themselves.", "Love and family are the greatest treasures of all. The End."]},
-  "The Dot": {"emoji": "\ud83c\udfa8", "pages": ["Vashti stared at her blank paper. I just cannot draw, she said.", "Her teacher looked at her empty page and said Just make a mark and see where it takes you.", "Vashti made one small angry dot on the paper.", "Her teacher framed the dot and hung it on the wall.", "Seeing her dot on the wall, Vashti made more dots. Big ones, small ones, colorful ones!", "At her art show a little boy said I wish I could draw like you.", "Vashti smiled and said Just make a mark and see where it takes you. The End."]},
-  "Ish": {"emoji": "\u270f\ufe0f", "pages": ["Ramon loved to draw until his brother laughed at his drawing of a vase.", "It does not look like a vase at all! said his brother.", "After that Ramon crumpled up all his drawings.", "But his sister Marisol had saved some of his crumpled pictures.", "She had them all over her walls! They are my favorites, she said.", "But they do not look like anything, said Ramon.", "They look vase-ish! said Marisol. And Ramon started drawing again. The End."]}
-,
-  "Aesops Fables": {"emoji": "\ud83e\udd8a", "pages": ["The Fox and the Grapes: A fox saw beautiful grapes high on a vine.", "He jumped and jumped but could not reach them no matter how hard he tried.", "After many attempts the fox gave up and walked away.", "Those grapes are probably sour anyway, he said with a sniff.", "But deep down he really wanted those grapes!", "Moral: It is easy to dislike what you cannot have.", "The Tortoise and the Eagle: Be happy with who you are! The End."]},
-  "The Jungle Book": {"emoji": "\ud83d\udc2f", "pages": ["Little Mowgli was a boy who grew up in the jungle with wolves.", "His wolf family loved him and kept him safe from danger.", "Baloo the bear and Bagheera the black panther were his teachers.", "They taught him the Laws of the Jungle and how to survive.", "But Shere Khan the tiger wanted to hurt Mowgli!", "With help from his friends Mowgli used fire to frighten the tiger away.", "Mowgli was brave, kind, and loved by all the jungle animals. The End."]},
-  "The Wind in the Willows": {"emoji": "\ud83d\udc2d", "pages": ["Mole was tired of spring cleaning and popped up out of the ground.", "He met Rat who lived by the river and loved it with all his heart.", "Would you like to come on the river with me? asked Rat.", "Oh yes please! said Mole, and they set off in a little boat.", "They met Toad who was very rich, very foolish, and very lovable.", "Badger was wise and gruff but kind to all his friends.", "Together the four friends had wonderful adventures. The End."]},
-  "Alice in Wonderland": {"emoji": "\ud83d\udc07", "pages": ["Alice was sitting with her sister when a White Rabbit ran past.", "Oh dear! Oh dear! I shall be too late! said the Rabbit.", "Alice followed him down a rabbit hole and fell for a long long time.", "She landed in a strange hall with tiny doors and a tiny key.", "She drank a bottle that said DRINK ME and became very small.", "She met a caterpillar, a grinning cat, and a Mad Hatter having tea!", "Then she woke up under the tree. It was all a dream! The End."]},
-  "Pinocchio": {"emoji": "\ud83e\udd25", "pages": ["Geppetto was a kind old woodcarver who made a puppet he called Pinocchio.", "That night a fairy made Pinocchio come alive and move and talk!", "Geppetto was so happy. You can go to school tomorrow, he said.", "But Pinocchio got tricked and skipped school to join a puppet show.", "Every time Pinocchio told a lie, his nose grew longer and longer!", "He learned that lying only causes trouble for yourself and others.", "At last the fairy turned him into a real boy. The End."]},
-  "Treasure Island": {"emoji": "\ud83c\udff4", "pages": ["Young Jim Hawkins found a treasure map hidden in an old sea chest.", "The map showed where the pirate Flint had buried his gold.", "Jim joined brave Captain Smollett and sailed to find the treasure.", "But the cook Long John Silver was secretly a sneaky pirate!", "There were battles and adventures on the wild island.", "Jim was brave and clever even when things were dangerous.", "They found the gold and sailed safely home. The End."]},
-  "Little Women": {"emoji": "\ud83d\udcd6", "pages": ["The four March sisters lived with their mother while Father was at war.", "Meg was gentle, Jo was wild and loved to write, Beth was shy, Amy was artistic.", "Though they were poor they had each other and plenty of love.", "Jo wanted to be a writer more than anything in the whole world.", "She worked hard and wrote a book that made people very happy.", "The sisters grew up learning to be kind, brave, and true to themselves.", "Love and family are the greatest treasures of all. The End."]},
-  "The Dot": {"emoji": "\ud83c\udfa8", "pages": ["Vashti stared at her blank paper. I just cannot draw, she said.", "Her teacher looked at her empty page and said Just make a mark and see where it takes you.", "Vashti made one small angry dot on the paper.", "Her teacher framed the dot and hung it on the wall.", "Seeing her dot on the wall, Vashti made more dots. Big ones, small ones, colorful ones!", "At her art show a little boy said I wish I could draw like you.", "Vashti smiled and said Just make a mark and see where it takes you. The End."]},
-  "Ish": {"emoji": "\u270f\ufe0f", "pages": ["Ramon loved to draw until his brother laughed at his drawing of a vase.", "It does not look like a vase at all! said his brother.", "After that Ramon crumpled up all his drawings.", "But his sister Marisol had saved some of his crumpled pictures.", "She had them all over her walls! They are my favorites, she said.", "But they do not look like anything, said Ramon.", "They look vase-ish! said Marisol. And Ramon started drawing again. The End."]}
-,
-  "Dino and the Ball": {"emoji": "\ud83e\udd95", "pages": ["Dino found a ball.", "The ball rolled down the hill.", "Dino ran fast and caught it.", "He laughed loud.", "The ball is fun! The End!"]},
-  "Dino in the Rain": {"emoji": "\ud83e\udd95", "pages": ["The sky turned dark.", "Fat raindrops fell.", "Dino grabbed his umbrella.", "The rain made puddles.", "Dino jumped in them and laughed! The End!"]},
-  "Dino Needs a Nap": {"emoji": "\ud83e\udd95", "pages": ["Dino played all day.", "He ran fast and growled loud.", "At last he felt tired.", "He lay down and closed his eyes.", "Dino took a nap. The End!"]},
-  "The Missing Egg": {"emoji": "\ud83e\udd5a", "pages": ["Dino saw a big egg.", "He looked away.", "The egg was gone!", "Dino searched the yard.", "He found the egg safe in the nest. The End!"]},
-  "The Magic Hat": {"emoji": "\ud83c\udfa9", "pages": ["A boy found a magic hat.", "He put it on his head.", "The hat made him feel brave.", "He shared it with his friend.", "They both felt brave. The End!"]},
-  "The Busy Garden": {"emoji": "\ud83c\udf38", "pages": ["Bees buzzed in the garden.", "Butterflies flew over flowers.", "A worm wiggled in the soil.", "The sun shone bright.", "The garden was alive. The End!"]},
-  "The Lost Key": {"emoji": "\ud83d\udd11", "pages": ["Sam lost his key.", "He looked in his pocket.", "He looked under the mat.", "He found it in his backpack.", "He was so happy! The End!"]},
-  "The Quiet Library": {"emoji": "\ud83d\udcda", "pages": ["The library was quiet.", "A girl read about dragons.", "A boy read about robots.", "They stayed quiet and happy.", "Reading is wonderful. The End!"]},
-  "The Hungry Duck": {"emoji": "\ud83e\udd86", "pages": ["A duck walked by the pond.", "His tummy felt empty.", "He ate a bug and a leaf.", "He drank some water.", "The duck felt full and happy. The End!"]},
-  "The Brave Bird": {"emoji": "\ud83d\udc26", "pages": ["A small bird sat on a high branch.", "The wind blew hard.", "The bird flapped its wings.", "It did not fall.", "The bird was brave. The End!"]}
-};
-  var story = BLOOMISTORIES_DATA[title];
-  if (!story) {
-    var ov2=document.createElement('div');ov2.id='gdlBookOv';
-    ov2.style.cssText='position:fixed;inset:0;z-index:9999;background:#1A0A2E;display:flex;flex-direction:column;align-items:center;justify-content:center;color:white;font-family:Nunito,sans-serif;text-align:center;padding:40px;';
-    ov2.innerHTML='<div style="font-size:3rem;margin-bottom:16px;">📚</div><div style="font-size:1.2rem;font-weight:800;margin-bottom:8px;">' + title + '</div><div style="font-size:.9rem;opacity:.7;margin-bottom:24px;">This book is coming soon to BloomiKids!</div>';
-    var cb=document.createElement('button');cb.textContent='Close';cb.style.cssText='padding:12px 24px;border-radius:40px;border:none;background:#8B6FE8;color:white;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;';
-    cb.onclick=function(){ov2.remove();};ov2.appendChild(cb);
-    document.body.appendChild(ov2);return;
-  }
-  var pageIdx=0;
-  var ov=document.createElement('div');ov.id='gdlBookOv';
-  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#1A0A2E,#2D1052);display:flex;flex-direction:column;font-family:Nunito,sans-serif;';
-  function rp(){
-    if(window.speechSynthesis)window.speechSynthesis.cancel();
-    ov.innerHTML='';
-    var h=document.createElement('div');h.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:rgba(0,0,0,.3);flex-shrink:0;';
-    h.innerHTML='<div style="color:white;font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;">'+story.emoji+' '+title+'</div><div style="color:rgba(255,255,255,.6);font-size:.8rem;">Page '+(pageIdx+1)+' of '+story.pages.length+'</div>';
-    var xb=document.createElement('button');xb.textContent='X';xb.style.cssText='background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;';
-    xb.onclick=function(){if(window.speechSynthesis)window.speechSynthesis.cancel();ov.remove();};
-    h.appendChild(xb);ov.appendChild(h);
-    var b=document.createElement('div');b.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;';
-    var em=document.createElement('div');em.style.cssText='font-size:5rem;margin-bottom:20px;';em.textContent=story.emoji;
-    var tx=document.createElement('div');tx.style.cssText='font-size:1.25rem;color:white;text-align:center;line-height:1.9;max-width:480px;font-weight:600;';tx.textContent=story.pages[pageIdx];
-    b.appendChild(em);b.appendChild(tx);ov.appendChild(b);
-    var f=document.createElement('div');f.style.cssText='padding:16px;display:flex;gap:10px;justify-content:center;flex-shrink:0;flex-wrap:wrap;';
-    var sp=false;
-    var rb=document.createElement('button');rb.textContent='🔈 Read to Me';rb.style.cssText='padding:12px 22px;border-radius:40px;border:none;background:linear-gradient(135deg,#8B6FE8,#C084FC);color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';
-    rb.onclick=function(){
-      if(!window.speechSynthesis)return;
-      if(sp){window.speechSynthesis.cancel();sp=false;rb.textContent='🔈 Read to Me';return;}
-      var u=new SpeechSynthesisUtterance(story.pages[pageIdx]);u.rate=0.78;u.pitch=1.0;u.volume=1;
-      var vs=window.speechSynthesis.getVoices();
-      var pk=vs.find(function(v){return v.name==='Samantha'||v.name==='Karen';});
-      if(!pk)pk=vs.find(function(v){return v.lang&&v.lang.startsWith('en');});
-      if(pk)u.voice=pk;
-      u.onend=function(){sp=false;rb.textContent='🔈 Read to Me';};
-      window.speechSynthesis.speak(u);sp=true;rb.textContent='⏹ Stop';
-    };
-    f.appendChild(rb);
-    if(pageIdx>0){var pb=document.createElement('button');pb.textContent='← Back';pb.style.cssText='padding:12px 18px;border-radius:40px;border:2px solid rgba(255,255,255,.3);background:transparent;color:white;font-family:Nunito,sans-serif;font-weight:700;cursor:pointer;';pb.onclick=function(){pageIdx--;rp();};f.appendChild(pb);}
-    if(pageIdx<story.pages.length-1){
-      var nb=document.createElement('button');nb.textContent='Next Page →';nb.style.cssText='padding:12px 22px;border-radius:40px;border:none;background:linear-gradient(135deg,#5ECDA0,#4ECDC4);color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';
-      nb.onclick=function(){pageIdx++;rp();};f.appendChild(nb);
-    } else {
-      var db=document.createElement('button');db.textContent='⭐ Finished! +20 Stars';db.style.cssText='padding:12px 22px;border-radius:40px;border:none;background:linear-gradient(135deg,#FFD700,#FFA500);color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';
-      db.onclick=function(){if(window.speechSynthesis)window.speechSynthesis.cancel();ov.remove();showBloomyVideo(); toast('+20 Stars!');
-        if(typeof sb!=='undefined'&&typeof activeChild!=='undefined'){sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:20}).catch(function(){});sessionData.stars+=20;var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;}
-      };f.appendChild(db);
-    }
-    ov.appendChild(f);
-    setTimeout(function(){if(typeof activeGrade!=='undefined'&&(activeGrade==='PreK'||activeGrade==='K'||activeGrade==='1'))rb.click();},800);
-  }
-  document.body.appendChild(ov);rp();
-}
-function buildGDLLibrary(grade) {
-  var BOOKS={
-    PreK:[
-      {t:'The Tale of Peter Rabbit',ia:'thetaleofpeterrabb00pott_2',d:'Beatrix Potters mischievous little rabbit'},
-      {t:'Little Red Riding Hood',ia:'littleredridingh00perrrich',d:'A beloved fairy tale classic'},
-      {t:'The Three Bears',ia:'storyofthreebear00south',d:'Goldilocks visits the three bears'},
-      {t:'Aesops Fables',ia:'aesopsfables00aeso_5',d:'Classic animal stories with lessons'},
-      {t:'Jack and the Beanstalk',ia:'jackandbeanstalk00unkn_4',d:'Jack climbs a magical beanstalk'},
-      {t:'Pinocchio',ia:'adventuresofpinoc00coll',d:'A wooden puppet who wants to be real'},
+  var STORIES = {
+    PreK: [
+      { title:"Dino Makes a Friend", cover:"stories/story_dino_friend.png",
+        skill:"Beginning Sounds", badge:"🔤",
+        pages:[
+          { img:"stories/story_dino_friend.png", text:"Dino sat in a big blue chair." },
+          { img:"stories/story_dino_friend.png", text:"A cat came to sit with Dino." },
+          { img:"stories/story_dino_friend.png", text:"The cat said, \"Can I sit here?\"" },
+          { img:"stories/story_dino_friend.png", text:"Dino said, \"Yes! Sit with me!\"" },
+          { img:"stories/story_dino_friend.png", text:"Now Dino has a new friend! 🦕" },
+        ],
+        quiz:[
+          { q:"Where was Dino sitting?", opts:["On the floor","In a blue chair","On a rug","On a mat"], a:1 },
+          { q:"Who came to sit with Dino?", opts:["A dog","A bird","A cat","A mouse"], a:2 },
+          { q:"What did Dino say to the cat?", opts:["Go away!","Yes! Sit with me!","I am busy.","No thank you."], a:1 },
+        ]
+      },
+      { title:"Dino's Quiet Day", cover:"stories/story_dino_quiet.png",
+        skill:"CVC Words", badge:"📖",
+        pages:[
+          { img:"stories/story_dino_quiet.png", text:"Dino sat on a mat." },
+          { img:"stories/story_dino_quiet.png", text:"The cat had a red hat." },
+          { img:"stories/story_dino_quiet.png", text:"Dino sat. The cat sat." },
+          { img:"stories/story_dino_quiet.png", text:"It was a good, quiet day." },
+        ],
+        quiz:[
+          { q:"What did Dino sit on?", opts:["A bed","A mat","A box","A rug"], a:1 },
+          { q:"What did the cat have?", opts:["A bat","A hat","A cat","A rat"], a:1 },
+          { q:"What kind of day was it?", opts:["A noisy day","A cold day","A quiet day","A rainy day"], a:2 },
+        ]
+      },
+      { title:"Dino Feels Tired", cover:"stories/story_dino_tired.png",
+        skill:"Rhyming", badge:"🎵",
+        pages:[
+          { img:"stories/story_dino_tired.png", text:"Dino played all day long." },
+          { img:"stories/story_dino_tired.png", text:"Dino ran and jumped and sang a song." },
+          { img:"stories/story_dino_tired.png", text:"Now Dino lies down on the mat." },
+          { img:"stories/story_dino_tired.png", text:"Dino is so tired — just like that! 😴" },
+        ],
+        quiz:[
+          { q:"What did Dino do all day?", opts:["Read books","Played and ran","Ate lunch","Slept all day"], a:1 },
+          { q:"Where did Dino lie down?", opts:["On a bed","In a chair","On a mat","On the grass"], a:2 },
+          { q:"Which word rhymes with SONG?", opts:["Sing","Long","Mat","Run"], a:1 },
+        ]
+      },
     ],
-    K:[
-      {t:'Alice in Wonderland',ia:'alicesadventuresiu00carr',d:'Alice falls into a wonderfully strange world'},
-      {t:'The Jungle Book',ia:'junglebook00kipling',d:'Mowgli is raised by wolves in the jungle'},
-      {t:'The Wind in the Willows',ia:'windinthewillows00grah',d:'Mole Rat Badger and Toad by the river'},
-      {t:'Cinderella',ia:'cinderellaorliitl00perrrich',d:'The classic fairy tale of Cinderella'},
-      {t:'Sleeping Beauty',ia:'sleepingbeautyandother',d:'A princess and a magical curse'},
-      {t:'The Wonderful Wizard of Oz',ia:'wonderfulwizardofo00baum',d:'Dorothy travels to the land of Oz'},
+    K: [
+      { title:"Dino Helps Clean Up", cover:"stories/story_dino_clean.png",
+        skill:"Sight Words", badge:"👀",
+        pages:[
+          { img:"stories/story_dino_clean.png", text:"Dino saw a big mess on the floor." },
+          { img:"stories/story_dino_clean.png", text:"A little mouse was looking at the mop." },
+          { img:"stories/story_dino_clean.png", text:"Dino said, \"I will help!\"" },
+          { img:"stories/story_dino_clean.png", text:"Dino used the mop to clean the floor." },
+          { img:"stories/story_dino_clean.png", text:"The mouse said, \"Thank you, Dino!\"" },
+        ],
+        quiz:[
+          { q:"What did Dino see on the floor?", opts:["A toy","A big mess","A book","A friend"], a:1 },
+          { q:"What did Dino use to clean?", opts:["A broom","His hands","A mop","A cloth"], a:2 },
+          { q:"Who thanked Dino?", opts:["A cat","A bird","The mouse","His mom"], a:2 },
+        ]
+      },
+      { title:"Dino's Sunny Day", cover:"stories/story_dino_sunny.png",
+        skill:"CVC Words", badge:"☀️",
+        pages:[
+          { img:"stories/story_dino_sunny.png", text:"Dino woke up and saw the sun." },
+          { img:"stories/story_dino_sunny.png", text:"He put on his cap and went outside." },
+          { img:"stories/story_dino_sunny.png", text:"Dino picked up his big red ball." },
+          { img:"stories/story_dino_sunny.png", text:"He kicked it, tossed it, and had fun!" },
+          { img:"stories/story_dino_sunny.png", text:"It was the best sunny day ever! 🌞" },
+        ],
+        quiz:[
+          { q:"What did Dino put on his head?", opts:["A hat","A cap","A helmet","Nothing"], a:1 },
+          { q:"What color was Dino's ball?", opts:["Blue","Green","Red","Yellow"], a:2 },
+          { q:"How did Dino feel about the day?", opts:["Sad","Scared","Bored","Happy"], a:3 },
+        ]
+      },
+      { title:"The Busy Garden", cover:"stories/story_garden.png",
+        skill:"Sight Words", badge:"🌸",
+        pages:[
+          { img:"stories/story_garden.png", text:"The garden was full of flowers." },
+          { img:"stories/story_garden.png", text:"A bee flew from flower to flower." },
+          { img:"stories/story_garden.png", text:"A butterfly landed on a rose." },
+          { img:"stories/story_garden.png", text:"A worm peeked up from the dirt." },
+          { img:"stories/story_garden.png", text:"Everyone was busy in the garden! 🐝" },
+        ],
+        quiz:[
+          { q:"What was in the garden?", opts:["Trees only","Flowers","Rocks","Snow"], a:1 },
+          { q:"What did the butterfly land on?", opts:["A daisy","A tulip","A rose","A leaf"], a:2 },
+          { q:"Where did the worm come from?", opts:["The sky","A leaf","The dirt","A rock"], a:2 },
+        ]
+      },
     ],
-    1:[
-      {t:'Treasure Island',ia:'treasureisland00stevgoog',d:'Pirates treasure and high adventure'},
-      {t:'Black Beauty',ia:'blackbeauty00sewarich',d:'A horse tells his own life story'},
-      {t:'Little Women',ia:'littlewomen00louirich',d:'The March sisters growing up together'},
-      {t:'The Secret Garden',ia:'secretgarden00burn',d:'Mary discovers a hidden magical garden'},
-      {t:'Adventures of Tom Sawyer',ia:'adventuresoftomsa00mark',d:'Tom and Huck have wild adventures'},
-      {t:'A Little Princess',ia:'littleprincess00burn_0',d:'Sara Crewe faces hardship with grace'},
+    1: [
+      { title:"Dino's Big Discovery", cover:"stories/story_dino_discovery.png",
+        skill:"Silent E", badge:"🥚",
+        pages:[
+          { img:"stories/story_dino_discovery.png", text:"One morning Dino went for a walk." },
+          { img:"stories/story_dino_discovery.png", text:"He wore his yellow boots in the wet grass." },
+          { img:"stories/story_dino_discovery.png", text:"Under a tree, Dino found something white." },
+          { img:"stories/story_dino_discovery.png", text:"It was a big egg sitting in a nest!" },
+          { img:"stories/story_dino_discovery.png", text:"Dino sat quietly beside it. \"I will keep it safe,\" he said. 🥚" },
+        ],
+        quiz:[
+          { q:"What was Dino wearing on his feet?", opts:["Sneakers","Nothing","Yellow boots","Red shoes"], a:2 },
+          { q:"Where did Dino find the egg?", opts:["In the river","In a nest under a tree","On the road","In his house"], a:1 },
+          { q:"What did Dino decide to do with the egg?", opts:["Throw it","Keep it safe","Eat it","Bury it"], a:1 },
+        ]
+      },
+      { title:"Dino in the Rain", cover:"stories/story_dino_rain.png",
+        skill:"Blends", badge:"🌧️",
+        pages:[
+          { img:"stories/story_dino_rain.png", text:"The clouds were big and dark." },
+          { img:"stories/story_dino_rain.png", text:"Drops of rain began to fall." },
+          { img:"stories/story_dino_rain.png", text:"Dino put on his yellow raincoat." },
+          { img:"stories/story_dino_rain.png", text:"He opened his umbrella with a snap!" },
+          { img:"stories/story_dino_rain.png", text:"Dino splashed in every puddle he could find. 💦" },
+        ],
+        quiz:[
+          { q:"What was the weather like?", opts:["Sunny and hot","Dark and rainy","Windy and cold","Snowy"], a:1 },
+          { q:"What did Dino put on?", opts:["A swimsuit","His raincoat","A sweater","A jacket"], a:1 },
+          { q:"What did Dino do in the puddles?", opts:["Swam","Splashed","Skipped","Sat down"], a:1 },
+        ]
+      },
+      { title:"The Key to the Door", cover:"stories/story_key_door.png",
+        skill:"Nouns & Verbs", badge:"🔑",
+        pages:[
+          { img:"stories/story_key_door.png", text:"Jamal had a big backpack and a small silver key." },
+          { img:"stories/story_key_door.png", text:"He stood at the blue door in the sunshine." },
+          { img:"stories/story_key_door.png", text:"He put the key in the lock — click!" },
+          { img:"stories/story_key_door.png", text:"The door opened wide. Jamal smiled." },
+          { img:"stories/story_key_door.png", text:"\"I did it!\" he said proudly. 🔑" },
+        ],
+        quiz:[
+          { q:"What color was the key?", opts:["Gold","Silver","Blue","Red"], a:1 },
+          { q:"What sound did the lock make?", opts:["Bang","Pop","Click","Boom"], a:2 },
+          { q:"How did Jamal feel at the end?", opts:["Sad","Angry","Scared","Proud"], a:3 },
+        ]
+      },
     ],
-    2:[
-      {t:'Robinson Crusoe',ia:'robinsoncrusoe00defogoog',d:'Stranded alone on an island for years'},
-      {t:'Call of the Wild',ia:'callofwild00londgoog',d:'Buck the dog in the Alaskan wilderness'},
-      {t:'Pollyanna',ia:'pollyanna00eleanor',d:'Pollyanna finds something to be glad about'},
-      {t:'Around the World in 80 Days',ia:'aroundworldineigh00verne',d:'A race around the globe in 80 days'},
-      {t:'Kidnapped',ia:'kidnapped00stev_0',d:'David Balfour has Scottish adventures'},
-      {t:'Swiss Family Robinson',ia:'swissfamilyrobins00wyss',d:'A family stranded on a tropical island'},
+    2: [
+      { title:"Sharing is Caring", cover:"stories/story_sharing.png",
+        skill:"Story Order", badge:"🤝",
+        pages:[
+          { img:"stories/story_sharing.png", text:"Mia and Jay both wanted the special star key." },
+          { img:"stories/story_sharing.png", text:"Jay held it out to Mia with a smile." },
+          { img:"stories/story_sharing.png", text:"\"You can use it first,\" Jay said." },
+          { img:"stories/story_sharing.png", text:"Mia smiled back. \"Then we share!\" she said." },
+          { img:"stories/story_sharing.png", text:"They decided to take turns. That was the fair thing to do. 🌟" },
+        ],
+        quiz:[
+          { q:"What did both Mia and Jay want?", opts:["A book","A star key","A magic hat","A toy car"], a:1 },
+          { q:"What did Jay say to Mia?", opts:["Go away!","You can use it first","It is mine!","Let me keep it."], a:1 },
+          { q:"What is the lesson of this story?", opts:["Winning is best","Sharing is caring","Keys are special","Jay is nice"], a:1 },
+        ]
+      },
+      { title:"Bug Day at School", cover:"stories/story_bug_day.png",
+        skill:"Main Idea", badge:"🐛",
+        pages:[
+          { img:"stories/story_bug_day.png", text:"It was Bug Day at Sunny Hill School." },
+          { img:"stories/story_bug_day.png", text:"Every student got crayons and paper." },
+          { img:"stories/story_bug_day.png", text:"They drew ladybugs, butterflies, and beetles." },
+          { img:"stories/story_bug_day.png", text:"Their drawings went up on the wall for all to see." },
+          { img:"stories/story_bug_day.png", text:"Bug Day was the best day of the week! 🐞" },
+        ],
+        quiz:[
+          { q:"What was special about this day at school?", opts:["Field trip day","Bug Day","Pajama Day","Read-aloud day"], a:1 },
+          { q:"What did the students use to draw?", opts:["Paint","Markers","Crayons","Pencils only"], a:2 },
+          { q:"What is the main idea of this story?", opts:["Bugs are scary","Art is boring","Students had fun on Bug Day","School is too long"], a:2 },
+        ]
+      },
     ],
-    3:[
-      {t:'Twenty Thousand Leagues',ia:'twentythousandlea00vern',d:'Captain Nemos undersea adventures'},
-      {t:'The Three Musketeers',ia:'threemusketeers00dumaurich',d:'All for one and one for all'},
-      {t:'Journey to the Center of the Earth',ia:'journeytocenterof00vern_0',d:'An expedition deep underground'},
-      {t:'Don Quixote',ia:'donquixote00cerv',d:'The adventures of a knight and his squire'},
-      {t:'Gullivers Travels',ia:'gulliverstravels00swif',d:'Gulliver travels to strange lands'},
-      {t:'The Count of Monte Cristo',ia:'countofmontecristo00duma',d:'Edmond Dantes seeks justice'},
-    ],
-    4:[
-      {t:'Frankenstein',ia:'frankenstein00marygoog',d:'The classic tale of creation gone wrong'},
-      {t:'The Time Machine',ia:'timemachine00well',d:'A traveler journeys to the far future'},
-      {t:'Jane Eyre',ia:'janeeyre00charlgoog',d:'Jane Eyre finds love and independence'},
-      {t:'The Invisible Man',ia:'invisibleman00well',d:'A scientist makes himself invisible'},
-      {t:'Dracula',ia:'draculabram00stok',d:'The classic vampire story'},
-      {t:'The Picture of Dorian Gray',ia:'pictureofdoriangr00wild',d:'A portrait that never ages'},
-    ],
-    5:[
-      {t:'Great Expectations',ia:'greatexpectation00dickgoog',d:'Pip rises from humble origins'},
-      {t:'David Copperfield',ia:'davidcopperfield00dickgoog',d:'The life of David Copperfield'},
-      {t:'Les Miserables',ia:'lesmisrables00hugogoog',d:'Justice mercy and redemption in France'},
-      {t:'Moby Dick',ia:'mobydick00melv',d:'The hunt for the great white whale'},
-      {t:'The Hunchback of Notre Dame',ia:'hunchbackofnotred00hugo',d:'Quasimodo and the bells of Paris'},
-      {t:'Around the World in 80 Days',ia:'aroundworldin80da00vern',d:'Phileas Fogg races around the globe'},
-    ]
   };
-  var books=BOOKS[grade]||BOOKS[3];
-  var wrap=document.createElement('div');wrap.style.cssText='margin-top:24px;';
-  var titleRow=document.createElement('div');titleRow.style.cssText='display:flex;align-items:center;gap:8px;margin-bottom:4px;';
-  var mainTitle=document.createElement('div');mainTitle.className='section-title';mainTitle.style.cssText='margin:0;';mainTitle.textContent='Free Classic Books';
-  var badge=document.createElement('span');badge.style.cssText='background:linear-gradient(135deg,#4ECDC4,#44CF6C);color:white;font-size:.65rem;font-weight:800;padding:3px 8px;border-radius:20px;';badge.textContent='READ IN APP';
-  titleRow.appendChild(mainTitle);titleRow.appendChild(badge);wrap.appendChild(titleRow);
-  var sub=document.createElement('div');sub.style.cssText='font-size:.78rem;color:var(--muted);margin-bottom:14px;';sub.textContent='Classic books from the Internet Archive - completely free and readable inside the app!';wrap.appendChild(sub);
-  var grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:10px;';
-  var emojis=['📘','📗','📙','📕','📓','📔'];
-  books.forEach(function(book,i){
-    var card=document.createElement('div');card.style.cssText='background:white;border-radius:16px;padding:14px 12px;box-shadow:0 2px 12px rgba(45,45,78,.08);cursor:pointer;text-align:center;border:2px solid transparent;';
-    card.innerHTML='<div style="font-size:1.8rem;margin-bottom:6px;">'+emojis[i%6]+'</div><div style="font-weight:800;font-size:.82rem;color:#2D2D4E;margin-bottom:4px;line-height:1.3;">'+book.t+'</div><div style="font-size:.7rem;color:#888;margin-bottom:8px;line-height:1.3;">'+book.d+'</div><div style="background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:white;font-size:.68rem;font-weight:800;border-radius:20px;padding:4px 10px;display:inline-block;">Read Now</div>';
-    (function(b){card.onclick=function(){openGDLBook(b.t,b.ia);};})(book);
-    grid.appendChild(card);
-  });
-  wrap.appendChild(grid);return wrap;
-}
 
-// ══════════════════════════════════════════════════════
-//  ONLINE LIBRARY LINKS
-// ══════════════════════════════════════════════════════
-function buildOnlineLibrary(){
-  var isYoung=activeGrade==='PreK'||activeGrade==='K'||activeGrade==='1'||activeGrade==='2';
-  var libs=isYoung?[
-    {name:'Storyline Online',desc:'Celebrities read books aloud!',icon:'🎭',color:'#9C27B0',url:'https://storylineonline.net/',note:'Free read-alouds'},
-    {name:'Epic! Books',desc:'1000s of kids books and videos',icon:'📗',color:'#4CAF50',url:'https://www.getepic.com/',note:'Free for students'},
-    {name:'Unite for Literacy',desc:'Picture books with audio',icon:'🔊',color:'#FF9800',url:'https://www.uniteforliteracy.com/',note:'Free always'},
-    {name:'Libby App',desc:'Free with library card',icon:'📘',color:'#2196F3',url:'https://libbyapp.com/',note:'Needs library card'},
-    {name:'Open Library',desc:'Borrow books online free',icon:'🌐',color:'#FF5722',url:'https://openlibrary.org/',note:'Free and open'},
-    {name:'International Library',desc:'Books in many languages',icon:'🌍',color:'#00BCD4',url:'http://en.childrenslibrary.org/',note:'Free always'}
-  ]:[
-    {name:'Libby App',desc:'Thousands of free ebooks and audiobooks',icon:'📘',color:'#2196F3',url:'https://libbyapp.com/',note:'Free with card'},
-    {name:'Open Library',desc:'Borrow millions of books online',icon:'🌐',color:'#FF5722',url:'https://openlibrary.org/',note:'Free and open'},
-    {name:'Storyline Online',desc:'Award-winning read-alouds',icon:'🎭',color:'#9C27B0',url:'https://storylineonline.net/',note:'Free videos'},
-    {name:'Epic! Books',desc:'Books learning videos quizzes',icon:'📗',color:'#4CAF50',url:'https://www.getepic.com/',note:'Free for students'},
-    {name:'Project Gutenberg',desc:'Free classic literature',icon:'📜',color:'#795548',url:'https://www.gutenberg.org/',note:'Free classics'},
-    {name:'CommonLit',desc:'Reading passages with questions',icon:'🎓',color:'#3F51B5',url:'https://www.commonlit.org/',note:'Free for students'}
-  ];
-  var wrap=document.createElement('div');wrap.style.cssText='margin-top:24px;';
-  var title=document.createElement('div');title.className='section-title';title.textContent='Free Online Libraries';wrap.appendChild(title);
-  var parentNote=document.createElement('div');parentNote.style.cssText='font-size:.78rem;color:var(--muted);margin-bottom:12px;padding:8px 12px;background:#F8F6FF;border-radius:10px;border-left:3px solid var(--lavender);line-height:1.5;';
-  parentNote.innerHTML='<strong>Parents:</strong> Tap any library below to open it. For <strong>Libby</strong> you will need your local library card. <strong>Epic!</strong> is free with a teacher or student account.';
-  wrap.appendChild(parentNote);
-  var grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:12px;';
-  libs.forEach(function(lib){
-    var card=document.createElement('div');
-    card.style.cssText='background:white;border-radius:16px;padding:14px 12px;box-shadow:0 2px 12px rgba(45,45,78,.08);cursor:pointer;text-align:center;';
-    card.innerHTML='<div style="font-size:2.2rem;margin-bottom:8px;">'+lib.icon+'</div><div style="font-weight:800;font-size:.9rem;color:#2D2D4E;margin-bottom:4px;line-height:1.2;">'+lib.name+'</div><div style="font-size:.75rem;color:#666;margin-bottom:8px;line-height:1.3;">'+lib.desc+'</div><div style="background:'+lib.color+';color:white;font-size:.7rem;font-weight:800;border-radius:20px;padding:4px 10px;display:inline-block;">'+lib.note+'</div>';
-    (function(u){card.onclick=function(){window.open(u,'_blank');};})(lib.url);
-    grid.appendChild(card);
-  });
-  wrap.appendChild(grid);return wrap;
-}
+  // Map grades
+  var gradeMap = {PreK:'PreK', K:'K', 0:'PreK', 1:'1', 2:'2'};
+  var storyList = STORIES[grade] || STORIES[gradeMap[grade]] || STORIES['K'];
 
-// ══════════════════════════════════════════════════════
-//  PARENT DASHBOARD + STREAK NOTIFICATIONS
-// ══════════════════════════════════════════════════════
-
-// ══════════════════════════════════════════════════════
-//  COMMON CORE STANDARDS ALIGNMENT
-//  Full map: subject × grade → standards
-// ══════════════════════════════════════════════════════
-
-// Map subject name → standard lookup key
-function getStandard(grade, subject) {
-  var gradeMap = COMMON_CORE[grade] || COMMON_CORE['K'];
-  var subj = (subject||'').trim();
-  // Direct match
-  if (gradeMap[subj]) return gradeMap[subj];
-  // Fuzzy match
-  var keys = Object.keys(gradeMap);
-  for (var i=0; i<keys.length; i++) {
-    if (subj.toLowerCase().includes(keys[i].toLowerCase()) || keys[i].toLowerCase().includes(subj.toLowerCase())) {
-      return gradeMap[keys[i]];
-    }
-  }
-  return null;
-}
-
-// Get all standards practiced by a child based on quiz_results subjects
-function getStandardsSummary(grade, quizResults) {
-  var seen = {};
-  quizResults.forEach(function(q) {
-    var std = getStandard(grade, q.subject);
-    if (std) {
-      std.codes.forEach(function(c) {
-        if (!seen[c]) seen[c] = { code:c, desc:std.desc, domain:std.domain, correct:0, total:0 };
-        seen[c].total++;
-        if (q.correct) seen[c].correct++;
-      });
-    }
-  });
-  return Object.values(seen).sort(function(a,b){ return b.total-a.total; });
-}
-
-
-async function enableStreakReminder(childId,childName){
-  if(!('Notification' in window)){toast('Notifications not supported');return;}
-  if(Notification.permission==='denied'){toast('Notifications blocked - enable in browser settings');return;}
-  var perm=await Notification.requestPermission();
-  if(perm!=='granted'){toast('Permission denied');return;}
-  localStorage.setItem('notif_'+childId,'true');localStorage.setItem('notif_name_'+childId,childName);
-  toast('Reminders enabled for '+childName+'!');scheduleStreakChecks();
-}
-
-function scheduleStreakChecks(){
-  if(window._streakCheck)clearInterval(window._streakCheck);
-  window._streakCheck=setInterval(function(){var h=new Date().getHours();if(h===15||h===17||h===19)sendStreakReminders();},3600000);
-}
-
-async function sendStreakReminders(){
-  if(Notification.permission!=='granted')return;
-  var keys=Object.keys(localStorage).filter(function(k){return k.startsWith('notif_')&&!k.startsWith('notif_name_')&&localStorage.getItem(k)==='true';});
-  for(var i=0;i<keys.length;i++){
-    var cid=keys[i].replace('notif_','');var name=localStorage.getItem('notif_name_'+cid)||'your child';
-    var today=new Date().toISOString().split('T')[0];
-    try{var r=await sb.from('daily_activity').select('id').eq('child_id',cid).eq('activity_date',today).single();
-      if(!r.data)new Notification('BloomiKids - Keep the streak going!',{body:name+' has not learned today yet!',icon:'/logo.png',tag:'streak-'+cid});}
-    catch(e){new Notification('Time to learn!',{body:name+' is waiting!',icon:'/logo.png',tag:'streak-'+cid});}
-  }
-}
-
-// ══════════════════════════════════════════════════════
-//  PWA INSTALL (iOS + Android)
-// ══════════════════════════════════════════════════════
-function showIOSInstallGuide(){
-  var ov=document.createElement('div');
-  ov.style.cssText='position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.7);display:flex;align-items:flex-end;padding:20px;';
-  var card=document.createElement('div');
-  card.style.cssText='background:white;border-radius:24px;padding:24px;width:100%;max-width:420px;margin:auto;max-height:90vh;overflow-y:auto;';
-  var isOldiPad=/ipad/i.test(navigator.userAgent)&&/os [1-9]_/i.test(navigator.userAgent);
-  var step2=isOldiPad
-    ?'Tap the Share icon at the <strong>top</strong> of Safari (box with arrow pointing up)'
-    :'Tap the Share button at the <strong>bottom</strong> of Safari (box with arrow pointing up)';
-  card.innerHTML='<div style="text-align:center;margin-bottom:16px;">'
-    +'<div style="font-size:2.8rem;">📲</div>'
-    +'<div style="font-family:Baloo 2,cursive;font-size:1.2rem;font-weight:800;color:#2D2D4E;margin-top:8px;">Add BloomiKids to Home Screen</div>'
-    +'<div style="font-size:.75rem;color:#888;margin-top:4px;">Works on iPhone, iPad (any age), and Android!</div>'
-    +'</div>'
-    +'<div style="font-size:.86rem;color:#444;line-height:1.7;">'
-    +'<div style="margin-bottom:8px;padding:10px 12px;background:#F8F6FF;border-radius:12px;">1️⃣ Make sure you are using <strong>Safari</strong> browser (not Chrome or Firefox)</div>'
-    +'<div style="margin-bottom:8px;padding:10px 12px;background:#F8F6FF;border-radius:12px;">2️⃣ '+step2+'</div>'
-    +'<div style="margin-bottom:8px;padding:10px 12px;background:#F8F6FF;border-radius:12px;">3️⃣ Scroll through the menu and tap <strong>Add to Home Screen</strong></div>'
-    +'<div style="margin-bottom:10px;padding:10px 12px;background:#F8F6FF;border-radius:12px;">4️⃣ Tap <strong>Add</strong> in the corner. BloomiKids will appear like an app!</div>'
-    +'<div style="padding:10px 12px;background:#E8FBF3;border-radius:10px;font-size:.78rem;color:#2A9970;border-left:3px solid var(--mint);">'
-    +'<strong>Android/Chrome?</strong> Tap the ⋮ menu and tap <strong>Add to Home screen</strong> or <strong>Install app</strong>'
-    +'</div>'
-    +'</div>';
-  var closeB=document.createElement('button');
-  closeB.textContent='Got it!';
-  closeB.style.cssText='width:100%;margin-top:16px;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--coral),var(--sunshine));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';
-  closeB.onclick=function(){ov.remove();};
-  card.appendChild(closeB);
-  ov.appendChild(card);
-  ov.onclick=function(e){if(e.target===ov)ov.remove();};
+  var ov = document.createElement('div');
+  ov.id = 'dinoOv';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#F0FFF4;display:flex;flex-direction:column;';
   document.body.appendChild(ov);
-}
 
-function showInstallButton(){
-  if(document.getElementById('installAppBtn'))return;
-  var btn=document.createElement('button');btn.id='installAppBtn';btn.innerHTML='📲 Add to Home Screen';
-  btn.style.cssText='position:fixed;bottom:76px;left:50%;transform:translateX(-50%);z-index:9000;background:linear-gradient(135deg,var(--coral),var(--sunshine));color:white;border:none;border-radius:40px;padding:12px 24px;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;box-shadow:0 4px 20px rgba(255,107,107,.5);white-space:nowrap;';
-  btn.onclick=function(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(function(r){deferredPrompt=null;btn.remove();if(r.outcome==='accepted')toast('BloomiKids added to your home screen!');});}else{showIOSInstallGuide();}};
-  document.body.appendChild(btn);setTimeout(function(){if(btn.parentNode)btn.remove();},20000);
-}
+  function showLibrary() {
+    ov.innerHTML = '';
+    var hdr = document.createElement('div');
+    hdr.style.cssText = 'background:linear-gradient(135deg,#1a472a,#2d8a4e);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;';
+    hdr.innerHTML = '<span style="font-size:1.1rem;font-weight:800;color:white;font-family:Baloo 2,cursive;">🦕 Dino Stories</span>'
+      +'<button data-closeov="dinoOv" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:34px;height:34px;cursor:pointer;font-weight:800;font-size:1rem;">✕</button>';
+    ov.appendChild(hdr);
 
-// Back navigation handler
-window.addEventListener('visibilitychange', async function() {
-  if (document.visibilityState !== 'visible') return;
-  try {
-    // Re-validate Supabase session when app comes back into focus
-    var { data: sessionData2 } = await sb.auth.getSession();
-    if (!sessionData2 || !sessionData2.session) {
-      // Session expired - go back to auth
-      currentUser = null; activeChild = null;
-      showScreen('auth');
-      return;
-    }
-    // Session still valid - restore app state
-    if (currentUser && activeChild) {
-      var mainApp = document.getElementById('mainApp');
-      var appVisible = mainApp && mainApp.style.display !== 'none';
-      if (!appVisible) showScreen('app');
-    } else if (currentUser && !activeChild) {
-      showScreen('children');
-    }
-  } catch(e) {
-    // Network error - show app as-is, don't logout
-    if (currentUser && activeChild) {
-      var mainApp2 = document.getElementById('mainApp');
-      if (mainApp2 && mainApp2.style.display === 'none') showScreen('app');
-    }
+    var body = document.createElement('div');
+    body.style.cssText = 'flex:1;overflow-y:auto;padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:14px;align-content:start;';
+
+    storyList.forEach(function(story, idx) {
+      var card = document.createElement('div');
+      card.style.cssText = 'background:white;border-radius:18px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.12);cursor:pointer;transition:transform .15s;';
+      card.innerHTML = '<img src="'+story.cover+'" alt="'+story.title+'" style="width:100%;height:120px;object-fit:cover;display:block;">'
+        +'<div style="padding:10px;">'
+        +'<div style="font-family:Baloo 2,cursive;font-size:.85rem;font-weight:800;color:#1a472a;line-height:1.2;margin-bottom:4px;">'+story.title+'</div>'
+        +'<div style="font-size:.72rem;color:#666;">'+story.badge+' '+story.skill+'</div>'
+        +'</div>';
+      card.onclick = function() { readStory(story); };
+      card.onmouseover = function(){ card.style.transform='scale(1.03)'; };
+      card.onmouseout = function(){ card.style.transform='scale(1)'; };
+      body.appendChild(card);
+    });
+    ov.appendChild(body);
   }
-});
 
+  function readStory(story) {
+    var pageIdx = 0;
+    var totalPages = story.pages.length;
 
-window.addEventListener('beforeinstallprompt', function(e) {
-  e.preventDefault();
-  deferredPrompt = e;
-  setTimeout(function(){ if(deferredPrompt) showInstallButton(); }, 5000);
-});
-window.addEventListener('appinstalled', function() {
-  deferredPrompt = null;
-  var b = document.getElementById('installAppBtn');
-  if (b) b.remove();
-  toast('BloomiKids added to home screen!');
-});
-// iOS auto-show install guide after 3s if not installed
-(function(){
-  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  var isStandalone = window.navigator.standalone === true;
-  if (isIOS && !isStandalone) {
-    setTimeout(function(){
-      var shown = sessionStorage.getItem('iosGuideShown');
-      if (!shown) { sessionStorage.setItem('iosGuideShown','1'); showInstallButton(); }
-    }, 3000);
+    function showPage() {
+      ov.innerHTML = '';
+      var pg = story.pages[pageIdx];
+
+      // Header with progress
+      var hdr = document.createElement('div');
+      hdr.style.cssText = 'background:linear-gradient(135deg,#1a472a,#2d8a4e);padding:12px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;';
+      // Stars progress like Duolingo
+      var stars = '';
+      for(var i=0;i<totalPages;i++) stars += '<span style="font-size:1.1rem;opacity:'+(i<pageIdx?1:.35)+';transition:opacity .3s;">⭐</span>';
+      hdr.innerHTML = '<button onclick="showLibrary()" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:.9rem;flex-shrink:0;">✕</button>'
+        +'<div style="display:flex;gap:4px;flex:1;justify-content:center;">'+stars+'</div>'
+        +'<div style="font-size:.8rem;color:rgba(255,255,255,.8);flex-shrink:0;">'+(pageIdx+1)+'/'+totalPages+'</div>';
+      ov.appendChild(hdr);
+
+      // Story image - large
+      var imgWrap = document.createElement('div');
+      imgWrap.style.cssText = 'flex-shrink:0;padding:12px 16px 0;';
+      var img = document.createElement('img');
+      img.src = pg.img;
+      img.style.cssText = 'width:100%;height:200px;object-fit:cover;border-radius:16px;display:block;';
+      imgWrap.appendChild(img);
+      ov.appendChild(imgWrap);
+
+      // Text with audio button
+      var textArea = document.createElement('div');
+      textArea.style.cssText = 'flex:1;padding:16px;display:flex;align-items:flex-start;gap:12px;';
+      var audioBtn = document.createElement('button');
+      audioBtn.style.cssText = 'width:44px;height:44px;border-radius:50%;border:none;background:#E8F5E9;color:#2d8a4e;font-size:1.2rem;cursor:pointer;flex-shrink:0;';
+      audioBtn.textContent = '🔊';
+      audioBtn.onclick = function() {
+        if('speechSynthesis' in window) {
+          var u = new SpeechSynthesisUtterance(pg.text);
+          u.rate = 0.85; u.pitch = 1.1;
+          window.speechSynthesis.cancel();
+          window.speechSynthesis.speak(u);
+        }
+      };
+      var textEl = document.createElement('div');
+      textEl.style.cssText = 'font-family:Baloo 2,cursive;font-size:1.3rem;font-weight:700;color:#1a2a1a;line-height:1.6;';
+      textEl.textContent = pg.text;
+      textArea.appendChild(audioBtn);
+      textArea.appendChild(textEl);
+      ov.appendChild(textArea);
+
+      // Navigation buttons
+      var nav = document.createElement('div');
+      nav.style.cssText = 'padding:12px 16px 24px;display:flex;gap:10px;flex-shrink:0;';
+      var backBtn = document.createElement('button');
+      backBtn.textContent = '←';
+      backBtn.style.cssText = 'padding:14px 20px;border-radius:40px;border:2px solid #ddd;background:white;font-size:1.1rem;cursor:pointer;'+(pageIdx===0?'opacity:.4;pointer-events:none;':'');
+      backBtn.onclick = function(){ if(pageIdx>0){pageIdx--;showPage();} };
+
+      var fwdBtn = document.createElement('button');
+      fwdBtn.textContent = pageIdx===totalPages-1?'Quiz! 📝':'→';
+      fwdBtn.style.cssText = 'flex:1;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#1a472a,#2d8a4e);color:white;font-size:1.1rem;font-weight:800;cursor:pointer;';
+      fwdBtn.onclick = function(){
+        if(pageIdx<totalPages-1){ pageIdx++; showPage(); }
+        else { showQuiz(story); }
+      };
+      nav.appendChild(backBtn);
+      nav.appendChild(fwdBtn);
+      ov.appendChild(nav);
+    }
+
+    showPage();
   }
-})();
 
+  function showQuiz(story) {
+    var qIdx=0, score=0;
+
+    function showQ() {
+      if(qIdx>=story.quiz.length){ showResults(); return; }
+      var q = story.quiz[qIdx];
+      ov.innerHTML = '';
+
+      var hdr = document.createElement('div');
+      hdr.style.cssText = 'background:linear-gradient(135deg,#1a472a,#2d8a4e);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;';
+      hdr.innerHTML = '<span style="font-family:Baloo 2,cursive;color:white;font-weight:800;">📝 Story Quiz</span>'
+        +'<span style="color:rgba(255,255,255,.8);font-size:.85rem;">'+(qIdx+1)+' of '+story.quiz.length+'</span>';
+      ov.appendChild(hdr);
+
+      var body = document.createElement('div');
+      body.style.cssText = 'flex:1;padding:20px;overflow-y:auto;';
+
+      // Story image thumbnail
+      var thumb = document.createElement('img');
+      thumb.src = story.cover;
+      thumb.style.cssText = 'width:100%;height:140px;object-fit:cover;border-radius:14px;margin-bottom:16px;display:block;';
+      body.appendChild(thumb);
+
+      var qCard = document.createElement('div');
+      qCard.style.cssText = 'background:white;border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 4px 14px rgba(0,0,0,.1);text-align:center;';
+      qCard.innerHTML = '<div style="font-family:Baloo 2,cursive;font-size:1.1rem;font-weight:800;color:#1a2a1a;line-height:1.4;">'+q.q+'</div>';
+      body.appendChild(qCard);
+
+      var answered = false;
+      q.opts.forEach(function(opt, i) {
+        var btn = document.createElement('button');
+        btn.textContent = opt;
+        btn.style.cssText = 'width:100%;padding:14px 16px;margin-bottom:10px;border-radius:16px;border:2px solid rgba(45,138,78,.25);background:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;text-align:left;box-shadow:0 2px 8px rgba(0,0,0,.08);';
+        btn.onclick = function() {
+          if(answered) return;
+          answered = true;
+          var correct = (i===q.a);
+          if(correct) score++;
+          // Show all answer feedback
+          body.querySelectorAll('button[data-ans]').forEach(function(b){
+            b.style.pointerEvents='none';
+            if(parseInt(b.dataset.ans)===q.a){b.style.background='#E8FBF3';b.style.borderColor='#22c55e';b.style.color='#166534';}
+          });
+          if(!correct){ btn.style.background='#FFF0EE'; btn.style.borderColor='#ef4444'; btn.style.color='#991b1b'; }
+          // Next button
+          var nextBtn = document.createElement('button');
+          nextBtn.textContent = qIdx<story.quiz.length-1?'Next ➡️':'See Results 🏆';
+          nextBtn.style.cssText = 'width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,#1a472a,#2d8a4e);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;margin-top:8px;';
+          nextBtn.onclick = function(){qIdx++;showQ();};
+          body.appendChild(nextBtn);
+        };
+        btn.dataset.ans = i;
+        body.appendChild(btn);
+      });
+      ov.appendChild(body);
+    }
+
+    function showResults() {
+      ov.innerHTML = '';
+      var hdr = document.createElement('div');
+      hdr.style.cssText = 'background:linear-gradient(135deg,#1a472a,#2d8a4e);padding:14px 20px;text-align:center;flex-shrink:0;';
+      hdr.innerHTML = '<div style="font-family:Baloo 2,cursive;color:white;font-weight:800;font-size:1.1rem;">📝 Story Complete!</div>';
+      ov.appendChild(hdr);
+
+      var body = document.createElement('div');
+      body.style.cssText = 'flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;';
+      var pct = Math.round(score/story.quiz.length*100);
+      body.innerHTML = '<div style="font-size:4.5rem;margin-bottom:8px;">'+(pct>=80?'🏆':pct>=50?'⭐':'💪')+'</div>'
+        +'<img src="'+story.cover+'" style="width:120px;height:80px;object-fit:cover;border-radius:12px;margin-bottom:12px;">'
+        +'<div style="font-family:Baloo 2,cursive;font-size:1.6rem;font-weight:800;color:#1a472a;">'+score+'/'+story.quiz.length+'</div>'
+        +'<div style="color:#555;margin:8px 0 24px;">'+(pct>=80?'Amazing reading! 🌟':pct>=50?'Good job! Keep reading!':'Try again — keep going!')+'</div>'
+        +'<div style="display:flex;gap:12px;">'
+        +'<button onclick="showLibrary()" style="padding:14px 24px;border-radius:40px;border:none;background:linear-gradient(135deg,#1a472a,#2d8a4e);color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;">More Stories 📚</button>'
+        +'<button onclick="readStory('+JSON.stringify({title:story.title,cover:story.cover,pages:story.pages,quiz:story.quiz,skill:story.skill,badge:story.badge})+')" style="padding:14px 24px;border-radius:40px;border:none;background:#E8F5E9;color:#1a472a;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;">Read Again 🔄</button>'
+        +'</div>';
+      ov.appendChild(body);
+      // Award stars
+      if(typeof sessionData!=='undefined'&&score>0){sessionData.stars=(sessionData.stars||0)+score*5;var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;toast('+'+(score*5)+' Stars! ⭐');}
+    }
+
+    showQ();
+  }
+
+  showLibrary();
+}
 
 </script>
 </body>
