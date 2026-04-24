@@ -1,6 +1,6 @@
-<!-- BloomiKids v363 -->
+<!-- BloomiKids v364 -->
 <!DOCTYPE html>
-<html lang="en"><!-- v369 -->
+<html lang="en">
 <head>
 <meta charset="UTF-8">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -77,7 +77,7 @@ input:-webkit-autofill:focus {
 .form-group label { display:block; font-weight:700; font-size:.88rem; color:rgba(255,255,255,.9); margin-bottom:6px; text-transform:uppercase; letter-spacing:.5px; }
 .form-group input { width:100%; padding:13px 16px; border-radius:14px; border:2px solid #F0F0F8; font-size:1rem; font-family:'Nunito',sans-serif; outline:none; transition:border-color .2s; background:#FAFAFA; }
 .form-group input:focus { border-color:var(--mint); background:white; }
-.auth-btn { width:100%; padding:14px; border-radius:40px; border:none; cursor:pointer; font-family:'Nunito',sans-serif; font-size:1rem; font-weight:800; background:linear-gradient(135deg,#7C3AED,#A78BFAar(--sky)); color:white; margin-top:8px; transition:all .2s; box-shadow:0 8px 20px rgba(94,205,160,.35); }
+.auth-btn { width:100%; padding:16px; border-radius:40px; border:none; cursor:pointer; font-family:'Nunito',sans-serif; font-size:1rem; font-weight:800; background:linear-gradient(135deg,#22C55E,#16A34A); color:white; box-shadow:0 6px 20px rgba(34,197,94,.4),inset 0 1px 0 rgba(255,255,255,.3); transition:all .2s; }
 .auth-btn:hover { transform:translateY(-2px); }
 .auth-btn:disabled { opacity:.6; cursor:not-allowed; transform:none; }
 .auth-error { background:#FFF0F0; border-radius:12px; padding:10px 14px; color:var(--coral); font-size:.88rem; font-weight:700; margin-top:12px; display:none; }
@@ -706,13 +706,13 @@ input::placeholder { color:rgba(255,255,255,.5) !important; }
 <!-- ══ AUTH ═════════════════════════════════════════════════ -->
 <div id="authScreen">
   <div class="auth-card">
-    <div class="auth-logo" style="text-align:center;"><img src="logo.png" alt="BloomiKids" style="width:clamp(80px,15vw,140px);height:auto;object-fit:contain;display:block !important;margin:0 auto 8px;border-radius:50%;background:#EDE9FF;"></div>
+    <div class="auth-logo" style="text-align:center;"><img src="logo.png" alt="BloomiKids" style="width:clamp(130px,25vw,200px);height:auto;object-fit:contain;display:block !important;filter:drop-shadow(0 8px 28px rgba(91,45,142,.45));margin:0 auto 12px;border-radius:50%;background:#EDE9FF;"></div>
     <div class="auth-tagline">Learn 📚 &nbsp;·&nbsp; Breathe 🧘 &nbsp;·&nbsp; Read 📖</div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:-16px 0 12px;">
-      <span style="font-size:.62rem;font-weight:800;background:#E8FBF3;color:#2A9970;padding:3px 9px;border-radius:20px;">No Ads</span>
-      <span style="font-size:.62rem;font-weight:800;background:#E8F4FF;color:#1A6FB0;padding:3px 9px;border-radius:20px;">No In-App Purchases</span>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:-8px 0 16px;">
+      <span style="font-size:.7rem;font-weight:800;background:linear-gradient(135deg,rgba(34,197,94,.2),rgba(34,197,94,.3));color:#166534;padding:5px 12px;border-radius:20px;border:1px solid rgba(34,197,94,.35);box-shadow:0 2px 8px rgba(34,197,94,.2);">✓ No Ads</span>
+      <span style="font-size:.7rem;font-weight:800;background:linear-gradient(135deg,rgba(59,130,246,.2),rgba(59,130,246,.3));color:#1D4ED8;padding:5px 12px;border-radius:20px;border:1px solid rgba(59,130,246,.35);box-shadow:0 2px 8px rgba(59,130,246,.2);">✓ No In-App Purchases</span>
       <span style="font-size:.62rem;font-weight:800;background:#F3EFFF;color:#6B44CC;padding:3px 9px;border-radius:20px;">COPPA Safe</span>
-      <span style="font-size:.62rem;font-weight:800;background:#FFF8E0;color:#B8860B;padding:3px 9px;border-radius:20px;">CC Aligned</span>
+      <span style="font-size:.7rem;font-weight:800;background:linear-gradient(135deg,rgba(234,179,8,.2),rgba(234,179,8,.3));color:#92400E;padding:5px 12px;border-radius:20px;border:1px solid rgba(234,179,8,.35);box-shadow:0 2px 8px rgba(234,179,8,.2);">★ CC Aligned</span>
     </div>
     <div class="auth-tabs">
       <button class="auth-tab active" onclick="showAuthTab('login')">Sign In</button>
@@ -922,6 +922,8 @@ input::placeholder { color:rgba(255,255,255,.5) !important; }
 
     <div class="section-title" id="subjectsTitle">📖 Today's Subjects</div>
     <div class="cards-grid" id="subjectCards"></div>
+    <div id="gradeGamesSection" style="margin:0 0 8px;"></div>
+
 
     <!-- Quiz box hidden - subjects handle quizzes via smart session -->
     <div id="quizTitle" style="display:none"></div>
@@ -1064,9 +1066,7 @@ input::placeholder { color:rgba(255,255,255,.5) !important; }
       <!-- Populated by buildReadingButtons() based on grade -->
     </div>
 
-    <div id="gradeGamesSection" style="margin-bottom:16px;">
-      <!-- Games populated by buildGradeGames() -->
-    </div>
+
     <div class="section-title" id="bookshelfTitle">📚 My Bookshelf</div>
     <div style="font-size:.82rem;font-weight:700;color:#A89880;margin:-16px 0 18px;display:flex;align-items:center;gap:7px;">
       <span style="background:linear-gradient(135deg,#5ECDA0,#4ECDC4);color:white;font-size:.65rem;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:20px;">Educator Curated</span>
@@ -4799,6 +4799,9 @@ function switchTab(tab) {
   }
   if (tab === 'reading') {
     setTimeout(function(){ buildReadingButtons(); }, 50);
+  }
+  if (tab === 'learn') {
+    setTimeout(function(){ buildGradeGames(); }, 50);
   }
   // ✅ FIX 4: Only build art tab once per child session
   if (tab === 'art' && !artTabBuilt) {
@@ -8862,7 +8865,7 @@ function openPassageReader(grade) {
         title: 'The Great Recess Rescue',
         theme: '🤝 Friendship',
         lexile: '500L–600L',
-        cover: '📿',
+        cover:"stories/story_recess_rescue.png",
         vocab: ['velvet','challenge','announced','accepted'],
         pages: [
           { text: 'Leo was the best marble player at Pinecrest Elementary. He had a velvet pouch full of "Earths," "Cat-Eyes," and his lucky "Blue Ghost." But Leo had a problem: his best friend Sam didn\'t have any marbles at all.', highlight: 'velvet' },
@@ -8883,7 +8886,7 @@ function openPassageReader(grade) {
         title: 'The Tallest Slide in the County',
         theme: '💪 Being Brave',
         lexile: '500L–600L',
-        cover: '🎢',
+        cover:"stories/story_tallest_slide.png",
         vocab: ['jelly','rungs','sprinkles','whoop'],
         pages: [
           { text: 'Maya stood at the bottom of the "Dragon Tail" slide. It was bright red, made of shiny plastic, and seemed to reach all the way to the clouds. To a third grader, it was the scariest thing in the park.', highlight: '' },
@@ -8904,7 +8907,7 @@ function openPassageReader(grade) {
         title: 'The Mystery of the Messy Garden',
         theme: '🌻 Helping Others',
         lexile: '500L–600L',
-        cover: '🌱',
+        cover:"stories/story_messy_garden.png",
         vocab: ['creaked','wilted','dandelions','miracle'],
         pages: [
           { text: 'Mrs. Gable lived at the end of the street in a house with a porch that creaked like an old door. She used to have the prettiest sunflowers in the neighborhood, but lately her garden was full of tall weeds and wilted leaves.', highlight: 'creaked' },
@@ -9008,7 +9011,70 @@ function openPassageReader(grade) {
           { q: 'What does "heritage" most likely mean?', opts: ['A type of compass', 'The traditions and culture passed down through generations', 'A school fair', 'A recipe card'], a: 1, explain: 'Heritage refers to cultural traditions, values, and history passed down from previous generations.' },
           { q: 'What happened at the end that showed Eli\'s peers were changing?', opts: ['They apologized for laughing', 'Amara searched how to make arepas and others asked for the recipe', 'The teacher gave Eli an award', 'Everyone brought food from their cultures'], a: 1, explain: 'Amara\'s curiosity about arepas showed acceptance and interest replacing mockery — a meaningful shift in the class.' },
         ]
+      },,
+      {
+        title: 'The Plastic Pirates of Pebble Beach',
+        theme: '♻️ Reuse, Reduce, Recycle',
+        lexile: '750L–850L',
+        cover: 'stories/story_plastic_pirates.png',
+        vocab: ['upcycling','filament','durable','initiative'],
+        pages: [
+          { text: 'Aris stood on the dunes of Pebble Beach, his tablet catching the morning sun. Behind him, his team — the "Plastic Pirates" — carried burlap sacks instead of swords. Fifth grade had taught Aris that the ocean was a giant set of lungs for the planet, and right now, those lungs were choking on plastic.', highlight: '' },
+          { text: '"Target sighted!" shouted Chloe, pointing to a massive tangle of discarded fishing nets and colorful detergent bottles wedged between the rocks. Instead of just hauling it to a landfill, Aris had a plan.', highlight: '' },
+          { text: 'Back at his garage "laboratory," he had rigged up a plastic shredder. "We aren\'t just cleaning," Aris told his team as they hauled the bounty back. "We\'re upcycling."', highlight: 'upcycling' },
+          { text: 'That week, the Pirates turned sixty-four milk jugs into high-strength filament for the school\'s 3D printer. The plastic became something useful again instead of polluting the sea.', highlight: 'filament' },
+          { text: 'By Friday, they had printed twenty durable, lightweight splints for the local seagull rescue center. Aris realized recycling wasn\'t just about putting a bin on the curb — it was about seeing a second life in everything. ♻️', highlight: 'durable' },
+        ],
+        quiz: [
+          { q: 'What did Aris and his team use instead of swords?', opts: ['Sticks', 'Burlap sacks', 'Fishing nets', 'Tablets'], a: 1, explain: 'The "Plastic Pirates" carried burlap sacks to collect plastic trash — a clever play on the pirate theme.' },
+          { q: 'What does "upcycling" mean in this story?', opts: ['Throwing things away', 'Riding bikes uphill', 'Turning waste into something useful and new', 'Cleaning beaches regularly'], a: 2, explain: 'Upcycling means transforming waste materials into new, useful products — higher value than just recycling.' },
+          { q: 'What did the team make with the plastic filament?', opts: ['Toys', 'Furniture', 'Splints for injured seagulls', 'School supplies'], a: 2, explain: 'They 3D-printed durable splints for the local seagull rescue center — a real-world impact.' },
+          { q: 'What was Aris\'s big lesson at the end?', opts: ['Recycling bins are enough', 'Seeing a second life in everything', 'Plastic is always dangerous', 'The ocean is polluted'], a: 1, explain: 'Aris learned that true recycling is creative — finding new purpose in things others consider trash.' },
+          { q: 'What is the theme of this story?', opts: ['Technology is powerful', 'Reuse, Reduce, Recycle through creativity and action', 'Beaches need cleaning', 'Science is hard'], a: 1, explain: 'The Plastic Pirates show that environmental action can be inventive, not just routine — they transformed trash into life-saving tools.' },
+        ]
       },
+      {
+        title: 'The Global Postcard Project',
+        theme: '🌍 Children Around the World',
+        lexile: '750L–850L',
+        cover: 'stories/story_global_postcard.png',
+        vocab: ['initiative','equinox','speckled','continents'],
+        pages: [
+          { text: 'The screen glowed in the dark of Kwabena\'s bedroom in Ghana. Outside, the night air was warm, and distant highlife music drifted through the trees. On the split-screen were Hiroki in Tokyo and Elena in Brazil. It was 8 PM for Kwabena, but Hiroki was already eating breakfast.', highlight: '' },
+          { text: '"The stars are so bright over the Gulf of Guinea tonight," Kwabena typed. "I can see Orion\'s Belt perfectly." "I can\'t see it at all," Hiroki replied sadly. "The city lights in Tokyo make the sky look like a gray blanket."', highlight: 'speckled' },
+          { text: 'The three friends realized that kids all over the world were losing their connection to the stars. They launched the "Global Lights Out" initiative through their school\'s social media.', highlight: 'initiative' },
+          { text: 'On the Spring Equinox, they convinced over a thousand families across three continents to flip their switches for one hour.', highlight: 'equinox' },
+          { text: 'When the hour hit, Hiroki sent a photo of a shimmering, star-speckled sky over Tokyo. Kwabena realized that even though thousands of miles and different time zones separated them, they were all roommates on the same spinning blue marble. 🌍', highlight: 'continents' },
+        ],
+        quiz: [
+          { q: 'Where does Kwabena live?', opts: ['Tokyo', 'Brazil', 'Ghana', 'London'], a: 2, explain: 'Kwabena lives in Ghana, where he can clearly see Orion\'s Belt from his bedroom window.' },
+          { q: 'Why couldn\'t Hiroki see the stars?', opts: ['He was inside', 'City lights in Tokyo made the sky too bright', 'It was daytime', 'Clouds were blocking them'], a: 1, explain: 'Light pollution from Tokyo\'s city lights made the sky look like a "gray blanket" — a real global problem.' },
+          { q: 'What is the Spring Equinox?', opts: ['A type of star', 'When the sun sets in the north', 'The day when day and night are equal length', 'A school project'], a: 2, explain: 'The equinox is when day and night are exactly equal length — it happens twice a year in spring and fall.' },
+          { q: 'What does "initiative" mean?', opts: ['A type of homework', 'A new action or project started to solve a problem', 'An internet connection', 'A star formation'], a: 1, explain: 'An initiative is a new plan or action started to address a problem — the three friends launched theirs on social media.' },
+          { q: 'What is the main message of this story?', opts: ['Stars are beautiful', 'Technology connects children worldwide to take meaningful action together', 'Tokyo has too many lights', 'Bedtime is important'], a: 1, explain: 'Three children from different continents, time zones, and cultures used technology to create real change together.' },
+        ]
+      },
+      {
+        title: 'Amara\'s Infinite Library',
+        theme: '📚 A Girl Who Loves to Read',
+        lexile: '750L–850L',
+        cover: 'stories/story_amara_library.png',
+        vocab: ['renovation','curated','deafening','converted'],
+        pages: [
+          { text: 'Amara lived in a house made of bricks, but in her mind, she lived in a palace made of paper. With her curls tucked under a headset and a worn paperback in her lap, she was famous at school for reading while walking through crowded hallways without hitting a single locker.', highlight: '' },
+          { text: 'When the neighborhood library closed for a six-month renovation, the silence in the community was deafening. "People need their stories," Amara told her dad. "Stories are how we breathe."', highlight: 'renovation' },
+          { text: 'She converted her old red wagon into the "Amara Express." She curated special "Adventure Bundles" for the younger kids and "Mystery Packs" for the seniors on her block.', highlight: 'curated' },
+          { text: 'Every Saturday, she pulled her wagon through the neighborhood, exchanging dog-eared copies of A Wrinkle in Time for historical biographies. She didn\'t just share books — she sparked conversations.', highlight: 'converted' },
+          { text: 'She started a neighborhood book club that met on front porches, proving that a library isn\'t a building — it\'s the people who share the words inside it. 📚', highlight: '' },
+        ],
+        quiz: [
+          { q: 'Why did Amara start the Amara Express?', opts: ['To make money', 'Because the neighborhood library closed', 'Her teacher assigned it', 'She wanted a new wagon'], a: 1, explain: 'When the library closed for six months, Amara created a mobile library to keep stories flowing in her community.' },
+          { q: 'What does "renovation" mean?', opts: ['A type of book', 'Closing permanently', 'Rebuilding or repairing a building', 'A neighborhood meeting'], a: 2, explain: 'A renovation is when a building is repaired, updated, or improved — the library would reopen after the work was done.' },
+          { q: 'What does "curated" mean in this story?', opts: ['Randomly grabbed', 'Carefully selected and organized with a purpose', 'Given away for free', 'Borrowed from a store'], a: 1, explain: 'Amara curated bundles — she thoughtfully selected specific books for each type of reader, not just any books.' },
+          { q: 'What did Amara\'s dad mean when she said "stories are how we breathe"?', opts: ['Books help us exercise', 'Stories are essential to human life, like breathing', 'Libraries smell like fresh air', 'Reading is a sport'], a: 1, explain: 'This is a metaphor — stories are as essential to the human spirit as breathing is to the body. We need them to thrive.' },
+          { q: 'What is the author\'s message about libraries?', opts: ['Buildings are important', 'A library is defined by the people who share stories, not just the building', 'Wagons make good libraries', 'Books should be free'], a: 1, explain: 'Amara\'s story redefines what a library is — community, connection, and shared words — not just a physical place.' },
+        ]
+      }
     ],
   };
 
