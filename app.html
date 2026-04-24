@@ -1,4 +1,4 @@
-<!-- BloomiKids v362 -->
+<!-- BloomiKids v363 -->
 <!DOCTYPE html>
 <html lang="en"><!-- v369 -->
 <head>
@@ -3416,10 +3416,14 @@ function buildReadingButtons() {
   }
 
   if (isOlder) {
-    btns += '<button onclick="openPassageReader(activeGrade)" style="width:100%;padding:16px;border-radius:20px;border:none;background:linear-gradient(135deg,#1a2a4a,#2d4a8a);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(0,0,0,.2);margin-bottom:12px;">'
-      + '<span style="font-size:1.5rem;">📖</span><span>Reading Comprehension</span></button>';
+    btns += '<button onclick="openPassageReader(activeGrade)" style="width:100%;padding:16px;border-radius:20px;border:none;background:linear-gradient(135deg,#1D4ED8,#3B82F6);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(29,78,216,.35);margin-bottom:12px;">'
+      + '<span style="font-size:1.5rem;">📖</span><span>Reading Corner — Stories &amp; Comprehension</span></button>';
   }
 
+  if (activeGrade === '2') {
+    btns += '<button onclick="openPassageReader(activeGrade)" style="width:100%;padding:16px;border-radius:20px;border:none;background:linear-gradient(135deg,#1D4ED8,#3B82F6);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(29,78,216,.35);margin-bottom:12px;">'
+      + '<span style="font-size:1.5rem;">📖</span><span>Reading Corner</span></button>';
+  }
   // Reading Lessons for all grades
   btns += '<button onclick="openMasterLessons(activeGrade)" style="width:100%;padding:16px;border-radius:20px;border:none;background:linear-gradient(135deg,#2D1A4E,#6B3FA0);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(0,0,0,.2);margin-bottom:12px;">'
     + '<span style="font-size:1.5rem;">🎓</span><span>Reading Lessons</span></button>';
@@ -8845,169 +8849,418 @@ function openStorylineSearch(title) {
 
 
 function openPassageReader(grade) {
-  var PASSAGES = [{"grade": "3", "skill": "Main Idea", "title": "The Library", "passage": "Maya loved the library. She visited every Saturday. She read books about animals, space, and history. The librarian helped her find new books each week. Maya said the library was her favorite place in the whole world.", "q": "What is the main idea?", "opts": ["Maya likes animals", "Maya loves the library", "Libraries have many books"], "a": "Maya loves the library", "explain": "The whole story is about how much Maya loves the library. All the details support this main idea."}, {"grade": "3", "skill": "Cause & Effect", "title": "The Rain", "passage": "Lena looked outside. Dark clouds covered the sky. She grabbed her umbrella and left for school. On the way, rain started falling. Lena stayed dry while her friends got wet.", "q": "Why did Lena grab her umbrella?", "opts": ["It was sunny", "It looked like rain", "She wanted to play"], "a": "It looked like rain", "explain": "Lena saw dark clouds and knew it would rain. She used clues from the sky to make a smart decision."}, {"grade": "3", "skill": "Sequence", "title": "Making Bread", "passage": "First, mix flour, water, and yeast. Next, knead the dough for ten minutes. Then, let it rise for one hour. After that, bake it in the oven. Finally, let it cool before eating.", "q": "What happens right after kneading?", "opts": ["Mix ingredients", "Let it rise", "Bake in oven"], "a": "Let it rise", "explain": "The word \"Then\" tells us letting it rise comes after kneading. Signal words like first, next, then help us understand sequence."}, {"grade": "3", "skill": "Vocabulary", "title": "The Desert", "passage": "The desert is an arid place. Very little rain falls there. Animals that live in arid places must find clever ways to store water. The camel stores water in its hump to survive long journeys.", "q": "What does arid mean?", "opts": ["Very wet", "Very dry", "Very cold"], "a": "Very dry", "explain": "The story tells us very little rain falls in arid places. This clue helps us figure out that arid means very dry."}, {"grade": "4", "skill": "Inference", "title": "The Contest", "passage": "Tom practiced piano every day for a month. His fingers flew across the keys. On contest day, his hands shook as he walked to the stage. He took a deep breath and began to play.", "q": "How does Tom feel before playing?", "opts": ["Bored", "Nervous", "Angry"], "a": "Nervous", "explain": "Tom practiced hard and his hands shook. Shaking hands is a clue that someone feels nervous. The author never says it directly but gives us clues."}, {"grade": "4", "skill": "Theme", "title": "The Gift", "passage": "Max gave his snack to his friend who forgot lunch. His friend smiled and later shared his juice with Max. Both boys went home happy that day.", "q": "What theme does this story show?", "opts": ["Sharing is kind", "Dogs are funny", "School is hard"], "a": "Sharing is kind", "explain": "The story shows that when Max shared his snack, his friend shared back. The lesson is that kindness and sharing make everyone happy."}, {"grade": "4", "skill": "Character Traits", "title": "The New Student", "passage": "When Zoe saw the new student sitting alone, she walked over and said hello. She showed him around the school and invited him to eat lunch with her friends. The new student smiled for the first time all day.", "q": "Which word best describes Zoe?", "opts": ["Shy", "Selfish", "Kind"], "a": "Kind", "explain": "Zoe noticed someone who needed help and did something about it. Her actions \u2014 saying hello, showing him around, including him \u2014 show she is kind."}, {"grade": "4", "skill": "Compare & Contrast", "title": "City and Country", "passage": "In the city, buildings tower over busy streets. Cars honk and people rush. In the country, open fields stretch for miles. Birds sing and the air smells fresh. Both places have families, schools, and stores.", "q": "What do city and country have in common?", "opts": ["Tall buildings", "Busy streets", "Families and schools"], "a": "Families and schools", "explain": "The story says BOTH places have families, schools, and stores. When comparing, look for what things share, not just how they differ."}, {"grade": "5", "skill": "Author's Purpose", "title": "Phones in School", "passage": "Some people think phones help students learn better. Others think phones are distracting. Students who use phones in class get lower grades in some studies. Schools that banned phones saw test scores improve.", "q": "What is the author doing?", "opts": ["Telling a story", "Presenting an argument", "Giving directions"], "a": "Presenting an argument", "explain": "The author presents both sides and includes evidence (studies, test scores). This is persuasive writing \u2014 the author wants you to think about the issue."}, {"grade": "5", "skill": "Evidence", "title": "Climate Change", "passage": "Scientists have measured Earth's temperature for over 100 years. Their data shows the planet is getting warmer. Ice caps are melting and sea levels are rising. Most scientists agree that human activities are causing these changes.", "q": "What evidence supports Earth getting warmer?", "opts": ["People disagree", "Ice caps are melting", "Scientists take measurements"], "a": "Ice caps are melting", "explain": "Melting ice caps and rising sea levels are direct evidence of warming. Scientific evidence must be observable and measurable, not just opinions."}, {"grade": "5", "skill": "Point of View", "title": "The Forest", "passage": "The logger thought the forest was a resource to be used. The scientist thought it was an ecosystem to be studied. The child thought it was a place to play and explore. All three stood at the edge of the same forest.", "q": "Why do the three people see the forest differently?", "opts": ["They have different jobs and experiences", "The forest looks different each day", "They are standing in different places"], "a": "They have different jobs and experiences", "explain": "A logger, scientist, and child each have different backgrounds and purposes. Our experiences and roles shape how we see the same thing \u2014 this is point of view."}];
-  var stories = PASSAGES.filter(function(p){ 
-    return p.grade === String(grade).replace('Grade ','').replace('PreK','-1').replace('K','0');
-  });
-  if (!stories.length) {
-    // Show all if no grade match
-    stories = PASSAGES.slice(0,3);
-  }
-  
-  var idx = 0;
-  var score = 0;
-  var ov = document.createElement('div'); ov.id = 'passageOv';
-  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#1a2a4a,#2d4a8a);display:flex;flex-direction:column;font-family:Nunito,sans-serif;';
-  
-  function render() {
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
+  var CA='#1D4ED8', CB='#3B82F6';
+  var ov=document.createElement('div');
+  ov.id='passageOv';
+  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:#EFF6FF;display:flex;flex-direction:column;font-family:Nunito,sans-serif;';
+  document.body.appendChild(ov);
+
+  // ── STORY DATA ──────────────────────────────────────────────────
+  var ALL_STORIES = {
+    '3': [
+      {
+        title: 'The Great Recess Rescue',
+        theme: '🤝 Friendship',
+        lexile: '500L–600L',
+        cover: '📿',
+        vocab: ['velvet','challenge','announced','accepted'],
+        pages: [
+          { text: 'Leo was the best marble player at Pinecrest Elementary. He had a velvet pouch full of "Earths," "Cat-Eyes," and his lucky "Blue Ghost." But Leo had a problem: his best friend Sam didn\'t have any marbles at all.', highlight: 'velvet' },
+          { text: 'During Tuesday\'s recess, the "Marble Kings" — a group of older fourth graders — challenged Leo to a match. "If you win, you get our rarest Tiger-Stripe," the leader said. "But if you lose, we take your Blue Ghost."', highlight: 'challenged' },
+          { text: 'Leo looked at Sam. Sam looked nervous. "You shouldn\'t risk it, Leo," Sam whispered. Leo realized that winning a new marble wasn\'t as important as playing with his friend.', highlight: 'realized' },
+          { text: 'Instead of accepting the challenge, Leo opened his pouch. He handed half of his marbles — including two "Earths" — to Sam. "I\'m not playing the Kings today," Leo announced. "I\'m teaching my friend how to play."', highlight: 'announced' },
+          { text: 'The fourth graders stomped away, but Leo didn\'t care. By the end of recess, Sam had won his first round against Leo, and they were both laughing so hard they forgot all about the Blue Ghost. 😄', highlight: '' },
+        ],
+        quiz: [
+          { q: 'What did Leo have in his velvet pouch?', opts: ['Baseball cards', 'Marbles', 'Candy', 'Stickers'], a: 1, explain: 'Leo\'s pouch held Earths, Cat-Eyes, and his lucky Blue Ghost marble.' },
+          { q: 'What did the Marble Kings offer Leo?', opts: ['A Tiger-Stripe marble if he won', 'Money if he played', 'His Blue Ghost back', 'A new pouch'], a: 0, explain: 'They offered their rarest Tiger-Stripe if Leo won, but wanted his Blue Ghost if he lost.' },
+          { q: 'Why did Leo decide NOT to play the Marble Kings?', opts: ['He was scared', 'Playing with Sam was more important', 'His marbles were broken', 'He was late for class'], a: 1, explain: 'Leo realized friendship mattered more than winning a new marble.' },
+          { q: 'What is the theme of this story?', opts: ['Always compete', 'Friendship matters more than winning', 'Marbles are valuable', 'Older kids are mean'], a: 1, explain: 'Leo chose to share and play with Sam rather than risk his marble in a competition — friendship won.' },
+          { q: 'What vocabulary word means "said loudly and clearly"?', opts: ['velvet','challenged','announced','accepted'], a: 2, explain: '"Announced" means to say something publicly and clearly — Leo told everyone his decision.' },
+        ]
+      },
+      {
+        title: 'The Tallest Slide in the County',
+        theme: '💪 Being Brave',
+        lexile: '500L–600L',
+        cover: '🎢',
+        vocab: ['jelly','rungs','sprinkles','whoop'],
+        pages: [
+          { text: 'Maya stood at the bottom of the "Dragon Tail" slide. It was bright red, made of shiny plastic, and seemed to reach all the way to the clouds. To a third grader, it was the scariest thing in the park.', highlight: '' },
+          { text: '"Are you going up?" her brother Marcus asked as he zipped past her and started climbing the ladder. Maya\'s knees felt like jelly. She took one step up the metal rungs. Clang. Then another. Clang.', highlight: 'jelly' },
+          { text: 'Halfway up, she looked down. The grass looked like tiny green sprinkles. She wanted to climb back down, but there was a line of kids behind her. "You can do it, Maya!" Marcus shouted from the top.', highlight: 'sprinkles' },
+          { text: 'Maya took a deep breath. Being brave didn\'t mean she wasn\'t scared — it meant she was going to do it even though she was scared. She climbed the last three steps and sat at the top. The world looked big and beautiful from up there.', highlight: 'brave' },
+          { text: 'With a small "Whoop!", she pushed off. The wind rushed past her ears, and her tummy did a little flip. When she landed at the bottom in a cloud of woodchips, she turned right back around and headed for the ladder. 🎢', highlight: '' },
+        ],
+        quiz: [
+          { q: 'What was the name of the slide?', opts: ['The Red Rocket', 'Dragon Tail', 'Cloud Chaser', 'The Big Drop'], a: 1, explain: 'The slide was called the "Dragon Tail" — it was bright red and very tall.' },
+          { q: 'What does "her knees felt like jelly" mean?', opts: ['Her knees hurt', 'She was hungry', 'She felt weak and wobbly from fear', 'She fell down'], a: 2, explain: '"Knees like jelly" is an idiom meaning wobbly and weak — usually from nervousness or fear.' },
+          { q: 'What does Maya say being brave means?', opts: ['Not being scared at all', 'Doing it even though you are scared', 'Being the fastest climber', 'Ignoring your feelings'], a: 1, explain: 'Maya understood that bravery isn\'t the absence of fear — it\'s acting despite the fear.' },
+          { q: 'What did Maya do when she reached the bottom?', opts: ['Cried and went home', 'Sat in the woodchips', 'Turned around and went back up', 'Called for her brother'], a: 2, explain: 'She turned right back around and headed for the ladder — she conquered her fear!' },
+          { q: 'What is the main theme of this story?', opts: ['Slides are dangerous', 'Bravery means doing things even when scared', 'Marcus is a good brother', 'Parks are fun'], a: 1, explain: 'Maya\'s journey up the slide teaches that true bravery means facing your fears, not avoiding them.' },
+        ]
+      },
+      {
+        title: 'The Mystery of the Messy Garden',
+        theme: '🌻 Helping Others',
+        lexile: '500L–600L',
+        cover: '🌱',
+        vocab: ['creaked','wilted','dandelions','miracle'],
+        pages: [
+          { text: 'Mrs. Gable lived at the end of the street in a house with a porch that creaked like an old door. She used to have the prettiest sunflowers in the neighborhood, but lately her garden was full of tall weeds and wilted leaves.', highlight: 'creaked' },
+          { text: '"Mrs. Gable hurt her knee," Maya\'s dad explained. "She can\'t bend down to pull the weeds anymore." That Saturday, Maya and her friend Toby decided to be "The Garden Ninjas."', highlight: '' },
+          { text: 'They didn\'t tell Mrs. Gable what they were doing. They put on their thickest gloves and crept into her front yard with a wheelbarrow. They pulled prickly dandelions and tangled vines.', highlight: 'dandelions' },
+          { text: 'They carried buckets of water to the thirsty roses. It was hot work, and Maya\'s shirt got covered in streaks of brown mud. Just as they were finishing, Mrs. Gable opened her front door.', highlight: '' },
+          { text: 'She looked at her tidy garden, then at the two muddy kids. "I thought a miracle happened!" she chirped. "We don\'t need a thank you," Toby said. "We just wanted to see the sunflowers grow again." 🌻', highlight: 'miracle' },
+        ],
+        quiz: [
+          { q: 'Why couldn\'t Mrs. Gable tend her garden?', opts: ['She moved away', 'She hurt her knee', 'She didn\'t like gardening', 'The weeds were too big'], a: 1, explain: 'Mrs. Gable injured her knee and couldn\'t bend down to pull weeds anymore.' },
+          { q: 'What did Maya and Toby call themselves?', opts: ['The Flower Friends', 'The Garden Ninjas', 'The Weed Warriors', 'The Mud Kids'], a: 1, explain: 'They secretly called themselves "The Garden Ninjas" for their surprise mission.' },
+          { q: 'What does "wilted" mean?', opts: ['Colorful and bright', 'Drooping and dying from lack of water', 'Freshly planted', 'Very tall'], a: 1, explain: '"Wilted" describes plants that droop and look unhealthy, usually from lack of water or sunlight.' },
+          { q: 'What does "miracle" most likely mean in this story?', opts: ['A normal event', 'Something that seems impossible or magical', 'A loud noise', 'A type of flower'], a: 1, explain: 'Mrs. Gable called it a miracle because the garden was cleaned up like magic — she didn\'t know who did it.' },
+          { q: 'What is the lesson of this story?', opts: ['Gardening is hard work', 'Helping others without expecting a reward is meaningful', 'Always ask before entering someone\'s yard', 'Sunflowers need a lot of water'], a: 1, explain: 'Toby\'s line — "We don\'t need a thank you" — shows the true meaning of helping: doing good for its own sake.' },
+        ]
+      },
+    ],
+    '4': [
+      {
+        title: 'The Bridge Builders',
+        theme: '🌉 Problem Solving',
+        lexile: '650L–750L',
+        cover: '🔧',
+        vocab: ['engineering','structure','collapse','prototype'],
+        pages: [
+          { text: 'The fifth-grade STEM challenge was simple: build a bridge out of popsicle sticks and white glue that could hold a full textbook. Aisha and her partner Devon had exactly 45 minutes and 30 sticks.', highlight: '' },
+          { text: 'Devon wanted to stack all the sticks flat on top of each other. "It\'ll be thick and strong," he said. Aisha shook her head. "A flat structure collapses sideways. We need triangles."', highlight: 'structure' },
+          { text: 'She had read about how triangles are the strongest shape in engineering — they distribute weight evenly and don\'t bend. Devon was skeptical, but they built her design.', highlight: 'engineering' },
+          { text: 'Their first prototype cracked under the book\'s weight. "We need more glue at the joints," Aisha observed. They rebuilt, this time pressing each joint firmly and waiting a full minute before moving on.', highlight: 'prototype' },
+          { text: 'When the teacher placed the textbook on their finished bridge, it held. Then she added a second book. Still holding. The class erupted in cheers. Devon turned to Aisha. "Triangles," he said, grinning. 🔧', highlight: '' },
+        ],
+        quiz: [
+          { q: 'What shape did Aisha say was strongest for engineering?', opts: ['Circles', 'Squares', 'Triangles', 'Rectangles'], a: 2, explain: 'Aisha explained that triangles distribute weight evenly and don\'t bend — they\'re the strongest geometric shape in engineering.' },
+          { q: 'What happened to their first prototype?', opts: ['It was perfect', 'It cracked under the book\'s weight', 'It fell off the table', 'Devon knocked it over'], a: 1, explain: 'Their first attempt cracked — this taught them they needed more glue at the joints.' },
+          { q: 'What does "prototype" mean?', opts: ['A finished product', 'A first test version of something', 'A kind of bridge', 'A school project'], a: 1, explain: 'A prototype is an early version built to test an idea before making the final product.' },
+          { q: 'What problem did they fix in their second attempt?', opts: ['They used more sticks', 'They made it shorter', 'They added more glue at the joints', 'They changed the shape'], a: 2, explain: 'Aisha identified that the joints needed more glue and more drying time — the key fix.' },
+          { q: 'What is the main idea of this story?', opts: ['Glue is important', 'Devon was right', 'Solving problems requires testing, failing, and improving', 'Popsicle sticks are strong'], a: 2, explain: 'The story shows the engineering design process: plan, build, test, improve — a real-world problem-solving cycle.' },
+        ]
+      },
+      {
+        title: 'A Postcard from the Past',
+        theme: '📜 History & Curiosity',
+        lexile: '650L–750L',
+        cover: '📬',
+        vocab: ['postcard','decade','faded','curiosity'],
+        pages: [
+          { text: 'While cleaning out her grandmother\'s attic, Priya found a shoebox sealed with brittle tape. Inside were 47 postcards, each addressed in loopy blue handwriting to "Miss Clara Mehta, Apartment 4C."', highlight: '' },
+          { text: 'The stamps showed presidents Priya didn\'t recognize. The dates on the back ranged from 1962 to 1974. "These are over 50 years old," she whispered, her curiosity fizzing like soda.', highlight: 'curiosity' },
+          { text: 'One card showed the Eiffel Tower. Another showed a market in Mumbai. A third showed a mountain range with a single sentence: "Climbed this today. Thought of you at the top." It wasn\'t signed.', highlight: 'faded' },
+          { text: 'Priya brought the box downstairs. Her grandmother, now 82, held a postcard with trembling hands. Her eyes filled. "My friend Amara sent these," she said softly. "She traveled the whole world, and I never left this city."', highlight: '' },
+          { text: '"Did you ever meet again?" Priya asked. Her grandmother smiled. "We wrote letters for a decade after these. Then life got busy." She looked at the card. "But I never forgot her." 📬', highlight: 'decade' },
+        ],
+        quiz: [
+          { q: 'Where did Priya find the postcards?', opts: ['In a library', 'In her grandmother\'s attic', 'At a yard sale', 'In her school backpack'], a: 1, explain: 'Priya discovered the shoebox of postcards while cleaning out her grandmother\'s attic.' },
+          { q: 'How old were the postcards?', opts: ['About 10 years old', 'About 25 years old', 'Over 50 years old', 'About 100 years old'], a: 2, explain: 'The dates ranged from 1962–1974, making them over 50 years old when Priya found them.' },
+          { q: 'Who sent the postcards to Clara?', opts: ['Priya\'s mother', 'A pen pal named Amara', 'A teacher', 'Her grandfather'], a: 1, explain: 'Grandmother Clara revealed that her friend Amara had sent all 47 postcards while traveling the world.' },
+          { q: 'What does "decade" mean?', opts: ['A hundred years', 'Ten years', 'A single year', 'A short moment'], a: 1, explain: 'A decade is exactly 10 years. Grandmother and Amara wrote letters for 10 years after the postcards stopped.' },
+          { q: 'What feeling does the story mostly create?', opts: ['Excitement about travel', 'Sadness and nostalgia about friendship and time passing', 'Anger at Amara', 'Pride in Priya'], a: 1, explain: 'The story evokes nostalgia — a bittersweet feeling about the past, friendship, and how quickly life moves forward.' },
+        ]
+      },
+    ],
+    '5': [
+      {
+        title: 'The Last Tree on Maple Street',
+        theme: '🌳 Environment & Action',
+        lexile: '750L–850L',
+        cover: '🌲',
+        vocab: ['petition','demolish','canopy','unanimous'],
+        pages: [
+          { text: 'The notice appeared on a Tuesday morning: the 200-year-old oak tree at the corner of Maple and Fifth would be demolished to make room for a parking lot. By Wednesday, sixth-grader Zara had started a petition.', highlight: 'petition' },
+          { text: '"This tree was here before any of us," Zara told her class. "Its canopy covers three blocks. Birds nest in it. In summer, it keeps the whole street cool." She had done her research.', highlight: 'canopy' },
+          { text: 'The city council meeting was intimidating. Zara stood at a microphone in front of 40 adults. Her voice shook, but her facts were solid. She cited a study: a single mature oak tree absorbs 48 pounds of CO₂ per year.', highlight: '' },
+          { text: '"Removing this tree," she concluded, "is not just about a parking lot. It\'s about what kind of neighborhood we choose to be." There was a moment of silence. Then the room applauded.', highlight: '' },
+          { text: 'The vote was unanimous: the tree would stay. The developer agreed to build a smaller lot on the other side. Zara walked home under the oak\'s wide branches, listening to the birds. 🌳', highlight: 'unanimous' },
+        ],
+        quiz: [
+          { q: 'Why was the oak tree going to be removed?', opts: ['It was diseased', 'To build a parking lot', 'It was blocking a road', 'Lightning had struck it'], a: 1, explain: 'The city planned to demolish the 200-year-old oak to make room for a parking lot.' },
+          { q: 'What does "petition" mean?', opts: ['A type of tree', 'A formal document collecting signatures to request an action', 'A city council meeting', 'A type of protest sign'], a: 1, explain: 'A petition is a document signed by many people to formally request something from those in power.' },
+          { q: 'What scientific fact did Zara use in her argument?', opts: ['Trees are 200 years old', 'A mature oak absorbs 48 lbs of CO₂ per year', 'Birds are protected by law', 'Parking lots cost too much'], a: 1, explain: 'Zara researched and cited a real environmental fact to strengthen her argument with data.' },
+          { q: 'What does "unanimous" mean?', opts: ['A close vote', 'Only one person agreed', 'Everyone agreed', 'Nobody voted'], a: 2, explain: '"Unanimous" means every single person voted the same way — in this case, all agreed to save the tree.' },
+          { q: 'What is the author\'s main message?', opts: ['Trees are more important than cars', 'Young people can create real change when they are prepared and speak up', 'City councils are helpful', 'Developers are always wrong'], a: 1, explain: 'Zara\'s story shows that research + courage + civic action can produce real results — even for a student.' },
+        ]
+      },
+      {
+        title: 'Two Compasses',
+        theme: '🧭 Identity & Belonging',
+        lexile: '750L–850L',
+        cover: '🧭',
+        vocab: ['heritage','navigate','identity','tradition'],
+        pages: [
+          { text: 'Eli\'s grandfather kept two compasses on his desk — one modern, one brass and dented, with "Caracas, 1971" scratched on the back. "Why two?" Eli asked once. "One tells you where to go," Abuelo said. "The other reminds you where you\'re from."', highlight: 'heritage' },
+          { text: 'At school, Eli felt pulled in two directions. At home, Spanish flowed easily. At school, kids sometimes laughed at his lunches — arepas and black beans — and called them "weird." He started eating alone to avoid it.', highlight: '' },
+          { text: '"Why does it feel like I have to pick?" he asked his mother one evening. She thought for a moment. "You don\'t navigate with just one compass. You use both. That\'s not confusion — that\'s a wider map."', highlight: 'navigate' },
+          { text: 'For the heritage fair, Eli brought his grandfather\'s brass compass, a photo of Caracas from 1971, and a recipe card for arepas handwritten by his great-grandmother. He explained both compasses to the class.', highlight: 'tradition' },
+          { text: 'Afterward, his classmate Amara pulled out her phone and searched: "how to make arepas." Three other kids asked for the recipe. Eli sat down next to them and smiled. Both compasses were pointing the same direction. 🧭', highlight: '' },
+        ],
+        quiz: [
+          { q: 'What did Abuelo\'s old brass compass represent?', opts: ['Direction and navigation', 'Where Eli was going in life', 'Knowing where you come from', 'A gift from school'], a: 2, explain: 'Abuelo said the modern compass tells where to go; the old one reminds you where you\'re from — it symbolizes heritage.' },
+          { q: 'Why did Eli start eating alone at school?', opts: ['He was shy', 'To avoid kids laughing at his cultural food', 'He had no friends', 'His teacher made him'], a: 1, explain: 'Kids mocked his arepas and called them "weird," so Eli began eating alone to avoid the discomfort.' },
+          { q: 'What does Eli\'s mother\'s advice mean — "you use both compasses"?', opts: ['Always carry a compass', 'You don\'t have to choose between two cultures — they both guide you', 'Navigation is important', 'Pick the culture you prefer'], a: 1, explain: 'She\'s saying that having two cultural identities isn\'t a problem to solve — it\'s a strength that gives you a "wider map."' },
+          { q: 'What does "heritage" most likely mean?', opts: ['A type of compass', 'The traditions and culture passed down through generations', 'A school fair', 'A recipe card'], a: 1, explain: 'Heritage refers to cultural traditions, values, and history passed down from previous generations.' },
+          { q: 'What happened at the end that showed Eli\'s peers were changing?', opts: ['They apologized for laughing', 'Amara searched how to make arepas and others asked for the recipe', 'The teacher gave Eli an award', 'Everyone brought food from their cultures'], a: 1, explain: 'Amara\'s curiosity about arepas showed acceptance and interest replacing mockery — a meaningful shift in the class.' },
+        ]
+      },
+    ],
+  };
+
+  var stories = ALL_STORIES[String(grade)] || ALL_STORIES['3'];
+
+  // ── LIBRARY VIEW ────────────────────────────────────────────────
+  function showLibrary() {
     ov.innerHTML = '';
-    
-    if (idx >= stories.length) {
-      ov.innerHTML = '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:white;text-align:center;padding:32px;">'
-        + '<div style="font-size:4rem;margin-bottom:16px;">📖</div>'
-        + '<div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;margin-bottom:8px;">Amazing Reader!</div>'
-        + '<div style="font-size:1.1rem;opacity:.85;margin-bottom:24px;">You got ' + score + ' of ' + stories.length + ' correct!</div>'
-        + '<button onclick="var o=document.getElementById(\"passageOv\");if(o)o.remove();addStarsFromGame(' + (score*20) + ');toast(\"+\"+(score*20)+\" Stars!\");" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:#1a2a4a;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Done! ⭐</button></div>';
-      if (typeof sb !== 'undefined' && typeof activeChild !== 'undefined') {
-        sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:score*20}).catch(function(){});
-      }
-      return;
-    }
-    
-    var story = stories[idx];
-    
-    // Header
     var hdr = document.createElement('div');
-    hdr.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:rgba(0,0,0,.2);flex-shrink:0;';
-    hdr.innerHTML = '<div style="color:white;font-family:Baloo 2,cursive;font-weight:800;">📖 Reading Comprehension</div>'
-      + '<div style="color:rgba(255,255,255,.7);font-size:.8rem;">' + story.skill + ' • ' + (idx+1) + '/' + stories.length + '</div>';
-    var xb = document.createElement('button'); xb.textContent='X';
-    xb.style.cssText='background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;';
-    xb.onclick=function(){if(window.speechSynthesis)window.speechSynthesis.cancel();ov.remove();};
-    hdr.appendChild(xb); ov.appendChild(hdr);
-    
+    hdr.style.cssText = 'background:linear-gradient(135deg,'+CA+','+CB+');padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;box-shadow:0 4px 16px rgba(0,0,0,.15);';
+    hdr.innerHTML = '<span style="font-family:Baloo 2,cursive;font-size:1.05rem;font-weight:800;color:white;">📖 Reading Corner — Grade '+grade+'</span>'
+      + '<button data-closeov="passageOv" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:34px;height:34px;cursor:pointer;font-weight:800;font-size:1rem;">✕</button>';
+    ov.appendChild(hdr);
+
     var body = document.createElement('div');
-    body.style.cssText = 'flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px;';
-    
-    // Passage box
-    var passageBox = document.createElement('div');
-    passageBox.style.cssText = 'background:rgba(255,255,255,.12);border-radius:16px;padding:16px;border-left:4px solid #5ECDA0;';
-    passageBox.innerHTML = '<div style="color:rgba(255,255,255,.6);font-size:.72rem;font-weight:800;text-transform:uppercase;margin-bottom:8px;">📄 ' + story.title + '</div>'
-      + '<div style="color:white;font-size:1rem;line-height:1.8;font-weight:600;">' + story.passage + '</div>';
-    body.appendChild(passageBox);
-    
-    // Read button
-    var readBtn = document.createElement('button');
-    readBtn.textContent = '🔈 Read Passage Aloud';
-    readBtn.style.cssText = 'padding:10px 20px;border-radius:30px;border:none;background:rgba(94,205,160,.3);color:white;font-family:Nunito,sans-serif;font-weight:700;cursor:pointer;align-self:flex-start;';
-    var sp = false;
-    readBtn.onclick = function(){
-      if(!window.speechSynthesis)return;
-      if(sp){window.speechSynthesis.cancel();sp=false;readBtn.textContent='🔈 Read Passage Aloud';return;}
-      var u=new SpeechSynthesisUtterance(story.passage);u.rate=0.85;u.pitch=1.0;
-      var vs=window.speechSynthesis.getVoices();var pk=vs.find(function(v){return v.name==='Samantha'||v.name==='Daniel';});
-      if(!pk)pk=vs.find(function(v){return v.lang&&v.lang.startsWith('en');});if(pk)u.voice=pk;
-      u.onend=function(){sp=false;readBtn.textContent='🔈 Read Passage Aloud';};
-      window.speechSynthesis.speak(u);sp=true;readBtn.textContent='⏹ Stop';
-    };
-    body.appendChild(readBtn);
-    
-    // Question
-    var qDiv = document.createElement('div');
-    qDiv.style.cssText = 'color:white;font-size:1rem;font-weight:800;background:rgba(255,255,255,.1);border-radius:12px;padding:14px;';
-    qDiv.textContent = '❓ ' + story.q;
-    body.appendChild(qDiv);
-    
-    // Answer options
-    var answered = false;
-    story.opts.forEach(function(opt){
-      var btn = document.createElement('button');
-      btn.textContent = opt;
-      btn.style.cssText = 'padding:14px 16px;border-radius:14px;border:2px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;text-align:left;width:100%;';
-      btn.onclick = function(){
-        if(answered) return; answered = true;
-        var correct = (opt === story.a);
-        // Show all answers
-        body.querySelectorAll('button').forEach(function(b){
-          if(b.textContent===story.a){b.style.background='rgba(94,205,160,.5)';b.style.borderColor='#5ECDA0';}
-          b.style.cursor='default';b.style.pointerEvents='none';
-        });
-        if(correct){btn.style.background='rgba(94,205,160,.6)';score++;showBloomy('celebrate');toast('Correct! Great thinking! 📖'); showBloomy('celebrate'); showBloomy('celebrate');}
-        else{btn.style.background='rgba(255,107,107,.4)';btn.style.borderColor='#FF6B6B';toast('Good try!');}
-        
-        // Show explanation
-        var expDiv = document.createElement('div');
-        expDiv.style.cssText = 'background:rgba(255,255,255,.12);border-radius:12px;padding:14px;border-left:3px solid #FFD700;';
-        expDiv.innerHTML = '<div style="color:#FFD700;font-weight:800;font-size:.8rem;margin-bottom:6px;">💡 WHY?</div>'
-          + '<div style="color:white;font-size:.9rem;line-height:1.6;">' + story.explain + '</div>';
-        body.appendChild(expDiv);
-        
-        // Next button
-        var nb = document.createElement('button');
-        nb.textContent = idx < stories.length-1 ? 'Next Passage →' : 'See Results 🎉';
-        nb.style.cssText = 'padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#5ECDA0,#4ECDC4);color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;width:100%;margin-top:8px;';
-        nb.onclick = function(){ idx++; render(); };
-        body.appendChild(nb);
-        
-        // Scroll to show explanation
-        setTimeout(function(){ expDiv.scrollIntoView({behavior:'smooth',block:'nearest'}); }, 100);
-      };
-      body.appendChild(btn);
+    body.style.cssText = 'flex:1;overflow-y:auto;padding:16px;';
+
+    // Story cards
+    stories.forEach(function(story, idx) {
+      var card = document.createElement('div');
+      card.style.cssText = 'background:white;border-radius:20px;padding:20px;margin-bottom:14px;box-shadow:0 4px 16px rgba(29,78,216,.1);cursor:pointer;display:flex;align-items:center;gap:16px;transition:transform .15s;';
+      card.innerHTML = '<div style="font-size:3.5rem;flex-shrink:0;">'+story.cover+'</div>'
+        + '<div style="flex:1;">'
+        + '<div style="font-family:Baloo 2,cursive;font-size:1.05rem;font-weight:800;color:#1E3A5F;margin-bottom:4px;">'+story.title+'</div>'
+        + '<div style="font-size:.8rem;color:#3B82F6;font-weight:700;margin-bottom:4px;">'+story.theme+'</div>'
+        + '<div style="display:flex;gap:8px;flex-wrap:wrap;">'
+        + '<span style="font-size:.7rem;background:#DBEAFE;color:#1D4ED8;padding:3px 8px;border-radius:20px;font-weight:700;">'+story.lexile+'</span>'
+        + '<span style="font-size:.7rem;background:#F0FDF4;color:#166534;padding:3px 8px;border-radius:20px;font-weight:700;">'+story.pages.length+' pages</span>'
+        + '<span style="font-size:.7rem;background:#FEF3C7;color:#92400E;padding:3px 8px;border-radius:20px;font-weight:700;">'+story.quiz.length+' questions</span>'
+        + '</div></div>'
+        + '<div style="font-size:1.4rem;color:#93C5FD;">›</div>';
+      card.onclick = function() { readStory(story); };
+      card.onmouseover = function(){ card.style.transform='translateX(4px)'; };
+      card.onmouseout = function(){ card.style.transform='translateX(0)'; };
+      body.appendChild(card);
     });
-    
+
+    // Vocab word of the day
+    var allVocab = stories.reduce(function(acc,s){return acc.concat(s.vocab||[]);}, []);
+    if(allVocab.length > 0) {
+      var wod = allVocab[Math.floor(Math.random()*allVocab.length)];
+      var wc = document.createElement('div');
+      wc.style.cssText = 'background:linear-gradient(135deg,#FEF3C7,#FDE68A);border-radius:16px;padding:14px 16px;margin-bottom:14px;';
+      wc.innerHTML = '<div style="font-weight:800;color:#92400E;font-size:.85rem;margin-bottom:4px;">⭐ Vocabulary Word</div>'
+        + '<div style="font-size:1.1rem;font-weight:800;color:#78350F;">'+wod+'</div>'
+        + '<div style="font-size:.8rem;color:#92400E;">Find it in today\'s stories!</div>';
+      body.insertBefore(wc, body.firstChild);
+    }
+
     ov.appendChild(body);
   }
-  
-  document.body.appendChild(ov);
-  render();
+
+  // ── STORY READER ────────────────────────────────────────────────
+  function readStory(story) {
+    var pageIdx = 0;
+    var totalPages = story.pages.length;
+
+    function showPage() {
+      var pg = story.pages[pageIdx];
+      ov.innerHTML = '';
+
+      // Header with star progress (Duolingo-style)
+      var hdr = document.createElement('div');
+      hdr.style.cssText = 'background:linear-gradient(135deg,'+CA+','+CB+');padding:12px 16px;display:flex;align-items:center;gap:8px;flex-shrink:0;';
+      var stars = '';
+      for(var i=0;i<totalPages;i++) {
+        stars += '<div style="width:28px;height:6px;border-radius:3px;background:'+(i<=pageIdx?'rgba(255,255,255,.9)':'rgba(255,255,255,.3')+');transition:background .3s;"></div>';
+      }
+      hdr.innerHTML = '<button onclick="showLibrary()" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:.9rem;flex-shrink:0;">✕</button>'
+        + '<div style="display:flex;gap:3px;flex:1;justify-content:center;">'+stars+'</div>'
+        + '<div style="font-size:.75rem;color:rgba(255,255,255,.8);flex-shrink:0;">'+(pageIdx+1)+'/'+totalPages+'</div>';
+      ov.appendChild(hdr);
+
+      // Story meta (page 1 only)
+      if(pageIdx === 0) {
+        var meta = document.createElement('div');
+        meta.style.cssText = 'background:white;margin:12px 16px 0;border-radius:16px;padding:12px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,.06);flex-shrink:0;';
+        meta.innerHTML = '<div style="font-size:2.5rem;">'+story.cover+'</div>'
+          + '<div><div style="font-family:Baloo 2,cursive;font-size:.95rem;font-weight:800;color:#1E3A5F;">'+story.title+'</div>'
+          + '<div style="font-size:.75rem;color:#3B82F6;font-weight:700;">'+story.theme+' · '+story.lexile+'</div></div>';
+        ov.appendChild(meta);
+      }
+
+      // Text area
+      var textWrap = document.createElement('div');
+      textWrap.style.cssText = 'flex:1;padding:16px;overflow-y:auto;';
+
+      var textCard = document.createElement('div');
+      textCard.style.cssText = 'background:white;border-radius:20px;padding:22px;box-shadow:0 4px 16px rgba(29,78,216,.1);';
+
+      // Highlight vocab word if present
+      var displayText = pg.text;
+      if(pg.highlight) {
+        var re = new RegExp('('+pg.highlight+')', 'i');
+        displayText = pg.text.replace(re, '<mark style="background:#FEF3C7;border-radius:4px;padding:0 2px;font-weight:800;">$1</mark>');
+      }
+
+      var textEl = document.createElement('div');
+      textEl.style.cssText = 'font-family:Baloo 2,cursive;font-size:1.15rem;font-weight:700;color:#1E3A5F;line-height:1.85;';
+      textEl.innerHTML = displayText;
+      textCard.appendChild(textEl);
+
+      // Audio button
+      var audioRow = document.createElement('div');
+      audioRow.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-top:12px;';
+      var readBtn = document.createElement('button');
+      readBtn.style.cssText = 'padding:8px 16px;border-radius:20px;border:none;background:#DBEAFE;color:#1D4ED8;font-weight:700;font-size:.82rem;cursor:pointer;';
+      readBtn.innerHTML = '🔊 Read aloud';
+      readBtn.onclick = function() {
+        if('speechSynthesis' in window) {
+          var u = new SpeechSynthesisUtterance(pg.text);
+          u.rate = 0.82; u.pitch = 1.05;
+          window.speechSynthesis.cancel();
+          window.speechSynthesis.speak(u);
+        }
+      };
+      audioRow.appendChild(readBtn);
+
+      if(pg.highlight) {
+        var vocabChip = document.createElement('span');
+        vocabChip.style.cssText = 'font-size:.72rem;background:#FEF3C7;color:#92400E;padding:4px 10px;border-radius:20px;font-weight:800;cursor:pointer;';
+        vocabChip.textContent = '📖 ' + pg.highlight;
+        vocabChip.onclick = function(){ toast('Vocab: "'+pg.highlight+'" — look for it in the text!'); };
+        audioRow.appendChild(vocabChip);
+      }
+      textCard.appendChild(audioRow);
+      textWrap.appendChild(textCard);
+      ov.appendChild(textWrap);
+
+      // Navigation
+      var nav = document.createElement('div');
+      nav.style.cssText = 'padding:12px 16px 24px;display:flex;gap:10px;flex-shrink:0;';
+      var back = document.createElement('button');
+      back.textContent = '←';
+      back.style.cssText = 'padding:14px 22px;border-radius:40px;border:2px solid #BFDBFE;background:white;font-size:1.1rem;cursor:pointer;'+(pageIdx===0?'opacity:.35;pointer-events:none;':'');
+      back.onclick = function(){ if(pageIdx>0){window.speechSynthesis&&window.speechSynthesis.cancel();pageIdx--;showPage();} };
+      var fwd = document.createElement('button');
+      fwd.textContent = pageIdx===totalPages-1 ? '📝 Take the Quiz →' : 'Next →';
+      fwd.style.cssText = 'flex:1;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 14px rgba(29,78,216,.35);';
+      fwd.onclick = function(){
+        window.speechSynthesis&&window.speechSynthesis.cancel();
+        if(pageIdx<totalPages-1){pageIdx++;showPage();}
+        else{showQuiz(story);}
+      };
+      nav.appendChild(back);
+      nav.appendChild(fwd);
+      ov.appendChild(nav);
+    }
+
+    showPage();
+  }
+
+  // ── QUIZ ────────────────────────────────────────────────────────
+  function showQuiz(story) {
+    var qIdx=0, score=0, total=story.quiz.length;
+
+    function showQ() {
+      if(qIdx>=total){showResults();return;}
+      var q=story.quiz[qIdx];
+      ov.innerHTML='';
+
+      var hdr=document.createElement('div');
+      hdr.style.cssText='background:linear-gradient(135deg,'+CA+','+CB+');padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;';
+      hdr.innerHTML='<span style="font-family:Baloo 2,cursive;color:white;font-weight:800;">📝 Comprehension Check</span>'
+        +'<span style="color:rgba(255,255,255,.8);font-size:.85rem;">'+(qIdx+1)+' / '+total+'</span>';
+      ov.appendChild(hdr);
+
+      var body=document.createElement('div');
+      body.style.cssText='flex:1;padding:20px;overflow-y:auto;';
+
+      // Progress dots
+      var dots='';
+      for(var i=0;i<total;i++) dots+='<div style="width:10px;height:10px;border-radius:50%;background:'+(i<qIdx?'#22c55e':i===qIdx?CB:'#DBEAFE')+'"></div>';
+      var dotsRow=document.createElement('div');
+      dotsRow.style.cssText='display:flex;gap:6px;justify-content:center;margin-bottom:16px;';
+      dotsRow.innerHTML=dots;
+      body.appendChild(dotsRow);
+
+      // Story title chip
+      var chip=document.createElement('div');
+      chip.style.cssText='text-align:center;margin-bottom:12px;';
+      chip.innerHTML='<span style="font-size:.75rem;background:#DBEAFE;color:#1D4ED8;padding:4px 12px;border-radius:20px;font-weight:700;">'+story.cover+' '+story.title+'</span>';
+      body.appendChild(chip);
+
+      var qCard=document.createElement('div');
+      qCard.style.cssText='background:white;border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 4px 14px rgba(29,78,216,.1);';
+      qCard.innerHTML='<div style="font-family:Baloo 2,cursive;font-size:1.05rem;font-weight:800;color:#1E3A5F;line-height:1.5;">'+q.q+'</div>';
+      body.appendChild(qCard);
+
+      var answered=false;
+      q.opts.forEach(function(opt,i){
+        var btn=document.createElement('button');
+        btn.textContent=opt;
+        btn.dataset.idx=i;
+        btn.style.cssText='width:100%;padding:14px 16px;margin-bottom:10px;border-radius:16px;border:2px solid #BFDBFE;background:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;text-align:left;transition:all .15s;';
+        btn.onclick=function(){
+          if(answered)return; answered=true;
+          var correct=(i===q.a);
+          if(correct)score++;
+          body.querySelectorAll('button[data-idx]').forEach(function(b){
+            b.style.pointerEvents='none';
+            if(parseInt(b.dataset.idx)===q.a){b.style.background='#E8FBF3';b.style.borderColor='#22c55e';b.style.color='#166534';}
+          });
+          if(!correct){btn.style.background='#FFF0EE';btn.style.borderColor='#ef4444';btn.style.color='#991b1b';}
+          var expl=document.createElement('div');
+          expl.style.cssText='background:'+(correct?'#E8FBF3':'#EFF6FF')+';border-radius:12px;padding:12px 14px;margin-bottom:12px;font-size:.88rem;font-weight:700;color:'+(correct?'#166534':'#1D4ED8')+';line-height:1.5;';
+          expl.innerHTML=(correct?'✅ Correct! ':'💡 ')+q.explain;
+          body.appendChild(expl);
+          var nb=document.createElement('button');
+          nb.textContent=qIdx<total-1?'Next Question →':'See My Score 🏆';
+          nb.style.cssText='width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 14px rgba(29,78,216,.3);';
+          nb.onclick=function(){qIdx++;showQ();};
+          body.appendChild(nb);
+        };
+        body.appendChild(btn);
+      });
+      ov.appendChild(body);
+    }
+
+    function showResults(){
+      ov.innerHTML='';
+      var hdr=document.createElement('div');
+      hdr.style.cssText='background:linear-gradient(135deg,'+CA+','+CB+');padding:14px 20px;text-align:center;flex-shrink:0;';
+      hdr.innerHTML='<div style="font-family:Baloo 2,cursive;color:white;font-weight:800;font-size:1.05rem;">📚 Story Complete!</div>';
+      ov.appendChild(hdr);
+      var pct=Math.round(score/total*100);
+      var body=document.createElement('div');
+      body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;';
+      body.innerHTML='<div style="font-size:4.5rem;margin-bottom:8px;">'+(pct>=80?'🏆':pct>=60?'⭐':'💪')+'</div>'
+        +'<div style="font-size:1.8rem;margin-bottom:4px;">'+story.cover+'</div>'
+        +'<div style="font-family:Baloo 2,cursive;font-size:1.6rem;font-weight:800;color:'+CA+';">'+score+'/'+total+'</div>'
+        +'<div style="color:#555;font-size:.95rem;margin:8px 0 8px;">'+(pct>=80?'Excellent comprehension! 🌟':pct>=60?'Good reading! Keep it up!':'Try reading the story again — you\'ll get it!')+'</div>'
+        +'<div style="background:#DBEAFE;border-radius:12px;padding:10px 16px;margin-bottom:20px;font-size:.82rem;color:#1D4ED8;font-weight:700;">Theme: '+story.theme+'</div>'
+        +'<div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">'
+        +'<button onclick="showLibrary()" style="padding:14px 22px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;">More Stories 📚</button>'
+        +'<button onclick="var o=document.getElementById(\'passageOv\');if(o)o.remove();" style="padding:14px 22px;border-radius:40px;border:none;background:#DBEAFE;color:'+CA+';font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;">🏠 Home</button>'
+        +'</div>';
+      ov.appendChild(body);
+      if(typeof sessionData!=='undefined'&&score>0){
+        sessionData.stars=(sessionData.stars||0)+score*20;
+        var el=document.getElementById('statStars');
+        if(el)el.textContent=sessionData.stars;
+        toast('+'+score*20+' Stars! ⭐ Great reading!');
+      }
+    }
+
+    showQ();
+  }
+
+  showLibrary();
 }
 
-
-
-function showBloomyVideo() {
-  var old = document.getElementById('bloomyVideoOv'); if(old) old.remove();
-  var ov = document.createElement('div');
-  ov.id = 'bloomyVideoOv';
-  ov.style.cssText = 'position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;';
-  var video = document.createElement('video');
-  video.src = '/bloomy_happy.mp4';
-  video.autoplay = true;
-  video.playsInline = true;
-  video.muted = false;
-  video.style.cssText = 'width:280px;height:280px;object-fit:contain;';
-  function done(){ ov.remove(); }
-  video.onended = done;
-  video.onerror = done;
-  ov.onclick = done;
-  video.onclick = done;
-  video.style.cursor = "pointer";
-  setTimeout(done, 4000);
-  ov.onclick = done;
-  ov.appendChild(video);
-  document.body.appendChild(ov);
-  video.play().catch(done);
-}
-
-function showBloomy(mood) {
-  var old = document.getElementById('bloomyPop'); if(old) old.remove();
-  var moods = {
-    'wave':      'bloomy_wave.png',
-    'celebrate': 'bloomy_celebrate.png',
-    'sit':       'bloomy_sit.png',
-    'think':     'bloomy_think.png',
-    'happy':     'bloomy_happy.png',
-  };
-  var ov = document.createElement('div');
-  ov.id = 'bloomyPop';
-  ov.style.cssText = 'position:fixed;bottom:80px;right:16px;z-index:9000;animation:bloomyPop .3s ease;pointer-events:none;';
-  var img = document.createElement('img');
-  img.src = '/' + (moods[mood] || moods['happy']);
-  img.style.cssText = 'width:100px;height:100px;object-fit:contain;filter:drop-shadow(0 4px 12px rgba(0,0,0,.2));';
-  ov.appendChild(img);
-  document.body.appendChild(ov);
-  setTimeout(function(){ ov.remove(); }, 2000);
-}
 
 function openDinoStories(grade) {
   var STORIES = {
