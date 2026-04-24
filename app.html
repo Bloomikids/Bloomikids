@@ -1,4 +1,4 @@
-<!-- BloomiKids v359 -->
+<!-- BloomiKids v362 -->
 <!DOCTYPE html>
 <html lang="en"><!-- v369 -->
 <head>
@@ -74,10 +74,10 @@ input:-webkit-autofill:focus {
 .auth-tab { flex:1; padding:10px; border-radius:40px; border:none; cursor:pointer; font-family:'Nunito',sans-serif; font-size:.9rem; font-weight:700; background:#F0F0F8; color:var(--muted); transition:all .2s; }
 .auth-tab.active { background:var(--mint); color:white; }
 .form-group { margin-bottom:16px; }
-.form-group label { display:block; font-weight:700; font-size:.88rem; color:var(--muted); margin-bottom:6px; text-transform:uppercase; letter-spacing:.5px; }
+.form-group label { display:block; font-weight:700; font-size:.88rem; color:rgba(255,255,255,.9); margin-bottom:6px; text-transform:uppercase; letter-spacing:.5px; }
 .form-group input { width:100%; padding:13px 16px; border-radius:14px; border:2px solid #F0F0F8; font-size:1rem; font-family:'Nunito',sans-serif; outline:none; transition:border-color .2s; background:#FAFAFA; }
 .form-group input:focus { border-color:var(--mint); background:white; }
-.auth-btn { width:100%; padding:14px; border-radius:40px; border:none; cursor:pointer; font-family:'Nunito',sans-serif; font-size:1rem; font-weight:800; background:linear-gradient(135deg,var(--mint),var(--sky)); color:white; margin-top:8px; transition:all .2s; box-shadow:0 8px 20px rgba(94,205,160,.35); }
+.auth-btn { width:100%; padding:14px; border-radius:40px; border:none; cursor:pointer; font-family:'Nunito',sans-serif; font-size:1rem; font-weight:800; background:linear-gradient(135deg,#7C3AED,#A78BFAar(--sky)); color:white; margin-top:8px; transition:all .2s; box-shadow:0 8px 20px rgba(94,205,160,.35); }
 .auth-btn:hover { transform:translateY(-2px); }
 .auth-btn:disabled { opacity:.6; cursor:not-allowed; transform:none; }
 .auth-error { background:#FFF0F0; border-radius:12px; padding:10px 14px; color:var(--coral); font-size:.88rem; font-weight:700; margin-top:12px; display:none; }
@@ -683,6 +683,9 @@ img[src*="bloomy_"] {
   background: transparent !important;
   mix-blend-mode: multiply;
 }
+input[type=email], input[type=password], input[type=text] { background:rgba(255,255,255,.15) !important; color:white !important; }
+input::placeholder { color:rgba(255,255,255,.5) !important; }
+
 </style>
   <link rel="icon" href="favicon.ico" sizes="32x32">
   <link rel="icon" href="favicon.png" type="image/png">
@@ -703,7 +706,7 @@ img[src*="bloomy_"] {
 <!-- ══ AUTH ═════════════════════════════════════════════════ -->
 <div id="authScreen">
   <div class="auth-card">
-    <div class="auth-logo" style="text-align:center;"><img src="logo.png" alt="BloomiKids" style="width:120px;height:120px;object-fit:contain;display:block !important;margin:0 auto 8px;border-radius:50%;background:#EDE9FF;"></div>
+    <div class="auth-logo" style="text-align:center;"><img src="logo.png" alt="BloomiKids" style="width:clamp(80px,15vw,140px);height:auto;object-fit:contain;display:block !important;margin:0 auto 8px;border-radius:50%;background:#EDE9FF;"></div>
     <div class="auth-tagline">Learn 📚 &nbsp;·&nbsp; Breathe 🧘 &nbsp;·&nbsp; Read 📖</div>
     <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:-16px 0 12px;">
       <span style="font-size:.62rem;font-weight:800;background:#E8FBF3;color:#2A9970;padding:3px 9px;border-radius:20px;">No Ads</span>
@@ -983,6 +986,13 @@ img[src*="bloomy_"] {
         <div class="progress-header"><span class="progress-label">🌬 Breathing</span><span class="progress-val" id="yogaBreathPct">0/2</span></div>
         <div class="progress-bar"><div class="progress-fill fill-mint" id="yogaBreathBar" style="width:0%"></div></div>
       </div>
+    </div>
+
+    <!-- Calm Board -->
+    <div style="margin:16px 16px 0;">
+      <button onclick="openBusyBoard()" style="width:100%;padding:16px;border-radius:20px;border:none;background:linear-gradient(135deg,#1a1a2e,#4F46E5);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(79,70,229,.35);">
+        <span style="font-size:1.4rem;">🌙</span> Calm Board — Breathe &amp; Relax
+      </button>
     </div>
   </div>
 
@@ -3317,6 +3327,7 @@ async function selectChild(child) {
   applyGradeUI();
   buildSubjectCards();
   buildReadingButtons();
+  buildGradeGames();
   buildYogaGrid();
   buildProgressSection();
   // Header
@@ -3414,6 +3425,87 @@ function buildReadingButtons() {
     + '<span style="font-size:1.5rem;">🎓</span><span>Reading Lessons</span></button>';
 
   container.innerHTML = btns;
+}
+
+function buildGradeGames() {
+  var container = document.getElementById('gradeGamesSection');
+  if (!container) return;
+
+  // Grade-appropriate game tiles
+  var GRADE_GAMES = {
+    PreK: [
+      {icon:'🔢', label:'Count It!',       fn:"openMathGame('PreK')",   color:'#22c55e'},
+      {icon:'🔤', label:'ABC Time',        fn:"openLangGame('PreK')",   color:'#EC4899'},
+      {icon:'🎵', label:'Patterns',        fn:"openSequencer('PreK')",  color:'#7C3AED'},
+      {icon:'🎨', label:'Colors Sort',     fn:"openColorsGame('PreK')", color:'#F59E0B'},
+      {icon:'🐾', label:'Animal Sort',     fn:"openScienceGame('PreK')",color:'#0EA5E9'},
+      {icon:'📚', label:'Busy Book',       fn:"openBusyBook('PreK')",   color:'#0369A1'},
+    ],
+    K: [
+      {icon:'🔢', label:'Counting',        fn:"openMathGame('K')",      color:'#22c55e'},
+      {icon:'✏️', label:'Word Builder',    fn:"openLangGame('K')",      color:'#EC4899'},
+      {icon:'🎵', label:'Patterns',        fn:"openSequencer('K')",     color:'#7C3AED'},
+      {icon:'🎨', label:'Colors & Shapes', fn:"openColorsGame('K')",    color:'#F59E0B'},
+      {icon:'🔬', label:'Science Sort',    fn:"openScienceGame('K')",   color:'#0EA5E9'},
+      {icon:'📚', label:'Busy Book',       fn:"openBusyBook('K')",      color:'#0369A1'},
+    ],
+    1: [
+      {icon:'➕', label:'Math Practice',   fn:"openMathGame('1')",      color:'#22c55e'},
+      {icon:'🛒', label:'Shop Math',       fn:"openShopMath('1')",      color:'#F59E0B'},
+      {icon:'📖', label:'Word Builder',    fn:"openLangGame('1')",      color:'#EC4899'},
+      {icon:'🔬', label:'Science Sort',    fn:"openScienceGame('1')",   color:'#0EA5E9'},
+      {icon:'📚', label:'Busy Book',       fn:"openBusyBook('1')",      color:'#0369A1'},
+      {icon:'🌍', label:'Social Studies',  fn:"openSSGame('1')",        color:'#8B5CF6'},
+    ],
+    2: [
+      {icon:'➕', label:'Add & Subtract',  fn:"openMathGame('2')",      color:'#22c55e'},
+      {icon:'½',  label:'Fractions',       fn:"openMathGame('2')",      color:'#6366F1'},
+      {icon:'✏️', label:'Word Builder',    fn:"openLangGame('2')",      color:'#EC4899'},
+      {icon:'🔬', label:'Science Sort',    fn:"openScienceGame('2')",   color:'#0EA5E9'},
+      {icon:'🌍', label:'Social Studies',  fn:"openSSGame('2')",        color:'#F59E0B'},
+      {icon:'🎨', label:'Shapes Sort',     fn:"openColorsGame('2')",    color:'#8B5CF6'},
+      {icon:'🛒', label:'Shop Math',       fn:"openShopMath('2')",      color:'#F59E0B'},
+      {icon:'📚', label:'Busy Book',       fn:"openBusyBook('2')",      color:'#0369A1'},
+    ],
+    3: [
+      {icon:'✖️', label:'Multiply!',       fn:"openMathGame('3')",      color:'#22c55e'},
+      {icon:'🏛',  label:'Place Values',   fn:"openMathGame('3')",      color:'#6366F1'},
+      {icon:'📝', label:'Homophones',      fn:"openLangGame('3')",      color:'#EC4899'},
+      {icon:'⚗️', label:'Science Sort',    fn:"openScienceGame('3')",   color:'#0EA5E9'},
+      {icon:'🌍', label:'Social Studies',  fn:"openSSGame('3')",        color:'#F59E0B'},
+      {icon:'📐', label:'Shapes Sort',     fn:"openColorsGame('3')",    color:'#8B5CF6'},
+      {icon:'🛒', label:'Shop Math',       fn:"openShopMath('3')",      color:'#F59E0B'},
+      {icon:'📚', label:'Busy Book',       fn:"openBusyBook('3')",      color:'#0369A1'},
+    ],
+    4: [
+      {icon:'✖️', label:'Multiply!',       fn:"openMathGame('4')",      color:'#22c55e'},
+      {icon:'➗', label:'Division',        fn:"openMathGame('4')",      color:'#6366F1'},
+      {icon:'📝', label:'Language Arts',   fn:"openLangGame('4')",      color:'#EC4899'},
+      {icon:'⚗️', label:'Science Sort',    fn:"openScienceGame('4')",   color:'#0EA5E9'},
+      {icon:'🌍', label:'Social Studies',  fn:"openSSGame('4')",        color:'#F59E0B'},
+      {icon:'📐', label:'Angles Sort',     fn:"openColorsGame('4')",    color:'#8B5CF6'},
+    ],
+    5: [
+      {icon:'➗', label:'Long Division',   fn:"openMathGame('5')",      color:'#22c55e'},
+      {icon:'🎯', label:'Estimation',      fn:"openMathGame('5')",      color:'#6366F1'},
+      {icon:'📝', label:'Vocab & Grammar', fn:"openLangGame('5')",      color:'#EC4899'},
+      {icon:'🔬', label:'Science Sort',    fn:"openScienceGame('5')",   color:'#0EA5E9'},
+      {icon:'🌍', label:'Social Studies',  fn:"openSSGame('5')",        color:'#F59E0B'},
+      {icon:'⚗️', label:'Mixtures Sort',   fn:"openColorsGame('5')",    color:'#8B5CF6'},
+    ],
+  };
+
+  var games = GRADE_GAMES[activeGrade] || GRADE_GAMES['2'];
+  container.innerHTML = '<div class="section-title" style="margin-bottom:12px;">🎮 Practice Games</div>'
+    + '<div style="display:grid;grid-template-columns:'+(games.length>4?'1fr 1fr 1fr':'1fr 1fr')+';gap:10px;">'
+    + games.map(function(g) {
+        return '<div onclick="'+g.fn+'" style="background:linear-gradient(135deg,'+g.color+'DD,'+g.color+');border-radius:18px;padding:16px 10px;text-align:center;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.15);position:relative;overflow:hidden;">'
+          +'<div style="position:absolute;top:0;left:0;right:0;height:40%;background:linear-gradient(180deg,rgba(255,255,255,.25),transparent);border-radius:18px 18px 50% 50%;pointer-events:none;"></div>'
+          +'<div style="font-size:2rem;margin-bottom:6px;position:relative;z-index:1;">'+g.icon+'</div>'
+          +'<div style="font-size:.8rem;font-weight:800;color:white;position:relative;z-index:1;">'+g.label+'</div>'
+          +'</div>';
+      }).join('')
+    + '</div>';
 }
 
 function buildSubjectCards() {
@@ -4117,7 +4209,8 @@ function buildArtTab() {
 
   // Show/hide drawing prompt based on grade
   var dpSection = document.getElementById('drawPromptSection');
-  if (dpSection) dpSection.style.display = (activeGrade==='PreK'||activeGrade==='K') ? 'none' : '';
+  var earlyGrades=['PreK','K','1','2'];
+  if (dpSection) dpSection.style.display = earlyGrades.indexOf(activeGrade)>=0 ? 'none' : '';
 
   // Drawing canvas for PreK and K (finger drawing), older grades also get it
   var canvasSection = document.getElementById('artDrawCanvas');
@@ -4411,7 +4504,12 @@ function _startMood(idx) {
   var nameEl = document.getElementById('trackName');
   if (nameEl) nameEl.textContent = track.name;
   var listEl = document.getElementById('trackList');
-  if (listEl) listEl.textContent = 'Now playing: ' + track.name + ' 🎵';
+  if (listEl) {
+    listEl.innerHTML = MUSIC_TRACKS.map(function(t,i){
+      var active = (i===_currentTrack);
+      return '<div onclick="_currentTrack='+i+';_startMood('+i+')" style="padding:8px 12px;border-radius:12px;cursor:pointer;margin-bottom:4px;font-size:.85rem;background:'+(active?'rgba(255,255,255,.25)':'rgba(255,255,255,.08)')+';color:white;font-weight:'+(active?'800':'500')+';">'+(active?'▶ ':'🎵 ')+t.name+'</div>';
+    }).join('');
+  }
 }
 
 function nextTrack() {
@@ -5232,6 +5330,586 @@ function startSmartSession(title, icon, questions, onComplete) {
   showQ();
 }
 
+// ════════════════════════════════════════════════════════════════════
+//  1. SHOP MATH — Grade 1-3 money/real-life math
+// ════════════════════════════════════════════════════════════════════
+function openShopMath(grade) {
+  var CA='#F59E0B', CB='#FCD34D';
+  var ov=document.createElement('div');
+  ov.id='shopOv';
+  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:#FFFBEB;display:flex;flex-direction:column;font-family:Nunito,sans-serif;';
+  document.body.appendChild(ov);
+
+  function hdr(title){
+    var h=document.createElement('div');
+    h.style.cssText='background:linear-gradient(135deg,'+CA+','+CB+');padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;box-shadow:0 4px 16px rgba(0,0,0,.12);';
+    h.innerHTML='<div style="font-size:1.4rem;">🛒</div><div style="font-family:Baloo 2,cursive;font-size:1.05rem;font-weight:800;color:white;">'+title+'</div><button data-closeov="shopOv" style="background:rgba(255,255,255,.3);border:none;color:white;border-radius:50%;width:34px;height:34px;cursor:pointer;font-weight:800;font-size:1rem;">✕</button>';
+    return h;
+  }
+
+  var SHOPS = {
+    1: {
+      name:"Sunny Fruit Stand 🍎",
+      items:[
+        {emoji:'🍎',name:'Apple',price:5},
+        {emoji:'🍌',name:'Banana',price:3},
+        {emoji:'🍊',name:'Orange',price:4},
+        {emoji:'🍇',name:'Grapes',price:7},
+        {emoji:'🍓',name:'Strawberry',price:6},
+        {emoji:'🍋',name:'Lemon',price:2},
+      ],
+      currency:'pennies', unit:'¢', mult:1, max:20
+    },
+    2: {
+      name:"Corner Toy Shop 🧸",
+      items:[
+        {emoji:'🧸',name:'Teddy Bear',price:25},
+        {emoji:'🎈',name:'Balloon',price:10},
+        {emoji:'✏️',name:'Pencil',price:15},
+        {emoji:'📚',name:'Book',price:30},
+        {emoji:'🎨',name:'Crayons',price:20},
+        {emoji:'🪀',name:'Yo-yo',price:35},
+      ],
+      currency:'cents', unit:'¢', mult:1, max:75
+    },
+    3: {
+      name:"School Supply Store 📐",
+      items:[
+        {emoji:'📓',name:'Notebook',price:1.50},
+        {emoji:'✂️',name:'Scissors',price:2.00},
+        {emoji:'📏',name:'Ruler',price:0.75},
+        {emoji:'🖊️',name:'Pen set',price:3.25},
+        {emoji:'📌',name:'Pushpins',price:1.00},
+        {emoji:'🗂️',name:'Folder',price:2.50},
+      ],
+      currency:'dollars', unit:'$', mult:1, max:5.00, decimal:true
+    }
+  };
+
+  var shop = SHOPS[grade] || SHOPS['2'];
+  var score=0, round=0, ROUNDS=6;
+  var cart=[], budget=0, targetSpend=0;
+
+  function makeRound(){
+    if(round>=ROUNDS){showResults();return;}
+    round++;
+
+    // Pick random scenario
+    var scenarioType = round<=2?'howmuch':round<=4?'canafford':'makechange';
+    var item = shop.items[Math.floor(Math.random()*shop.items.length)];
+    var qty = Math.floor(Math.random()*3)+1;
+    var total = shop.decimal ? Math.round(item.price*qty*100)/100 : item.price*qty;
+    var given = shop.decimal ? total + [0.25,0.50,1.00][Math.floor(Math.random()*3)] : total + [5,10,15][Math.floor(Math.random()*3)];
+    given = shop.decimal ? Math.round(given*100)/100 : given;
+    var change = shop.decimal ? Math.round((given-total)*100)/100 : given-total;
+
+    ov.innerHTML='';
+    ov.appendChild(hdr('🛒 '+shop.name+' — Round '+round+'/'+ROUNDS));
+
+    var body=document.createElement('div');
+    body.style.cssText='flex:1;overflow-y:auto;padding:20px;max-width:480px;margin:0 auto;width:100%;';
+
+    // Progress bar
+    var prog=document.createElement('div');
+    prog.style.cssText='background:#FDE68A;height:8px;border-radius:4px;margin-bottom:16px;overflow:hidden;';
+    prog.innerHTML='<div style="background:linear-gradient(90deg,'+CA+','+CB+');height:100%;width:'+Math.round((round-1)/ROUNDS*100)+'%;border-radius:4px;transition:width .3s;"></div>';
+    body.appendChild(prog);
+
+    // Shop display
+    var shopCard=document.createElement('div');
+    shopCard.style.cssText='background:white;border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 4px 16px rgba(245,158,11,.15);text-align:center;';
+
+    var prompt='', ans=0, opts=[];
+    if(scenarioType==='howmuch'){
+      prompt='You want to buy '+qty+' '+item.name+(qty>1?'s':'')+'. Each costs '+shop.unit+(shop.decimal?item.price.toFixed(2):item.price)+'. How much do you pay?';
+      ans=total;
+      var w=[ans+(shop.decimal?.25:5), ans+(shop.decimal?.50:10), ans-(shop.decimal?.25:5)].filter(function(x){return x>0&&x!==ans;});
+      opts=shuffle([ans,w[0],w[1],w[2]||ans+(shop.decimal?1:3)].slice(0,4));
+    } else if(scenarioType==='canafford'){
+      var wallet=shop.decimal?[1.00,2.00,3.00][Math.floor(Math.random()*3)]:[10,15,20][Math.floor(Math.random()*3)];
+      prompt='You have '+shop.unit+(shop.decimal?wallet.toFixed(2):wallet)+' in your piggy bank. The '+item.name+' costs '+shop.unit+(shop.decimal?item.price.toFixed(2):item.price)+'. Can you buy it?';
+      ans=wallet>=item.price?0:1; // 0=yes 1=no
+      opts=['Yes! I have enough 😊','No, I need more money 💰','I don\'t know','Maybe'];
+    } else {
+      prompt='You buy a '+item.name+' for '+shop.unit+(shop.decimal?item.price.toFixed(2):item.price)+'. You give '+shop.unit+(shop.decimal?given.toFixed(2):given)+'. What is your change?';
+      ans=change;
+      var w2=[change+(shop.decimal?.25:5),change+(shop.decimal?.10:3),Math.abs(change-(shop.decimal?.25:5))].filter(function(x){return x>=0&&x!==change;});
+      opts=shuffle([change,w2[0]||change+1,w2[1]||change+2,w2[2]||change+4].slice(0,4));
+    }
+
+    shopCard.innerHTML='<div style="font-size:3.5rem;margin-bottom:8px;">'+item.emoji+'</div>'
+      +'<div style="font-family:Baloo 2,cursive;font-size:1.05rem;font-weight:800;color:#92400E;line-height:1.5;">'+prompt+'</div>'
+      +'<button onclick="toast(\'💡 Hint: '+( scenarioType==='howmuch'?'Multiply '+shop.unit+(shop.decimal?item.price.toFixed(2):item.price)+' × '+qty : scenarioType==='canafford'?'Compare the price with your money!':'Subtract the price from what you gave!'  )+'\')" style="margin-top:10px;padding:6px 16px;border-radius:20px;border:none;background:#FEF3C7;color:#92400E;font-weight:700;font-size:.82rem;cursor:pointer;">💡 Hint</button>';
+    body.appendChild(shopCard);
+
+    // Answer buttons
+    var grid=document.createElement('div');
+    grid.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;';
+    var answered=false;
+
+    opts.forEach(function(opt,i){
+      var btn=document.createElement('button');
+      var isCorrect = scenarioType==='canafford' ? (i===ans) : (parseFloat(opt)===parseFloat(ans));
+      var displayVal = scenarioType==='canafford' ? opt : shop.unit+(shop.decimal?parseFloat(opt).toFixed(2):opt);
+      btn.textContent=displayVal;
+      btn.style.cssText='padding:16px 10px;border-radius:16px;border:2.5px solid rgba(245,158,11,.25);background:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;color:#2D2D4E;cursor:pointer;transition:all .15s;';
+      btn.onclick=function(){
+        if(answered)return; answered=true;
+        if(isCorrect)score++;
+        grid.querySelectorAll('button').forEach(function(b,bi){
+          b.style.pointerEvents='none';
+          var bCorrect = scenarioType==='canafford'?(bi===ans):(parseFloat(opts[bi])===parseFloat(ans));
+          if(bCorrect){b.style.background='linear-gradient(135deg,#22c55e,#4ade80)';b.style.color='white';b.style.borderColor='#22c55e';}
+        });
+        if(!isCorrect){btn.style.background='linear-gradient(135deg,#ef4444,#f87171)';btn.style.color='white';btn.style.borderColor='#ef4444';}
+        var expl=document.createElement('div');
+        expl.style.cssText='background:'+(isCorrect?'#E8FBF3':'#FFF0EE')+';border-radius:12px;padding:10px 14px;margin-bottom:12px;font-size:.88rem;font-weight:700;color:'+(isCorrect?'#166534':'#991b1b')+';';
+        expl.textContent=isCorrect?'✅ Correct! Great math skills!':'❌ '+(scenarioType==='howmuch'?shop.unit+(shop.decimal?total.toFixed(2):total)+' ('+shop.unit+(shop.decimal?item.price.toFixed(2):item.price)+' × '+qty+')':scenarioType==='canafford'?(wallet>=item.price?'Yes! '+shop.unit+(shop.decimal?wallet.toFixed(2):wallet)+' ≥ '+shop.unit+(shop.decimal?item.price.toFixed(2):item.price):'No! '+shop.unit+(shop.decimal?item.price.toFixed(2):item.price)+' > '+shop.unit+(shop.decimal?wallet.toFixed(2):wallet)):'Change = '+shop.unit+(shop.decimal?given.toFixed(2):given)+' − '+shop.unit+(shop.decimal?item.price.toFixed(2):item.price)+' = '+shop.unit+(shop.decimal?change.toFixed(2):change));
+        body.appendChild(expl);
+        var nb=document.createElement('button');
+        nb.textContent=round<ROUNDS?'Next Item ➡️':'See Results 🏆';
+        nb.style.cssText='width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';
+        nb.onclick=function(){makeRound();};
+        body.appendChild(nb);
+      };
+      grid.appendChild(btn);
+    });
+    body.appendChild(grid);
+    ov.appendChild(body);
+  }
+
+  function shuffle(a){return a.slice().sort(function(){return Math.random()-.5;});}
+
+  function showResults(){
+    ov.innerHTML='';
+    ov.appendChild(hdr('🛒 Shop Results!'));
+    var pct=Math.round(score/ROUNDS*100);
+    var body=document.createElement('div');
+    body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;';
+    body.innerHTML='<div style="font-size:5rem;margin-bottom:8px;">'+(pct>=80?'🏆':pct>=50?'🌟':'💪')+'</div>'
+      +'<div style="font-size:3rem;margin-bottom:4px;">'+shop.items[0].emoji+'</div>'
+      +'<div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:'+CA+';">'+score+'/'+ROUNDS+'</div>'
+      +'<div style="color:#666;margin:8px 0 24px;">'+(pct>=80?'Amazing! You\'re a great shopper!':pct>=50?'Good job! Keep practicing!':'Math makes shopping easier — keep going!')+'</div>'
+      +'<div style="display:flex;gap:12px;">'
+      +'<button onclick="score=0;round=0;makeRound();" style="padding:14px 24px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;">Shop Again 🛒</button>'
+      +'<button onclick="var o=document.getElementById(\'shopOv\');if(o)o.remove();" style="padding:14px 24px;border-radius:40px;border:none;background:#FEF3C7;color:'+CA+';font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;">Home 🏠</button>'
+      +'</div>';
+    ov.appendChild(body);
+    if(typeof sessionData!=='undefined'&&score>0){sessionData.stars=(sessionData.stars||0)+score*15;var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;if(score>0)toast('+'+score*15+' Stars! ⭐');}
+  }
+
+  makeRound();
+}
+
+// ════════════════════════════════════════════════════════════════════
+//  2. BUSY BOOK — Interactive grade-level encyclopedia
+// ════════════════════════════════════════════════════════════════════
+function openBusyBook(grade) {
+  var CA='#0EA5E9', CB='#38BDF8';
+  var ov=document.createElement('div');
+  ov.id='busyBookOv';
+  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:#F0F9FF;display:flex;flex-direction:column;font-family:Nunito,sans-serif;';
+  document.body.appendChild(ov);
+
+  var BOOKS = {
+    PreK:[
+      {emoji:'🐶',title:'Dogs',fact:'Dogs are pets. They wag their tails when happy. Dogs say WOOF!',funFact:'A dog\'s nose print is as unique as a fingerprint!',q:'What do dogs do when happy?',opts:['Wag their tails','Meow','Fly away','Sleep'],a:0},
+      {emoji:'🌧️',title:'Rain',fact:'Rain comes from clouds. Water falls from the sky. Plants love rain!',funFact:'A raindrop falls at about 14 miles per hour.',q:'Where does rain come from?',opts:['Clouds','Mountains','The ground','The sun'],a:0},
+      {emoji:'🌱',title:'Seeds',fact:'Seeds grow into plants. They need water, soil, and sunlight. Small seeds make big trees!',funFact:'The tiniest seed in the world is the size of a grain of dust!',q:'What do seeds need to grow?',opts:['Water, soil, sunlight','Ice and snow','Darkness','Wind only'],a:0},
+      {emoji:'🐛',title:'Caterpillars',fact:'Caterpillars eat leaves all day. Then they make a cocoon and become butterflies!',funFact:'A caterpillar grows up to 100 times its size before becoming a butterfly.',q:'What does a caterpillar become?',opts:['A butterfly','A bee','A dragonfly','A moth'],a:0},
+      {emoji:'⭐',title:'Stars',fact:'Stars are giant balls of hot gas in space. The sun is a star! Stars twinkle at night.',funFact:'There are more stars in the universe than grains of sand on Earth.',q:'What is the sun?',opts:['A star','A planet','A moon','A cloud'],a:0},
+      {emoji:'🌊',title:'Oceans',fact:'Oceans are huge bodies of salt water. Fish and whales live there. Oceans cover most of Earth!',funFact:'The deepest part of the ocean is deeper than Mount Everest is tall.',q:'What kind of water is in the ocean?',opts:['Salt water','Fresh water','Rain water','Ice water'],a:0},
+    ],
+    K:[
+      {emoji:'🦋',title:'Butterflies',fact:'Butterflies start as eggs, then become caterpillars, then go into a chrysalis, then emerge as butterflies. This is called metamorphosis!',funFact:'Butterflies taste with their feet!',q:'What is it called when a caterpillar becomes a butterfly?',opts:['Metamorphosis','Migration','Hibernation','Pollination'],a:0},
+      {emoji:'🌍',title:'Our Earth',fact:'Earth is our planet. It has land, oceans, and air. Earth spins around once every day!',funFact:'Earth is the only planet we know of with liquid water on its surface.',q:'How long does it take Earth to spin once?',opts:['1 day','1 week','1 year','1 hour'],a:0},
+      {emoji:'🌬️',title:'Wind',fact:'Wind is moving air. It can blow leaves and fly kites. Wind can also turn windmills to make electricity!',funFact:'The fastest wind ever recorded on Earth was 253 mph during a cyclone.',q:'What is wind?',opts:['Moving air','Moving water','Moving clouds','Moving dirt'],a:0},
+      {emoji:'🐝',title:'Bees',fact:'Bees collect pollen from flowers to make honey. They help flowers grow by spreading pollen. This is called pollination!',funFact:'A single bee makes only 1/12 teaspoon of honey in its whole life.',q:'What do bees make?',opts:['Honey','Milk','Juice','Butter'],a:0},
+      {emoji:'🧲',title:'Magnets',fact:'Magnets can attract or repel other magnets. North poles attract south poles. Magnets can pick up metal objects!',funFact:'Earth itself is a giant magnet — that\'s why compasses work!',q:'What can magnets attract?',opts:['Metal objects','Wood','Plastic','Paper'],a:0},
+    ],
+    1:[
+      {emoji:'⚡',title:'Electricity',fact:'Electricity powers our lights, phones, and TVs. It flows through wires. Benjamin Franklin discovered electricity in lightning!',funFact:'Lightning strikes Earth about 100 times every second.',q:'Who discovered electricity in lightning?',opts:['Benjamin Franklin','George Washington','Abraham Lincoln','Thomas Edison'],a:0},
+      {emoji:'🌿',title:'Plants & Photosynthesis',fact:'Plants make their own food using sunlight, water, and air. This process is called photosynthesis. The green color comes from a pigment called chlorophyll!',funFact:'A large tree can absorb 48 pounds of CO₂ per year.',q:'What process do plants use to make food?',opts:['Photosynthesis','Digestion','Evaporation','Migration'],a:0},
+      {emoji:'🌙',title:'The Moon',fact:'The Moon orbits Earth. It takes about 29 days to go all the way around. The Moon has no air, water, or weather!',funFact:'Footprints left by astronauts on the Moon will last millions of years.',q:'How long does the Moon take to orbit Earth?',opts:['About 29 days','About 7 days','About 365 days','About 1 day'],a:0},
+      {emoji:'🦴',title:'Bones',fact:'Your body has 206 bones! Bones protect your organs and help you move. Milk and calcium keep bones strong.',funFact:'Babies are born with about 300 bones — they fuse together as you grow.',q:'How many bones does an adult human body have?',opts:['206','100','300','52'],a:0},
+    ],
+    2:[
+      {emoji:'💧',title:'Water Cycle',fact:'Water evaporates from oceans, forms clouds, then falls as rain or snow. This cycle repeats forever! It\'s called the water cycle.',funFact:'The same water that dinosaurs drank still exists today — it\'s recycled!',q:'What happens first in the water cycle?',opts:['Evaporation','Condensation','Precipitation','Runoff'],a:0},
+      {emoji:'🌋',title:'Volcanoes',fact:'Volcanoes are mountains that can erupt with hot lava, ash, and gas. The lava cools into new rock. Hawaii was formed by volcanoes!',funFact:'There are about 1,500 active volcanoes on Earth.',q:'What comes out of a volcano when it erupts?',opts:['Lava','Water','Sand','Air'],a:0},
+      {emoji:'🦕',title:'Dinosaurs',fact:'Dinosaurs lived millions of years ago. Some were plant-eaters (herbivores) and some ate meat (carnivores). Scientists learn about them from fossils!',funFact:'The T-Rex had a bite force of 12,800 pounds — stronger than any other land animal.',q:'What do we call scientists who study dinosaurs?',opts:['Paleontologists','Biologists','Geologists','Archaeologists'],a:0},
+      {emoji:'🔭',title:'Planets',fact:'Our solar system has 8 planets. Earth is the third one from the Sun. The largest planet is Jupiter!',funFact:'One day on Venus is longer than one year on Venus — it rotates very slowly.',q:'How many planets are in our solar system?',opts:['8','9','6','12'],a:0},
+    ],
+    3:[
+      {emoji:'⚡',title:'Electricity & Circuits',fact:'Electricity flows in a loop called a circuit. For a light to turn on, the circuit must be complete. Switches break the circuit to turn things off!',funFact:'The first electric power station was built by Thomas Edison in 1882.',q:'What is the path electricity flows through called?',opts:['A circuit','A current','A wire','A loop'],a:0},
+      {emoji:'🌦️',title:'Weather vs Climate',fact:'Weather is what the sky is like today. Climate is the average weather over many years. The Amazon rainforest has a tropical climate!',funFact:'The hottest temperature ever recorded on Earth was 134°F in Death Valley.',q:'What is the difference between weather and climate?',opts:['Weather is today, climate is long-term average','They are the same','Climate is today\'s sky','Weather is yearly average'],a:0},
+      {emoji:'🦴',title:'Fossils',fact:'Fossils form when dead animals or plants are buried and slowly turn to rock over millions of years. They tell us about life on Earth long ago!',funFact:'Mary Anning, a 12-year-old girl, found the first complete Ichthyosaur fossil.',q:'How do fossils form?',opts:['Buried organisms slowly turn to rock','Animals are painted onto rocks','Scientists carve them','Ice preserves them'],a:0},
+    ],
+    4:[
+      {emoji:'⚛️',title:'Matter & Mass',fact:'Everything is made of matter — even air! Matter has mass (how much stuff) and takes up space. There are three states: solid, liquid, and gas.',funFact:'One teaspoon of neutron star material would weigh 6 billion tons on Earth.',q:'What are the three states of matter?',opts:['Solid, liquid, gas','Fire, ice, water','Hard, soft, wet','Big, small, tiny'],a:0},
+      {emoji:'🌡️',title:'Heat Energy',fact:'Heat is a form of energy that moves from hot objects to cold ones. Conduction is heat moving through solids. The Sun heats Earth through radiation!',funFact:'The surface of the Sun is about 10,000°F — hotter than any fire on Earth.',q:'What is it called when heat moves through a solid?',opts:['Conduction','Convection','Radiation','Evaporation'],a:0},
+      {emoji:'🌐',title:'Earth Features',fact:'Earth has continents, oceans, mountains, and plains. Tectonic plates move very slowly and create earthquakes and mountains over millions of years!',funFact:'The Himalayas grow about 5mm taller every year because of tectonic plate movement.',q:'What causes earthquakes?',opts:['Moving tectonic plates','Heavy rain','Strong winds','Ocean waves'],a:0},
+    ],
+    5:[
+      {emoji:'🪨',title:'Rocks & Fossils',fact:'Rocks form in three ways: igneous (from volcanoes), sedimentary (from layers), and metamorphic (changed by heat/pressure). Fossils form in sedimentary rock!',funFact:'The oldest rocks on Earth are about 4 billion years old.',q:'In what type of rock do fossils usually form?',opts:['Sedimentary','Igneous','Metamorphic','Volcanic'],a:0},
+      {emoji:'🔬',title:'Adaptations',fact:'Animals develop special features to survive in their environment. A polar bear\'s white fur blends into snow. A cactus stores water in its thick stem!',funFact:'The mimic octopus can imitate over 15 different species to avoid predators.',q:'What is it called when an animal develops features to survive?',opts:['Adaptation','Evolution','Migration','Hibernation'],a:0},
+      {emoji:'🌌',title:'Astronomy',fact:'Our galaxy is called the Milky Way. It contains over 200 billion stars. Light from distant stars takes millions of years to reach Earth!',funFact:'The light we see from the North Star tonight left it 434 years ago.',q:'What is our galaxy called?',opts:['The Milky Way','The Solar System','Andromeda','The Big Dipper'],a:0},
+    ],
+  };
+
+  var cards = BOOKS[grade] || BOOKS['2'];
+  var cardIdx = 0;
+
+  function showLibrary(){
+    ov.innerHTML='';
+    var h=document.createElement('div');
+    h.style.cssText='background:linear-gradient(135deg,'+CA+','+CB+');padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;';
+    h.innerHTML='<span style="font-family:Baloo 2,cursive;font-weight:800;color:white;font-size:1.05rem;">📚 Busy Book</span><button data-closeov="busyBookOv" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:34px;height:34px;cursor:pointer;font-weight:800;font-size:1rem;">✕</button>';
+    ov.appendChild(h);
+    var body=document.createElement('div');
+    body.style.cssText='flex:1;overflow-y:auto;padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start;';
+    cards.forEach(function(card,i){
+      var tile=document.createElement('div');
+      tile.style.cssText='background:white;border-radius:18px;padding:20px 12px;text-align:center;cursor:pointer;box-shadow:0 4px 14px rgba(14,165,233,.15);transition:transform .15s;';
+      tile.innerHTML='<div style="font-size:2.8rem;margin-bottom:8px;">'+card.emoji+'</div><div style="font-family:Baloo 2,cursive;font-size:.9rem;font-weight:800;color:#0369A1;">'+card.title+'</div>';
+      tile.onclick=function(){cardIdx=i;showCard(i);};
+      tile.onmouseover=function(){tile.style.transform='scale(1.04)';};
+      tile.onmouseout=function(){tile.style.transform='scale(1)';};
+      body.appendChild(tile);
+    });
+    ov.appendChild(body);
+  }
+
+  function showCard(i){
+    var card=cards[i];
+    ov.innerHTML='';
+    var h=document.createElement('div');
+    h.style.cssText='background:linear-gradient(135deg,'+CA+','+CB+');padding:12px 20px;display:flex;align-items:center;gap:10px;flex-shrink:0;';
+    h.innerHTML='<button onclick="showLibrary()" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:.9rem;flex-shrink:0;">←</button>'
+      +'<div style="font-family:Baloo 2,cursive;font-weight:800;color:white;font-size:1.05rem;flex:1;text-align:center;">'+card.emoji+' '+card.title+'</div>'
+      +'<button data-closeov="busyBookOv" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:30px;height:30px;cursor:pointer;font-weight:800;flex-shrink:0;">✕</button>';
+    ov.appendChild(h);
+
+    var body=document.createElement('div');
+    body.style.cssText='flex:1;overflow-y:auto;padding:16px;max-width:480px;margin:0 auto;width:100%;';
+
+    // Main fact
+    var factCard=document.createElement('div');
+    factCard.style.cssText='background:white;border-radius:20px;padding:20px;margin-bottom:12px;box-shadow:0 4px 14px rgba(14,165,233,.12);';
+    factCard.innerHTML='<div style="font-size:4rem;text-align:center;margin-bottom:12px;">'+card.emoji+'</div>'
+      +'<div style="font-family:Baloo 2,cursive;font-size:1.1rem;font-weight:800;color:#0369A1;margin-bottom:8px;">'+card.title+'</div>'
+      +'<div style="font-size:.95rem;color:#374151;line-height:1.7;">'+card.fact+'</div>'
+      +'<button onclick="if(\'speechSynthesis\' in window){var u=new SpeechSynthesisUtterance(\''+card.fact.replace(/'/g,'')+'\');u.rate=0.85;window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}" style="margin-top:12px;padding:8px 16px;border-radius:20px;border:none;background:#E0F2FE;color:#0369A1;font-weight:700;cursor:pointer;">🔊 Read to me</button>';
+    body.appendChild(factCard);
+
+    // Fun fact
+    var funCard=document.createElement('div');
+    funCard.style.cssText='background:linear-gradient(135deg,#FEF3C7,#FDE68A);border-radius:16px;padding:16px;margin-bottom:12px;';
+    funCard.innerHTML='<div style="font-weight:800;color:#92400E;margin-bottom:4px;">🤩 Wow Factor!</div><div style="font-size:.9rem;color:#78350F;line-height:1.6;">'+card.funFact+'</div>';
+    body.appendChild(funCard);
+
+    // Quick quiz
+    var quizCard=document.createElement('div');
+    quizCard.style.cssText='background:white;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);';
+    quizCard.innerHTML='<div style="font-weight:800;color:#0369A1;margin-bottom:10px;">🧠 Quick Check: '+card.q+'</div>';
+    var answered=false;
+    card.opts.forEach(function(opt,oi){
+      var btn=document.createElement('button');
+      btn.textContent=opt;
+      btn.style.cssText='width:100%;padding:12px 14px;margin-bottom:8px;border-radius:14px;border:2px solid rgba(14,165,233,.2);background:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;text-align:left;';
+      btn.onclick=function(){
+        if(answered)return; answered=true;
+        quizCard.querySelectorAll('button').forEach(function(b,bi){
+          b.style.pointerEvents='none';
+          if(bi===card.a){b.style.background='#E8FBF3';b.style.borderColor='#22c55e';b.style.color='#166534';}
+        });
+        if(oi!==card.a){btn.style.background='#FFF0EE';btn.style.borderColor='#ef4444';btn.style.color='#991b1b';}
+        if(oi===card.a){toast('🌟 Correct! +5 stars');if(typeof sessionData!=='undefined'){sessionData.stars=(sessionData.stars||0)+5;var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;}}
+      };
+      quizCard.appendChild(btn);
+    });
+    body.appendChild(quizCard);
+
+    // Navigation
+    var nav=document.createElement('div');
+    nav.style.cssText='display:flex;gap:10px;padding-bottom:20px;';
+    if(i>0){
+      var prev=document.createElement('button');
+      prev.textContent='← '+cards[i-1].emoji;
+      prev.style.cssText='padding:12px 16px;border-radius:40px;border:2px solid rgba(14,165,233,.3);background:white;cursor:pointer;font-weight:700;';
+      prev.onclick=function(){showCard(i-1);};
+      nav.appendChild(prev);
+    }
+    if(i<cards.length-1){
+      var next=document.createElement('button');
+      next.textContent=cards[i+1].emoji+' →';
+      next.style.cssText='flex:1;padding:12px 16px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;cursor:pointer;font-weight:800;';
+      next.onclick=function(){showCard(i+1);};
+      nav.appendChild(next);
+    }
+    body.appendChild(nav);
+    ov.appendChild(body);
+  }
+
+  showLibrary();
+}
+
+// ════════════════════════════════════════════════════════════════════
+//  3. BUSY BOARD — Yoga tab sensory / calming tools
+// ════════════════════════════════════════════════════════════════════
+function openBusyBoard() {
+  var ov=document.createElement('div');
+  ov.id='busyBoardOv';
+  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#1a1a2e,#16213e,#0f3460);display:flex;flex-direction:column;font-family:Nunito,sans-serif;overflow:hidden;';
+  document.body.appendChild(ov);
+
+  var hdr=document.createElement('div');
+  hdr.style.cssText='padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;';
+  hdr.innerHTML='<div style="font-family:Baloo 2,cursive;font-size:1.05rem;font-weight:800;color:white;">🌙 Calm Board</div><button data-closeov="busyBoardOv" style="background:rgba(255,255,255,.15);border:none;color:white;border-radius:50%;width:34px;height:34px;cursor:pointer;font-weight:800;font-size:1rem;">✕</button>';
+  ov.appendChild(hdr);
+
+  var body=document.createElement('div');
+  body.style.cssText='flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:16px;max-width:480px;margin:0 auto;width:100%;';
+
+  // Breathing bubble
+  var breathCard=document.createElement('div');
+  breathCard.style.cssText='background:rgba(255,255,255,.08);border-radius:24px;padding:24px;text-align:center;';
+  var breathState=0, breathTimer=null;
+  var breathBubble=document.createElement('div');
+  breathBubble.style.cssText='width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,#818CF8,#4F46E5);margin:0 auto 12px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:2rem;transition:transform 4s ease,background 4s;box-shadow:0 0 40px rgba(99,102,241,.4);';
+  breathBubble.textContent='🫁';
+  var breathLabel=document.createElement('div');
+  breathLabel.style.cssText='color:rgba(255,255,255,.85);font-weight:700;font-size:.9rem;';
+  breathLabel.textContent='Tap the bubble to breathe';
+  breathBubble.onclick=function(){
+    clearTimeout(breathTimer);
+    if(breathState===0){
+      breathBubble.style.transform='scale(1.6)';
+      breathBubble.style.background='radial-gradient(circle,#34D399,#059669)';
+      breathLabel.textContent='Breathe IN... 🌬️';
+      breathState=1;
+      breathTimer=setTimeout(function(){
+        breathBubble.style.transform='scale(1)';
+        breathBubble.style.background='radial-gradient(circle,#818CF8,#4F46E5)';
+        breathLabel.textContent='Breathe OUT... 😮‍💨';
+        breathState=0;
+        breathTimer=setTimeout(function(){breathLabel.textContent='Tap again to breathe!';},4000);
+      },4000);
+    }
+  };
+  breathCard.innerHTML='<div style="color:white;font-weight:800;font-size:1rem;margin-bottom:12px;">🫁 Breathing Bubble</div>';
+  breathCard.appendChild(breathBubble);
+  breathCard.appendChild(breathLabel);
+  body.appendChild(breathCard);
+
+  // Tap stars
+  var starsCard=document.createElement('div');
+  starsCard.style.cssText='background:rgba(255,255,255,.08);border-radius:24px;padding:20px;';
+  starsCard.innerHTML='<div style="color:white;font-weight:800;font-size:.95rem;margin-bottom:12px;">✨ Tap the stars!</div>';
+  var starsArea=document.createElement('div');
+  starsArea.style.cssText='min-height:120px;border-radius:16px;background:rgba(0,0,0,.2);position:relative;overflow:hidden;cursor:crosshair;';
+  starsArea.innerHTML='<div style="color:rgba(255,255,255,.3);font-size:.8rem;padding:16px;text-align:center;">Tap anywhere to make stars ✨</div>';
+  var starCount=0;
+  starsArea.onclick=function(e){
+    var rect=starsArea.getBoundingClientRect();
+    var x=e.clientX-rect.left, y=e.clientY-rect.top;
+    var star=document.createElement('div');
+    var emojis=['⭐','✨','💫','🌟'];
+    star.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+    star.style.cssText='position:absolute;font-size:'+(Math.random()*.8+.8)+'rem;left:'+x+'px;top:'+y+'px;transform:translate(-50%,-50%);animation:starPop .6s ease forwards;pointer-events:none;';
+    starsArea.appendChild(star);
+    starCount++;
+    setTimeout(function(){if(star.parentNode)star.parentNode.removeChild(star);},600);
+  };
+  starsCard.appendChild(starsArea);
+  body.appendChild(starsCard);
+
+  // Color mood selector
+  var moodCard=document.createElement('div');
+  moodCard.style.cssText='background:rgba(255,255,255,.08);border-radius:24px;padding:20px;';
+  moodCard.innerHTML='<div style="color:white;font-weight:800;font-size:.95rem;margin-bottom:12px;">🎨 How are you feeling?</div>';
+  var moods=[
+    {emoji:'😊',label:'Happy',color:'#FCD34D'},
+    {emoji:'😴',label:'Sleepy',color:'#818CF8'},
+    {emoji:'😤',label:'Frustrated',color:'#F87171'},
+    {emoji:'😰',label:'Worried',color:'#6EE7B7'},
+    {emoji:'🥰',label:'Loved',color:'#F472B6'},
+    {emoji:'😐',label:'Calm',color:'#93C5FD'},
+  ];
+  var moodGrid=document.createElement('div');
+  moodGrid.style.cssText='display:grid;grid-template-columns:repeat(3,1fr);gap:8px;';
+  moods.forEach(function(mood){
+    var btn=document.createElement('button');
+    btn.style.cssText='padding:12px 8px;border-radius:14px;border:none;background:rgba(255,255,255,.1);cursor:pointer;color:white;font-weight:700;font-size:.8rem;transition:all .2s;';
+    btn.innerHTML='<div style="font-size:1.8rem;margin-bottom:4px;">'+mood.emoji+'</div>'+mood.label;
+    btn.onclick=function(){
+      moodGrid.querySelectorAll('button').forEach(function(b){b.style.background='rgba(255,255,255,.1)';});
+      btn.style.background=mood.color+'44';
+      btn.style.borderColor=mood.color;
+      var tips={
+        'Happy':'That is wonderful! Keep that good energy going! 🌟',
+        'Sleepy':'Take a deep breath and stretch your arms wide! ☀️',
+        'Frustrated':'Try the breathing bubble — breathe in slowly, then out. 🫁',
+        'Worried':'Everything is okay. Take 3 slow breaths. You are safe. 💙',
+        'Loved':'That is so nice! Who makes you feel loved today? 🥰',
+        'Calm':'Great! You are in a perfect state to learn! 📚',
+      };
+      toast(tips[mood.label]||'You are doing great!');
+    };
+    moodGrid.appendChild(btn);
+  });
+  moodCard.appendChild(moodGrid);
+  body.appendChild(moodCard);
+
+  // Zen ripple pond
+  var pondCard=document.createElement('div');
+  pondCard.style.cssText='background:rgba(255,255,255,.08);border-radius:24px;padding:20px;';
+  pondCard.innerHTML='<div style="color:white;font-weight:800;font-size:.95rem;margin-bottom:12px;">🌊 Zen Pond — tap to ripple</div>';
+  var pond=document.createElement('div');
+  pond.style.cssText='height:120px;border-radius:16px;background:linear-gradient(135deg,#0c4a6e,#075985);position:relative;overflow:hidden;cursor:crosshair;';
+  pond.onclick=function(e){
+    var rect=pond.getBoundingClientRect();
+    var x=e.clientX-rect.left,y=e.clientY-rect.top;
+    for(var r=0;r<3;r++){
+      (function(ri){
+        setTimeout(function(){
+          var ring=document.createElement('div');
+          ring.style.cssText='position:absolute;border:2px solid rgba(147,197,253,'+(1-ri*.25)+');border-radius:50%;left:'+x+'px;top:'+y+'px;transform:translate(-50%,-50%) scale(0);animation:pondRipple '+(0.8+ri*.2)+'s ease-out forwards;pointer-events:none;width:20px;height:20px;';
+          pond.appendChild(ring);
+          setTimeout(function(){if(ring.parentNode)ring.parentNode.removeChild(ring);},1000);
+        },ri*150);
+      })(r);
+    }
+  };
+  pondCard.appendChild(pond);
+  body.appendChild(pondCard);
+  ov.appendChild(body);
+
+  // Add required animations
+  if(!document.getElementById('busyBoardCSS')){
+    var style=document.createElement('style');
+    style.id='busyBoardCSS';
+    style.textContent='@keyframes starPop{0%{transform:translate(-50%,-50%) scale(0);opacity:1}70%{transform:translate(-50%,-50%) scale(1.3);opacity:1}100%{transform:translate(-50%,-100px) scale(0.8);opacity:0}}'
+      +'@keyframes pondRipple{0%{transform:translate(-50%,-50%) scale(0);opacity:1}100%{transform:translate(-50%,-50%) scale(8);opacity:0}}';
+    document.head.appendChild(style);
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════
+//  4. PATTERN SEQUENCER — PreK-K math patterns
+// ════════════════════════════════════════════════════════════════════
+function openSequencer(grade) {
+  var CA='#7C3AED', CB='#A78BFA';
+  var ov=document.createElement('div');
+  ov.id='seqOv';
+  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:#F5F3FF;display:flex;flex-direction:column;font-family:Nunito,sans-serif;';
+  document.body.appendChild(ov);
+
+  var hdr=document.createElement('div');
+  hdr.style.cssText='background:linear-gradient(135deg,'+CA+','+CB+');padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;box-shadow:0 4px 16px rgba(0,0,0,.12);';
+  hdr.innerHTML='<div style="font-size:1.4rem;">🎵</div><div style="font-family:Baloo 2,cursive;font-size:1.05rem;font-weight:800;color:white;">Pattern Maker</div><button data-closeov="seqOv" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:34px;height:34px;cursor:pointer;font-weight:800;font-size:1rem;">✕</button>';
+  ov.appendChild(hdr);
+
+  var body=document.createElement('div');
+  body.style.cssText='flex:1;overflow-y:auto;padding:20px;max-width:480px;margin:0 auto;width:100%;';
+
+  // Pattern sets by grade
+  var PATTERN_SETS = {
+    PreK: ['🔴','🔵','🟡','🟢','🟠'],
+    K:    ['🐶','🐱','🐸','🐰','🐻'],
+    1:    ['⭐','🌙','☀️','🌟','💫'],
+    2:    ['🎵','🎶','🎸','🥁','🎹'],
+  };
+  var emojis = PATTERN_SETS[grade] || PATTERN_SETS['K'];
+  var sequence = [], score=0, round=0, ROUNDS=5;
+  var isPlaying=false, currentPattern=[];
+
+  function makePattern(){
+    round++;
+    if(round>ROUNDS){showResults();return;}
+    sequence=[];
+    var len=Math.min(3+round,6);
+    var repeatUnit=[];
+    var unitLen=round<=2?2:3;
+    for(var i=0;i<unitLen;i++) repeatUnit.push(emojis[Math.floor(Math.random()*emojis.length)]);
+    while(sequence.length<len) sequence=sequence.concat(repeatUnit);
+    sequence=sequence.slice(0,len);
+    currentPattern=repeatUnit;
+    renderSequencer();
+  }
+
+  function renderSequencer(){
+    body.innerHTML='';
+
+    var prog=document.createElement('div');
+    prog.style.cssText='background:#EDE9FF;height:8px;border-radius:4px;margin-bottom:16px;overflow:hidden;';
+    prog.innerHTML='<div style="background:linear-gradient(90deg,'+CA+','+CB+');height:100%;width:'+Math.round((round-1)/ROUNDS*100)+'%;border-radius:4px;"></div>';
+    body.appendChild(prog);
+
+    // Challenge card
+    var card=document.createElement('div');
+    card.style.cssText='background:white;border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 4px 14px rgba(124,58,237,.15);text-align:center;';
+    card.innerHTML='<div style="font-family:Baloo 2,cursive;font-size:.95rem;font-weight:800;color:'+CA+';margin-bottom:12px;">Round '+round+'/'+ROUNDS+' — What comes next?</div>'
+      +'<div style="font-size:2.2rem;letter-spacing:4px;margin-bottom:12px;line-height:1.8;">'+sequence.join(' ')+'  <span style="font-size:1.8rem;color:#CBD5E1;border:3px dashed #CBD5E1;border-radius:12px;padding:4px 10px;">?</span></div>'
+      +'<button onclick="toast(\'💡 Look at the pattern! The first '+currentPattern.length+' emojis repeat!\')" style="padding:6px 16px;border-radius:20px;border:none;background:#F3EFFF;color:'+CA+';font-weight:700;font-size:.82rem;cursor:pointer;">💡 Hint</button>';
+    body.appendChild(card);
+
+    // Answer choices
+    var correctNext=currentPattern[sequence.length%currentPattern.length];
+    var wrong=emojis.filter(function(e){return e!==correctNext;}).slice(0,3);
+    var choices=wrong.concat([correctNext]).sort(function(){return Math.random()-.5;});
+    var answered=false;
+
+    var grid=document.createElement('div');
+    grid.style.cssText='display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;';
+    choices.forEach(function(choice){
+      var btn=document.createElement('button');
+      btn.textContent=choice;
+      btn.style.cssText='padding:18px 8px;border-radius:16px;border:2.5px solid rgba(124,58,237,.2);background:white;font-size:1.8rem;cursor:pointer;transition:all .15s;';
+      btn.onclick=function(){
+        if(answered)return; answered=true;
+        var correct=(choice===correctNext);
+        if(correct)score++;
+        grid.querySelectorAll('button').forEach(function(b){
+          b.style.pointerEvents='none';
+          if(b.textContent===correctNext){b.style.background='linear-gradient(135deg,#22c55e,#4ade80)';b.style.borderColor='#22c55e';}
+        });
+        if(!correct){btn.style.background='linear-gradient(135deg,#ef4444,#f87171)';btn.style.borderColor='#ef4444';}
+        // Show full pattern
+        var expl=document.createElement('div');
+        expl.style.cssText='background:'+(correct?'#E8FBF3':'#FFF0EE')+';border-radius:12px;padding:10px 14px;margin-bottom:12px;font-size:.88rem;font-weight:700;color:'+(correct?'#166534':'#991b1b')+';text-align:center;';
+        expl.innerHTML=(correct?'✅ Yes! ':'❌ The pattern repeats: ')+currentPattern.join(' ')+'  '+currentPattern.join(' ')+'...';
+        body.appendChild(expl);
+        // Play button
+        var nb=document.createElement('button');
+        nb.textContent=round<ROUNDS?'Next Pattern ➡️':'See Results 🏆';
+        nb.style.cssText='width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';
+        nb.onclick=function(){makePattern();};
+        body.appendChild(nb);
+      };
+      grid.appendChild(btn);
+    });
+    body.appendChild(grid);
+    ov.appendChild(body);
+  }
+
+  function showResults(){
+    var pct=Math.round(score/ROUNDS*100);
+    body.innerHTML='';
+    body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;';
+    body.innerHTML='<div style="font-size:5rem;margin-bottom:8px;">'+(pct>=80?'🏆':pct>=50?'🌟':'💪')+'</div>'
+      +'<div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:'+CA+';">'+score+'/'+ROUNDS+'</div>'
+      +'<div style="color:#666;margin:8px 0 24px;">'+(pct>=80?'You\'re a pattern pro!':pct>=50?'Good pattern finding!':'Patterns take practice — try again!')+'</div>'
+      +'<div style="display:flex;gap:12px;">'
+      +'<button onclick="score=0;round=0;makePattern();" style="padding:14px 24px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;">Play Again 🔄</button>'
+      +'<button onclick="var o=document.getElementById(\'seqOv\');if(o)o.remove();" style="padding:14px 24px;border-radius:40px;border:none;background:#EDE9FF;color:'+CA+';font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;">Home 🏠</button>'
+      +'</div>';
+    if(typeof sessionData!=='undefined'&&score>0){sessionData.stars=(sessionData.stars||0)+score*10;var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;toast('+'+score*10+' Stars! ⭐');}
+  }
+
+  makePattern();
+}
+
+
 async function startSubject(name) {
   if(name==='Letter Tracing'){showLetterTracing();return;}
   if(name==='Number Tracing'){openNumberTracing();return;}
@@ -5245,6 +5923,10 @@ async function startSubject(name) {
   if(sciNames.indexOf(name)>=0){openScienceGame(activeGrade);return;}
   if(ssNames.indexOf(name)>=0){openSocialStudiesGame(activeGrade);return;}
   if(colorNames.indexOf(name)>=0){openColorsGame(activeGrade);return;}
+  if(name==='Shop Math'||name==='Money Math'||name==='Shops'){openShopMath(activeGrade);return;}
+  if(name==='Busy Book'||name==='Encyclopedia'){openBusyBook(activeGrade);return;}
+  if(name==='Pattern Maker'||name==='Sequencer'||name==='Patterns'){openSequencer(activeGrade);return;}
+  if(name==='Calm Board'){openBusyBoard();return;}
   if(name==='ABC Time' && (activeGrade==='PreK'||activeGrade==='K')){openLetterQuiz();return;}
   if(langNames.indexOf(name)>=0){openLangGame(activeGrade);return;}
 
@@ -6396,6 +7078,8 @@ function openScienceGame(grade) {
 // ══════════════════════════════════════════════════════════════════════
 //  4. SOCIAL STUDIES — COMMUNITY MAP MATCH
 // ══════════════════════════════════════════════════════════════════════
+
+function openSSGame(grade){ openSocialStudiesGame(grade); }
 function openSocialStudiesGame(grade) {
   var CA='#F59E0B', CB='#FCD34D';
   var ov = gameOverlay('ssGameOv','#FFFBF0');
@@ -7902,11 +8586,32 @@ function openActualDashboard() {
 
 // Parent dashboard tile functions (global scope)
 function showParentProgress(){
-  var ov=document.getElementById('parentDashOv');
+  var today=new Date().toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric',year:'numeric'});
   var stars=typeof sessionData!=='undefined'?sessionData.stars||0:0;
   var tasks=typeof sessionData!=='undefined'?sessionData.tasks||0:0;
-  var mins=typeof sessionData!=='undefined'?sessionData.minutes||0:0;
-  toast('⭐ Stars: '+stars+' | 📚 Activities: '+tasks+' | ⏱ Mins: '+mins);
+  var streak=typeof sessionData!=='undefined'?sessionData.streak||0:0;
+  // Try to get Supabase data for active child
+  var childName = typeof activeChild!=='undefined'&&activeChild?activeChild.name:'your child';
+  if(typeof sb!=='undefined'&&typeof activeChild!=='undefined'&&activeChild){
+    sb.from('daily_activity').select('stars,tasks_done,minutes_spent,created_at')
+      .eq('child_id',activeChild.id)
+      .order('created_at',{ascending:false})
+      .limit(7)
+      .then(function(res){
+        if(res.data&&res.data.length>0){
+          var totalStars=res.data.reduce(function(s,r){return s+(r.stars||0);},0);
+          var totalTasks=res.data.reduce(function(s,r){return s+(r.tasks_done||0);},0);
+          var totalMins=res.data.reduce(function(s,r){return s+(r.minutes_spent||0);},0);
+          toast('📊 '+childName+' (last 7 days): ⭐'+totalStars+' stars | 📚'+totalTasks+' activities | ⏱'+totalMins+' mins');
+        } else {
+          toast('📊 '+childName+' today ('+today+'): ⭐'+stars+' stars | 📚'+tasks+' activities | 🔥'+streak+' day streak');
+        }
+      }).catch(function(){
+        toast('📊 '+childName+' today ('+today+'): ⭐'+stars+' | 📚'+tasks+' | 🔥'+streak);
+      });
+  } else {
+    toast('📊 Today ('+today+'): ⭐'+stars+' stars | 📚'+tasks+' activities | 🔥'+streak+' day streak');
+  }
 }
 function showStarsHistory(){toast('⭐ Total stars: '+(typeof sessionData!=='undefined'?sessionData.stars||0:0));}
 function showSchedule(){toast('📅 Schedule feature coming soon!');}
@@ -7916,7 +8621,65 @@ function manageChildren(){
   setTimeout(function(){showScreen('children');loadChildren();},100);
 }
 function showReminders(){toast('🔔 Reminders feature coming soon!');}
-function showParentSettings(){toast('⚙️ Settings feature coming soon!');}
+function showParentSettings(){
+  var existing=document.getElementById('settingsOv');
+  if(existing){existing.remove();return;}
+  var ov=document.createElement('div');
+  ov.id='settingsOv';
+  ov.style.cssText='position:fixed;inset:0;z-index:10000;background:linear-gradient(160deg,#2D1B69,#5B2D8E);display:flex;flex-direction:column;font-family:Nunito,sans-serif;overflow-y:auto;';
+  ov.innerHTML='<div style="background:rgba(0,0,0,.2);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">'
+    +'<div style="font-family:Baloo 2,cursive;font-size:1.2rem;font-weight:800;color:white;">⚙️ Settings & Policies</div>'
+    +'<button data-closeov="settingsOv" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:34px;height:34px;cursor:pointer;font-weight:800;">✕</button>'
+    +'</div>'
+    +'<div style="padding:20px;max-width:480px;margin:0 auto;width:100%;">'
+    // Privacy Policy
+    +'<div style="background:rgba(255,255,255,.1);border-radius:18px;padding:18px;margin-bottom:14px;">'
+    +'<div style="font-weight:800;color:white;font-size:1rem;margin-bottom:8px;">🔒 Privacy Policy</div>'
+    +'<div style="color:rgba(255,255,255,.85);font-size:.85rem;line-height:1.6;">'
+    +'BloomiKids is COPPA compliant. We collect only the information needed to provide our educational service. '
+    +'We do <strong>not</strong> sell personal data. We do <strong>not</strong> show ads. '
+    +'Children&#39;s data is stored securely and never shared with third parties. '
+    +'Parents may request deletion of all account data at any time by emailing support@bloomikids.co.'
+    +'</div></div>'
+    // Terms of Use
+    +'<div style="background:rgba(255,255,255,.1);border-radius:18px;padding:18px;margin-bottom:14px;">'
+    +'<div style="font-weight:800;color:white;font-size:1rem;margin-bottom:8px;">📋 Terms of Use</div>'
+    +'<div style="color:rgba(255,255,255,.85);font-size:.85rem;line-height:1.6;">'
+    +'BloomiKids is designed for children ages 4–11. This app is for educational purposes only. '
+    +'Your subscription grants access to all content for the duration of your plan. '
+    +'Content is Common Core aligned for PreK through Grade 5. '
+    +'Subscriptions renew automatically unless cancelled before renewal date.'
+    +'</div></div>'
+    // Notifications
+    +'<div style="background:rgba(255,255,255,.1);border-radius:18px;padding:18px;margin-bottom:14px;">'
+    +'<div style="font-weight:800;color:white;font-size:1rem;margin-bottom:8px;">🔔 Notifications</div>'
+    +'<div style="color:rgba(255,255,255,.85);font-size:.85rem;line-height:1.6;margin-bottom:10px;">Daily learning reminders help kids stay on streak!</div>'
+    +'<button id="notifBtn" style="padding:10px 20px;border-radius:20px;border:none;background:rgba(255,255,255,.2);color:white;font-weight:700;cursor:pointer;">Manage Notifications</button>'
+    +'</div>'
+    // Data & Account
+    +'<div style="background:rgba(255,255,255,.1);border-radius:18px;padding:18px;margin-bottom:14px;">'
+    +'<div style="font-weight:800;color:white;font-size:1rem;margin-bottom:8px;">🗂 Data & Account</div>'
+    +'<div style="color:rgba(255,255,255,.85);font-size:.85rem;line-height:1.6;margin-bottom:10px;">All your child progress is saved securely to your account.</div>'
+    +'<button id="dataBtn" style="padding:10px 20px;border-radius:20px;border:none;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);font-weight:700;cursor:pointer;margin-right:8px;">Request Data Deletion</button>'
+    +'</div>'
+    // Contact
+    +'<div style="background:rgba(255,255,255,.1);border-radius:18px;padding:18px;margin-bottom:14px;">'
+    +'<div style="font-weight:800;color:white;font-size:1rem;margin-bottom:8px;">✉️ Contact & Support</div>'
+    +'<div style="color:rgba(255,255,255,.85);font-size:.85rem;line-height:1.6;">'
+    +'Email: <strong>support@bloomikids.co</strong><br>'
+    +'Website: <strong>bloomikids.co</strong><br>'
+    +'For billing questions, visit your account settings on bloomikids.co'
+    +'</div></div>'
+    +'<div style="text-align:center;color:rgba(255,255,255,.5);font-size:.75rem;padding-bottom:40px;">BloomiKids v1.0 · © 2025 BloomiKids LLC · All rights reserved</div>'
+    +'</div>';
+  document.body.appendChild(ov);
+  setTimeout(function(){
+    var nb=document.getElementById('notifBtn');
+    if(nb) nb.addEventListener('click',function(){toast('Notifications coming in next update!');});
+    var db=document.getElementById('dataBtn');
+    if(db) db.addEventListener('click',function(){toast('Email support@bloomikids.co');});
+  },50);
+}
 
 
 function scheduleStreakChecks(){
@@ -8278,13 +9041,13 @@ function openDinoStories(grade) {
           { q:"What kind of day was it?", opts:["A noisy day","A cold day","A quiet day","A rainy day"], a:2 },
         ]
       },
-      { title:"Dino Feels Tired", cover:"stories/story_dino_tired.png",
+      { title:"Dino Feels Tired", cover:"stories/story_dino_discovery.png",
         skill:"Rhyming", badge:"🎵",
         pages:[
-          { img:"stories/story_dino_tired.png", text:"Dino played all day long." },
-          { img:"stories/story_dino_tired.png", text:"Dino ran and jumped and sang a song." },
-          { img:"stories/story_dino_tired.png", text:"Now Dino lies down on the mat." },
-          { img:"stories/story_dino_tired.png", text:"Dino is so tired — just like that! 😴" },
+          { img:"stories/story_dino_discovery.png", text:"Dino played all day long." },
+          { img:"stories/story_dino_discovery.png", text:"Dino ran and jumped and sang a song." },
+          { img:"stories/story_dino_discovery.png", text:"Now Dino lies down on the mat." },
+          { img:"stories/story_dino_discovery.png", text:"Dino is so tired — just like that! 😴" },
         ],
         quiz:[
           { q:"What did Dino do all day?", opts:["Read books","Played and ran","Ate lunch","Slept all day"], a:1 },
@@ -8341,14 +9104,14 @@ function openDinoStories(grade) {
       },
     ],
     1: [
-      { title:"Dino's Big Discovery", cover:"stories/story_dino_discovery.png",
+      { title:"Dino's Big Discovery", cover:"stories/story_dino_tired.png",
         skill:"Silent E", badge:"🥚",
         pages:[
-          { img:"stories/story_dino_discovery.png", text:"One morning Dino went for a walk." },
-          { img:"stories/story_dino_discovery.png", text:"He wore his yellow boots in the wet grass." },
-          { img:"stories/story_dino_discovery.png", text:"Under a tree, Dino found something white." },
-          { img:"stories/story_dino_discovery.png", text:"It was a big egg sitting in a nest!" },
-          { img:"stories/story_dino_discovery.png", text:"Dino sat quietly beside it. \"I will keep it safe,\" he said. 🥚" },
+          { img:"stories/story_dino_tired.png", text:"One morning Dino went for a walk." },
+          { img:"stories/story_dino_tired.png", text:"He wore his yellow boots in the wet grass." },
+          { img:"stories/story_dino_tired.png", text:"Under a tree, Dino found something white." },
+          { img:"stories/story_dino_tired.png", text:"It was a big egg sitting in a nest!" },
+          { img:"stories/story_dino_tired.png", text:"Dino sat quietly beside it. \"I will keep it safe,\" he said. 🥚" },
         ],
         quiz:[
           { q:"What was Dino wearing on his feet?", opts:["Sneakers","Nothing","Yellow boots","Red shoes"], a:2 },
@@ -8444,7 +9207,7 @@ function openDinoStories(grade) {
     storyList.forEach(function(story, idx) {
       var card = document.createElement('div');
       card.style.cssText = 'background:white;border-radius:18px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.12);cursor:pointer;transition:transform .15s;';
-      card.innerHTML = '<img src="'+story.cover+'" alt="'+story.title+'" style="width:100%;height:120px;object-fit:cover;display:block;">'
+      card.innerHTML = '<img src="'+story.cover+'" alt="'+story.title+'" style="width:100%;height:120px;object-fit:contain;background:#f0f7f0;display:block;">'
         +'<div style="padding:10px;">'
         +'<div style="font-family:Baloo 2,cursive;font-size:.85rem;font-weight:800;color:#1a472a;line-height:1.2;margin-bottom:4px;">'+story.title+'</div>'
         +'<div style="font-size:.72rem;color:#666;">'+story.badge+' '+story.skill+'</div>'
@@ -8481,7 +9244,7 @@ function openDinoStories(grade) {
       imgWrap.style.cssText = 'flex-shrink:0;padding:12px 16px 0;';
       var img = document.createElement('img');
       img.src = pg.img;
-      img.style.cssText = 'width:100%;height:200px;object-fit:cover;border-radius:16px;display:block;';
+      img.style.cssText = 'width:100%;height:220px;object-fit:contain;border-radius:16px;display:block;background:#f9f5ff;';
       imgWrap.appendChild(img);
       ov.appendChild(imgWrap);
 
@@ -8600,8 +9363,9 @@ function openDinoStories(grade) {
         +'<img src="'+story.cover+'" style="width:120px;height:80px;object-fit:cover;border-radius:12px;margin-bottom:12px;">'
         +'<div style="font-family:Baloo 2,cursive;font-size:1.6rem;font-weight:800;color:#1a472a;">'+score+'/'+story.quiz.length+'</div>'
         +'<div style="color:#555;margin:8px 0 24px;">'+(pct>=80?'Amazing reading! 🌟':pct>=50?'Good job! Keep reading!':'Try again — keep going!')+'</div>'
-        +'<div style="display:flex;gap:12px;">'
-        +'<button onclick="showLibrary()" style="padding:14px 24px;border-radius:40px;border:none;background:linear-gradient(135deg,#1a472a,#2d8a4e);color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;">More Stories 📚</button>'
+        +'<div style="display:flex;gap:12px;flex-wrap:wrap;">'
+        +'<button onclick="var o=document.getElementById(\'dinoOv\');if(o)o.remove();" style="padding:14px 20px;border-radius:40px;border:none;background:rgba(255,255,255,.2);color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;">🏠 Home</button>'
+        +'<button onclick="showLibrary()" style="padding:14px 20px;border-radius:40px;border:none;background:linear-gradient(135deg,#1a472a,#2d8a4e);color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;">More Stories 📚</button>'
         +'<button onclick="readStory('+JSON.stringify({title:story.title,cover:story.cover,pages:story.pages,quiz:story.quiz,skill:story.skill,badge:story.badge})+')" style="padding:14px 24px;border-radius:40px;border:none;background:#E8F5E9;color:#1a472a;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;">Read Again 🔄</button>'
         +'</div>';
       ov.appendChild(body);
