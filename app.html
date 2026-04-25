@@ -1,4 +1,4 @@
-<!-- BloomiKids v364 -->
+<!-- BloomiKids v365 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,14 +67,16 @@ input:-webkit-autofill:focus {
 }
 .auth-card { background:rgba(255,255,255,.95); backdrop-filter:blur(20px); border-radius:28px; padding:36px; box-shadow:0 20px 60px rgba(0,0,0,.3); width:100%; max-width:420px; animation:fadeUp .5s ease; border:1px solid rgba(255,255,255,.5); }
 @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+@keyframes bloomiCorrect { 0%{transform:scale(1)} 30%{transform:scale(1.3) rotate(10deg)} 100%{transform:scale(1)} }
+@keyframes bloomiWrong { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
 .auth-logo { font-family:'Baloo 2',cursive; font-size:2.2rem; font-weight:800; text-align:center; margin-bottom:6px; background:linear-gradient(135deg,var(--coral),var(--sunshine)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
 .auth-logo span { -webkit-text-fill-color:var(--mint); }
 .auth-tagline { text-align:center; color:rgba(255,255,255,.9); font-size:.95rem; font-weight:600; margin-bottom:28px; }
 .auth-tabs { display:flex; gap:8px; margin-bottom:24px; }
-.auth-tab { flex:1; padding:10px; border-radius:40px; border:none; cursor:pointer; font-family:'Nunito',sans-serif; font-size:.9rem; font-weight:700; background:#F0F0F8; color:var(--muted); transition:all .2s; }
-.auth-tab.active { background:var(--mint); color:white; }
+.auth-tab { flex:1; padding:10px; border-radius:40px; border:1px solid rgba(91,45,142,.15); cursor:pointer; font-family:'Nunito',sans-serif; font-size:.9rem; font-weight:700; background:rgba(91,45,142,.08); color:#5B2D8E; transition:all .2s; }
+.auth-tab.active { background:linear-gradient(135deg,#5B2D8E,#8B5CF6); color:white; box-shadow:0 4px 12px rgba(91,45,142,.35); }
 .form-group { margin-bottom:16px; }
-.form-group label { display:block; font-weight:700; font-size:.88rem; color:rgba(255,255,255,.9); margin-bottom:6px; text-transform:uppercase; letter-spacing:.5px; }
+.form-group label { display:block; font-weight:700; font-size:.82rem; color:#5B2D8E; margin-bottom:6px; text-transform:uppercase; letter-spacing:.5px; }
 .form-group input { width:100%; padding:13px 16px; border-radius:14px; border:2px solid #F0F0F8; font-size:1rem; font-family:'Nunito',sans-serif; outline:none; transition:border-color .2s; background:#FAFAFA; }
 .form-group input:focus { border-color:var(--mint); background:white; }
 .auth-btn { width:100%; padding:16px; border-radius:40px; border:none; cursor:pointer; font-family:'Nunito',sans-serif; font-size:1rem; font-weight:800; background:linear-gradient(135deg,#22C55E,#16A34A); color:white; box-shadow:0 6px 20px rgba(34,197,94,.4),inset 0 1px 0 rgba(255,255,255,.3); transition:all .2s; }
@@ -683,8 +685,8 @@ img[src*="bloomy_"] {
   background: transparent !important;
   mix-blend-mode: multiply;
 }
-input[type=email], input[type=password], input[type=text] { background:rgba(255,255,255,.15) !important; color:white !important; }
-input::placeholder { color:rgba(255,255,255,.5) !important; }
+input[type=email], input[type=password], input[type=text] { background:white !important; color:#2D2D4E !important; border:2px solid rgba(91,45,142,.2) !important; border-radius:14px !important; padding:12px 16px !important; }
+input::placeholder { color:#aaa !important; }
 
 </style>
   <link rel="icon" href="favicon.ico" sizes="32x32">
@@ -3424,9 +3426,7 @@ function buildReadingButtons() {
     btns += '<button onclick="openPassageReader(activeGrade)" style="width:100%;padding:16px;border-radius:20px;border:none;background:linear-gradient(135deg,#1D4ED8,#3B82F6);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(29,78,216,.35);margin-bottom:12px;">'
       + '<span style="font-size:1.5rem;">📖</span><span>Reading Corner</span></button>';
   }
-  // Reading Lessons for all grades
-  btns += '<button onclick="openMasterLessons(activeGrade)" style="width:100%;padding:16px;border-radius:20px;border:none;background:linear-gradient(135deg,#2D1A4E,#6B3FA0);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(0,0,0,.2);margin-bottom:12px;">'
-    + '<span style="font-size:1.5rem;">🎓</span><span>Reading Lessons</span></button>';
+
 
   container.innerHTML = btns;
 }
@@ -3444,6 +3444,7 @@ function buildGradeGames() {
       {icon:'🎨', label:'Colors Sort',     fn:"openColorsGame('PreK')", color:'#F59E0B'},
       {icon:'🐾', label:'Animal Sort',     fn:"openScienceGame('PreK')",color:'#0EA5E9'},
       {icon:'📚', label:'Busy Book',       fn:"openBusyBook('PreK')",   color:'#0369A1'},
+      {icon:'🃏', label:'Memory Match',   fn:"openMemoryMatch('PreK')", color:'#7C3AED'},
     ],
     K: [
       {icon:'🔢', label:'Counting',        fn:"openMathGame('K')",      color:'#22c55e'},
@@ -3452,6 +3453,7 @@ function buildGradeGames() {
       {icon:'🎨', label:'Colors & Shapes', fn:"openColorsGame('K')",    color:'#F59E0B'},
       {icon:'🔬', label:'Science Sort',    fn:"openScienceGame('K')",   color:'#0EA5E9'},
       {icon:'📚', label:'Busy Book',       fn:"openBusyBook('K')",      color:'#0369A1'},
+      {icon:'🃏', label:'Memory Match',   fn:"openMemoryMatch('K')",    color:'#7C3AED'},
     ],
     1: [
       {icon:'➕', label:'Math Practice',   fn:"openMathGame('1')",      color:'#22c55e'},
@@ -3460,6 +3462,8 @@ function buildGradeGames() {
       {icon:'🔬', label:'Science Sort',    fn:"openScienceGame('1')",   color:'#0EA5E9'},
       {icon:'📚', label:'Busy Book',       fn:"openBusyBook('1')",      color:'#0369A1'},
       {icon:'🌍', label:'Social Studies',  fn:"openSSGame('1')",        color:'#8B5CF6'},
+      {icon:'🃏', label:'Memory Match',   fn:"openMemoryMatch('1')",   color:'#7C3AED'},
+      {icon:'🔗', label:'Number Bonds',   fn:"openNumberBonds('1')",   color:'#059669'},
     ],
     2: [
       {icon:'➕', label:'Add & Subtract',  fn:"openMathGame('2')",      color:'#22c55e'},
@@ -5917,6 +5921,151 @@ function openSequencer(grade) {
 }
 
 
+function showWhatsNew() {
+  try { if(localStorage.getItem('bk_seen_v365')) return; localStorage.setItem('bk_seen_v365','1'); } catch(e){}
+  var ov=document.createElement('div');
+  ov.style.cssText='position:fixed;inset:0;z-index:10002;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:20px;';
+  var card=document.createElement('div');
+  card.style.cssText='background:white;border-radius:24px;padding:24px;max-width:380px;width:100%;';
+  card.innerHTML='<div style="text-align:center;margin-bottom:16px;"><div style="font-size:2.5rem;">🌱</div><div style="font-family:Baloo 2,cursive;font-size:1.3rem;font-weight:800;color:#5B2D8E;">What\'s New!</div></div>'
+    +'<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;font-size:.88rem;">'
+    +'<div style="background:#F5F3FF;border-radius:12px;padding:10px;">📚 <strong>10 Original Stories</strong> with illustrations</div>'
+    +'<div style="background:#F0FDF4;border-radius:12px;padding:10px;">🛒 <strong>Shop Math</strong> — real-life money practice</div>'
+    +'<div style="background:#FFF7ED;border-radius:12px;padding:10px;">🌙 <strong>Calm Board</strong> — breathing + mood check</div>'
+    +'<div style="background:#EFF6FF;border-radius:12px;padding:10px;">🃏 <strong>Memory Match + Number Bonds</strong> — new games!</div>'
+    +'</div>'
+    +'<button id="wnClose" style="width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#5B2D8E,#8B5CF6);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Let\'s Go! 🚀</button>';
+  ov.appendChild(card);
+  document.body.appendChild(ov);
+  document.getElementById('wnClose').onclick=function(){ ov.remove(); };
+}
+
+function openMasterLessons(grade){ openPassageReader(grade); }
+
+function openMemoryMatch(grade) {
+  var CA='#7C3AED', CB='#A78BFA';
+  var ov=document.createElement('div'); ov.id='matchOv';
+  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:#F5F3FF;display:flex;flex-direction:column;';
+  document.body.appendChild(ov);
+  var SETS={PreK:['🍎','🐶','⭐','🌸','🐱','🦋','🌈','🐸'],K:['🍕','🚀','🎸','🌊','🦁','🎨','🌙','⚡'],1:['🔴','🔵','🟡','🟢','🟣','🟠','💛','🤍'],2:['🏠','🌲','✈','🎯','🎪','🎭','🎬','🎮']};
+  var base=SETS[grade]||SETS.K;
+  var emojis=base.concat(base).sort(function(){return Math.random()-.5;});
+  var flipped=[],matched=[],moves=0;
+  function render(){
+    ov.innerHTML='<div style="background:linear-gradient(135deg,'+CA+','+CB+');padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;"><div style="font-family:Baloo 2,cursive;font-weight:800;color:white;">🃏 Memory Match</div><div style="display:flex;gap:8px;align-items:center;"><span style="color:rgba(255,255,255,.85);font-size:.85rem;">Moves: '+moves+'</span><button data-closeov="matchOv" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:34px;height:34px;cursor:pointer;font-weight:800;">✕</button></div></div>'
+      +'<div id="matchGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:20px;max-width:400px;margin:16px auto;"></div>';
+    var grid=document.getElementById('matchGrid');
+    emojis.forEach(function(emoji,i){
+      var card=document.createElement('div');
+      var isFlipped=flipped.indexOf(i)>=0||matched.indexOf(i)>=0;
+      card.style.cssText='aspect-ratio:1;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:2rem;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.1);background:'+(isFlipped?'linear-gradient(135deg,'+CA+','+CB+')':'white')+';transition:all .2s;';
+      card.textContent=isFlipped?emoji:'?';
+      card.onclick=function(){
+        if(flipped.length>=2||matched.indexOf(i)>=0||flipped.indexOf(i)>=0)return;
+        flipped.push(i); moves++; render();
+        if(flipped.length===2){
+          if(emojis[flipped[0]]===emojis[flipped[1]]){
+            matched=matched.concat(flipped); flipped=[];
+            if(matched.length===emojis.length){
+              setTimeout(function(){
+                ov.innerHTML='<div style="background:linear-gradient(135deg,'+CA+','+CB+');padding:14px 20px;flex-shrink:0;text-align:center;"><div style="font-family:Baloo 2,cursive;font-weight:800;color:white;">🃏 Memory Match</div></div>';
+                var b=document.createElement('div');b.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;';
+                b.innerHTML='<div style="font-size:5rem;">🏆</div><div style="font-family:Baloo 2,cursive;font-size:1.6rem;font-weight:800;color:'+CA+';">You won!</div><div style="color:#666;margin:8px 0 20px;">'+moves+' moves</div>';
+                var btns=document.createElement('div');btns.style='display:flex;gap:12px;';
+                var r1=document.createElement('button');r1.textContent='Play Again 🔄';r1.style.cssText='padding:14px 22px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;';
+                r1.onclick=function(){flipped=[];matched=[];moves=0;render();};
+                var r2=document.createElement('button');r2.textContent='Home 🏠';r2.style.cssText='padding:14px 22px;border-radius:40px;border:none;background:#EDE9FF;color:'+CA+';font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;';
+                r2.onclick=function(){var o=document.getElementById('matchOv');if(o)o.remove();};
+                btns.appendChild(r1);btns.appendChild(r2);b.appendChild(btns);ov.appendChild(b);
+                if(typeof sessionData!=='undefined'){sessionData.stars=(sessionData.stars||0)+20;var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;toast('+20 Stars!');}
+              },400);
+            } else render();
+          } else { setTimeout(function(){flipped=[];render();},900); }
+        }
+      };
+      grid.appendChild(card);
+    });
+  }
+  render();
+}
+
+function openNumberBonds(grade) {
+  var CA='#059669', CB='#34D399';
+  var ov=document.createElement('div'); ov.id='bondsOv';
+  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:#F0FDF4;display:flex;flex-direction:column;font-family:Nunito,sans-serif;';
+  document.body.appendChild(ov);
+  var MAX=grade==='1'?10:grade==='2'?20:50;
+  var score=0,round=0,ROUNDS=6;
+  function makeRound(){
+    if(round>=ROUNDS){showResults();return;}
+    round++;
+    var total=Math.floor(Math.random()*(MAX-2))+2;
+    var part1=Math.floor(Math.random()*(total-1))+1;
+    var part2=total-part1;
+    var missing=Math.random()<0.5?'total':'part1';
+    var answer=missing==='total'?total:part1;
+    var w=[answer+1,answer>1?answer-1:answer+2,answer+2];
+    var opts=[answer,w[0],w[1],w[2]].sort(function(){return Math.random()-.5;});
+    ov.innerHTML='';
+    var hdr=document.createElement('div');
+    hdr.style.cssText='background:linear-gradient(135deg,'+CA+','+CB+');padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;';
+    hdr.innerHTML='<div style="font-family:Baloo 2,cursive;font-weight:800;color:white;">🔗 Number Bonds</div><div style="display:flex;gap:8px;align-items:center;"><span style="color:rgba(255,255,255,.8);font-size:.85rem;">'+round+'/'+ROUNDS+'</span><button data-closeov="bondsOv" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:34px;height:34px;cursor:pointer;font-weight:800;">✕</button></div>';
+    ov.appendChild(hdr);
+    var body=document.createElement('div');
+    body.style.cssText='flex:1;overflow-y:auto;padding:20px;max-width:480px;margin:0 auto;width:100%;';
+    var topVal=missing==='total'?'?':String(total);
+    var p1Val=missing==='part1'?'?':String(part1);
+    var diagram=document.createElement('div');
+    diagram.style.cssText='background:white;border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 4px 14px rgba(5,150,105,.15);text-align:center;';
+    diagram.innerHTML='<div style="font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:'+CA+';margin-bottom:14px;">Find the missing number!</div>'
+      +'<div style="display:flex;justify-content:center;align-items:center;gap:24px;">'
+      +'<div style="display:flex;flex-direction:column;align-items:center;gap:6px;">'
+      +'<div style="width:68px;height:68px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:800;color:white;background:'+(missing==='total'?'#FDE68A':'linear-gradient(135deg,'+CA+','+CB+')')+';">'+topVal+'</div>'
+      +'<div style="font-size:.7rem;color:#666;">Total</div></div>'
+      +'<div style="font-size:1.5rem;">↔</div>'
+      +'<div style="display:flex;flex-direction:column;gap:10px;">'
+      +'<div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:800;color:white;background:'+(missing==='part1'?'#FDE68A':'linear-gradient(135deg,#22c55e,#4ade80)')+';">'+p1Val+'</div><div style="font-size:.65rem;color:#666;">Part A</div></div>'
+      +'<div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#4ade80);display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:800;color:white;">'+String(part2)+'</div><div style="font-size:.65rem;color:#666;">Part B</div></div>'
+      +'</div></div>';
+    body.appendChild(diagram);
+    var grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;';
+    var answered=false;
+    opts.forEach(function(opt){
+      var btn=document.createElement('button');btn.textContent=String(opt);
+      btn.style.cssText='padding:18px;border-radius:16px;border:2.5px solid rgba(5,150,105,.2);background:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1.2rem;cursor:pointer;';
+      btn.onclick=function(){
+        if(answered)return;answered=true;
+        var correct=(opt===answer);if(correct)score++;
+        grid.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';if(parseInt(b.textContent)===answer){b.style.background='linear-gradient(135deg,#22c55e,#4ade80)';b.style.color='white';b.style.borderColor='#22c55e';}});
+        if(!correct){btn.style.background='linear-gradient(135deg,#ef4444,#f87171)';btn.style.color='white';}
+        var expl=document.createElement('div');
+        expl.style.cssText='background:'+(correct?'#E8FBF3':'#FFF0EE')+';border-radius:12px;padding:10px 14px;margin-bottom:12px;font-size:.88rem;font-weight:700;color:'+(correct?'#166534':'#991b1b')+';';
+        expl.textContent=(correct?'✅ ':'❌ ')+String(part1)+' + '+String(part2)+' = '+String(total);
+        body.appendChild(expl);
+        var nb=document.createElement('button');nb.textContent=round<ROUNDS?'Next ➡️':'Results 🏆';
+        nb.style.cssText='width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';
+        nb.onclick=function(){makeRound();};body.appendChild(nb);
+      };
+      grid.appendChild(btn);
+    });
+    body.appendChild(grid);ov.appendChild(body);
+  }
+  function showResults(){
+    ov.innerHTML='';
+    var pct=Math.round(score/ROUNDS*100);
+    var hdr2=document.createElement('div');hdr2.style.cssText='background:linear-gradient(135deg,'+CA+','+CB+');padding:14px 20px;flex-shrink:0;text-align:center;';
+    hdr2.innerHTML='<div style="font-family:Baloo 2,cursive;font-weight:800;color:white;">🔗 Number Bonds</div>';ov.appendChild(hdr2);
+    var b2=document.createElement('div');b2.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;';
+    b2.innerHTML='<div style="font-size:5rem;">'+(pct>=80?'🏆':pct>=50?'⭐':'💪')+'</div><div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:'+CA+';">'+score+'/'+ROUNDS+'</div><div style="color:#666;margin:8px 0 20px;">'+(pct>=80?'Number bond master!':'Keep practicing!')+'</div>';
+    var btns=document.createElement('div');btns.style='display:flex;gap:12px;';
+    var r1=document.createElement('button');r1.textContent='Play Again 🔄';r1.style.cssText='padding:14px 22px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';r1.onclick=function(){score=0;round=0;makeRound();};
+    var r2=document.createElement('button');r2.textContent='Home 🏠';r2.style.cssText='padding:14px 22px;border-radius:40px;border:none;background:#D1FAE5;color:'+CA+';font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';r2.onclick=function(){var o=document.getElementById('bondsOv');if(o)o.remove();};
+    btns.appendChild(r1);btns.appendChild(r2);b2.appendChild(btns);ov.appendChild(b2);
+    if(typeof sessionData!=='undefined'&&score>0){sessionData.stars=(sessionData.stars||0)+score*15;var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;toast('+'+score*15+' Stars! ⭐');}
+  }
+  makeRound();
+}
+
 async function startSubject(name) {
   if(name==='Letter Tracing'){showLetterTracing();return;}
   if(name==='Number Tracing'){openNumberTracing();return;}
@@ -5934,6 +6083,8 @@ async function startSubject(name) {
   if(name==='Busy Book'||name==='Encyclopedia'){openBusyBook(activeGrade);return;}
   if(name==='Pattern Maker'||name==='Sequencer'||name==='Patterns'){openSequencer(activeGrade);return;}
   if(name==='Calm Board'){openBusyBoard();return;}
+  if(name==='Memory Match'){openMemoryMatch(activeGrade);return;}
+  if(name==='Number Bonds'){openNumberBonds(activeGrade);return;}
   if(name==='ABC Time' && (activeGrade==='PreK'||activeGrade==='K')){openLetterQuiz();return;}
   if(langNames.indexOf(name)>=0){openLangGame(activeGrade);return;}
 
@@ -8593,33 +8744,31 @@ function openActualDashboard() {
 
 // Parent dashboard tile functions (global scope)
 function showParentProgress(){
-  var today=new Date().toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric',year:'numeric'});
+  var childName=typeof activeChild!=='undefined'&&activeChild?activeChild.name:'Your Child';
   var stars=typeof sessionData!=='undefined'?sessionData.stars||0:0;
   var tasks=typeof sessionData!=='undefined'?sessionData.tasks||0:0;
   var streak=typeof sessionData!=='undefined'?sessionData.streak||0:0;
-  // Try to get Supabase data for active child
-  var childName = typeof activeChild!=='undefined'&&activeChild?activeChild.name:'your child';
-  if(typeof sb!=='undefined'&&typeof activeChild!=='undefined'&&activeChild){
-    sb.from('daily_activity').select('stars,tasks_done,minutes_spent,created_at')
-      .eq('child_id',activeChild.id)
-      .order('created_at',{ascending:false})
-      .limit(7)
-      .then(function(res){
-        if(res.data&&res.data.length>0){
-          var totalStars=res.data.reduce(function(s,r){return s+(r.stars||0);},0);
-          var totalTasks=res.data.reduce(function(s,r){return s+(r.tasks_done||0);},0);
-          var totalMins=res.data.reduce(function(s,r){return s+(r.minutes_spent||0);},0);
-          toast('📊 '+childName+' (last 7 days): ⭐'+totalStars+' stars | 📚'+totalTasks+' activities | ⏱'+totalMins+' mins');
-        } else {
-          toast('📊 '+childName+' today ('+today+'): ⭐'+stars+' stars | 📚'+tasks+' activities | 🔥'+streak+' day streak');
-        }
-      }).catch(function(){
-        toast('📊 '+childName+' today ('+today+'): ⭐'+stars+' | 📚'+tasks+' | 🔥'+streak);
-      });
-  } else {
-    toast('📊 Today ('+today+'): ⭐'+stars+' stars | 📚'+tasks+' activities | 🔥'+streak+' day streak');
-  }
+  var ov=document.createElement('div');
+  ov.id='progressPanel';
+  ov.style.cssText='position:fixed;inset:0;z-index:10001;background:linear-gradient(160deg,#2D1B69,#5B2D8E);display:flex;flex-direction:column;font-family:Nunito,sans-serif;';
+  var today=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  ov.innerHTML='<div style="background:rgba(0,0,0,.2);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">'
+    +'<div style="font-family:Baloo 2,cursive;color:white;font-weight:800;font-size:1.1rem;">📊 '+childName+' — Progress</div>'
+    +'<button data-closeov="progressPanel" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:34px;height:34px;cursor:pointer;font-weight:800;">✕</button>'
+    +'</div>'
+    +'<div style="flex:1;overflow-y:auto;padding:20px;max-width:480px;margin:0 auto;width:100%;">'
+    +'<div style="color:rgba(255,255,255,.7);font-size:.82rem;margin-bottom:16px;">'+today+'</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">'
+    +'<div style="background:rgba(255,255,255,.12);border-radius:18px;padding:16px;text-align:center;"><div style="font-size:2.2rem;font-weight:800;color:#FCD34D;">'+stars+'</div><div style="color:rgba(255,255,255,.8);font-size:.8rem;">⭐ Stars</div></div>'
+    +'<div style="background:rgba(255,255,255,.12);border-radius:18px;padding:16px;text-align:center;"><div style="font-size:2.2rem;font-weight:800;color:#34D399;">'+tasks+'</div><div style="color:rgba(255,255,255,.8);font-size:.8rem;">📚 Activities</div></div>'
+    +'<div style="background:rgba(255,255,255,.12);border-radius:18px;padding:16px;text-align:center;"><div style="font-size:2.2rem;font-weight:800;color:#FB923C;">'+streak+'🔥</div><div style="color:rgba(255,255,255,.8);font-size:.8rem;">Day Streak</div></div>'
+    +'<div style="background:rgba(255,255,255,.12);border-radius:18px;padding:16px;text-align:center;"><div style="font-size:2.2rem;font-weight:800;color:#A78BFA;">0</div><div style="color:rgba(255,255,255,.8);font-size:.8rem;">⏱ Minutes</div></div>'
+    +'</div>'
+    +'<div style="background:rgba(255,255,255,.1);border-radius:18px;padding:20px;text-align:center;color:rgba(255,255,255,.6);font-size:.85rem;">Activity history syncs from Supabase. Start learning to track progress! 🌱</div>'
+    +'</div>';
+  document.body.appendChild(ov);
 }
+
 function showStarsHistory(){toast('⭐ Total stars: '+(typeof sessionData!=='undefined'?sessionData.stars||0:0));}
 function showSchedule(){toast('📅 Schedule feature coming soon!');}
 function manageChildren(){
