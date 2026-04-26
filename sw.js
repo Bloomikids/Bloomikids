@@ -1,24 +1,72 @@
-// BloomiKids SW v320 - force cache bust
-const V = 'bk-v345';
-self.addEventListener('install', e => { self.skipWaiting(); });
-self.addEventListener('activate', e => {
+// BloomiKids Service Worker v367
+const CACHE = 'bk-v367';
+const STATIC = [
+  '/',
+  '/app.html',
+  '/manifest.json',
+  '/bloom_happy.png',
+  '/logo.png',
+];
+
+// Install - cache static assets
+self.addEventListener('install', function(e) {
+  self.skipWaiting();
   e.waitUntil(
-    caches.keys()
-      .then(ks => Promise.all(ks.map(k => caches.delete(k))))
-      .then(() => self.clients.claim())
-      .then(() => self.clients.matchAll({type:'window', includeUncontrolled:true}))
-      .then(cs => { cs.forEach(c => { try { c.navigate(c.url); } catch(e){} }); })
+    caches.open(CACHE).then(function(c) {
+      return c.addAll(STATIC).catch(function(){});
+    })
   );
 });
-self.addEventListener('fetch', e => {
-  if (e.request.method !== 'GET') return;
-  // Never cache app.html
-  if (e.request.url.includes('app.html')) {
-    e.respondWith(fetch(e.request, {cache:'no-store'}));
+
+// Activate - delete ALL old caches
+self.addEventListener('activate', function(e) {
+  e.waitUntil(
+    caches.keys().then(function(keys) {
+      return Promise.all(
+        keys.filter(function(k){ return k !== CACHE; })
+            .map(function(k){ return caches.delete(k); })
+      );
+    }).then(function(){ return self.clients.claim(); })
+  );
+});
+
+// Fetch - network first for HTML, cache first for assets
+self.addEventListener('fetch', function(e) {
+  var url = e.request.url;
+  
+  // Always network-first for app.html (never serve stale)
+  if (url.endsWith('app.html') || url.endsWith('/')) {
+    e.respondWith(
+      fetch(e.request).catch(function() {
+        return caches.match('/app.html');
+      })
+    );
     return;
   }
+
+  // Network first for JS/HTML files
+  if (url.includes('.html') || url.includes('.js')) {
+    e.respondWith(
+      fetch(e.request)
+        .then(function(res) {
+          var clone = res.clone();
+          caches.open(CACHE).then(function(c){ c.put(e.request, clone); });
+          return res;
+        })
+        .catch(function() { return caches.match(e.request); })
+    );
+    return;
+  }
+
+  // Cache first for images, fonts, audio
   e.respondWith(
-    fetch(e.request, {cache:'no-store'})
-      .catch(() => caches.match(e.request))
+    caches.match(e.request).then(function(cached) {
+      if (cached) return cached;
+      return fetch(e.request).then(function(res) {
+        var clone = res.clone();
+        caches.open(CACHE).then(function(c){ c.put(e.request, clone); });
+        return res;
+      });
+    })
   );
 });

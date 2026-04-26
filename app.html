@@ -1,4 +1,4 @@
-<!-- BloomiKids v365 -->
+<!-- BloomiKids v368 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -688,6 +688,37 @@ img[src*="bloomy_"] {
 input[type=email], input[type=password], input[type=text] { background:white !important; color:#2D2D4E !important; border:2px solid rgba(91,45,142,.2) !important; border-radius:14px !important; padding:12px 16px !important; }
 input::placeholder { color:#aaa !important; }
 
+/* ── Correct Answer Celebration ── */
+@keyframes confettiFall {
+  0%   { transform:translateY(-20px) rotate(0deg); opacity:1; }
+  100% { transform:translateY(100vh) rotate(720deg); opacity:0; }
+}
+@keyframes celebFlash {
+  0%   { opacity:0; }
+  20%  { opacity:.85; }
+  80%  { opacity:.85; }
+  100% { opacity:0; }
+}
+#celebOverlay {
+  position:fixed; inset:0; z-index:99999;
+  pointer-events:none;
+  display:flex; align-items:center; justify-content:center;
+}
+#celebOverlay.active { animation:celebFlash .9s ease forwards; }
+.confetti-piece {
+  position:fixed;
+  top:-20px;
+  width:10px; height:10px;
+  border-radius:2px;
+  animation:confettiFall 1s ease forwards;
+}
+@keyframes correctPop {
+  0%  { transform:scale(1); }
+  40% { transform:scale(1.25); }
+  70% { transform:scale(.95); }
+  100%{ transform:scale(1); }
+}
+.correct-pop { animation:correctPop .45s ease; }
 </style>
   <link rel="icon" href="favicon.ico" sizes="32x32">
   <link rel="icon" href="favicon.png" type="image/png">
@@ -696,6 +727,7 @@ input::placeholder { color:#aaa !important; }
 
 <div id="offlineBanner">📡 You're offline -- progress saves when you reconnect!</div>
 <div id="toast"></div>
+<div id="celebOverlay"></div>
 <div id="birthdayOverlay" style="position:fixed;inset:0;z-index:9999;background:rgba(45,45,78,.88);display:none;align-items:center;justify-content:center;flex-direction:column;">
   <div class="birthday-card" id="birthdayCard" style="background:white;border-radius:36px;padding:48px 40px;text-align:center;max-width:380px;width:90%;box-shadow:0 24px 80px rgba(45,45,78,.4);position:relative;overflow:hidden;">
     <div style="font-size:3.5rem;margin-bottom:12px;animation:bounce 1s infinite;">🎂🎉🎈</div>
@@ -4153,28 +4185,26 @@ const MIX_RESULTS = {
 // Coloring book scenes — outlines only, kids fill all colors
 const COLORING_SCENES = {
   PreK: [
-    { label:'🌈 Rainbow', svg:`<svg class="coloring-svg" viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="220" fill="#FAFAFA" rx="12"/><!-- ground --><rect class="fillable" data-id="gnd" x="0" y="178" width="300" height="42" rx="0" fill="white" stroke="#333" stroke-width="2.5"/><!-- rainbow arcs - outline only --><path class="fillable" data-id="arc1" d="M20,178 Q150,10 280,178 L272,178 Q150,26 28,178Z" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="arc2" d="M38,178 Q150,30 262,178 L254,178 Q150,44 46,178Z" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="arc3" d="M55,178 Q150,50 245,178 L237,178 Q150,62 63,178Z" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="arc4" d="M72,178 Q150,68 228,178 L220,178 Q150,80 80,178Z" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="arc5" d="M89,178 Q150,86 211,178 L203,178 Q150,96 97,178Z" fill="white" stroke="#333" stroke-width="2.5"/><!-- clouds - puffy bumpy outline --><path class="fillable" data-id="cl1" d="M30,55 Q30,35 50,35 Q52,20 68,22 Q72,10 88,14 Q102,6 110,20 Q124,18 126,32 Q136,32 136,46 Q136,58 124,58 L42,58 Q30,58 30,55Z" fill="white" stroke="#333" stroke-width="2.5"/><!-- sun --><circle class="fillable" data-id="sun" cx="245" cy="38" r="26" fill="white" stroke="#333" stroke-width="2.5"/><line x1="245" y1="6" x2="245" y2="1" stroke="#333" stroke-width="2.5" stroke-linecap="round"/><line x1="271" y1="12" x2="275" y2="8" stroke="#333" stroke-width="2.5" stroke-linecap="round"/><line x1="277" y1="38" x2="282" y2="38" stroke="#333" stroke-width="2.5" stroke-linecap="round"/><line x1="271" y1="64" x2="275" y2="68" stroke="#333" stroke-width="2.5" stroke-linecap="round"/><line x1="245" y1="70" x2="245" y2="75" stroke="#333" stroke-width="2.5" stroke-linecap="round"/><line x1="219" y1="64" x2="215" y2="68" stroke="#333" stroke-width="2.5" stroke-linecap="round"/><line x1="213" y1="38" x2="208" y2="38" stroke="#333" stroke-width="2.5" stroke-linecap="round"/><line x1="219" y1="12" x2="215" y2="8" stroke="#333" stroke-width="2.5" stroke-linecap="round"/><!-- flowers --><circle class="fillable" data-id="f1c" cx="40" cy="188" r="9" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="f1p1" cx="40" cy="178" r="6" fill="white" stroke="#333" stroke-width="1.5"/><circle class="fillable" data-id="f1p2" cx="49" cy="183" r="6" fill="white" stroke="#333" stroke-width="1.5"/><circle class="fillable" data-id="f1p3" cx="31" cy="183" r="6" fill="white" stroke="#333" stroke-width="1.5"/><line x1="40" y1="197" x2="40" y2="210" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="f2c" cx="265" cy="188" r="9" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="f2p1" cx="265" cy="178" r="6" fill="white" stroke="#333" stroke-width="1.5"/><circle class="fillable" data-id="f2p2" cx="274" cy="183" r="6" fill="white" stroke="#333" stroke-width="1.5"/><circle class="fillable" data-id="f2p3" cx="256" cy="183" r="6" fill="white" stroke="#333" stroke-width="1.5"/><line x1="265" y1="197" x2="265" y2="210" stroke="#333" stroke-width="2"/></svg>`},
-    { label:'🦋 Butterfly', svg:`<svg class="coloring-svg" viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="260" fill="#FAFAFA" rx="12"/><!-- top left wing --><path class="fillable" data-id="wTL" d="M148,130 Q100,50 40,60 Q10,65 20,100 Q30,130 148,138Z" fill="white" stroke="#333" stroke-width="2.5"/><!-- top right wing --><path class="fillable" data-id="wTR" d="M152,130 Q200,50 260,60 Q290,65 280,100 Q270,130 152,138Z" fill="white" stroke="#333" stroke-width="2.5"/><!-- bottom left wing --><path class="fillable" data-id="wBL" d="M148,140 Q90,155 60,190 Q45,215 70,220 Q110,225 148,165Z" fill="white" stroke="#333" stroke-width="2.5"/><!-- bottom right wing --><path class="fillable" data-id="wBR" d="M152,140 Q210,155 240,190 Q255,215 230,220 Q190,225 152,165Z" fill="white" stroke="#333" stroke-width="2.5"/><!-- wing spots --><circle class="fillable" data-id="sp1" cx="95" cy="95" r="18" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="sp2" cx="205" cy="95" r="18" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="sp3" cx="110" cy="175" r="12" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="sp4" cx="190" cy="175" r="12" fill="white" stroke="#333" stroke-width="2"/><!-- body --><ellipse class="fillable" data-id="body" cx="150" cy="148" rx="8" ry="48" fill="white" stroke="#333" stroke-width="2.5"/><!-- head --><circle class="fillable" data-id="head" cx="150" cy="92" r="12" fill="white" stroke="#333" stroke-width="2.5"/><!-- antennae --><path d="M144,82 Q132,58 124,46" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/><circle class="fillable" data-id="an1" cx="123" cy="44" r="5" fill="white" stroke="#333" stroke-width="2"/><path d="M156,82 Q168,58 176,46" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/><circle class="fillable" data-id="an2" cx="177" cy="44" r="5" fill="white" stroke="#333" stroke-width="2"/><!-- flowers --><circle class="fillable" data-id="bg1c" cx="28" cy="240" r="10" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="bg1p" cx="28" cy="228" r="7" fill="white" stroke="#333" stroke-width="1.5"/><circle cx="38" cy="234" r="7" fill="white" stroke="#333" stroke-width="1.5"/><circle cx="18" cy="234" r="7" fill="white" stroke="#333" stroke-width="1.5"/><circle class="fillable" data-id="bg2c" cx="272" cy="240" r="10" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="bg2p" cx="272" cy="228" r="7" fill="white" stroke="#333" stroke-width="1.5"/><circle cx="282" cy="234" r="7" fill="white" stroke="#333" stroke-width="1.5"/><circle cx="262" cy="234" r="7" fill="white" stroke="#333" stroke-width="1.5"/></svg>`},
-    { label:'🏠 House', svg:`<svg class="coloring-svg" viewBox="0 0 300 240" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="240" fill="#FAFAFA" rx="12"/><!-- sky --><rect class="fillable" data-id="sky" x="0" y="0" width="300" height="170" fill="white" stroke="#333" stroke-width="2" rx="12"/><!-- ground --><rect class="fillable" data-id="grass" x="0" y="170" width="300" height="70" fill="white" stroke="#333" stroke-width="2"/><!-- house wall --><rect class="fillable" data-id="wall" x="75" y="118" width="150" height="92" fill="white" stroke="#333" stroke-width="2.5"/><!-- roof --><polygon class="fillable" data-id="roof" points="60,120 150,50 240,120" fill="white" stroke="#333" stroke-width="2.5"/><!-- chimney --><rect class="fillable" data-id="chimney" x="183" y="62" width="26" height="40" fill="white" stroke="#333" stroke-width="2"/><!-- door --><rect class="fillable" data-id="door" x="127" y="158" width="46" height="52" rx="5" fill="white" stroke="#333" stroke-width="2"/><!-- doorknob --><circle cx="167" cy="185" r="3.5" fill="#333"/><!-- windows --><rect class="fillable" data-id="win1" x="86" y="136" width="36" height="30" rx="3" fill="white" stroke="#333" stroke-width="2"/><line x1="104" y1="136" x2="104" y2="166" stroke="#333" stroke-width="1.5"/><line x1="86" y1="151" x2="122" y2="151" stroke="#333" stroke-width="1.5"/><rect class="fillable" data-id="win2" x="178" y="136" width="36" height="30" rx="3" fill="white" stroke="#333" stroke-width="2"/><line x1="196" y1="136" x2="196" y2="166" stroke="#333" stroke-width="1.5"/><line x1="178" y1="151" x2="214" y2="151" stroke="#333" stroke-width="1.5"/><!-- cloud --><path class="fillable" data-id="cl1" d="M28,52 Q28,34 46,34 Q48,20 62,22 Q66,10 80,14 Q92,8 100,20 Q112,18 114,30 Q122,30 122,44 Q122,54 112,54 L40,54 Q28,54 28,52Z" fill="white" stroke="#333" stroke-width="2"/><!-- cloud 2 --><path class="fillable" data-id="cl2" d="M170,38 Q170,24 184,24 Q186,14 196,16 Q200,8 210,11 Q218,6 224,16 Q232,15 233,25 Q240,25 240,36 Q240,44 232,44 L178,44 Q170,44 170,38Z" fill="white" stroke="#333" stroke-width="2"/><!-- sun --><circle class="fillable" data-id="sun" cx="262" cy="32" r="22" fill="white" stroke="#333" stroke-width="2"/><line x1="262" y1="5" x2="262" y2="1" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="284" y1="10" x2="288" y2="7" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="289" y1="32" x2="293" y2="32" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="284" y1="54" x2="288" y2="57" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="262" y1="59" x2="262" y2="63" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="240" y1="54" x2="236" y2="57" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="235" y1="32" x2="231" y2="32" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="240" y1="10" x2="236" y2="7" stroke="#333" stroke-width="2" stroke-linecap="round"/><!-- tree --><rect x="238" y="155" width="10" height="35" fill="white" stroke="#333" stroke-width="2"/><ellipse class="fillable" data-id="tree" cx="243" cy="144" rx="22" ry="24" fill="white" stroke="#333" stroke-width="2"/><!-- flowers --><circle class="fillable" data-id="fl1" cx="38" cy="185" r="8" fill="white" stroke="#333" stroke-width="2"/><line x1="38" y1="193" x2="38" y2="207" stroke="#333" stroke-width="2"/><circle cx="38" cy="176" r="5" fill="white" stroke="#333" stroke-width="1.5"/><circle cx="46" cy="181" r="5" fill="white" stroke="#333" stroke-width="1.5"/><circle cx="30" cy="181" r="5" fill="white" stroke="#333" stroke-width="1.5"/></svg>`},
-    { label:'🐟 Ocean', svg:`<svg class="coloring-svg" viewBox="0 0 300 240" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="240" fill="#FAFAFA" rx="12"/><!-- sky --><rect class="fillable" data-id="sky" x="0" y="0" width="300" height="90" fill="white" stroke="#333" stroke-width="2" rx="12"/><!-- water --><rect class="fillable" data-id="water" x="0" y="90" width="300" height="150" fill="white" stroke="#333" stroke-width="2"/><!-- waves --><path class="fillable" data-id="wv1" d="M0,88 Q25,76 50,88 Q75,100 100,88 Q125,76 150,88 Q175,100 200,88 Q225,76 250,88 Q275,100 300,88 L300,104 Q275,116 250,104 Q225,92 200,104 Q175,116 150,104 Q125,92 100,104 Q75,116 50,104 Q25,92 0,104Z" fill="white" stroke="#333" stroke-width="2"/><!-- big fish body --><ellipse class="fillable" data-id="fish1" cx="150" cy="158" rx="58" ry="32" fill="white" stroke="#333" stroke-width="2.5"/><!-- tail --><polygon class="fillable" data-id="tail1" points="92,158 66,136 66,180" fill="white" stroke="#333" stroke-width="2.5"/><!-- fin top --><path class="fillable" data-id="fin1" d="M150,126 Q162,106 172,126" fill="white" stroke="#333" stroke-width="2"/><!-- eye --><circle cx="188" cy="150" r="7" fill="white" stroke="#333" stroke-width="2"/><circle cx="189" cy="150" r="3" fill="#333"/><!-- mouth --><path d="M195,160 Q200,165 195,168" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/><!-- small fish 1 --><ellipse class="fillable" data-id="fish2" cx="55" cy="122" rx="26" ry="14" fill="white" stroke="#333" stroke-width="2"/><polygon class="fillable" data-id="tail2" points="29,122 14,112 14,132" fill="white" stroke="#333" stroke-width="2"/><circle cx="72" cy="118" r="4" fill="white" stroke="#333" stroke-width="1.5"/><circle cx="73" cy="118" r="2" fill="#333"/><!-- small fish 2 --><ellipse class="fillable" data-id="fish3" cx="242" cy="132" rx="24" ry="13" fill="white" stroke="#333" stroke-width="2"/><polygon points="218,132 204,122 204,142" fill="white" stroke="#333" stroke-width="2"/><circle cx="258" cy="128" r="4" fill="white" stroke="#333" stroke-width="1.5"/><circle cx="259" cy="128" r="2" fill="#333"/><!-- seaweed --><path class="fillable" data-id="sw1" d="M28,240 Q16,214 28,196 Q40,178 28,160" stroke="#333" stroke-width="7" fill="none" stroke-linecap="round"/><!-- starfish --><polygon class="fillable" data-id="star1" points="85,225 90,210 95,225 80,214 100,214" fill="white" stroke="#333" stroke-width="2"/><!-- bubbles --><circle cx="168" cy="114" r="5" fill="none" stroke="#333" stroke-width="1.5"/><circle cx="160" cy="103" r="3.5" fill="none" stroke="#333" stroke-width="1.5"/><circle cx="174" cy="97" r="4" fill="none" stroke="#333" stroke-width="1.5"/><!-- cloud --><path class="fillable" data-id="cl1" d="M30,40 Q30,24 46,24 Q48,12 60,14 Q64,4 76,8 Q86,2 94,14 Q104,12 106,24 Q114,24 114,36 Q114,46 104,46 L42,46 Q30,46 30,40Z" fill="white" stroke="#333" stroke-width="2"/><!-- sun --><circle class="fillable" data-id="sun" cx="252" cy="38" r="22" fill="white" stroke="#333" stroke-width="2"/><line x1="252" y1="11" x2="252" y2="7" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="274" y1="16" x2="278" y2="12" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="279" y1="38" x2="283" y2="38" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="274" y1="60" x2="278" y2="64" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="252" y1="65" x2="252" y2="69" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="230" y1="60" x2="226" y2="64" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="225" y1="38" x2="221" y2="38" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="230" y1="16" x2="226" y2="12" stroke="#333" stroke-width="2" stroke-linecap="round"/></svg>`},
-    { label:'🚂 Train', svg:`<svg class="coloring-svg" viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="220" fill="#FAFAFA" rx="12"/><!-- sky --><rect class="fillable" data-id="sky" x="0" y="0" width="300" height="140" fill="white" stroke="#333" stroke-width="2" rx="12"/><!-- ground --><rect class="fillable" data-id="gnd" x="0" y="140" width="300" height="80" fill="white" stroke="#333" stroke-width="2"/><!-- tracks --><line x1="0" y1="175" x2="300" y2="175" stroke="#333" stroke-width="3"/><line x1="0" y1="185" x2="300" y2="185" stroke="#333" stroke-width="3"/><line x1="20" y1="175" x2="20" y2="185" stroke="#333" stroke-width="2.5"/><line x1="50" y1="175" x2="50" y2="185" stroke="#333" stroke-width="2.5"/><line x1="80" y1="175" x2="80" y2="185" stroke="#333" stroke-width="2.5"/><line x1="110" y1="175" x2="110" y2="185" stroke="#333" stroke-width="2.5"/><line x1="140" y1="175" x2="140" y2="185" stroke="#333" stroke-width="2.5"/><line x1="170" y1="175" x2="170" y2="185" stroke="#333" stroke-width="2.5"/><line x1="200" y1="175" x2="200" y2="185" stroke="#333" stroke-width="2.5"/><line x1="230" y1="175" x2="230" y2="185" stroke="#333" stroke-width="2.5"/><line x1="260" y1="175" x2="260" y2="185" stroke="#333" stroke-width="2.5"/><line x1="290" y1="175" x2="290" y2="185" stroke="#333" stroke-width="2.5"/><!-- engine body --><rect class="fillable" data-id="eng" x="30" y="105" width="90" height="68" rx="8" fill="white" stroke="#333" stroke-width="2.5"/><!-- engine cab --><rect class="fillable" data-id="cab" x="80" y="88" width="40" height="50" rx="5" fill="white" stroke="#333" stroke-width="2"/><!-- cab window --><rect class="fillable" data-id="cabwin" x="88" y="96" width="24" height="18" rx="3" fill="white" stroke="#333" stroke-width="2"/><!-- boiler dome --><ellipse class="fillable" data-id="dome" cx="55" cy="105" rx="14" ry="10" fill="white" stroke="#333" stroke-width="2"/><!-- smokestack --><rect class="fillable" data-id="stack" x="44" y="82" width="14" height="24" rx="3" fill="white" stroke="#333" stroke-width="2"/><!-- smoke puffs --><circle class="fillable" data-id="sm1" cx="51" cy="72" r="9" fill="white" stroke="#333" stroke-width="1.5"/><circle class="fillable" data-id="sm2" cx="62" cy="60" r="12" fill="white" stroke="#333" stroke-width="1.5"/><circle class="fillable" data-id="sm3" cx="76" cy="50" r="9" fill="white" stroke="#333" stroke-width="1.5"/><!-- engine wheels --><circle class="fillable" data-id="ew1" cx="52" cy="173" r="14" fill="white" stroke="#333" stroke-width="2.5"/><circle cx="52" cy="173" r="5" fill="#333"/><circle class="fillable" data-id="ew2" cx="92" cy="173" r="14" fill="white" stroke="#333" stroke-width="2.5"/><circle cx="92" cy="173" r="5" fill="#333"/><!-- carriage --><rect class="fillable" data-id="car1" x="140" y="115" width="80" height="58" rx="6" fill="white" stroke="#333" stroke-width="2.5"/><!-- carriage windows --><rect class="fillable" data-id="cw1" x="150" y="124" width="22" height="18" rx="3" fill="white" stroke="#333" stroke-width="2"/><rect class="fillable" data-id="cw2" x="186" y="124" width="22" height="18" rx="3" fill="white" stroke="#333" stroke-width="2"/><!-- carriage wheels --><circle class="fillable" data-id="cw3" cx="158" cy="173" r="12" fill="white" stroke="#333" stroke-width="2.5"/><circle cx="158" cy="173" r="4" fill="#333"/><circle class="fillable" data-id="cw4" cx="204" cy="173" r="12" fill="white" stroke="#333" stroke-width="2.5"/><circle cx="204" cy="173" r="4" fill="#333"/><!-- connector --><line x1="120" y1="155" x2="140" y2="155" stroke="#333" stroke-width="3"/><!-- cloud --><path class="fillable" data-id="cl1" d="M180,30 Q180,16 194,16 Q196,6 206,8 Q210,0 220,3 Q228,-2 234,8 Q242,7 243,17 Q250,17 250,28 Q250,36 242,36 L188,36 Q180,36 180,30Z" fill="white" stroke="#333" stroke-width="2"/><!-- sun --><circle class="fillable" data-id="sun" cx="270" cy="40" r="24" fill="white" stroke="#333" stroke-width="2"/><line x1="270" y1="11" x2="270" y2="7" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="294" y1="16" x2="298" y2="12" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="299" y1="40" x2="303" y2="40" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="270" y1="69" x2="270" y2="73" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="246" y1="64" x2="242" y2="68" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="241" y1="40" x2="237" y2="40" stroke="#333" stroke-width="2" stroke-linecap="round"/></svg>`},
-    { label:'🦁 Lion', svg:`<svg class="coloring-svg" viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="280" fill="#FAFAFA" rx="12"/><!-- mane outer --><circle class="fillable" data-id="mane" cx="150" cy="148" r="85" fill="white" stroke="#333" stroke-width="2.5"/><!-- mane spikes around edge --><path class="fillable" data-id="mn1" d="M150,63 L158,82 L142,82Z" fill="white" stroke="#333" stroke-width="2"/><path class="fillable" data-id="mn2" d="M193,72 L196,92 L180,86Z" fill="white" stroke="#333" stroke-width="2"/><path class="fillable" data-id="mn3" d="M225,98 L222,118 L208,108Z" fill="white" stroke="#333" stroke-width="2"/><path class="fillable" data-id="mn4" d="M236,140 L218,148 L220,132Z" fill="white" stroke="#333" stroke-width="2"/><path class="fillable" data-id="mn5" d="M107,72 L120,86 L104,92Z" fill="white" stroke="#333" stroke-width="2"/><path class="fillable" data-id="mn6" d="M75,98 L92,108 L78,118Z" fill="white" stroke="#333" stroke-width="2"/><path class="fillable" data-id="mn7" d="M64,140 L80,132 L82,148Z" fill="white" stroke="#333" stroke-width="2"/><!-- face --><circle class="fillable" data-id="face" cx="150" cy="148" r="62" fill="white" stroke="#333" stroke-width="2.5"/><!-- ears --><ellipse class="fillable" data-id="ear1" cx="100" cy="100" rx="16" ry="18" fill="white" stroke="#333" stroke-width="2"/><ellipse class="fillable" data-id="ear2" cx="200" cy="100" rx="16" ry="18" fill="white" stroke="#333" stroke-width="2"/><!-- eyes --><circle class="fillable" data-id="eye1" cx="128" cy="138" r="14" fill="white" stroke="#333" stroke-width="2"/><circle cx="131" cy="138" r="6" fill="#333"/><circle class="fillable" data-id="eye2" cx="172" cy="138" r="14" fill="white" stroke="#333" stroke-width="2"/><circle cx="175" cy="138" r="6" fill="#333"/><!-- nose --><ellipse class="fillable" data-id="nose" cx="150" cy="162" rx="12" ry="9" fill="white" stroke="#333" stroke-width="2"/><!-- mouth --><path d="M144,170 Q150,180 156,170" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/><!-- whiskers --><line x1="100" y1="162" x2="132" y2="165" stroke="#333" stroke-width="1.5"/><line x1="100" y1="170" x2="132" y2="170" stroke="#333" stroke-width="1.5"/><line x1="168" y1="165" x2="200" y2="162" stroke="#333" stroke-width="1.5"/><line x1="168" y1="170" x2="200" y2="170" stroke="#333" stroke-width="1.5"/><!-- body --><ellipse class="fillable" data-id="body" cx="150" cy="234" rx="44" ry="36" fill="white" stroke="#333" stroke-width="2.5"/><!-- paws --><ellipse class="fillable" data-id="paw1" cx="114" cy="263" rx="18" ry="12" fill="white" stroke="#333" stroke-width="2"/><ellipse class="fillable" data-id="paw2" cx="186" cy="263" rx="18" ry="12" fill="white" stroke="#333" stroke-width="2"/><!-- tail --><path d="M194,240 Q230,230 240,255 Q248,272 232,275" stroke="#333" stroke-width="3" fill="none" stroke-linecap="round"/><circle class="fillable" data-id="tailtip" cx="228" cy="276" r="10" fill="white" stroke="#333" stroke-width="2"/></svg>`},
+    { label:'🦕 Dino Ball',  img:'coloring/color_dino_ball.png', prompt:'Color Dino and his ball!' },
+    { label:'🐟 Happy Fish', img:'coloring/color_fish.png',       prompt:'Color the happy fish!' },
   ],
   K: [
-    { label:'🌈 Rainbow', svg:`<svg class="coloring-svg" viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="220" fill="#FAFAFA" rx="12"/><rect class="fillable" data-id="gnd" x="0" y="178" width="300" height="42" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="arc1" d="M20,178 Q150,10 280,178 L272,178 Q150,26 28,178Z" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="arc2" d="M38,178 Q150,30 262,178 L254,178 Q150,44 46,178Z" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="arc3" d="M55,178 Q150,50 245,178 L237,178 Q150,62 63,178Z" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="arc4" d="M72,178 Q150,68 228,178 L220,178 Q150,80 80,178Z" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="arc5" d="M89,178 Q150,86 211,178 L203,178 Q150,96 97,178Z" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="cl1" d="M30,55 Q30,35 50,35 Q52,20 68,22 Q72,10 88,14 Q102,6 110,20 Q124,18 126,32 Q136,32 136,46 Q136,58 124,58 L42,58 Q30,58 30,55Z" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="cl2" d="M168,44 Q168,28 182,28 Q184,16 196,18 Q200,8 212,12 Q222,6 228,18 Q238,16 240,28 Q248,28 248,40 Q248,50 238,50 L178,50 Q168,50 168,44Z" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="sun" cx="256" cy="32" r="24" fill="white" stroke="#333" stroke-width="2.5"/><line x1="256" y1="3" x2="256" y2="-1" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="280" y1="8" x2="284" y2="4" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="285" y1="32" x2="289" y2="32" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="280" y1="56" x2="284" y2="60" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="256" y1="61" x2="256" y2="65" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="232" y1="56" x2="228" y2="60" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="227" y1="32" x2="223" y2="32" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="232" y1="8" x2="228" y2="4" stroke="#333" stroke-width="2" stroke-linecap="round"/><circle class="fillable" data-id="f1c" cx="40" cy="188" r="9" fill="white" stroke="#333" stroke-width="2"/><circle cx="40" cy="178" r="6" fill="white" stroke="#333" stroke-width="1.5"/><circle cx="49" cy="183" r="6" fill="white" stroke="#333" stroke-width="1.5"/><circle cx="31" cy="183" r="6" fill="white" stroke="#333" stroke-width="1.5"/><line x1="40" y1="197" x2="40" y2="210" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="f2c" cx="265" cy="188" r="9" fill="white" stroke="#333" stroke-width="2"/><circle cx="265" cy="178" r="6" fill="white" stroke="#333" stroke-width="1.5"/><circle cx="274" cy="183" r="6" fill="white" stroke="#333" stroke-width="1.5"/><circle cx="256" cy="183" r="6" fill="white" stroke="#333" stroke-width="1.5"/><line x1="265" y1="197" x2="265" y2="210" stroke="#333" stroke-width="2"/></svg>`},
-    { label:'🦋 Butterfly', svg:`<svg class="coloring-svg" viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="260" fill="#FAFAFA" rx="12"/><path class="fillable" data-id="wTL" d="M148,130 Q100,50 40,60 Q10,65 20,100 Q30,130 148,138Z" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="wTR" d="M152,130 Q200,50 260,60 Q290,65 280,100 Q270,130 152,138Z" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="wBL" d="M148,140 Q90,155 60,190 Q45,215 70,220 Q110,225 148,165Z" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="wBR" d="M152,140 Q210,155 240,190 Q255,215 230,220 Q190,225 152,165Z" fill="white" stroke="#333" stroke-width="2.5"/><circle class="fillable" data-id="sp1" cx="95" cy="95" r="18" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="sp2" cx="205" cy="95" r="18" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="sp3" cx="110" cy="175" r="12" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="sp4" cx="190" cy="175" r="12" fill="white" stroke="#333" stroke-width="2"/><ellipse class="fillable" data-id="body" cx="150" cy="148" rx="8" ry="48" fill="white" stroke="#333" stroke-width="2.5"/><circle class="fillable" data-id="head" cx="150" cy="92" r="12" fill="white" stroke="#333" stroke-width="2.5"/><path d="M144,82 Q132,58 124,46" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/><circle class="fillable" data-id="an1" cx="123" cy="44" r="5" fill="white" stroke="#333" stroke-width="2"/><path d="M156,82 Q168,58 176,46" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/><circle class="fillable" data-id="an2" cx="177" cy="44" r="5" fill="white" stroke="#333" stroke-width="2"/></svg>`},
-    { label:'🏠 House', svg:`<svg class="coloring-svg" viewBox="0 0 300 240" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="240" fill="#FAFAFA" rx="12"/><rect class="fillable" data-id="sky" x="0" y="0" width="300" height="170" fill="white" stroke="#333" stroke-width="2" rx="12"/><rect class="fillable" data-id="grass" x="0" y="170" width="300" height="70" fill="white" stroke="#333" stroke-width="2"/><rect class="fillable" data-id="wall" x="75" y="118" width="150" height="92" fill="white" stroke="#333" stroke-width="2.5"/><polygon class="fillable" data-id="roof" points="60,120 150,50 240,120" fill="white" stroke="#333" stroke-width="2.5"/><rect class="fillable" data-id="chimney" x="183" y="62" width="26" height="40" fill="white" stroke="#333" stroke-width="2"/><rect class="fillable" data-id="door" x="127" y="158" width="46" height="52" rx="5" fill="white" stroke="#333" stroke-width="2"/><circle cx="167" cy="185" r="3.5" fill="#333"/><rect class="fillable" data-id="win1" x="86" y="136" width="36" height="30" rx="3" fill="white" stroke="#333" stroke-width="2"/><line x1="104" y1="136" x2="104" y2="166" stroke="#333" stroke-width="1.5"/><line x1="86" y1="151" x2="122" y2="151" stroke="#333" stroke-width="1.5"/><rect class="fillable" data-id="win2" x="178" y="136" width="36" height="30" rx="3" fill="white" stroke="#333" stroke-width="2"/><line x1="196" y1="136" x2="196" y2="166" stroke="#333" stroke-width="1.5"/><line x1="178" y1="151" x2="214" y2="151" stroke="#333" stroke-width="1.5"/><path class="fillable" data-id="cl1" d="M28,52 Q28,34 46,34 Q48,20 62,22 Q66,10 80,14 Q92,8 100,20 Q112,18 114,30 Q122,30 122,44 Q122,54 112,54 L40,54 Q28,54 28,52Z" fill="white" stroke="#333" stroke-width="2"/><path class="fillable" data-id="cl2" d="M165,40 Q165,26 177,26 Q179,16 189,18 Q193,10 201,13 Q209,8 215,18 Q223,17 224,27 Q230,27 230,37 Q230,45 222,45 L173,45 Q165,45 165,40Z" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="sun" cx="262" cy="32" r="22" fill="white" stroke="#333" stroke-width="2"/><line x1="262" y1="5" x2="262" y2="1" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="284" y1="10" x2="288" y2="7" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="289" y1="32" x2="293" y2="32" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="262" y1="59" x2="262" y2="63" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="240" y1="54" x2="236" y2="57" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="235" y1="32" x2="231" y2="32" stroke="#333" stroke-width="2" stroke-linecap="round"/><rect x="238" y="155" width="10" height="35" fill="white" stroke="#333" stroke-width="2"/><ellipse class="fillable" data-id="tree" cx="243" cy="144" rx="22" ry="24" fill="white" stroke="#333" stroke-width="2"/></svg>`},
-    { label:'🐟 Ocean', svg:`<svg class="coloring-svg" viewBox="0 0 300 240" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="240" fill="#FAFAFA" rx="12"/><rect class="fillable" data-id="sky" x="0" y="0" width="300" height="90" fill="white" stroke="#333" stroke-width="2" rx="12"/><rect class="fillable" data-id="water" x="0" y="90" width="300" height="150" fill="white" stroke="#333" stroke-width="2"/><path class="fillable" data-id="wv1" d="M0,88 Q25,76 50,88 Q75,100 100,88 Q125,76 150,88 Q175,100 200,88 Q225,76 250,88 Q275,100 300,88 L300,104 Q275,116 250,104 Q225,92 200,104 Q175,116 150,104 Q125,92 100,104 Q75,116 50,104 Q25,92 0,104Z" fill="white" stroke="#333" stroke-width="2"/><ellipse class="fillable" data-id="fish1" cx="150" cy="158" rx="58" ry="32" fill="white" stroke="#333" stroke-width="2.5"/><polygon class="fillable" data-id="tail1" points="92,158 66,136 66,180" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="fin1" d="M150,126 Q162,106 172,126" fill="white" stroke="#333" stroke-width="2"/><circle cx="188" cy="150" r="7" fill="white" stroke="#333" stroke-width="2"/><circle cx="189" cy="150" r="3" fill="#333"/><ellipse class="fillable" data-id="fish2" cx="55" cy="122" rx="26" ry="14" fill="white" stroke="#333" stroke-width="2"/><polygon class="fillable" data-id="tail2" points="29,122 14,112 14,132" fill="white" stroke="#333" stroke-width="2"/><circle cx="72" cy="118" r="4" fill="white" stroke="#333" stroke-width="1.5"/><circle cx="73" cy="118" r="2" fill="#333"/><ellipse class="fillable" data-id="fish3" cx="242" cy="132" rx="24" ry="13" fill="white" stroke="#333" stroke-width="2"/><polygon points="218,132 204,122 204,142" fill="white" stroke="#333" stroke-width="2"/><circle cx="258" cy="128" r="4" fill="white" stroke="#333" stroke-width="1.5"/><circle cx="259" cy="128" r="2" fill="#333"/><path class="fillable" data-id="sw1" d="M28,240 Q16,214 28,196 Q40,178 28,160" stroke="#333" stroke-width="7" fill="none" stroke-linecap="round"/><polygon class="fillable" data-id="star1" points="85,225 90,210 95,225 80,214 100,214" fill="white" stroke="#333" stroke-width="2"/><circle cx="168" cy="114" r="5" fill="none" stroke="#333" stroke-width="1.5"/><circle cx="160" cy="103" r="3.5" fill="none" stroke="#333" stroke-width="1.5"/><path class="fillable" data-id="cl1" d="M30,40 Q30,24 46,24 Q48,12 60,14 Q64,4 76,8 Q86,2 94,14 Q104,12 106,24 Q114,24 114,36 Q114,46 104,46 L42,46 Q30,46 30,40Z" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="sun" cx="252" cy="38" r="22" fill="white" stroke="#333" stroke-width="2"/><line x1="252" y1="11" x2="252" y2="7" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="274" y1="16" x2="278" y2="12" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="279" y1="38" x2="283" y2="38" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="252" y1="65" x2="252" y2="69" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="230" y1="60" x2="226" y2="64" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="225" y1="38" x2="221" y2="38" stroke="#333" stroke-width="2" stroke-linecap="round"/></svg>`},
-    { label:'🚂 Train', svg:`<svg class="coloring-svg" viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="220" fill="#FAFAFA" rx="12"/><rect class="fillable" data-id="sky" x="0" y="0" width="300" height="140" fill="white" stroke="#333" stroke-width="2" rx="12"/><rect class="fillable" data-id="gnd" x="0" y="140" width="300" height="80" fill="white" stroke="#333" stroke-width="2"/><line x1="0" y1="175" x2="300" y2="175" stroke="#333" stroke-width="3"/><line x1="0" y1="185" x2="300" y2="185" stroke="#333" stroke-width="3"/><line x1="20" y1="175" x2="20" y2="185" stroke="#333" stroke-width="2.5"/><line x1="55" y1="175" x2="55" y2="185" stroke="#333" stroke-width="2.5"/><line x1="90" y1="175" x2="90" y2="185" stroke="#333" stroke-width="2.5"/><line x1="125" y1="175" x2="125" y2="185" stroke="#333" stroke-width="2.5"/><line x1="160" y1="175" x2="160" y2="185" stroke="#333" stroke-width="2.5"/><line x1="195" y1="175" x2="195" y2="185" stroke="#333" stroke-width="2.5"/><line x1="230" y1="175" x2="230" y2="185" stroke="#333" stroke-width="2.5"/><line x1="265" y1="175" x2="265" y2="185" stroke="#333" stroke-width="2.5"/><rect class="fillable" data-id="eng" x="30" y="105" width="90" height="68" rx="8" fill="white" stroke="#333" stroke-width="2.5"/><rect class="fillable" data-id="cab" x="80" y="88" width="40" height="50" rx="5" fill="white" stroke="#333" stroke-width="2"/><rect class="fillable" data-id="cabwin" x="88" y="96" width="24" height="18" rx="3" fill="white" stroke="#333" stroke-width="2"/><ellipse class="fillable" data-id="dome" cx="55" cy="105" rx="14" ry="10" fill="white" stroke="#333" stroke-width="2"/><rect class="fillable" data-id="stack" x="44" y="82" width="14" height="24" rx="3" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="sm1" cx="51" cy="72" r="9" fill="white" stroke="#333" stroke-width="1.5"/><circle class="fillable" data-id="sm2" cx="62" cy="60" r="12" fill="white" stroke="#333" stroke-width="1.5"/><circle class="fillable" data-id="sm3" cx="76" cy="50" r="9" fill="white" stroke="#333" stroke-width="1.5"/><circle class="fillable" data-id="ew1" cx="52" cy="173" r="14" fill="white" stroke="#333" stroke-width="2.5"/><circle cx="52" cy="173" r="5" fill="#333"/><circle class="fillable" data-id="ew2" cx="92" cy="173" r="14" fill="white" stroke="#333" stroke-width="2.5"/><circle cx="92" cy="173" r="5" fill="#333"/><rect class="fillable" data-id="car1" x="140" y="115" width="80" height="58" rx="6" fill="white" stroke="#333" stroke-width="2.5"/><rect class="fillable" data-id="cw1" x="150" y="124" width="22" height="18" rx="3" fill="white" stroke="#333" stroke-width="2"/><rect class="fillable" data-id="cw2" x="186" y="124" width="22" height="18" rx="3" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="cw3" cx="158" cy="173" r="12" fill="white" stroke="#333" stroke-width="2.5"/><circle cx="158" cy="173" r="4" fill="#333"/><circle class="fillable" data-id="cw4" cx="204" cy="173" r="12" fill="white" stroke="#333" stroke-width="2.5"/><circle cx="204" cy="173" r="4" fill="#333"/><line x1="120" y1="155" x2="140" y2="155" stroke="#333" stroke-width="3"/><path class="fillable" data-id="cl1" d="M180,30 Q180,16 194,16 Q196,6 206,8 Q210,0 220,3 Q228,-2 234,8 Q242,7 243,17 Q250,17 250,28 Q250,36 242,36 L188,36 Q180,36 180,30Z" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="sun" cx="262" cy="42" r="22" fill="white" stroke="#333" stroke-width="2"/><line x1="262" y1="15" x2="262" y2="11" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="286" y1="18" x2="290" y2="14" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="289" y1="42" x2="293" y2="42" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="262" y1="69" x2="262" y2="73" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="238" y1="66" x2="234" y2="70" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="235" y1="42" x2="231" y2="42" stroke="#333" stroke-width="2" stroke-linecap="round"/></svg>`},
-    { label:'🦁 Lion', svg:`<svg class="coloring-svg" viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="280" fill="#FAFAFA" rx="12"/><circle class="fillable" data-id="mane" cx="150" cy="148" r="85" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="mn1" d="M150,63 L158,82 L142,82Z" fill="white" stroke="#333" stroke-width="2"/><path class="fillable" data-id="mn2" d="M193,72 L196,92 L180,86Z" fill="white" stroke="#333" stroke-width="2"/><path class="fillable" data-id="mn3" d="M225,98 L222,118 L208,108Z" fill="white" stroke="#333" stroke-width="2"/><path class="fillable" data-id="mn4" d="M236,140 L218,148 L220,132Z" fill="white" stroke="#333" stroke-width="2"/><path class="fillable" data-id="mn5" d="M107,72 L120,86 L104,92Z" fill="white" stroke="#333" stroke-width="2"/><path class="fillable" data-id="mn6" d="M75,98 L92,108 L78,118Z" fill="white" stroke="#333" stroke-width="2"/><path class="fillable" data-id="mn7" d="M64,140 L80,132 L82,148Z" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="face" cx="150" cy="148" r="62" fill="white" stroke="#333" stroke-width="2.5"/><ellipse class="fillable" data-id="ear1" cx="100" cy="100" rx="16" ry="18" fill="white" stroke="#333" stroke-width="2"/><ellipse class="fillable" data-id="ear2" cx="200" cy="100" rx="16" ry="18" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="eye1" cx="128" cy="138" r="14" fill="white" stroke="#333" stroke-width="2"/><circle cx="131" cy="138" r="6" fill="#333"/><circle class="fillable" data-id="eye2" cx="172" cy="138" r="14" fill="white" stroke="#333" stroke-width="2"/><circle cx="175" cy="138" r="6" fill="#333"/><ellipse class="fillable" data-id="nose" cx="150" cy="162" rx="12" ry="9" fill="white" stroke="#333" stroke-width="2"/><path d="M144,170 Q150,180 156,170" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/><line x1="100" y1="162" x2="132" y2="165" stroke="#333" stroke-width="1.5"/><line x1="100" y1="170" x2="132" y2="170" stroke="#333" stroke-width="1.5"/><line x1="168" y1="165" x2="200" y2="162" stroke="#333" stroke-width="1.5"/><line x1="168" y1="170" x2="200" y2="170" stroke="#333" stroke-width="1.5"/><ellipse class="fillable" data-id="body" cx="150" cy="234" rx="44" ry="36" fill="white" stroke="#333" stroke-width="2.5"/><ellipse class="fillable" data-id="paw1" cx="114" cy="263" rx="18" ry="12" fill="white" stroke="#333" stroke-width="2"/><ellipse class="fillable" data-id="paw2" cx="186" cy="263" rx="18" ry="12" fill="white" stroke="#333" stroke-width="2"/><path d="M194,240 Q230,230 240,255 Q248,272 232,275" stroke="#333" stroke-width="3" fill="none" stroke-linecap="round"/><circle class="fillable" data-id="tailtip" cx="228" cy="276" r="10" fill="white" stroke="#333" stroke-width="2"/></svg>`},
+    { label:'🫧 Bubbles',    img:'coloring/color_bubbles.png',   prompt:'Color the girl and bubbles!' },
+    { label:'🦋 Butterfly',  img:'coloring/color_butterfly.png', prompt:'Color the butterfly garden!' },
+    { label:'🐱 Cat',        img:'coloring/color_cat.png',       prompt:'Color the cat on the mat!' },
   ],
   1: [
-    { label:'🌈 Rainbow', svg:`<svg class="coloring-svg" viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="220" fill="#FAFAFA" rx="12"/><rect class="fillable" data-id="gnd" x="0" y="178" width="300" height="42" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="arc1" d="M20,178 Q150,10 280,178 L272,178 Q150,26 28,178Z" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="arc2" d="M38,178 Q150,30 262,178 L254,178 Q150,44 46,178Z" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="arc3" d="M55,178 Q150,50 245,178 L237,178 Q150,62 63,178Z" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="arc4" d="M72,178 Q150,68 228,178 L220,178 Q150,80 80,178Z" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="arc5" d="M89,178 Q150,86 211,178 L203,178 Q150,96 97,178Z" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="cl1" d="M30,55 Q30,35 50,35 Q52,20 68,22 Q72,10 88,14 Q102,6 110,20 Q124,18 126,32 Q136,32 136,46 Q136,58 124,58 L42,58 Q30,58 30,55Z" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="cl2" d="M168,44 Q168,28 182,28 Q184,16 196,18 Q200,8 212,12 Q222,6 228,18 Q238,16 240,28 Q248,28 248,40 Q248,50 238,50 L178,50 Q168,50 168,44Z" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="sun" cx="256" cy="32" r="24" fill="white" stroke="#333" stroke-width="2.5"/><line x1="256" y1="3" x2="256" y2="-1" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="280" y1="8" x2="284" y2="4" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="285" y1="32" x2="289" y2="32" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="256" y1="61" x2="256" y2="65" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="232" y1="56" x2="228" y2="60" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="227" y1="32" x2="223" y2="32" stroke="#333" stroke-width="2" stroke-linecap="round"/><circle class="fillable" data-id="f1c" cx="40" cy="188" r="9" fill="white" stroke="#333" stroke-width="2"/><circle cx="40" cy="178" r="6" fill="white" stroke="#333" stroke-width="1.5"/><circle cx="49" cy="183" r="6" fill="white" stroke="#333" stroke-width="1.5"/><circle cx="31" cy="183" r="6" fill="white" stroke="#333" stroke-width="1.5"/><line x1="40" y1="197" x2="40" y2="210" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="f2c" cx="265" cy="188" r="9" fill="white" stroke="#333" stroke-width="2"/><circle cx="265" cy="178" r="6" fill="white" stroke="#333" stroke-width="1.5"/><circle cx="274" cy="183" r="6" fill="white" stroke="#333" stroke-width="1.5"/><circle cx="256" cy="183" r="6" fill="white" stroke="#333" stroke-width="1.5"/><line x1="265" y1="197" x2="265" y2="210" stroke="#333" stroke-width="2"/></svg>`},
-    { label:'🦋 Butterfly', svg:`<svg class="coloring-svg" viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="260" fill="#FAFAFA" rx="12"/><path class="fillable" data-id="wTL" d="M148,130 Q100,50 40,60 Q10,65 20,100 Q30,130 148,138Z" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="wTR" d="M152,130 Q200,50 260,60 Q290,65 280,100 Q270,130 152,138Z" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="wBL" d="M148,140 Q90,155 60,190 Q45,215 70,220 Q110,225 148,165Z" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="wBR" d="M152,140 Q210,155 240,190 Q255,215 230,220 Q190,225 152,165Z" fill="white" stroke="#333" stroke-width="2.5"/><circle class="fillable" data-id="sp1" cx="95" cy="95" r="18" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="sp2" cx="205" cy="95" r="18" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="sp3" cx="110" cy="175" r="12" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="sp4" cx="190" cy="175" r="12" fill="white" stroke="#333" stroke-width="2"/><ellipse class="fillable" data-id="body" cx="150" cy="148" rx="8" ry="48" fill="white" stroke="#333" stroke-width="2.5"/><circle class="fillable" data-id="head" cx="150" cy="92" r="12" fill="white" stroke="#333" stroke-width="2.5"/><path d="M144,82 Q132,58 124,46" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/><circle class="fillable" data-id="an1" cx="123" cy="44" r="5" fill="white" stroke="#333" stroke-width="2"/><path d="M156,82 Q168,58 176,46" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/><circle class="fillable" data-id="an2" cx="177" cy="44" r="5" fill="white" stroke="#333" stroke-width="2"/></svg>`},
-    { label:'🏠 House', svg:`<svg class="coloring-svg" viewBox="0 0 300 240" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="240" fill="#FAFAFA" rx="12"/><rect class="fillable" data-id="sky" x="0" y="0" width="300" height="170" fill="white" stroke="#333" stroke-width="2" rx="12"/><rect class="fillable" data-id="grass" x="0" y="170" width="300" height="70" fill="white" stroke="#333" stroke-width="2"/><rect class="fillable" data-id="wall" x="75" y="118" width="150" height="92" fill="white" stroke="#333" stroke-width="2.5"/><polygon class="fillable" data-id="roof" points="60,120 150,50 240,120" fill="white" stroke="#333" stroke-width="2.5"/><rect class="fillable" data-id="chimney" x="183" y="62" width="26" height="40" fill="white" stroke="#333" stroke-width="2"/><rect class="fillable" data-id="door" x="127" y="158" width="46" height="52" rx="5" fill="white" stroke="#333" stroke-width="2"/><circle cx="167" cy="185" r="3.5" fill="#333"/><rect class="fillable" data-id="win1" x="86" y="136" width="36" height="30" rx="3" fill="white" stroke="#333" stroke-width="2"/><line x1="104" y1="136" x2="104" y2="166" stroke="#333" stroke-width="1.5"/><line x1="86" y1="151" x2="122" y2="151" stroke="#333" stroke-width="1.5"/><rect class="fillable" data-id="win2" x="178" y="136" width="36" height="30" rx="3" fill="white" stroke="#333" stroke-width="2"/><line x1="196" y1="136" x2="196" y2="166" stroke="#333" stroke-width="1.5"/><line x1="178" y1="151" x2="214" y2="151" stroke="#333" stroke-width="1.5"/><path class="fillable" data-id="cl1" d="M28,52 Q28,34 46,34 Q48,20 62,22 Q66,10 80,14 Q92,8 100,20 Q112,18 114,30 Q122,30 122,44 Q122,54 112,54 L40,54 Q28,54 28,52Z" fill="white" stroke="#333" stroke-width="2"/><path class="fillable" data-id="cl2" d="M165,40 Q165,26 177,26 Q179,16 189,18 Q193,10 201,13 Q209,8 215,18 Q223,17 224,27 Q230,27 230,37 Q230,45 222,45 L173,45 Q165,45 165,40Z" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="sun" cx="262" cy="32" r="22" fill="white" stroke="#333" stroke-width="2"/><line x1="262" y1="5" x2="262" y2="1" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="284" y1="10" x2="288" y2="7" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="289" y1="32" x2="293" y2="32" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="262" y1="59" x2="262" y2="63" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="240" y1="54" x2="236" y2="57" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="235" y1="32" x2="231" y2="32" stroke="#333" stroke-width="2" stroke-linecap="round"/><rect x="238" y="155" width="10" height="35" fill="white" stroke="#333" stroke-width="2"/><ellipse class="fillable" data-id="tree" cx="243" cy="144" rx="22" ry="24" fill="white" stroke="#333" stroke-width="2"/></svg>`},
-    { label:'🐟 Ocean', svg:`<svg class="coloring-svg" viewBox="0 0 300 240" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="240" fill="#FAFAFA" rx="12"/><rect class="fillable" data-id="sky" x="0" y="0" width="300" height="90" fill="white" stroke="#333" stroke-width="2" rx="12"/><rect class="fillable" data-id="water" x="0" y="90" width="300" height="150" fill="white" stroke="#333" stroke-width="2"/><path class="fillable" data-id="wv1" d="M0,88 Q25,76 50,88 Q75,100 100,88 Q125,76 150,88 Q175,100 200,88 Q225,76 250,88 Q275,100 300,88 L300,104 Q275,116 250,104 Q225,92 200,104 Q175,116 150,104 Q125,92 100,104 Q75,116 50,104 Q25,92 0,104Z" fill="white" stroke="#333" stroke-width="2"/><ellipse class="fillable" data-id="fish1" cx="150" cy="158" rx="58" ry="32" fill="white" stroke="#333" stroke-width="2.5"/><polygon class="fillable" data-id="tail1" points="92,158 66,136 66,180" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="fin1" d="M150,126 Q162,106 172,126" fill="white" stroke="#333" stroke-width="2"/><circle cx="188" cy="150" r="7" fill="white" stroke="#333" stroke-width="2"/><circle cx="189" cy="150" r="3" fill="#333"/><ellipse class="fillable" data-id="fish2" cx="55" cy="122" rx="26" ry="14" fill="white" stroke="#333" stroke-width="2"/><polygon class="fillable" data-id="tail2" points="29,122 14,112 14,132" fill="white" stroke="#333" stroke-width="2"/><circle cx="72" cy="118" r="4" fill="white" stroke="#333" stroke-width="1.5"/><circle cx="73" cy="118" r="2" fill="#333"/><ellipse class="fillable" data-id="fish3" cx="242" cy="132" rx="24" ry="13" fill="white" stroke="#333" stroke-width="2"/><polygon points="218,132 204,122 204,142" fill="white" stroke="#333" stroke-width="2"/><circle cx="258" cy="128" r="4" fill="white" stroke="#333" stroke-width="1.5"/><circle cx="259" cy="128" r="2" fill="#333"/><path class="fillable" data-id="sw1" d="M28,240 Q16,214 28,196 Q40,178 28,160" stroke="#333" stroke-width="7" fill="none" stroke-linecap="round"/><polygon class="fillable" data-id="star1" points="85,225 90,210 95,225 80,214 100,214" fill="white" stroke="#333" stroke-width="2"/><circle cx="168" cy="114" r="5" fill="none" stroke="#333" stroke-width="1.5"/><circle cx="160" cy="103" r="3.5" fill="none" stroke="#333" stroke-width="1.5"/><path class="fillable" data-id="cl1" d="M30,40 Q30,24 46,24 Q48,12 60,14 Q64,4 76,8 Q86,2 94,14 Q104,12 106,24 Q114,24 114,36 Q114,46 104,46 L42,46 Q30,46 30,40Z" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="sun" cx="252" cy="38" r="22" fill="white" stroke="#333" stroke-width="2"/><line x1="252" y1="11" x2="252" y2="7" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="274" y1="16" x2="278" y2="12" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="279" y1="38" x2="283" y2="38" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="252" y1="65" x2="252" y2="69" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="230" y1="60" x2="226" y2="64" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="225" y1="38" x2="221" y2="38" stroke="#333" stroke-width="2" stroke-linecap="round"/></svg>`},
-    { label:'🚂 Train', svg:`<svg class="coloring-svg" viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="220" fill="#FAFAFA" rx="12"/><rect class="fillable" data-id="sky" x="0" y="0" width="300" height="140" fill="white" stroke="#333" stroke-width="2" rx="12"/><rect class="fillable" data-id="gnd" x="0" y="140" width="300" height="80" fill="white" stroke="#333" stroke-width="2"/><line x1="0" y1="175" x2="300" y2="175" stroke="#333" stroke-width="3"/><line x1="0" y1="185" x2="300" y2="185" stroke="#333" stroke-width="3"/><line x1="20" y1="175" x2="20" y2="185" stroke="#333" stroke-width="2.5"/><line x1="55" y1="175" x2="55" y2="185" stroke="#333" stroke-width="2.5"/><line x1="90" y1="175" x2="90" y2="185" stroke="#333" stroke-width="2.5"/><line x1="125" y1="175" x2="125" y2="185" stroke="#333" stroke-width="2.5"/><line x1="160" y1="175" x2="160" y2="185" stroke="#333" stroke-width="2.5"/><line x1="195" y1="175" x2="195" y2="185" stroke="#333" stroke-width="2.5"/><line x1="230" y1="175" x2="230" y2="185" stroke="#333" stroke-width="2.5"/><line x1="265" y1="175" x2="265" y2="185" stroke="#333" stroke-width="2.5"/><rect class="fillable" data-id="eng" x="30" y="105" width="90" height="68" rx="8" fill="white" stroke="#333" stroke-width="2.5"/><rect class="fillable" data-id="cab" x="80" y="88" width="40" height="50" rx="5" fill="white" stroke="#333" stroke-width="2"/><rect class="fillable" data-id="cabwin" x="88" y="96" width="24" height="18" rx="3" fill="white" stroke="#333" stroke-width="2"/><ellipse class="fillable" data-id="dome" cx="55" cy="105" rx="14" ry="10" fill="white" stroke="#333" stroke-width="2"/><rect class="fillable" data-id="stack" x="44" y="82" width="14" height="24" rx="3" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="sm1" cx="51" cy="72" r="9" fill="white" stroke="#333" stroke-width="1.5"/><circle class="fillable" data-id="sm2" cx="62" cy="60" r="12" fill="white" stroke="#333" stroke-width="1.5"/><circle class="fillable" data-id="sm3" cx="76" cy="50" r="9" fill="white" stroke="#333" stroke-width="1.5"/><circle class="fillable" data-id="ew1" cx="52" cy="173" r="14" fill="white" stroke="#333" stroke-width="2.5"/><circle cx="52" cy="173" r="5" fill="#333"/><circle class="fillable" data-id="ew2" cx="92" cy="173" r="14" fill="white" stroke="#333" stroke-width="2.5"/><circle cx="92" cy="173" r="5" fill="#333"/><rect class="fillable" data-id="car1" x="140" y="115" width="80" height="58" rx="6" fill="white" stroke="#333" stroke-width="2.5"/><rect class="fillable" data-id="cw1" x="150" y="124" width="22" height="18" rx="3" fill="white" stroke="#333" stroke-width="2"/><rect class="fillable" data-id="cw2" x="186" y="124" width="22" height="18" rx="3" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="cw3" cx="158" cy="173" r="12" fill="white" stroke="#333" stroke-width="2.5"/><circle cx="158" cy="173" r="4" fill="#333"/><circle class="fillable" data-id="cw4" cx="204" cy="173" r="12" fill="white" stroke="#333" stroke-width="2.5"/><circle cx="204" cy="173" r="4" fill="#333"/><line x1="120" y1="155" x2="140" y2="155" stroke="#333" stroke-width="3"/><path class="fillable" data-id="cl1" d="M180,30 Q180,16 194,16 Q196,6 206,8 Q210,0 220,3 Q228,-2 234,8 Q242,7 243,17 Q250,17 250,28 Q250,36 242,36 L188,36 Q180,36 180,30Z" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="sun" cx="262" cy="42" r="22" fill="white" stroke="#333" stroke-width="2"/><line x1="262" y1="15" x2="262" y2="11" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="286" y1="18" x2="290" y2="14" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="289" y1="42" x2="293" y2="42" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="262" y1="69" x2="262" y2="73" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="238" y1="66" x2="234" y2="70" stroke="#333" stroke-width="2" stroke-linecap="round"/><line x1="235" y1="42" x2="231" y2="42" stroke="#333" stroke-width="2" stroke-linecap="round"/></svg>`},
-    { label:'🦁 Lion', svg:`<svg class="coloring-svg" viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg"><rect width="300" height="280" fill="#FAFAFA" rx="12"/><circle class="fillable" data-id="mane" cx="150" cy="148" r="85" fill="white" stroke="#333" stroke-width="2.5"/><path class="fillable" data-id="mn1" d="M150,63 L158,82 L142,82Z" fill="white" stroke="#333" stroke-width="2"/><path class="fillable" data-id="mn2" d="M193,72 L196,92 L180,86Z" fill="white" stroke="#333" stroke-width="2"/><path class="fillable" data-id="mn3" d="M225,98 L222,118 L208,108Z" fill="white" stroke="#333" stroke-width="2"/><path class="fillable" data-id="mn4" d="M236,140 L218,148 L220,132Z" fill="white" stroke="#333" stroke-width="2"/><path class="fillable" data-id="mn5" d="M107,72 L120,86 L104,92Z" fill="white" stroke="#333" stroke-width="2"/><path class="fillable" data-id="mn6" d="M75,98 L92,108 L78,118Z" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="face" cx="150" cy="148" r="62" fill="white" stroke="#333" stroke-width="2.5"/><ellipse class="fillable" data-id="ear1" cx="100" cy="100" rx="16" ry="18" fill="white" stroke="#333" stroke-width="2"/><ellipse class="fillable" data-id="ear2" cx="200" cy="100" rx="16" ry="18" fill="white" stroke="#333" stroke-width="2"/><circle class="fillable" data-id="eye1" cx="128" cy="138" r="14" fill="white" stroke="#333" stroke-width="2"/><circle cx="131" cy="138" r="6" fill="#333"/><circle class="fillable" data-id="eye2" cx="172" cy="138" r="14" fill="white" stroke="#333" stroke-width="2"/><circle cx="175" cy="138" r="6" fill="#333"/><ellipse class="fillable" data-id="nose" cx="150" cy="162" rx="12" ry="9" fill="white" stroke="#333" stroke-width="2"/><path d="M144,170 Q150,180 156,170" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/><line x1="100" y1="162" x2="132" y2="165" stroke="#333" stroke-width="1.5"/><line x1="168" y1="165" x2="200" y2="162" stroke="#333" stroke-width="1.5"/><ellipse class="fillable" data-id="body" cx="150" cy="234" rx="44" ry="36" fill="white" stroke="#333" stroke-width="2.5"/><ellipse class="fillable" data-id="paw1" cx="114" cy="263" rx="18" ry="12" fill="white" stroke="#333" stroke-width="2"/><ellipse class="fillable" data-id="paw2" cx="186" cy="263" rx="18" ry="12" fill="white" stroke="#333" stroke-width="2"/><path d="M194,240 Q230,230 240,255 Q248,272 232,275" stroke="#333" stroke-width="3" fill="none" stroke-linecap="round"/><circle class="fillable" data-id="tailtip" cx="228" cy="276" r="10" fill="white" stroke="#333" stroke-width="2"/></svg>`},
+    { label:'🦄 Unicorn',    img:'coloring/color_unicorn.png',   prompt:'Color the magical unicorn!' },
+    { label:'🤖 Robot',      img:'coloring/color_robot.png',     prompt:'Color the friendly robot!' },
+    { label:'🚂 Train',      img:'coloring/color_train.png',     prompt:'Color the happy train!' },
+  ],
+  2: [
+    { label:'🐉 Dragon',     img:'coloring/color_dragon.png',    prompt:'Color the baby dragon!' },
+    { label:'🐍 Snake',      img:'coloring/color_snake.png',     prompt:'Color the cute snake!' },
+  ],
+  3: [
+    { label:'📖 Reading',    img:'coloring/color_reading.png',   prompt:'Color the boy reading!' },
+    { label:'🦄 Unicorn',    img:'coloring/color_unicorn.png',   prompt:'Color the magical unicorn!' },
   ],
 };
 
@@ -4243,30 +4273,30 @@ let activeColoringScene = 0;
 
 function buildColoringBook(container) {
   const PALETTE = [
-    '#FF6B6B','#FF8C42','#FFD166','#5ECDA0','#4ECDC4',
-    '#4488FF','#C9B8FF','#FF6B9D','#A0522D','#2D2D4E',
-    '#FFFFFF','#90EE90',
+    '#FF6B6B','#FF8C42','#FFD166','#22c55e','#4ECDC4',
+    '#4488FF','#A78BFA','#FF6B9D','#A0522D','#2D2D4E',
+    '#FFFFFF','#000000',
   ];
   activeColoringScene = 0;
   activeColoringColor = '#FF6B6B';
-  // Pick scenes for this grade
   const scenes = COLORING_SCENES[activeGrade] || COLORING_SCENES['K'];
   window._currentColoringScenes = scenes;
 
   container.innerHTML = `
     <div class="coloring-section" style="width:100%;grid-column:1/-1;">
-      <div style="font-family:'Baloo 2',cursive;font-size:1.3rem;font-weight:800;margin-bottom:12px;text-align:center;">🎨 Pick a scene to color!</div>
+      <div style="font-family:'Baloo 2',cursive;font-size:1.1rem;font-weight:800;margin-bottom:10px;text-align:center;">🎨 Pick a picture to color!</div>
       <div class="coloring-picker" id="coloringPicker">
         ${scenes.map((s,i)=>`
           <button class="coloring-scene-btn ${i===0?'active':''}" onclick="switchColoringScene(${i})" id="sceneBtn_${i}">
             ${s.label}
           </button>`).join('')}
       </div>
-      <div style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:700;text-align:center;color:var(--muted);margin-bottom:12px;">👆 Tap any part to color it!</div>
-      <div class="coloring-canvas-wrap">
-        <div id="coloringCanvas">${scenes[0].svg}</div>
+      <div style="font-size:.82rem;font-weight:700;text-align:center;color:var(--muted);margin-bottom:8px;">🖌 Draw on the picture with your finger!</div>
+      <div class="coloring-canvas-wrap" style="position:relative;border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,.12);">
+        <img id="coloringImg" src="${scenes[0].img}" alt="coloring" style="width:100%;display:block;border-radius:16px;">
+        <canvas id="drawCanvas" style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:16px;touch-action:none;cursor:crosshair;"></canvas>
       </div>
-      <div style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;margin-bottom:10px;text-align:center;">Pick a color 🎨</div>
+      <div style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;margin:10px 0 8px;text-align:center;">Pick a color 🎨</div>
       <div class="color-palette" id="coloringPalette">
         ${PALETTE.map(c=>`
           <button class="palette-btn ${c===activeColoringColor?'selected':''}"
@@ -4274,22 +4304,85 @@ function buildColoringBook(container) {
             onclick="selectColoringColor('${c}',this)">
           </button>`).join('')}
       </div>
-      <div class="coloring-actions">
-        <button class="coloring-action-btn color-action-clear" onclick="clearColoring()">🗑 Clear</button>
-        <button class="coloring-action-btn color-action-done" onclick="doneColoring()">✅ I'm Done! +20 Stars</button>
+      <div style="display:flex;gap:8px;margin-top:10px;">
+        <button class="coloring-action-btn color-action-clear" onclick="clearDrawing()" style="flex:1;">🗑 Clear</button>
+        <input type="range" id="brushSize" min="4" max="30" value="12" style="flex:1;accent-color:#FF6B6B;" oninput="window._brushSize=parseInt(this.value)">
+        <button class="coloring-action-btn color-action-done" onclick="doneColoring()" style="flex:1;">✅ Done! +20⭐</button>
       </div>
     </div>`;
 
-  // Attach tap listeners after render
-  setTimeout(()=>attachColoringListeners(), 100);
+  // Set up canvas drawing
+  window._brushSize = 12;
+  setTimeout(()=>setupDrawCanvas(), 100);
 }
+
+function setupDrawCanvas() {
+  var img = document.getElementById('coloringImg');
+  var canvas = document.getElementById('drawCanvas');
+  if(!canvas || !img) return;
+  canvas.width = img.naturalWidth || img.offsetWidth;
+  canvas.height = img.naturalHeight || img.offsetHeight;
+  var ctx = canvas.getContext('2d');
+  var drawing = false;
+  var lastX=0, lastY=0;
+
+  function getPos(e) {
+    var rect = canvas.getBoundingClientRect();
+    var scaleX = canvas.width / rect.width;
+    var scaleY = canvas.height / rect.height;
+    var src = e.touches ? e.touches[0] : e;
+    return { x:(src.clientX - rect.left)*scaleX, y:(src.clientY - rect.top)*scaleY };
+  }
+
+  function draw(e) {
+    if(!drawing) return;
+    e.preventDefault();
+    var pos = getPos(e);
+    ctx.globalCompositeOperation = activeColoringColor==='#FFFFFF'?'destination-out':'source-over';
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(pos.x, pos.y);
+    ctx.strokeStyle = activeColoringColor;
+    ctx.lineWidth = (window._brushSize||12) * (canvas.width/canvas.getBoundingClientRect().width);
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.stroke();
+    lastX = pos.x; lastY = pos.y;
+  }
+
+  canvas.addEventListener('mousedown', function(e){drawing=true;var p=getPos(e);lastX=p.x;lastY=p.y;});
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', function(){drawing=false;});
+  canvas.addEventListener('mouseleave', function(){drawing=false;});
+  canvas.addEventListener('touchstart', function(e){e.preventDefault();drawing=true;var p=getPos(e);lastX=p.x;lastY=p.y;},{passive:false});
+  canvas.addEventListener('touchmove', draw, {passive:false});
+  canvas.addEventListener('touchend', function(){drawing=false;});
+}
+
+function clearDrawing() {
+  var canvas = document.getElementById('drawCanvas');
+  if(canvas) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+}
+
 
 function switchColoringScene(idx) {
   activeColoringScene = idx;
   document.querySelectorAll('.coloring-scene-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
   const scenes = window._currentColoringScenes || COLORING_SCENES['K'];
-  document.getElementById('coloringCanvas').innerHTML = scenes[idx].svg;
-  setTimeout(()=>attachColoringListeners(), 100);
+  var scene = scenes[idx];
+  // Clear canvas drawing
+  var canvas = document.getElementById('drawCanvas');
+  if(canvas){ var ctx=canvas.getContext('2d'); ctx.clearRect(0,0,canvas.width,canvas.height); }
+  // Switch image
+  var img = document.getElementById('coloringImg');
+  if(img && scene.img){ img.src = scene.img; }
+  // Re-setup canvas after image loads
+  if(img){ img.onload = function(){ setupDrawCanvas(); }; } else { setupDrawCanvas(); }
+  // Show prompt
+  if(scene.prompt) toast('🎨 '+scene.prompt);
 }
 
 function attachColoringListeners() {
@@ -4824,7 +4917,64 @@ function switchTab(tab) {
   }
 }
 
+
+// ── Activity logging — called whenever a game completes ──────────
+
+// ── Correct answer celebration ──────────────────────────────────
+function showCorrectCelebration() {
+  var ov = document.getElementById('celebOverlay');
+  if(!ov) return;
+  // Flash overlay with green tint
+  ov.style.background = 'radial-gradient(circle,rgba(34,197,94,.35),rgba(74,222,128,.15))';
+  ov.classList.remove('active');
+  void ov.offsetWidth;
+  ov.classList.add('active');
+  // Launch confetti
+  var colors = ['#FF6B6B','#FFD166','#22c55e','#4ECDC4','#4488FF','#C9B8FF','#FF6B9D','#FFA500'];
+  for(var i=0;i<18;i++){
+    (function(idx){
+      setTimeout(function(){
+        var c = document.createElement('div');
+        c.className = 'confetti-piece';
+        c.style.left = Math.random()*100+'vw';
+        c.style.background = colors[Math.floor(Math.random()*colors.length)];
+        c.style.width = (8+Math.random()*8)+'px';
+        c.style.height = (8+Math.random()*8)+'px';
+        c.style.borderRadius = Math.random()>0.5?'50%':'2px';
+        c.style.animationDuration = (.7+Math.random()*.5)+'s';
+        c.style.animationDelay = '0s';
+        document.body.appendChild(c);
+        setTimeout(function(){ if(c.parentNode) c.parentNode.removeChild(c); }, 1200);
+      }, idx*40);
+    })(i);
+  }
+  // Clean up overlay class
+  setTimeout(function(){
+    if(ov) ov.classList.remove('active');
+  }, 950);
+}
+function logGameComplete(starsEarned, tasksCount) {
+  try {
+    // Update local session
+    sessionData.stars = (sessionData.stars||0) + starsEarned;
+    sessionData.tasks = (sessionData.tasks||0) + (tasksCount||1);
+    // Update UI
+    var se = document.getElementById('statStars');
+    var te = document.getElementById('statTasks');
+    if(se) se.textContent = sessionData.stars;
+    if(te) te.textContent = sessionData.tasks;
+    // Push to Supabase
+    if(typeof sb !== 'undefined' && typeof activeChild !== 'undefined' && activeChild) {
+      upsertDailyActivity({
+        tasks_done: tasksCount||1,
+        minutes_academic: 2,
+        stars_earned: starsEarned
+      }).catch(function(e){ console.warn('logGameComplete Supabase error:', e); });
+    }
+  } catch(e) { console.warn('logGameComplete error:', e); }
+}
 async function upsertDailyActivity(updates) {
+  if(!activeChild) return;
   const today=new Date().toISOString().split('T')[0];
   const {data:ex}=await sb.from('daily_activity').select('*').eq('child_id',activeChild.id).eq('activity_date',today).maybeSingle();
   if (ex) {
@@ -5506,7 +5656,7 @@ function openShopMath(grade) {
       +'<button onclick="var o=document.getElementById(\'shopOv\');if(o)o.remove();" style="padding:14px 24px;border-radius:40px;border:none;background:#FEF3C7;color:'+CA+';font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;">Home 🏠</button>'
       +'</div>';
     ov.appendChild(body);
-    if(typeof sessionData!=='undefined'&&score>0){sessionData.stars=(sessionData.stars||0)+score*15;var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;if(score>0)toast('+'+score*15+' Stars! ⭐');}
+    if(score>0){ logGameComplete(score*15, 1); toast('+'+score*15+' Stars! ⭐'); }
   }
 
   makeRound();
@@ -5967,6 +6117,7 @@ function openMemoryMatch(grade) {
           if(emojis[flipped[0]]===emojis[flipped[1]]){
             matched=matched.concat(flipped); flipped=[];
             if(matched.length===emojis.length){
+              showCorrectCelebration();
               setTimeout(function(){
                 ov.innerHTML='<div style="background:linear-gradient(135deg,'+CA+','+CB+');padding:14px 20px;flex-shrink:0;text-align:center;"><div style="font-family:Baloo 2,cursive;font-weight:800;color:white;">🃏 Memory Match</div></div>';
                 var b=document.createElement('div');b.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;';
@@ -5977,7 +6128,7 @@ function openMemoryMatch(grade) {
                 var r2=document.createElement('button');r2.textContent='Home 🏠';r2.style.cssText='padding:14px 22px;border-radius:40px;border:none;background:#EDE9FF;color:'+CA+';font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;';
                 r2.onclick=function(){var o=document.getElementById('matchOv');if(o)o.remove();};
                 btns.appendChild(r1);btns.appendChild(r2);b.appendChild(btns);ov.appendChild(b);
-                if(typeof sessionData!=='undefined'){sessionData.stars=(sessionData.stars||0)+20;var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;toast('+20 Stars!');}
+                logGameComplete(20, 1); toast('+20 Stars! ⭐');
               },400);
             } else render();
           } else { setTimeout(function(){flipped=[];render();},900); }
@@ -6035,7 +6186,7 @@ function openNumberBonds(grade) {
       btn.style.cssText='padding:18px;border-radius:16px;border:2.5px solid rgba(5,150,105,.2);background:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1.2rem;cursor:pointer;';
       btn.onclick=function(){
         if(answered)return;answered=true;
-        var correct=(opt===answer);if(correct)score++;
+        var correct=(opt===answer);if(correct){score++;showCorrectCelebration();}
         grid.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';if(parseInt(b.textContent)===answer){b.style.background='linear-gradient(135deg,#22c55e,#4ade80)';b.style.color='white';b.style.borderColor='#22c55e';}});
         if(!correct){btn.style.background='linear-gradient(135deg,#ef4444,#f87171)';btn.style.color='white';}
         var expl=document.createElement('div');
@@ -6061,7 +6212,7 @@ function openNumberBonds(grade) {
     var r1=document.createElement('button');r1.textContent='Play Again 🔄';r1.style.cssText='padding:14px 22px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';r1.onclick=function(){score=0;round=0;makeRound();};
     var r2=document.createElement('button');r2.textContent='Home 🏠';r2.style.cssText='padding:14px 22px;border-radius:40px;border:none;background:#D1FAE5;color:'+CA+';font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';r2.onclick=function(){var o=document.getElementById('bondsOv');if(o)o.remove();};
     btns.appendChild(r1);btns.appendChild(r2);b2.appendChild(btns);ov.appendChild(b2);
-    if(typeof sessionData!=='undefined'&&score>0){sessionData.stars=(sessionData.stars||0)+score*15;var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;toast('+'+score*15+' Stars! ⭐');}
+    if(score>0){ logGameComplete(score*15, 1); toast('+'+score*15+' Stars! ⭐'); }
   }
   makeRound();
 }
@@ -6342,10 +6493,11 @@ function gameWinScreen(score, total, colorA, colorB, ovId) {
 //  G4-5: place value, estimation, multiplication, division
 // ══════════════════════════════════════════════════════════════════════
 function openMathGame(grade) {
-  var CA='#6C3FC5', CB='#A78BFA';
+  var CA=earlyGradeOv?'#C0392B':'#6C3FC5', CB=earlyGradeOv?'#E74C3C':'#A78BFA';
   var ov = document.createElement('div');
   ov.id = 'mathGameOv';
-  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#F2EFFF;display:flex;flex-direction:column;';
+  var earlyGradeOv = ['PreK','K','1'].indexOf(grade) >= 0;
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:'+(earlyGradeOv?'linear-gradient(160deg,#FF6B6B 0%,#FF8E53 100%)':'#F2EFFF')+';display:flex;flex-direction:column;';
   document.body.appendChild(ov);
 
   // Close button always works
@@ -6677,83 +6829,235 @@ function openMathGame(grade) {
   function runQuiz(questions, gameId) {
     var qIdx=0, score=0, total=questions.length;
 
+    // Early grades get picture buttons + Bloomy reads aloud
+    var earlyGrade = ['PreK','K','1'].indexOf(grade) >= 0;
+
+    function bloomy_speak(text) {
+      if (!earlyGrade) return;
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      var u = new SpeechSynthesisUtterance(text);
+      u.rate = 0.82; u.pitch = 1.15; u.volume = 1;
+      // Prefer a friendly voice
+      var voices = window.speechSynthesis.getVoices();
+      var pref = voices.find(function(v){ return v.name.indexOf('Samantha')>=0||v.name.indexOf('Karen')>=0||v.name.indexOf('Google US')>=0; });
+      if(pref) u.voice = pref;
+      window.speechSynthesis.speak(u);
+    }
+
     function showQ() {
       if(qIdx>=total){ showResults(); return; }
       var q=questions[qIdx];
+      window.speechSynthesis && window.speechSynthesis.cancel();
       ov.innerHTML='';
       addHeader('Math — Round '+(qIdx+1)+'/'+total);
-      var body=document.createElement('div');
-      body.style.cssText='flex:1;overflow-y:auto;padding:20px;max-width:480px;margin:0 auto;width:100%;';
-      
-      // Progress bar
-      var prog=document.createElement('div');
-      prog.style.cssText='background:#EDE9FF;height:8px;border-radius:4px;margin-bottom:16px;overflow:hidden;';
-      prog.innerHTML='<div style="background:linear-gradient(90deg,'+CA+','+CB+');height:100%;width:'+Math.round(qIdx/total*100)+'%;transition:width .3s;border-radius:4px;"></div>';
-      body.appendChild(prog);
 
-      // Question card
-      var card=document.createElement('div');
-      card.style.cssText='background:white;border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 4px 16px rgba(108,63,197,.15);text-align:center;';
-      var promptEl=document.createElement('div');
-      promptEl.style.cssText='font-family:Baloo 2,cursive;font-size:1.15rem;font-weight:800;color:#2D2D4E;margin-bottom:12px;line-height:1.4;';
-      promptEl.textContent=q.prompt;
-      card.appendChild(promptEl);
+      // ── EARLY GRADE LAYOUT: Bloomy sidebar + bigger visuals ──
+      if(earlyGrade) {
+        var wrap=document.createElement('div');
+        wrap.style.cssText='flex:1;overflow-y:auto;display:flex;flex-direction:column;padding:0;';
 
-      if(q.visual){
-        var vis=document.createElement('div');
-        vis.style.cssText='font-size:'+(q.type==='compare'?'2.2rem':'2.8rem')+';margin:8px 0 16px;line-height:2.2;word-break:break-word;text-align:center;';
-        if(q.type==='compare'){
-          vis.innerHTML='<div style="display:flex;justify-content:center;gap:20px;"><div><div style="font-size:.75rem;font-weight:800;color:'+CA+';">Group A</div>'+q.groupA+'</div><div><div style="font-size:.75rem;font-weight:800;color:'+CA+';">Group B</div>'+q.groupB+'</div></div>';
-        } else {
-          vis.innerHTML=q.visual;
+        // Progress dots
+        var dots=document.createElement('div');
+        dots.style.cssText='display:flex;gap:5px;justify-content:center;padding:10px 0 6px;flex-shrink:0;';
+        for(var d=0;d<total;d++){
+          var dot=document.createElement('div');
+          dot.style.cssText='width:8px;height:8px;border-radius:50%;background:'+(d<qIdx?CA:d===qIdx?'white':'rgba(255,255,255,.3)'+');flex-shrink:0;transition:all .3s;').replace('+)','');
+          dot.style.cssText='width:8px;height:8px;border-radius:50%;background:'+(d<qIdx?CA:d===qIdx?'white':'rgba(255,255,255,.3)')+';flex-shrink:0;';
+          dots.appendChild(dot);
         }
-        card.appendChild(vis);
-      }
+        wrap.appendChild(dots);
 
-      // Hint button
-      var hintBtn=document.createElement('button');
-      hintBtn.textContent='💡 Hint';
-      hintBtn.style.cssText='padding:6px 16px;border-radius:20px;border:none;background:#F3EFFF;color:'+CA+';font-family:Nunito,sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;margin-bottom:4px;';
-      hintBtn.onclick=function(){ toast('💡 '+q.hint); };
-      card.appendChild(hintBtn);
-      body.appendChild(card);
+        // Main content area
+        var main=document.createElement('div');
+        main.style.cssText='flex:1;padding:12px 16px;display:flex;flex-direction:column;gap:12px;';
 
-      // Answer choices
-      var choiceGrid=document.createElement('div');
-      var isTwoChoice=q.choices.length<=2;
-      choiceGrid.style.cssText='display:grid;grid-template-columns:'+(isTwoChoice?'1fr 1fr':'1fr 1fr')+';gap:10px;margin-bottom:16px;';
-      var answered=false;
-      q.choices.forEach(function(choice){
-        var btn=document.createElement('button');
-        btn.innerHTML=choice;
-        btn.style.cssText='padding:14px 10px;border-radius:16px;border:2.5px solid rgba(108,63,197,.2);background:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.95rem;color:#2D2D4E;cursor:pointer;transition:all .15s;line-height:1.3;';
-        btn.onclick=function(){
-          if(answered)return;
-          answered=true;
-          var correct=(choice===q.answer);
-          // Color all buttons
-          choiceGrid.querySelectorAll('button').forEach(function(b){
-            b.style.pointerEvents='none';
-            if(b.innerHTML===q.answer){b.style.background='linear-gradient(135deg,#22c55e,#4ade80)';b.style.color='white';b.style.borderColor='#22c55e';}
+        // Bloomy speech bubble + question
+        var bloomy_row=document.createElement('div');
+        bloomy_row.style.cssText='display:flex;align-items:flex-start;gap:10px;';
+        var bloomy_img=document.createElement('img');
+        bloomy_img.src='bloom_happy.png';
+        bloomy_img.style.cssText='width:64px;height:64px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 4px 12px rgba(0,0,0,.2));cursor:pointer;';
+        bloomy_img.title='Tap Bloomy to hear the question!';
+        var _qprompt=q.prompt; bloomy_img.onclick=function(){ bloomy_speak(_qprompt); };
+        var bubble=document.createElement('div');
+        bubble.style.cssText='background:white;border-radius:18px 18px 18px 4px;padding:14px 16px;flex:1;box-shadow:0 4px 16px rgba(0,0,0,.1);position:relative;';
+        bubble.innerHTML='<div style="font-family:Baloo 2,cursive;font-size:1.05rem;font-weight:800;color:#2D2D4E;line-height:1.5;">'+q.prompt+'</div>'
+          +'<button id="bubbleReadBtn" style="position:absolute;top:8px;right:8px;background:#EDE9FF;border:none;border-radius:50%;width:26px;height:26px;cursor:pointer;font-size:.75rem;display:flex;align-items:center;justify-content:center;">🔊</button>';
+        bloomy_row.appendChild(bloomy_img);
+        bloomy_row.appendChild(bubble);
+        // Wire read button after DOM insert
+        var rbtn=bubble.querySelector('#bubbleReadBtn');
+        if(rbtn){ var _qp=q.prompt; rbtn.onclick=function(e){e.stopPropagation();bloomy_speak(_qp);}; }
+        main.appendChild(bloomy_row);
+
+        // Visual (big emoji display)
+        if(q.visual){
+          var vis=document.createElement('div');
+          vis.style.cssText='background:white;border-radius:18px;padding:16px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.08);';
+          if(q.type==='compare'){
+            vis.innerHTML='<div style="display:flex;justify-content:center;gap:24px;">'
+              +'<div style="text-align:center;"><div style="font-size:.8rem;font-weight:800;color:'+CA+';margin-bottom:4px;">Group A</div><div style="font-size:2.4rem;line-height:1.8;">'+q.groupA+'</div></div>'
+              +'<div style="text-align:center;"><div style="font-size:.8rem;font-weight:800;color:'+CA+';margin-bottom:4px;">Group B</div><div style="font-size:2.4rem;line-height:1.8;">'+q.groupB+'</div></div>'
+              +'</div>';
+          } else {
+            vis.innerHTML='<div style="font-size:3rem;line-height:2;word-break:break-word;">'+q.visual+'</div>';
+          }
+          main.appendChild(vis);
+        }
+
+        // PICTURE answer buttons for early grades
+        var isPicture = q.type==='visual'||q.type==='compare'||q.type==='pattern';
+        var answered=false;
+        var choiceGrid=document.createElement('div');
+
+        if(isPicture && q.type==='pattern'){
+          // Pattern: show big emoji tiles
+          choiceGrid.style.cssText='display:grid;grid-template-columns:repeat(4,1fr);gap:8px;';
+          q.choices.forEach(function(choice){
+            var btn=document.createElement('button');
+            btn.style.cssText='aspect-ratio:1;border-radius:16px;border:3px solid rgba(108,63,197,.2);background:white;font-size:2rem;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.08);transition:all .18s;';
+            btn.textContent=choice;
+            btn.onclick=function(){ handleAnswer(choice, q, answered, function(a){answered=a;}, choiceGrid, main); };
+            choiceGrid.appendChild(btn);
           });
-          if(!correct){btn.style.background='linear-gradient(135deg,#ef4444,#f87171)';btn.style.color='white';btn.style.borderColor='#ef4444';}
-          if(correct)score++;
-          // Show explanation
-          var expl=document.createElement('div');
-          expl.style.cssText='background:'+(correct?'#E8FBF3':'#FFF0EE')+';border-radius:12px;padding:10px 14px;margin-bottom:12px;font-size:.88rem;font-weight:700;color:'+(correct?'#166534':'#991b1b')+';';
-          expl.textContent=(correct?'✅ ':'❌ ')+q.explain;
-          body.appendChild(expl);
-          // Next button
-          var nextBtn=document.createElement('button');
-          nextBtn.textContent=qIdx<total-1?'Next ➡️':'See Results 🏆';
-          nextBtn.style.cssText='width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 16px rgba(108,63,197,.35);';
-          nextBtn.onclick=function(){qIdx++;showQ();};
-          body.appendChild(nextBtn);
-        };
-        choiceGrid.appendChild(btn);
+        } else if(q.type==='compare'){
+          // More/less: two big picture cards
+          choiceGrid.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:10px;';
+          q.choices.forEach(function(choice){
+            var btn=document.createElement('button');
+            btn.style.cssText='padding:16px 10px;border-radius:18px;border:3px solid rgba(108,63,197,.2);background:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.08);transition:all .18s;';
+            btn.textContent=choice;
+            btn.onclick=function(){ handleAnswer(choice, q, answered, function(a){answered=a;}, choiceGrid, main); };
+            choiceGrid.appendChild(btn);
+          });
+        } else {
+          // Counting: big number buttons
+          choiceGrid.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:10px;';
+          q.choices.forEach(function(choice){
+            var btn=document.createElement('button');
+            btn.style.cssText='padding:20px;border-radius:18px;border:3px solid rgba(108,63,197,.2);background:white;font-family:Baloo 2,cursive;font-weight:800;font-size:1.6rem;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.08);transition:all .18s;';
+            btn.textContent=choice;
+            btn.onclick=function(){ handleAnswer(choice, q, answered, function(a){answered=a;}, choiceGrid, main); };
+            choiceGrid.appendChild(btn);
+          });
+        }
+        main.appendChild(choiceGrid);
+
+        // Hint
+        var hintBtn=document.createElement('button');
+        hintBtn.style.cssText='padding:10px;border-radius:20px;border:none;background:rgba(255,255,255,.25);color:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;width:100%;';
+        hintBtn.textContent='💡 Hint';
+        hintBtn.onclick=function(){ bloomy_speak(q.hint); toast('💡 '+q.hint); };
+        main.appendChild(hintBtn);
+
+        wrap.appendChild(main);
+        ov.appendChild(wrap);
+
+        // Auto-read question after brief delay
+        setTimeout(function(){ bloomy_speak(q.prompt); }, 400);
+
+      } else {
+        // ── OLDER GRADE LAYOUT: original compact style ──
+        var body=document.createElement('div');
+        body.style.cssText='flex:1;overflow-y:auto;padding:20px;max-width:480px;margin:0 auto;width:100%;';
+        var prog=document.createElement('div');
+        prog.style.cssText='background:#EDE9FF;height:8px;border-radius:4px;margin-bottom:16px;overflow:hidden;';
+        prog.innerHTML='<div style="background:linear-gradient(90deg,'+CA+','+CB+');height:100%;width:'+Math.round(qIdx/total*100)+'%;transition:width .3s;border-radius:4px;"></div>';
+        body.appendChild(prog);
+        var card=document.createElement('div');
+        card.style.cssText='background:white;border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 4px 16px rgba(108,63,197,.15);text-align:center;';
+        var promptEl=document.createElement('div');
+        promptEl.style.cssText='font-family:Baloo 2,cursive;font-size:1.15rem;font-weight:800;color:#2D2D4E;margin-bottom:12px;line-height:1.4;';
+        promptEl.textContent=q.prompt;
+        card.appendChild(promptEl);
+        if(q.visual){
+          var vis=document.createElement('div');
+          vis.style.cssText='font-size:'+(q.type==='compare'?'2.2rem':'2.8rem')+';margin:8px 0 16px;line-height:2.2;word-break:break-word;text-align:center;';
+          if(q.type==='compare'){
+            vis.innerHTML='<div style="display:flex;justify-content:center;gap:20px;"><div><div style="font-size:.75rem;font-weight:800;color:'+CA+';">Group A</div>'+q.groupA+'</div><div><div style="font-size:.75rem;font-weight:800;color:'+CA+';">Group B</div>'+q.groupB+'</div></div>';
+          } else { vis.innerHTML=q.visual; }
+          card.appendChild(vis);
+        }
+        var hintBtn=document.createElement('button');
+        hintBtn.textContent='💡 Hint';
+        hintBtn.style.cssText='padding:6px 16px;border-radius:20px;border:none;background:#F3EFFF;color:'+CA+';font-family:Nunito,sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;margin-bottom:4px;';
+        hintBtn.onclick=function(){ toast('💡 '+q.hint); };
+        card.appendChild(hintBtn);
+        body.appendChild(card);
+        var choiceGrid=document.createElement('div');
+        var isTwoChoice=q.choices.length<=2;
+        choiceGrid.style.cssText='display:grid;grid-template-columns:'+(isTwoChoice?'1fr 1fr':'1fr 1fr')+';gap:10px;margin-bottom:16px;';
+        var answered=false;
+        q.choices.forEach(function(choice){
+          var btn=document.createElement('button');
+          btn.innerHTML=choice;
+          btn.style.cssText='padding:14px 10px;border-radius:16px;border:2.5px solid rgba(108,63,197,.2);background:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.95rem;color:#2D2D4E;cursor:pointer;transition:all .15s;line-height:1.3;';
+          btn.onclick=function(){
+            if(answered)return; answered=true;
+            var correct=(choice===q.answer);
+            if(correct) showCorrectCelebration();
+            choiceGrid.querySelectorAll('button').forEach(function(b){
+              b.style.pointerEvents='none';
+              if(b.innerHTML===q.answer){b.style.background='linear-gradient(135deg,#22c55e,#4ade80)';b.style.color='white';b.style.borderColor='#22c55e';}
+            });
+            if(!correct){btn.style.background='linear-gradient(135deg,#ef4444,#f87171)';btn.style.color='white';btn.style.borderColor='#ef4444';}
+            if(correct)score++;
+            var _bm=document.getElementById('bloomiMascot');
+            if(_bm){_bm.style.animation='none';void _bm.offsetWidth;_bm.style.animation=(correct?'bloomiCorrect':'bloomiWrong')+' .6s ease';setTimeout(function(){if(_bm)_bm.style.animation='';},700);}
+            if(q.explain){
+              var expl=document.createElement('div');
+              expl.style.cssText='background:'+(correct?'#E8FBF3':'#FFF0EE')+';border-radius:12px;padding:10px 14px;margin-bottom:12px;font-size:.88rem;font-weight:700;color:'+(correct?'#166534':'#991b1b')+';';
+              expl.textContent=(correct?'✅ ':'❌ ')+q.explain;
+              body.appendChild(expl);
+            }
+            var nextBtn=document.createElement('button');
+            nextBtn.textContent=qIdx<total-1?'Next ➡️':'See Results 🏆';
+            nextBtn.style.cssText='width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 16px rgba(108,63,197,.35);';
+            nextBtn.onclick=function(){qIdx++;showQ();};
+            body.appendChild(nextBtn);
+          };
+          choiceGrid.appendChild(btn);
+        });
+        body.appendChild(choiceGrid);
+        ov.appendChild(body);
+      }
+    }
+
+    // Shared answer handler for early grades
+    function handleAnswer(choice, q, answered, setAnswered, grid, container) {
+      if(answered) return;
+      setAnswered(true);
+      var correct = (String(choice)===String(q.answer));
+      if(correct){ score++; showCorrectCelebration(); }
+      grid.querySelectorAll('button').forEach(function(b){
+        b.style.pointerEvents='none';
+        if(String(b.textContent)===String(q.answer)){
+          b.style.background='linear-gradient(135deg,#22c55e,#4ade80)';
+          b.style.color='white'; b.style.borderColor='#22c55e';
+          b.style.border='3px solid #22c55e';
+        }
       });
-      body.appendChild(choiceGrid);
-      ov.appendChild(body);
+      if(!correct){
+        // Find and highlight wrong button
+        grid.querySelectorAll('button').forEach(function(b){
+          if(String(b.textContent)===String(choice)&&String(b.textContent)!==String(q.answer)){
+            b.style.background='linear-gradient(135deg,#ef4444,#f87171)';
+            b.style.color='white'; b.style.border='3px solid #ef4444';
+          }
+        });
+      }
+      // Bloomy reacts
+      bloomy_speak(correct ? 'Great job! ' + q.explain : 'Good try! ' + q.explain);
+      var expl=document.createElement('div');
+      expl.style.cssText='background:'+(correct?'#E8FBF3':'#FFF0EE')+';border-radius:14px;padding:12px 16px;font-size:.9rem;font-weight:700;color:'+(correct?'#166534':'#991b1b')+';margin-top:4px;';
+      expl.textContent=(correct?'✅ ':'❌ ')+q.explain;
+      container.appendChild(expl);
+      var nextBtn=document.createElement('button');
+      nextBtn.textContent=qIdx<total-1?'Next ➡️':'See Results 🏆';
+      nextBtn.style.cssText='width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1.1rem;cursor:pointer;margin-top:8px;box-shadow:0 4px 16px rgba(108,63,197,.35);';
+      nextBtn.onclick=function(){qIdx++;showQ();};
+      container.appendChild(nextBtn);
     }
 
     function showResults(){
@@ -6772,7 +7076,8 @@ function openMathGame(grade) {
         +'<button onclick="document.getElementById(\'mathGameOv\').remove();showScreen(\'app\');" style="padding:14px 24px;border-radius:40px;border:none;background:#F3EFFF;color:'+CA+';font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;">Home 🏠</button>'
         +'</div>';
       ov.appendChild(body);
-      if(typeof activeChild!=='undefined'&&activeChild){try{sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:score*10}).catch(function(){});sessionData.stars+=score*10;var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;if(score>0)toast('+'+score*10+' Stars! ⭐');}catch(e){}}
+      logGameComplete(score*10, 1);
+      if(score>0) toast('+'+score*10+' Stars! ⭐');
     }
 
     showQ();
@@ -7145,7 +7450,8 @@ function openScienceGame(grade) {
 
     ov.innerHTML = gameHeader('Science Sort','🔬',CA,CB,'sciGameOv')
       +'<div style="flex:1;overflow-y:auto;padding:16px;max-width:500px;margin:0 auto;width:100%;">'
-      +'<div style="background:white;border-radius:18px;padding:14px 18px;margin-bottom:14px;text-align:center;box-shadow:0 4px 14px rgba(14,165,233,.15);">'
+      +'<div style="background:white;border-radius:18px;padding:14px 18px;margin-bottom:14px;text-align:left;box-shadow:0 4px 14px rgba(14,165,233,.15);">'
+      +(['PreK','K','1'].indexOf(grade)>=0?'<img src="bloom_happy.png" style="width:44px;height:44px;object-fit:contain;float:right;margin:0 0 4px 8px;" />':'')
       +'<div style="font-family:\'Baloo 2\',cursine;font-size:1.05rem;font-weight:800;color:#0EA5E9;">'+r.title+'</div>'
       +'<div style="font-size:.85rem;color:#888;margin-top:2px;">Tap each item to sort it!</div>'
       +'</div>'
@@ -7170,6 +7476,15 @@ function openScienceGame(grade) {
       +'</div>';
 
     var sorted={};
+    // TTS for early grades
+    if(['PreK','K','1'].indexOf(grade)>=0 && 'speechSynthesis' in window){
+      window.speechSynthesis.cancel();
+      setTimeout(function(){
+        var u=new SpeechSynthesisUtterance(r.title+'. Tap each picture, then tap where it belongs!');
+        u.rate=0.82; u.pitch=1.15;
+        window.speechSynthesis.speak(u);
+      }, 350);
+    }
     var _sciSelected=null;
     window._sciTap=function(el){
       if(_sciSelected===el){
@@ -9422,7 +9737,7 @@ function openPassageReader(grade) {
         btn.onclick=function(){
           if(answered)return; answered=true;
           var correct=(i===q.a);
-          if(correct)score++;
+          if(correct){ score++; showCorrectCelebration(); }
           body.querySelectorAll('button[data-idx]').forEach(function(b){
             b.style.pointerEvents='none';
             if(parseInt(b.dataset.idx)===q.a){b.style.background='#E8FBF3';b.style.borderColor='#22c55e';b.style.color='#166534';}
@@ -9462,12 +9777,7 @@ function openPassageReader(grade) {
         +'<button onclick="var o=document.getElementById(\'passageOv\');if(o)o.remove();" style="padding:14px 22px;border-radius:40px;border:none;background:#DBEAFE;color:'+CA+';font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;">🏠 Home</button>'
         +'</div>';
       ov.appendChild(body);
-      if(typeof sessionData!=='undefined'&&score>0){
-        sessionData.stars=(sessionData.stars||0)+score*20;
-        var el=document.getElementById('statStars');
-        if(el)el.textContent=sessionData.stars;
-        toast('+'+score*20+' Stars! ⭐ Great reading!');
-      }
+      if(score>0){ logGameComplete(score*20, 1); toast('+'+score*20+' Stars! ⭐ Great reading!'); }
     }
 
     showQ();
@@ -9797,7 +10107,7 @@ function openDinoStories(grade) {
           if(answered) return;
           answered = true;
           var correct = (i===q.a);
-          if(correct) score++;
+          if(correct){ score++; showCorrectCelebration(); }
           // Show all answer feedback
           body.querySelectorAll('button[data-ans]').forEach(function(b){
             b.style.pointerEvents='none';
@@ -9838,7 +10148,7 @@ function openDinoStories(grade) {
         +'</div>';
       ov.appendChild(body);
       // Award stars
-      if(typeof sessionData!=='undefined'&&score>0){sessionData.stars=(sessionData.stars||0)+score*5;var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;toast('+'+(score*5)+' Stars! ⭐');}
+      if(score>0){ logGameComplete(score*5, 1); toast('+'+(score*5)+' Stars! ⭐'); }
     }
 
     showQ();
