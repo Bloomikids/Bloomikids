@@ -1,4 +1,4 @@
-<!-- BloomiKids v368 -->
+<!-- BloomiKids v370 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -71,7 +71,7 @@ input:-webkit-autofill:focus {
 @keyframes bloomiWrong { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
 .auth-logo { font-family:'Baloo 2',cursive; font-size:2.2rem; font-weight:800; text-align:center; margin-bottom:6px; background:linear-gradient(135deg,var(--coral),var(--sunshine)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
 .auth-logo span { -webkit-text-fill-color:var(--mint); }
-.auth-tagline { text-align:center; color:rgba(255,255,255,.9); font-size:.95rem; font-weight:600; margin-bottom:28px; }
+.auth-tagline { text-align:center; color:#5B2D8E; font-size:.95rem; font-weight:700; margin-bottom:16px; letter-spacing:.3px; }
 .auth-tabs { display:flex; gap:8px; margin-bottom:24px; }
 .auth-tab { flex:1; padding:10px; border-radius:40px; border:1px solid rgba(91,45,142,.15); cursor:pointer; font-family:'Nunito',sans-serif; font-size:.9rem; font-weight:700; background:rgba(91,45,142,.08); color:#5B2D8E; transition:all .2s; }
 .auth-tab.active { background:linear-gradient(135deg,#5B2D8E,#8B5CF6); color:white; box-shadow:0 4px 12px rgba(91,45,142,.35); }
@@ -700,9 +700,11 @@ input::placeholder { color:#aaa !important; }
   100% { opacity:0; }
 }
 #celebOverlay {
-  position:fixed; inset:0; z-index:99999;
-  pointer-events:none;
+  position:fixed; inset:0; z-index:9998;
+  pointer-events:none !important;
   display:flex; align-items:center; justify-content:center;
+  opacity:0;
+  background:transparent !important;
 }
 #celebOverlay.active { animation:celebFlash .9s ease forwards; }
 .confetti-piece {
@@ -740,13 +742,13 @@ input::placeholder { color:#aaa !important; }
 <!-- ══ AUTH ═════════════════════════════════════════════════ -->
 <div id="authScreen">
   <div class="auth-card">
-    <div class="auth-logo" style="text-align:center;"><img src="logo.png" alt="BloomiKids" style="width:clamp(130px,25vw,200px);height:auto;object-fit:contain;display:block !important;filter:drop-shadow(0 8px 28px rgba(91,45,142,.45));margin:0 auto 12px;border-radius:50%;background:#EDE9FF;"></div>
+    <div class="auth-logo" style="text-align:center;"><img src="logo.png" alt="BloomiKids" style="width:clamp(110px,22vw,160px);height:auto;object-fit:contain;display:block !important;filter:drop-shadow(0 6px 18px rgba(91,45,142,.35));margin:0 auto 6px;border-radius:50%;background:#EDE9FF;"></div>
     <div class="auth-tagline">Learn 📚 &nbsp;·&nbsp; Breathe 🧘 &nbsp;·&nbsp; Read 📖</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:-8px 0 16px;">
-      <span style="font-size:.7rem;font-weight:800;background:linear-gradient(135deg,rgba(34,197,94,.2),rgba(34,197,94,.3));color:#166534;padding:5px 12px;border-radius:20px;border:1px solid rgba(34,197,94,.35);box-shadow:0 2px 8px rgba(34,197,94,.2);">✓ No Ads</span>
-      <span style="font-size:.7rem;font-weight:800;background:linear-gradient(135deg,rgba(59,130,246,.2),rgba(59,130,246,.3));color:#1D4ED8;padding:5px 12px;border-radius:20px;border:1px solid rgba(59,130,246,.35);box-shadow:0 2px 8px rgba(59,130,246,.2);">✓ No In-App Purchases</span>
-      <span style="font-size:.62rem;font-weight:800;background:#F3EFFF;color:#6B44CC;padding:3px 9px;border-radius:20px;">COPPA Safe</span>
-      <span style="font-size:.7rem;font-weight:800;background:linear-gradient(135deg,rgba(234,179,8,.2),rgba(234,179,8,.3));color:#92400E;padding:5px 12px;border-radius:20px;border:1px solid rgba(234,179,8,.35);box-shadow:0 2px 8px rgba(234,179,8,.2);">★ CC Aligned</span>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:8px 0 18px;">
+      <span style="font-size:.68rem;font-weight:800;background:linear-gradient(135deg,#22C55E,#16A34A);color:white;padding:5px 11px;border-radius:20px;box-shadow:0 2px 6px rgba(34,197,94,.3);">✓ No Ads</span>
+      <span style="font-size:.68rem;font-weight:800;background:linear-gradient(135deg,#3B82F6,#2563EB);color:white;padding:5px 11px;border-radius:20px;box-shadow:0 2px 6px rgba(59,130,246,.3);">✓ No In-App Purchases</span>
+      <span style="font-size:.68rem;font-weight:800;background:linear-gradient(135deg,#8B5CF6,#7C3AED);color:white;padding:5px 11px;border-radius:20px;box-shadow:0 2px 6px rgba(139,92,246,.3);">🛡 COPPA Safe</span>
+      <span style="font-size:.68rem;font-weight:800;background:linear-gradient(135deg,#F59E0B,#D97706);color:white;padding:5px 11px;border-radius:20px;box-shadow:0 2px 6px rgba(245,158,11,.3);">★ CC Aligned</span>
     </div>
     <div class="auth-tabs">
       <button class="auth-tab active" onclick="showAuthTab('login')">Sign In</button>
@@ -1139,7 +1141,7 @@ input::placeholder { color:#aaa !important; }
 <div class="bottom-nav">
   <button class="tab-btn active" data-tab="academics" onclick="switchTab('academics')">📚 <span id="tabLearn2">Learn</span></button>
   <button class="tab-btn" data-tab="yoga" onclick="switchTab('yoga')">🧘 <span id="tabMove2">Move</span></button>
-  <button class="tab-btn" data-tab="reading" onclick="switchTab('reading')">📖 <span id="tabRead2">Read</span></button>
+  <button class="tab-btn" data-tab="reading" onclick="switchTab('reading')" style="display:none;">📖 <span id="tabRead2">Read</span></button>
   <button class="tab-btn" data-tab="art" onclick="switchTab('art')">🎨 <span id="tabArt2">Art</span></button>
 </div>
 
@@ -3477,6 +3479,8 @@ function buildGradeGames() {
       {icon:'🐾', label:'Animal Sort',     fn:"openScienceGame('PreK')",color:'#0EA5E9'},
       {icon:'📚', label:'Busy Book',       fn:"openBusyBook('PreK')",   color:'#0369A1'},
       {icon:'🃏', label:'Memory Match',   fn:"openMemoryMatch('PreK')", color:'#7C3AED'},
+      {icon:'📖', label:'Phonics & Words', fn:"openPhonicsGame('PreK')", color:'#0EA5E9'},
+      {icon:'🦕', label:'Dino Stories',    fn:"openDinoStories('PreK')", color:'#1a472a'},
     ],
     K: [
       {icon:'🔢', label:'Counting',        fn:"openMathGame('K')",      color:'#22c55e'},
@@ -3486,6 +3490,8 @@ function buildGradeGames() {
       {icon:'🔬', label:'Science Sort',    fn:"openScienceGame('K')",   color:'#0EA5E9'},
       {icon:'📚', label:'Busy Book',       fn:"openBusyBook('K')",      color:'#0369A1'},
       {icon:'🃏', label:'Memory Match',   fn:"openMemoryMatch('K')",    color:'#7C3AED'},
+      {icon:'📖', label:'Phonics & Words', fn:"openPhonicsGame('K')",   color:'#0EA5E9'},
+      {icon:'🦕', label:'Dino Stories',    fn:"openDinoStories('K')",   color:'#1a472a'},
     ],
     1: [
       {icon:'➕', label:'Math Practice',   fn:"openMathGame('1')",      color:'#22c55e'},
@@ -3496,6 +3502,8 @@ function buildGradeGames() {
       {icon:'🌍', label:'Social Studies',  fn:"openSSGame('1')",        color:'#8B5CF6'},
       {icon:'🃏', label:'Memory Match',   fn:"openMemoryMatch('1')",   color:'#7C3AED'},
       {icon:'🔗', label:'Number Bonds',   fn:"openNumberBonds('1')",   color:'#059669'},
+      {icon:'📖', label:'Phonics & Words', fn:"openPhonicsGame('1')",   color:'#0EA5E9'},
+      {icon:'🦕', label:'Dino Stories',    fn:"openDinoStories('1')",   color:'#1a472a'},
     ],
     2: [
       {icon:'➕', label:'Add & Subtract',  fn:"openMathGame('2')",      color:'#22c55e'},
@@ -3506,6 +3514,7 @@ function buildGradeGames() {
       {icon:'🎨', label:'Shapes Sort',     fn:"openColorsGame('2')",    color:'#8B5CF6'},
       {icon:'🛒', label:'Shop Math',       fn:"openShopMath('2')",      color:'#F59E0B'},
       {icon:'📚', label:'Busy Book',       fn:"openBusyBook('2')",      color:'#0369A1'},
+      {icon:'📖', label:'Reading Corner',  fn:"openPassageReader('2')", color:'#1D4ED8'},
     ],
     3: [
       {icon:'✖️', label:'Multiply!',       fn:"openMathGame('3')",      color:'#22c55e'},
@@ -3516,6 +3525,7 @@ function buildGradeGames() {
       {icon:'📐', label:'Shapes Sort',     fn:"openColorsGame('3')",    color:'#8B5CF6'},
       {icon:'🛒', label:'Shop Math',       fn:"openShopMath('3')",      color:'#F59E0B'},
       {icon:'📚', label:'Busy Book',       fn:"openBusyBook('3')",      color:'#0369A1'},
+      {icon:'📖', label:'Reading Corner',  fn:"openPassageReader('3')", color:'#1D4ED8'},
     ],
     4: [
       {icon:'✖️', label:'Multiply!',       fn:"openMathGame('4')",      color:'#22c55e'},
@@ -3524,6 +3534,7 @@ function buildGradeGames() {
       {icon:'⚗️', label:'Science Sort',    fn:"openScienceGame('4')",   color:'#0EA5E9'},
       {icon:'🌍', label:'Social Studies',  fn:"openSSGame('4')",        color:'#F59E0B'},
       {icon:'📐', label:'Angles Sort',     fn:"openColorsGame('4')",    color:'#8B5CF6'},
+      {icon:'📖', label:'Reading Corner',  fn:"openPassageReader('4')", color:'#1D4ED8'},
     ],
     5: [
       {icon:'➗', label:'Long Division',   fn:"openMathGame('5')",      color:'#22c55e'},
@@ -3532,6 +3543,7 @@ function buildGradeGames() {
       {icon:'🔬', label:'Science Sort',    fn:"openScienceGame('5')",   color:'#0EA5E9'},
       {icon:'🌍', label:'Social Studies',  fn:"openSSGame('5')",        color:'#F59E0B'},
       {icon:'⚗️', label:'Mixtures Sort',   fn:"openColorsGame('5')",    color:'#8B5CF6'},
+      {icon:'📖', label:'Reading Corner',  fn:"openPassageReader('5')", color:'#1D4ED8'},
     ],
   };
 
@@ -4185,27 +4197,44 @@ const MIX_RESULTS = {
 // Coloring book scenes — outlines only, kids fill all colors
 const COLORING_SCENES = {
   PreK: [
-    { label:'🦕 Dino Ball',  img:'coloring/color_dino_ball.png', prompt:'Color Dino and his ball!' },
-    { label:'🐟 Happy Fish', img:'coloring/color_fish.png',       prompt:'Color the happy fish!' },
+    { label:'🦕 Dino Ball',   img:'coloring/color_dino_ball.png',  prompt:'Color Dino and his ball!' },
+    { label:'🐟 Happy Fish',  img:'coloring/color_fish.png',        prompt:'Color the happy fish!' },
+    { label:'🐶 Puppies',     img:'coloring/color_puppies.png',     prompt:'Color the two happy puppies!' },
   ],
   K: [
-    { label:'🫧 Bubbles',    img:'coloring/color_bubbles.png',   prompt:'Color the girl and bubbles!' },
-    { label:'🦋 Butterfly',  img:'coloring/color_butterfly.png', prompt:'Color the butterfly garden!' },
-    { label:'🐱 Cat',        img:'coloring/color_cat.png',       prompt:'Color the cat on the mat!' },
+    { label:'🫧 Bubbles',     img:'coloring/color_bubbles.png',    prompt:'Color the girl and her bubbles!' },
+    { label:'🦋 Butterfly',   img:'coloring/color_butterfly.png',  prompt:'Color the butterfly garden!' },
+    { label:'🐱 Cat',         img:'coloring/color_cat.png',        prompt:'Color the cat on the picnic mat!' },
+    { label:'🐦 Bird',        img:'coloring/color_bird.png',       prompt:'Color the cute bird on a branch!' },
   ],
   1: [
-    { label:'🦄 Unicorn',    img:'coloring/color_unicorn.png',   prompt:'Color the magical unicorn!' },
-    { label:'🤖 Robot',      img:'coloring/color_robot.png',     prompt:'Color the friendly robot!' },
-    { label:'🚂 Train',      img:'coloring/color_train.png',     prompt:'Color the happy train!' },
+    { label:'🦄 Unicorn',     img:'coloring/color_unicorn.png',    prompt:'Color the magical unicorn!' },
+    { label:'🤖 Robot',       img:'coloring/color_robot.png',      prompt:'Color the friendly robot!' },
+    { label:'🚂 Train',       img:'coloring/color_train.png',      prompt:'Color the happy train!' },
+    { label:'🛝 Playground',  img:'coloring/color_playground.png', prompt:'Color the playground scene!' },
   ],
   2: [
-    { label:'🐉 Dragon',     img:'coloring/color_dragon.png',    prompt:'Color the baby dragon!' },
-    { label:'🐍 Snake',      img:'coloring/color_snake.png',     prompt:'Color the cute snake!' },
+    { label:'🐉 Dragon',      img:'coloring/color_dragon.png',     prompt:'Color the baby dragon!' },
+    { label:'🐍 Snake',       img:'coloring/color_snake.png',      prompt:'Color the cute snake!' },
+    { label:'🦁 Jungle',      img:'coloring/color_jungle.png',     prompt:'Color the jungle animals!' },
   ],
   3: [
-    { label:'📖 Reading',    img:'coloring/color_reading.png',   prompt:'Color the boy reading!' },
-    { label:'🦄 Unicorn',    img:'coloring/color_unicorn.png',   prompt:'Color the magical unicorn!' },
+    { label:'📖 Reading',     img:'coloring/color_reading.png',    prompt:'Color the boy reading his book!' },
+    { label:'🤖 Robot City',  img:'coloring/color_robot2.png',     prompt:'Color the robot in the city!' },
+    { label:'🦄 Unicorn',     img:'coloring/color_unicorn.png',    prompt:'Color the magical unicorn!' },
   ],
+  4: [
+    { label:'🦁 Jungle',      img:'coloring/color_jungle.png',    prompt:'Color the jungle animals!' },
+    { label:'🤖 Robot City',  img:'coloring/color_robot2.png',    prompt:'Color the robot in the city!' },
+    { label:'🌸 Flower Field',img:'coloring/color_field.png',     prompt:'Color the flower field!' },
+    { label:'🐦 Little Bird', img:'coloring/color_bird.png',      prompt:'Color the cute little bird!' },
+  ],
+  5: [
+    { label:'🌈 Wonderland',  img:'coloring/color_surreal2.png',  prompt:'Color this amazing world!' },
+    { label:'✨ Magic Land',  img:'coloring/color_surreal1.png',  prompt:'Color this magical scene!' },
+    { label:'🦄 Unicorn',     img:'coloring/color_unicorn.png',   prompt:'Color the magical unicorn!' },
+    { label:'🐶 Puppies',     img:'coloring/color_puppies.png',   prompt:'Color the happy puppies!' },
+  ]
 };
 
 function buildArtTab() {
@@ -4378,7 +4407,7 @@ function switchColoringScene(idx) {
   if(canvas){ var ctx=canvas.getContext('2d'); ctx.clearRect(0,0,canvas.width,canvas.height); }
   // Switch image
   var img = document.getElementById('coloringImg');
-  if(img && scene.img){ img.src = scene.img; }
+  if(img && scene.img){ img.src = scene.img ? (scene.img.charAt(0)==='/'?'':'/') + scene.img : ''; }
   // Re-setup canvas after image loads
   if(img){ img.onload = function(){ setupDrawCanvas(); }; } else { setupDrawCanvas(); }
   // Show prompt
@@ -4924,10 +4953,13 @@ function switchTab(tab) {
 function showCorrectCelebration() {
   var ov = document.getElementById('celebOverlay');
   if(!ov) return;
-  // Flash overlay with green tint
-  ov.style.background = 'radial-gradient(circle,rgba(34,197,94,.35),rgba(74,222,128,.15))';
+  // Reset any stuck state
   ov.classList.remove('active');
+  ov.style.background = '';
+  ov.style.opacity = '';
   void ov.offsetWidth;
+  // Flash overlay with green tint via inline animation only
+  ov.style.background = 'radial-gradient(circle,rgba(34,197,94,.3),rgba(74,222,128,.1))';
   ov.classList.add('active');
   // Launch confetti
   var colors = ['#FF6B6B','#FFD166','#22c55e','#4ECDC4','#4488FF','#C9B8FF','#FF6B9D','#FFA500'];
@@ -4948,10 +4980,18 @@ function showCorrectCelebration() {
       }, idx*40);
     })(i);
   }
-  // Clean up overlay class
+  // Clean up overlay completely
   setTimeout(function(){
-    if(ov) ov.classList.remove('active');
-  }, 950);
+    if(ov) {
+      ov.classList.remove('active');
+      ov.style.background = '';
+      ov.style.opacity = '';
+    }
+    // Also remove any orphan confetti
+    document.querySelectorAll('.confetti-piece').forEach(function(c){
+      if(c.parentNode) c.parentNode.removeChild(c);
+    });
+  }, 1000);
 }
 function logGameComplete(starsEarned, tasksCount) {
   try {
@@ -6103,12 +6143,12 @@ function openMemoryMatch(grade) {
   var flipped=[],matched=[],moves=0;
   function render(){
     ov.innerHTML='<div style="background:linear-gradient(135deg,'+CA+','+CB+');padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;"><div style="font-family:Baloo 2,cursive;font-weight:800;color:white;">🃏 Memory Match</div><div style="display:flex;gap:8px;align-items:center;"><span style="color:rgba(255,255,255,.85);font-size:.85rem;">Moves: '+moves+'</span><button data-closeov="matchOv" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:34px;height:34px;cursor:pointer;font-weight:800;">✕</button></div></div>'
-      +'<div id="matchGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:20px;max-width:400px;margin:16px auto;"></div>';
+      +'<div id="matchGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:20px;max-width:540px;width:100%;margin:20px auto;flex:1;align-content:start;"></div>';
     var grid=document.getElementById('matchGrid');
     emojis.forEach(function(emoji,i){
       var card=document.createElement('div');
       var isFlipped=flipped.indexOf(i)>=0||matched.indexOf(i)>=0;
-      card.style.cssText='aspect-ratio:1;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:2rem;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.1);background:'+(isFlipped?'linear-gradient(135deg,'+CA+','+CB+')':'white')+';transition:all .2s;';
+      card.style.cssText='aspect-ratio:1;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:clamp(2rem,8vw,3.5rem);cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.12);background:'+(isFlipped?'linear-gradient(135deg,'+CA+','+CB+')':'white')+';transition:all .2s;';
       card.textContent=isFlipped?emoji:'?';
       card.onclick=function(){
         if(flipped.length>=2||matched.indexOf(i)>=0||flipped.indexOf(i)>=0)return;
@@ -6493,10 +6533,11 @@ function gameWinScreen(score, total, colorA, colorB, ovId) {
 //  G4-5: place value, estimation, multiplication, division
 // ══════════════════════════════════════════════════════════════════════
 function openMathGame(grade) {
-  var CA=earlyGradeOv?'#C0392B':'#6C3FC5', CB=earlyGradeOv?'#E74C3C':'#A78BFA';
+  var earlyGradeOv = ['PreK','K','1'].indexOf(grade) >= 0;
+  var CA = earlyGradeOv ? '#C0392B' : '#6C3FC5';
+  var CB = earlyGradeOv ? '#E74C3C' : '#A78BFA';
   var ov = document.createElement('div');
   ov.id = 'mathGameOv';
-  var earlyGradeOv = ['PreK','K','1'].indexOf(grade) >= 0;
   ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:'+(earlyGradeOv?'linear-gradient(160deg,#FF6B6B 0%,#FF8E53 100%)':'#F2EFFF')+';display:flex;flex-direction:column;';
   document.body.appendChild(ov);
 
@@ -6862,8 +6903,7 @@ function openMathGame(grade) {
         dots.style.cssText='display:flex;gap:5px;justify-content:center;padding:10px 0 6px;flex-shrink:0;';
         for(var d=0;d<total;d++){
           var dot=document.createElement('div');
-          dot.style.cssText='width:8px;height:8px;border-radius:50%;background:'+(d<qIdx?CA:d===qIdx?'white':'rgba(255,255,255,.3)'+');flex-shrink:0;transition:all .3s;').replace('+)','');
-          dot.style.cssText='width:8px;height:8px;border-radius:50%;background:'+(d<qIdx?CA:d===qIdx?'white':'rgba(255,255,255,.3)')+';flex-shrink:0;';
+          dot.style.cssText='width:9px;height:9px;border-radius:50%;background:'+(d<qIdx?'rgba(255,255,255,.95)':d===qIdx?'#FFD166':'rgba(255,255,255,.4)')+';flex-shrink:0;transition:all .3s;box-shadow:0 1px 3px rgba(0,0,0,.15);';
           dots.appendChild(dot);
         }
         wrap.appendChild(dots);
@@ -7447,6 +7487,7 @@ function openScienceGame(grade) {
     if(rIdx>=TOTAL_ROUNDS){ gameWinScreen(score,TOTAL_ROUNDS,CA,CB,'sciGameOv'); return; }
     var r=rounds[rIdx];
     var items=r.items.slice().sort(function(){return Math.random()-.5;});
+    window._csItems = items;
 
     ov.innerHTML = gameHeader('Science Sort','🔬',CA,CB,'sciGameOv')
       +'<div style="flex:1;overflow-y:auto;padding:16px;max-width:500px;margin:0 auto;width:100%;">'
@@ -7728,7 +7769,7 @@ function openColorsGame(grade) {
       }).join('')
       +'</div>'
       +'<div id="csCheckWrap" style="text-align:center;margin-top:16px;display:none;">'
-      +'<button onclick="window._csCheck('+JSON.stringify(items)+')" style="padding:14px 36px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(236,72,153,.4);">✅ Check!</button>'
+      +'<button onclick="window._csCheck()" style="padding:14px 36px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(236,72,153,.4);">✅ Check!</button>'
       +'</div>'
       +'</div>';
 
@@ -7757,7 +7798,8 @@ function openColorsGame(grade) {
       if(belt&&belt.querySelectorAll('[data-cat]').length===0){ var cw=document.getElementById('csCheckWrap'); if(cw) cw.style.display='block'; }
     };
 
-    window._csCheck=function(items){
+    window._csCheck=function(){
+      var items = window._csItems || [];
       var correct=0;
       items.forEach(function(item,i){
         var el=document.getElementById('csi'+i);
@@ -9079,7 +9121,7 @@ function showParentProgress(){
     +'<div style="background:rgba(255,255,255,.12);border-radius:18px;padding:16px;text-align:center;"><div style="font-size:2.2rem;font-weight:800;color:#FB923C;">'+streak+'🔥</div><div style="color:rgba(255,255,255,.8);font-size:.8rem;">Day Streak</div></div>'
     +'<div style="background:rgba(255,255,255,.12);border-radius:18px;padding:16px;text-align:center;"><div style="font-size:2.2rem;font-weight:800;color:#A78BFA;">0</div><div style="color:rgba(255,255,255,.8);font-size:.8rem;">⏱ Minutes</div></div>'
     +'</div>'
-    +'<div style="background:rgba(255,255,255,.1);border-radius:18px;padding:20px;text-align:center;color:rgba(255,255,255,.6);font-size:.85rem;">Activity history syncs from Supabase. Start learning to track progress! 🌱</div>'
+    +'<div style="background:rgba(255,255,255,.1);border-radius:18px;padding:20px;text-align:center;color:rgba(255,255,255,.7);font-size:.9rem;">🌱 Your child\'s progress will appear here as they complete activities!</div>'
     +'</div>';
   document.body.appendChild(ov);
 }
@@ -9324,6 +9366,50 @@ function openPassageReader(grade) {
 
   // ── STORY DATA ──────────────────────────────────────────────────
   var ALL_STORIES = {
+    '2': [
+      {
+        title: 'Sharing is Caring',
+        theme: '🤝 Friendship',
+        lexile: '400L–500L',
+        cover: 'stories/story_sharing.png',
+        vocab: ['offered','decided','together','fair'],
+        pages: [
+          { text: 'Mia and Jay both wanted to use the special star key.', highlight: '' },
+          { text: 'Jay picked it up first. He looked at Mia. She looked sad.', highlight: '' },
+          { text: '"You can use it first," Jay offered with a smile.', highlight: 'offered' },
+          { text: 'Mia smiled back. "Then we can share!" she said.', highlight: '' },
+          { text: 'They decided to take turns. That was the fair thing to do. 🌟', highlight: 'fair' },
+        ],
+        quiz: [
+          { q: 'What did Mia and Jay both want?', opts: ['A book','The star key','A toy car','Some candy'], a: 1, explain: 'Both Mia and Jay wanted to use the special star key.' },
+          { q: 'What did Jay say to Mia?', opts: ['Go away!','You can use it first','It is mine!','Let me keep it.'], a: 1, explain: 'Jay said "You can use it first" — showing kindness.' },
+          { q: 'What did they decide to do?', opts: ['Fight over it','Take turns sharing','Each get their own','Put it away'], a: 1, explain: 'They decided to take turns, which was the fair solution.' },
+          { q: 'What does "fair" mean?', opts: ['Boring','Following the rules correctly','A place with rides','Fast'], a: 1, explain: 'Fair means treating everyone equally and following the rules.' },
+          { q: 'What is the lesson of this story?', opts: ['Winning is best','Sharing and taking turns is kind','Always go first','Keys are special'], a: 1, explain: 'The story shows that sharing and kindness make both people happy.' },
+        ]
+      },
+      {
+        title: 'Bug Day at School',
+        theme: '🐛 Curiosity',
+        lexile: '400L–500L',
+        cover: 'stories/story_bug_day.png',
+        vocab: ['excited','drew','ladybug','displayed'],
+        pages: [
+          { text: 'It was Bug Day at Sunny Hill School! Everyone was excited.', highlight: 'excited' },
+          { text: 'Each student got crayons and paper to use.', highlight: '' },
+          { text: 'They drew ladybugs, butterflies, and beetles.', highlight: 'drew' },
+          { text: 'Their pictures went up on the wall for everyone to see.', highlight: 'displayed' },
+          { text: 'Bug Day was the best day of the whole week! 🐞', highlight: '' },
+        ],
+        quiz: [
+          { q: 'What was special about this school day?', opts: ['Field trip day','Bug Day','Pajama Day','Free play day'], a: 1, explain: 'It was Bug Day — a special art and learning day about bugs.' },
+          { q: 'What did students use to draw?', opts: ['Paint','Markers','Crayons','Pencils only'], a: 2, explain: 'Students used crayons to make their bug drawings.' },
+          { q: 'Where did the drawings go?', opts: ['In the trash','On the wall','In their backpacks','On their desks'], a: 1, explain: 'The drawings were put up on the wall for everyone to see.' },
+          { q: 'What does "excited" mean?', opts: ['Very happy and looking forward to something','Tired and ready to sleep','Angry about something','Confused about a problem'], a: 0, explain: 'Excited means feeling very happy and eager about something.' },
+          { q: 'What is the main idea?', opts: ['Bugs are scary','Art supplies are important','Students had fun on Bug Day','School is hard'], a: 2, explain: 'The whole story is about students enjoying Bug Day at school.' },
+        ]
+      },
+    ],
     '3': [
       {
         title: 'The Great Recess Rescue',
@@ -9560,7 +9646,10 @@ function openPassageReader(grade) {
     stories.forEach(function(story, idx) {
       var card = document.createElement('div');
       card.style.cssText = 'background:white;border-radius:20px;padding:20px;margin-bottom:14px;box-shadow:0 4px 16px rgba(29,78,216,.1);cursor:pointer;display:flex;align-items:center;gap:16px;transition:transform .15s;';
-      card.innerHTML = '<div style="font-size:3.5rem;flex-shrink:0;">'+story.cover+'</div>'
+      var coverHtml = story.cover && story.cover.indexOf('stories/')===0
+        ? '<img src="/'+story.cover+'" style="width:64px;height:64px;object-fit:cover;border-radius:12px;flex-shrink:0;">'
+        : '<div style="font-size:3.5rem;flex-shrink:0;">'+story.cover+'</div>';
+      card.innerHTML = coverHtml
         + '<div style="flex:1;">'
         + '<div style="font-family:Baloo 2,cursive;font-size:1.05rem;font-weight:800;color:#1E3A5F;margin-bottom:4px;">'+story.title+'</div>'
         + '<div style="font-size:.8rem;color:#3B82F6;font-weight:700;margin-bottom:4px;">'+story.theme+'</div>'
@@ -9616,7 +9705,10 @@ function openPassageReader(grade) {
       if(pageIdx === 0) {
         var meta = document.createElement('div');
         meta.style.cssText = 'background:white;margin:12px 16px 0;border-radius:16px;padding:12px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,.06);flex-shrink:0;';
-        meta.innerHTML = '<div style="font-size:2.5rem;">'+story.cover+'</div>'
+        var metaCover = story.cover && story.cover.indexOf('stories/')===0
+          ? '<img src="/'+story.cover+'" style="width:50px;height:50px;object-fit:cover;border-radius:10px;">'
+          : '<div style="font-size:2.5rem;">'+story.cover+'</div>';
+        meta.innerHTML = metaCover
           + '<div><div style="font-family:Baloo 2,cursive;font-size:.95rem;font-weight:800;color:#1E3A5F;">'+story.title+'</div>'
           + '<div style="font-size:.75rem;color:#3B82F6;font-weight:700;">'+story.theme+' · '+story.lexile+'</div></div>';
         ov.appendChild(meta);
@@ -9985,7 +10077,7 @@ function openDinoStories(grade) {
     storyList.forEach(function(story, idx) {
       var card = document.createElement('div');
       card.style.cssText = 'background:white;border-radius:18px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.12);cursor:pointer;transition:transform .15s;';
-      card.innerHTML = '<img src="'+story.cover+'" alt="'+story.title+'" style="width:100%;height:120px;object-fit:contain;background:#f0f7f0;display:block;">'
+      card.innerHTML = '<img src="/'+story.cover+'" alt="'+story.title+'" style="width:100%;height:120px;object-fit:contain;background:#f0f7f0;display:block;">'
         +'<div style="padding:10px;">'
         +'<div style="font-family:Baloo 2,cursive;font-size:.85rem;font-weight:800;color:#1a472a;line-height:1.2;margin-bottom:4px;">'+story.title+'</div>'
         +'<div style="font-size:.72rem;color:#666;">'+story.badge+' '+story.skill+'</div>'
@@ -10021,7 +10113,7 @@ function openDinoStories(grade) {
       var imgWrap = document.createElement('div');
       imgWrap.style.cssText = 'flex-shrink:0;padding:12px 16px 0;';
       var img = document.createElement('img');
-      img.src = pg.img;
+      img.src = (pg.img && pg.img.indexOf('/')<0) ? '/'+pg.img : (pg.img||'');
       img.style.cssText = 'width:100%;height:220px;object-fit:contain;border-radius:16px;display:block;background:#f9f5ff;';
       imgWrap.appendChild(img);
       ov.appendChild(imgWrap);
@@ -10138,7 +10230,7 @@ function openDinoStories(grade) {
       body.style.cssText = 'flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;';
       var pct = Math.round(score/story.quiz.length*100);
       body.innerHTML = '<div style="font-size:4.5rem;margin-bottom:8px;">'+(pct>=80?'🏆':pct>=50?'⭐':'💪')+'</div>'
-        +'<img src="'+story.cover+'" style="width:120px;height:80px;object-fit:cover;border-radius:12px;margin-bottom:12px;">'
+        +'<img src="/'+story.cover+'" style="width:120px;height:80px;object-fit:cover;border-radius:12px;margin-bottom:12px;">'
         +'<div style="font-family:Baloo 2,cursive;font-size:1.6rem;font-weight:800;color:#1a472a;">'+score+'/'+story.quiz.length+'</div>'
         +'<div style="color:#555;margin:8px 0 24px;">'+(pct>=80?'Amazing reading! 🌟':pct>=50?'Good job! Keep reading!':'Try again — keep going!')+'</div>'
         +'<div style="display:flex;gap:12px;flex-wrap:wrap;">'
