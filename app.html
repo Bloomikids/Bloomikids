@@ -1,4 +1,4 @@
-<!-- BloomiKids v370 -->
+<!-- BloomiKids v383 - Fixed: art stuck after login, home forced on login, coloring grade-sort, image load on scene switch, artTabBuilt reset per child -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +12,10 @@
 <meta name="theme-color" content="#5ECDA0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="BloomiKids">
-<link rel="apple-touch-icon" href="favicon.png">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="logo.png">
+<link rel="apple-touch-icon" sizes="180x180" href="logo.png">
+<link rel="apple-touch-icon" sizes="192x192" href="logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -614,7 +617,8 @@ body.grade-prek .book-title, body.grade-k .book-title, body.grade-1 .book-title 
 body.grade-prek .art-card-icon, body.grade-k .art-card-icon { font-size:3rem; }
 
 /* -- BOTTOM NAV ---------------------------------------- */
-.bottom-nav { position:fixed; bottom:0; left:0; right:0; background:white; padding:10px 12px; display:flex; gap:6px; box-shadow:0 -8px 32px rgba(45,45,78,.08); z-index:100; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; justify-content:flex-start; }
+.bottom-nav { display:none !important; }
+.bottom-nav.was-shown { position:fixed; bottom:0; left:0; right:0; background:white; padding:10px 12px; gap:6px; box-shadow:0 -8px 32px rgba(45,45,78,.08); z-index:100; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; justify-content:flex-start; }
 .bottom-nav::-webkit-scrollbar { display:none; }
 .bottom-nav .tab-btn { font-size:.88rem; padding:10px 20px; }
 
@@ -742,7 +746,7 @@ input::placeholder { color:#aaa !important; }
 <!-- ══ AUTH ═════════════════════════════════════════════════ -->
 <div id="authScreen">
   <div class="auth-card">
-    <div class="auth-logo" style="text-align:center;"><img src="logo.png" alt="BloomiKids" style="width:clamp(110px,22vw,160px);height:auto;object-fit:contain;display:block !important;filter:drop-shadow(0 6px 18px rgba(91,45,142,.35));margin:0 auto 6px;border-radius:50%;background:#EDE9FF;"></div>
+    <div class="auth-logo" style="text-align:center;"><img src="logo.png" alt="BloomiKids" style="width:clamp(110px,22vw,160px);height:auto;object-fit:contain;display:block !important;filter:drop-shadow(0 6px 18px rgba(91,45,142,.35));margin:0 auto 6px;"></div>
     <div class="auth-tagline">Learn 📚 &nbsp;·&nbsp; Breathe 🧘 &nbsp;·&nbsp; Read 📖</div>
     <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:8px 0 18px;">
       <span style="font-size:.68rem;font-weight:800;background:linear-gradient(135deg,#22C55E,#16A34A);color:white;padding:5px 11px;border-radius:20px;box-shadow:0 2px 6px rgba(34,197,94,.3);">✓ No Ads</span>
@@ -773,7 +777,7 @@ input::placeholder { color:#aaa !important; }
 <div id="welcomeScreen" class="hidden">
   <div class="welcome-wrap">
     <div class="welcome-logo-ring">
-      <img src="bloom_happy.png" alt="BloomiKids" style="width:150px;height:150px;object-fit:contain;display:block;">
+      <img src="bloomy_wave.png" alt="BloomiKids" style="width:150px;height:150px;object-fit:contain;display:block;">
     </div>
     <div class="welcome-confetti">🌟✨🌱🎉💫</div>
     <h1 class="welcome-h1">Welcome to<br>BloomiKids! 🎉</h1>
@@ -819,17 +823,23 @@ input::placeholder { color:#aaa !important; }
     </div>
   </header>
 
-  <!-- Grade banner -->
-  <div class="grade-banner">
+  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- v376 v3 HOME - Clean redesign: Bloomy hero + Lets Play  -->
+  <!-- ════════════════════════════════════════════════════════ -->
+
+  <!-- Hidden: old grade banner kept for parent panel access -->
+  <div class="grade-banner" style="display:none;">
     <span>Learning level:</span>
     <span class="grade-pill" id="gradePill">K</span>
     <span id="gradeLabel">Kindergarten</span>
   </div>
 
-  <div class="greeting">Good <span id="timeOfDay">Morning</span>, <span id="greetingName">Friend</span>! ⭐</div>
-  <div class="subtitle" id="appSubtitle">Ready for a fun day of learning?</div>
+  <!-- Hidden: old greeting (replaced by hero below) -->
+  <div class="greeting" id="oldGreeting" style="display:none;">Hi <span id="greetingName">Friend</span>! 👋 <span id="timeOfDay" style="display:none;">Morning</span></div>
+  <div class="subtitle" id="appSubtitle" style="display:none;">Ready for a fun day of learning?</div>
 
-  <div class="streak-banner">
+  <!-- Hidden: streak banner (kept for streakCount logic) -->
+  <div class="streak-banner" style="display:none;">
     <div class="streak-icon">🔥</div>
     <div class="streak-text">
       <h3 id="streakTitle">Amazing Streak!</h3>
@@ -838,80 +848,54 @@ input::placeholder { color:#aaa !important; }
     <div class="streak-count" id="streakCount">0</div>
   </div>
 
-  <div class="tabs">
+  <!-- v3 HERO: Bloomy mascot + speech bubble greeting -->
+  <div id="v3Hero" style="display:flex;align-items:flex-end;gap:10px;margin:4px 0 16px;min-height:130px;">
+    <div style="width:130px;flex-shrink:0;display:flex;align-items:flex-end;justify-content:center;">
+      <img id="v3HeroMascot" src="bloomy_wave.png" onclick="bloomiDance()" alt="Bloom" style="max-width:100%;max-height:150px;object-fit:contain;filter:drop-shadow(0 6px 4px rgba(0,0,0,.15));cursor:pointer;">
+    </div>
+    <div style="flex:1;background:white;border-radius:18px;padding:12px 14px;position:relative;margin-bottom:14px;box-shadow:0 3px 0 rgba(0,0,0,.06);">
+      <div style="position:absolute;left:-10px;top:18px;width:0;height:0;border-top:8px solid transparent;border-bottom:8px solid transparent;border-right:12px solid white;"></div>
+      <p style="font-family:'Baloo 2',cursive;font-size:1.15rem;font-weight:800;color:#2D1B3D;margin:0 0 2px;line-height:1.2;">Hi <span id="v3HeroName">friend</span>! 👋</p>
+      <p style="font-size:.85rem;font-weight:600;color:#6B5B73;margin:0;line-height:1.4;" id="v3HeroSub">I picked something fun for us today ✨</p>
+    </div>
+  </div>
+
+  <!-- v377 PLAY TODAY CARD: ▶️ in circle on left, text on right -->
+  <button id="v3PlayBtn" onclick="v3StartTodaysActivity()" style="width:100%;background:linear-gradient(135deg,#FF6B6B,#FF8E53);border:none;border-radius:24px;padding:16px 18px;color:white;cursor:pointer;box-shadow:0 7px 0 #C73E3E,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);margin-bottom:18px;text-align:left;position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;font-family:'Nunito',sans-serif;">
+    <div style="position:absolute;top:0;left:0;right:0;height:50%;background:linear-gradient(180deg,rgba(255,255,255,.30),rgba(255,255,255,0));border-radius:24px 24px 50% 50%;pointer-events:none;"></div>
+    <div style="width:54px;height:54px;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;box-shadow:inset 0 -3px 0 rgba(0,0,0,.08),0 2px 0 rgba(0,0,0,.1);position:relative;z-index:1;">▶️</div>
+    <div style="flex:1;position:relative;z-index:1;">
+      <div style="font-family:'Baloo 2',cursive;font-size:1.35rem;font-weight:800;line-height:1.1;">Play Today!</div>
+      <div id="v3PlaySub" style="font-size:.78rem;font-weight:700;opacity:.92;margin-top:2px;">Bloom picked a game for you ⭐</div>
+    </div>
+  </button>
+
+  <!-- Top tabs restored v380 — Art/Move/Read must be accessible -->
+  <!-- Tab bar hidden v381 — all sections accessible via home tiles -->
+  <div class="tabs" style="display:none;">
     <button class="tab-btn active" data-tab="academics" onclick="switchTab('academics')">📚 <span id="tabLearn">Learn</span></button>
     <button class="tab-btn" data-tab="yoga" onclick="switchTab('yoga')">🧘 <span id="tabMove">Move</span></button>
     <button class="tab-btn" data-tab="reading" onclick="switchTab('reading')">📖 <span id="tabRead">Read</span></button>
     <button class="tab-btn" data-tab="art" onclick="switchTab('art')">🎨 <span id="tabArt">Art</span></button>
-    </div>
-
-  <!-- -- GAMES -- -->
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:4px 0 20px;">
-
-      <div onclick="openWordMatch()" style="background:linear-gradient(135deg,#FF6B6B,#FF8E53);border-radius:20px;padding:20px 14px;text-align:center;cursor:pointer;box-shadow:0 4px 16px rgba(255,107,107,.3);">
-        <div style="font-size:2.2rem;margin-bottom:8px;">🔤</div>
-        <div style="font-family:'Baloo 2',cursive;font-weight:800;color:white;font-size:.95rem;">Word Match</div>
-        <div style="font-size:.72rem;color:rgba(255,255,255,.8);margin-top:4px;">Match words to pictures</div>
-      </div>
-
-      <div onclick="openFlashCards()" style="background:linear-gradient(135deg,#5ECDA0,#4ECDC4);border-radius:20px;padding:20px 14px;text-align:center;cursor:pointer;box-shadow:0 4px 16px rgba(94,205,160,.3);">
-        <div style="font-size:2.2rem;margin-bottom:8px;">🃏</div>
-        <div style="font-family:'Baloo 2',cursive;font-weight:800;color:white;font-size:.95rem;">Flash Cards</div>
-        <div style="font-size:.72rem;color:rgba(255,255,255,.8);margin-top:4px;">Sight word practice</div>
-      </div>
-
-      <div onclick="openMemoryMatch()" style="background:linear-gradient(135deg,#C9B8FF,#8B6FE8);border-radius:20px;padding:20px 14px;text-align:center;cursor:pointer;box-shadow:0 4px 16px rgba(139,111,232,.3);">
-        <div style="font-size:2.2rem;margin-bottom:8px;">🧠</div>
-        <div style="font-family:'Baloo 2',cursive;font-weight:800;color:white;font-size:.95rem;">Memory Match</div>
-        <div style="font-size:.72rem;color:rgba(255,255,255,.8);margin-top:4px;">Find the pairs</div>
-      </div>
-
-      <div onclick="openSpellingBee()" style="background:linear-gradient(135deg,#FFD166,#FF6B6B);border-radius:20px;padding:20px 14px;text-align:center;cursor:pointer;box-shadow:0 4px 16px rgba(255,209,102,.3);">
-        <div style="font-size:2.2rem;margin-bottom:8px;">🐝</div>
-        <div style="font-family:'Baloo 2',cursive;font-weight:800;color:white;font-size:.95rem;">Spelling Bee</div>
-        <div style="font-size:.72rem;color:rgba(255,255,255,.8);margin-top:4px;">Tap the letters</div>
-      </div>
-
-      <div onclick="openNumberBonds()" style="background:linear-gradient(135deg,#4ECDC4,#2D8A8A);border-radius:20px;padding:20px 14px;text-align:center;cursor:pointer;box-shadow:0 4px 16px rgba(78,205,196,.3);">
-        <div style="font-size:2.2rem;margin-bottom:8px;">🔢</div>
-        <div style="font-family:'Baloo 2',cursive;font-weight:800;color:white;font-size:.95rem;">Number Bonds</div>
-        <div style="font-size:.72rem;color:rgba(255,255,255,.8);margin-top:4px;">Make the number!</div>
-      </div>
-
-      <div onclick="openSoundMatch()" style="background:linear-gradient(135deg,#FF8E53,#FF6B6B);border-radius:20px;padding:20px 14px;text-align:center;cursor:pointer;box-shadow:0 4px 16px rgba(255,142,83,.3);">
-        <div style="font-size:2.2rem;margin-bottom:8px;">🔊</div>
-        <div style="font-family:'Baloo 2',cursive;font-weight:800;color:white;font-size:.95rem;">Sound Match</div>
-        <div style="font-size:.72rem;color:rgba(255,255,255,.8);margin-top:4px;">Match sound to letter</div>
-      </div>
-
-      <div onclick="openRhyming()" style="background:linear-gradient(135deg,#8B6FE8,#C084FC);border-radius:20px;padding:20px 14px;text-align:center;cursor:pointer;box-shadow:0 4px 16px rgba(139,111,232,.3);">
-        <div style="font-size:2.2rem;margin-bottom:8px;">🎵</div>
-        <div style="font-family:'Baloo 2',cursive;font-weight:800;color:white;font-size:.95rem;">Rhyming</div>
-        <div style="font-size:.72rem;color:rgba(255,255,255,.8);margin-top:4px;">Find the rhyme</div>
-      </div>
-
-      <div onclick="openWordBuilder()" style="background:linear-gradient(135deg,#5ECDA0,#2D8A4E);border-radius:20px;padding:20px 14px;text-align:center;cursor:pointer;box-shadow:0 4px 16px rgba(94,205,160,.3);">
-        <div style="font-size:2.2rem;margin-bottom:8px;">🏗️</div>
-        <div style="font-family:'Baloo 2',cursive;font-weight:800;color:white;font-size:.95rem;">Word Builder</div>
-        <div style="font-size:.72rem;color:rgba(255,255,255,.8);margin-top:4px;">Drag sounds to build words</div>
-      </div>
-
-      <div onclick="openCountingGame()" style="background:linear-gradient(135deg,#FFD166,#5ECDA0);border-radius:20px;padding:20px 14px;text-align:center;cursor:pointer;box-shadow:0 4px 16px rgba(255,209,102,.3);">
-        <div style="font-size:2.2rem;margin-bottom:8px;">🍎</div>
-        <div style="font-family:'Baloo 2',cursive;font-weight:800;color:white;font-size:.95rem;">Counting</div>
-        <div style="font-size:.72rem;color:rgba(255,255,255,.8);margin-top:4px;">Tap and count with Bloomy</div>
-      </div>
-
-      <div onclick="openReadingChallenge()" style="background:linear-gradient(135deg,#1a2a4a,#2d4a8a);border-radius:20px;padding:20px 14px;text-align:center;cursor:pointer;box-shadow:0 4px 16px rgba(26,42,74,.3);">
-        <div style="font-size:2.2rem;margin-bottom:8px;">📖</div>
-        <div style="font-family:'Baloo 2',cursive;font-weight:800;color:white;font-size:.95rem;">Reading Challenge</div>
-        <div style="font-size:.72rem;color:rgba(255,255,255,.8);margin-top:4px;">Read and answer</div>
-      </div>
-
-    </div>
   </div>
 
-  <!-- -- ACADEMICS -- -->
+  <!-- HIDDEN: old ad-hoc tile grid (these called undefined functions: openWordMatch, openFlashCards, openSpellingBee, openSoundMatch, openRhyming, openWordBuilder, openCountingGame, openReadingChallenge - all crash on click). Kept in DOM but hidden so we don't break anything. Real game tiles render dynamically into #gradeGamesSection below. -->
+  <div style="display:none;" id="oldAdHocTiles">
+
+      <div onclick="openWordMatch()"><div>🔤</div><div>Word Match</div></div>
+      <div onclick="openFlashCards()"><div>🃏</div><div>Flash Cards</div></div>
+      <div onclick="openMemoryMatch()"><div>🧠</div><div>Memory Match</div></div>
+      <div onclick="openSpellingBee()"><div>🐝</div><div>Spelling Bee</div></div>
+      <div onclick="openNumberBonds()"><div>🔢</div><div>Number Bonds</div></div>
+      <div onclick="openSoundMatch()"><div>🔊</div><div>Sound Match</div></div>
+      <div onclick="openRhyming()"><div>🎵</div><div>Rhyming</div></div>
+      <div onclick="openWordBuilder()"><div>🏗️</div><div>Word Builder</div></div>
+      <div onclick="openCountingGame()"><div>🍎</div><div>Counting</div></div>
+      <div onclick="openReadingChallenge()"><div>📖</div><div>Reading Challenge</div></div>
+
+  </div>
+
+  <!-- ACADEMICS panel: continue card + games section header + dynamic grade tiles -->
   <div class="panel active" id="panel-academics">
     <!-- Continue where you left off -->
     <div id="continueCard" style="display:none;" class="continue-card" onclick="resumeLastActivity()">
@@ -923,17 +907,17 @@ input::placeholder { color:#aaa !important; }
       <div class="continue-card-arrow">→</div>
     </div>
 
-    <!-- Bloomi Mascot + Streak -->
-    <div class="bloomi-mascot-row">
-      <img class="bloomi-mascot" id="bloomiMascot" style="filter:drop-shadow(0 4px 16px rgba(0,0,0,.3));" src="bloom_happy.png" onclick="bloomiDance()" title="Tap Bloom!" alt="Bloom">
+    <!-- HIDDEN: old mascot+streak row (Bloomy now lives in v3 hero above) -->
+    <div class="bloomi-mascot-row" style="display:none;">
+      <img class="bloomi-mascot" id="bloomiMascot" src="bloomy_wave.png" onclick="bloomiDance()" title="Tap Bloom!" alt="Bloom">
       <div class="bloomi-streak-card">
         <div class="bloomi-streak-num"><span id="bloomiStreakNum">0</span> 🔥</div>
         <div class="bloomi-streak-label" id="bloomiStreakLabel">Day streak — keep going!</div>
       </div>
     </div>
 
-    <!-- Bloom Level -->
-    <div class="bloom-level" id="bloomLevel">
+    <!-- Bloom Level (hidden on home, shown in parent panel) -->
+    <div class="bloom-level" id="bloomLevel" style="display:none;">
       <img class="bloom-level-sprite" id="bloomLevelSprite" src="bloom_level1.png" alt="Bloom level">
       <div class="bloom-level-info">
         <div class="bloom-level-name" id="bloomLevelName">Seedling</div>
@@ -941,24 +925,110 @@ input::placeholder { color:#aaa !important; }
       </div>
     </div>
 
-    <!-- Daily Mission -->
-    <div class="bloomi-daily-mission" id="bloomiMission">
-      <div class="bloomi-mission-title">⭐ Today's Mission</div>
-      <div class="bloomi-mission-item" id="mission-quiz"><div class="bloomi-mission-check" id="mcheck-quiz"></div>Answer 3 questions</div>
-      <div class="bloomi-mission-item" id="mission-yoga"><div class="bloomi-mission-check" id="mcheck-yoga"></div>Try a yoga pose</div>
-      <div class="bloomi-mission-item" id="mission-book"><div class="bloomi-mission-check" id="mcheck-book"></div>Read a book</div>
+    <!-- Daily Mission (compact - 1 line) -->
+    <div class="bloomi-daily-mission" id="bloomiMission" style="padding:10px 16px;display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+      <div class="bloomi-mission-title" style="margin:0;">⭐ <span id="missionInline">Today's Mission · 0/3</span></div>
+      <div class="bloomi-mission-item" id="mission-quiz" style="display:none;"><div class="bloomi-mission-check" id="mcheck-quiz"></div>Answer 3 questions</div>
+      <div class="bloomi-mission-item" id="mission-yoga" style="display:none;"><div class="bloomi-mission-check" id="mcheck-yoga"></div>Try a yoga pose</div>
+      <div class="bloomi-mission-item" id="mission-book" style="display:none;"><div class="bloomi-mission-check" id="mcheck-book"></div>Read a book</div>
     </div>
 
-    <div class="stats-row">
+    <!-- Stats row (hidden on home, shown in parent panel) -->
+    <div class="stats-row" style="display:none;">
       <div class="stat-chip"><div class="stat-num num-mint" id="statTasks">0</div><div class="stat-lbl" id="labelTasks">Done!</div></div>
       <div class="stat-chip"><div class="stat-num num-coral" id="statAccuracy">--</div><div class="stat-lbl">💡 Correct!</div></div>
       <div class="stat-chip"><div class="stat-num num-sun"  id="statMinutes">0</div><div class="stat-lbl">⏱ Minutes</div></div>
       <div class="stat-chip"><div class="stat-num num-lav"  id="statStars">0</div><div class="stat-lbl">⭐ Stars</div></div>
     </div>
 
-    <div class="section-title" id="subjectsTitle">📖 Today's Subjects</div>
-    <div class="cards-grid" id="subjectCards"></div>
-    <div id="gradeGamesSection" style="margin:0 0 8px;"></div>
+    <!-- v379 MINDFUL MOMENTS — moved to top of sections, Yoga+Music combined -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin:14px 0 10px;padding:0 4px;">
+      <h2 style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:#2D1B3D;margin:0;">🌿 Mindful Moments</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;">
+      <!-- Yoga & Music (combined) -->
+      <div onclick="v3OpenMindful('yoga')" style="background:#5ECDA0;border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #3FA77F,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
+        <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
+        <div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">🧘</div>
+        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">Yoga &amp; Music</div>
+        <div style="font-size:.66rem;font-weight:700;opacity:.85;position:relative;z-index:1;">Move &amp; flow</div>
+      </div>
+      <!-- Breathing -->
+      <div onclick="v3OpenMindful('breathing')" style="background:#C9B8FF;border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #9B85E0,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:#2D1B3D;font-family:Nunito,sans-serif;">
+        <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
+        <div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">🌬️</div>
+        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">Breathing</div>
+        <div style="font-size:.66rem;font-weight:700;opacity:.7;position:relative;z-index:1;">In &amp; out</div>
+      </div>
+      <!-- Calm Board (separate) -->
+      <div onclick="v3OpenMindful('calmboard')" style="background:#2D7A6B;border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #1F5A4D,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
+        <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
+        <div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">🌙</div>
+        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">Calm Board</div>
+        <div style="font-size:.66rem;font-weight:700;opacity:.85;position:relative;z-index:1;">Pause &amp; reset</div>
+      </div>
+      <!-- Mindful Stories (NEW full feature) -->
+      <div onclick="openMindfulStories()" style="background:#1A1A2E;border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #0A0A1A,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
+        <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.25),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
+        <div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">📖</div>
+        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">Mindful Stories</div>
+        <div style="font-size:.66rem;font-weight:700;opacity:.85;position:relative;z-index:1;">Listen &amp; relax</div>
+      </div>
+    </div>
+
+    <!-- v3 SECTION HEADER: Games -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin:8px 0 10px;padding:0 4px;">
+      <h2 style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:#2D1B3D;margin:0;">🎮 Games</h2>
+      <span onclick="openAllGames()" style="font-size:.75rem;font-weight:800;color:#6B3DCF;cursor:pointer;padding:4px 8px;border-radius:8px;background:rgba(155,133,224,.1);">See all →</span>
+    </div>
+
+    <div class="section-title" id="subjectsTitle" style="display:none;">📖 Today's Subjects</div>
+    <div class="cards-grid" id="subjectCards" style="display:none;"></div>
+    <div id="gradeGamesSection" style="margin:0 0 18px;"></div>
+
+    <!-- v379 SUBJECTS — Reading + Math + Social Studies -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin:8px 0 10px;padding:0 4px;">
+      <h2 style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:#2D1B3D;margin:0;">📚 Subjects</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:18px;">
+      <div onclick="v3OpenReadingSubject()" style="background:#4ECDC4;border-radius:20px;padding:16px 8px 12px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #2FA29A,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
+        <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
+        <div style="width:42px;height:42px;margin:0 auto 6px;border-radius:13px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">📖</div>
+        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.78rem;position:relative;z-index:1;">Reading</div>
+      </div>
+      <div onclick="v3OpenMathSubject()" style="background:#FF9F43;border-radius:20px;padding:16px 8px 12px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #D17715,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
+        <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
+        <div style="width:42px;height:42px;margin:0 auto 6px;border-radius:13px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">🔢</div>
+        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.78rem;position:relative;z-index:1;">Math</div>
+      </div>
+      <div onclick="v3OpenSocialStudies()" style="background:#8B5CF6;border-radius:20px;padding:16px 8px 12px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #6B3DCF,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
+        <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
+        <div style="width:42px;height:42px;margin:0 auto 6px;border-radius:13px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">🌍</div>
+        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.78rem;position:relative;z-index:1;">Our World</div>
+      </div>
+      <div onclick="switchTab('art')" style="background:#FF6B6B;border-radius:20px;padding:16px 8px 12px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #E04848,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
+        <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
+        <div style="width:42px;height:42px;margin:0 auto 6px;border-radius:13px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">🎨</div>
+        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.78rem;position:relative;z-index:1;">Create</div>
+      </div>
+    </div>
+
+    <!-- _OLD MARKERS_ kept hidden for selector compatibility -->
+    <div style="display:none;" id="oldGamesAndSubjectsAnchors">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;">
+      <div onclick="v3OpenReadingSubject()" style="background:#4ECDC4;border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #2FA29A,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
+        <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
+        <div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">📖</div>
+        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;position:relative;z-index:1;">Reading</div>
+      </div>
+      <div onclick="v3OpenMathSubject()" style="background:#FF9F43;border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #D17715,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
+        <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
+        <div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">🔢</div>
+        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;position:relative;z-index:1;">Math</div>
+      </div>
+    </div>
+    </div>
+    <!-- end oldGamesAndSubjectsAnchors -->
 
 
     <!-- Quiz box hidden - subjects handle quizzes via smart session -->
@@ -974,6 +1044,11 @@ input::placeholder { color:#aaa !important; }
 
   <!-- -- YOGA -- -->
   <div class="panel" id="panel-yoga">
+    <!-- v383: Home button -->
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 0 4px;">
+      <button onclick="switchTab('academics')" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.15);flex-shrink:0;">🏠</button>
+      <span style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1.05rem;color:#2D1B3D;">🧘 Mindful Moments</span>
+    </div>
     <!-- -- MUSIC PLAYER -- -->
     <div class="music-player" id="musicPlayer">
       <div class="music-header">
@@ -1026,17 +1101,17 @@ input::placeholder { color:#aaa !important; }
       </div>
     </div>
 
-    <!-- Calm Board -->
-    <div style="margin:16px 16px 0;">
-      <button onclick="openBusyBoard()" style="width:100%;padding:16px;border-radius:20px;border:none;background:linear-gradient(135deg,#1a1a2e,#4F46E5);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(79,70,229,.35);">
-        <span style="font-size:1.4rem;">🌙</span> Calm Board — Breathe &amp; Relax
-      </button>
-    </div>
+    <!-- Calm Board button removed v380 — already has its own tile on home screen -->
   </div>
 
 
   <!-- -- ART -- -->
   <div class="panel" id="panel-art">
+    <!-- v383: Home button for Art panel (not a fixed overlay so global injector doesn't reach it) -->
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 0 4px;">
+      <button onclick="switchTab('academics')" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.15);flex-shrink:0;">🏠</button>
+      <span style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1.05rem;color:#2D1B3D;">🎨 Create</span>
+    </div>
     <div class="art-hero" id="artHero">
       <span class="art-hero-emoji" id="artHeroEmoji">🎨</span>
       <div class="art-hero-title" id="artHeroTitle">Art Studio!</div>
@@ -1052,6 +1127,7 @@ input::placeholder { color:#aaa !important; }
     <div class="section-title" id="artActivitiesTitle">🖌 Today's Art Activities</div>
     <div class="art-activities" id="artActivities"></div>
 
+    <div id="colorMixerSection">
     <div class="section-title">🎨 Color Mixer Lab</div>
     <div class="color-mixer-box">
       <div class="color-mixer-title">🔬 Mix two colors -- what do you get?</div>
@@ -1092,6 +1168,11 @@ input::placeholder { color:#aaa !important; }
 
   <!-- -- READING -- -->
   <div class="panel" id="panel-reading">
+    <!-- v383: Home button -->
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 0 4px;">
+      <button onclick="switchTab('academics')" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.15);flex-shrink:0;">🏠</button>
+      <span style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1.05rem;color:#2D1B3D;">📖 Stories</span>
+    </div>
     <div class="stats-row">
       <div class="stat-chip"><div class="stat-num num-mint" id="booksRead">0</div><div class="stat-lbl">Books!</div></div>
       <div class="stat-chip"><div class="stat-num num-coral" id="totalPages">0</div><div class="stat-lbl">Pages</div></div>
@@ -1138,7 +1219,7 @@ input::placeholder { color:#aaa !important; }
   </div>
 </div>
 
-<div class="bottom-nav">
+<div class="bottom-nav" style="display:none;">
   <button class="tab-btn active" data-tab="academics" onclick="switchTab('academics')">📚 <span id="tabLearn2">Learn</span></button>
   <button class="tab-btn" data-tab="yoga" onclick="switchTab('yoga')">🧘 <span id="tabMove2">Move</span></button>
   <button class="tab-btn" data-tab="reading" onclick="switchTab('reading')" style="display:none;">📖 <span id="tabRead2">Read</span></button>
@@ -2520,31 +2601,25 @@ function showIntroVideo() {
   var ov = document.createElement('div');
   ov.id = 'introVideoOv';
   ov.style.cssText = 'position:fixed;inset:0;z-index:99999;background:#1A0A2E;display:flex;align-items:center;justify-content:center;';
-  
+
   var video = document.createElement('video');
   video.src = '/hi-bloom-2.mp4';
   video.autoplay = true;
   video.playsInline = true;
   video.muted = false;
   video.style.cssText = 'width:100%;height:100%;object-fit:cover;';
-  
-  // Skip button
-  var skip = null;
-  
+
   function goToApp() {
-    ov.remove();
-    showIntroVideo();
+    if (document.getElementById('introVideoOv')) ov.remove();
   }
-  
-  skip.onclick = goToApp;
+
   video.onended = goToApp;
   video.onerror = goToApp;
-  
+
   // Fallback - if video doesn't play in 8 seconds, skip it
   setTimeout(goToApp, 8000);
-  
+
   ov.appendChild(video);
-  // no skip button
   document.body.appendChild(ov);
   video.play().catch(goToApp);
 }
@@ -2579,6 +2654,9 @@ async function handleLogout() {
   showScreen('auth');
   showAuthTab('login');
 }
+// v382: alias so parent board Sign Out button works
+function signOut() { handleLogout(); }
+window.signOut = signOut;
 let _authHandled = false;
 sb.auth.onAuthStateChange(async(event,session)=>{
   if (session?.user) {
@@ -2802,9 +2880,9 @@ var bloomiMoodIdx = 0;
 function bloomiDance() {
   var m = document.getElementById('bloomiMascot');
   if (!m) return;
-  m.src = 'bloom_correct_anim.gif?' + Date.now();
+  m.src = 'bloomy_celebrate.png?' + Date.now();
   showBloomCelebration();
-  setTimeout(function() { m.src = 'bloom_happy.png'; }, 2200);
+  setTimeout(function() { m.src = 'bloomy_wave.png'; }, 2200);
 }
 
 function bloomiReact(mood) {
@@ -2812,13 +2890,13 @@ function bloomiReact(mood) {
   if (!m) return;
   if (mood === 'correct' || mood === 'done') {
     // Swap home mascot to correct pose
-    m.src = 'bloom_correct_anim.gif?' + Date.now();
+    m.src = 'bloomy_celebrate.png?' + Date.now();
     // Also show brief centered celebration overlay
     showBloomCelebration();
-    setTimeout(function() { m.src = 'bloom_happy.png'; }, 2200);
+    setTimeout(function() { m.src = 'bloomy_wave.png'; }, 2200);
   } else if (mood === 'wrong') {
-    m.src = 'bloom_wrong.png';
-    setTimeout(function() { m.src = 'bloom_happy.png'; }, 1800);
+    m.src = 'bloomy_think.png';
+    setTimeout(function() { m.src = 'bloomy_wave.png'; }, 1800);
   }
 }
 
@@ -2839,7 +2917,7 @@ function showBloomCelebration() {
   ].join(';');
 
   var img = document.createElement('img');
-  img.src = 'bloom_correct_anim.gif?' + Date.now();
+  img.src = 'bloomy_celebrate.png?' + Date.now();
   img.style.cssText = 'width:110px;height:132px;object-fit:contain;display:block;';
   ov.appendChild(img);
   document.body.appendChild(ov);
@@ -2907,6 +2985,11 @@ function updateDailyMission() {
       check.textContent = '';
     }
   });
+
+  // v371: update compact inline counter
+  var done = (mission.quiz?1:0) + (mission.yoga?1:0) + (mission.book?1:0);
+  var inline = document.getElementById('missionInline');
+  if (inline) inline.textContent = "Today's Mission · " + done + "/3";
 
   // Check if all done
   if (mission.quiz && mission.yoga && mission.book) {
@@ -3176,10 +3259,18 @@ function showComprehensionCheck(onComplete) {
   ov.id = 'comprehensionOv';
   ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(10,10,26,.9);display:flex;align-items:center;justify-content:center;padding:20px;';
 
+  // v379 Back + Home buttons (works for kids who want to bail mid-check)
+  var navBar = document.createElement('div');
+  navBar.style.cssText = 'position:absolute;top:14px;left:14px;display:flex;gap:10px;z-index:10;';
+  navBar.innerHTML =
+    '<button onclick="document.getElementById(\'comprehensionOv\').remove()" title="Back" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.9);border:none;cursor:pointer;font-size:18px;color:#2D1B3D;box-shadow:0 3px 0 rgba(0,0,0,.3);">←</button>'
+    +'<button onclick="goHomeFromOverlay()" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.3);">🏠</button>';
+  ov.appendChild(navBar);
+
   var card = document.createElement('div');
   card.style.cssText = 'background:white;border-radius:28px;padding:28px 24px;width:100%;max-width:380px;text-align:center;';
 
-  card.innerHTML = '<img src="bloom_happy.png" style="width:70px;height:84px;object-fit:contain;margin-bottom:8px;">'
+  card.innerHTML = '<img src="bloomy_wave.png" style="width:70px;height:84px;object-fit:contain;margin-bottom:8px;">'
     + '<div style="font-family:Baloo 2,cursive;font-size:1.1rem;font-weight:800;color:#2D2D4E;margin-bottom:16px;">Quick Check! 🌟</div>'
     + '<div style="font-size:.95rem;font-weight:700;color:#444;margin-bottom:18px;line-height:1.5;">' + q.q + '</div>';
 
@@ -3353,12 +3444,22 @@ async function selectChild(child) {
   activeChild  = child;
   activeGrade  = child.grade || 'K';
   gradeContent = GRADE_DATA[activeGrade] || GRADE_DATA['K'];
-  artTabBuilt  = false;  // ✅ Reset so art tab rebuilds for this child
+  artTabBuilt  = false;  // v383: always rebuild art tab for the new child/grade
 
   // Apply grade CSS class to body
   document.body.className = `grade-${activeGrade.toLowerCase()}`;
 
   showScreen('app');
+  // v383: force academics (home) tab on every login — prevents stuck-on-art after logout/login
+  // Do it immediately AND with delay to cover any race conditions
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+  var homePanel = document.getElementById('panel-academics');
+  if (homePanel) homePanel.classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(function(b){
+    b.classList.remove('active');
+    if (b.dataset && b.dataset.tab === 'academics') b.classList.add('active');
+  });
+  setTimeout(function() { if (typeof switchTab === 'function') switchTab('academics'); }, 300);
   setTimeout(showIntroVideo, 500);
   applyGradeUI();
   buildSubjectCards();
@@ -3370,6 +3471,24 @@ async function selectChild(child) {
   document.getElementById('activeChildAvatar').textContent = child.avatar||'🌟';
   document.getElementById('activeChildName').textContent   = child.name;
   document.getElementById('greetingName').textContent      = child.name;
+  // v376: also update v3 hero name
+  var v3Name = document.getElementById('v3HeroName');
+  if (v3Name) v3Name.textContent = child.name;
+  // v377: update Play Today! subtitle with next Reading Path lesson
+  var v3Sub = document.getElementById('v3PlaySub');
+  if (v3Sub && typeof READING_LESSONS !== 'undefined' && typeof _readingPathProgress === 'function') {
+    try {
+      var st = _readingPathProgress();
+      var nextLessonId = 1;
+      for (var i = 0; i < READING_LESSONS.length; i++) {
+        if (st.completed.indexOf(READING_LESSONS[i].id) === -1) { nextLessonId = READING_LESSONS[i].id; break; }
+      }
+      var lesson = READING_LESSONS.find(function(L){ return L.id === nextLessonId; });
+      if (lesson) {
+        v3Sub.textContent = "Bloom's Reading Path · " + lesson.title + " · ⭐ 5 stars";
+      }
+    } catch(e) {}
+  }
   checkBirthday(child);
   const h = new Date().getHours();
   document.getElementById('timeOfDay').textContent = h<12?'Morning':h<17?'Afternoon':'Evening';
@@ -3472,6 +3591,7 @@ function buildGradeGames() {
   // Grade-appropriate game tiles
   var GRADE_GAMES = {
     PreK: [
+      {icon:'🌱', label:"Bloom's Reading Path", fn:"openReadingPath()",     color:'#5ECDA0'},
       {icon:'🔢', label:'Count It!',       fn:"openMathGame('PreK')",   color:'#22c55e'},
       {icon:'🔤', label:'ABC Time',        fn:"openLangGame('PreK')",   color:'#EC4899'},
       {icon:'🎵', label:'Patterns',        fn:"openSequencer('PreK')",  color:'#7C3AED'},
@@ -3479,10 +3599,11 @@ function buildGradeGames() {
       {icon:'🐾', label:'Animal Sort',     fn:"openScienceGame('PreK')",color:'#0EA5E9'},
       {icon:'📚', label:'Busy Book',       fn:"openBusyBook('PreK')",   color:'#0369A1'},
       {icon:'🃏', label:'Memory Match',   fn:"openMemoryMatch('PreK')", color:'#7C3AED'},
-      {icon:'📖', label:'Phonics & Words', fn:"openPhonicsGame('PreK')", color:'#0EA5E9'},
+      {icon:'🔊', label:'Sound Play',      fn:"openPhonicsGame('PreK')", color:'#0EA5E9'},
       {icon:'🦕', label:'Dino Stories',    fn:"openDinoStories('PreK')", color:'#1a472a'},
     ],
     K: [
+      {icon:'🌱', label:"Bloom's Reading Path", fn:"openReadingPath()",     color:'#5ECDA0'},
       {icon:'🔢', label:'Counting',        fn:"openMathGame('K')",      color:'#22c55e'},
       {icon:'✏️', label:'Word Builder',    fn:"openLangGame('K')",      color:'#EC4899'},
       {icon:'🎵', label:'Patterns',        fn:"openSequencer('K')",     color:'#7C3AED'},
@@ -3490,19 +3611,20 @@ function buildGradeGames() {
       {icon:'🔬', label:'Science Sort',    fn:"openScienceGame('K')",   color:'#0EA5E9'},
       {icon:'📚', label:'Busy Book',       fn:"openBusyBook('K')",      color:'#0369A1'},
       {icon:'🃏', label:'Memory Match',   fn:"openMemoryMatch('K')",    color:'#7C3AED'},
-      {icon:'📖', label:'Phonics & Words', fn:"openPhonicsGame('K')",   color:'#0EA5E9'},
+      {icon:'🔊', label:'Sound Play',      fn:"openPhonicsGame('K')",   color:'#0EA5E9'},
       {icon:'🦕', label:'Dino Stories',    fn:"openDinoStories('K')",   color:'#1a472a'},
     ],
     1: [
+      {icon:'🌱', label:"Bloom's Reading Path", fn:"openReadingPath()",     color:'#5ECDA0'},
       {icon:'➕', label:'Math Practice',   fn:"openMathGame('1')",      color:'#22c55e'},
       {icon:'🛒', label:'Shop Math',       fn:"openShopMath('1')",      color:'#F59E0B'},
-      {icon:'📖', label:'Word Builder',    fn:"openLangGame('1')",      color:'#EC4899'},
+      {icon:'✏️', label:'Word Builder',    fn:"openLangGame('1')",      color:'#EC4899'},
       {icon:'🔬', label:'Science Sort',    fn:"openScienceGame('1')",   color:'#0EA5E9'},
       {icon:'📚', label:'Busy Book',       fn:"openBusyBook('1')",      color:'#0369A1'},
       {icon:'🌍', label:'Social Studies',  fn:"openSSGame('1')",        color:'#8B5CF6'},
       {icon:'🃏', label:'Memory Match',   fn:"openMemoryMatch('1')",   color:'#7C3AED'},
       {icon:'🔗', label:'Number Bonds',   fn:"openNumberBonds('1')",   color:'#059669'},
-      {icon:'📖', label:'Phonics & Words', fn:"openPhonicsGame('1')",   color:'#0EA5E9'},
+      {icon:'🔊', label:'Sound Play',      fn:"openPhonicsGame('1')",   color:'#0EA5E9'},
       {icon:'🦕', label:'Dino Stories',    fn:"openDinoStories('1')",   color:'#1a472a'},
     ],
     2: [
@@ -3548,17 +3670,98 @@ function buildGradeGames() {
   };
 
   var games = GRADE_GAMES[activeGrade] || GRADE_GAMES['2'];
-  container.innerHTML = '<div class="section-title" style="margin-bottom:12px;">🎮 Practice Games</div>'
-    + '<div style="display:grid;grid-template-columns:'+(games.length>4?'1fr 1fr 1fr':'1fr 1fr')+';gap:10px;">'
-    + games.map(function(g) {
-        return '<div onclick="'+g.fn+'" style="background:linear-gradient(135deg,'+g.color+'DD,'+g.color+');border-radius:18px;padding:16px 10px;text-align:center;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.15);position:relative;overflow:hidden;">'
-          +'<div style="position:absolute;top:0;left:0;right:0;height:40%;background:linear-gradient(180deg,rgba(255,255,255,.25),transparent);border-radius:18px 18px 50% 50%;pointer-events:none;"></div>'
-          +'<div style="font-size:2rem;margin-bottom:6px;position:relative;z-index:1;">'+g.icon+'</div>'
-          +'<div style="font-size:.8rem;font-weight:800;color:white;position:relative;z-index:1;">'+g.label+'</div>'
-          +'</div>';
-      }).join('')
+  // v381: cache globally for openAllGames
+  window._cachedGradeGames = games;
+
+  // v377 — convert raw color to a "deeper" shade for pillow shadow
+  function _darken(hex) {
+    var c = hex.replace('#','');
+    if (c.length === 3) c = c[0]+c[0]+c[1]+c[1]+c[2]+c[2];
+    var r = Math.max(0, parseInt(c.substring(0,2),16) - 40);
+    var g = Math.max(0, parseInt(c.substring(2,4),16) - 40);
+    var b = Math.max(0, parseInt(c.substring(4,6),16) - 40);
+    return '#' + r.toString(16).padStart(2,'0') + g.toString(16).padStart(2,'0') + b.toString(16).padStart(2,'0');
+  }
+
+  // v377 — short subtitle per game (kid-readable)
+  var SUBS = {
+    "Bloom's Reading Path":'Lessons','Count It!':'Numbers','Counting':'Numbers','Math Practice':'Numbers',
+    'ABC Time':'Letters','Word Builder':'Spelling','Patterns':'Shapes','Colors Sort':'Sort it',
+    'Colors & Shapes':'Sort it','Animal Sort':'Sort it','Science Sort':'Sort it','Busy Book':'Activities',
+    'Memory Match':'Find pairs','Sound Play':'Phonics','Dino Stories':'Stories','Shop Math':'Money',
+    'Social Studies':'World','Number Bonds':'Add up','Reading Corner':'Read'
+  };
+
+  function _makeTile(g) {
+    var deeper = _darken(g.color);
+    var sub = SUBS[g.label] || 'Tap to play';
+    var lightBg = (g.color.toUpperCase() === '#FFD166' || g.color.toUpperCase() === '#C9B8FF' || g.color.toUpperCase() === '#FBBF24');
+    var textColor = lightBg ? '#2D1B3D' : 'white';
+    var subOpacity = lightBg ? '.7' : '.85';
+    return '<div onclick="'+g.fn+'" style="background:'+g.color+';border-radius:20px;padding:16px 12px 14px;text-align:center;cursor:pointer;'
+      +'box-shadow:0 6px 0 '+deeper+',inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);'
+      +'position:relative;overflow:hidden;font-family:Nunito,sans-serif;color:'+textColor+';">'
+      +'<div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>'
+      +'<div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">'+g.icon+'</div>'
+      +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.9rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">'+g.label+'</div>'
+      +'<div style="font-size:.66rem;font-weight:700;opacity:'+subOpacity+';position:relative;z-index:1;">'+sub+'</div>'
+      +'</div>';
+  }
+
+  // v380: show first 4 tiles only; See all opens fullscreen grid
+  var first4 = games.slice(0,4);
+  container.innerHTML = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">'
+    + first4.map(_makeTile).join('')
     + '</div>';
 }
+
+// v380: fullscreen "See all Games" overlay
+function openAllGames() {
+  // v381: use cached grade games (GRADE_GAMES is local to renderGradeGames scope)
+  var games = window._cachedGradeGames || [];
+  if (!games.length) {
+    alert('Please log in first to see your games!');
+    return;
+  }
+  var ov = document.createElement('div');
+  ov.id = 'allGamesOv';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#F4F0FB;display:flex;flex-direction:column;overflow-y:auto;font-family:Nunito,sans-serif;';
+
+  // Build same _darken + _makeTile inline (scope issue — redeclare here)
+  function _dk(hex) {
+    var c = hex.replace('#','');
+    if (c.length===3) c=c[0]+c[0]+c[1]+c[1]+c[2]+c[2];
+    var r=Math.max(0,parseInt(c.substring(0,2),16)-40);
+    var g=Math.max(0,parseInt(c.substring(2,4),16)-40);
+    var b=Math.max(0,parseInt(c.substring(4,6),16)-40);
+    return '#'+r.toString(16).padStart(2,'0')+g.toString(16).padStart(2,'0')+b.toString(16).padStart(2,'0');
+  }
+  var SUBS2 = {"Bloom's Reading Path":'Lessons','Count It!':'Numbers','Counting':'Numbers','Math Practice':'Numbers','ABC Time':'Letters','Word Builder':'Spelling','Patterns':'Shapes','Colors Sort':'Sort it','Colors & Shapes':'Sort it','Animal Sort':'Sort it','Science Sort':'Sort it','Busy Book':'Activities','Memory Match':'Find pairs','Sound Play':'Phonics','Dino Stories':'Stories','Shop Math':'Money','Social Studies':'World','Number Bonds':'Add up','Reading Corner':'Read'};
+
+  ov.innerHTML =
+    '<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 14px;position:sticky;top:0;background:#F4F0FB;z-index:10;border-bottom:1px solid rgba(45,27,61,.06);">'
+      +'<button onclick="document.getElementById(\'allGamesOv\').remove()" style="width:42px;height:42px;border-radius:50%;background:white;border:none;cursor:pointer;font-size:18px;color:#2D1B3D;box-shadow:0 3px 0 rgba(0,0,0,.15);">←</button>'
+      +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1.1rem;color:#2D1B3D;">🎮 All Games</div>'
+      +'<button onclick="goHomeFromOverlay()" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.15);">🏠</button>'
+    +'</div>'
+    +'<div style="padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">'
+    + games.map(function(g) {
+        var deeper = _dk(g.color);
+        var sub = SUBS2[g.label] || 'Tap to play';
+        var lightBg = (g.color.toUpperCase()==='#FFD166'||g.color.toUpperCase()==='#C9B8FF'||g.color.toUpperCase()==='#FBBF24');
+        var textColor = lightBg ? '#2D1B3D' : 'white';
+        var subOpacity = lightBg ? '.7' : '.85';
+        return '<div onclick="document.getElementById(\'allGamesOv\').remove();'+g.fn+'" style="background:'+g.color+';border-radius:20px;padding:16px 12px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 '+deeper+',inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;font-family:Nunito,sans-serif;color:'+textColor+';">'
+          +'<div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>'
+          +'<div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">'+g.icon+'</div>'
+          +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.9rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">'+g.label+'</div>'
+          +'<div style="font-size:.66rem;font-weight:700;opacity:'+subOpacity+';position:relative;z-index:1;">'+sub+'</div>'
+          +'</div>';
+      }).join('')
+    +'</div>';
+  document.body.appendChild(ov);
+}
+window.openAllGames = openAllGames;
 
 function buildSubjectCards() {
   const container = document.getElementById('subjectCards');
@@ -4000,6 +4203,79 @@ function renderBookShelf(books) {
   }
 }
 
+// v382: buildGDLLibrary was missing — caused crash in bookshelf for Grade 1+
+// Returns a section wrapper with classic public-domain books (coming soon state)
+function buildGDLLibrary(grade) {
+  var GDL_BOOKS = {
+    1: [
+      {emoji:'🐰', title:'The Tale of Peter Rabbit', author:'Beatrix Potter', id:'thetaleofpeterrabb00pott_2'},
+      {emoji:'🐻', title:'The Three Bears', author:'Traditional', id:'storyofthreebear00south'},
+      {emoji:'🦊', title:'Aesop\'s Fables', author:'Aesop', id:'aesopsfables_librivox'},
+    ],
+    2: [
+      {emoji:'🌹', title:'Jack and the Beanstalk', author:'Traditional', id:'jackandbeanstalk00englgoog'},
+      {emoji:'🪆', title:'Pinocchio', author:'Carlo Collodi', id:'pinocchio_2_0811_librivox'},
+      {emoji:'🐺', title:'Little Red Riding Hood', author:'Traditional', id:'littleredridingh00perrrich'},
+    ],
+    3: [
+      {emoji:'🃏', title:'Alice in Wonderland', author:'Lewis Carroll', id:'alicesadventuresinwonderland_2005_librivox'},
+      {emoji:'🐅', title:'The Jungle Book', author:'Rudyard Kipling', id:'jungle_book_mh_0808_librivox'},
+      {emoji:'🌈', title:'The Wizard of Oz', author:'L. Frank Baum', id:'wonderful_wizard_of_oz_librivox'},
+    ],
+    4: [
+      {emoji:'💎', title:'Treasure Island', author:'R.L. Stevenson', id:'treasure_island_0711_librivox'},
+      {emoji:'🐴', title:'Black Beauty', author:'Anna Sewell', id:'blackbeauty_2_0811_librivox'},
+      {emoji:'🌷', title:'The Secret Garden', author:'Frances Hodgson Burnett', id:'secret_garden_0907_librivox'},
+    ],
+    5: [
+      {emoji:'🏝️', title:'Robinson Crusoe', author:'Daniel Defoe', id:'robinsoncrusoe_librivox'},
+      {emoji:'🌊', title:'20,000 Leagues Under the Sea', author:'Jules Verne', id:'twentythousandleagues_librivox'},
+      {emoji:'🗡️', title:'The Count of Monte Cristo (abridged)', author:'Alexandre Dumas', id:'montecristo_librivox'},
+    ],
+  };
+
+  var gradeNum = parseInt(grade) || 1;
+  // Clamp to our available grades
+  if (gradeNum < 1) gradeNum = 1;
+  if (gradeNum > 5) gradeNum = 5;
+  var books = GDL_BOOKS[gradeNum] || GDL_BOOKS[1];
+
+  var wrap = document.createElement('div');
+  wrap.style.cssText = 'margin-top:24px;';
+
+  var title = document.createElement('div');
+  title.className = 'section-title';
+  title.textContent = '📚 Classic Stories';
+  wrap.appendChild(title);
+
+  var grid = document.createElement('div');
+  grid.style.cssText = 'display:grid;gap:12px;';
+
+  books.forEach(function(book) {
+    var card = document.createElement('div');
+    card.style.cssText = 'background:white;border-radius:18px;padding:16px;display:flex;align-items:center;gap:14px;box-shadow:0 3px 0 rgba(0,0,0,.06);cursor:pointer;';
+    card.innerHTML =
+      '<div style="font-size:2.2rem;flex-shrink:0;">'+book.emoji+'</div>'
+      +'<div style="flex:1;">'
+        +'<div style="font-family:\'Baloo 2\',cursive;font-weight:800;font-size:1rem;color:#2D1B3D;">'+book.title+'</div>'
+        +'<div style="font-size:.82rem;color:#6B5B73;margin-top:2px;">'+book.author+'</div>'
+      +'</div>'
+      +'<div style="font-size:.75rem;font-weight:800;color:#8B6FE8;background:#F4F0FB;padding:6px 10px;border-radius:10px;">Read ▶</div>';
+    card.onclick = function() {
+      // Try to open via existing reader — fall back gracefully
+      if (typeof openAudioBookReader === 'function') {
+        openAudioBookReader({title:book.title, gdlId:book.id, emoji:book.emoji});
+      } else {
+        toast('📚 ' + book.title + ' — coming soon!');
+      }
+    };
+    grid.appendChild(card);
+  });
+
+  wrap.appendChild(grid);
+  return wrap;
+}
+
 function renderComingSoon() {
   const comingSoon = [
     { emoji:'🦁', title:'The Lion, the Witch and the Wardrobe', author:'C.S. Lewis', grade:'Grades 4-5' },
@@ -4197,44 +4473,70 @@ const MIX_RESULTS = {
 // Coloring book scenes — outlines only, kids fill all colors
 const COLORING_SCENES = {
   PreK: [
-    { label:'🦕 Dino Ball',   img:'coloring/color_dino_ball.png',  prompt:'Color Dino and his ball!' },
-    { label:'🐟 Happy Fish',  img:'coloring/color_fish.png',        prompt:'Color the happy fish!' },
-    { label:'🐶 Puppies',     img:'coloring/color_puppies.png',     prompt:'Color the two happy puppies!' },
+    { label:'🐶 Puppies',        img:'color_puppies.png',    prompt:'Color the two happy puppies!' },
+    { label:'🦕 Dino Ball',      img:'color_dino_ball.png',  prompt:'Color Dino and his ball!' },
+    { label:'🐟 Happy Fish',     img:'color_fish.png',       prompt:'Color the happy fish!' },
+    { label:'🐱 Cat',            img:'color_cat.png',        prompt:'Color the cat!' },
+    { label:'🐦 Bird',           img:'color_bird.png',       prompt:'Color the cute bird!' },
+    { label:'🏠 My House',       img:'IMG_1913.PNG',         prompt:'Color the cozy house!' },
+    { label:'🌀 Easy Maze',      img:'IMG_1943.PNG',         prompt:'Trace the path through the maze!' },
   ],
   K: [
-    { label:'🫧 Bubbles',     img:'coloring/color_bubbles.png',    prompt:'Color the girl and her bubbles!' },
-    { label:'🦋 Butterfly',   img:'coloring/color_butterfly.png',  prompt:'Color the butterfly garden!' },
-    { label:'🐱 Cat',         img:'coloring/color_cat.png',        prompt:'Color the cat on the picnic mat!' },
-    { label:'🐦 Bird',        img:'coloring/color_bird.png',       prompt:'Color the cute bird on a branch!' },
+    { label:'🦋 Butterfly',      img:'color_butterfly.png',  prompt:'Color the butterfly garden!' },
+    { label:'🫧 Bubbles',        img:'color_bubbles.png',    prompt:'Color the girl and her bubbles!' },
+    { label:'🦄 Unicorn',        img:'color_unicorn.png',    prompt:'Color the magical unicorn!' },
+    { label:'🤖 Robot',          img:'color_robot2.png',     prompt:'Color the friendly robot!' },
+    { label:'🚒 Fire Truck',     img:'IMG_1893.PNG',         prompt:'Color the friendly fire truck!' },
+    { label:'🏠 My House',       img:'IMG_1913.PNG',         prompt:'Color the cozy house!' },
+    { label:'👩‍⚕️ Helpers',       img:'IMG_1914.PNG',         prompt:'Color the community helpers!' },
+    { label:'🐢 Turtle',         img:'IMG_1938.PNG',         prompt:'Color the happy turtle!' },
   ],
   1: [
-    { label:'🦄 Unicorn',     img:'coloring/color_unicorn.png',    prompt:'Color the magical unicorn!' },
-    { label:'🤖 Robot',       img:'coloring/color_robot.png',      prompt:'Color the friendly robot!' },
-    { label:'🚂 Train',       img:'coloring/color_train.png',      prompt:'Color the happy train!' },
-    { label:'🛝 Playground',  img:'coloring/color_playground.png', prompt:'Color the playground scene!' },
+    { label:'🚂 Train',          img:'color_train.png',      prompt:'Color the happy train!' },
+    { label:'🐉 Dragon',         img:'color_dragon.png',     prompt:'Color the baby dragon!' },
+    { label:'📚 Reading',        img:'color_reading.png',    prompt:'Color the reading scene!' },
+    { label:'🛝 Playground',     img:'IMG_1874.PNG',         prompt:'Color the playground!' },
+    { label:'✈️ Airplane',       img:'IMG_1894.PNG',         prompt:'Color the airplane!' },
+    { label:'🐶 Puppies',        img:'IMG_1895.PNG',         prompt:'Color the puppies!' },
+    { label:'🌈 Rainbow Day',    img:'IMG_1915.PNG',         prompt:'Color the rainbow day!' },
+    { label:'🐅 Tiger',          img:'IMG_1939.PNG',         prompt:'Color the jungle tiger!' },
+    { label:'🦁 Lion',           img:'IMG_1940.PNG',         prompt:'Color the friendly lion!' },
+    { label:'🐞 Ladybug',        img:'IMG_1916.jpeg',        prompt:'Color the ladybug!' },
   ],
   2: [
-    { label:'🐉 Dragon',      img:'coloring/color_dragon.png',     prompt:'Color the baby dragon!' },
-    { label:'🐍 Snake',       img:'coloring/color_snake.png',      prompt:'Color the cute snake!' },
-    { label:'🦁 Jungle',      img:'coloring/color_jungle.png',     prompt:'Color the jungle animals!' },
+    { label:'🌴 Jungle',         img:'color_jungle.png',     prompt:'Color the jungle animals!' },
+    { label:'🐍 Snake',          img:'color_snake.png',      prompt:'Color the cute snake!' },
+    { label:'🤖 Robot Lab',      img:'color_robot.png',      prompt:'Color the robot!' },
+    { label:'🍎 Happy Fruit',    img:'IMG_1896.PNG',         prompt:'Color the happy fruit!' },
+    { label:'🚌 School Bus',     img:'IMG_1898.PNG',         prompt:'Color the school bus!' },
+    { label:'🏖️ Beach Day',      img:'IMG_1901.PNG',         prompt:'Color the beach scene!' },
+    { label:'🪐 Solar System',   img:'IMG_1937.PNG',         prompt:'Color the solar system!' },
+    { label:'🌀 Maze',           img:'IMG_1941.PNG',         prompt:'Find the path through the maze!' },
   ],
   3: [
-    { label:'📖 Reading',     img:'coloring/color_reading.png',    prompt:'Color the boy reading his book!' },
-    { label:'🤖 Robot City',  img:'coloring/color_robot2.png',     prompt:'Color the robot in the city!' },
-    { label:'🦄 Unicorn',     img:'coloring/color_unicorn.png',    prompt:'Color the magical unicorn!' },
+    { label:'🌾 Flower Field',   img:'color_field.png',      prompt:'Color the flower field!' },
+    { label:'👁️ Dream Garden',   img:'IMG_1875.PNG',         prompt:'Color this dreamlike garden!' },
+    { label:'🏖️ Sandcastle',     img:'IMG_1897.PNG',         prompt:'Color the sandcastle scene!' },
+    { label:'🚒 Fire Scene',     img:'IMG_1900.PNG',         prompt:'Color the fire truck scene!' },
+    { label:'🌸 Nature Mandala', img:'IMG_1933.PNG',         prompt:'Color the beautiful mandala!' },
+    { label:'🌙 Moon & Stars',   img:'IMG_1936.PNG',         prompt:'Color the celestial scene!' },
+    { label:'🌀 Hard Maze',      img:'IMG_1942.PNG',         prompt:'Solve the hard maze!' },
   ],
   4: [
-    { label:'🦁 Jungle',      img:'coloring/color_jungle.png',    prompt:'Color the jungle animals!' },
-    { label:'🤖 Robot City',  img:'coloring/color_robot2.png',    prompt:'Color the robot in the city!' },
-    { label:'🌸 Flower Field',img:'coloring/color_field.png',     prompt:'Color the flower field!' },
-    { label:'🐦 Little Bird', img:'coloring/color_bird.png',      prompt:'Color the cute little bird!' },
+    { label:'🌻 Surreal Garden', img:'IMG_1876.PNG',         prompt:'Color this amazing garden!' },
+    { label:'🌀 Expert Maze',    img:'IMG_1899.PNG',         prompt:'Solve the expert maze!' },
+    { label:'🌸 Mandala',        img:'IMG_1933.PNG',         prompt:'Color the detailed mandala!' },
+    { label:'🌿 Botanical',      img:'IMG_1934.PNG',         prompt:'Color the botanical pattern!' },
+    { label:'🌙 Celestial',      img:'IMG_1936.PNG',         prompt:'Color the celestial design!' },
   ],
   5: [
-    { label:'🌈 Wonderland',  img:'coloring/color_surreal2.png',  prompt:'Color this amazing world!' },
-    { label:'✨ Magic Land',  img:'coloring/color_surreal1.png',  prompt:'Color this magical scene!' },
-    { label:'🦄 Unicorn',     img:'coloring/color_unicorn.png',   prompt:'Color the magical unicorn!' },
-    { label:'🐶 Puppies',     img:'coloring/color_puppies.png',   prompt:'Color the happy puppies!' },
-  ]
+    { label:'🌻 Surreal Scene',  img:'IMG_1876.PNG',         prompt:'Color this surreal world!' },
+    { label:'🌾 Landscape',      img:'IMG_1877.PNG',         prompt:'Color the landscape sketch!' },
+    { label:'🌸 Complex Mandala',img:'IMG_1933.PNG',         prompt:'Color the complex mandala!' },
+    { label:'🌿 Dense Botanical',img:'IMG_1934.PNG',         prompt:'Color the dense botanical!' },
+    { label:'🌙 Celestial Mandala',img:'IMG_1936.PNG',       prompt:'Color the celestial mandala!' },
+    { label:'🌀 Expert Maze',    img:'IMG_1941.PNG',         prompt:'Solve the expert maze!' },
+  ],
 };
 
 function buildArtTab() {
@@ -4242,58 +4544,66 @@ function buildArtTab() {
   artActivitiesDone = 0; artStarsEarned = 0; colorMixCount = 0;
 
   const hero = document.getElementById('artHero');
-  hero.className = 'art-hero ' + artContent.heroClass;
-  document.getElementById('artHeroEmoji').textContent  = artContent.heroEmoji;
-  document.getElementById('artHeroTitle').textContent  = artContent.heroTitle;
-  document.getElementById('artHeroSub').textContent    = artContent.heroSub;
-  document.getElementById('artActivitiesTitle').textContent = artContent.activitiesTitle;
+  if (hero) {
+    hero.className = 'art-hero ' + artContent.heroClass;
+    document.getElementById('artHeroEmoji').textContent  = artContent.heroEmoji;
+    document.getElementById('artHeroTitle').textContent  = artContent.heroTitle;
+    document.getElementById('artHeroSub').textContent    = artContent.heroSub;
+  }
+  if (document.getElementById('artActivitiesTitle'))
+    document.getElementById('artActivitiesTitle').textContent = artContent.activitiesTitle;
 
-  const isYoung = activeGrade==='PreK'||activeGrade==='K'||activeGrade==='1';
+  // v381: ALL grades get coloring book mode (grade-appropriate pages)
   const grid = document.getElementById('artActivities');
+  if (grid) buildColoringBook(grid);
 
-  if (isYoung) {
-    // ✅ COLORING BOOK MODE for PreK/K/Grade 1
-    buildColoringBook(grid);
-  } else {
-    // Activity cards for Grade 2+
-    grid.innerHTML = artContent.activities.map((a, i) => `
-      <div class="art-card ac-${a.color}" id="artCard_${i}" onclick="toggleArtCard(${i})">
-        <span class="art-card-icon">${a.icon}</span>
-        <div class="art-card-title">${a.title}</div>
-        <div class="art-card-desc">${a.desc}</div>
-        <span class="art-card-badge ${a.badge_style}">${a.badge}</span>
-        <div class="art-card-steps">
-          ${a.steps.map((s, si) => `<div class="art-step"><div class="art-step-num">${si+1}</div><span>${s}</span></div>`).join('')}
-          <button class="art-card-done-btn" onclick="markArtDone(event, ${i})">✅ I Made This! +20 Stars</button>
-        </div>
-      </div>`).join('');
+  // v383: Add free drawing section for all grades
+  var artPanel = document.getElementById('panel-art');
+  var existingCanvas = document.getElementById('artFreeDrawSection');
+  if (artPanel && !existingCanvas) {
+    var freeSection = document.createElement('div');
+    freeSection.id = 'artFreeDrawSection';
+    freeSection.style.cssText = 'margin-top:24px;';
+    var freeTitle = document.createElement('div');
+    freeTitle.className = 'section-title';
+    freeTitle.textContent = '🖌 Free Drawing';
+    freeSection.appendChild(freeTitle);
+    buildDrawingCanvas(freeSection);
+    artPanel.appendChild(freeSection);
   }
 
-  buildColorSwatches();
-  drawPromptIdx = Math.floor(Math.random() * artContent.drawPrompts.length);
-  showDrawPrompt();
-  updateArtStats();
+  // v381: Color Mixer for PreK/K only
+  var mixerBox = document.querySelector('.color-mixer-box');
+  var mixerTitle = document.querySelector('.section-title');
+  // Find the Color Mixer Lab section title and box specifically
+  document.querySelectorAll('.section-title').forEach(function(el) {
+    if (el.textContent.indexOf('Color Mixer') !== -1) {
+      var isYoung = (activeGrade === 'PreK' || activeGrade === 'K');
+      el.style.display = isYoung ? '' : 'none';
+      var next = el.nextElementSibling;
+      if (next && next.classList.contains('color-mixer-box')) next.style.display = isYoung ? '' : 'none';
+    }
+  });
+  if (activeGrade === 'PreK' || activeGrade === 'K') buildColorSwatches();
 
-  // Show/hide drawing prompt based on grade
+  // v381: Hide drawing prompt, art goals, and art progress stats
   var dpSection = document.getElementById('drawPromptSection');
-  var earlyGrades=['PreK','K','1','2'];
-  if (dpSection) dpSection.style.display = earlyGrades.indexOf(activeGrade)>=0 ? 'none' : '';
+  if (dpSection) dpSection.style.display = 'none';
 
-  // Drawing canvas for PreK and K (finger drawing), older grades also get it
-  var canvasSection = document.getElementById('artDrawCanvas');
-  if (!canvasSection) {
-    canvasSection = document.createElement('div');
-    canvasSection.id = 'artDrawCanvas';
-    canvasSection.style.cssText = 'margin-top:16px;';
-    var drawTitle = document.createElement('div');
-    drawTitle.className = 'section-title';
-    drawTitle.textContent = (activeGrade==='PreK'||activeGrade==='K') ? '🖌 Draw with Your Finger!' : 'Your Drawing Canvas';
-    canvasSection.appendChild(drawTitle);
-    buildDrawingCanvas(canvasSection);
-    var artTab = document.getElementById('panel-art');
-    if (artTab) artTab.appendChild(canvasSection);
-  }
-  // Letter Tracing button is already in subject cards - don't add it here again
+  // Hide art stats row
+  var artProgress = document.querySelector('.art-progress-row');
+  if (artProgress) artProgress.style.display = 'none';
+
+  // Hide art goals section
+  document.querySelectorAll('.section-title').forEach(function(el) {
+    if (el.textContent.indexOf('Art Goals') !== -1) {
+      el.style.display = 'none';
+      var next = el.nextElementSibling;
+      if (next) next.style.display = 'none';
+    }
+  });
+
+  updateArtStats();
 }
 
 // Coloring book state
@@ -4308,7 +4618,16 @@ function buildColoringBook(container) {
   ];
   activeColoringScene = 0;
   activeColoringColor = '#FF6B6B';
-  const scenes = COLORING_SCENES[activeGrade] || COLORING_SCENES['K'];
+
+  // v383: normalize activeGrade to match COLORING_SCENES keys
+  var gradeKey = activeGrade;
+  if (!COLORING_SCENES[gradeKey]) {
+    // Try numeric match (e.g. activeGrade might be '2' but key is 2, or vice versa)
+    var keys = Object.keys(COLORING_SCENES);
+    var match = keys.find(function(k){ return String(k) === String(gradeKey); });
+    gradeKey = match || 'K';
+  }
+  const scenes = COLORING_SCENES[gradeKey];
   window._currentColoringScenes = scenes;
 
   container.innerHTML = `
@@ -4342,7 +4661,20 @@ function buildColoringBook(container) {
 
   // Set up canvas drawing
   window._brushSize = 12;
-  setTimeout(()=>setupDrawCanvas(), 100);
+  // v382: use onload so large PNGs (IMG_*.PNG) are fully loaded before canvas setup
+  var coloringImgEl = document.getElementById('coloringImg');
+  if (coloringImgEl) {
+    if (coloringImgEl.complete && coloringImgEl.naturalWidth > 0) {
+      setTimeout(()=>setupDrawCanvas(), 50);
+    } else {
+      coloringImgEl.onload = function() { setupDrawCanvas(); };
+      coloringImgEl.onerror = function() { console.warn('Coloring image failed to load:', coloringImgEl.src); };
+      // Fallback in case onload already fired
+      setTimeout(()=>setupDrawCanvas(), 800);
+    }
+  } else {
+    setTimeout(()=>setupDrawCanvas(), 100);
+  }
 }
 
 function setupDrawCanvas() {
@@ -4399,19 +4731,27 @@ function clearDrawing() {
 
 function switchColoringScene(idx) {
   activeColoringScene = idx;
-  document.querySelectorAll('.coloring-scene-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
-  const scenes = window._currentColoringScenes || COLORING_SCENES['K'];
+  document.querySelectorAll('.coloring-scene-btn').forEach(function(b,i){ b.classList.toggle('active', i===idx); });
+  var scenes = window._currentColoringScenes || COLORING_SCENES['K'];
   var scene = scenes[idx];
-  // Clear canvas drawing
+  if (!scene) return;
+
+  // Clear existing canvas drawing
   var canvas = document.getElementById('drawCanvas');
-  if(canvas){ var ctx=canvas.getContext('2d'); ctx.clearRect(0,0,canvas.width,canvas.height); }
-  // Switch image
+  if (canvas) { var ctx = canvas.getContext('2d'); ctx.clearRect(0,0,canvas.width,canvas.height); }
+
+  // Switch image — use path as-is (no slash prefix, files are in repo root)
   var img = document.getElementById('coloringImg');
-  if(img && scene.img){ img.src = scene.img ? (scene.img.charAt(0)==='/'?'':'/') + scene.img : ''; }
-  // Re-setup canvas after image loads
-  if(img){ img.onload = function(){ setupDrawCanvas(); }; } else { setupDrawCanvas(); }
-  // Show prompt
-  if(scene.prompt) toast('🎨 '+scene.prompt);
+  if (img && scene.img) {
+    img.src = scene.img;
+    img.alt = scene.label || 'coloring page';
+    img.onload = function() { setupDrawCanvas(); };
+    img.onerror = function() { console.warn('Could not load:', scene.img); };
+    // Fallback if already loaded
+    if (img.complete && img.naturalWidth > 0) setupDrawCanvas();
+  }
+
+  if (scene.prompt) { if (typeof toast === 'function') toast('🎨 ' + scene.prompt); }
 }
 
 function attachColoringListeners() {
@@ -6445,7 +6785,10 @@ function gameHeader(title, emoji, colorA, colorB, ovId) {
   return '<div style="background:linear-gradient(135deg,'+colorA+','+colorB+');padding:14px 20px;color:white;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;box-shadow:0 4px 16px rgba(0,0,0,.15);">'
     +'<div style="font-size:1.4rem;">'+emoji+'</div>'
     +'<div style="font-family:Baloo 2,cursive;font-size:1.05rem;font-weight:800;letter-spacing:.3px;">'+title+'</div>'
-    +'<button data-closeov="'+ovId+'" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;font-size:1rem;line-height:1;">✕</button>'
+    +'<div style="display:flex;gap:6px;">'
+      +'<button onclick="goHomeFromOverlay()" title="Home" style="background:#FFD166;border:none;color:#5C3A00;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;font-size:.9rem;line-height:1;box-shadow:0 2px 0 rgba(0,0,0,.2);">🏠</button>'
+      +'<button data-closeov="'+ovId+'" title="Back" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;font-size:1rem;line-height:1;">✕</button>'
+    +'</div>'
     +'</div>';
 }
 
@@ -6496,7 +6839,10 @@ function gameHeader(title, emoji, colorA, colorB, ovId) {
   return '<div style="background:linear-gradient(135deg,'+colorA+','+colorB+');padding:14px 20px;color:white;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;box-shadow:0 4px 16px rgba(0,0,0,.15);">'
     +'<div style="font-size:1.4rem;">'+emoji+'</div>'
     +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.05rem;font-weight:800;letter-spacing:.3px;">'+title+'</div>'
-    +'<button onclick="document.getElementById(\''+ovId+'\').remove();" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;font-size:1rem;line-height:1;">✕</button>'
+    +'<div style="display:flex;gap:6px;">'
+      +'<button onclick="goHomeFromOverlay()" title="Home" style="background:#FFD166;border:none;color:#5C3A00;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;font-size:.9rem;line-height:1;box-shadow:0 2px 0 rgba(0,0,0,.2);">🏠</button>'
+      +'<button onclick="document.getElementById(\''+ovId+'\').remove();" title="Back" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;font-size:1rem;line-height:1;">✕</button>'
+    +'</div>'
     +'</div>';
 }
 function gameScoreBar(score, total, colorA, colorB) {
@@ -6916,7 +7262,7 @@ function openMathGame(grade) {
         var bloomy_row=document.createElement('div');
         bloomy_row.style.cssText='display:flex;align-items:flex-start;gap:10px;';
         var bloomy_img=document.createElement('img');
-        bloomy_img.src='bloom_happy.png';
+        bloomy_img.src='bloomy_wave.png';
         bloomy_img.style.cssText='width:64px;height:64px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 4px 12px rgba(0,0,0,.2));cursor:pointer;';
         bloomy_img.title='Tap Bloomy to hear the question!';
         var _qprompt=q.prompt; bloomy_img.onclick=function(){ bloomy_speak(_qprompt); };
@@ -7492,7 +7838,7 @@ function openScienceGame(grade) {
     ov.innerHTML = gameHeader('Science Sort','🔬',CA,CB,'sciGameOv')
       +'<div style="flex:1;overflow-y:auto;padding:16px;max-width:500px;margin:0 auto;width:100%;">'
       +'<div style="background:white;border-radius:18px;padding:14px 18px;margin-bottom:14px;text-align:left;box-shadow:0 4px 14px rgba(14,165,233,.15);">'
-      +(['PreK','K','1'].indexOf(grade)>=0?'<img src="bloom_happy.png" style="width:44px;height:44px;object-fit:contain;float:right;margin:0 0 4px 8px;" />':'')
+      +(['PreK','K','1'].indexOf(grade)>=0?'<img src="bloomy_wave.png" style="width:44px;height:44px;object-fit:contain;float:right;margin:0 0 4px 8px;" />':'')
       +'<div style="font-family:\'Baloo 2\',cursine;font-size:1.05rem;font-weight:800;color:#0EA5E9;">'+r.title+'</div>'
       +'<div style="font-size:.85rem;color:#888;margin-top:2px;">Tap each item to sort it!</div>'
       +'</div>'
@@ -7825,6 +8171,557 @@ function openColorsGame(grade) {
 
 
 // ══════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+//  BLOOM'S READING PATH (v373)
+// ══════════════════════════════════════════════════════
+// READING_LESSONS — auto-generated from CSV
+// Each lesson has: id, title, script, options (array), correct (index), audioCue
+const READING_LESSONS = [
+  {id:1,  title:"Rhyming",            script:"Today we listen for words that sound the same at the end. Cat and hat rhyme. Dog and log rhyme. Do cake and lake rhyme?", options:["Yes!","No"], correct:0, audioCue:"rhyming examples"},
+  {id:2,  title:"Rhyming Again",      script:"Sun and run rhyme. Car and star rhyme. Do pig and pen rhyme?", options:["Yes","No, they don't"], correct:1, audioCue:"non-rhyming examples"},
+  {id:3,  title:"Counting Syllables", script:"Today we clap the parts in words. Ba-na-na has 3 syllables. Ap-ple has 2 syllables. How many in dog?", options:["1","2","3"], correct:0, audioCue:"clapping sounds"},
+  {id:4,  title:"More Syllables",     script:"Mom-my has 2 syllables. Pen-cil has 2 syllables. How many in cup?", options:["1","2","3"], correct:0, audioCue:"syllable clapping"},
+  {id:5,  title:"Beginning Sounds",   script:"Mouse starts with the m sound. Sun starts with the s sound. Ball starts with the b sound. Which word starts with m?", options:["Mouse","Sun","Ball"], correct:0, audioCue:"m sound"},
+  {id:6,  title:"More Beginnings",    script:"Cat, sun, map. Dog, fish, mouse. Which word starts with the f sound?", options:["Dog","Fish","Mouse"], correct:1, audioCue:"f sound"},
+  {id:7,  title:"Letter Names",       script:"This is M. Say M. This is S. Say S. This is T. Say T. Which letter is shown?", options:["M","S","T"], correct:0, audioCue:"letter names"},
+  {id:8,  title:"Pick the Letter",    script:"Which letter is M?", options:["A","M"], correct:1, audioCue:"letter images"},
+  {id:9,  title:"Letter Sounds",      script:"M says m. S says s. T says t. Which letter says m?", options:["M","S","T"], correct:0, audioCue:"letter sounds"},
+  {id:10, title:"Vowel Sounds",       script:"A says ah. B says buh. C says kuh. Which letter says buh?", options:["A","B","C"], correct:1, audioCue:"a b sounds"},
+  {id:11, title:"Rhyme Match",        script:"Which word rhymes with cat?", options:["Hat","Dog"], correct:0, audioCue:"rhyming pairs"},
+  {id:12, title:"Syllable Clap",      script:"Cup-cake has 2 syllables. Rain-bow has 2 syllables. How many claps for ta-ble?", options:["1","2","3"], correct:1, audioCue:"clapping"},
+  {id:13, title:"First Sound Match",  script:"Which word starts with the s sound?", options:["Sun","Cat"], correct:0, audioCue:"s m sounds"},
+  {id:14, title:"Picture Words",      script:"This is a dog. This is a sun. Which one is a dog?", options:["🐕","☀️"], correct:0, audioCue:"dog sun"},
+  {id:15, title:"More Picture Words", script:"This is a hat. Drink from a cup. Which one is a hat?", options:["🎩","☕"], correct:0, audioCue:"hat cup"},
+  {id:16, title:"Letter Review",      script:"M says m. S says s. T says t. Which letter says t?", options:["M","S","T"], correct:2, audioCue:"all sounds"},
+  {id:17, title:"Sound Review",       script:"Mouse starts with m. Fish starts with f. Sun starts with s. Which starts with s?", options:["Mouse","Fish","Sun"], correct:2, audioCue:"m f s"},
+  {id:18, title:"Mixed Review",       script:"Does cat rhyme with hat?", options:["Yes!","No"], correct:0, audioCue:"mixed examples"},
+  {id:19, title:"More Mixed Review",  script:"How many syllables in ba-na-na?", options:["1","2","3"], correct:2, audioCue:"banana clapping"},
+  {id:20, title:"PreK Celebration!",  script:"You learned rhyming, syllables, sounds, and letters! Tap to celebrate!", options:["🎉 Yay!"], correct:0, audioCue:"celebration"},
+  {id:21, title:"Tap the Letter",     script:"Which letter says m?", options:["M","S"], correct:0, audioCue:"letter sounds"},
+  {id:22, title:"Blending 2 Sounds",  script:"The sounds m and a together say ma. What does m and o say?", options:["Mo","No","So"], correct:0, audioCue:"blending"},
+  {id:23, title:"Blending 3 Sounds",  script:"c-a-t says cat. d-o-g says dog. What does h-a-t say?", options:["Hat","Hot","Hit"], correct:0, audioCue:"CVC blending"},
+  {id:24, title:"CVC Words",          script:"Read this word: m-a-t.", options:["Mat","Map","Mad"], correct:0, audioCue:"CVC words"},
+  {id:25, title:"Sight Words",        script:"This word is 'the'. Tap 'the'.", options:["the","and","is"], correct:0, audioCue:"sight words"},
+  {id:26, title:"Digraphs sh / ch",   script:"Sh says shh. Ch says ch. Ship starts with sh. Which starts with sh?", options:["Ship","Chin","Cat"], correct:0, audioCue:"digraphs"},
+  {id:27, title:"Consonant Blends",   script:"The letters s and t together say st. Read this word: stop.", options:["Stop","Step","Star"], correct:0, audioCue:"blends"},
+  {id:28, title:"Magic E",            script:"Magic e makes the vowel say its name. Read this word: bike.", options:["Bike","Bik","Big"], correct:0, audioCue:"magic e"},
+  {id:29, title:"Vowel Teams",        script:"Ai says ay. Read this word: rain.", options:["Rain","Ran","Run"], correct:0, audioCue:"vowel teams"},
+  {id:30, title:"Plurals",            script:"Add s to make more than one. One dog, two ___?", options:["Dogs","Doggy","Dogged"], correct:0, audioCue:"endings"},
+  {id:31, title:"Big Words",          script:"Pen-cil has 2 parts. Ta-ble has 2 parts. How many parts in bas-ket-ball?", options:["2","3","4"], correct:1, audioCue:"syllable break"},
+  {id:32, title:"What Words Mean",    script:"Brave means not afraid. Sam was brave. What does brave mean?", options:["Not afraid","Tired","Hungry"], correct:0, audioCue:"sentence"},
+  {id:33, title:"Read Faster",        script:"Read this fast: The cat sat. What did the cat do?", options:["Sat","Ran","Jumped"], correct:0, audioCue:"repeated reading"},
+  {id:34, title:"Main Idea",          script:"Birds fly. Fish swim. Dogs run. What is this about?", options:["Animals move","Food","Weather"], correct:0, audioCue:"passage"},
+  {id:35, title:"Story Order",        script:"First a girl wakes up. Then she eats breakfast. Then what?", options:["Goes to school","Goes to bed","Sees a movie"], correct:0, audioCue:"sequence"},
+  {id:36, title:"Reading Faster",     script:"Max had a red ball. He kicked it far over the fence. Whose ball was it?", options:["Max's","Sam's","Mom's"], correct:0, audioCue:"fluency passage"},
+  {id:37, title:"Finding Main Idea",  script:"Birds fly. Fish swim. Dogs run. Animals move in different ways. What is the main idea?", options:["Animals move differently","Birds are best","Fish swim fast"], correct:0, audioCue:"informational"},
+  {id:38, title:"Why Did They?",      script:"Sara smiled big. Her eyes were wet. She clapped her hands. Why was she happy?", options:["Good news","She was tired","She was hungry"], correct:0, audioCue:"inference passage"},
+  {id:39, title:"How Text is Built",  script:"A title, then facts, then more facts. What kind of writing is this?", options:["Description","A story","A poem"], correct:0, audioCue:"nonfiction"},
+  {id:40, title:"What's the Lesson?", script:"A boy shared his toy. His friend shared back. They played all day. What does the story teach?", options:["Sharing is good","Toys break","Friends fight"], correct:0, audioCue:"theme passage"},
+  {id:41, title:"Magic E Review",     script:"Magic e makes the vowel long. Read this word: name.", options:["Name","Nam","Nan"], correct:0, audioCue:"magic e review"},
+  {id:42, title:"Digraph Review",     script:"Sh, ch, th, wh. Which word starts with th?", options:["Thin","Ship","When"], correct:0, audioCue:"digraph review"},
+  {id:43, title:"Blends Review",      script:"St, bl, cr, fl. Read this word: clap.", options:["Clap","Cap","Cup"], correct:0, audioCue:"blends review"},
+  {id:44, title:"R-Controlled",       script:"Ar says ar. Er says er. Read this word: car.", options:["Car","Care","Can"], correct:0, audioCue:"r-controlled"},
+  {id:45, title:"Diphthongs",         script:"Oi says oy. Read this word: coin.", options:["Coin","Con","Cone"], correct:0, audioCue:"diphthongs"},
+  {id:46, title:"Soft C and G",       script:"C before e says s. G before e says j. Read this word: cent.", options:["Cent","Cant","Can"], correct:0, audioCue:"soft c g"},
+  {id:47, title:"Compound Words",     script:"Sun + light = sunlight. What does foot + ball make?", options:["Football","Footing","Feet"], correct:0, audioCue:"compounds"},
+  {id:48, title:"Same Meaning",       script:"Happy means glad. Big means large. What word means the same as fast?", options:["Quick","Slow","Sad"], correct:0, audioCue:"synonyms"},
+  {id:49, title:"Opposites",          script:"Hot is opposite of cold. Up is opposite of down. What's opposite of big?", options:["Small","Tall","Fast"], correct:0, audioCue:"antonyms"},
+  {id:50, title:"You Did It!",        script:"You learned blends, digraphs, long vowels, syllables, and fluency. You can read! Tap to celebrate!", options:["🎉 I did it!"], correct:0, audioCue:"celebration"}
+];
+
+// ══════════════════════════════════════════════════════
+//  BLOOM'S READING PATH — sequential lesson player
+//  v373 — adds 50-lesson reading curriculum (PreK → G1)
+// ══════════════════════════════════════════════════════
+
+function _readingPathProgress() {
+  var key = 'bloom_reading_path_' + (activeChild ? activeChild.id : 'guest');
+  try { return JSON.parse(localStorage.getItem(key) || '{"completed":[]}'); }
+  catch(e) { return {completed:[]}; }
+}
+function _readingPathSave(state) {
+  var key = 'bloom_reading_path_' + (activeChild ? activeChild.id : 'guest');
+  try { localStorage.setItem(key, JSON.stringify(state)); } catch(e) {}
+}
+function _readingPathSpeak(text) {
+  try {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(text);
+    u.rate = 0.9; u.pitch = 1.05; u.volume = 1;
+    var voices = window.speechSynthesis.getVoices();
+    var preferred = voices.find(function(v){ return /female|samantha|karen|moira|tessa/i.test(v.name); });
+    if (preferred) u.voice = preferred;
+    window.speechSynthesis.speak(u);
+  } catch(e) {}
+}
+
+// ══════════════════════════════════════════════════════
+//  v379 MINDFUL STORIES — guided meditations for kids
+//  4 scripts: Worry-Balloon, Pause Button, Sensory Scavenger, Energy Shake-Out
+//  TTS by default, mute toggle for silent reading, back+home buttons
+// ══════════════════════════════════════════════════════
+var MINDFUL_STORIES = [
+  {
+    id: 'worry_balloon',
+    title: 'The Worry-Balloon Release',
+    duration: '5–7 min',
+    icon: '🎈',
+    color: '#8B6FE8',
+    intro: 'A gentle visualization to release a worry or frustration.',
+    body: "Find a comfortable spot. Let your shoulders drop away from your ears. Close your eyes, or find a soft spot on the floor to look at. Imagine you are holding a bright, colorful balloon. Whatever color you love the most, see it clearly in your mind. Now, think of one thing that is bothering you today — maybe a frustration or a worry. You don't need to change it; just acknowledge it. Gently place that worry inside your balloon. Tie a soft knot at the end. Now, take a deep breath in through your nose, filling your lungs, and as you breathe out, imagine you are letting go of the string. Watch that balloon drift up, up, and away. It's getting smaller. Higher. It's moving past the clouds. Now, look back at your hands — they are light and free. Let's take one more big breath together, feeling how light your body is. You are ready for the rest of your day."
+  },
+  {
+    id: 'pause_button',
+    title: 'The Pause Button',
+    duration: '5 min',
+    icon: '⏸️',
+    color: '#FF6B6B',
+    intro: 'For when you feel frustrated, angry, or over-excited.',
+    body: "Sit up tall, but keep your muscles relaxed. Imagine you have a special button right in the center of your chest. This is your Pause button. It's the same color as your favorite fruit. When we are feeling big feelings, our brain is moving super fast. Let's slow it down. On the count of three, mentally press that button. One… two… three… Click! Everything stops. The noise in your head goes quiet. Now, breathe in through your nose for four seconds — one, two, three, four. Hold it for just a second. Now, breathe out through your mouth like you're blowing out a candle — whoosh. Do it again. Press that button. Click. In through your nose… and out. You are the boss of your feelings. You just pressed pause. You are calm, you are steady, and you are ready to try again."
+  },
+  {
+    id: 'sensory_scavenger',
+    title: 'The Sensory Scavenger',
+    duration: '6 min',
+    icon: '🔍',
+    color: '#5ECDA0',
+    intro: 'For when you feel distracted, anxious, or need to refocus.',
+    body: "Let's take a little trip without moving our feet. Look around the room with the eyes of a detective. You are looking for very specific things. First, find three things you can see that are the color blue. Look closely. Maybe it's a book, a shirt, or a line on the wall. Got them? Good. Now, listen carefully. Find two things you can hear. Maybe the hum of the lights, a car outside, or even the sound of your own breathing. Listen past the quiet. What do you hear? Finally, find one thing you can feel. Maybe it's the fabric of your pants against your legs, the hard floor under your feet, or the cool air on your skin. Touch it. Feel how solid it is. You have just used your senses to bring your brain back to right now. You aren't worried about what happened yesterday, and you aren't rushing to what's happening later. You are right here. And right here is a safe place to be."
+  },
+  {
+    id: 'energy_shake',
+    title: 'The Energy Shake-Out',
+    duration: '5 min',
+    icon: '✨',
+    color: '#FFD166',
+    intro: 'For when you have been sitting too long and feel restless.',
+    body: "Stand up, but stay in your own space. If you feel like your body is full of restless energy, that's okay — we're going to use it. Start with your right hand. Shake it out, like you're shaking off a little bit of water. Now your left hand. Shake them both together. Now your right leg — give it a wiggle! Now your left leg. Are you ready? On the count of three, we are going to shake our entire body. One, two, three — shake! Shake out the wiggles, shake out the restlessness, shake out the I-don't-want-to-do-this feeling. Keep shaking! And… freeze! Like a statue. Feel that tingle in your fingers? That's your energy. Now, take a big breath, reach your arms up to the ceiling, and as you bring them down, let all that extra energy melt into the floor. You've moved the wiggles out. Your body is still, your mind is clear, and you're ready to focus."
+  }
+];
+
+var _mindfulMutedKey = 'bloom_mindful_muted';
+function _mindfulIsMuted() {
+  try { return localStorage.getItem(_mindfulMutedKey) === '1'; } catch(e) { return false; }
+}
+function _mindfulSetMuted(v) {
+  try { localStorage.setItem(_mindfulMutedKey, v ? '1' : '0'); } catch(e) {}
+}
+function _mindfulSpeak(text) {
+  if (_mindfulIsMuted()) return;
+  try {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(text);
+    u.rate = 0.78; u.pitch = 1.0; u.volume = 1;
+    var voices = window.speechSynthesis.getVoices();
+    var preferred = voices.find(function(v){ return /female|samantha|karen|moira|tessa/i.test(v.name); });
+    if (preferred) u.voice = preferred;
+    window.speechSynthesis.speak(u);
+  } catch(e) {}
+}
+function _mindfulStop() {
+  try { window.speechSynthesis && window.speechSynthesis.cancel(); } catch(e) {}
+}
+
+function openMindfulStories() {
+  _mindfulStop();
+  var existing = document.getElementById('mindfulStoriesOverlay');
+  if (existing) existing.remove();
+
+  var ov = document.createElement('div');
+  ov.id = 'mindfulStoriesOverlay';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#0F0A1F 0%,#1A1A2E 50%,#16213E 100%);display:flex;flex-direction:column;font-family:Nunito,sans-serif;overflow-y:auto;color:white;';
+
+  var muted = _mindfulIsMuted();
+
+  ov.innerHTML =
+    '<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 14px 8px;">'
+      +'<div style="display:flex;gap:10px;">'
+        +'<button onclick="closeMindfulStories()" title="Back" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;font-size:18px;color:white;box-shadow:0 3px 0 rgba(0,0,0,.4),inset 0 -2px 0 rgba(0,0,0,.06);">←</button>'
+        +'<button onclick="goHomeFromOverlay()" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.3),inset 0 -2px 0 rgba(0,0,0,.06);">🏠</button>'
+      +'</div>'
+      +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1.05rem;color:white;">🌙 Mindful Stories</div>'
+      +'<button id="mindfulMuteBtn" onclick="toggleMindfulMute()" title="Mute/unmute narration" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;font-size:18px;color:white;box-shadow:0 3px 0 rgba(0,0,0,.4);">'+(muted?'🔇':'🔊')+'</button>'
+    +'</div>'
+
+    +'<div style="text-align:center;padding:6px 24px 22px;color:rgba(255,255,255,.75);">'
+      +'<div style="font-family:Baloo 2,cursive;font-size:1.5rem;font-weight:800;color:white;margin-bottom:4px;">Take a quiet moment</div>'
+      +'<div style="font-size:.9rem;">Pick a story. I will read it to you while you breathe.</div>'
+    +'</div>'
+
+    +'<div style="padding:0 18px 32px;display:grid;gap:14px;">'
+      +MINDFUL_STORIES.map(function(s) {
+        return '<div onclick="_playMindfulStory(\''+s.id+'\')" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:18px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:transform .15s;" '
+          +'onmouseover="this.style.transform=\'translateY(-2px)\';" onmouseout="this.style.transform=\'translateY(0)\';">'
+          +'<div style="width:60px;height:60px;border-radius:18px;background:'+s.color+';display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;box-shadow:inset 0 -3px 0 rgba(0,0,0,.15);">'+s.icon+'</div>'
+          +'<div style="flex:1;">'
+            +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1.1rem;color:white;margin-bottom:2px;">'+s.title+'</div>'
+            +'<div style="font-size:.78rem;color:rgba(255,255,255,.6);margin-bottom:4px;">'+s.duration+'</div>'
+            +'<div style="font-size:.82rem;color:rgba(255,255,255,.85);line-height:1.4;">'+s.intro+'</div>'
+          +'</div>'
+          +'<div style="font-size:22px;color:rgba(255,255,255,.7);">▶</div>'
+        +'</div>';
+      }).join('')
+    +'</div>';
+
+  document.body.appendChild(ov);
+}
+
+function _playMindfulStory(id) {
+  var story = MINDFUL_STORIES.find(function(s){ return s.id === id; });
+  if (!story) return;
+  _mindfulStop();
+
+  var ov = document.getElementById('mindfulStoriesOverlay');
+  if (!ov) return;
+  var muted = _mindfulIsMuted();
+
+  ov.innerHTML =
+    '<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 14px 8px;">'
+      +'<div style="display:flex;gap:10px;">'
+        +'<button onclick="openMindfulStories()" title="Back to stories" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;font-size:18px;color:white;box-shadow:0 3px 0 rgba(0,0,0,.4);">←</button>'
+        +'<button onclick="goHomeFromOverlay()" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.3);">🏠</button>'
+      +'</div>'
+      +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1.05rem;color:white;text-align:center;flex:1;padding:0 8px;">'+story.icon+' '+story.title+'</div>'
+      +'<button onclick="toggleMindfulMute(true)" title="Mute/unmute" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;font-size:18px;color:white;box-shadow:0 3px 0 rgba(0,0,0,.4);" id="mindfulMuteBtn2">'+(muted?'🔇':'🔊')+'</button>'
+    +'</div>'
+
+    +'<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:24px 24px 60px;text-align:center;">'
+      +'<div id="mindfulPulse" style="width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,'+story.color+',transparent 70%);margin:20px 0 28px;animation:mindfulBreath 6s ease-in-out infinite;display:flex;align-items:center;justify-content:center;font-size:64px;">'+story.icon+'</div>'
+
+      +'<div style="font-family:Baloo 2,cursive;font-size:1.4rem;font-weight:800;color:white;margin-bottom:8px;">'+story.title+'</div>'
+      +'<div style="font-size:.85rem;color:rgba(255,255,255,.6);margin-bottom:24px;">'+story.duration+'</div>'
+
+      +'<div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:22px 22px;max-width:600px;line-height:1.85;font-size:1rem;color:rgba(255,255,255,.92);text-align:left;">'
+        +story.body
+      +'</div>'
+
+      +'<div style="display:flex;gap:12px;margin-top:22px;flex-wrap:wrap;justify-content:center;">'
+        +'<button onclick="_replayMindfulStory(\''+id+'\')" style="background:'+story.color+';border:none;border-radius:999px;padding:14px 28px;font-family:Nunito,sans-serif;font-weight:800;font-size:.95rem;color:white;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.3),inset 0 -2px 0 rgba(0,0,0,.1);">▶ Read Again</button>'
+        +'<button onclick="openMindfulStories()" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:14px 28px;font-family:Nunito,sans-serif;font-weight:800;font-size:.95rem;color:white;cursor:pointer;">Pick another</button>'
+      +'</div>'
+    +'</div>'
+
+    +'<style>@keyframes mindfulBreath { 0%,100%{transform:scale(.85);opacity:.6;} 50%{transform:scale(1.05);opacity:1;} }</style>';
+
+  // Start TTS narration after a short pause
+  setTimeout(function() { _mindfulSpeak(story.body); }, 600);
+}
+
+function _replayMindfulStory(id) {
+  var story = MINDFUL_STORIES.find(function(s){ return s.id === id; });
+  if (story) _mindfulSpeak(story.body);
+}
+
+function toggleMindfulMute(replayCurrent) {
+  var nowMuted = !_mindfulIsMuted();
+  _mindfulSetMuted(nowMuted);
+  // Update both possible mute buttons
+  var b1 = document.getElementById('mindfulMuteBtn');
+  var b2 = document.getElementById('mindfulMuteBtn2');
+  if (b1) b1.textContent = nowMuted ? '🔇' : '🔊';
+  if (b2) b2.textContent = nowMuted ? '🔇' : '🔊';
+  if (nowMuted) {
+    _mindfulStop();
+  }
+}
+
+function closeMindfulStories() {
+  _mindfulStop();
+  var ov = document.getElementById('mindfulStoriesOverlay');
+  if (ov) ov.remove();
+}
+
+// v379: Universal "go home from overlay" — closes any open overlay & returns to home
+function goHomeFromOverlay() {
+  _mindfulStop();
+  // Remove any open overlay
+  ['mindfulStoriesOverlay','readingPathOverlay'].forEach(function(id) {
+    var el = document.getElementById(id); if (el) el.remove();
+  });
+  // Find any other dynamic overlay (z-index >= 9999) and remove
+  document.querySelectorAll('div[style*="position:fixed"][style*="z-index:9999"]').forEach(function(el) {
+    if (el.id !== 'mindfulStoriesOverlay') el.remove();
+  });
+  // Switch back to academics tab (the home)
+  if (typeof switchTab === 'function') switchTab('academics');
+  // Scroll to top
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+window.openMindfulStories = openMindfulStories;
+window.closeMindfulStories = closeMindfulStories;
+window._playMindfulStory = _playMindfulStory;
+window._replayMindfulStory = _replayMindfulStory;
+window.toggleMindfulMute = toggleMindfulMute;
+window.goHomeFromOverlay = goHomeFromOverlay;
+
+function openReadingPath() {
+  var state = _readingPathProgress();
+  var nextId = 1;
+  for (var i = 0; i < READING_LESSONS.length; i++) {
+    if (state.completed.indexOf(READING_LESSONS[i].id) === -1) {
+      nextId = READING_LESSONS[i].id;
+      break;
+    }
+    if (i === READING_LESSONS.length - 1) nextId = READING_LESSONS[i].id;
+  }
+  _renderReadingPathHome(nextId, state);
+}
+
+function _renderReadingPathHome(nextId, state) {
+  var done = state.completed.length;
+  var total = READING_LESSONS.length;
+  var pct = Math.round((done/total)*100);
+
+  var ov = document.createElement('div');
+  ov.id = 'readingPathOverlay';
+  ov.style.cssText = 'position:fixed;inset:0;background:linear-gradient(180deg,#E8F5EE,#F4F0FB);z-index:9999;overflow-y:auto;font-family:Nunito,sans-serif;';
+  ov.innerHTML =
+    '<div style="max-width:600px;margin:0 auto;padding:20px 18px 80px;">'
+    +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">'
+      +'<button onclick="document.getElementById(\'readingPathOverlay\').remove();window.speechSynthesis&&window.speechSynthesis.cancel();" style="background:white;border:none;width:40px;height:40px;border-radius:50%;font-size:20px;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.1);">←</button>'
+      +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1.1rem;color:#2D7A5C;">🌱 Reading Path</div>'
+      +'<div style="width:40px;"></div>'
+    +'</div>'
+
+    +'<div style="background:white;border-radius:22px;padding:18px;margin-bottom:18px;box-shadow:0 4px 0 rgba(94,205,160,.3);">'
+      +'<div style="font-family:Baloo 2,cursive;font-size:1.3rem;font-weight:800;color:#2D1B3D;margin-bottom:6px;">Hi friend! 🌱</div>'
+      +'<div style="color:#6B5B73;font-weight:600;margin-bottom:12px;">Lesson '+done+' of '+total+' done</div>'
+      +'<div style="background:#E8E2F2;height:10px;border-radius:6px;overflow:hidden;">'
+        +'<div style="background:linear-gradient(90deg,#5ECDA0,#4ECDC4);height:100%;width:'+pct+'%;border-radius:6px;transition:width .4s;"></div>'
+      +'</div>'
+    +'</div>'
+
+    +(done < total
+      ? '<button onclick="_readingPathStart('+nextId+')" style="width:100%;background:#5ECDA0;border:none;border-radius:22px;padding:20px 24px;color:white;font-family:Baloo 2,cursive;font-size:1.4rem;font-weight:800;cursor:pointer;box-shadow:0 6px 0 #3FA77F;position:relative;overflow:hidden;margin-bottom:24px;">'
+        +'<div style="position:absolute;top:0;left:0;right:0;height:50%;background:linear-gradient(180deg,rgba(255,255,255,.30),transparent);border-radius:22px 22px 50% 50%;pointer-events:none;"></div>'
+        +'<span style="position:relative;">▶ Start Lesson '+nextId+'</span>'
+      +'</button>'
+      : '<div style="background:linear-gradient(135deg,#FFD166,#FF9F43);border-radius:22px;padding:24px;text-align:center;color:white;margin-bottom:24px;box-shadow:0 6px 0 #C77A1A;">'
+        +'<div style="font-size:48px;">🏆</div>'
+        +'<div style="font-family:Baloo 2,cursive;font-size:1.4rem;font-weight:800;">You finished all 50 lessons!</div>'
+      +'</div>')
+
+    +'<div style="font-family:Baloo 2,cursive;font-weight:800;color:#2D1B3D;margin:0 0 12px 4px;">All Lessons</div>'
+    +'<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;">'
+      +READING_LESSONS.map(function(L){
+          var isDone = state.completed.indexOf(L.id) !== -1;
+          var isNext = L.id === nextId && !isDone;
+          var isLocked = !isDone && !isNext;
+          var bg = isDone ? '#5ECDA0' : (isNext ? '#FFD166' : '#E8E2F2');
+          var txt = isDone ? 'white' : (isNext ? '#5C3A00' : '#9B85B5');
+          var click = isLocked ? '' : 'onclick="_readingPathStart('+L.id+')"';
+          var icon = isDone ? '✓' : (isLocked ? '🔒' : L.id);
+          return '<div '+click+' style="aspect-ratio:1;background:'+bg+';border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:Baloo 2,cursive;font-weight:800;color:'+txt+';cursor:'+(isLocked?'default':'pointer')+';box-shadow:0 3px 0 rgba(0,0,0,.1);font-size:'+(isDone||isLocked?'18px':'1rem')+';">'+icon+'</div>';
+      }).join('')
+    +'</div>'
+    +'</div>';
+  document.body.appendChild(ov);
+}
+
+function _readingPathStart(id) {
+  var lesson = READING_LESSONS.find(function(L){ return L.id === id; });
+  if (!lesson) return;
+  var existing = document.getElementById('readingPathOverlay');
+  if (existing) existing.remove();
+
+  var ov = document.createElement('div');
+  ov.id = 'readingPathOverlay';
+  ov.style.cssText = 'position:fixed;inset:0;background:linear-gradient(180deg,#E8F5EE,#F4F0FB);z-index:9999;overflow-y:auto;font-family:Nunito,sans-serif;';
+
+  var optsHtml = lesson.options.map(function(opt, idx){
+    return '<button onclick="_readingPathAnswer('+id+','+idx+',this)" style="width:100%;background:white;border:2.5px solid #E8E2F2;border-radius:18px;padding:18px;font-family:Baloo 2,cursive;font-size:1.2rem;font-weight:800;color:#2D1B3D;cursor:pointer;margin-bottom:10px;box-shadow:0 3px 0 rgba(0,0,0,.06);transition:all .15s;">'+opt+'</button>';
+  }).join('');
+
+  ov.innerHTML =
+    '<div style="max-width:600px;margin:0 auto;padding:20px 18px 80px;">'
+    +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">'
+      +'<button onclick="openReadingPath()" style="background:white;border:none;width:40px;height:40px;border-radius:50%;font-size:20px;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.1);">←</button>'
+      +'<div style="font-family:Baloo 2,cursive;font-weight:800;color:#2D7A5C;">Lesson '+id+' / '+READING_LESSONS.length+'</div>'
+      +'<div style="width:40px;"></div>'
+    +'</div>'
+
+    +'<div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:18px;">'
+      +'<div style="width:96px;flex-shrink:0;display:flex;align-items:flex-end;justify-content:center;"><img src="bloomy_wave.png" style="width:96px;height:auto;object-fit:contain;filter:drop-shadow(0 6px 4px rgba(0,0,0,.15));" alt="Bloom"></div>'
+      +'<div style="flex:1;background:white;border-radius:18px;padding:14px;margin-top:8px;box-shadow:0 3px 0 rgba(0,0,0,.06);">'
+        +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1.1rem;color:#2D1B3D;margin-bottom:6px;">'+lesson.title+'</div>'
+        +'<div style="color:#6B5B73;font-weight:600;line-height:1.5;">'+lesson.script+'</div>'
+      +'</div>'
+    +'</div>'
+
+    +'<button onclick="_readingPathSpeakAgain('+id+')" style="width:100%;background:#FFD166;border:none;border-radius:18px;padding:14px;font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;color:#5C3A00;cursor:pointer;box-shadow:0 4px 0 #E0A82E;margin-bottom:20px;">🔊 Listen Again</button>'
+
+    +'<div id="rpOptions">'+optsHtml+'</div>'
+    +'<div id="rpFeedback" style="margin-top:14px;"></div>'
+
+    +'</div>';
+  document.body.appendChild(ov);
+
+  setTimeout(function(){ _readingPathSpeak(lesson.script); }, 300);
+}
+
+function _readingPathSpeakAgain(id) {
+  var lesson = READING_LESSONS.find(function(L){ return L.id === id; });
+  if (lesson) _readingPathSpeak(lesson.script);
+}
+
+function _readingPathAnswer(id, idx, btn) {
+  var lesson = READING_LESSONS.find(function(L){ return L.id === id; });
+  if (!lesson) return;
+  var fb = document.getElementById('rpFeedback');
+  if (idx === lesson.correct) {
+    btn.style.background = '#5ECDA0';
+    btn.style.color = 'white';
+    btn.style.borderColor = '#3FA77F';
+    if (fb) fb.innerHTML = '<div style="background:#5ECDA0;color:white;border-radius:18px;padding:14px;text-align:center;font-family:Baloo 2,cursive;font-weight:800;box-shadow:0 4px 0 #3FA77F;">⭐ Great job! +5 stars</div>';
+    _readingPathSpeak("Great job!");
+    var state = _readingPathProgress();
+    if (state.completed.indexOf(id) === -1) state.completed.push(id);
+    _readingPathSave(state);
+    try { if (typeof updateStars === 'function') updateStars(5); } catch(e) {}
+    setTimeout(function(){
+      if (id < READING_LESSONS.length) {
+        _readingPathStart(id + 1);
+      } else {
+        openReadingPath();
+      }
+    }, 1800);
+  } else {
+    btn.style.background = '#FFE4DC';
+    btn.style.borderColor = '#FF6B6B';
+    if (fb) fb.innerHTML = '<div style="background:#FFE4DC;color:#C73E3E;border-radius:18px;padding:14px;text-align:center;font-family:Baloo 2,cursive;font-weight:800;">Almost! Try again 💚</div>';
+    _readingPathSpeak("Try again");
+    setTimeout(function(){ if (fb) fb.innerHTML = ''; }, 1500);
+  }
+}
+window.openReadingPath = openReadingPath;
+
+// v382: updateStars() was missing — called by Reading Path + other features
+// Wraps the existing sb.rpc('add_stars') pattern used everywhere else
+function updateStars(amount) {
+  amount = parseInt(amount) || 5;
+  try {
+    if (typeof sessionData !== 'undefined') {
+      sessionData.stars = (sessionData.stars || 0) + amount;
+      var el = document.getElementById('statStars');
+      if (el) el.textContent = sessionData.stars;
+    }
+    if (typeof activeChild !== 'undefined' && activeChild && typeof sb !== 'undefined') {
+      sb.rpc('add_stars', {p_child_id: activeChild.id, p_amount: amount}).catch(function(){});
+    }
+    if (amount > 0) {
+      if (typeof toast === 'function') toast('+' + amount + ' Stars! ⭐');
+    }
+  } catch(e) {}
+}
+window.updateStars = updateStars;
+
+// v382: alias so updateStars(5) works even before full init
+if (typeof window.updateStars === 'undefined') window.updateStars = function(n) {};
+function v3StartTodaysActivity() {
+  if (typeof openReadingPath === 'function') {
+    openReadingPath();
+  } else if (typeof bloomiDance === 'function') {
+    bloomiDance();
+  }
+}
+window.v3StartTodaysActivity = v3StartTodaysActivity;
+
+// ══════════════════════════════════════════════════════
+//  v380: GLOBAL FLOATING HOME BUTTON — injected on every overlay
+//  Uses MutationObserver so it works on ALL existing + future overlays
+//  without patching each function individually
+// ══════════════════════════════════════════════════════
+(function() {
+  function _injectHomeBtn(node) {
+    if (!node || node.nodeType !== 1) return;
+    var css = node.style && node.style.cssText || '';
+    var isFixed = css.indexOf('position:fixed') !== -1;
+    var zMatch = css.match(/z-index:(\d+)/);
+    var highZ = zMatch && parseInt(zMatch[1]) >= 9000;
+    if (!isFixed || !highZ) return;
+    if (node.querySelector && node.querySelector('[data-global-home]')) return;
+    if (node.id === 'introVideoOv') return; // skip intro video
+    var btn = document.createElement('button');
+    btn.setAttribute('data-global-home', '1');
+    btn.innerHTML = '&#127968;';
+    btn.title = 'Go Home';
+    btn.style.cssText = 'position:absolute;top:14px;right:14px;z-index:99999;width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.3),inset 0 -2px 0 rgba(0,0,0,.1);display:flex;align-items:center;justify-content:center;line-height:1;';
+    btn.onclick = function(e) {
+      e.stopPropagation();
+      if (typeof goHomeFromOverlay === 'function') goHomeFromOverlay();
+    };
+    node.appendChild(btn);
+  }
+  var _obs = new MutationObserver(function(ms) {
+    ms.forEach(function(m) { m.addedNodes.forEach(_injectHomeBtn); });
+  });
+  function _startObs() {
+    if (document.body) _obs.observe(document.body, {childList:true, subtree:false});
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', _startObs);
+  } else {
+    _startObs();
+  }
+})();
+
+// v377: Subject section buttons
+function v3OpenReadingSubject() {
+  // Reading subject -> Reading Path (sequential curriculum)
+  if (typeof openReadingPath === 'function') openReadingPath();
+}
+function v3OpenMathSubject() {
+  // Math subject -> Math game for the active grade
+  if (typeof openMathGame === 'function' && typeof activeGrade !== 'undefined') {
+    openMathGame(activeGrade);
+  }
+}
+window.v3OpenReadingSubject = v3OpenReadingSubject;
+window.v3OpenMathSubject = v3OpenMathSubject;
+
+// v378: Mindful Moments tile router
+function v3OpenMindful(which) {
+  // Switch to yoga panel (this is where all mindfulness features live)
+  if (typeof switchTab === 'function') {
+    switchTab('yoga');
+  }
+  // After switching, scroll to the relevant subsection
+  setTimeout(function() {
+    if (which === 'yoga') {
+      // Scrolls to top of yoga panel — music + poses both visible from there
+      var panel = document.getElementById('panel-yoga');
+      if (panel) panel.scrollIntoView({behavior:'smooth', block:'start'});
+    } else if (which === 'breathing') {
+      var breath = document.querySelector('.breathing-area');
+      if (breath) breath.scrollIntoView({behavior:'smooth', block:'center'});
+    } else if (which === 'calmboard') {
+      // Calm Board — opens fullscreen via openBusyBoard
+      if (typeof openBusyBoard === 'function') openBusyBoard();
+    }
+  }, 250);
+}
+window.v3OpenMindful = v3OpenMindful;
+
+// v379: Social Studies subject button
+function v3OpenSocialStudies() {
+  // Open Social Studies game for active grade (PreK/K fall back to grade 1 content)
+  var g = (typeof activeGrade !== 'undefined') ? activeGrade : '2';
+  if (g === 'PreK' || g === 'K') g = '1';
+  if (typeof openSSGame === 'function') {
+    openSSGame(g);
+  } else if (typeof openSocialStudiesGame === 'function') {
+    openSocialStudiesGame(g);
+  }
+}
+window.v3OpenSocialStudies = v3OpenSocialStudies;
+window._readingPathStart = _readingPathStart;
+window._readingPathSpeakAgain = _readingPathSpeakAgain;
+window._readingPathAnswer = _readingPathAnswer;
+
+
 //  PHONICS BLENDING + SIGHT WORDS GAME
 // ══════════════════════════════════════════════════════
 function openPhonicsGame(grade) {
@@ -7833,6 +8730,14 @@ function openPhonicsGame(grade) {
   ov.id = 'phonicsOv';
   ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#F0FAFF;display:flex;flex-direction:column;';
   document.body.appendChild(ov);
+
+  // v379: Back + Home buttons (top-left)
+  var navBar = document.createElement('div');
+  navBar.style.cssText = 'position:absolute;top:14px;left:14px;display:flex;gap:10px;z-index:100;';
+  navBar.innerHTML =
+    '<button onclick="document.getElementById(\'phonicsOv\').remove()" title="Back" style="width:42px;height:42px;border-radius:50%;background:white;border:none;cursor:pointer;font-size:18px;color:#2D1B3D;box-shadow:0 3px 0 rgba(0,0,0,.15);">←</button>'
+    +'<button onclick="goHomeFromOverlay()" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.15);">🏠</button>';
+  ov.appendChild(navBar);
 
   var WORDS = {
     PreK:[{w:'CAT',sounds:['C','A','T'],pic:'🐱'},{w:'DOG',sounds:['D','O','G'],pic:'🐶'},{w:'SUN',sounds:['S','U','N'],pic:'☀️'},{w:'HEN',sounds:['H','E','N'],pic:'🐔'},{w:'BIG',sounds:['B','I','G'],pic:'🐘'},{w:'RUN',sounds:['R','U','N'],pic:'🏃'},{w:'TOP',sounds:['T','O','P'],pic:'🌀'},{w:'FAN',sounds:['F','A','N'],pic:'🌬️'}],
@@ -7991,6 +8896,15 @@ function openNumberTracing() {
   ov.id = 'numTraceOv';
   ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#F2EFFF;display:flex;flex-direction:column;';
   document.body.appendChild(ov);
+
+  // v379: Back + Home buttons
+  var navBar = document.createElement('div');
+  navBar.style.cssText = 'position:absolute;top:14px;left:14px;display:flex;gap:10px;z-index:100;';
+  navBar.innerHTML =
+    '<button onclick="document.getElementById(\'numTraceOv\').remove()" title="Back" style="width:42px;height:42px;border-radius:50%;background:white;border:none;cursor:pointer;font-size:18px;color:#2D1B3D;box-shadow:0 3px 0 rgba(0,0,0,.15);">←</button>'
+    +'<button onclick="goHomeFromOverlay()" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.15);">🏠</button>';
+  ov.appendChild(navBar);
+
   var nums = ['1','2','3','4','5','6','7','8','9','0'];
   var idx = 0, earnedStars = 0;
 
@@ -8915,7 +9829,7 @@ function showParentPinEntry(storedPin) {
   var ov = document.createElement('div');
   ov.id = 'pinOv';
   ov.style.cssText = 'position:fixed;inset:0;z-index:10000;background:linear-gradient(135deg,#2D1A4E,#8B6FE8);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;';
-  ov.innerHTML = '<img src="bloom_happy.png" style="width:80px;height:80px;object-fit:contain;margin-bottom:12px;">'
+  ov.innerHTML = '<img src="bloomy_wave.png" style="width:80px;height:80px;object-fit:contain;margin-bottom:12px;">'
     + '<div style="font-family:Baloo 2,cursive;font-size:1.4rem;font-weight:800;color:white;margin-bottom:8px;">Parents Only</div>'
     + '<div style="font-size:.85rem;color:rgba(255,255,255,.7);margin-bottom:28px;">Enter your 4-digit PIN</div>'
     + '<div id="pinDots" style="display:flex;gap:14px;margin-bottom:24px;">'
@@ -9031,72 +9945,23 @@ function openActualDashboard() {
   var old = document.getElementById('parentDashOv'); if (old) old.remove();
   var ov = document.createElement('div');
   ov.id = 'parentDashOv';
-  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#2D1B69 0%,#5B2D8E 50%,#8B5CF6 100%);display:flex;flex-direction:column;font-family:Nunito,sans-serif;overflow-y:auto;';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#2D1B69 0%,#5B2D8E 50%,#8B5CF6 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:Nunito,sans-serif;';
   document.body.appendChild(ov);
 
-  var stars = (typeof sessionData!=='undefined') ? (sessionData.stars||0) : 0;
-  var streak = (typeof sessionData!=='undefined') ? (sessionData.streak||0) : 0;
-  var tasks = (typeof sessionData!=='undefined') ? (sessionData.tasks||0) : 0;
-  var mins = (typeof sessionData!=='undefined') ? (sessionData.minutes||0) : 0;
   var child = (typeof activeChild!=='undefined'&&activeChild) ? activeChild : {};
   var grade = (typeof gradeContent!=='undefined'&&gradeContent) ? (gradeContent.label||'') : '';
 
-  ov.innerHTML = 
-    // Header
-    '<div style="background:rgba(0,0,0,.2);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">'
-    +'<div style="font-family:Baloo 2,cursive;font-size:1.3rem;font-weight:800;color:white;">🎛 Parent Dashboard</div>'
-    +'<button onclick="document.getElementById(&quot;parentDashOv&quot;).remove()" style="background:rgba(255,255,255,.2);border:none;color:white;width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;font-weight:800;">✕</button>'
+  // v380: Clean parent view — child name + grade only
+  ov.innerHTML =
+    '<div style="position:absolute;top:14px;left:14px;">'
+      +'<button onclick="document.getElementById(\'parentDashOv\').remove()" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.2);border:none;cursor:pointer;font-size:18px;color:white;box-shadow:0 3px 0 rgba(0,0,0,.3);">←</button>'
     +'</div>'
-    // Child hero card
-    +'<div style="padding:20px;max-width:480px;margin:0 auto;width:100%;">'
-    +'<div style="background:rgba(255,255,255,.15);backdrop-filter:blur(10px);border-radius:24px;padding:20px;margin-bottom:16px;border:1px solid rgba(255,255,255,.2);">'
-    +'<div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">'
-    +'<div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#FFD700,#FFA500);display:flex;align-items:center;justify-content:center;font-size:2rem;box-shadow:0 4px 16px rgba(0,0,0,.3);">'+(child.avatar||'🌟')+'</div>'
-    +'<div><div style="font-size:1.2rem;font-weight:800;color:white;">'+(child.name||'Your Child')+'</div>'
-    +'<div style="color:rgba(255,255,255,.7);font-size:.85rem;">'+grade+'</div></div>'
-    +'</div>'
-    // Stats grid
-    +'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">'
-    +'<div style="background:rgba(255,255,255,.12);border-radius:14px;padding:10px 6px;text-align:center;">'
-    +'<div style="font-size:1.4rem;font-weight:800;color:#FFD700;">'+streak+'</div>'
-    +'<div style="font-size:.6rem;color:rgba(255,255,255,.7);margin-top:2px;">DAY STREAK</div></div>'
-    +'<div style="background:rgba(255,255,255,.12);border-radius:14px;padding:10px 6px;text-align:center;">'
-    +'<div style="font-size:1.4rem;font-weight:800;color:#4ADE80;">'+tasks+'</div>'
-    +'<div style="font-size:.6rem;color:rgba(255,255,255,.7);margin-top:2px;">ACTIVITIES</div></div>'
-    +'<div style="background:rgba(255,255,255,.12);border-radius:14px;padding:10px 6px;text-align:center;">'
-    +'<div style="font-size:1.4rem;font-weight:800;color:#F472B6;">'+stars+'</div>'
-    +'<div style="font-size:.6rem;color:rgba(255,255,255,.7);margin-top:2px;">STARS</div></div>'
-    +'<div style="background:rgba(255,255,255,.12);border-radius:14px;padding:10px 6px;text-align:center;">'
-    +'<div style="font-size:1.4rem;font-weight:800;color:#38BDF8;">'+mins+'</div>'
-    +'<div style="font-size:.6rem;color:rgba(255,255,255,.7);margin-top:2px;">MINUTES</div></div>'
-    +'</div></div>'
-    // Menu grid - 6 glossy tiles
-    +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;">'
-    +[
-      {icon:'📊',label:'Progress',color:'#6366F1',fn:'showParentProgress'},
-      {icon:'⭐',label:'Stars',color:'#F59E0B',fn:'showStarsHistory'},
-      {icon:'📅',label:'Schedule',color:'#10B981',fn:'showSchedule'},
-      {icon:'👶',label:'Children',color:'#EC4899',fn:'manageChildren'},
-      {icon:'🔔',label:'Reminders',color:'#8B5CF6',fn:'showReminders'},
-      {icon:'⚙️',label:'Settings',color:'#64748B',fn:'showParentSettings'},
-    ].map(function(item,ti){
-      return '<div onclick="window._pdTile('+ti+')" style="background:linear-gradient(155deg,'+item.color+'CC,'+item.color+');border-radius:20px;padding:18px 10px;text-align:center;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.25);position:relative;overflow:hidden;">'
-        +'<div style="position:absolute;top:0;left:0;right:0;height:50%;background:linear-gradient(180deg,rgba(255,255,255,.25),transparent);border-radius:20px 20px 50% 50%;pointer-events:none;"></div>'
-        +'<div style="font-size:2rem;margin-bottom:6px;position:relative;z-index:1;">'+item.icon+'</div>'
-        +'<div style="font-size:.75rem;font-weight:800;color:white;position:relative;z-index:1;">'+item.label+'</div>'
-        +'</div>';
-    }).join('')
-    +'</div>'
-    // Sign out
-    +'<button onclick="if(confirm(\'Sign out?\'))signOut();" style="width:100%;padding:14px;border-radius:16px;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);font-family:Nunito,sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;">Sign Out</button>'
+    +'<div style="text-align:center;padding:32px 24px;">'
+      +'<div style="width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,#FFD700,#FFA500);display:flex;align-items:center;justify-content:center;font-size:3rem;margin:0 auto 20px;box-shadow:0 8px 24px rgba(0,0,0,.3);">'+(child.avatar||'🌟')+'</div>'
+      +'<div style="font-family:Baloo 2,cursive;font-size:2rem;font-weight:800;color:white;margin-bottom:8px;">'+(child.name||'Your Child')+'</div>'
+      +'<div style="color:rgba(255,255,255,.75);font-size:1.1rem;font-weight:700;margin-bottom:40px;">'+grade+'</div>'
+      +'<button onclick="if(confirm(\'Sign out?\'))signOut();" style="padding:14px 40px;border-radius:999px;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:rgba(255,255,255,.85);font-family:Nunito,sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;">Sign Out</button>'
     +'</div>';
-
-  // Register tile dispatcher
-  window._pdTile = function(i){
-    var fns = [showParentProgress,showStarsHistory,showSchedule,manageChildren,showReminders,showParentSettings];
-    if(fns[i]) fns[i]();
-  };
-
 }
 
 // Parent dashboard tile functions (global scope)
@@ -9363,6 +10228,14 @@ function openPassageReader(grade) {
   ov.id='passageOv';
   ov.style.cssText='position:fixed;inset:0;z-index:9999;background:#EFF6FF;display:flex;flex-direction:column;font-family:Nunito,sans-serif;';
   document.body.appendChild(ov);
+
+  // v379: Back + Home buttons
+  var navBar = document.createElement('div');
+  navBar.style.cssText = 'position:absolute;top:14px;left:14px;display:flex;gap:10px;z-index:100;';
+  navBar.innerHTML =
+    '<button onclick="document.getElementById(\'passageOv\').remove()" title="Back" style="width:42px;height:42px;border-radius:50%;background:white;border:none;cursor:pointer;font-size:18px;color:#2D1B3D;box-shadow:0 3px 0 rgba(0,0,0,.15);">←</button>'
+    +'<button onclick="goHomeFromOverlay()" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.15);">🏠</button>';
+  ov.appendChild(navBar);
 
   // ── STORY DATA ──────────────────────────────────────────────────
   var ALL_STORIES = {
