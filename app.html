@@ -1,4 +1,4 @@
-<!-- BloomiKids v383 - Fixed: art stuck after login, home forced on login, coloring grade-sort, image load on scene switch, artTabBuilt reset per child -->
+<!-- BloomiKids v384 - Full parent dashboard restored, Bloomy Wardrobe (star-unlocked accessories), Mindful Stories star-locked, breathing removed from yoga panel -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -850,8 +850,12 @@ input::placeholder { color:#aaa !important; }
 
   <!-- v3 HERO: Bloomy mascot + speech bubble greeting -->
   <div id="v3Hero" style="display:flex;align-items:flex-end;gap:10px;margin:4px 0 16px;min-height:130px;">
-    <div style="width:130px;flex-shrink:0;display:flex;align-items:flex-end;justify-content:center;">
-      <img id="v3HeroMascot" src="bloomy_wave.png" onclick="bloomiDance()" alt="Bloom" style="max-width:100%;max-height:150px;object-fit:contain;filter:drop-shadow(0 6px 4px rgba(0,0,0,.15));cursor:pointer;">
+    <div style="width:130px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;">
+      <div style="position:relative;display:inline-block;">
+        <img id="v3HeroMascot" src="bloomy_wave.png" onclick="bloomiDance()" alt="Bloom" style="max-width:100%;max-height:130px;object-fit:contain;filter:drop-shadow(0 6px 4px rgba(0,0,0,.15));cursor:pointer;">
+        <div id="bloomyAccOverlay" style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:1.8rem;line-height:1;pointer-events:none;z-index:5;"></div>
+      </div>
+      <button onclick="openBloomyWardrobe()" style="background:#FFD166;border:none;border-radius:999px;padding:5px 12px;font-size:.72rem;font-weight:800;color:#5C3A00;cursor:pointer;box-shadow:0 3px 0 #D4A017;font-family:Nunito,sans-serif;">👗 Dress Up</button>
     </div>
     <div style="flex:1;background:white;border-radius:18px;padding:12px 14px;position:relative;margin-bottom:14px;box-shadow:0 3px 0 rgba(0,0,0,.06);">
       <div style="position:absolute;left:-10px;top:18px;width:0;height:0;border-top:8px solid transparent;border-bottom:8px solid transparent;border-right:12px solid white;"></div>
@@ -1066,13 +1070,7 @@ input::placeholder { color:#aaa !important; }
       </div>
     </div>
 
-    <div class="section-title">🌬 Breathing Time</div>
-    <div class="breathing-area">
-      <div class="breath-circle" id="breathCircle">🌸</div>
-      <div class="breath-instruction" id="breathInstruction">Tap the circle to start!</div>
-      <div class="breath-sub" id="breathSub">Watch the circle! Breathe in when it gets big, out when it gets small.</div>
-      <button onclick="initBreathing()" style="margin-top:12px;padding:10px 28px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--lavender),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;">🌬 Start Breathing</button>
-    </div>
+    <!-- Breathing removed v384 - has its own tile on home -->
 
     <div class="section-title">⏱ Pose Timer</div>
     <div class="timer-box" id="timerBox">
@@ -3460,6 +3458,8 @@ async function selectChild(child) {
     if (b.dataset && b.dataset.tab === 'academics') b.classList.add('active');
   });
   setTimeout(function() { if (typeof switchTab === 'function') switchTab('academics'); }, 300);
+  // v384: restore Bloomy's saved accessory for this child
+  setTimeout(function() { if (typeof _applyAccessory === 'function' && typeof _wardrobeGet === 'function') _applyAccessory(_wardrobeGet()); }, 500);
   setTimeout(showIntroVideo, 500);
   applyGradeUI();
   buildSubjectCards();
@@ -8263,38 +8263,30 @@ function _readingPathSpeak(text) {
 // ══════════════════════════════════════════════════════
 var MINDFUL_STORIES = [
   {
-    id: 'worry_balloon',
+    id: 'worry_balloon', cost: 0,
     title: 'The Worry-Balloon Release',
-    duration: '5–7 min',
-    icon: '🎈',
-    color: '#8B6FE8',
+    duration: '5–7 min', icon: '🎈', color: '#8B6FE8',
     intro: 'A gentle visualization to release a worry or frustration.',
     body: "Find a comfortable spot. Let your shoulders drop away from your ears. Close your eyes, or find a soft spot on the floor to look at. Imagine you are holding a bright, colorful balloon. Whatever color you love the most, see it clearly in your mind. Now, think of one thing that is bothering you today — maybe a frustration or a worry. You don't need to change it; just acknowledge it. Gently place that worry inside your balloon. Tie a soft knot at the end. Now, take a deep breath in through your nose, filling your lungs, and as you breathe out, imagine you are letting go of the string. Watch that balloon drift up, up, and away. It's getting smaller. Higher. It's moving past the clouds. Now, look back at your hands — they are light and free. Let's take one more big breath together, feeling how light your body is. You are ready for the rest of your day."
   },
   {
-    id: 'pause_button',
+    id: 'pause_button', cost: 25,
     title: 'The Pause Button',
-    duration: '5 min',
-    icon: '⏸️',
-    color: '#FF6B6B',
+    duration: '5 min', icon: '⏸️', color: '#FF6B6B',
     intro: 'For when you feel frustrated, angry, or over-excited.',
     body: "Sit up tall, but keep your muscles relaxed. Imagine you have a special button right in the center of your chest. This is your Pause button. It's the same color as your favorite fruit. When we are feeling big feelings, our brain is moving super fast. Let's slow it down. On the count of three, mentally press that button. One… two… three… Click! Everything stops. The noise in your head goes quiet. Now, breathe in through your nose for four seconds — one, two, three, four. Hold it for just a second. Now, breathe out through your mouth like you're blowing out a candle — whoosh. Do it again. Press that button. Click. In through your nose… and out. You are the boss of your feelings. You just pressed pause. You are calm, you are steady, and you are ready to try again."
   },
   {
-    id: 'sensory_scavenger',
+    id: 'sensory_scavenger', cost: 75,
     title: 'The Sensory Scavenger',
-    duration: '6 min',
-    icon: '🔍',
-    color: '#5ECDA0',
+    duration: '6 min', icon: '🔍', color: '#5ECDA0',
     intro: 'For when you feel distracted, anxious, or need to refocus.',
     body: "Let's take a little trip without moving our feet. Look around the room with the eyes of a detective. You are looking for very specific things. First, find three things you can see that are the color blue. Look closely. Maybe it's a book, a shirt, or a line on the wall. Got them? Good. Now, listen carefully. Find two things you can hear. Maybe the hum of the lights, a car outside, or even the sound of your own breathing. Listen past the quiet. What do you hear? Finally, find one thing you can feel. Maybe it's the fabric of your pants against your legs, the hard floor under your feet, or the cool air on your skin. Touch it. Feel how solid it is. You have just used your senses to bring your brain back to right now. You aren't worried about what happened yesterday, and you aren't rushing to what's happening later. You are right here. And right here is a safe place to be."
   },
   {
-    id: 'energy_shake',
+    id: 'energy_shake', cost: 150,
     title: 'The Energy Shake-Out',
-    duration: '5 min',
-    icon: '✨',
-    color: '#FFD166',
+    duration: '5 min', icon: '✨', color: '#FFD166',
     intro: 'For when you have been sitting too long and feel restless.',
     body: "Stand up, but stay in your own space. If you feel like your body is full of restless energy, that's okay — we're going to use it. Start with your right hand. Shake it out, like you're shaking off a little bit of water. Now your left hand. Shake them both together. Now your right leg — give it a wiggle! Now your left leg. Are you ready? On the count of three, we are going to shake our entire body. One, two, three — shake! Shake out the wiggles, shake out the restlessness, shake out the I-don't-want-to-do-this feeling. Keep shaking! And… freeze! Like a statue. Feel that tingle in your fingers? That's your energy. Now, take a big breath, reach your arms up to the ceiling, and as you bring them down, let all that extra energy melt into the floor. You've moved the wiggles out. Your body is still, your mind is clear, and you're ready to focus."
   }
@@ -8352,15 +8344,18 @@ function openMindfulStories() {
 
     +'<div style="padding:0 18px 32px;display:grid;gap:14px;">'
       +MINDFUL_STORIES.map(function(s) {
-        return '<div onclick="_playMindfulStory(\''+s.id+'\')" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:18px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:transform .15s;" '
-          +'onmouseover="this.style.transform=\'translateY(-2px)\';" onmouseout="this.style.transform=\'translateY(0)\';">'
-          +'<div style="width:60px;height:60px;border-radius:18px;background:'+s.color+';display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;box-shadow:inset 0 -3px 0 rgba(0,0,0,.15);">'+s.icon+'</div>'
+        var stars = (typeof sessionData!=='undefined') ? (sessionData.stars||0) : 0;
+        var locked = s.cost > 0 && stars < s.cost;
+        return '<div onclick="'+(locked?'':'"_playMindfulStory(\''+s.id+'\')"'[0]).slice(0,0)+(!locked?'_playMindfulStory(\''+s.id+'\')':'')+'" style="background:rgba(255,255,255,'+(locked?'.04':'.08')+');border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:18px;cursor:'+(locked?'default':'pointer')+';display:flex;align-items:center;gap:14px;opacity:'+(locked?'.6':'1')+'">'
+          +'<div style="width:60px;height:60px;border-radius:18px;background:'+(locked?'rgba(255,255,255,.1)':s.color)+';display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;">'+(locked?'🔒':s.icon)+'</div>'
           +'<div style="flex:1;">'
-            +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1.1rem;color:white;margin-bottom:2px;">'+s.title+'</div>'
+            +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1.05rem;color:white;margin-bottom:2px;">'+s.title+'</div>'
             +'<div style="font-size:.78rem;color:rgba(255,255,255,.6);margin-bottom:4px;">'+s.duration+'</div>'
-            +'<div style="font-size:.82rem;color:rgba(255,255,255,.85);line-height:1.4;">'+s.intro+'</div>'
+            +(locked
+              ? '<div style="font-size:.8rem;color:#FFD166;font-weight:700;">⭐ '+s.cost+' stars to unlock</div>'
+              : '<div style="font-size:.82rem;color:rgba(255,255,255,.85);">'+s.intro+'</div>')
           +'</div>'
-          +'<div style="font-size:22px;color:rgba(255,255,255,.7);">▶</div>'
+          +(locked?'':'<div style="font-size:22px;color:rgba(255,255,255,.7);">▶</div>')
         +'</div>';
       }).join('')
     +'</div>';
@@ -8456,6 +8451,85 @@ window._playMindfulStory = _playMindfulStory;
 window._replayMindfulStory = _replayMindfulStory;
 window.toggleMindfulMute = toggleMindfulMute;
 window.goHomeFromOverlay = goHomeFromOverlay;
+
+// v384 BLOOMY WARDROBE
+var BLOOMY_ACCESSORIES = [
+  {id:'none',    emoji:'',   label:'Just Bloomy',   cost:0,   desc:'Free!'},
+  {id:'flower',  emoji:'🌸', label:'Flower Crown',  cost:25,  desc:'25 stars to unlock'},
+  {id:'cape',    emoji:'🦸', label:'Hero Cape',     cost:50,  desc:'50 stars to unlock'},
+  {id:'wizard',  emoji:'🧙', label:'Wizard Hat',    cost:100, desc:'100 stars to unlock'},
+  {id:'crown',   emoji:'👑', label:'Party Crown',   cost:150, desc:'150 stars to unlock'},
+  {id:'rocket',  emoji:'🚀', label:'Astronaut',     cost:200, desc:'200 stars to unlock'},
+  {id:'rainbow', emoji:'🌈', label:'Rainbow Wings', cost:300, desc:'300 stars to unlock'},
+  {id:'dragon',  emoji:'🐉', label:'Dragon Rider',  cost:500, desc:'500 stars to unlock'},
+];
+function _wardrobeKey(){return 'bloomy_acc_'+((typeof activeChild!='undefined'&&activeChild)?activeChild.id:'guest');}
+function _wardrobeGet(){try{return localStorage.getItem(_wardrobeKey())||'none';}catch(e){return 'none';}}
+function _wardrobeSet(id){try{localStorage.setItem(_wardrobeKey(),id);}catch(e){}}
+function _applyAccessory(id){
+  var acc=BLOOMY_ACCESSORIES.find(function(a){return a.id===id;})||BLOOMY_ACCESSORIES[0];
+  var overlay=document.getElementById('bloomyAccOverlay');
+  if(!overlay){
+    var heroImg=document.getElementById('v3HeroMascot')||document.querySelector('.hero-mascot img');
+    if(heroImg&&heroImg.parentElement){
+      overlay=document.createElement('div');
+      overlay.id='bloomyAccOverlay';
+      overlay.style.cssText='position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:1.8rem;line-height:1;pointer-events:none;z-index:5;';
+      heroImg.parentElement.style.position='relative';
+      heroImg.parentElement.appendChild(overlay);
+    }
+  }
+  if(overlay) overlay.textContent=acc.emoji;
+}
+function openBloomyWardrobe(){
+  var old=document.getElementById('wardrobeOv');if(old)old.remove();
+  var ov=document.createElement('div');
+  ov.id='wardrobeOv';
+  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#1A0F2E,#3D1B6E);display:flex;flex-direction:column;font-family:Nunito,sans-serif;overflow-y:auto;';
+  document.body.appendChild(ov);
+  var stars=(typeof sessionData!='undefined')?(sessionData.stars||0):0;
+  var current=_wardrobeGet();
+  var tilesHtml=BLOOMY_ACCESSORIES.map(function(acc){
+    var owned=stars>=acc.cost;
+    var isCurrent=acc.id===current;
+    var bg=isCurrent?'#FFD166':(owned?'rgba(255,255,255,.12)':'rgba(255,255,255,.05)');
+    var tc=isCurrent?'#5C3A00':'white';
+    return '<div onclick="_selectAccessory(\''+acc.id+'\')" style="background:'+bg+';border-radius:20px;padding:18px 14px;text-align:center;cursor:'+(owned?'pointer':'default')+';opacity:'+(owned?'1':'.5')+';border:2px solid '+(isCurrent?'#FFD166':'rgba(255,255,255,.1)')+';position:relative;">'
+      +'<div style="font-size:2.4rem;margin-bottom:6px;">'+(acc.emoji||'🌱')+'</div>'
+      +'<div style="font-family:\'Baloo 2\',cursive;font-weight:800;font-size:.9rem;color:'+tc+';margin-bottom:3px;">'+acc.label+'</div>'
+      +'<div style="font-size:.7rem;color:'+(isCurrent?'#8B6800':(owned?'rgba(255,255,255,.7)':'rgba(255,255,255,.4)'))+';">'+(isCurrent?'Wearing! ✅':(owned?'Tap to wear!':acc.desc))+'</div>'
+      +(!owned&&acc.cost>0?'<div style="position:absolute;top:8px;right:10px;font-size:1.1rem;">🔒</div>':'')
+      +'</div>';
+  }).join('');
+  ov.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;padding:14px;position:sticky;top:0;background:rgba(26,15,46,.95);z-index:10;border-bottom:1px solid rgba(255,255,255,.1);">'
+    +'<button onclick="document.getElementById(\'wardrobeOv\').remove()" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;font-size:18px;color:white;">←</button>'
+    +'<div style="font-family:\'Baloo 2\',cursive;font-weight:800;font-size:1.1rem;color:white;">👗 Bloomy\'s Wardrobe</div>'
+    +'<div style="background:rgba(255,211,22,.15);border-radius:12px;padding:6px 12px;color:#FFD166;font-weight:800;">⭐ '+stars+'</div>'
+    +'</div>'
+    +'<div style="text-align:center;padding:24px 16px 8px;">'
+      +'<div style="position:relative;display:inline-block;">'
+        +'<img src="bloomy_wave.png" style="width:120px;height:auto;filter:drop-shadow(0 8px 16px rgba(0,0,0,.3));">'
+        +'<div id="wardrobePreviewEmoji" style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);font-size:2.2rem;line-height:1;"></div>'
+      +'</div>'
+      +'<div style="font-family:\'Baloo 2\',cursive;font-weight:800;font-size:1rem;color:white;margin-top:10px;">Tap an item to try it on Bloomy!</div>'
+    +'</div>'
+    +'<div style="padding:12px 14px 32px;display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">'+tilesHtml+'</div>';
+  var pe=document.getElementById('wardrobePreviewEmoji');
+  var ca=BLOOMY_ACCESSORIES.find(function(a){return a.id===current;});
+  if(pe&&ca) pe.textContent=ca.emoji;
+}
+function _selectAccessory(id){
+  var stars=(typeof sessionData!='undefined')?(sessionData.stars||0):0;
+  var acc=BLOOMY_ACCESSORIES.find(function(a){return a.id===id;});
+  if(!acc||stars<acc.cost) return;
+  _wardrobeSet(id);_applyAccessory(id);openBloomyWardrobe();
+  if(typeof toast=='function') toast('✨ Bloomy is wearing '+acc.label+'!');
+}
+window.openBloomyWardrobe=openBloomyWardrobe;
+window._selectAccessory=_selectAccessory;
+window._applyAccessory=_applyAccessory;
+window._wardrobeGet=_wardrobeGet;
+
 
 function openReadingPath() {
   var state = _readingPathProgress();
@@ -9942,28 +10016,64 @@ function selectPlan(plan) {
 }
 
 function openActualDashboard() {
-  var old = document.getElementById('parentDashOv'); if (old) old.remove();
+  var old2 = document.getElementById('parentDashOv'); if (old2) old2.remove();
   var ov = document.createElement('div');
   ov.id = 'parentDashOv';
-  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#2D1B69 0%,#5B2D8E 50%,#8B5CF6 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:Nunito,sans-serif;';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#2D1B69 0%,#5B2D8E 50%,#8B5CF6 100%);display:flex;flex-direction:column;font-family:Nunito,sans-serif;overflow-y:auto;';
   document.body.appendChild(ov);
-
   var child = (typeof activeChild!=='undefined'&&activeChild) ? activeChild : {};
   var grade = (typeof gradeContent!=='undefined'&&gradeContent) ? (gradeContent.label||'') : '';
-
-  // v380: Clean parent view — child name + grade only
+  var stars  = (typeof sessionData!=='undefined') ? (sessionData.stars||0)   : 0;
+  var streak = (typeof sessionData!=='undefined') ? (sessionData.streak||0)  : 0;
+  var tasks  = (typeof sessionData!=='undefined') ? (sessionData.tasks||0)   : 0;
+  var mins   = (typeof sessionData!=='undefined') ? (sessionData.minutes||0) : 0;
+  var TILES = [
+    {icon:'SS', label:'Progress',  color:'#6366F1', shadow:'#4338CA', fn:'showParentProgress()'},
+    {icon:'ST', label:'Stars',     color:'#F59E0B', shadow:'#D97706', fn:'showStarsHistory()'},
+    {icon:'CA', label:'Schedule',  color:'#10B981', shadow:'#059669', fn:'showSchedule()'},
+    {icon:'BA', label:'Children',  color:'#EC4899', shadow:'#DB2777', fn:'manageChildren()'},
+    {icon:'BE', label:'Reminders', color:'#8B5CF6', shadow:'#7C3AED', fn:'showReminders()'},
+    {icon:'GE', label:'Settings',  color:'#64748B', shadow:'#475569', fn:'showParentSettings()'},
+  ];
+  var ICONS = {'SS':'SS','ST':'ST','CA':'CA','BA':'BA','BE':'BE','GE':'GE'};
+  var EMOJIS = {Progress:'\ud83d\udcca', Stars:'\u2b50', Schedule:'\ud83d\udcc5', Children:'\ud83d\udc76', Reminders:'\ud83d\udd14', Settings:'\u2699\ufe0f'};
+  var tilesHtml = TILES.map(function(t) {
+    return '<div onclick="'+t.fn+'" style="background:linear-gradient(155deg,'+t.color+'CC,'+t.color+');border-radius:20px;padding:18px 10px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 '+t.shadow+';position:relative;overflow:hidden;">'
+      +'<div style="position:absolute;top:0;left:0;right:0;height:50%;background:linear-gradient(180deg,rgba(255,255,255,.2),transparent);border-radius:20px 20px 50% 50%;pointer-events:none;"></div>'
+      +'<div style="font-size:2rem;margin-bottom:6px;position:relative;z-index:1;">'+(EMOJIS[t.label]||'?')+'</div>'
+      +'<div style="font-size:.78rem;font-weight:800;color:white;position:relative;z-index:1;">'+t.label+'</div>'
+      +'</div>';
+  }).join('');
+  var statsHtml = [
+    {e:'\ud83d\udd25', v:streak, l:'STREAK'},
+    {e:'\u2705',       v:tasks,  l:'DONE'},
+    {e:'\u2b50',       v:stars,  l:'STARS'},
+    {e:'\u23f1',       v:mins,   l:'MINS'},
+  ].map(function(s){
+    return '<div style="background:rgba(255,255,255,.12);border-radius:14px;padding:10px 4px;text-align:center;">'
+      +'<div style="font-size:1.1rem;">'+s.e+'</div>'
+      +'<div style="font-size:1.2rem;font-weight:800;color:white;line-height:1.2;">'+s.v+'</div>'
+      +'<div style="font-size:.58rem;color:rgba(255,255,255,.65);font-weight:700;">'+s.l+'</div>'
+      +'</div>';
+  }).join('');
   ov.innerHTML =
-    '<div style="position:absolute;top:14px;left:14px;">'
-      +'<button onclick="document.getElementById(\'parentDashOv\').remove()" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.2);border:none;cursor:pointer;font-size:18px;color:white;box-shadow:0 3px 0 rgba(0,0,0,.3);">←</button>'
+    '<div style="background:rgba(0,0,0,.25);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">'
+      +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.1rem;font-weight:800;color:white;">\ud83c\udf9b Parent Dashboard</div>'
+      +'<button onclick="document.getElementById(\'parentDashOv\').remove()" style="background:rgba(255,255,255,.2);border:none;color:white;width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;font-weight:800;">X</button>'
     +'</div>'
-    +'<div style="text-align:center;padding:32px 24px;">'
-      +'<div style="width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,#FFD700,#FFA500);display:flex;align-items:center;justify-content:center;font-size:3rem;margin:0 auto 20px;box-shadow:0 8px 24px rgba(0,0,0,.3);">'+(child.avatar||'🌟')+'</div>'
-      +'<div style="font-family:Baloo 2,cursive;font-size:2rem;font-weight:800;color:white;margin-bottom:8px;">'+(child.name||'Your Child')+'</div>'
-      +'<div style="color:rgba(255,255,255,.75);font-size:1.1rem;font-weight:700;margin-bottom:40px;">'+grade+'</div>'
-      +'<button onclick="if(confirm(\'Sign out?\'))signOut();" style="padding:14px 40px;border-radius:999px;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:rgba(255,255,255,.85);font-family:Nunito,sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;">Sign Out</button>'
+    +'<div style="padding:18px;max-width:480px;margin:0 auto;width:100%;box-sizing:border-box;">'
+      +'<div style="background:rgba(255,255,255,.15);border-radius:24px;padding:18px;margin-bottom:16px;border:1px solid rgba(255,255,255,.2);">'
+        +'<div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;">'
+          +'<div style="width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,#FFD700,#FFA500);display:flex;align-items:center;justify-content:center;font-size:1.9rem;box-shadow:0 4px 16px rgba(0,0,0,.3);">'+(child.avatar||'\u2b50')+'</div>'
+          +'<div><div style="font-family:\'Baloo 2\',cursive;font-size:1.2rem;font-weight:800;color:white;">'+(child.name||'Your Child')+'</div>'
+          +'<div style="color:rgba(255,255,255,.7);font-size:.85rem;">'+grade+'</div></div>'
+        +'</div>'
+        +'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">'+statsHtml+'</div>'
+      +'</div>'
+      +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;">'+tilesHtml+'</div>'
+      +'<button onclick="if(confirm(\'Sign out?\'))signOut();" style="width:100%;padding:14px;border-radius:16px;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);font-family:Nunito,sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;box-sizing:border-box;">Sign Out</button>'
     +'</div>';
 }
-
 // Parent dashboard tile functions (global scope)
 function showParentProgress(){
   var childName=typeof activeChild!=='undefined'&&activeChild?activeChild.name:'Your Child';
