@@ -1,5 +1,5 @@
-// BloomiKids Service Worker v384
-const CACHE = 'bk-v384';
+// BloomiKids Service Worker v410
+const CACHE = 'bk-v410';
 const STATIC = [
   '/',
   '/app.html',
