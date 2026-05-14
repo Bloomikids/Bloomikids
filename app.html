@@ -3234,7 +3234,7 @@ async function loadDashboardStats() {
   try {
     if (!activeChild) return;
     const today=new Date().toISOString().split('T')[0];
-    const {data:act}=await sb.from('daily_activity').select('*').eq('child_id',activeChild.id).eq('activity_date',today).single();
+    const {data:act}=await sb.from('daily_activity').select('*').eq('child_id',activeChild.id).eq('activity_date',today).maybeSingle();
     if(act){sessionData.tasks=act.tasks_done||0;sessionData.minutes=(act.minutes_academic||0)+(act.minutes_yoga||0)+(act.minutes_reading||0);}
     // Stars are tracked in sessionData only - no stars column in children table
     const t=document.getElementById('statTasks');if(t)t.textContent=sessionData.tasks;
@@ -3545,8 +3545,8 @@ const POSE_PHOTOS = {
   'Plank Pose':    { src:'yoga/pose_plank.png', pos:'center 40%' },
   'Happy Baby':    { src:'yoga/pose_happybaby.png', pos:'center 40%' },
   'Knee Hug':      { src:'yoga/pose_happybaby.png', pos:'center 40%' },
-  'Goddess Pose':  { src:'yoga/pose_goddess.jpg', pos:'center 20%' },
-  'Goddess':       { src:'yoga/pose_goddess.jpg', pos:'center 20%' },
+  'Goddess Pose':  { src:'yoga/IMG_0861.PNG', pos:'center 20%' },
+  'Goddess':       { src:'yoga/IMG_0861.PNG', pos:'center 20%' },
   'Dancer':        { src:'yoga/IMG_1349.jpeg', pos:'center 20%' },
   'Dancer Pose':   { src:'yoga/IMG_1349.jpeg', pos:'center 20%' },
   'Crow':          { src:'yoga/IMG_1345.jpeg', pos:'center 50%' },
@@ -5179,7 +5179,7 @@ function switchTab(tab) {
 
 async function upsertDailyActivity(updates) {
   const today=new Date().toISOString().split('T')[0];
-  const {data:ex}=await sb.from('daily_activity').select('*').eq('child_id',activeChild.id).eq('activity_date',today).single();
+  const {data:ex}=await sb.from('daily_activity').select('*').eq('child_id',activeChild.id).eq('activity_date',today).maybeSingle();
   if (ex) {
     const merged={};
     Object.keys(updates).forEach(k=>{ merged[k]=(ex[k]||0)+(updates[k]||0); });
@@ -7176,7 +7176,7 @@ async function sendStreakReminders(){
   for(var i=0;i<keys.length;i++){
     var cid=keys[i].replace('notif_','');var name=localStorage.getItem('notif_name_'+cid)||'your child';
     var today=new Date().toISOString().split('T')[0];
-    try{var r=await sb.from('daily_activity').select('id').eq('child_id',cid).eq('activity_date',today).single();
+    try{var r=await sb.from('daily_activity').select('id').eq('child_id',cid).eq('activity_date',today).maybeSingle();
       if(!r.data)new Notification('BloomiKids - Keep the streak going!',{body:name+' has not learned today yet!',icon:'/logo.png',tag:'streak-'+cid});}
     catch(e){new Notification('Time to learn!',{body:name+' is waiting!',icon:'/logo.png',tag:'streak-'+cid});}
   }
@@ -7612,7 +7612,7 @@ async function sendStreakReminders(){
   for(var i=0;i<keys.length;i++){
     var cid=keys[i].replace('notif_','');var name=localStorage.getItem('notif_name_'+cid)||'your child';
     var today=new Date().toISOString().split('T')[0];
-    try{var r=await sb.from('daily_activity').select('id').eq('child_id',cid).eq('activity_date',today).single();
+    try{var r=await sb.from('daily_activity').select('id').eq('child_id',cid).eq('activity_date',today).maybeSingle();
       if(!r.data)new Notification('BloomiKids - Keep the streak going!',{body:name+' has not learned today yet!',icon:'/logo.png',tag:'streak-'+cid});}
     catch(e){new Notification('Time to learn!',{body:name+' is waiting!',icon:'/logo.png',tag:'streak-'+cid});}
   }

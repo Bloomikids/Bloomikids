@@ -1,5 +1,5 @@
-// BloomiKids Service Worker v384
-const CACHE = 'bk-v384';
+// BloomiKids Service Worker v411
+const CACHE = 'bk-v411';
 const STATIC = [
   '/',
   '/app.html',
@@ -8,7 +8,6 @@ const STATIC = [
   '/logo.png',
 ];
 
-// Install - cache static assets
 self.addEventListener('install', function(e) {
   self.skipWaiting();
   e.waitUntil(
@@ -18,7 +17,6 @@ self.addEventListener('install', function(e) {
   );
 });
 
-// Activate - delete ALL old caches
 self.addEventListener('activate', function(e) {
   e.waitUntil(
     caches.keys().then(function(keys) {
@@ -30,14 +28,22 @@ self.addEventListener('activate', function(e) {
   );
 });
 
-// Fetch - network first for HTML, cache first for assets
 self.addEventListener('fetch', function(e) {
-  var url = e.request.url;
+  var req = e.request;
   
+  // Skip non-GET requests (POST, PUT, etc.) - these cannot be cached
+  if (req.method !== 'GET') return;
+  
+  // Skip Supabase API calls - always go to network
+  if (req.url.includes('supabase.co')) return;
+  
+  // Skip chrome-extension and non-http requests
+  if (!req.url.startsWith('http')) return;
+
   // Always network-first for app.html (never serve stale)
-  if (url.endsWith('app.html') || url.endsWith('/')) {
+  if (req.url.endsWith('app.html') || req.url.endsWith('/')) {
     e.respondWith(
-      fetch(e.request).catch(function() {
+      fetch(req).catch(function() {
         return caches.match('/app.html');
       })
     );
@@ -45,28 +51,30 @@ self.addEventListener('fetch', function(e) {
   }
 
   // Network first for JS/HTML files
-  if (url.includes('.html') || url.includes('.js')) {
+  if (req.url.includes('.html') || req.url.includes('.js')) {
     e.respondWith(
-      fetch(e.request)
+      fetch(req)
         .then(function(res) {
           var clone = res.clone();
-          caches.open(CACHE).then(function(c){ c.put(e.request, clone); });
+          caches.open(CACHE).then(function(c){ c.put(req, clone); });
           return res;
         })
-        .catch(function() { return caches.match(e.request); })
+        .catch(function() { return caches.match(req); })
     );
     return;
   }
 
-  // Cache first for images, fonts, audio
+  // Cache first for images, fonts
   e.respondWith(
-    caches.match(e.request).then(function(cached) {
+    caches.match(req).then(function(cached) {
       if (cached) return cached;
-      return fetch(e.request).then(function(res) {
-        var clone = res.clone();
-        caches.open(CACHE).then(function(c){ c.put(e.request, clone); });
+      return fetch(req).then(function(res) {
+        if (res && res.status === 200) {
+          var clone = res.clone();
+          caches.open(CACHE).then(function(c){ c.put(req, clone); });
+        }
         return res;
-      });
+      }).catch(function(){ return cached; });
     })
   );
 });
