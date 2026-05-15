@@ -1,6 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+// Force cache bust - runs before anything else
+(function() {
+  var CURRENT_VERSION = 'bk-411';
+  var stored = localStorage.getItem('bk_app_version');
+  if (stored !== CURRENT_VERSION) {
+    localStorage.setItem('bk_app_version', CURRENT_VERSION);
+    // Unregister ALL service workers
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for (var r of registrations) { r.unregister(); }
+      });
+    }
+    // Clear all caches
+    if ('caches' in window) {
+      caches.keys().then(function(keys) {
+        keys.forEach(function(key) { caches.delete(key); });
+      });
+    }
+    // Hard reload once to get fresh version
+    if (!window.location.search.includes('fresh')) {
+      window.location.replace(window.location.pathname + '?fresh=1');
+    }
+  }
+})();
+</script>
 <meta charset="UTF-8">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
