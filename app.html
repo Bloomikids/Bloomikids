@@ -3403,6 +3403,18 @@ var _errorLog=[];
 function logError(src,err){var e={source:src,msg:err?(err.message||String(err)):'unknown',ts:Date.now()};_errorLog.push(e);try{var l=JSON.parse(localStorage.getItem('bloomi_errors')||'[]');l.push(e);if(l.length>50)l=l.slice(-50);localStorage.setItem('bloomi_errors',JSON.stringify(l));}catch(x){}}
 window.addEventListener('error',function(e){logError('window',e.error||e.message);});
 window.addEventListener('unhandledrejection',function(e){logError('promise',e.reason);});
+
+function saveLocalProgress(cid,data){try{var k='bp_'+cid;var ex=getLocalProgress(cid);var m=Object.assign(ex,data,{ts:Date.now()});localStorage.setItem(k,JSON.stringify(m));}catch(e){}}
+function getLocalProgress(cid){try{var r=localStorage.getItem('bp_'+cid);return r?JSON.parse(r):{};}catch(e){return{};}}
+function saveSessionToLocal(){if(!activeChild)return;saveLocalProgress(activeChild.id,{stars:sessionData?sessionData.stars:0,grade:activeGrade,lastSeen:new Date().toISOString()});}
+setInterval(saveSessionToLocal,60000);
+
+function imgFallback(img,emoji){img.style.display='none';var s=document.createElement('span');s.textContent=emoji||'🖼️';s.style.cssText='font-size:3rem;display:block;text-align:center;padding:20px;';if(img.parentNode)img.parentNode.insertBefore(s,img);}
+
+
+var LEARNING_PATH={'PreK':[{icon:'🔤',title:'Letter Names',desc:'Recognize A-Z'},{icon:'🔢',title:'Count to 10',desc:'Numbers 1-10'},{icon:'🎨',title:'Colors & Shapes',desc:'Basic shapes'},{icon:'🌿',title:'My World',desc:'Animals & nature'},{icon:'🧘',title:'Move & Breathe',desc:'Yoga & calm'}],'K':[{icon:'🔤',title:'Letter Sounds',desc:'Phonics A-Z'},{icon:'🔢',title:'Numbers to 20',desc:'Count & compare'},{icon:'✍',title:'Writing',desc:'Trace & write'},{icon:'🌍',title:'Community',desc:'Family & helpers'},{icon:'🔬',title:'Senses',desc:'5 senses science'}],'1':[{icon:'📖',title:'Reading',desc:'CVC & sight words'},{icon:'➕',title:'Add & Subtract',desc:'Within 20'},{icon:'✍',title:'Sentences',desc:'Capitals & punctuation'},{icon:'🌱',title:'Living Things',desc:'Plants & animals'},{icon:'🗺',title:'My Community',desc:'Maps & helpers'}],'2':[{icon:'📚',title:'Fluency',desc:'Read with expression'},{icon:'✖',title:'Multiplication',desc:'Groups & arrays'},{icon:'✏',title:'Opinion Writing',desc:'Claim & reasons'},{icon:'💧',title:'Earth Science',desc:'Water cycle'},{icon:'🏛',title:'History',desc:'Holidays & heroes'}],'3':[{icon:'📖',title:'Chapter Books',desc:'Main idea & details'},{icon:'✖',title:'Multiply & Divide',desc:'Facts 1-10'},{icon:'✍',title:'Narratives',desc:'Story structure'},{icon:'⚡',title:'Forces',desc:'Push, pull, motion'},{icon:'🗺',title:'Geography',desc:'Maps & regions'}],'4':[{icon:'📚',title:'Informational Text',desc:'Text features'},{icon:'➗',title:'Fractions',desc:'Equivalent & compare'},{icon:'🖊',title:'Research Writing',desc:'Sources & notes'},{icon:'🌊',title:'Ecosystems',desc:'Food webs'},{icon:'🏛',title:'U.S. History',desc:'Colonial era'}],'5':[{icon:'📖',title:'Literature',desc:'Theme & craft'},{icon:'÷',title:'Decimals',desc:'Add, subtract, multiply'},{icon:'✍',title:'Argumentative',desc:'Evidence & claims'},{icon:'⚗',title:'Matter',desc:'Physical & chemical'},{icon:'🌎',title:'World Cultures',desc:'Regions & traditions'}]};
+function showLearningPath(){var path=LEARNING_PATH[activeGrade]||LEARNING_PATH['K'];var ov=document.createElement('div');ov.id='lpOv';ov.style.cssText='position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#F4F1FF,#FFF0F8);overflow-y:auto;padding:20px;';var hdr=document.createElement('div');hdr.style.cssText='display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;';var ttl=document.createElement('div');ttl.style.cssText='font-family:Baloo 2,cursive;font-size:1.4rem;font-weight:800;color:#2D2D4E;';ttl.textContent='📚 '+activeGrade+' Learning Path';var cb=document.createElement('button');cb.textContent='×';cb.style.cssText='background:#8B6FE8;border:none;color:white;border-radius:50%;width:36px;height:36px;font-size:1.2rem;cursor:pointer;font-weight:800;flex-shrink:0;';cb.onclick=function(){ov.remove();};hdr.appendChild(ttl);hdr.appendChild(cb);ov.appendChild(hdr);path.forEach(function(item,i){var card=document.createElement('div');card.style.cssText='background:white;border-radius:18px;padding:18px;margin-bottom:12px;display:flex;align-items:center;gap:16px;box-shadow:0 4px 16px rgba(0,0,0,.08);';var ic=document.createElement('div');ic.style.cssText='font-size:2.2rem;flex-shrink:0;';ic.textContent=item.icon;var inf=document.createElement('div');inf.style.flex='1';var t=document.createElement('div');t.style.cssText='font-family:Baloo 2,cursive;font-weight:800;color:#2D2D4E;';t.textContent=item.title;var d=document.createElement('div');d.style.cssText='font-size:.82rem;color:#888;margin-top:2px;';d.textContent=item.desc;inf.appendChild(t);inf.appendChild(d);var b=document.createElement('div');b.style.cssText='background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:white;border-radius:20px;padding:4px 12px;font-size:.7rem;font-weight:800;white-space:nowrap;';b.textContent='Unit '+(i+1);card.appendChild(ic);card.appendChild(inf);card.appendChild(b);ov.appendChild(card);});var done=document.createElement('button');done.style.cssText='width:100%;margin-top:8px;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';done.textContent='Got it! ⭐';done.onclick=function(){ov.remove();};ov.appendChild(done);document.body.appendChild(ov);}
+
 function toggleSound(){
   soundEnabled=!soundEnabled;
   try{localStorage.setItem('bloomi_sound',soundEnabled?'on':'off');}catch(e){}
@@ -3753,10 +3765,10 @@ function buildGradeGames() {
 function openAllGames() {
   // v381: use cached grade games (GRADE_GAMES is local to renderGradeGames scope)
   var games = window._cachedGradeGames || [];
-  if (!games.length) {
-    alert('Please log in first to see your games!');
-    return;
+  if (!games.length && typeof gradeContent !== 'undefined' && gradeContent && gradeContent.games) {
+    games = gradeContent.games;
   }
+  if (!games.length) { toast('Tap a subject first!'); return; }
   var ov = document.createElement('div');
   ov.id = 'allGamesOv';
   ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#F4F0FB;display:flex;flex-direction:column;overflow-y:auto;font-family:Nunito,sans-serif;';
@@ -4066,6 +4078,10 @@ async function checkAnswer(btn, correct) {
   var nb = document.getElementById('nextBtn');
   if (nb) { nb.style.display='block'; }
 }
+
+function restartLesson(){qIdx=0;answered=false;var nb=document.getElementById('nextBtn');if(nb)nb.style.display='none';var fb=document.getElementById('quizFeedback');if(fb){fb.style.display='none';}renderQuestion();toast('🔄 Lesson restarted!');}
+function tryAgainQuestion(){answered=false;var ta=document.getElementById('tryAgainBtn');if(ta)ta.style.display='none';var nb=document.getElementById('nextBtn');if(nb)nb.style.display='none';renderQuestion();}
+
 function nextQuestion() {
   var nb = document.getElementById('nextBtn');
   if (nb) nb.style.display='none';
@@ -4791,10 +4807,18 @@ function switchColoringScene(idx) {
 function attachColoringListeners() {
   document.querySelectorAll('#coloringCanvas .fillable').forEach(el => {
     el.style.cursor = 'pointer';
-    el.onclick = function() {
+    el.addEventListener('touchend', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
       this.style.fill = activeColoringColor;
       this.setAttribute('fill', activeColoringColor);
-      // Little sparkle toast
+      const names = ['Nice!','Beautiful!','Love it!','So pretty!','Amazing!','Great color!'];
+      if (Math.random()<.3) toast('🌟 ' + names[Math.floor(Math.random()*names.length)]);
+    }, { passive:false });
+    el.onclick = function(e) {
+      if (e.sourceCapabilities && e.sourceCapabilities.firesTouchEvents) return;
+      this.style.fill = activeColoringColor;
+      this.setAttribute('fill', activeColoringColor);
       const names = ['Nice!','Beautiful!','Love it!','So pretty!','Amazing!','Great color!'];
       if (Math.random()<.3) toast('🌟 ' + names[Math.floor(Math.random()*names.length)]);
     };
