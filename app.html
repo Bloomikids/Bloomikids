@@ -75,7 +75,7 @@ input:-webkit-autofill:focus {
 .auth-logo { font-family:'Baloo 2',cursive; font-size:2.2rem; font-weight:800; text-align:center; margin-bottom:6px; background:linear-gradient(135deg,var(--coral),var(--sunshine)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
 .auth-logo span { -webkit-text-fill-color:var(--mint); }
 .auth-tagline { text-align:center; color:#5B2D8E; font-size:.95rem; font-weight:700; margin-bottom:16px; letter-spacing:.3px; }
-.auth-tabs { display:flex; gap:8px; margin-bottom:24px; }
+.auth-tabs { display:flex; gap:8px; margin-bottom:22px; background:#F0EEF8; border-radius:40px; padding:4px; }
 .auth-tab { flex:1; padding:10px; border-radius:40px; border:1px solid rgba(91,45,142,.15); cursor:pointer; font-family:'Nunito',sans-serif; font-size:.9rem; font-weight:700; background:rgba(91,45,142,.08); color:#5B2D8E; transition:all .2s; }
 .auth-tab.active { background:linear-gradient(135deg,#5B2D8E,#8B5CF6); color:white; box-shadow:0 4px 12px rgba(91,45,142,.35); }
 .form-group { margin-bottom:16px; }
@@ -87,6 +87,14 @@ input:-webkit-autofill:focus {
 .auth-btn:disabled { opacity:.6; cursor:not-allowed; transform:none; }
 .auth-error { background:#FFF0F0; border-radius:12px; padding:10px 14px; color:var(--coral); font-size:.88rem; font-weight:700; margin-top:12px; display:none; }
 .auth-error.show { display:block; }
+.auth-badges { display:flex; gap:7px; flex-wrap:wrap; justify-content:center; margin-bottom:20px; }
+.auth-badge { display:inline-flex; align-items:center; gap:4px; font-size:.75rem; font-weight:800; padding:6px 13px; border-radius:40px; }
+.badge-green  { background:#2ECC71; color:white; }
+.badge-blue   { background:#3A9BD5; color:white; }
+.badge-purple { background:#7B52C8; color:white; }
+.badge-orange { background:#F39C12; color:white; }
+.auth-install-wrap { width:100%; max-width:400px; display:flex; justify-content:center; }
+.auth-install-btn { display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg,#E67E22,#F39C12); color:white; border:none; border-radius:40px; padding:13px 28px; font-family:'Nunito',sans-serif; font-weight:800; font-size:.95rem; cursor:pointer; white-space:nowrap; }
 
 /* -- CHILD PICKER -------------------------------------- */
 #childPicker { position:fixed; inset:0; z-index:900; background:linear-gradient(160deg,#2D1B69 0%,#5B2D8E 40%,#8B5CF6 100%); display:flex; align-items:center; justify-content:center; flex-direction:column; padding:24px; }
@@ -746,30 +754,35 @@ input::placeholder { color:#aaa !important; }
 <!-- ══ AUTH ═════════════════════════════════════════════════ -->
 <div id="authScreen">
   <div class="auth-card">
-    <div class="auth-logo" style="text-align:center;"><img src="logo.png" alt="BloomiKids" style="width:clamp(110px,22vw,160px);height:auto;object-fit:contain;display:block !important;filter:drop-shadow(0 6px 18px rgba(91,45,142,.35));margin:0 auto 6px;"></div>
-    <div class="auth-tagline">Learn 📚 &nbsp;·&nbsp; Breathe 🧘 &nbsp;·&nbsp; Read 📖</div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:8px 0 18px;">
-      <span style="font-size:.68rem;font-weight:800;background:linear-gradient(135deg,#22C55E,#16A34A);color:white;padding:5px 11px;border-radius:20px;box-shadow:0 2px 6px rgba(34,197,94,.3);">✓ No Ads</span>
-      <span style="font-size:.68rem;font-weight:800;background:linear-gradient(135deg,#3B82F6,#2563EB);color:white;padding:5px 11px;border-radius:20px;box-shadow:0 2px 6px rgba(59,130,246,.3);">✓ No In-App Purchases</span>
-      <span style="font-size:.68rem;font-weight:800;background:linear-gradient(135deg,#8B5CF6,#7C3AED);color:white;padding:5px 11px;border-radius:20px;box-shadow:0 2px 6px rgba(139,92,246,.3);">🛡 COPPA Safe</span>
-      <span style="font-size:.68rem;font-weight:800;background:linear-gradient(135deg,#F59E0B,#D97706);color:white;padding:5px 11px;border-radius:20px;box-shadow:0 2px 6px rgba(245,158,11,.3);">★ CC Aligned</span>
+    <div style="text-align:center;margin-bottom:10px;">
+      <img src="logo.png" alt="BloomiKids" style="width:130px;height:130px;object-fit:contain;display:block;margin:0 auto;border-radius:50%;box-shadow:0 6px 24px rgba(107,53,184,.18);">
+    </div>
+    <div class="auth-tagline">Learn 📚 · Breathe 🧘 · Read 📖</div>
+    <div class="auth-badges">
+      <span class="auth-badge badge-green">✓ No Ads</span>
+      <span class="auth-badge badge-blue">✓ No In-App Purchases</span>
+      <span class="auth-badge badge-purple">🛡 COPPA Safe</span>
+      <span class="auth-badge badge-orange">★ CC Aligned</span>
     </div>
     <div class="auth-tabs">
       <button class="auth-tab active" onclick="showAuthTab('login')">Sign In</button>
       <button class="auth-tab" onclick="showAuthTab('signup')">Sign Up</button>
     </div>
     <div id="loginForm">
-      <div class="form-group"><label>Email</label><input type="email" id="loginEmail" placeholder="parent@email.com"></div>
-      <div class="form-group"><label>Password</label><input type="password" id="loginPassword" placeholder="••••••••"></div>
+      <div class="form-group"><label>Email</label><input type="email" id="loginEmail" placeholder="parent@email.com" autocomplete="email"></div>
+      <div class="form-group"><label>Password</label><input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password"></div>
       <button class="auth-btn" onclick="handleLogin()">Sign In →</button>
     </div>
     <div id="signupForm" style="display:none">
-      <div class="form-group"><label>Your Name</label><input type="text" id="signupName" placeholder="Jane Smith"></div>
-      <div class="form-group"><label>Email</label><input type="email" id="signupEmail" placeholder="parent@email.com"></div>
-      <div class="form-group"><label>Password (min 6 characters)</label><input type="password" id="signupPassword" placeholder="••••••••"></div>
+      <div class="form-group"><label>Your Name</label><input type="text" id="signupName" placeholder="Jane Smith" autocomplete="name"></div>
+      <div class="form-group"><label>Email</label><input type="email" id="signupEmail" placeholder="parent@email.com" autocomplete="email"></div>
+      <div class="form-group"><label>Password (min 6 chars)</label><input type="password" id="signupPassword" placeholder="••••••••" autocomplete="new-password"></div>
       <button class="auth-btn" onclick="handleSignup()">Create Free Account →</button>
     </div>
     <div class="auth-error" id="authError"></div>
+  </div>
+  <div class="auth-install-wrap" id="authInstallWrap" style="display:none;">
+    <button class="auth-install-btn" onclick="triggerInstall()">📲 Add to Home Screen</button>
   </div>
 </div>
 
@@ -2557,6 +2570,8 @@ let artActivitiesDone = 0;
 let artStarsEarned = 0;
 let colorMixCount = 0;
 let colorPick1 = null, colorPick2 = null;
+var soundEnabled = true;
+try { var _sv = localStorage.getItem('bloomi_sound'); if (_sv !== null) soundEnabled = (_sv !== 'off'); } catch(e) {}
 let drawPromptIdx = 0;
 let artContent = null;
 let artTabBuilt = false;  // ✅ FIX 4: only build art tab once per child session
@@ -3055,7 +3070,9 @@ function askNotificationPermission() {
   }
   if (Notification.permission !== 'denied') {
     // Ask after 30 seconds of use — not immediately
-    setTimeout(function() {
+    if(localStorage.getItem('bloomi_notif_asked'))return;
+    setTimeout(function(){
+      localStorage.setItem('bloomi_notif_asked','1');
       Notification.requestPermission().then(function(permission) {
         if (permission === 'granted') {
           scheduleStreakReminder();
@@ -3139,7 +3156,7 @@ function showPricingModal() {
 
         <div class="price-option" id="planMonthly" onclick="selectPlan('monthly')">
           <div class="price-label">Monthly Plan</div>
-          <div class="price-amount">$9.99<span style="font-size:1rem;color:#888;">/month</span></div>
+          <div class="price-amount">$8.99<span style="font-size:1rem;color:#888;">/month</span></div>
           <div class="price-note">Billed monthly · Cancel anytime</div>
         </div>
 
@@ -3378,7 +3395,24 @@ async function loadDashboardStats() {
 // ══════════════════════════════════════════════════════
 //  STAR BURST ANIMATION on correct answers
 // ══════════════════════════════════════════════════════
+
+var _analytics=[];
+function trackEvent(event,data){try{var e=Object.assign({event:event,ts:Date.now()},data||{});_analytics.push(e);var l=[];try{l=JSON.parse(localStorage.getItem('bloomi_analytics')||'[]');}catch(x){}l.push(e);if(l.length>100)l=l.slice(-100);localStorage.setItem('bloomi_analytics',JSON.stringify(l));}catch(x){}}
+function getAnalyticsLog(){try{return JSON.parse(localStorage.getItem('bloomi_analytics')||'[]');}catch(e){return[];}}
+var _errorLog=[];
+function logError(src,err){var e={source:src,msg:err?(err.message||String(err)):'unknown',ts:Date.now()};_errorLog.push(e);try{var l=JSON.parse(localStorage.getItem('bloomi_errors')||'[]');l.push(e);if(l.length>50)l=l.slice(-50);localStorage.setItem('bloomi_errors',JSON.stringify(l));}catch(x){}}
+window.addEventListener('error',function(e){logError('window',e.error||e.message);});
+window.addEventListener('unhandledrejection',function(e){logError('promise',e.reason);});
+function toggleSound(){
+  soundEnabled=!soundEnabled;
+  try{localStorage.setItem('bloomi_sound',soundEnabled?'on':'off');}catch(e){}
+  var btn=document.getElementById('soundToggleBtn');
+  if(btn)btn.textContent=soundEnabled?'🔊':'🔇';
+  toast(soundEnabled?'🔊 Sound on!':'🔇 Sound off');
+}
+
 function playSound(type) {
+  if (!soundEnabled) return;
   try {
     var ctx = new (window.AudioContext || window.webkitAudioContext)();
     if (type === 'correct') {
@@ -10181,7 +10215,7 @@ async function sendStreakReminders(){
   for(var i=0;i<keys.length;i++){
     var cid=keys[i].replace('notif_','');var name=localStorage.getItem('notif_name_'+cid)||'your child';
     var today=new Date().toISOString().split('T')[0];
-    try{var r=await sb.from('daily_activity').select('id').eq('child_id',cid).eq('activity_date',today).single();
+    try{var r=await sb.from('daily_activity').select('id').eq('child_id',cid).eq('activity_date',today).maybeSingle();
       if(!r.data)new Notification('BloomiKids - Keep the streak going!',{body:name+' has not learned today yet!',icon:'/logo.png',tag:'streak-'+cid});}
     catch(e){new Notification('Time to learn!',{body:name+' is waiting!',icon:'/logo.png',tag:'streak-'+cid});}
   }
@@ -10222,6 +10256,8 @@ function showIOSInstallGuide(){
   ov.onclick=function(e){if(e.target===ov)ov.remove();};
   document.body.appendChild(ov);
 }
+
+function triggerInstall(){if(typeof deferredPrompt!=='undefined'&&deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(function(r){deferredPrompt=null;var w=document.getElementById('authInstallWrap');if(w)w.style.display='none';if(r.outcome==='accepted')toast('BloomiKids added to your home screen!');});}else if(typeof showIOSInstallGuide==='function'){showIOSInstallGuide();}}
 
 function showInstallButton(){
   if(document.getElementById('installAppBtn'))return;
