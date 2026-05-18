@@ -739,8 +739,7 @@ input::placeholder { color:#aaa !important; }
 </head>
 <body>
 
-<div id="versionBadge" style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:#ccc;z-index:9999;pointer-events:none;">v390</div>
-  <div id="offlineBanner">📡 You're offline -- progress saves when you reconnect!</div>
+<div id="offlineBanner">📡 You're offline -- progress saves when you reconnect!</div>
 <div id="toast"></div>
 <div id="celebOverlay"></div>
 <div id="birthdayOverlay" style="position:fixed;inset:0;z-index:9999;background:rgba(45,45,78,.88);display:none;align-items:center;justify-content:center;flex-direction:column;">
@@ -3764,12 +3763,15 @@ function buildGradeGames() {
 
 // v380: fullscreen "See all Games" overlay
 function openAllGames() {
-  // v381: use cached grade games (GRADE_GAMES is local to renderGradeGames scope)
   var games = window._cachedGradeGames || [];
   if (!games.length && typeof gradeContent !== 'undefined' && gradeContent && gradeContent.games) {
     games = gradeContent.games;
   }
-  if (!games.length) { toast('Tap a subject first!'); return; }
+  if (!games.length && typeof GRADE_DATA !== 'undefined') {
+    var gd = GRADE_DATA[activeGrade] || GRADE_DATA['K'];
+    if (gd && gd.games) games = gd.games;
+  }
+  if (!games.length) { toast('No games yet — sign in first!'); return; }
   var ov = document.createElement('div');
   ov.id = 'allGamesOv';
   ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#F4F0FB;display:flex;flex-direction:column;overflow-y:auto;font-family:Nunito,sans-serif;';
