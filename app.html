@@ -105,7 +105,7 @@ input:-webkit-autofill:focus {
 #welcomeScreen{
   position:fixed;inset:0;z-index:950;
   display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(145deg,var(--bg),#E8F8F2);
+  background:linear-gradient(160deg,#2D1B69 0%,#5B2D8E 40%,#8B5CF6 100%);
   padding:24px;overflow-y:auto;
 }
 #welcomeScreen.hidden{display:none;}
@@ -817,16 +817,16 @@ input::placeholder { color:#aaa !important; }
 <div id="welcomeScreen" class="hidden">
   <div class="welcome-wrap">
     <div class="welcome-logo-ring">
-      <img src="bloomy_wave.png" alt="BloomiKids" style="width:150px;height:150px;object-fit:contain;display:block;">
+      <img src="bloomy_wave.png" alt="BloomiKids" style="width:150px;height:150px;object-fit:contain;display:block;margin:0 auto;">
     </div>
     <div class="welcome-confetti">🌟✨🌱🎉💫</div>
-    <h1 class="welcome-h1">Welcome to<br>BloomiKids! 🎉</h1>
-    <p class="welcome-sub">You're all set! Lets create your child's profile so they can start learning, moving, and reading today.</p>
+    <h1 class="welcome-h1" style="color:white;">Welcome to<br>BloomiKids! 🎉</h1>
+    <p class="welcome-sub" style="color:rgba(255,255,255,.85);">You're all set! Lets create your child's profile so they can start learning, moving, and reading today.</p>
     <button class="welcome-btn" onclick="addChild()">
       <span>➕ Set Up My Child's Profile</span>
       <span class="welcome-btn-arrow">→</span>
     </button>
-    <p class="welcome-note">Takes less than 30 seconds · <button onclick="showPricingModal()" style="background:none;border:none;color:var(--mint);font-weight:800;cursor:pointer;font-size:inherit;">See pricing</button></p>
+    <p class="welcome-note" style="color:rgba(255,255,255,.7);">Takes less than 30 seconds · <button onclick="showPricingModal()" style="background:none;border:none;color:var(--mint);font-weight:800;cursor:pointer;font-size:inherit;">See pricing</button></p>
     <button class="logout-link" style="margin-top:24px" onclick="handleLogout()">← Sign out</button>
   </div>
 </div>
@@ -4844,7 +4844,7 @@ function setupDrawCanvas() {
       var fillRgb = hexToRgb(fillColor);
       // Don't fill if clicking on a dark outline pixel
       var brightness = (targetR * 299 + targetG * 587 + targetB * 114) / 1000;
-      if (brightness < 80 && targetA > 128) {
+      if (brightness < 120 && targetA > 128) {
         toast('🖊 Pick a white area to color!');
         return;
       }
@@ -4856,7 +4856,7 @@ function setupDrawCanvas() {
       // Simple scanline flood fill on the fill canvas
       var stack = [[startX, startY]];
       var visited = new Uint8Array(canvas.width * canvas.height);
-      var tolerance = 60;
+      var tolerance = 30;
 
       function colorsMatch(i) {
         return Math.abs(data[i]-targetR) < tolerance &&
