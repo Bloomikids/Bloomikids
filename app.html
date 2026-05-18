@@ -3717,31 +3717,34 @@ function buildGradeGames() {
       {icon:'📖', label:'Reading Corner',  fn:"openPassageReader('2')", color:'#1D4ED8'},
     ],
     3: [
-      {icon:'✖️', label:'Multiply!',       fn:"openMathGame('3')",      color:'#22c55e'},
-      {icon:'🏛',  label:'Place Values',   fn:"openMathGame('3')",      color:'#6366F1'},
-      {icon:'📝', label:'Homophones',      fn:"openLangGame('3')",      color:'#EC4899'},
-      {icon:'⚗️', label:'Science Sort',    fn:"openScienceGame('3')",   color:'#0EA5E9'},
-      {icon:'🌍', label:'Social Studies',  fn:"openSSGame('3')",        color:'#F59E0B'},
-      {icon:'📐', label:'Shapes Sort',     fn:"openColorsGame('3')",    color:'#8B5CF6'},
-      {icon:'🛒', label:'Shop Math',       fn:"openShopMath('3')",      color:'#F59E0B'},
+      {icon:'✖️', label:'Multiply Mania',  fn:"openMathGame('3')",      color:'#22c55e'},
+      {icon:'💧', label:'Water Cycle',     fn:"openScienceGame('3')",   color:'#0EA5E9'},
+      {icon:'📖', label:'Fact Finder',     fn:"openPassageReader('3')", color:'#1D4ED8'},
+      {icon:'✏️', label:'Grammar Grab',    fn:"openLangGame('3')",      color:'#EC4899'},
+      {icon:'🎱', label:'Math Bingo',      fn:"openMathGame('3')",      color:'#6366F1'},
+      {icon:'🗺️', label:'Map Mission',     fn:"openSSGame('3')",        color:'#F59E0B'},
+      {icon:'⚖️', label:'Fact or Opinion', fn:"openLangGame('3')",      color:'#8B5CF6'},
+      {icon:'🛒', label:'Shop Math',       fn:"openShopMath('3')",      color:'#D97706'},
       {icon:'📚', label:'Busy Book',       fn:"openBusyBook('3')",      color:'#0369A1'},
-      {icon:'📖', label:'Reading Corner',  fn:"openPassageReader('3')", color:'#1D4ED8'},
     ],
     4: [
-      {icon:'✖️', label:'Multiply!',       fn:"openMathGame('4')",      color:'#22c55e'},
-      {icon:'➗', label:'Division',        fn:"openMathGame('4')",      color:'#6366F1'},
-      {icon:'📝', label:'Language Arts',   fn:"openLangGame('4')",      color:'#EC4899'},
-      {icon:'⚗️', label:'Science Sort',    fn:"openScienceGame('4')",   color:'#0EA5E9'},
-      {icon:'🌍', label:'Social Studies',  fn:"openSSGame('4')",        color:'#F59E0B'},
+      {icon:'🍕', label:'Fraction Feast',  fn:"openMathGame('4')",      color:'#22c55e'},
+      {icon:'🌸', label:'Grammar Garden',  fn:"openLangGame('4')",      color:'#EC4899'},
+      {icon:'🔬', label:'Science Sort Lab',fn:"openScienceGame('4')",   color:'#0EA5E9'},
+      {icon:'📖', label:'Vocabulary Vault',fn:"openLangGame('4')",      color:'#6366F1'},
+      {icon:'✍️', label:'Story Relay',     fn:"openPassageReader('4')", color:'#F59E0B'},
+      {icon:'🌍', label:'Social Studies',  fn:"openSSGame('4')",        color:'#D97706'},
       {icon:'📐', label:'Angles Sort',     fn:"openColorsGame('4')",    color:'#8B5CF6'},
       {icon:'📖', label:'Reading Corner',  fn:"openPassageReader('4')", color:'#1D4ED8'},
     ],
     5: [
-      {icon:'➗', label:'Long Division',   fn:"openMathGame('5')",      color:'#22c55e'},
-      {icon:'🎯', label:'Estimation',      fn:"openMathGame('5')",      color:'#6366F1'},
-      {icon:'📝', label:'Vocab & Grammar', fn:"openLangGame('5')",      color:'#EC4899'},
-      {icon:'🔬', label:'Science Sort',    fn:"openScienceGame('5')",   color:'#0EA5E9'},
-      {icon:'🌍', label:'Social Studies',  fn:"openSSGame('5')",        color:'#F59E0B'},
+      {icon:'📍', label:'Coordinate Chase',fn:"openMathGame('5')",      color:'#22c55e'},
+      {icon:'🔎', label:'Evidence Explorer',fn:"openPassageReader('5')",color:'#1D4ED8'},
+      {icon:'🧮', label:'Problem Solver',  fn:"openMathGame('5')",      color:'#6366F1'},
+      {icon:'🏆', label:'Jeopardy',        fn:"openPassageReader('5')", color:'#F59E0B'},
+      {icon:'🗺️', label:'Treasure Hunt',   fn:"openSSGame('5')",        color:'#D97706'},
+      {icon:'⚖️', label:'Argument Builder',fn:"openLangGame('5')",      color:'#EC4899'},
+      {icon:'🔬', label:'Research Race',   fn:"openScienceGame('5')",   color:'#0EA5E9'},
       {icon:'⚗️', label:'Mixtures Sort',   fn:"openColorsGame('5')",    color:'#8B5CF6'},
       {icon:'📖', label:'Reading Corner',  fn:"openPassageReader('5')", color:'#1D4ED8'},
     ],
@@ -3820,7 +3823,7 @@ function openAllGames() {
     '<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 14px;position:sticky;top:0;background:#F4F0FB;z-index:10;border-bottom:1px solid rgba(45,27,61,.06);">'
       +'<button onclick="document.getElementById(\'allGamesOv\').remove()" style="width:42px;height:42px;border-radius:50%;background:white;border:none;cursor:pointer;font-size:18px;color:#2D1B3D;box-shadow:0 3px 0 rgba(0,0,0,.15);">←</button>'
       +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1.1rem;color:#2D1B3D;">🎮 All Games</div>'
-      +'<button onclick="goHomeFromOverlay()" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.15);">🏠</button>'
+      
     +'</div>'
     +'<div style="padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">'
     + games.map(function(g) {
@@ -4827,71 +4830,66 @@ function setupDrawCanvas() {
     }
 
     function floodFill(startX, startY, fillColor) {
-      // Draw the coloring image onto canvas first to get pixel data
+      // Sample from the actual image (not canvas) to get true colors
       var offscreen = document.createElement('canvas');
       offscreen.width = canvas.width;
       offscreen.height = canvas.height;
       var octx = offscreen.getContext('2d');
-      octx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      // Also composite existing fill layer
-      octx.drawImage(canvas, 0, 0);
-
+      try { octx.drawImage(img, 0, 0, canvas.width, canvas.height); } catch(e) { return; }
+      
       var imageData = octx.getImageData(0, 0, canvas.width, canvas.height);
       var data = imageData.data;
       var idx = (startY * canvas.width + startX) * 4;
-      var targetR = data[idx], targetG = data[idx+1], targetB = data[idx+2], targetA = data[idx+3];
+      var targetR = data[idx], targetG = data[idx+1], targetB = data[idx+2];
 
-      var fillRgb = hexToRgb(fillColor);
-      // Don't fill if clicking on a dark outline pixel
+      // Don't fill if clicking on a dark outline pixel (brightness < 100)
       var brightness = (targetR * 299 + targetG * 587 + targetB * 114) / 1000;
-      if (brightness < 120 && targetA > 128) {
-        toast('🖊 Pick a white area to color!');
+      if (brightness < 100) {
+        toast('👉 Tap inside the lines to fill!');
         return;
       }
 
-      var fillCtx = canvas.getContext('2d');
-      fillCtx.globalAlpha = 0.7;
-      fillCtx.fillStyle = fillColor;
-
-      // Simple scanline flood fill on the fill canvas
-      var stack = [[startX, startY]];
-      var visited = new Uint8Array(canvas.width * canvas.height);
-      var tolerance = 30;
+      var fillRgb = hexToRgb(fillColor);
+      var tolerance = 40;
 
       function colorsMatch(i) {
         return Math.abs(data[i]-targetR) < tolerance &&
                Math.abs(data[i+1]-targetG) < tolerance &&
-               Math.abs(data[i+2]-targetB) < tolerance &&
-               data[i+3] > 20;
+               Math.abs(data[i+2]-targetB) < tolerance;
       }
 
-      var minX=startX, maxX=startX, minY=startY, maxY=startY;
+      // Scanline flood fill for speed
+      var visited = new Uint8Array(canvas.width * canvas.height);
+      var stack = [startY * canvas.width + startX];
       var count = 0;
-      while (stack.length && count < 500000) {
+      
+      while (stack.length && count < 800000) {
         count++;
-        var point = stack.pop();
-        var x = point[0], y = point[1];
+        var pos = stack.pop();
+        var x = pos % canvas.width;
+        var y = Math.floor(pos / canvas.width);
         if (x < 0 || x >= canvas.width || y < 0 || y >= canvas.height) continue;
-        var vi = y * canvas.width + x;
-        if (visited[vi]) continue;
-        var pi = vi * 4;
-        if (!colorsMatch(pi)) continue;
-        visited[vi] = 1;
-        if (x < minX) minX=x; if (x > maxX) maxX=x;
-        if (y < minY) minY=y; if (y > maxY) maxY=y;
-        stack.push([x+1,y],[x-1,y],[x,y+1],[x,y-1]);
+        if (visited[pos]) continue;
+        if (!colorsMatch(pos * 4)) continue;
+        visited[pos] = 1;
+        stack.push(pos+1, pos-1, pos+canvas.width, pos-canvas.width);
       }
 
-      // Fill the bounding region with color
-      fillCtx.globalAlpha = 0.65;
-      for (var fy = minY; fy <= maxY; fy++) {
-        for (var fx = minX; fx <= maxX; fx++) {
-          if (visited[fy * canvas.width + fx]) {
-            fillCtx.fillRect(fx, fy, 1, 1);
-          }
+      // Write fill color pixels to draw canvas
+      var fillCtx = canvas.getContext('2d');
+      var outData = fillCtx.getImageData(0, 0, canvas.width, canvas.height);
+      var out = outData.data;
+      var fr = fillRgb[0], fg = fillRgb[1], fb = fillRgb[2];
+      for (var i = 0; i < visited.length; i++) {
+        if (visited[i]) {
+          var p = i * 4;
+          out[p]   = fr;
+          out[p+1] = fg;
+          out[p+2] = fb;
+          out[p+3] = 180; // semi-transparent so outlines show through
         }
       }
-      fillCtx.globalAlpha = 1.0;
+      fillCtx.putImageData(outData, 0, 0);
     }
 
     function doFill(e) {
@@ -8075,7 +8073,7 @@ function openScienceGame(grade) {
           +'</div>';
       }).join('')
       +'</div>'
-      +'<div id="sciCheckWrap" style="text-align:center;margin-top:16px;display:none;">'
+      +'<div id="sciCheckWrap" style="text-align:center;margin-top:16px;">'
       +'<button onclick="window._sciCheck('+JSON.stringify(items)+')" style="padding:14px 36px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(14,165,233,.4);">✅ Check Answers!</button>'
       +'</div>'
       +'</div>';
@@ -8124,10 +8122,19 @@ function openScienceGame(grade) {
       _sciSelected.style.border='2px solid #0EA5E9';
       _sciSelected.style.boxShadow='0 2px 8px rgba(14,165,233,.2)';
       catEl.appendChild(_sciSelected);
+      // Allow tapping placed item to move it back to belt
+      _sciSelected.onclick=function(){ 
+        var belt=document.getElementById('itemBelt');
+        if(belt){ 
+          delete this.dataset.placed;
+          this.style.background='linear-gradient(135deg,#0EA5E9,#38BDF8)';
+          this.style.color='white'; this.style.border='none';
+          this.style.boxShadow='0 4px 12px rgba(14,165,233,.3)';
+          belt.appendChild(this);
+          this.onclick=function(){window._sciTap(this);};
+        }
+      };
       _sciSelected=null;
-      var belt=document.getElementById('itemBelt');
-      var remaining=belt?belt.querySelectorAll('[data-cat]').length:0;
-      if(remaining===0){ var cw=document.getElementById('sciCheckWrap'); if(cw) cw.style.display='block'; }
     };
 
     window._sciCheck=function(items){
