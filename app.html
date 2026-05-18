@@ -3962,8 +3962,14 @@ function buildYogaGrid() {
   const grid = document.getElementById('yogaGrid');
   if(!grid) return;
   grid.innerHTML = '';
-  if(!gradeContent || !gradeContent.poses) return;
-  gradeContent.poses.forEach(function(p) {
+  // Fallback: use gradeContent or GRADE_DATA directly
+  var poses = (gradeContent && gradeContent.poses) ? gradeContent.poses
+    : (typeof GRADE_DATA !== 'undefined' && activeGrade && GRADE_DATA[activeGrade]) ? GRADE_DATA[activeGrade].poses
+    : (typeof GRADE_DATA !== 'undefined') ? GRADE_DATA['K'].poses : [];
+  if(!poses || !poses.length) return;
+  gradeContent = gradeContent || {};
+  gradeContent.poses = poses;
+  poses.forEach(function(p) {
     var card = document.createElement('div');
     card.className = 'pose-card';
     card.style.cssText = 'background:white;border-radius:20px;padding:14px;text-align:center;box-shadow:var(--shadow);cursor:pointer;';
@@ -4047,6 +4053,7 @@ async function checkAnswer(btn, correct) {
     showStarBurst(btn);
     bloomiReact('correct');
     playSound('correct');
+    if(typeof trackEvent==='function') trackEvent('quiz_correct',{grade:activeGrade});
   } else {
     // Show correct answer in green
     var opts = document.getElementById('quizOptions');
@@ -4060,6 +4067,7 @@ async function checkAnswer(btn, correct) {
     }
     bloomiReact('wrong');
     playSound('wrong');
+    if(typeof trackEvent==='function') trackEvent('quiz_wrong',{grade:activeGrade});
   }
   const stars = correct?10:2;
   setSyncState('syncing');
@@ -9910,7 +9918,12 @@ function getStandardsSummary(grade, quizResults) {
 }
 
 async function openParentDashboard() {
-  openActualDashboard();
+  var storedPin = localStorage.getItem('bloomi_parent_pin');
+  if (!storedPin) {
+    showParentPinSetup();
+  } else {
+    showParentPinEntry(storedPin);
+  }
 }
 function showParentPinSetup() {
   var ov = document.createElement('div');
