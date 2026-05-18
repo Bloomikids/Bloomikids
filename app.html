@@ -4269,6 +4269,7 @@ function initBreathing() {
     : ['Breathe In... 🌬','Hold... ✨','Breathe Out... 🍃','Relax... 💫'];
   let bIdx=0;
   const el=document.getElementById('breathInstruction');
+  if (!el) return;
   if (el._breathInterval) clearInterval(el._breathInterval);
   el._breathInterval=setInterval(()=>{ bIdx=(bIdx+1)%phrases.length; el.textContent=phrases[bIdx]; },2000);
 }
@@ -4817,12 +4818,23 @@ function setupDrawCanvas() {
     if(!drawing) return;
     e.preventDefault();
     var pos = getPos(e);
-    ctx.globalCompositeOperation = activeColoringColor==='#FFFFFF'?'destination-out':'source-over';
+    if (activeColoringColor==='#FFFFFF') {
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.strokeStyle = 'rgba(255,255,255,1)';
+    } else {
+      ctx.globalCompositeOperation = 'source-over';
+      // Use semi-transparent color so outlines show through
+      var hex = activeColoringColor.replace('#','');
+      if (hex.length===3) hex=hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+      var r=parseInt(hex.substring(0,2),16);
+      var g=parseInt(hex.substring(2,4),16);
+      var b=parseInt(hex.substring(4,6),16);
+      ctx.strokeStyle = 'rgba('+r+','+g+','+b+',0.55)';
+    }
     ctx.beginPath();
     ctx.moveTo(lastX, lastY);
     ctx.lineTo(pos.x, pos.y);
-    ctx.strokeStyle = activeColoringColor;
-    ctx.lineWidth = (window._brushSize||12) * (canvas.width/canvas.getBoundingClientRect().width);
+    ctx.lineWidth = (window._brushSize||20) * (canvas.width/canvas.getBoundingClientRect().width);
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
     ctx.stroke();
@@ -8484,7 +8496,7 @@ function openMindfulStories() {
     +'<div style="padding:0 18px 32px;display:grid;gap:14px;">'
       +MINDFUL_STORIES.map(function(s) {
         var stars = (typeof sessionData!=='undefined') ? (sessionData.stars||0) : 0;
-        var locked = s.cost > 0 && stars < s.cost;
+        var locked = false; // all stories unlocked
         return '<div onclick="'+(locked?'':'"_playMindfulStory(\''+s.id+'\')"'[0]).slice(0,0)+(!locked?'_playMindfulStory(\''+s.id+'\')':'')+'" style="background:rgba(255,255,255,'+(locked?'.04':'.08')+');border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:18px;cursor:'+(locked?'default':'pointer')+';display:flex;align-items:center;gap:14px;opacity:'+(locked?'.6':'1')+'">'
           +'<div style="width:60px;height:60px;border-radius:18px;background:'+(locked?'rgba(255,255,255,.1)':s.color)+';display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;">'+(locked?'🔒':s.icon)+'</div>'
           +'<div style="flex:1;">'
