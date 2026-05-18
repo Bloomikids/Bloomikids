@@ -1,5 +1,5 @@
-// bk-v390
-const CACHE_NAME = 'bk-v390';
+// bk-v392
+const CACHE_NAME = 'bk-v392';
 
 self.addEventListener('install', e => {
   self.skipWaiting();
