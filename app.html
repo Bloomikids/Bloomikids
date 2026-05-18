@@ -3511,7 +3511,6 @@ async function selectChild(child) {
   buildSubjectCards();
   buildReadingButtons();
   buildGradeGames();
-  if (!gradeContent && typeof GRADE_DATA !== 'undefined') { gradeContent = GRADE_DATA[activeGrade] || GRADE_DATA['K']; }
   buildYogaGrid();
   buildProgressSection();
   // Header
@@ -3586,15 +3585,16 @@ async function selectChild(child) {
 
 function applyGradeUI() {
   const ui = gradeContent.ui;
-  document.getElementById('appSubtitle').textContent    = ui.subtitle;
-  document.getElementById('streakTitle').textContent    = ui.streakTitle;
-  document.getElementById('streakSubtitle').textContent = ui.streakSub;
-  document.getElementById('subjectsTitle').textContent  = ui.subjectsTitle;
-  document.getElementById('quizTitle').textContent      = ui.quizTitle;
-  document.getElementById('posesTitle').textContent     = ui.posesTitle;
-  document.getElementById('breathSub').textContent      = ui.breathSub;
-  document.getElementById('bookshelfTitle').textContent = ui.bookshelfTitle;
-  document.getElementById('timerTopLabel').textContent  = ui.timerTopLabel;
+  function setText(id, val) { var el = document.getElementById(id); if (el && val !== undefined) el.textContent = val; }
+  setText('appSubtitle',    ui.subtitle);
+  setText('streakTitle',    ui.streakTitle);
+  setText('streakSubtitle', ui.streakSub);
+  setText('subjectsTitle',  ui.subjectsTitle);
+  setText('quizTitle',      ui.quizTitle);
+  setText('posesTitle',     ui.posesTitle);
+  setText('breathSub',      ui.breathSub);
+  setText('bookshelfTitle', ui.bookshelfTitle);
+  setText('timerTopLabel',  ui.timerTopLabel);
   ['tabLearn','tabLearn2'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=ui.tabLearn; });
   ['tabMove', 'tabMove2' ].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=ui.tabMove; });
   ['tabRead', 'tabRead2' ].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=ui.tabRead; });
@@ -3636,7 +3636,6 @@ function buildGradeGames() {
   if (!container) return;
 
   // Grade-appropriate game tiles
-  window.GRADE_GAMES = window.GRADE_GAMES || {};
   var GRADE_GAMES = {
     PreK: [
       {icon:'🌱', label:"Bloom's Reading Path", fn:"openReadingPath()",     color:'#5ECDA0'},
@@ -3720,7 +3719,6 @@ function buildGradeGames() {
   var games = GRADE_GAMES[activeGrade] || GRADE_GAMES['2'];
   // v381: cache globally for openAllGames
   window._cachedGradeGames = games;
-  window.GRADE_GAMES_BUILT = GRADE_GAMES;
 
   // v377 — convert raw color to a "deeper" shade for pillow shadow
   function _darken(hex) {
