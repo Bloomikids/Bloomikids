@@ -1,18 +1,27 @@
-// bk-v382 — force kill all caches
-const CACHE_NAME = 'bk-v382';
-self.addEventListener('install', e => { self.skipWaiting(); });
+// bk-v390
+const CACHE_NAME = 'bk-v390';
+
+self.addEventListener('install', e => {
+  self.skipWaiting();
+});
+
 self.addEventListener('activate', e => {
   e.waitUntil(
-    caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k))))
-    .then(() => self.clients.claim())
-    .then(() => self.clients.matchAll().then(clients => clients.forEach(c => c.navigate(c.url))))
+    caches.keys()
+      .then(keys => Promise.all(keys.map(k => caches.delete(k))))
+      .then(() => self.clients.claim())
+      .then(() => self.clients.matchAll({includeUncontrolled:true}))
+      .then(clients => clients.forEach(c => c.navigate(c.url)))
   );
 });
+
 self.addEventListener('fetch', e => {
-  if (e.request.method !== 'GET') { e.respondWith(fetch(e.request)); return; }
-  if (e.request.url.includes('app.html') || e.request.url.endsWith('/')) {
-    e.respondWith(fetch(e.request.url + '?v=382'));
+  // Never cache — always go to network
+  if (e.request.method !== 'GET') {
+    e.respondWith(fetch(e.request));
     return;
   }
-  e.respondWith(fetch(e.request));
+  e.respondWith(
+    fetch(e.request).catch(() => caches.match(e.request))
+  );
 });
