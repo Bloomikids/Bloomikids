@@ -3511,6 +3511,7 @@ async function selectChild(child) {
   buildSubjectCards();
   buildReadingButtons();
   buildGradeGames();
+  if (!gradeContent && typeof GRADE_DATA !== 'undefined') { gradeContent = GRADE_DATA[activeGrade] || GRADE_DATA['K']; }
   buildYogaGrid();
   buildProgressSection();
   // Header
@@ -3635,6 +3636,7 @@ function buildGradeGames() {
   if (!container) return;
 
   // Grade-appropriate game tiles
+  window.GRADE_GAMES = window.GRADE_GAMES || {};
   var GRADE_GAMES = {
     PreK: [
       {icon:'🌱', label:"Bloom's Reading Path", fn:"openReadingPath()",     color:'#5ECDA0'},
@@ -3718,6 +3720,7 @@ function buildGradeGames() {
   var games = GRADE_GAMES[activeGrade] || GRADE_GAMES['2'];
   // v381: cache globally for openAllGames
   window._cachedGradeGames = games;
+  window.GRADE_GAMES_BUILT = GRADE_GAMES;
 
   // v377 — convert raw color to a "deeper" shade for pillow shadow
   function _darken(hex) {
@@ -3763,15 +3766,12 @@ function buildGradeGames() {
 
 // v380: fullscreen "See all Games" overlay
 function openAllGames() {
+  // v381: use cached grade games (GRADE_GAMES is local to renderGradeGames scope)
   var games = window._cachedGradeGames || [];
   if (!games.length && typeof gradeContent !== 'undefined' && gradeContent && gradeContent.games) {
     games = gradeContent.games;
   }
-  if (!games.length && typeof GRADE_DATA !== 'undefined') {
-    var gd = GRADE_DATA[activeGrade] || GRADE_DATA['K'];
-    if (gd && gd.games) games = gd.games;
-  }
-  if (!games.length) { toast('No games yet — sign in first!'); return; }
+  if (!games.length) { toast('Tap a subject first!'); return; }
   var ov = document.createElement('div');
   ov.id = 'allGamesOv';
   ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#F4F0FB;display:flex;flex-direction:column;overflow-y:auto;font-family:Nunito,sans-serif;';
