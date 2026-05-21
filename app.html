@@ -21,10 +21,10 @@
 
 <style>
 :root {
-  --mint:     #2ED573;
-  --sky:      #1E90FF;
-  --sunshine: #FFA502;
-  --coral:    #FF4757;
+  --mint:     #5ECDA0;
+  --sky:      #4ECDC4;
+  --sunshine: #FFD166;
+  --coral:    #FF6B6B;
   --lavender: #C9B8FF;
   --bg:       #EEE8FF;
   --text:     #2D2D4E;
@@ -760,6 +760,64 @@ input::placeholder { color:#aaa !important; }
 #coloringCanvas svg line:not(.fillable),
 #coloringCanvas svg polyline:not(.fillable) { pointer-events:none; fill:none; }
 
+
+/* ═══ PROGRESSION SYSTEM ═══ */
+.journey-bar { background:white; border-radius:20px; padding:14px 16px; margin-bottom:16px;
+  box-shadow:0 4px 20px rgba(107,53,184,.12); border:2px solid rgba(107,53,184,.08); }
+.journey-top { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+.journey-avatar { width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg,#8B6FE8,#C9B8FF);
+  display:flex; align-items:center; justify-content:center; font-size:1.6rem; flex-shrink:0;
+  box-shadow:0 4px 12px rgba(139,111,232,.4); border:3px solid white; }
+.journey-info { flex:1; }
+.journey-name { font-family:'Baloo 2',cursive; font-weight:800; font-size:1rem; color:#1A1A2E; }
+.journey-level { font-size:.72rem; font-weight:700; color:#8B6FE8; margin-top:1px; }
+.journey-xp-bar { height:10px; background:#F0EEFF; border-radius:10px; overflow:hidden; position:relative; }
+.journey-xp-fill { height:100%; border-radius:10px;
+  background:linear-gradient(90deg,#8B6FE8,#C084FC,#FFD700);
+  background-size:200% 100%; animation:xpShimmer 2s linear infinite;
+  transition:width 1s cubic-bezier(.34,1.56,.64,1); }
+@keyframes xpShimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+.journey-xp-text { font-size:.65rem; font-weight:800; color:#8B6FE8; margin-top:3px; text-align:right; }
+.journey-badges { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+.j-badge { background:linear-gradient(135deg,#FFD700,#FFA500); color:white;
+  border-radius:20px; padding:3px 10px; font-size:.65rem; font-weight:800;
+  box-shadow:0 2px 6px rgba(255,165,0,.4); }
+.j-badge.locked { background:#F0F0F8; color:#CCC; box-shadow:none; }
+
+/* Mission tracker */
+.mission-track { background:linear-gradient(135deg,#1A1A2E,#2D1B69); border-radius:18px;
+  padding:12px 14px; margin-bottom:14px; color:white; }
+.mission-title { font-family:'Baloo 2',cursive; font-weight:800; font-size:.85rem; margin-bottom:8px; }
+.mission-steps { display:flex; gap:6px; align-items:center; }
+.mission-step { width:36px; height:36px; border-radius:50%; border:2px solid rgba(255,255,255,.3);
+  display:flex; align-items:center; justify-content:center; font-size:1rem;
+  transition:all .4s cubic-bezier(.34,1.56,.64,1); flex-shrink:0; }
+.mission-step.done { background:linear-gradient(135deg,#22c55e,#4ade80);
+  border-color:#22c55e; transform:scale(1.1); box-shadow:0 4px 12px rgba(34,197,94,.5); }
+.mission-step.active { background:rgba(255,255,255,.15); border-color:rgba(255,255,255,.6); animation:missionPulse 1.5s ease infinite; }
+.mission-step.locked { background:rgba(255,255,255,.05); }
+.mission-connector { flex:1; height:3px; background:rgba(255,255,255,.15); border-radius:2px; }
+.mission-connector.done { background:linear-gradient(90deg,#22c55e,#4ade80); }
+@keyframes missionPulse { 0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.4)} 50%{box-shadow:0 0 0 6px rgba(255,255,255,0)} }
+
+/* Level up overlay */
+.level-up-overlay { position:fixed; inset:0; z-index:99999; background:rgba(0,0,0,.75);
+  display:flex; align-items:center; justify-content:center;
+  animation:fadeIn .3s ease; }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+.level-up-card { background:linear-gradient(160deg,#1A1A2E,#2D1B69,#4C1D95);
+  border-radius:32px; padding:40px 32px; text-align:center; max-width:340px; width:90%;
+  border:2px solid rgba(255,215,0,.4); box-shadow:0 0 60px rgba(139,92,246,.6);
+  animation:bounceIn .6s cubic-bezier(.34,1.56,.64,1) both; }
+
+/* Daily streak display */
+.streak-display { display:flex; align-items:center; gap:8px; background:linear-gradient(135deg,#FF6B35,#FFD700);
+  border-radius:14px; padding:8px 14px; margin-bottom:12px; }
+.streak-fire { font-size:1.6rem; animation:streakFlame 1s ease infinite alternate; }
+@keyframes streakFlame { from{transform:scale(1) rotate(-5deg)} to{transform:scale(1.1) rotate(5deg)} }
+.streak-num { font-family:'Baloo 2',cursive; font-size:1.5rem; font-weight:800; color:white; }
+.streak-label { font-size:.7rem; font-weight:800; color:rgba(255,255,255,.9); }
+
 </style>
   <link rel="icon" href="favicon.ico" sizes="32x32">
   <link rel="icon" href="favicon.png" type="image/png">
@@ -788,7 +846,8 @@ input::placeholder { color:#aaa !important; }
     <div class="auth-badges">
       <span class="auth-badge badge-green">✓ No Ads</span>
       <span class="auth-badge badge-blue">✓ No In-App Purchases</span>
-
+      <span class="auth-badge badge-purple">🛡 COPPA Safe</span>
+      <span class="auth-badge badge-orange">★ CC Aligned</span>
     </div>
     <div class="auth-tabs">
       <button class="auth-tab active" onclick="showAuthTab('login')">Sign In</button>
@@ -888,7 +947,7 @@ input::placeholder { color:#aaa !important; }
   </div>
 
   <!-- v3 HERO: Bloomy mascot + speech bubble greeting -->
-  <div id="v3Hero" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;margin:4px 0 12px;text-align:center;">
+  <div id="v3Hero" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;margin:4px 0 16px;min-height:130px;text-align:center;">
     <div style="width:130px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;">
       <div style="position:relative;display:inline-block;">
         <img id="v3HeroMascot" src="bloomy_wave.png" onclick="bloomiDance()" alt="Bloom" style="max-width:100%;max-height:130px;object-fit:contain;filter:drop-shadow(0 6px 4px rgba(0,0,0,.15));cursor:pointer;">
@@ -1089,7 +1148,7 @@ input::placeholder { color:#aaa !important; }
   <div class="panel" id="panel-yoga">
     <!-- v383: Home button -->
     <div style="display:flex;align-items:center;gap:10px;padding:8px 0 4px;">
-      <button onclick="switchTab('academics')" style="width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,.15);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;flex-shrink:0;">✕</button>
+      <button onclick="switchTab('academics')" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.15);flex-shrink:0;">🏠</button>
       <span style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1.05rem;color:#2D1B3D;">🧘 Mindful Moments</span>
     </div>
     <!-- -- MUSIC PLAYER -- -->
@@ -1146,7 +1205,7 @@ input::placeholder { color:#aaa !important; }
   <div class="panel" id="panel-art">
     <!-- v383: Home button for Art panel (not a fixed overlay so global injector doesn't reach it) -->
     <div style="display:flex;align-items:center;gap:10px;padding:8px 0 4px;">
-      <button onclick="switchTab('academics')" style="width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,.15);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;flex-shrink:0;">✕</button>
+      <button onclick="switchTab('academics')" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.15);flex-shrink:0;">🏠</button>
       <span style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1.05rem;color:#2D1B3D;">🎨 Create</span>
     </div>
     <div class="art-hero" id="artHero">
@@ -1207,7 +1266,7 @@ input::placeholder { color:#aaa !important; }
   <div class="panel" id="panel-reading">
     <!-- v383: Home button -->
     <div style="display:flex;align-items:center;gap:10px;padding:8px 0 4px;">
-      <button onclick="switchTab('academics')" style="width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,.15);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;flex-shrink:0;">✕</button>
+      <button onclick="switchTab('academics')" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.15);flex-shrink:0;">🏠</button>
       <span style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1.05rem;color:#2D1B3D;">📖 Stories</span>
     </div>
     <div class="stats-row">
@@ -2993,6 +3052,165 @@ function updateBloomLevel(stars) {
   }
 }
 
+
+// ══════════════════════════════════════════════════════
+//  PROGRESSION SYSTEM
+// ══════════════════════════════════════════════════════
+
+var BLOOM_LEVELS = [
+  { name:'Seedling',    emoji:'🌱', xpNeeded:50,  level:1, color:'#5ECDA0' },
+  { name:'Sprout',      emoji:'🌿', xpNeeded:150, level:2, color:'#22c55e' },
+  { name:'Bud',         emoji:'🌷', xpNeeded:300, level:3, color:'#FF6B9D' },
+  { name:'Bloomer',     emoji:'🌸', xpNeeded:500, level:4, color:'#A855F7' },
+  { name:'Super Bloom', emoji:'🌺', xpNeeded:800, level:5, color:'#FF6B35' },
+  { name:'Master',      emoji:'🌻', xpNeeded:9999,level:6, color:'#FFD700' },
+];
+
+var BADGES = [
+  { id:'first_star',   label:'⭐ First Star',   req: function(s,d,t){ return s>=1; } },
+  { id:'ten_stars',    label:'🌟 10 Stars',      req: function(s,d,t){ return s>=10; } },
+  { id:'streak3',      label:'🔥 3-Day Streak',  req: function(s,d,t){ return d>=3; } },
+  { id:'game5',        label:'🎮 5 Games',       req: function(s,d,t){ return t>=5; } },
+  { id:'fifty_stars',  label:'🏆 50 Stars',      req: function(s,d,t){ return s>=50; } },
+  { id:'streak7',      label:'🔥🔥 Week Streak', req: function(s,d,t){ return d>=7; } },
+  { id:'hundred',      label:'💯 100 Stars',     req: function(s,d,t){ return s>=100; } },
+  { id:'master',       label:'👑 Master Bloomer',req: function(s,d,t){ return s>=500; } },
+];
+
+var _prevLevel = 1;
+
+function updateJourneyBar() {
+  var stars = sessionData ? (sessionData.stars || 0) : 0;
+  var streak = sessionData ? (sessionData.streak || 0) : 0;
+  var tasks = sessionData ? (sessionData.tasks || 0) : 0;
+
+  // Find current level
+  var lvl = BLOOM_LEVELS[0];
+  var totalXP = stars;
+  for (var i = BLOOM_LEVELS.length-1; i >= 0; i--) {
+    if (totalXP >= BLOOM_LEVELS[i].xpNeeded || i === 0) {
+      // Find by cumulative
+    }
+  }
+  // Simple level calc
+  var cumulative = 0;
+  var currentLvl = BLOOM_LEVELS[0];
+  var nextLvl = BLOOM_LEVELS[1];
+  for (var i = 0; i < BLOOM_LEVELS.length; i++) {
+    if (totalXP < BLOOM_LEVELS[i].xpNeeded) {
+      currentLvl = i > 0 ? BLOOM_LEVELS[i-1] : BLOOM_LEVELS[0];
+      nextLvl = BLOOM_LEVELS[i];
+      break;
+    }
+    if (i === BLOOM_LEVELS.length - 1) {
+      currentLvl = BLOOM_LEVELS[i];
+      nextLvl = null;
+    }
+  }
+
+  // XP within current level
+  var xpMin = currentLvl.xpNeeded;
+  var xpMax = nextLvl ? nextLvl.xpNeeded : currentLvl.xpNeeded + 500;
+  var xpProgress = Math.min(100, Math.round(((totalXP - xpMin) / (xpMax - xpMin)) * 100));
+  if (totalXP < 50) { xpMin = 0; xpMax = 50; xpProgress = Math.round((totalXP/50)*100); }
+
+  // Update DOM
+  var avatar = document.getElementById('journeyAvatar');
+  var nameEl = document.getElementById('journeyChildName');
+  var levelEl = document.getElementById('journeyLevelName');
+  var starsEl = document.getElementById('journeyStars');
+  var xpFill = document.getElementById('journeyXPFill');
+  var xpText = document.getElementById('journeyXPText');
+  var badgesEl = document.getElementById('journeyBadges');
+
+  if (avatar) avatar.textContent = currentLvl.emoji;
+  if (nameEl && activeChild) nameEl.textContent = activeChild.name || 'Explorer';
+  if (levelEl) levelEl.textContent = currentLvl.name + ' · Level ' + currentLvl.level;
+  if (starsEl) starsEl.textContent = stars + ' ⭐';
+  if (xpFill) xpFill.style.width = xpProgress + '%';
+  if (xpText) {
+    var remaining = nextLvl ? (xpMax - totalXP) : 0;
+    xpText.textContent = nextLvl
+      ? (totalXP - xpMin) + ' / ' + (xpMax - xpMin) + ' XP — ' + remaining + ' to ' + nextLvl.name
+      : '👑 MAX LEVEL!';
+  }
+
+  // Check level up
+  if (currentLvl.level > _prevLevel && _prevLevel > 0) {
+    showLevelUpOverlay(currentLvl);
+  }
+  _prevLevel = currentLvl.level;
+
+  // Badges
+  if (badgesEl) {
+    var earned = BADGES.filter(function(b){ return b.req(stars, streak, tasks); });
+    if (earned.length > 0) {
+      badgesEl.innerHTML = earned.slice(0,4).map(function(b){
+        return '<div class="j-badge">'+b.label+'</div>';
+      }).join('');
+    } else {
+      badgesEl.innerHTML = '<div class="j-badge locked">🔒 Earn your first badge!</div>';
+    }
+  }
+}
+
+function showLevelUpOverlay(lvl) {
+  var ov = document.createElement('div');
+  ov.className = 'level-up-overlay';
+  ov.innerHTML = '<div class="level-up-card">'+
+    '<div style="font-size:5rem;margin-bottom:8px;animation:mascotCelebrate 0.8s ease infinite;">'+lvl.emoji+'</div>'+
+    '<div style="color:#FFD700;font-family:Baloo 2,cursive;font-size:1rem;font-weight:800;margin-bottom:4px;letter-spacing:.1em;">LEVEL UP!</div>'+
+    '<div style="color:white;font-family:Baloo 2,cursive;font-size:2rem;font-weight:800;margin-bottom:8px;">'+lvl.name+'</div>'+
+    '<div style="color:rgba(255,255,255,.8);font-size:.9rem;margin-bottom:24px;">You are growing into a true Bloomer! 🌟</div>'+
+    '<button onclick="var p=this.parentElement.parentElement;if(p)p.remove();" style="padding:14px 32px;border-radius:40px;border:none;background:linear-gradient(135deg,#FFD700,#FFA500);color:#1A1A2E;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Awesome! 🌟</button>'+
+    '</div>';
+  document.body.appendChild(ov);
+  if(typeof celebrateLevelComplete==='function') celebrateLevelComplete();
+  ov.onclick = function(e){ if(e.target===ov) ov.remove(); };
+}
+
+// Update mission steps UI
+function updateMissionUI() {
+  var done = sessionData ? (sessionData.tasks || 0) : 0;
+  var icons = ['📖','🎮','🧘'];
+  var labels = ['Learn','Play','Move'];
+  for (var i = 0; i < 3; i++) {
+    var step = document.getElementById('mstep'+i);
+    var conn = document.getElementById('mconn'+i);
+    if (!step) continue;
+    if (i < done) {
+      step.className = 'mission-step done';
+      step.textContent = '✓';
+      if (conn) conn.className = 'mission-connector done';
+    } else if (i === done) {
+      step.className = 'mission-step active';
+      step.textContent = icons[i];
+    } else {
+      step.className = 'mission-step locked';
+      step.textContent = icons[i];
+    }
+  }
+  var lbl = document.getElementById('missionCountLabel');
+  if (lbl) lbl.textContent = Math.min(done,3) + '/3 complete' + (done>=3?' ✓':'');
+  // Also update old inline mission
+  var inline = document.getElementById('missionInline');
+  if (inline) inline.textContent = "Today's Mission · " + Math.min(done,3) + "/3";
+}
+
+// Hook into completeMission
+var _origCompleteMission = typeof completeMission === 'function' ? completeMission : null;
+function completeMission(type) {
+  if (_origCompleteMission) _origCompleteMission(type);
+  setTimeout(function() {
+    updateJourneyBar();
+    updateMissionUI();
+  }, 100);
+}
+window.completeMission = completeMission;
+
+// Hook into logGameComplete
+var _origLogGameComplete = typeof logGameComplete === 'function' ? logGameComplete : null;
+
 function updateBloomiStreak(streak) {
   var numEl = document.getElementById('bloomiStreakNum');
   var lblEl = document.getElementById('bloomiStreakLabel');
@@ -3305,7 +3523,7 @@ function showComprehensionCheck(onComplete) {
   navBar.style.cssText = 'position:absolute;top:14px;left:14px;display:flex;gap:10px;z-index:10;';
   navBar.innerHTML =
     '<button onclick="document.getElementById(\'comprehensionOv\').remove()" title="Back" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.9);border:none;cursor:pointer;font-size:18px;color:#2D1B3D;box-shadow:0 3px 0 rgba(0,0,0,.3);">←</button>'
-    +'<button onclick="goHomeFromOverlay()" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.2);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;">✕</button>';
+    +'<button onclick="goHomeFromOverlay()" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.3);">🏠</button>';
   ov.appendChild(navBar);
 
   var card = document.createElement('div');
@@ -3535,6 +3753,7 @@ async function selectChild(child) {
   setTimeout(showIntroVideo, 500);
   applyGradeUI();
   buildSubjectCards();
+  setTimeout(function(){ updateJourneyBar(); updateMissionUI(); }, 200);
   buildReadingButtons();
   buildGradeGames();
   buildYogaGrid();
@@ -3738,10 +3957,10 @@ function buildGradeGames() {
     ],
     5: [
       {icon:'📍', label:'Coordinate Chase',fn:"openMathGame('5')",      color:'#22c55e'},
-      {icon:'🔎', label:'Evidence Explorer',fn:"openEvidenceExplorer()",color:'#1D4ED8'},
+      {icon:'🔎', label:'Evidence Explorer',fn:"openPassageReader('5')",color:'#1D4ED8'},
       {icon:'🧮', label:'Problem Solver',  fn:"openMathGame('5')",      color:'#6366F1'},
-      {icon:'🏆', label:'Jeopardy',        fn:"openJeopardy()",          color:'#7C3AED'},
-      {icon:'🗺️', label:'Treasure Hunt',   fn:"openTreasureHunt()",     color:'#D97706'},
+      {icon:'🏆', label:'Jeopardy',        fn:"openPassageReader('5')", color:'#F59E0B'},
+      {icon:'🗺️', label:'Treasure Hunt',   fn:"openSSGame('5')",        color:'#D97706'},
       {icon:'⚖️', label:'Argument Builder',fn:"openLangGame('5')",      color:'#EC4899'},
       {icon:'🔬', label:'Research Race',   fn:"openScienceGame('5')",   color:'#0EA5E9'},
       {icon:'⚗️', label:'Mixtures Sort',   fn:"openColorsGame('5')",    color:'#8B5CF6'},
@@ -4898,19 +5117,11 @@ function setupDrawCanvas() {
         var ctx2 = canvas.getContext('2d');
         ctx2.globalCompositeOperation = 'destination-out';
         ctx2.beginPath();
-        ctx2.arc(pos.x, pos.y, 30, 0, Math.PI*2);
+        ctx2.arc(pos.x, pos.y, 20, 0, Math.PI*2);
         ctx2.fill();
         ctx2.globalCompositeOperation = 'source-over';
       } else {
         floodFill(pos.x, pos.y, activeColoringColor);
-        // Redraw image outline on top so lines always show
-        setTimeout(function() {
-          var topCtx = canvas.getContext('2d');
-          topCtx.save();
-          topCtx.globalCompositeOperation = 'multiply';
-          topCtx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          topCtx.restore();
-        }, 50);
       }
     }
 
@@ -7009,7 +7220,7 @@ function gameHeader(title, emoji, colorA, colorB, ovId) {
     +'<div style="font-size:1.4rem;">'+emoji+'</div>'
     +'<div style="font-family:Baloo 2,cursive;font-size:1.05rem;font-weight:800;letter-spacing:.3px;">'+title+'</div>'
     +'<div style="display:flex;gap:6px;">'
-      +'<button onclick="goHomeFromOverlay()" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;font-size:.9rem;">✕</button>'
+      +'<button onclick="goHomeFromOverlay()" title="Home" style="background:#FFD166;border:none;color:#5C3A00;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;font-size:.9rem;line-height:1;box-shadow:0 2px 0 rgba(0,0,0,.2);">🏠</button>'
       +'<button data-closeov="'+ovId+'" title="Back" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;font-size:1rem;line-height:1;">✕</button>'
     +'</div>'
     +'</div>';
@@ -7063,7 +7274,7 @@ function gameHeader(title, emoji, colorA, colorB, ovId) {
     +'<div style="font-size:1.4rem;">'+emoji+'</div>'
     +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.05rem;font-weight:800;letter-spacing:.3px;">'+title+'</div>'
     +'<div style="display:flex;gap:6px;">'
-      +'<button onclick="goHomeFromOverlay()" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;font-size:.9rem;">✕</button>'
+      +'<button onclick="goHomeFromOverlay()" title="Home" style="background:#FFD166;border:none;color:#5C3A00;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;font-size:.9rem;line-height:1;box-shadow:0 2px 0 rgba(0,0,0,.2);">🏠</button>'
       +'<button onclick="document.getElementById(\''+ovId+'\').remove();" title="Back" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;font-size:1rem;line-height:1;">✕</button>'
     +'</div>'
     +'</div>';
@@ -8563,7 +8774,7 @@ function openMindfulStories() {
     '<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 14px 8px;">'
       +'<div style="display:flex;gap:10px;">'
         +'<button onclick="closeMindfulStories()" title="Back" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;font-size:18px;color:white;box-shadow:0 3px 0 rgba(0,0,0,.4),inset 0 -2px 0 rgba(0,0,0,.06);">←</button>'
-        +'<button onclick="goHomeFromOverlay()" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.2);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;">✕</button>'
+        +'<button onclick="goHomeFromOverlay()" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.3),inset 0 -2px 0 rgba(0,0,0,.06);">🏠</button>'
       +'</div>'
       +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1.05rem;color:white;">🌙 Mindful Stories</div>'
       +'<button id="mindfulMuteBtn" onclick="toggleMindfulMute()" title="Mute/unmute narration" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;font-size:18px;color:white;box-shadow:0 3px 0 rgba(0,0,0,.4);">'+(muted?'🔇':'🔊')+'</button>'
@@ -8608,7 +8819,7 @@ function _playMindfulStory(id) {
     '<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 14px 8px;">'
       +'<div style="display:flex;gap:10px;">'
         +'<button onclick="openMindfulStories()" title="Back to stories" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;font-size:18px;color:white;box-shadow:0 3px 0 rgba(0,0,0,.4);">←</button>'
-        +'<button onclick="goHomeFromOverlay()" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.2);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;">✕</button>'
+        +'<button onclick="goHomeFromOverlay()" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.3);">🏠</button>'
       +'</div>'
       +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1.05rem;color:white;text-align:center;flex:1;padding:0 8px;">'+story.icon+' '+story.title+'</div>'
       +'<button onclick="toggleMindfulMute(true)" title="Mute/unmute" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;font-size:18px;color:white;box-shadow:0 3px 0 rgba(0,0,0,.4);" id="mindfulMuteBtn2">'+(muted?'🔇':'🔊')+'</button>'
@@ -8661,247 +8872,6 @@ function closeMindfulStories() {
 }
 
 // v379: Universal "go home from overlay" — closes any open overlay & returns to home
-
-function openEvidenceExplorer() {
-  var CA='#1D4ED8', CB='#3B82F6';
-  var PASSAGES = [
-    { text:'Penguins live in Antarctica. They cannot fly, but they are excellent swimmers. Their black and white feathers help them blend in the ocean. Emperor penguins are the tallest — they can grow up to 4 feet tall!',
-      q:'What helps penguins blend into the ocean?', opts:['Their black and white feathers','Their sharp claws','Their long beaks','Their size'], a:0,
-      e:'The passage says "their black and white feathers help them blend in the ocean."' },
-    { text:'The Amazon rainforest produces 20% of the world oxygen. It is home to over 3 million species. Scientists call it the "lungs of the Earth" because of all the oxygen it creates.',
-      q:'Why do scientists call the Amazon the "lungs of the Earth"?', opts:['It breathes like humans','It creates large amounts of oxygen','It looks like lungs on a map','It has the most animals'], a:1,
-      e:'The passage says scientists call it the lungs of the Earth "because of all the oxygen it creates."' },
-    { text:'Marie Curie was the first woman to win a Nobel Prize and the only person to win it in two different sciences — Physics and Chemistry. She discovered the elements polonium and radium. She worked so hard she often forgot to eat.',
-      q:'What makes Marie Curie unique in Nobel Prize history?', opts:['She was the youngest winner','She won in two different sciences','She declined the prize','She won it three times'], a:1,
-      e:'The passage says she is "the only person to win it in two different sciences."' },
-  ];
-  var idx=0, score=0;
-  var ov = document.createElement('div');
-  ov.id = 'evidenceOv';
-  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#EFF6FF;display:flex;flex-direction:column;';
-  document.body.appendChild(ov);
-
-  function render() {
-    if (idx >= PASSAGES.length) {
-      ov.innerHTML = '<div style="padding:40px;text-align:center;"><div style="font-size:3.5rem;margin-bottom:16px;">🔎</div>'+
-        '<div style="font-family:Baloo 2,cursive;font-size:1.5rem;font-weight:800;color:#1D4ED8;">'+score+'/'+PASSAGES.length+' Correct!</div>'+
-        '<div style="color:#888;margin:12px 0 24px;">'+(score===PASSAGES.length?'Perfect evidence hunter!':'Good reading! Keep practicing!')+'</div>'+
-        '<button onclick="document.getElementById(\'evidenceOv\').remove();" style="padding:14px 32px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;">Done ✕</button></div>';
-      return;
-    }
-    var p = PASSAGES[idx];
-    ov.innerHTML = '<div style="background:linear-gradient(135deg,'+CA+','+CB+');padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">'+
-      '<div style="font-family:Baloo 2,cursive;font-weight:800;color:white;">🔎 Evidence Explorer</div>'+
-      '<div style="display:flex;align-items:center;gap:10px;"><span style="color:rgba(255,255,255,.9);font-size:.9rem;">⭐ '+score+'/'+PASSAGES.length+'</span>'+
-      '<button onclick="document.getElementById(\'evidenceOv\').remove();" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:36px;height:36px;cursor:pointer;font-weight:800;font-size:1.1rem;">✕</button></div></div>'+
-      '<div style="flex:1;overflow-y:auto;padding:20px;max-width:500px;margin:0 auto;width:100%;">'+
-      '<div style="background:white;border-radius:16px;padding:18px;margin-bottom:16px;line-height:1.7;font-size:.95rem;color:#1e293b;box-shadow:0 4px 16px rgba(0,0,0,.08);">'+p.text+'</div>'+
-      '<div style="background:linear-gradient(135deg,#DBEAFE,#EFF6FF);border-radius:16px;padding:16px;margin-bottom:16px;font-weight:700;color:#1D4ED8;">❓ '+p.q+'</div>'+
-      p.opts.map(function(o,i){ return '<button onclick="window._evAnswer('+i+')" style="width:100%;margin-bottom:10px;padding:14px;border-radius:14px;border:2px solid #BFDBFE;background:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;text-align:left;">'+o+'</button>'; }).join('')+
-      '<div style="text-align:center;color:#888;font-size:.8rem;margin-top:8px;">Question '+(idx+1)+' of '+PASSAGES.length+'</div></div>';
-    window._evAnswer = function(chosen) {
-      document.querySelectorAll('[onclick^="window._evAnswer"]').forEach(function(b){b.style.pointerEvents='none';});
-      var btns = document.querySelectorAll('[onclick^="window._evAnswer"]');
-      btns[p.a].style.background='#D1FAE5'; btns[p.a].style.borderColor='#22c55e';
-      if(chosen===p.a){ score++; toast('✅ Correct! Great evidence finding!'); playSound('correct'); }
-      else { btns[chosen].style.background='#FEE2E2'; btns[chosen].style.borderColor='#ef4444'; toast('💡 '+p.e); playSound('wrong'); }
-      idx++; setTimeout(render, 1500);
-    };
-  }
-  render();
-}
-window.openEvidenceExplorer = openEvidenceExplorer;
-
-
-function openJeopardy() {
-  var CA='#7C3AED', CB='#A78BFA';
-  var categories = [
-    { name:'Math', color:'#2563EB', qs:[
-      {v:100,q:'What is 12 × 12?',a:'144'},
-      {v:200,q:'What is 144 ÷ 12?',a:'12'},
-      {v:300,q:'What fraction equals 0.5?',a:'½'},
-    ]},
-    { name:'Science', color:'#059669', qs:[
-      {v:100,q:'What gas do plants absorb?',a:'Carbon dioxide (CO2)'},
-      {v:200,q:'What planet is closest to the Sun?',a:'Mercury'},
-      {v:300,q:'What is H2O?',a:'Water'},
-    ]},
-    { name:'Language', color:'#DC2626', qs:[
-      {v:100,q:'What is a noun?',a:'A person, place, or thing'},
-      {v:200,q:'What punctuation ends a question?',a:'Question mark (?)'},
-      {v:300,q:'What is an antonym of "hot"?',a:'Cold'},
-    ]},
-  ];
-  var score = 0;
-  var ov = document.createElement('div');
-  ov.id = 'jeopardyOv';
-  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#1e1b4b;display:flex;flex-direction:column;overflow-y:auto;';
-  document.body.appendChild(ov);
-
-  function renderBoard() {
-    ov.innerHTML = '';
-    var hdr = document.createElement('div');
-    hdr.style.cssText = 'background:linear-gradient(135deg,#1e1b4b,#312e81);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;';
-    var title = document.createElement('div');
-    title.style.cssText = 'font-family:Baloo 2,cursive;font-weight:800;color:#FFD700;font-size:1.1rem;';
-    title.textContent = '🏆 Jeopardy!';
-    var scoreEl = document.createElement('span');
-    scoreEl.style.cssText = 'color:#FFD700;font-weight:800;margin-right:10px;';
-    scoreEl.textContent = '$' + score;
-    var closeBtn = document.createElement('button');
-    closeBtn.textContent = '✕';
-    closeBtn.style.cssText = 'background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:36px;height:36px;cursor:pointer;font-weight:800;font-size:1.1rem;';
-    closeBtn.onclick = function() { document.getElementById('jeopardyOv').remove(); };
-    var right = document.createElement('div');
-    right.style.cssText = 'display:flex;align-items:center;gap:8px;';
-    right.appendChild(scoreEl); right.appendChild(closeBtn);
-    hdr.appendChild(title); hdr.appendChild(right);
-    ov.appendChild(hdr);
-
-    var body = document.createElement('div');
-    body.style.cssText = 'padding:20px;';
-    var grid = document.createElement('div');
-    grid.style.cssText = 'display:grid;grid-template-columns:repeat(3,1fr);gap:6px;border-radius:12px;overflow:hidden;';
-
-    categories.forEach(function(cat) {
-      var col = document.createElement('div');
-      var catHeader = document.createElement('div');
-      catHeader.style.cssText = 'background:'+cat.color+';color:white;font-family:Baloo 2,cursive;font-weight:800;padding:12px;text-align:center;border-radius:10px 10px 0 0;font-size:.9rem;';
-      catHeader.textContent = cat.name;
-      col.appendChild(catHeader);
-      cat.qs.forEach(function(q, qi) {
-        var cell = document.createElement('div');
-        if (q.used) {
-          cell.style.cssText = 'background:#1e1b4b;border:1px solid #3730a3;height:60px;';
-        } else {
-          cell.style.cssText = 'background:linear-gradient(135deg,#3730a3,#4338ca);color:#FFD700;font-family:Baloo 2,cursive;font-weight:800;font-size:1.1rem;text-align:center;padding:16px;cursor:pointer;border:1px solid #4338ca;';
-          cell.textContent = '$' + q.v;
-          (function(c, qi2) {
-            cell.onclick = function() { window._jeopardyQ(c, qi2); };
-          })(cat, qi);
-        }
-        col.appendChild(cell);
-      });
-      grid.appendChild(col);
-    });
-    body.appendChild(grid);
-    ov.appendChild(body);
-
-    window._jeopardyQ = function(cat, qi) {
-      var q = cat.qs[qi];
-      var modal = document.createElement('div');
-      modal.style.cssText = 'position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;padding:20px;';
-      var box = document.createElement('div');
-      box.style.cssText = 'background:linear-gradient(135deg,#3730a3,#4338ca);border-radius:24px;padding:28px;max-width:400px;width:100%;text-align:center;';
-      var catLabel = document.createElement('div');
-      catLabel.style.cssText = 'color:#FFD700;font-weight:800;font-size:.85rem;margin-bottom:8px;';
-      catLabel.textContent = cat.name + ' — $' + q.v;
-      var qText = document.createElement('div');
-      qText.style.cssText = 'color:white;font-family:Baloo 2,cursive;font-size:1.2rem;font-weight:800;margin-bottom:20px;line-height:1.5;';
-      qText.textContent = q.q;
-      var input = document.createElement('input');
-      input.type = 'text'; input.placeholder = 'Type your answer...';
-      input.style.cssText = 'width:100%;padding:12px;border-radius:12px;border:none;font-size:1rem;font-family:Nunito,sans-serif;text-align:center;box-sizing:border-box;';
-      var btnRow = document.createElement('div');
-      btnRow.style.cssText = 'display:flex;gap:10px;margin-top:16px;';
-      var submitBtn = document.createElement('button');
-      submitBtn.textContent = 'Submit ✓';
-      submitBtn.style.cssText = 'flex:1;padding:12px;border-radius:30px;border:none;background:#FFD700;color:#1e1b4b;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';
-      var showBtn = document.createElement('button');
-      showBtn.textContent = 'Show Answer';
-      showBtn.style.cssText = 'flex:1;padding:12px;border-radius:30px;border:none;background:rgba(255,255,255,.2);color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';
-      submitBtn.onclick = function() {
-        var userAns = input.value.toLowerCase().trim();
-        var correct = q.a.toLowerCase();
-        cat.qs[qi].used = true;
-        modal.remove();
-        if (userAns && (correct.indexOf(userAns) > -1 || userAns.indexOf(correct.split(' ')[0]) > -1)) {
-          score += q.v; toast('✅ Correct! +$' + q.v); if(typeof playSound==='function')playSound('correct');
-        } else { toast('💡 Answer: ' + q.a); if(typeof playSound==='function')playSound('wrong'); }
-        renderBoard();
-      };
-      showBtn.onclick = function() { cat.qs[qi].used = true; modal.remove(); toast('💡 Answer: ' + q.a); renderBoard(); };
-      box.appendChild(catLabel); box.appendChild(qText); box.appendChild(input); btnRow.appendChild(submitBtn); btnRow.appendChild(showBtn); box.appendChild(btnRow);
-      modal.appendChild(box); document.body.appendChild(modal); input.focus();
-    };
-  }
-
-  renderBoard();
-}
-window.openJeopardy = openJeopardy;
-window.openJeopardy = openJeopardy;
-
-
-function openTreasureHunt() {
-  var CA='#D97706', CB='#F59E0B';
-  var clues = [
-    {clue:'🌍 I am the largest continent on Earth. Explorers sailed for months to reach my shores. What continent am I?', a:'Asia', opts:['Asia','Africa','Europe','Australia']},
-    {clue:'🗺️ I am a line on a map that runs east and west. Ships use me to find their position. I am called lines of what?', a:'Latitude', opts:['Latitude','Longitude','Altitude','Longitude']},
-    {clue:'🏔️ I am the tallest mountain in the world. I sit on the border of Nepal and Tibet. What is my name?', a:'Mount Everest', opts:['Mount Everest','Mount Fuji','K2','Mont Blanc']},
-    {clue:'🌊 I am the largest ocean on Earth covering more than a third of the globe. Ships cross me to reach Asia from America. What ocean am I?', a:'Pacific Ocean', opts:['Pacific Ocean','Atlantic Ocean','Indian Ocean','Arctic Ocean']},
-  ];
-  var idx=0, score=0;
-  var ov = document.createElement('div');
-  ov.id = 'treasureHuntOv';
-  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#FEF3C7,#FDE68A);display:flex;flex-direction:column;';
-  document.body.appendChild(ov);
-
-  function render() {
-    ov.innerHTML = '';
-    if (idx >= clues.length) {
-      var done = document.createElement('div');
-      done.style.cssText = 'padding:40px;text-align:center;';
-      done.innerHTML = '<div style="font-size:3.5rem;margin-bottom:16px;">🗺️🏆</div>'+
-        '<div style="font-family:Baloo 2,cursive;font-size:1.5rem;font-weight:800;color:#92400E;">Treasure Found! '+score+'/'+clues.length+'</div>'+
-        '<div style="color:#888;margin:12px 0 24px;">'+(score===clues.length?'Perfect explorer!':'Great journey!')+'</div>';
-      var doneBtn = document.createElement('button');
-      doneBtn.textContent = 'Done ✕';
-      doneBtn.style.cssText = 'padding:14px 32px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';
-      doneBtn.onclick = function() { document.getElementById('treasureHuntOv').remove(); };
-      done.appendChild(doneBtn);
-      ov.appendChild(done);
-      return;
-    }
-    var c = clues[idx];
-    var hdr = document.createElement('div');
-    hdr.style.cssText = 'background:linear-gradient(135deg,'+CA+','+CB+');padding:14px 20px;display:flex;justify-content:space-between;align-items:center;';
-    var t = document.createElement('div');
-    t.style.cssText = 'font-family:Baloo 2,cursive;font-weight:800;color:white;';
-    t.textContent = '🗺️ Treasure Hunt — Clue '+(idx+1)+'/'+clues.length;
-    var xBtn = document.createElement('button');
-    xBtn.textContent = '✕';
-    xBtn.style.cssText = 'background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:36px;height:36px;cursor:pointer;font-weight:800;font-size:1.1rem;';
-    xBtn.onclick = function() { document.getElementById('treasureHuntOv').remove(); };
-    hdr.appendChild(t); hdr.appendChild(xBtn); ov.appendChild(hdr);
-
-    var body = document.createElement('div');
-    body.style.cssText = 'flex:1;overflow-y:auto;padding:24px;max-width:500px;margin:0 auto;width:100%;';
-    var clueCard = document.createElement('div');
-    clueCard.style.cssText = 'background:white;border-radius:20px;padding:24px;margin-bottom:20px;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.1);';
-    clueCard.innerHTML = '<div style="font-size:2.5rem;margin-bottom:12px;">🔍</div><div style="font-family:Baloo 2,cursive;font-size:1.1rem;font-weight:800;color:#92400E;line-height:1.5;">'+c.clue+'</div>';
-    body.appendChild(clueCard);
-
-    c.opts.forEach(function(o) {
-      var btn = document.createElement('button');
-      btn.textContent = o;
-      btn.style.cssText = 'width:100%;margin-bottom:10px;padding:14px;border-radius:14px;border:2px solid #FCD34D;background:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;display:block;';
-      (function(answer) {
-        btn.onclick = function() {
-          body.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});
-          if(answer===c.a){ score++; if(typeof playSound==='function')playSound('correct'); toast('🎉 Correct! You found the treasure!'); }
-          else { if(typeof playSound==='function')playSound('wrong'); toast('💡 The answer was: '+c.a); }
-          idx++; setTimeout(render, 1500);
-        };
-      })(o);
-      body.appendChild(btn);
-    });
-    ov.appendChild(body);
-  }
-
-  render();
-}
-window.openTreasureHunt = openTreasureHunt;
-
 function goHomeFromOverlay() {
   _mindfulStop();
   // Remove any open overlay
@@ -9283,7 +9253,7 @@ function openPhonicsGame(grade) {
   navBar.style.cssText = 'position:absolute;top:14px;left:14px;display:flex;gap:10px;z-index:100;';
   navBar.innerHTML =
     '<button onclick="document.getElementById(\'phonicsOv\').remove()" title="Back" style="width:42px;height:42px;border-radius:50%;background:white;border:none;cursor:pointer;font-size:18px;color:#2D1B3D;box-shadow:0 3px 0 rgba(0,0,0,.15);">←</button>'
-    +'<button onclick="goHomeFromOverlay()" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.2);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;">✕</button>';
+    +'<button onclick="goHomeFromOverlay()" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.15);">🏠</button>';
   ov.appendChild(navBar);
 
   var WORDS = {
@@ -9424,7 +9394,7 @@ function openPhonicsGame(grade) {
       +'<div style="font-size:5rem;margin-bottom:8px;">🏆</div>'
       +'<div style="font-family:Baloo 2,cursive;font-size:2rem;font-weight:800;">Amazing Reader!</div>'
       +'<div style="font-size:1rem;opacity:.9;margin:8px 0 24px;">'+score+' words mastered!</div>'
-      +'<button onclick="document.getElementById(&quot;phonicsOv&quot;).remove();" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:'+CA+';font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">✕ Done!</button>'
+      +'<button onclick="document.getElementById(&quot;phonicsOv&quot;).remove();showScreen(&quot;app&quot;);" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:'+CA+';font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">🏠 Done!</button>'
       +'</div>';
     if(typeof activeChild!=='undefined'&&activeChild){try{sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:score*10}).catch(function(){});sessionData.stars+=score*10;var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;}catch(e){}}
   }
@@ -9449,7 +9419,7 @@ function openNumberTracing() {
   navBar.style.cssText = 'position:absolute;top:14px;left:14px;display:flex;gap:10px;z-index:100;';
   navBar.innerHTML =
     '<button onclick="document.getElementById(\'numTraceOv\').remove()" title="Back" style="width:42px;height:42px;border-radius:50%;background:white;border:none;cursor:pointer;font-size:18px;color:#2D1B3D;box-shadow:0 3px 0 rgba(0,0,0,.15);">←</button>'
-    +'<button onclick="goHomeFromOverlay()" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.2);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;">✕</button>';
+    +'<button onclick="goHomeFromOverlay()" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.15);">🏠</button>';
   ov.appendChild(navBar);
 
   var nums = ['1','2','3','4','5','6','7','8','9','0'];
@@ -10826,7 +10796,7 @@ function openPassageReader(grade) {
   navBar.style.cssText = 'position:absolute;top:14px;left:14px;display:flex;gap:10px;z-index:100;';
   navBar.innerHTML =
     '<button onclick="document.getElementById(\'passageOv\').remove()" title="Back" style="width:42px;height:42px;border-radius:50%;background:white;border:none;cursor:pointer;font-size:18px;color:#2D1B3D;box-shadow:0 3px 0 rgba(0,0,0,.15);">←</button>'
-    +'<button onclick="goHomeFromOverlay()" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.2);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;">✕</button>';
+    +'<button onclick="goHomeFromOverlay()" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.15);">🏠</button>';
   ov.appendChild(navBar);
 
   // ── STORY DATA ──────────────────────────────────────────────────
