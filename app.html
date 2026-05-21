@@ -818,6 +818,23 @@ input::placeholder { color:#aaa !important; }
 .streak-num { font-family:'Baloo 2',cursive; font-size:1.5rem; font-weight:800; color:white; }
 .streak-label { font-size:.7rem; font-weight:800; color:rgba(255,255,255,.9); }
 
+
+/* ═══ CELEBRATION ANIMATIONS ═══ */
+@keyframes confettiBurst { 0%{transform:translate(0,0) rotate(0deg) scale(1);opacity:1} 100%{transform:translate(var(--tx),var(--ty)) rotate(var(--rot)) scale(0.3);opacity:0} }
+@keyframes floatUp { 0%{transform:translate(-50%,-50%) scale(0);opacity:1} 50%{transform:translate(var(--fx),-120%) scale(1.2);opacity:1} 100%{transform:translate(var(--fx),-200%) scale(0.8);opacity:0} }
+@keyframes bounceIn { 0%{transform:scale(0) rotate(-10deg);opacity:0} 60%{transform:scale(1.2) rotate(5deg);opacity:1} 80%{transform:scale(0.95) rotate(-2deg)} 100%{transform:scale(1) rotate(0deg);opacity:1} }
+@keyframes shakeWrong { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px) rotate(-2deg)} 40%{transform:translateX(8px) rotate(2deg)} 60%{transform:translateX(-6px)} 80%{transform:translateX(6px)} }
+@keyframes streakFlash { 0%{transform:scale(1);filter:brightness(1)} 30%{transform:scale(1.15);filter:brightness(1.5)} 60%{transform:scale(1.05);filter:brightness(1.2)} 100%{transform:scale(1);filter:brightness(1)} }
+@keyframes levelUp { 0%{transform:translateY(0) scale(1);opacity:1} 50%{transform:translateY(-40px) scale(1.3);opacity:1} 100%{transform:translateY(-80px) scale(0.8);opacity:0} }
+@keyframes bloomiJump { 0%,100%{transform:translateY(0) scale(1)} 25%{transform:translateY(-20px) scale(1.05) rotate(-5deg)} 50%{transform:translateY(-30px) scale(1.1) rotate(5deg)} 75%{transform:translateY(-15px) scale(1.05) rotate(-3deg)} }
+@keyframes mascotCelebrate { 0%,100%{transform:scale(1) rotate(0deg)} 25%{transform:scale(1.15) rotate(-8deg)} 50%{transform:scale(1.2) rotate(8deg)} 75%{transform:scale(1.1) rotate(-4deg)} }
+@keyframes starsRain { 0%{transform:translateY(-20px) rotate(0deg);opacity:1} 100%{transform:translateY(100vh) rotate(360deg);opacity:0} }
+@keyframes rippleOut { 0%{transform:scale(0);opacity:1} 100%{transform:scale(2.5);opacity:0} }
+@keyframes xpShimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+@keyframes missionPulse { 0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.4)} 50%{box-shadow:0 0 0 6px rgba(255,255,255,0)} }
+@keyframes streakFlame { from{transform:scale(1) rotate(-5deg)} to{transform:scale(1.1) rotate(5deg)} }
+@keyframes fadeInOverlay { from{opacity:0} to{opacity:1} }
+
 </style>
   <link rel="icon" href="favicon.ico" sizes="32x32">
   <link rel="icon" href="favicon.png" type="image/png">
@@ -846,8 +863,6 @@ input::placeholder { color:#aaa !important; }
     <div class="auth-badges">
       <span class="auth-badge badge-green">✓ No Ads</span>
       <span class="auth-badge badge-blue">✓ No In-App Purchases</span>
-      <span class="auth-badge badge-purple">🛡 COPPA Safe</span>
-      <span class="auth-badge badge-orange">★ CC Aligned</span>
     </div>
     <div class="auth-tabs">
       <button class="auth-tab active" onclick="showAuthTab('login')">Sign In</button>
@@ -1076,6 +1091,12 @@ input::placeholder { color:#aaa !important; }
         <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">Mindful Stories</div>
         <div style="font-size:.66rem;font-weight:700;opacity:.85;position:relative;z-index:1;">Listen &amp; relax</div>
       </div>
+      <div onclick="openKindnessCorner()" style="background:linear-gradient(135deg,#FF6B9D,#FF8E53);border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #E0456A,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
+        <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
+        <div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:24px;position:relative;z-index:1;">💛</div>
+        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">Kindness Corner</div>
+        <div style="font-size:.66rem;font-weight:700;opacity:.85;position:relative;z-index:1;">Be kind &amp; caring</div>
+      </div>
     </div>
 
     <!-- v3 SECTION HEADER: Games -->
@@ -1148,7 +1169,7 @@ input::placeholder { color:#aaa !important; }
   <div class="panel" id="panel-yoga">
     <!-- v383: Home button -->
     <div style="display:flex;align-items:center;gap:10px;padding:8px 0 4px;">
-      <button onclick="switchTab('academics')" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.15);flex-shrink:0;">🏠</button>
+      <button onclick="switchTab('academics')" style="width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,.15);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;flex-shrink:0;">✕</button>
       <span style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1.05rem;color:#2D1B3D;">🧘 Mindful Moments</span>
     </div>
     <!-- -- MUSIC PLAYER -- -->
@@ -1205,7 +1226,7 @@ input::placeholder { color:#aaa !important; }
   <div class="panel" id="panel-art">
     <!-- v383: Home button for Art panel (not a fixed overlay so global injector doesn't reach it) -->
     <div style="display:flex;align-items:center;gap:10px;padding:8px 0 4px;">
-      <button onclick="switchTab('academics')" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.15);flex-shrink:0;">🏠</button>
+      <button onclick="switchTab('academics')" style="width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,.15);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;flex-shrink:0;">✕</button>
       <span style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1.05rem;color:#2D1B3D;">🎨 Create</span>
     </div>
     <div class="art-hero" id="artHero">
@@ -1266,7 +1287,7 @@ input::placeholder { color:#aaa !important; }
   <div class="panel" id="panel-reading">
     <!-- v383: Home button -->
     <div style="display:flex;align-items:center;gap:10px;padding:8px 0 4px;">
-      <button onclick="switchTab('academics')" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.15);flex-shrink:0;">🏠</button>
+      <button onclick="switchTab('academics')" style="width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,.15);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;flex-shrink:0;">✕</button>
       <span style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1.05rem;color:#2D1B3D;">📖 Stories</span>
     </div>
     <div class="stats-row">
@@ -3523,7 +3544,7 @@ function showComprehensionCheck(onComplete) {
   navBar.style.cssText = 'position:absolute;top:14px;left:14px;display:flex;gap:10px;z-index:10;';
   navBar.innerHTML =
     '<button onclick="document.getElementById(\'comprehensionOv\').remove()" title="Back" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.9);border:none;cursor:pointer;font-size:18px;color:#2D1B3D;box-shadow:0 3px 0 rgba(0,0,0,.3);">←</button>'
-    +'<button onclick="goHomeFromOverlay()" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.3);">🏠</button>';
+    +'<button onclick="goHomeFromOverlay()" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.2);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;">✕</button>';
   ov.appendChild(navBar);
 
   var card = document.createElement('div');
@@ -3957,7 +3978,7 @@ function buildGradeGames() {
     ],
     5: [
       {icon:'📍', label:'Coordinate Chase',fn:"openMathGame('5')",      color:'#22c55e'},
-      {icon:'🔎', label:'Evidence Explorer',fn:"openPassageReader('5')",color:'#1D4ED8'},
+      {icon:'🔎', label:'Evidence Explorer',fn:"openEvidenceExplorer()",color:'#1D4ED8'},
       {icon:'🧮', label:'Problem Solver',  fn:"openMathGame('5')",      color:'#6366F1'},
       {icon:'🏆', label:'Jeopardy',        fn:"openPassageReader('5')", color:'#F59E0B'},
       {icon:'🗺️', label:'Treasure Hunt',   fn:"openSSGame('5')",        color:'#D97706'},
@@ -7220,7 +7241,7 @@ function gameHeader(title, emoji, colorA, colorB, ovId) {
     +'<div style="font-size:1.4rem;">'+emoji+'</div>'
     +'<div style="font-family:Baloo 2,cursive;font-size:1.05rem;font-weight:800;letter-spacing:.3px;">'+title+'</div>'
     +'<div style="display:flex;gap:6px;">'
-      +'<button onclick="goHomeFromOverlay()" title="Home" style="background:#FFD166;border:none;color:#5C3A00;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;font-size:.9rem;line-height:1;box-shadow:0 2px 0 rgba(0,0,0,.2);">🏠</button>'
+      +'<button onclick="goHomeFromOverlay()" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;font-size:.9rem;">✕</button>'
       +'<button data-closeov="'+ovId+'" title="Back" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;font-size:1rem;line-height:1;">✕</button>'
     +'</div>'
     +'</div>';
@@ -7274,7 +7295,7 @@ function gameHeader(title, emoji, colorA, colorB, ovId) {
     +'<div style="font-size:1.4rem;">'+emoji+'</div>'
     +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.05rem;font-weight:800;letter-spacing:.3px;">'+title+'</div>'
     +'<div style="display:flex;gap:6px;">'
-      +'<button onclick="goHomeFromOverlay()" title="Home" style="background:#FFD166;border:none;color:#5C3A00;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;font-size:.9rem;line-height:1;box-shadow:0 2px 0 rgba(0,0,0,.2);">🏠</button>'
+      +'<button onclick="goHomeFromOverlay()" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;font-size:.9rem;">✕</button>'
       +'<button onclick="document.getElementById(\''+ovId+'\').remove();" title="Back" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;font-size:1rem;line-height:1;">✕</button>'
     +'</div>'
     +'</div>';
@@ -8774,7 +8795,7 @@ function openMindfulStories() {
     '<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 14px 8px;">'
       +'<div style="display:flex;gap:10px;">'
         +'<button onclick="closeMindfulStories()" title="Back" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;font-size:18px;color:white;box-shadow:0 3px 0 rgba(0,0,0,.4),inset 0 -2px 0 rgba(0,0,0,.06);">←</button>'
-        +'<button onclick="goHomeFromOverlay()" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.3),inset 0 -2px 0 rgba(0,0,0,.06);">🏠</button>'
+        +'<button onclick="goHomeFromOverlay()" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.2);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;">✕</button>'
       +'</div>'
       +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1.05rem;color:white;">🌙 Mindful Stories</div>'
       +'<button id="mindfulMuteBtn" onclick="toggleMindfulMute()" title="Mute/unmute narration" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;font-size:18px;color:white;box-shadow:0 3px 0 rgba(0,0,0,.4);">'+(muted?'🔇':'🔊')+'</button>'
@@ -8819,7 +8840,7 @@ function _playMindfulStory(id) {
     '<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 14px 8px;">'
       +'<div style="display:flex;gap:10px;">'
         +'<button onclick="openMindfulStories()" title="Back to stories" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;font-size:18px;color:white;box-shadow:0 3px 0 rgba(0,0,0,.4);">←</button>'
-        +'<button onclick="goHomeFromOverlay()" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.3);">🏠</button>'
+        +'<button onclick="goHomeFromOverlay()" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.2);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;">✕</button>'
       +'</div>'
       +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1.05rem;color:white;text-align:center;flex:1;padding:0 8px;">'+story.icon+' '+story.title+'</div>'
       +'<button onclick="toggleMindfulMute(true)" title="Mute/unmute" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;font-size:18px;color:white;box-shadow:0 3px 0 rgba(0,0,0,.4);" id="mindfulMuteBtn2">'+(muted?'🔇':'🔊')+'</button>'
@@ -8872,6 +8893,156 @@ function closeMindfulStories() {
 }
 
 // v379: Universal "go home from overlay" — closes any open overlay & returns to home
+
+function openKindnessCorner(){
+  var ov=document.createElement('div');ov.id='kindnessOv';
+  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#FFF0F8,#FFF8E8);display:flex;flex-direction:column;overflow-y:auto;';
+  document.body.appendChild(ov);
+  var scenarios=[
+    {emoji:'😢',scene:'Your friend falls down and is crying.',q:'What do you do?',opts:['Laugh at them','Help them up and ask if they are okay','Walk away','Run faster'],a:1,praise:'Helping a friend who is hurt is SO kind! 💛'},
+    {emoji:'🎒',scene:'A new kid at school has no one to sit with at lunch.',q:'What would a kind person do?',opts:['Ignore them','Tell them to find another seat','Invite them to sit with you','Take their lunch'],a:2,praise:'Inviting someone to sit with you is one of the kindest things! 🌟'},
+    {emoji:'🖍️',scene:'You only have one red crayon and your friend wants red too.',q:'What is the kind thing to do?',opts:['Hide the crayon','Share and take turns','Say no','Use all the red yourself'],a:1,praise:'Sharing is caring! You are a wonderful friend! 💕'},
+    {emoji:'😤',scene:'You feel really angry because someone took your toy.',q:'What is the best thing to do with angry feelings?',opts:['Hit someone','Scream and cry','Take a deep breath and use your words','Break something'],a:2,praise:'Taking a deep breath and using your words is so brave! 🌈'},
+    {emoji:'🌧️',scene:'Your friend is sad because it is raining.',q:'What could you say to help them feel better?',opts:['Too bad!','We can play inside together!','Stop being sad.','I am glad!'],a:1,praise:'Saying kind words to cheer someone up is a superpower! ⭐'},
+  ];
+  var idx=0,score=0;
+  function render(){
+    ov.innerHTML='';
+    if(idx>=scenarios.length){
+      var d=document.createElement('div');d.style.cssText='padding:40px;text-align:center;';
+      d.innerHTML='<div style="font-size:4rem;margin-bottom:16px;">💛🌟💛</div><div style="font-family:Baloo 2,cursive;font-size:1.5rem;font-weight:800;color:#E91E8C;">You are SO KIND!</div><div style="font-size:1rem;color:#666;margin:12px 0 24px;">'+score+' kind choices out of '+scenarios.length+'!</div>';
+      var btn=document.createElement('button');btn.textContent='Done ✕';btn.style.cssText='padding:14px 32px;border-radius:40px;border:none;background:linear-gradient(135deg,#FF6B9D,#FF8E53);color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;font-size:1rem;';btn.onclick=function(){ov.remove();};d.appendChild(btn);ov.appendChild(d);return;
+    }
+    var s=scenarios[idx];
+    var hdr=document.createElement('div');hdr.style.cssText='background:linear-gradient(135deg,#FF6B9D,#FF8E53);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;';
+    var t=document.createElement('div');t.style.cssText='font-family:Baloo 2,cursive;font-weight:800;color:white;font-size:1.05rem;';t.textContent='💛 Kindness Corner';
+    var right=document.createElement('div');right.style.cssText='display:flex;align-items:center;gap:8px;';
+    var prog=document.createElement('span');prog.style.cssText='color:rgba(255,255,255,.9);font-size:.85rem;';prog.textContent=(idx+1)+'/'+scenarios.length;
+    var xBtn=document.createElement('button');xBtn.textContent='✕';xBtn.style.cssText='background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:34px;height:34px;cursor:pointer;font-weight:800;font-size:1rem;';xBtn.onclick=function(){ov.remove();};
+    right.appendChild(prog);right.appendChild(xBtn);hdr.appendChild(t);hdr.appendChild(right);ov.appendChild(hdr);
+    var body=document.createElement('div');body.style.cssText='padding:24px;max-width:480px;margin:0 auto;width:100%;box-sizing:border-box;';
+    var card=document.createElement('div');card.style.cssText='background:white;border-radius:24px;padding:24px;margin-bottom:20px;text-align:center;box-shadow:0 6px 24px rgba(255,107,157,.15);';
+    card.innerHTML='<div style="font-size:3.5rem;margin-bottom:12px;">'+s.emoji+'</div><div style="font-family:Baloo 2,cursive;font-size:1.05rem;font-weight:800;color:#2D2D4E;line-height:1.5;margin-bottom:8px;">'+s.scene+'</div><div style="color:#FF6B9D;font-weight:800;font-size:.9rem;">'+s.q+'</div>';
+    body.appendChild(card);
+    s.opts.forEach(function(opt,i){
+      var btn=document.createElement('button');btn.textContent=opt;btn.style.cssText='width:100%;margin-bottom:12px;padding:16px;border-radius:18px;border:2px solid #FFB3D1;background:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;text-align:left;display:block;box-sizing:border-box;';
+      (function(chosen){btn.onclick=function(){body.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});if(chosen===s.a){score++;if(typeof playSound==='function')playSound('correct');toast(s.praise);}else{body.querySelectorAll('button')[s.a].style.background='#D1FAE5';body.querySelectorAll('button')[s.a].style.borderColor='#22c55e';if(typeof playSound==='function')playSound('wrong');toast('💡 The kind choice: '+s.opts[s.a]);}idx++;setTimeout(render,2000);};})(i);
+      body.appendChild(btn);
+    });
+    ov.appendChild(body);
+  }
+  render();
+}
+window.openKindnessCorner=openKindnessCorner;
+
+
+function openEvidenceExplorer(){
+  var CA='#1D4ED8',CB='#3B82F6';
+  var PASSAGES=[
+    {text:'Penguins live in Antarctica. They cannot fly, but they are excellent swimmers. Their black and white feathers help them blend in the ocean. Emperor penguins are the tallest and can grow up to 4 feet tall!',q:'What helps penguins blend into the ocean?',opts:['Their black and white feathers','Their sharp claws','Their long beaks','Their size'],a:0,e:'The passage says their black and white feathers help them blend in the ocean.'},
+    {text:'The Amazon rainforest produces 20% of the world oxygen. It is home to over 3 million species. Scientists call it the lungs of the Earth because of all the oxygen it creates.',q:'Why do scientists call the Amazon the lungs of the Earth?',opts:['It breathes like humans','It creates large amounts of oxygen','It looks like lungs on a map','It has the most animals'],a:1,e:'The passage says scientists call it the lungs of the Earth because of all the oxygen it creates.'},
+    {text:'Marie Curie was the first woman to win a Nobel Prize and the only person to win it in two different sciences - Physics and Chemistry. She discovered the elements polonium and radium.',q:'What makes Marie Curie unique in Nobel Prize history?',opts:['She was the youngest winner','She won in two different sciences','She declined the prize','She won it three times'],a:1,e:'The passage says she is the only person to win it in two different sciences.'},
+  ];
+  var idx=0,score=0;
+  var ov=document.createElement('div');ov.id='evidenceOv';ov.style.cssText='position:fixed;inset:0;z-index:9999;background:#EFF6FF;display:flex;flex-direction:column;';document.body.appendChild(ov);
+  function render(){
+    ov.innerHTML='';
+    if(idx>=PASSAGES.length){var d=document.createElement('div');d.style.cssText='padding:40px;text-align:center;';d.innerHTML='<div style="font-size:3.5rem;margin-bottom:16px;">🔎</div><div style="font-family:Baloo 2,cursive;font-size:1.5rem;font-weight:800;color:#1D4ED8;">'+score+'/'+PASSAGES.length+' Correct!</div><div style="color:#888;margin:12px 0 24px;">'+(score===PASSAGES.length?'Perfect evidence hunter!':'Good reading!')+'</div>';var btn=document.createElement('button');btn.textContent='Done ✕';btn.style.cssText='padding:14px 32px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';btn.onclick=function(){ov.remove();};d.appendChild(btn);ov.appendChild(d);return;}
+    var p=PASSAGES[idx];
+    var hdr=document.createElement('div');hdr.style.cssText='background:linear-gradient(135deg,'+CA+','+CB+');padding:14px 20px;display:flex;justify-content:space-between;align-items:center;';
+    var t=document.createElement('div');t.style.cssText='font-family:Baloo 2,cursive;font-weight:800;color:white;';t.textContent='🔎 Evidence Explorer';
+    var right=document.createElement('div');right.style.cssText='display:flex;align-items:center;gap:10px;';
+    var sc=document.createElement('span');sc.style.cssText='color:rgba(255,255,255,.9);font-size:.9rem;';sc.textContent='⭐ '+score+'/'+PASSAGES.length;
+    var xb=document.createElement('button');xb.textContent='✕';xb.style.cssText='background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:36px;height:36px;cursor:pointer;font-weight:800;font-size:1.1rem;';xb.onclick=function(){ov.remove();};
+    right.appendChild(sc);right.appendChild(xb);hdr.appendChild(t);hdr.appendChild(right);ov.appendChild(hdr);
+    var body=document.createElement('div');body.style.cssText='flex:1;overflow-y:auto;padding:20px;max-width:500px;margin:0 auto;width:100%;';
+    var pc=document.createElement('div');pc.style.cssText='background:white;border-radius:16px;padding:18px;margin-bottom:16px;line-height:1.7;font-size:.95rem;color:#1e293b;box-shadow:0 4px 16px rgba(0,0,0,.08);';pc.textContent=p.text;body.appendChild(pc);
+    var qc=document.createElement('div');qc.style.cssText='background:linear-gradient(135deg,#DBEAFE,#EFF6FF);border-radius:16px;padding:16px;margin-bottom:16px;font-weight:700;color:#1D4ED8;';qc.textContent='❓ '+p.q;body.appendChild(qc);
+    p.opts.forEach(function(o,i){var btn=document.createElement('button');btn.textContent=o;btn.style.cssText='width:100%;margin-bottom:10px;padding:14px;border-radius:14px;border:2px solid #BFDBFE;background:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;text-align:left;box-sizing:border-box;';(function(ci){btn.onclick=function(){body.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});var btns=body.querySelectorAll('button');btns[p.a].style.background='#D1FAE5';btns[p.a].style.borderColor='#22c55e';if(ci===p.a){score++;toast('✅ Correct!');if(typeof playSound==='function')playSound('correct');}else{btns[ci].style.background='#FEE2E2';btns[ci].style.borderColor='#ef4444';toast('💡 '+p.e);if(typeof playSound==='function')playSound('wrong');}idx++;setTimeout(render,1500);};})(i);body.appendChild(btn);});
+    ov.appendChild(body);
+  }
+  render();
+}
+window.openEvidenceExplorer=openEvidenceExplorer;
+
+
+function openTreasureHunt(){
+  var CA='#D97706',CB='#F59E0B';
+  var clues=[
+    {clue:'🌍 I am the largest continent on Earth. What continent am I?',a:'Asia',opts:['Asia','Africa','Europe','Australia']},
+    {clue:'🗺️ I run east and west on a map. Ships use me to find their position. I am lines of...?',a:'Latitude',opts:['Latitude','Longitude','Altitude','Equator']},
+    {clue:'🏔️ I am the tallest mountain in the world on the Nepal-Tibet border.',a:'Mount Everest',opts:['Mount Everest','Mount Fuji','K2','Mont Blanc']},
+    {clue:'🌊 I am the largest ocean on Earth covering more than a third of the globe.',a:'Pacific Ocean',opts:['Pacific Ocean','Atlantic Ocean','Indian Ocean','Arctic Ocean']},
+  ];
+  var idx=0,score=0;
+  var ov=document.createElement('div');ov.id='treasureHuntOv';ov.style.cssText='position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#FEF3C7,#FDE68A);display:flex;flex-direction:column;';document.body.appendChild(ov);
+  function render(){
+    ov.innerHTML='';
+    if(idx>=clues.length){var d=document.createElement('div');d.style.cssText='padding:40px;text-align:center;';d.innerHTML='<div style="font-size:3.5rem;margin-bottom:16px;">🗺️🏆</div><div style="font-family:Baloo 2,cursive;font-size:1.5rem;font-weight:800;color:#92400E;">Treasure Found! '+score+'/'+clues.length+'</div>';var btn=document.createElement('button');btn.textContent='Done ✕';btn.style.cssText='margin-top:20px;padding:14px 32px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';btn.onclick=function(){ov.remove();};d.appendChild(btn);ov.appendChild(d);if(score===clues.length&&typeof celebrateLevelComplete==='function')celebrateLevelComplete();return;}
+    var c=clues[idx];
+    var hdr=document.createElement('div');hdr.style.cssText='background:linear-gradient(135deg,'+CA+','+CB+');padding:14px 20px;display:flex;justify-content:space-between;align-items:center;';
+    var t=document.createElement('div');t.style.cssText='font-family:Baloo 2,cursive;font-weight:800;color:white;';t.textContent='🗺️ Treasure Hunt — Clue '+(idx+1)+'/'+clues.length;
+    var xb=document.createElement('button');xb.textContent='✕';xb.style.cssText='background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:36px;height:36px;cursor:pointer;font-weight:800;font-size:1.1rem;';xb.onclick=function(){ov.remove();};
+    hdr.appendChild(t);hdr.appendChild(xb);ov.appendChild(hdr);
+    var body=document.createElement('div');body.style.cssText='flex:1;overflow-y:auto;padding:24px;max-width:500px;margin:0 auto;width:100%;';
+    var cc=document.createElement('div');cc.style.cssText='background:white;border-radius:20px;padding:24px;margin-bottom:20px;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.1);';
+    cc.innerHTML='<div style="font-size:2.5rem;margin-bottom:12px;">🔍</div><div style="font-family:Baloo 2,cursive;font-size:1.1rem;font-weight:800;color:#92400E;line-height:1.5;">'+c.clue+'</div>';
+    body.appendChild(cc);
+    c.opts.forEach(function(o){var btn=document.createElement('button');btn.textContent=o;btn.style.cssText='width:100%;margin-bottom:10px;padding:14px;border-radius:14px;border:2px solid #FCD34D;background:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;display:block;box-sizing:border-box;';(function(answer){btn.onclick=function(){body.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});if(answer===c.a){score++;if(typeof playSound==='function')playSound('correct');toast('🎉 Correct! You found the treasure!');}else{if(typeof playSound==='function')playSound('wrong');toast('💡 The answer was: '+c.a);}idx++;setTimeout(render,1500);};})(o);body.appendChild(btn);});
+    ov.appendChild(body);
+  }
+  render();
+}
+window.openTreasureHunt=openTreasureHunt;
+
+
+function openJeopardy(){
+  var categories=[
+    {name:'Math',color:'#2563EB',qs:[{v:100,q:'What is 12 x 12?',a:'144'},{v:200,q:'What is 144 divided by 12?',a:'12'},{v:300,q:'What fraction equals 0.5?',a:'one half or 1/2'}]},
+    {name:'Science',color:'#059669',qs:[{v:100,q:'What gas do plants absorb from the air?',a:'Carbon dioxide'},{v:200,q:'What planet is closest to the Sun?',a:'Mercury'},{v:300,q:'What is H2O?',a:'Water'}]},
+    {name:'Language',color:'#DC2626',qs:[{v:100,q:'What is a noun?',a:'A person, place, or thing'},{v:200,q:'What punctuation ends a question?',a:'Question mark'},{v:300,q:'What is an antonym of hot?',a:'Cold'}]},
+  ];
+  var score=0;
+  var ov=document.createElement('div');ov.id='jeopardyOv';ov.style.cssText='position:fixed;inset:0;z-index:9999;background:#1e1b4b;display:flex;flex-direction:column;overflow-y:auto;';document.body.appendChild(ov);
+  function renderBoard(){
+    ov.innerHTML='';
+    var hdr=document.createElement('div');hdr.style.cssText='background:linear-gradient(135deg,#1e1b4b,#312e81);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;';
+    var t=document.createElement('div');t.style.cssText='font-family:Baloo 2,cursive;font-weight:800;color:#FFD700;font-size:1.1rem;';t.textContent='🏆 Jeopardy!';
+    var right=document.createElement('div');right.style.cssText='display:flex;align-items:center;gap:8px;';
+    var sc=document.createElement('span');sc.style.cssText='color:#FFD700;font-weight:800;';sc.textContent='$'+score;
+    var xb=document.createElement('button');xb.textContent='✕';xb.style.cssText='background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:36px;height:36px;cursor:pointer;font-weight:800;font-size:1.1rem;';xb.onclick=function(){ov.remove();};
+    right.appendChild(sc);right.appendChild(xb);hdr.appendChild(t);hdr.appendChild(right);ov.appendChild(hdr);
+    var body=document.createElement('div');body.style.cssText='padding:20px;';
+    var grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:repeat(3,1fr);gap:6px;border-radius:12px;overflow:hidden;';
+    categories.forEach(function(cat){
+      var col=document.createElement('div');
+      var ch=document.createElement('div');ch.style.cssText='background:'+cat.color+';color:white;font-family:Baloo 2,cursive;font-weight:800;padding:12px;text-align:center;border-radius:10px 10px 0 0;font-size:.9rem;';ch.textContent=cat.name;col.appendChild(ch);
+      cat.qs.forEach(function(q,qi){
+        var cell=document.createElement('div');
+        if(q.used){cell.style.cssText='background:#1e1b4b;border:1px solid #3730a3;height:60px;';}
+        else{cell.style.cssText='background:linear-gradient(135deg,#3730a3,#4338ca);color:#FFD700;font-family:Baloo 2,cursive;font-weight:800;font-size:1.1rem;text-align:center;padding:16px;cursor:pointer;border:1px solid #4338ca;';cell.textContent='$'+q.v;(function(c2,qi2){cell.onclick=function(){askJeopardyQ(c2,qi2,renderBoard);};})(cat,qi);}
+        col.appendChild(cell);
+      });grid.appendChild(col);
+    });body.appendChild(grid);ov.appendChild(body);
+  }
+  function askJeopardyQ(cat,qi,cb){
+    var q=cat.qs[qi];
+    var modal=document.createElement('div');modal.style.cssText='position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;padding:20px;';
+    var box=document.createElement('div');box.style.cssText='background:linear-gradient(135deg,#3730a3,#4338ca);border-radius:24px;padding:28px;max-width:400px;width:100%;text-align:center;';
+    var cl=document.createElement('div');cl.style.cssText='color:#FFD700;font-weight:800;font-size:.85rem;margin-bottom:8px;';cl.textContent=cat.name+' — $'+q.v;
+    var qt=document.createElement('div');qt.style.cssText='color:white;font-family:Baloo 2,cursive;font-size:1.2rem;font-weight:800;margin-bottom:20px;line-height:1.5;';qt.textContent=q.q;
+    var input=document.createElement('input');input.type='text';input.placeholder='Type your answer...';input.style.cssText='width:100%;padding:12px;border-radius:12px;border:none;font-size:1rem;text-align:center;box-sizing:border-box;';
+    var btnRow=document.createElement('div');btnRow.style.cssText='display:flex;gap:10px;margin-top:16px;';
+    var sb=document.createElement('button');sb.textContent='Submit ✓';sb.style.cssText='flex:1;padding:12px;border-radius:30px;border:none;background:#FFD700;color:#1e1b4b;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';
+    var shb=document.createElement('button');shb.textContent='Show Answer';shb.style.cssText='flex:1;padding:12px;border-radius:30px;border:none;background:rgba(255,255,255,.2);color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;';
+    sb.onclick=function(){var ua=input.value.toLowerCase().trim();var ca=q.a.toLowerCase();cat.qs[qi].used=true;modal.remove();if(ua&&(ca.indexOf(ua)>-1||ua.indexOf(ca.split(' ')[0])>-1)){score+=q.v;toast('✅ Correct! +$'+q.v);if(typeof playSound==='function')playSound('correct');}else{toast('💡 Answer: '+q.a);if(typeof playSound==='function')playSound('wrong');}cb();};
+    shb.onclick=function(){cat.qs[qi].used=true;modal.remove();toast('💡 Answer: '+q.a);cb();};
+    box.appendChild(cl);box.appendChild(qt);box.appendChild(input);btnRow.appendChild(sb);btnRow.appendChild(shb);box.appendChild(btnRow);modal.appendChild(box);document.body.appendChild(modal);input.focus();
+  }
+  renderBoard();
+}
+window.openJeopardy=openJeopardy;
+
 function goHomeFromOverlay() {
   _mindfulStop();
   // Remove any open overlay
@@ -9253,7 +9424,7 @@ function openPhonicsGame(grade) {
   navBar.style.cssText = 'position:absolute;top:14px;left:14px;display:flex;gap:10px;z-index:100;';
   navBar.innerHTML =
     '<button onclick="document.getElementById(\'phonicsOv\').remove()" title="Back" style="width:42px;height:42px;border-radius:50%;background:white;border:none;cursor:pointer;font-size:18px;color:#2D1B3D;box-shadow:0 3px 0 rgba(0,0,0,.15);">←</button>'
-    +'<button onclick="goHomeFromOverlay()" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.15);">🏠</button>';
+    +'<button onclick="goHomeFromOverlay()" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.2);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;">✕</button>';
   ov.appendChild(navBar);
 
   var WORDS = {
@@ -9394,7 +9565,7 @@ function openPhonicsGame(grade) {
       +'<div style="font-size:5rem;margin-bottom:8px;">🏆</div>'
       +'<div style="font-family:Baloo 2,cursive;font-size:2rem;font-weight:800;">Amazing Reader!</div>'
       +'<div style="font-size:1rem;opacity:.9;margin:8px 0 24px;">'+score+' words mastered!</div>'
-      +'<button onclick="document.getElementById(&quot;phonicsOv&quot;).remove();showScreen(&quot;app&quot;);" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:'+CA+';font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">🏠 Done!</button>'
+      +'<button onclick="document.getElementById(&quot;phonicsOv&quot;).remove();showScreen(&quot;app&quot;);" style="padding:14px 32px;border-radius:40px;border:none;background:white;color:'+CA+';font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">✕ Done!</button>'
       +'</div>';
     if(typeof activeChild!=='undefined'&&activeChild){try{sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:score*10}).catch(function(){});sessionData.stars+=score*10;var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;}catch(e){}}
   }
@@ -9419,7 +9590,7 @@ function openNumberTracing() {
   navBar.style.cssText = 'position:absolute;top:14px;left:14px;display:flex;gap:10px;z-index:100;';
   navBar.innerHTML =
     '<button onclick="document.getElementById(\'numTraceOv\').remove()" title="Back" style="width:42px;height:42px;border-radius:50%;background:white;border:none;cursor:pointer;font-size:18px;color:#2D1B3D;box-shadow:0 3px 0 rgba(0,0,0,.15);">←</button>'
-    +'<button onclick="goHomeFromOverlay()" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.15);">🏠</button>';
+    +'<button onclick="goHomeFromOverlay()" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.2);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;">✕</button>';
   ov.appendChild(navBar);
 
   var nums = ['1','2','3','4','5','6','7','8','9','0'];
@@ -10796,7 +10967,7 @@ function openPassageReader(grade) {
   navBar.style.cssText = 'position:absolute;top:14px;left:14px;display:flex;gap:10px;z-index:100;';
   navBar.innerHTML =
     '<button onclick="document.getElementById(\'passageOv\').remove()" title="Back" style="width:42px;height:42px;border-radius:50%;background:white;border:none;cursor:pointer;font-size:18px;color:#2D1B3D;box-shadow:0 3px 0 rgba(0,0,0,.15);">←</button>'
-    +'<button onclick="goHomeFromOverlay()" title="Home" style="width:42px;height:42px;border-radius:50%;background:#FFD166;border:none;cursor:pointer;font-size:18px;color:#5C3A00;box-shadow:0 3px 0 rgba(0,0,0,.15);">🏠</button>';
+    +'<button onclick="goHomeFromOverlay()" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.2);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;">✕</button>';
   ov.appendChild(navBar);
 
   // ── STORY DATA ──────────────────────────────────────────────────
