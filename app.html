@@ -8588,6 +8588,7 @@ function openColorsGame(grade) {
 
     var _csSelected=null;
     window._csTap=function(el){
+      if(!el) return;
       if(_csSelected===el){
         el.style.transform='scale(1)'; el.style.background='linear-gradient(135deg,#EC4899,#F472B6)';
         el.style.color='white'; el.style.boxShadow='0 4px 12px rgba(236,72,153,.3)'; _csSelected=null;
