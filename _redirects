@@ -1,5 +1,5 @@
 # Founders page IS the homepage (index.html)
 # App lives at /app.html
 /app   /app.html   200
+/app2  /app.html   200
 /founders-story.html   /index.html   301
-
