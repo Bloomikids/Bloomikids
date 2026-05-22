@@ -1,14 +1,14 @@
-// bk-v410
-const CACHE_NAME = 'bk-v410';
+// bk-v411-kill
 self.addEventListener('install', e => { self.skipWaiting(); });
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys()
       .then(keys => Promise.all(keys.map(k => caches.delete(k))))
       .then(() => self.clients.claim())
+      .then(() => self.clients.matchAll({includeUncontrolled:true, type:'window'}))
+      .then(clients => clients.forEach(c => c.navigate(c.url)))
   );
 });
 self.addEventListener('fetch', e => {
-  if (e.request.method !== 'GET') return;
-  e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+  e.respondWith(fetch(e.request));
 });
