@@ -2707,7 +2707,13 @@ let artTabBuilt = false;  // ✅ FIX 4: only build art tab once per child sessio
 
 // -- PWA -----------------------------------------------
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js').catch(function(){});
+  // Unregister old service workers first, then register new one
+  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+    var unregPromises = registrations.map(function(r) { return r.unregister(); });
+    return Promise.all(unregPromises);
+  }).then(function() {
+    return navigator.serviceWorker.register('/sw-v411.js');
+  }).catch(function(){});
 }
 
 // -- Offline -------------------------------------------
