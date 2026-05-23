@@ -45,7 +45,7 @@ body.grade-4    { --font-body:1rem; --font-heading:1.5rem; --font-big:2.4rem; }
 body.grade-5    { --font-body:1rem; --font-heading:1.5rem; --font-big:2.4rem; }
 
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Nunito',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; font-size:var(--font-body); }
+body { font-family:'Nunito',sans-serif; background:linear-gradient(160deg,#2D1B69 0%,#4C1D95 40%,#7C3AED 100%); background-attachment:fixed; color:var(--text); min-height:100vh; overflow-x:hidden; font-size:var(--font-body); }
 
 body::before { content:''; position:fixed; width:700px; height:700px; background:radial-gradient(circle,#C9B8FF22 0%,#FFD16618 50%,transparent 70%); top:-250px; right:-200px; pointer-events:none; z-index:0; }
 body::after  { content:''; position:fixed; width:600px; height:600px; background:radial-gradient(circle,#5ECDA028 0%,#4ECDC418 50%,transparent 70%); bottom:-180px; left:-180px; pointer-events:none; z-index:0; }
@@ -180,7 +180,7 @@ input:-webkit-autofill:focus {
 .grade-pill { background:linear-gradient(135deg,var(--mint),var(--sky)); color:white; border-radius:40px; padding:4px 14px; font-family:'Baloo 2',cursive; font-size:.9rem; font-weight:800; }
 
 /* -- MAIN APP ------------------------------------------- */
-.app { position:relative; z-index:1; max-width:1100px; margin:0 auto; padding:20px; padding-bottom:90px; }
+.app { position:relative; z-index:1; max-width:1100px; margin:0 auto; padding:20px; padding-bottom:90px; min-height:100vh; }
 header { display:flex; align-items:center; justify-content:space-between; padding:20px 0 20px; flex-wrap:wrap; gap:10px; }
 .logo { font-family:'Baloo 2',cursive; font-size:2rem; font-weight:800; background:linear-gradient(135deg,var(--coral),var(--sunshine)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
 .logo svg { width:44px; height:44px; flex-shrink:0; }
@@ -834,30 +834,6 @@ input::placeholder { color:#aaa !important; }
 @keyframes streakFlame { from{transform:scale(1) rotate(-5deg)} to{transform:scale(1.1) rotate(5deg)} }
 @keyframes fadeInOverlay { from{opacity:0} to{opacity:1} }
 
-
-/* Premium Progress Card */
-.premium-progress { background:linear-gradient(135deg,#1A1A2E,#2D1B69,#4C1D95); border-radius:24px; padding:20px; color:white; position:relative; overflow:hidden; }
-.premium-progress::before { content:''; position:absolute; top:-30px; right:-30px; width:120px; height:120px; background:radial-gradient(circle,rgba(255,215,0,.3),transparent); border-radius:50%; }
-.premium-progress::after { content:''; position:absolute; bottom:-20px; left:-20px; width:80px; height:80px; background:radial-gradient(circle,rgba(167,139,250,.3),transparent); border-radius:50%; }
-.pp-header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
-.pp-avatar { width:56px; height:56px; border-radius:50%; border:3px solid rgba(255,215,0,.6); display:flex; align-items:center; justify-content:center; font-size:1.8rem; background:rgba(255,255,255,.1); flex-shrink:0; }
-.pp-title { font-family:'Baloo 2',cursive; font-weight:800; font-size:1rem; }
-.pp-level { font-size:.7rem; font-weight:700; color:rgba(255,215,0,.9); letter-spacing:.05em; }
-.pp-stars { font-family:'Baloo 2',cursive; font-size:1.3rem; font-weight:800; color:#FFD700; text-shadow:0 0 10px rgba(255,215,0,.5); }
-.pp-xp-wrap { margin-bottom:14px; }
-.pp-xp-label { display:flex; justify-content:space-between; font-size:.72rem; font-weight:700; margin-bottom:6px; color:rgba(255,255,255,.8); }
-.pp-xp-bar { height:12px; background:rgba(255,255,255,.15); border-radius:10px; overflow:hidden; }
-.pp-xp-fill { height:100%; border-radius:10px; background:linear-gradient(90deg,#FFD700,#FF8C42,#FF6B9D); background-size:200%; animation:xpShimmer 2s linear infinite; transition:width 1.2s cubic-bezier(.34,1.56,.64,1); }
-.pp-subjects { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-.pp-subject { background:rgba(255,255,255,.1); border-radius:14px; padding:10px 12px; }
-.pp-subj-name { font-size:.7rem; font-weight:800; color:rgba(255,255,255,.8); margin-bottom:6px; }
-.pp-leaves { display:flex; gap:3px; }
-.pp-leaf { font-size:.85rem; }
-.pp-leaf.earned { filter:none; }
-.pp-leaf.unearned { opacity:.25; }
-.pp-badges { display:flex; gap:6px; flex-wrap:wrap; margin-top:12px; }
-.pp-badge { background:linear-gradient(135deg,rgba(255,215,0,.3),rgba(255,140,0,.2)); border:1px solid rgba(255,215,0,.4); color:#FFD700; border-radius:20px; padding:4px 10px; font-size:.65rem; font-weight:800; }
-
 </style>
   <link rel="icon" href="favicon.ico" sizes="32x32">
   <link rel="icon" href="favicon.png" type="image/png">
@@ -1192,7 +1168,7 @@ input::placeholder { color:#aaa !important; }
   <div class="panel" id="panel-yoga">
     <!-- v383: Home button -->
     <div style="display:flex;align-items:center;gap:10px;padding:8px 0 4px;">
-      <button onclick="switchTab('academics')" style="display:none;">✕</button>
+      <button onclick="switchTab('academics')" style="width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,.15);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;flex-shrink:0;">✕</button>
       <span style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1.05rem;color:#2D1B3D;">🧘 Mindful Moments</span>
     </div>
     <!-- -- MUSIC PLAYER -- -->
@@ -1249,7 +1225,7 @@ input::placeholder { color:#aaa !important; }
   <div class="panel" id="panel-art">
     <!-- v383: Home button for Art panel (not a fixed overlay so global injector doesn't reach it) -->
     <div style="display:flex;align-items:center;gap:10px;padding:8px 0 4px;">
-      <button onclick="switchTab('academics')" style="display:none;">✕</button>
+      <button onclick="switchTab('academics')" style="width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,.15);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;flex-shrink:0;">✕</button>
       <span style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1.05rem;color:#2D1B3D;">🎨 Create</span>
     </div>
     <div class="art-hero" id="artHero">
@@ -1310,7 +1286,7 @@ input::placeholder { color:#aaa !important; }
   <div class="panel" id="panel-reading">
     <!-- v383: Home button -->
     <div style="display:flex;align-items:center;gap:10px;padding:8px 0 4px;">
-      <button onclick="switchTab('academics')" style="display:none;">✕</button>
+      <button onclick="switchTab('academics')" style="width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,.15);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;flex-shrink:0;">✕</button>
       <span style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1.05rem;color:#2D1B3D;">📖 Stories</span>
     </div>
     <div class="stats-row">
@@ -2707,11 +2683,9 @@ let artTabBuilt = false;  // ✅ FIX 4: only build art tab once per child sessio
 
 // -- PWA -----------------------------------------------
 if ('serviceWorker' in navigator) {
-  // Unregister old service workers first, then register new one
-  navigator.serviceWorker.getRegistrations().then(function(registrations) {
-    var unregPromises = registrations.map(function(r) { return r.unregister(); });
-    return Promise.all(unregPromises);
-  }).then(function() {
+  navigator.serviceWorker.getRegistrations().then(function(regs){
+    return Promise.all(regs.map(function(r){return r.unregister();}));
+  }).then(function(){
     return navigator.serviceWorker.register('/sw-v411.js');
   }).catch(function(){});
 }
@@ -4127,59 +4101,56 @@ function buildProgressSection() {
   var container = document.getElementById('progressSection');
   if (!container) return;
   var stars = sessionData ? (sessionData.stars || 0) : 0;
-  var streak = sessionData ? (sessionData.streak || 0) : 0;
-  var tasks = sessionData ? (sessionData.tasks || 0) : 0;
 
-  // Level system
-  var levels = [
-    {name:'Seedling', emoji:'🌱', min:0,   max:50},
-    {name:'Sprout',   emoji:'🌿', min:50,  max:150},
-    {name:'Bud',      emoji:'🌷', min:150, max:300},
-    {name:'Bloomer',  emoji:'🌸', min:300, max:500},
-    {name:'SuperBloom',emoji:'🌺',min:500, max:800},
-    {name:'Master',   emoji:'🌻', min:800, max:9999},
-  ];
-  var lvl = levels[0];
-  for(var i=levels.length-1; i>=0; i--){ if(stars>=levels[i].min){ lvl=levels[i]; break; } }
-  var xpPct = lvl.max < 9999 ? Math.min(100, Math.round((stars-lvl.min)/(lvl.max-lvl.min)*100)) : 100;
-  var xpLeft = lvl.max < 9999 ? (lvl.max - stars) : 0;
+  // Plant stage based on stars
+  var stage, stageLabel, potImg;
+  if (stars < 10) {
+    stage = 0; stageLabel = 'Plant your first seed! 🌱';
+    potImg = 'IMG_1480.PNG';
+  } else if (stars < 30) {
+    stage = 1; stageLabel = 'Your seedling is growing! 🌿';
+    potImg = 'IMG_1479.PNG';
+  } else if (stars < 60) {
+    stage = 2; stageLabel = 'Sprouting up! Keep going! 🌱';
+    potImg = 'bloom_pot_small.png';
+  } else {
+    stage = 3; stageLabel = 'Your plant is blooming! 🌺';
+    potImg = 'bloom_pot_small.png';
+  }
 
-  // Subjects from gradeContent
-  var subjects = (gradeContent && gradeContent.subjects_progress) ? gradeContent.subjects_progress : ['Reading','Math','Science','Writing'];
-  var subjectIcons = ['📚','🔢','🔬','✏'];
-  var leavesEarned = Math.min(10, Math.floor(stars/5));
+  // Leaves earned (1 leaf per 5 stars, max 10)
+  var leavesEarned = Math.min(10, Math.floor(stars / 5));
 
-  // Badges
-  var badges = [];
-  if(stars>=1) badges.push('⭐ First Star');
-  if(stars>=10) badges.push('🌟 10 Stars');
-  if(streak>=3) badges.push('🔥 3-Day Streak');
-  if(tasks>=5) badges.push('🎮 5 Games');
-  if(stars>=50) badges.push('🏆 50 Stars');
+  var subjects = (gradeContent && gradeContent.subjects_progress) ? gradeContent.subjects_progress : ['Reading','Math','Science'];
+  var icons = ['📚','🔢','🔬','✍'];
 
-  var subjHTML = subjects.slice(0,4).map(function(subj,i){
-    var earned = Math.min(5, Math.max(0, leavesEarned-(i*2)));
+  var subjHTML = subjects.map(function(subj, i) {
+    var leavesForSubj = Math.min(5, Math.max(0, leavesEarned - (i * 2)));
     var leaves = '';
-    for(var l=0;l<5;l++) leaves += '<span style="opacity:'+(l<earned?'1':'0.25')+';">🍃</span>';
-    return '<div class="pp-subject"><div class="pp-subj-name">'+(subjectIcons[i]||'📖')+' '+subj+'</div><div class="pp-leaves">'+leaves+'</div></div>';
+    for (var l = 0; l < 5; l++) {
+      leaves += '<span class="plant-leaf' + (l < leavesForSubj ? ' earned' : '') + '">🍃</span>';
+    }
+    return '<div class="plant-subj-row">'
+      + '<div class="plant-subj-icon">' + (icons[i] || '📖') + '</div>'
+      + '<div class="plant-subj-info">'
+      + '<div class="plant-subj-name">' + subj + '</div>'
+      + '<div class="plant-subj-leaves">' + leaves + '</div>'
+      + '</div></div>';
   }).join('');
 
-  var badgeHTML = badges.length ? badges.map(function(b){ return '<div class="pp-badge">'+b+'</div>'; }).join('') : '<div class="pp-badge">🔒 Earn your first badge!</div>';
+  var starsHTML = '';
+  for (var s = 0; s < Math.min(stars, 20); s++) {
+    starsHTML += '<span class="plant-star earned">⭐</span>';
+  }
+  if (stars > 20) starsHTML += '<span style="font-size:.75rem;color:#888;font-weight:700;">+' + (stars-20) + ' more!</span>';
 
-  container.innerHTML = '<div class="premium-progress">'
-    + '<div class="pp-header">'
-    + '<div class="pp-avatar">'+lvl.emoji+'</div>'
-    + '<div style="flex:1"><div class="pp-title">'+(activeChild?activeChild.name:'Explorer')+'</div>'
-    + '<div class="pp-level">'+lvl.name+' · LEVEL '+(levels.indexOf(lvl)+1)+'</div></div>'
-    + '<div class="pp-stars">'+stars+' ⭐</div>'
+  container.innerHTML = '<div class="plant-progress-wrap">'
+    + '<div class="plant-pot-area"><img src="' + potImg + '" alt="Your plant" onerror="this.style.display=&quot;none&quot;"></div>'
+    + '<div class="plant-stage-label">' + stageLabel + '</div>'
+    + '<div class="plant-stars-row">' + starsHTML + '</div>'
+    + '<div style="font-size:.75rem;color:#888;font-weight:700;margin-top:6px;">' + stars + ' stars earned today</div>'
     + '</div>'
-    + '<div class="pp-xp-wrap">'
-    + '<div class="pp-xp-label"><span>Progress</span><span>'+(xpLeft>0?xpLeft+' XP to next level':'MAX LEVEL 👑')+'</span></div>'
-    + '<div class="pp-xp-bar"><div class="pp-xp-fill" style="width:'+xpPct+'%"></div></div>'
-    + '</div>'
-    + '<div class="pp-subjects">'+subjHTML+'</div>'
-    + (badges.length?'<div class="pp-badges">'+badgeHTML+'</div>':'')
-    + '</div>';
+    + '<div class="plant-progress-subjects">' + subjHTML + '</div>';
 }
 
 // ══════════════════════════════════════════════════════
@@ -5108,7 +5079,6 @@ function setupDrawCanvas() {
       var octx = offscreen.getContext('2d');
       try { octx.drawImage(img, 0, 0, canvas.width, canvas.height); } catch(e) { return; }
       
-      octx.willReadFrequently = true;
       var imageData = octx.getImageData(0, 0, canvas.width, canvas.height);
       var data = imageData.data;
       var idx = (startY * canvas.width + startX) * 4;
@@ -8603,7 +8573,7 @@ function openColorsGame(grade) {
       +'</div>'
       +'<div id="csItems" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px;">'
       +items.map(function(item,i){
-        return '<div id="csi'+i+'" data-cat="'+item.cat+'" onclick="window._csTap(this)" '
+        return '<div id="csi'+i+'" data-cat="'+item.cat+'" onclick="window._csTap(document.getElementById(\'cs\'+'+i+'))" '
           +'style="padding:10px 14px;border-radius:14px;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-weight:700;font-size:.9rem;cursor:pointer;box-shadow:0 4px 12px rgba(236,72,153,.3);transition:all .2s;">'+item.label+'</div>';
       }).join('')
       +'</div>'
@@ -11894,5 +11864,6 @@ function openDinoStories(grade) {
 }
 
 </script>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v412</div>
 </body>
 </html>
