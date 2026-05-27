@@ -761,22 +761,22 @@ input::placeholder { color:#aaa !important; }
 
 
 /* ═══ PROGRESSION SYSTEM ═══ */
-.journey-bar { background:white; border-radius:20px; padding:14px 16px; margin-bottom:16px;
-  box-shadow:0 4px 20px rgba(107,53,184,.12); border:2px solid rgba(107,53,184,.08); }
+.journey-bar { background:linear-gradient(135deg,#1A0A3E 0%,#2D1B69 50%,#4C1D95 100%); border-radius:20px; padding:16px; margin-bottom:16px;
+  box-shadow:0 8px 32px rgba(0,0,0,.4); border:2px solid rgba(255,255,255,.15); }
 .journey-top { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
 .journey-avatar { width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg,#8B6FE8,#C9B8FF);
   display:flex; align-items:center; justify-content:center; font-size:1.6rem; flex-shrink:0;
   box-shadow:0 4px 12px rgba(139,111,232,.4); border:3px solid white; }
 .journey-info { flex:1; }
-.journey-name { font-family:'Baloo 2',cursive; font-weight:800; font-size:1rem; color:#1A1A2E; }
-.journey-level { font-size:.72rem; font-weight:700; color:#8B6FE8; margin-top:1px; }
-.journey-xp-bar { height:10px; background:#F0EEFF; border-radius:10px; overflow:hidden; position:relative; }
+.journey-name { font-family:'Baloo 2',cursive; font-weight:800; font-size:1rem; color:white; text-shadow:0 1px 4px rgba(0,0,0,.4); }
+.journey-level { font-size:.72rem; font-weight:700; color:#C9B8FF; margin-top:1px; }
+.journey-xp-bar { height:12px; background:rgba(255,255,255,.15); border-radius:10px; overflow:hidden; position:relative; border:1px solid rgba(255,255,255,.1); }
 .journey-xp-fill { height:100%; border-radius:10px;
   background:linear-gradient(90deg,#8B6FE8,#C084FC,#FFD700);
   background-size:200% 100%; animation:xpShimmer 2s linear infinite;
   transition:width 1s cubic-bezier(.34,1.56,.64,1); }
 @keyframes xpShimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
-.journey-xp-text { font-size:.65rem; font-weight:800; color:#8B6FE8; margin-top:3px; text-align:right; }
+.journey-xp-text { font-size:.65rem; font-weight:800; color:#C9B8FF; margin-top:3px; text-align:right; }
 .journey-badges { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
 .j-badge { background:linear-gradient(135deg,#FFD700,#FFA500); color:white;
   border-radius:20px; padding:3px 10px; font-size:.65rem; font-weight:800;
@@ -1059,7 +1059,7 @@ input::placeholder { color:#aaa !important; }
 
     <!-- v379 MINDFUL MOMENTS — moved to top of sections, Yoga+Music combined -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin:14px 0 10px;padding:0 4px;">
-      <h2 style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:#2D1B3D;margin:0;">🌿 Mindful Moments</h2>
+      <h2 style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:white;margin:0;text-shadow:0 1px 4px rgba(0,0,0,.3);">🌿 Mindful Moments</h2>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;">
       <!-- Yoga & Music (combined) -->
@@ -1100,8 +1100,8 @@ input::placeholder { color:#aaa !important; }
 
     <!-- v3 SECTION HEADER: Games -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin:8px 0 10px;padding:0 4px;">
-      <h2 style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:#2D1B3D;margin:0;">🎮 Games</h2>
-      <span onclick="openAllGames()" style="font-size:.75rem;font-weight:800;color:#6B3DCF;cursor:pointer;padding:4px 8px;border-radius:8px;background:rgba(155,133,224,.1);">See all →</span>
+      <h2 style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:white;margin:0;text-shadow:0 1px 4px rgba(0,0,0,.3);">🎮 Games</h2>
+      <span onclick="openAllGames()" style="font-size:.75rem;font-weight:800;color:white;cursor:pointer;padding:5px 12px;border-radius:20px;background:rgba(255,255,255,.22);border:1.5px solid rgba(255,255,255,.4);">See all →</span>
     </div>
 
     <div class="section-title" id="subjectsTitle" style="display:none;">📖 Today's Subjects</div>
@@ -1110,7 +1110,7 @@ input::placeholder { color:#aaa !important; }
 
     <!-- v379 SUBJECTS — Reading + Math + Social Studies -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin:8px 0 10px;padding:0 4px;">
-      <h2 style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:#2D1B3D;margin:0;">📚 Subjects</h2>
+      <h2 style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:white;margin:0;text-shadow:0 1px 4px rgba(0,0,0,.3);">📚 Subjects</h2>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:18px;">
       <div onclick="v3OpenReadingSubject()" style="background:#4ECDC4;border-radius:20px;padding:16px 8px 12px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #2FA29A,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
@@ -4146,11 +4146,16 @@ function buildProgressSection() {
   }
   if (stars > 20) starsHTML += '<span style="font-size:.75rem;color:#888;font-weight:700;">+' + (stars-20) + ' more!</span>';
 
-  container.innerHTML = '<div class="plant-progress-wrap">'
-    + '<div class="plant-pot-area"><img src="' + potImg + '" alt="Your plant" onerror="this.style.display=&quot;none&quot;"></div>'
-    + '<div class="plant-stage-label">' + stageLabel + '</div>'
-    + '<div class="plant-stars-row">' + starsHTML + '</div>'
-    + '<div style="font-size:.75rem;color:#888;font-weight:700;margin-top:6px;">' + stars + ' stars earned today</div>'
+  container.innerHTML = '<div style="background:linear-gradient(135deg,#1A0A3E,#2D1B69,#4C1D95);border-radius:20px;padding:18px;margin-bottom:12px;box-shadow:0 8px 32px rgba(0,0,0,.35);border:2px solid rgba(255,255,255,.1);">'
+    + '<div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;">'
+    + '<img src="' + potImg + '" alt="plant" style="width:64px;height:64px;object-fit:contain;flex-shrink:0;" onerror="this.style.display=\'none\'">'
+    + '<div style="flex:1;">'
+    + '<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;color:white;">' + stageLabel + '</div>'
+    + '<div style="margin-top:8px;background:rgba(255,255,255,.15);border-radius:10px;height:10px;overflow:hidden;">'
+    + '<div style="height:100%;border-radius:10px;background:linear-gradient(90deg,#FFD700,#FF9500);width:' + Math.min(100,(stars%50)*2) + '%;transition:width 1s;"></div></div>'
+    + '<div style="font-size:.65rem;color:#C9B8FF;font-weight:700;margin-top:4px;">' + stars + ' ⭐ total stars</div>'
+    + '</div></div>'
+    + '<div style="display:flex;gap:3px;flex-wrap:wrap;">' + starsHTML + '</div>'
     + '</div>'
     + '<div class="plant-progress-subjects">' + subjHTML + '</div>';
 }
@@ -4335,6 +4340,23 @@ function renderQuestion() {
   qqEl.style.display='block'; qoEl.style.display='block';
   if(qfEl) { qfEl.style.display='none'; qfEl.className='quiz-feedback'; }
   qqEl.textContent = q.q;
+  // Auto-read question aloud for younger grades
+  if (soundEnabled && ['PreK','K','1','2'].indexOf(activeGrade+'') >= 0) {
+    setTimeout(function() {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        var utt = new SpeechSynthesisUtterance(q.q.replace(/[🌟⭐🎉💫✨🌈]/g,''));
+        utt.rate = 0.85; utt.pitch = 1.1;
+        var voices = window.speechSynthesis.getVoices();
+        var pref = ['Samantha','Karen','Google UK English Female'];
+        for (var pi=0;pi<pref.length;pi++) {
+          var v = voices.find(function(v){return v.name===pref[pi];});
+          if (v) { utt.voice=v; break; }
+        }
+        window.speechSynthesis.speak(utt);
+      }
+    }, 200);
+  }
   // Shuffle options so correct answer position varies
   var rOpts = q.opts.map((o,i)=>({o:o,c:i===q.answer}));
   for(var ri=rOpts.length-1;ri>0;ri--){var rj=Math.floor(Math.random()*(ri+1));var rt=rOpts[ri];rOpts[ri]=rOpts[rj];rOpts[rj]=rt;}
@@ -9053,6 +9075,163 @@ function openJeopardy(){
 }
 window.openJeopardy=openJeopardy;
 
+
+// ══ COORDINATE CHASE - Hot/Cold treasure hunt on a 5x5 grid ══
+function openCoordinateChase() {
+  var SIZE = 5;
+  var treasure = [Math.floor(Math.random()*SIZE), Math.floor(Math.random()*SIZE)];
+  var guesses = 0;
+  var found = false;
+  var ov = document.createElement('div');
+  ov.id = 'coordOv';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#0F172A,#1E3A5F);display:flex;flex-direction:column;overflow-y:auto;';
+  document.body.appendChild(ov);
+
+  function dist(r,c) { return Math.abs(r-treasure[0])+Math.abs(c-treasure[1]); }
+  function render() {
+    ov.innerHTML = '';
+    var hdr = document.createElement('div');
+    hdr.style.cssText = 'background:rgba(0,0,0,.3);padding:14px 18px;display:flex;justify-content:space-between;align-items:center;';
+    hdr.innerHTML = '<span style="font-family:Baloo 2,cursive;font-weight:800;color:#FFD700;font-size:1.1rem;">🗺️ Coordinate Chase</span>'
+      + '<span style="color:#aaa;font-size:.85rem;">Guesses: '+guesses+'</span>';
+    var xb = document.createElement('button');
+    xb.textContent = '✕'; xb.style.cssText = 'background:rgba(255,255,255,.15);border:none;color:white;border-radius:50%;width:36px;height:36px;cursor:pointer;font-weight:800;font-size:1rem;margin-left:10px;';
+    xb.onclick = function(){ov.remove();};
+    hdr.appendChild(xb);
+    ov.appendChild(hdr);
+
+    var body = document.createElement('div');
+    body.style.cssText = 'padding:20px;flex:1;';
+
+    var hint = document.createElement('div');
+    hint.style.cssText = 'text-align:center;color:#94A3B8;font-size:.9rem;margin-bottom:16px;';
+    hint.textContent = found ? '🎉 You found the treasure!' : 'Tap a square to hunt for the hidden 💎 treasure!';
+    body.appendChild(hint);
+
+    // Column labels
+    var colRow = document.createElement('div');
+    colRow.style.cssText = 'display:grid;grid-template-columns:24px repeat('+SIZE+',1fr);gap:4px;margin-bottom:4px;';
+    colRow.appendChild(document.createElement('div'));
+    for (var c=0;c<SIZE;c++) {
+      var l=document.createElement('div');
+      l.style.cssText='color:#94A3B8;text-align:center;font-weight:800;font-size:.85rem;';
+      l.textContent=String.fromCharCode(65+c);
+      colRow.appendChild(l);
+    }
+    body.appendChild(colRow);
+
+    var grid = document.createElement('div');
+    grid.style.cssText = 'display:grid;grid-template-columns:24px repeat('+SIZE+',1fr);gap:4px;';
+    for (var r=0;r<SIZE;r++) {
+      var rl=document.createElement('div');
+      rl.style.cssText='color:#94A3B8;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;';
+      rl.textContent=r+1;
+      grid.appendChild(rl);
+      for (var ci=0;ci<SIZE;ci++) {
+        var cell=document.createElement('div');
+        var d=dist(r,ci);
+        var isFound=found&&r===treasure[0]&&ci===treasure[1];
+        cell.style.cssText='border-radius:10px;height:52px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;cursor:pointer;border:2px solid rgba(255,255,255,.1);transition:all .2s;'
+          +(isFound?'background:linear-gradient(135deg,#FFD700,#FFA500);border-color:#FFD700;':'background:rgba(255,255,255,.07);');
+        if(isFound){cell.textContent='💎';}
+        else{cell.textContent='?';}
+        (function(ro,co){
+          cell.onclick=function(){
+            if(found)return;
+            guesses++;
+            var d2=dist(ro,co);
+            var fb='';
+            if(ro===treasure[0]&&co===treasure[1]){found=true;fb='🎉 FOUND IT!';}
+            else if(d2===1){fb='🔥 Burning hot!';}
+            else if(d2===2){fb='🌡️ Very warm!';}
+            else if(d2===3){fb='☀️ Getting warmer...';}
+            else if(d2===4){fb='❄️ A bit cold...';}
+            else{fb='🥶 Ice cold!';}
+            toast(fb);
+            if(found){if(typeof playSound==='function')playSound('correct');if(typeof celebrateLevelComplete==='function')celebrateLevelComplete();}
+            render();
+          };
+        })(r,ci);
+        grid.appendChild(cell);
+      }
+    }
+    body.appendChild(grid);
+
+    if(found){
+      var btn=document.createElement('button');
+      btn.textContent='Play Again 🔄';
+      btn.style.cssText='display:block;margin:20px auto 0;padding:14px 32px;border-radius:40px;border:none;background:linear-gradient(135deg,#FFD700,#FFA500);color:#1A0A00;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';
+      btn.onclick=function(){treasure=[Math.floor(Math.random()*SIZE),Math.floor(Math.random()*SIZE)];guesses=0;found=false;render();};
+      body.appendChild(btn);
+    }
+    ov.appendChild(body);
+  }
+  render();
+}
+window.openCoordinateChase = openCoordinateChase;
+
+// ══ PROBLEM SOLVER - Fun grade-5 word problems with multiple choice ══
+function openProblemSolver() {
+  var problems = [
+    {q:'A pizza has 8 slices. Three friends each ate 2 slices. How many are left?', opts:['2','3','4','6'], a:0, emoji:'🍕'},
+    {q:'Maya biked 4.5 miles to school and 4.5 miles back every day for 5 days. How many miles total?', opts:['20','40 miles','45 miles','9 miles'], a:2, emoji:'🚴'},
+    {q:'A recipe needs 2½ cups of flour. You want to triple it. How much flour do you need?', opts:['6 cups','7 cups','7½ cups','5 cups'], a:2, emoji:'🍰'},
+    {q:'A store sells 3 shirts for $24. What is the cost of 1 shirt?', opts:['$6','$7','$8','$9'], a:2, emoji:'👕'},
+    {q:'A train travels 60 miles per hour. How far will it go in 2½ hours?', opts:['120 miles','150 miles','140 miles','100 miles'], a:1, emoji:'🚂'},
+    {q:'A garden is 12 feet long and 8 feet wide. What is its area?', opts:['20 sq ft','40 sq ft','96 sq ft','80 sq ft'], a:2, emoji:'🌻'},
+  ];
+  var idx = 0; var score = 0; var answered = false;
+  var CA='#8B6FE8'; var CB='#C084FC';
+  var ov=document.createElement('div');ov.id='problemOv';
+  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#F0FFF4,#ECFDF5);display:flex;flex-direction:column;overflow-y:auto;';
+  document.body.appendChild(ov);
+
+  function render() {
+    ov.innerHTML='';
+    if(idx>=problems.length){
+      var d=document.createElement('div');d.style.cssText='padding:40px;text-align:center;';
+      d.innerHTML='<div style="font-size:3.5rem;margin-bottom:16px;">🧮</div>'
+        +'<div style="font-family:Baloo 2,cursive;font-size:1.5rem;font-weight:800;color:#059669;">'+score+'/'+problems.length+' Solved!</div>'
+        +'<div style="color:#888;margin:12px 0 24px;">'+(score===problems.length?'Math genius!':'Good problem solving!')+'</div>';
+      var btn=document.createElement('button');btn.textContent='Play Again 🔄';btn.style.cssText='padding:14px 32px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;font-size:1rem;';
+      btn.onclick=function(){idx=0;score=0;answered=false;render();};
+      d.appendChild(btn);
+      var xb2=document.createElement('button');xb2.textContent='Done ✕';xb2.style.cssText='margin-top:10px;display:block;margin-left:auto;margin-right:auto;padding:14px 32px;border-radius:40px;border:none;background:#F0F0F8;color:#888;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;font-size:1rem;';
+      xb2.onclick=function(){ov.remove();};d.appendChild(xb2);ov.appendChild(d);
+      if(score===problems.length&&typeof celebrateLevelComplete==='function')celebrateLevelComplete();
+      return;
+    }
+    var p=problems[idx];
+    var hdr=document.createElement('div');hdr.style.cssText='background:linear-gradient(135deg,'+CA+','+CB+');padding:14px 18px;display:flex;justify-content:space-between;align-items:center;';
+    hdr.innerHTML='<span style="font-family:Baloo 2,cursive;font-weight:800;color:white;font-size:1rem;">🧮 Problem Solver</span>'
+      +'<span style="color:rgba(255,255,255,.8);font-size:.85rem;">'+(idx+1)+'/'+problems.length+'</span>';
+    var xb=document.createElement('button');xb.textContent='✕';xb.style.cssText='background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:36px;height:36px;cursor:pointer;font-weight:800;font-size:1rem;margin-left:10px;';
+    xb.onclick=function(){ov.remove();};hdr.appendChild(xb);ov.appendChild(hdr);
+    var body=document.createElement('div');body.style.cssText='padding:20px;';
+    var qcard=document.createElement('div');qcard.style.cssText='background:white;border-radius:20px;padding:24px;margin-bottom:20px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.08);';
+    qcard.innerHTML='<div style="font-size:3rem;margin-bottom:12px;">'+p.emoji+'</div>'
+      +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1.1rem;color:#1A1A2E;line-height:1.5;">'+p.q+'</div>';
+    body.appendChild(qcard);
+    answered=false;
+    p.opts.forEach(function(o,oi){
+      var btn=document.createElement('button');
+      btn.textContent=o;
+      btn.style.cssText='width:100%;margin-bottom:10px;padding:14px;border-radius:14px;border:2px solid #D1FAE5;background:white;font-family:Nunito,sans-serif;font-weight:700;font-size:1rem;cursor:pointer;text-align:left;box-sizing:border-box;color:#1A1A2E;';
+      (function(ci){btn.onclick=function(){
+        if(answered)return; answered=true;
+        body.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});
+        if(ci===p.a){score++;btn.style.background='#D1FAE5';btn.style.borderColor='#22c55e';toast('✅ Correct!');if(typeof playSound==='function')playSound('correct');}
+        else{btn.style.background='#FEE2E2';btn.style.borderColor='#ef4444';body.querySelectorAll('button')[p.a].style.background='#D1FAE5';body.querySelectorAll('button')[p.a].style.borderColor='#22c55e';toast('💡 Keep trying!');if(typeof playSound==='function')playSound('wrong');}
+        idx++;setTimeout(render,1500);
+      };})(oi);
+      body.appendChild(btn);
+    });
+    ov.appendChild(body);
+  }
+  render();
+}
+window.openProblemSolver = openProblemSolver;
+
 function goHomeFromOverlay() {
   _mindfulStop();
   // Remove any open overlay
@@ -11867,5 +12046,6 @@ function openDinoStories(grade) {
 
 </script>
 <div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v413</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v411</div>
 </body>
 </html>
