@@ -2686,7 +2686,7 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.getRegistrations().then(function(regs){
     return Promise.all(regs.map(function(r){return r.unregister();}));
   }).then(function(){
-    return navigator.serviceWorker.register('/sw-v411.js');
+    return navigator.serviceWorker.register('/sw.js');
   }).catch(function(){});
 }
 
@@ -3226,7 +3226,7 @@ var _origCompleteMission = typeof completeMission === 'function' ? completeMissi
 function completeMission(type) {
   if (_origCompleteMission) _origCompleteMission(type);
   setTimeout(function() {
-    updateJourneyBar();
+    buildProgressSection();
     updateMissionUI();
   }, 100);
 }
@@ -3777,7 +3777,7 @@ async function selectChild(child) {
   setTimeout(showIntroVideo, 500);
   applyGradeUI();
   buildSubjectCards();
-  setTimeout(function(){ updateJourneyBar(); updateMissionUI(); }, 200);
+  setTimeout(function(){ buildProgressSection(); updateMissionUI(); }, 200);
   buildReadingButtons();
   buildGradeGames();
   buildYogaGrid();
@@ -4102,63 +4102,159 @@ function buildSubjectCards() {
 function buildProgressSection() {
   var container = document.getElementById('progressSection');
   if (!container) return;
-  var stars = sessionData ? (sessionData.stars || 0) : 0;
 
-  // Plant stage based on stars
-  var stage, stageLabel, potImg;
-  if (stars < 10) {
-    stage = 0; stageLabel = 'Plant your first seed! 🌱';
-    potImg = 'IMG_1480.PNG';
-  } else if (stars < 30) {
-    stage = 1; stageLabel = 'Your seedling is growing! 🌿';
-    potImg = 'IMG_1479.PNG';
-  } else if (stars < 60) {
-    stage = 2; stageLabel = 'Sprouting up! Keep going! 🌱';
-    potImg = 'bloom_pot_small.png';
+  var stars   = sessionData ? (sessionData.stars   || 0) : 0;
+  var streak  = sessionData ? (sessionData.streak  || 0) : 0;
+  var tasks   = sessionData ? (sessionData.tasks   || 0) : 0;
+  var name    = (activeChild && activeChild.name) ? activeChild.name : 'Explorer';
+
+  // ── Level calculation ──
+  var LEVELS = [
+    {level:1, name:'Seedling',   emoji:'🌱', xp:0},
+    {level:2, name:'Sprout',     emoji:'🌿', xp:50},
+    {level:3, name:'Bud',        emoji:'🌷', xp:150},
+    {level:4, name:'Bloomer',    emoji:'🌸', xp:300},
+    {level:5, name:'Super Bloom',emoji:'🌺', xp:500},
+    {level:6, name:'Master',     emoji:'🌻', xp:800},
+  ];
+  var currentLvl = LEVELS[0], nextLvl = LEVELS[1];
+  for (var i = LEVELS.length - 1; i >= 0; i--) {
+    if (stars >= LEVELS[i].xp) { currentLvl = LEVELS[i]; nextLvl = LEVELS[i+1]||null; break; }
+  }
+  var xpMin = currentLvl.xp;
+  var xpMax = nextLvl ? nextLvl.xp : xpMin + 500;
+  var xpPct = nextLvl ? Math.min(100, Math.round(((stars - xpMin) / (xpMax - xpMin)) * 100)) : 100;
+  var xpLabel = nextLvl ? ((stars - xpMin) + '/' + (xpMax - xpMin) + ' XP · ' + (xpMax - stars) + ' to ' + nextLvl.name) : '👑 MAX LEVEL!';
+
+  // ── Badges ──
+  var BDGS = [
+    {emoji:'⭐', label:'First Star',    earned: stars >= 1},
+    {emoji:'🔥', label:'On Fire',       earned: streak >= 3},
+    {emoji:'🎯', label:'10 Stars',      earned: stars >= 10},
+    {emoji:'📚', label:'5 Activities',  earned: tasks >= 5},
+    {emoji:'💫', label:'50 Stars',      earned: stars >= 50},
+    {emoji:'🏆', label:'100 Stars',     earned: stars >= 100},
+    {emoji:'🌟', label:'Week Streak',   earned: streak >= 7},
+    {emoji:'👑', label:'Master',        earned: stars >= 800},
+  ];
+  var earnedBadges = BDGS.filter(function(b){return b.earned;});
+
+  // ── Subject leaves ──
+  var subjects = ['Reading','Math','Science','Art'];
+  var subjIcons = ['📚','🔢','🔬','🎨'];
+  var leavesTotal = Math.min(40, Math.floor(stars / 3));
+
+  // ── Plant image ──
+  var potImg = stars < 10 ? 'IMG_1480.PNG' : stars < 30 ? 'IMG_1479.PNG' : 'bloom_pot_small.png';
+
+  // ── Build HTML ──
+  var html = '';
+
+  // TOP CARD — dark premium
+  html += '<div style="background:linear-gradient(135deg,#120726 0%,#1E0D45 40%,#3B1578 100%);'
+    + 'border-radius:22px;padding:18px 18px 14px;margin-bottom:14px;'
+    + 'box-shadow:0 12px 40px rgba(0,0,0,.5);border:1.5px solid rgba(255,255,255,.12);">';
+
+  // Row 1: avatar + name + level
+  html += '<div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;">';
+  // Avatar circle
+  html += '<div style="width:58px;height:58px;border-radius:50%;'
+    + 'background:linear-gradient(135deg,#8B6FE8,#C084FC);'
+    + 'display:flex;align-items:center;justify-content:center;font-size:1.8rem;'
+    + 'flex-shrink:0;box-shadow:0 4px 16px rgba(139,111,232,.6);'
+    + 'border:3px solid rgba(255,255,255,.3);">'
+    + currentLvl.emoji + '</div>';
+  // Name + level
+  html += '<div style="flex:1;">';
+  html += '<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1.05rem;'
+  html += '<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1.05rem;color:white;line-height:1.1;">' + name + '&#39;s Garden</div>';
+  html += '<div style="font-size:.72rem;font-weight:700;color:#C9B8FF;margin-top:2px;">'
+    + 'Level ' + currentLvl.level + ' · ' + currentLvl.name + '</div>';
+  // Star count pill
+  html += '<div style="display:inline-flex;align-items:center;gap:4px;margin-top:6px;'
+    + 'background:rgba(255,215,0,.15);border:1px solid rgba(255,215,0,.3);'
+    + 'border-radius:20px;padding:3px 10px;">';
+  html += '<span style="font-size:.85rem;">⭐</span>';
+  html += '<span style="font-family:Baloo 2,cursive;font-weight:800;font-size:.82rem;color:#FFD700;">'
+    + stars + ' stars</span></div>';
+  html += '</div>';
+  // Plant image
+  html += '<img src="' + potImg + '" style="width:56px;height:56px;object-fit:contain;flex-shrink:0;" onerror="this.style.display=&quot;none&quot;">';
+  html += '</div>'; // end row 1
+
+  // XP Bar
+  html += '<div style="margin-bottom:8px;">';
+  html += '<div style="display:flex;justify-content:space-between;margin-bottom:5px;">';
+  html += '<span style="font-size:.62rem;font-weight:800;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.5px;">Progress</span>';
+  html += '<span style="font-size:.62rem;font-weight:700;color:#C9B8FF;">' + xpLabel + '</span>';
+  html += '</div>';
+  html += '<div style="height:12px;background:rgba(255,255,255,.1);border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.08);">';
+  html += '<div style="height:100%;width:' + xpPct + '%;border-radius:20px;'
+    + 'background:linear-gradient(90deg,#8B6FE8,#C084FC,#FFD700);'
+    + 'box-shadow:0 0 12px rgba(192,132,252,.6);'
+    + 'transition:width 1.2s cubic-bezier(.34,1.56,.64,1);"></div>';
+  html += '</div></div>'; // end XP bar
+
+  // Streak pill
+  if (streak > 0) {
+    html += '<div style="display:inline-flex;align-items:center;gap:5px;'
+      + 'background:linear-gradient(135deg,#FF6B35,#FF9500);'
+      + 'border-radius:20px;padding:4px 12px;margin-bottom:10px;">';
+    html += '<span style="font-size:.9rem;">🔥</span>';
+    html += '<span style="font-family:Baloo 2,cursive;font-weight:800;font-size:.78rem;color:white;">'
+      + streak + ' Day Streak!</span></div>';
+  }
+
+  // Badges
+  if (earnedBadges.length > 0) {
+    html += '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;">';
+    earnedBadges.forEach(function(b) {
+      html += '<div style="background:linear-gradient(135deg,#FFD700,#FFA500);'
+        + 'border-radius:20px;padding:4px 10px;display:flex;align-items:center;gap:4px;'
+        + 'box-shadow:0 3px 10px rgba(255,165,0,.4);">';
+      html += '<span style="font-size:.8rem;">' + b.emoji + '</span>';
+      html += '<span style="font-family:Nunito,sans-serif;font-weight:800;font-size:.65rem;color:#1A0A00;">' + b.label + '</span>';
+      html += '</div>';
+    });
+    html += '</div>';
   } else {
-    stage = 3; stageLabel = 'Your plant is blooming! 🌺';
-    potImg = 'bloom_pot_small.png';
+    html += '<div style="font-size:.72rem;color:rgba(255,255,255,.35);margin-top:4px;">'
+      + 'Complete activities to earn badges! 🏅</div>';
   }
 
-  // Leaves earned (1 leaf per 5 stars, max 10)
-  var leavesEarned = Math.min(10, Math.floor(stars / 5));
+  html += '</div>'; // end top card
 
-  var subjects = (gradeContent && gradeContent.subjects_progress) ? gradeContent.subjects_progress : ['Reading','Math','Science'];
-  var icons = ['📚','🔢','🔬','✍'];
+  // SUBJECT LEAVES SECTION
+  html += '<div style="background:white;border-radius:18px;padding:14px 16px;'
+    + 'box-shadow:0 4px 16px rgba(0,0,0,.08);border:1.5px solid #F0EEFF;">';
+  html += '<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.85rem;'
+    + 'color:#2D1B3D;margin-bottom:12px;">🍃 Growing Leaves</div>';
 
-  var subjHTML = subjects.map(function(subj, i) {
-    var leavesForSubj = Math.min(5, Math.max(0, leavesEarned - (i * 2)));
-    var leaves = '';
+  subjects.forEach(function(subj, i) {
+    var myLeaves = Math.min(5, Math.max(0, leavesTotal - i * 2));
+    html += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">';
+    html += '<div style="font-size:1.3rem;width:28px;text-align:center;">' + subjIcons[i] + '</div>';
+    html += '<div style="flex:1;">';
+    html += '<div style="font-family:Nunito,sans-serif;font-weight:800;font-size:.8rem;color:#2D1B3D;margin-bottom:4px;">' + subj + '</div>';
+    html += '<div style="display:flex;gap:4px;">';
     for (var l = 0; l < 5; l++) {
-      leaves += '<span class="plant-leaf' + (l < leavesForSubj ? ' earned' : '') + '">🍃</span>';
+      var on = l < myLeaves;
+      html += '<span style="font-size:1.05rem;opacity:' + (on ? '1' : '0.2') + ';'
+        + 'transition:opacity .3s;filter:' + (on ? 'none' : 'grayscale(1)') + ';">🍃</span>';
     }
-    return '<div class="plant-subj-row">'
-      + '<div class="plant-subj-icon">' + (icons[i] || '📖') + '</div>'
-      + '<div class="plant-subj-info">'
-      + '<div class="plant-subj-name">' + subj + '</div>'
-      + '<div class="plant-subj-leaves">' + leaves + '</div>'
-      + '</div></div>';
-  }).join('');
+    html += '</div></div>';
+    // Mini progress bar
+    html += '<div style="width:50px;height:6px;background:#F0EEFF;border-radius:6px;overflow:hidden;">';
+    html += '<div style="height:100%;width:' + (myLeaves * 20) + '%;background:linear-gradient(90deg,#5ECDA0,#4ECDC4);border-radius:6px;"></div>';
+    html += '</div>';
+    html += '</div>'; // end row
+  });
 
-  var starsHTML = '';
-  for (var s = 0; s < Math.min(stars, 20); s++) {
-    starsHTML += '<span class="plant-star earned">⭐</span>';
-  }
-  if (stars > 20) starsHTML += '<span style="font-size:.75rem;color:#888;font-weight:700;">+' + (stars-20) + ' more!</span>';
+  html += '</div>'; // end leaves section
 
-  container.innerHTML = '<div style="background:linear-gradient(135deg,#1A0A3E,#2D1B69,#4C1D95);border-radius:20px;padding:18px;margin-bottom:12px;box-shadow:0 8px 32px rgba(0,0,0,.35);border:2px solid rgba(255,255,255,.1);">'
-    + '<div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;">'
-    + '<img src="' + potImg + '" alt="plant" style="width:64px;height:64px;object-fit:contain;flex-shrink:0;" onerror="this.style.display=\'none\'">'
-    + '<div style="flex:1;">'
-    + '<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;color:white;">' + stageLabel + '</div>'
-    + '<div style="margin-top:8px;background:rgba(255,255,255,.15);border-radius:10px;height:10px;overflow:hidden;">'
-    + '<div style="height:100%;border-radius:10px;background:linear-gradient(90deg,#FFD700,#FF9500);width:' + Math.min(100,(stars%50)*2) + '%;transition:width 1s;"></div></div>'
-    + '<div style="font-size:.65rem;color:#C9B8FF;font-weight:700;margin-top:4px;">' + stars + ' ⭐ total stars</div>'
-    + '</div></div>'
-    + '<div style="display:flex;gap:3px;flex-wrap:wrap;">' + starsHTML + '</div>'
-    + '</div>'
-    + '<div class="plant-progress-subjects">' + subjHTML + '</div>';
+  container.innerHTML = html;
 }
+
 
 // ══════════════════════════════════════════════════════
 //  YOGA POSES  ✅ FIX 3: photo onerror → SVG fallback
