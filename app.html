@@ -208,7 +208,7 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 @keyframes slideDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
 .subtitle { color:var(--muted); font-size:var(--font-body); margin-bottom:24px; font-weight:600; }
 
-.bloomi-mascot-row { display:flex; align-items:center; gap:14px; margin-bottom:20px; min-height:110px; }
+.bloomi-mascot-row { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; margin-bottom:20px; min-height:110px; }
 .bloomi-mascot { width:72px; height:88px; object-fit:contain; object-position:center bottom; cursor:pointer; filter:drop-shadow(0 4px 8px rgba(139,111,232,.2)); transition:transform .2s; }
 .bloomi-streak-card { flex:1; background:linear-gradient(135deg,#FF6B6B,#FFD166); border-radius:18px; padding:12px 16px; color:white; }
 .bloomi-streak-num { font-family:'Baloo 2',cursive; font-size:2rem; font-weight:800; line-height:1; }
@@ -436,12 +436,12 @@ body.grade-prek .pose-name, body.grade-k .pose-name, body.grade-1 .pose-name { f
 
 
 .breathing-area { text-align:center; padding:30px; background:white; border-radius:24px; box-shadow:var(--shadow); margin-bottom:28px; }
-.breath-circle { width:160px; height:160px; border-radius:50%; background:radial-gradient(circle,#E8D4FF,#C9B8FF); margin:0 auto 24px; display:flex; align-items:center; justify-content:center; font-size:3.5rem; animation:breathe 8s ease-in-out infinite; }
+.breath-circle { width:120px; height:120px; border-radius:50%; background:radial-gradient(circle,#E8D4FF,#C9B8FF); margin:0 auto 16px; display:flex; align-items:center; justify-content:center; font-size:2.8rem; animation:breathe 8s ease-in-out infinite; }
 @keyframes breathe { 0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(201,184,255,.4)} 50%{transform:scale(1.4);box-shadow:0 0 0 30px rgba(201,184,255,0)} }
 .breath-instruction { font-family:'Baloo 2',cursive; font-size:var(--font-heading); font-weight:800; margin-bottom:8px; }
 .breath-sub { color:var(--muted); font-size:var(--font-body); font-weight:600; }
 
-body.grade-prek .breath-circle, body.grade-k .breath-circle, body.grade-1 .breath-circle { width:200px; height:200px; font-size:5rem; }
+body.grade-prek .breath-circle, body.grade-k .breath-circle, body.grade-1 .breath-circle { width:150px; height:150px; font-size:3.5rem; }
 
 /* -- BOOKS --------------------------------------------- */
 .book-shelf { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:18px; margin-bottom:28px; }
@@ -834,6 +834,9 @@ input::placeholder { color:#aaa !important; }
 @keyframes streakFlame { from{transform:scale(1) rotate(-5deg)} to{transform:scale(1.1) rotate(5deg)} }
 @keyframes fadeInOverlay { from{opacity:0} to{opacity:1} }
 
+
+/* Single close button rule */
+.overlay-close-dup { display:none !important; }
 </style>
   <link rel="icon" href="favicon.ico" sizes="32x32">
   <link rel="icon" href="favicon.png" type="image/png">
@@ -920,8 +923,8 @@ input::placeholder { color:#aaa !important; }
       <button class="done-btn" onclick="iAmDone()" title="I'm done for today!">
         👋 I'm Done!
       </button>
-      <button class="logout-app-btn" onclick="handleLogout()" title="Log out" style="background:linear-gradient(135deg,#FF6B6B,#FF8E53);border:none;color:white;border-radius:20px;padding:7px 14px;font-size:.82rem;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">
-        🚪 Log Out
+      <button class="logout-app-btn" onclick="window._showExitMenu()" title="Switch child or sign out" style="background:linear-gradient(135deg,#8B6FE8,#6B4FCC);border:none;color:white;border-radius:20px;padding:7px 14px;font-size:.82rem;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">
+        👋 Exit
       </button>
       <button class="logout-app-btn" onclick="openParentDashboard()" title="Parent Dashboard" style="background:linear-gradient(135deg,var(--lavender),var(--sky));color:white;border:none;">
         📊 Parents
@@ -4253,8 +4256,9 @@ function buildProgressSection() {
   html += '<span style="font-size:.62rem;font-weight:700;color:#C9B8FF;">' + xpLabel + '</span>';
   html += '</div>';
   html += '<div style="height:12px;background:rgba(255,255,255,.1);border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.08);">';
-  html += '<div style="height:100%;width:' + xpPct + '%;border-radius:20px;'
+  html += '<div id="journeyXPFill" style="height:100%;width:' + xpPct + '%;border-radius:20px;'
     + 'background:linear-gradient(90deg,#8B6FE8,#C084FC,#FFD700);'
+    + 'background-size:200% 100%;animation:xpShimmer 2.5s linear infinite;'
     + 'box-shadow:0 0 12px rgba(192,132,252,.6);'
     + 'transition:width 1.2s cubic-bezier(.34,1.56,.64,1);"></div>';
   html += '</div></div>'; // end XP bar
@@ -12285,8 +12289,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v413c</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v413c</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v414</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v414</div>
 
 </body>
 </html
