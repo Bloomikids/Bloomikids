@@ -3907,92 +3907,116 @@ function buildGradeGames() {
   // Grade-appropriate game tiles
   var GRADE_GAMES = {
     PreK: [
-      {icon:'🌱', label:"Bloom's Reading Path", fn:"openReadingPath()",     color:'#5ECDA0'},
-      {icon:'✏',     label:'Letter Tracing',  fn:"showLetterTracing()",     color:'#A855F7'},
-      {icon:'🔢', label:'Number Tracing',  fn:"openNumberTracing()",     color:'#22c55e'},
-            {icon:'🔢', label:'Count It!',       fn:"openMathGame('PreK')",   color:'#22c55e'},
-      {icon:'🔤', label:'ABC Time',        fn:"openLangGame('PreK')",   color:'#EC4899'},
-      {icon:'🎵', label:'Patterns',        fn:"openSequencer('PreK')",  color:'#7C3AED'},
-      {icon:'🎨', label:'Colors Sort',     fn:"openColorsGame('PreK')", color:'#F59E0B'},
-      {icon:'🐾', label:'Animal Sort',     fn:"openScienceGame('PreK')",color:'#0EA5E9'},
-      {icon:'🔤', label:'Word Match',      fn:"openLangGame('PreK')",   color:'#EF4444'},
-      {icon:'🀄', label:'Flash Cards',     fn:"openLangGame('PreK')",   color:'#0D9488'},
-      {icon:'🧠', label:'Memory Match',    fn:"openMemoryMatch()",      color:'#8B5CF6'},
-      {icon:'🐝', label:'Spelling Bee',    fn:"openSpellingBee()",      color:'#F59E0B'},
-      {icon:'📚', label:'Busy Book',       fn:"openBusyBook('PreK')",   color:'#0369A1'},
-      {icon:'🃏', label:'Memory Match',   fn:"openMemoryMatch('PreK')", color:'#7C3AED'},
-      {icon:'🔊', label:'Sound Play',      fn:"openPhonicsGame('PreK')", color:'#0EA5E9'},
-      {icon:'🦕', label:'Dino Stories',    fn:"openDinoStories('PreK')", color:'#1a472a'},
+      // Language & Literacy
+      {icon:'🌱', label:"Bloom's Reading Path", fn:"openReadingPath()",      color:'#5ECDA0'},
+      {icon:'✏️', label:'Letter Tracing',       fn:"showLetterTracing()",    color:'#A855F7'},
+      {icon:'🔤', label:'ABC Time',             fn:"openLangGame('PreK')",   color:'#EC4899'},
+      {icon:'🔊', label:'Sound Play',           fn:"openPhonicsGame('PreK')",color:'#0EA5E9'},
+      {icon:'🧠', label:'Memory Match',         fn:"openMemoryMatch()",      color:'#8B5CF6'},
+      // Math
+      {icon:'🔢', label:'Number Tracing',       fn:"openNumberTracing()",    color:'#22c55e'},
+      {icon:'🔢', label:'Count It!',            fn:"openMathGame('PreK')",   color:'#059669'},
+      {icon:'🎵', label:'Patterns',             fn:"openSequencer('PreK')",  color:'#7C3AED'},
+      // Science & World
+      {icon:'🎨', label:'Colors Sort',          fn:"openColorsGame('PreK')", color:'#F59E0B'},
+      {icon:'🐾', label:'Animal Sort',          fn:"openScienceGame('PreK')",color:'#0EA5E9'},
+      // Stories & Play
+      {icon:'🦕', label:'Dino Stories',         fn:"openDinoStories('PreK')",color:'#1a472a'},
+      {icon:'📚', label:'Busy Book',            fn:"openBusyBook('PreK')",   color:'#0369A1'},
     ],
     K: [
-      {icon:'🌱', label:"Bloom's Reading Path", fn:"openReadingPath()", color:'#5ECDA0'},
-            {icon:'🔢', label:'Counting',        fn:"openMathGame('K')",      color:'#22c55e'},
-      {icon:'✏️', label:'Word Builder',    fn:"openLangGame('K')",      color:'#EC4899'},
-      {icon:'🎵', label:'Patterns',        fn:"openSequencer('K')",     color:'#7C3AED'},
-      {icon:'🎨', label:'Colors & Shapes', fn:"openColorsGame('K')",    color:'#F59E0B'},
-      {icon:'🔬', label:'Science Sort',    fn:"openScienceGame('K')",   color:'#0EA5E9'},
-      {icon:'📚', label:'Busy Book',       fn:"openBusyBook('K')",      color:'#0369A1'},
-      {icon:'🃏', label:'Memory Match',   fn:"openMemoryMatch('K')",    color:'#7C3AED'},
-      {icon:'🔊', label:'Sound Play',      fn:"openPhonicsGame('K')",   color:'#0EA5E9'},
-      {icon:'🦕', label:'Dino Stories',    fn:"openDinoStories('K')",   color:'#1a472a'},
+      // Language & Literacy
+      {icon:'🌱', label:"Bloom's Reading Path", fn:"openReadingPath()",      color:'#5ECDA0'},
+      {icon:'✏️', label:'Word Builder',         fn:"openLangGame('K')",      color:'#EC4899'},
+      {icon:'🔊', label:'Sound Play',           fn:"openPhonicsGame('K')",   color:'#0EA5E9'},
+      {icon:'🧠', label:'Memory Match',         fn:"openMemoryMatch('K')",   color:'#8B5CF6'},
+      // Math
+      {icon:'🔢', label:'Counting',             fn:"openMathGame('K')",      color:'#22c55e'},
+      {icon:'🎵', label:'Patterns',             fn:"openSequencer('K')",     color:'#7C3AED'},
+      {icon:'🎨', label:'Colors & Shapes',      fn:"openColorsGame('K')",    color:'#F59E0B'},
+      // Science
+      {icon:'🔬', label:'Science Sort',         fn:"openScienceGame('K')",   color:'#0EA5E9'},
+      // Stories & Play
+      {icon:'🦕', label:'Dino Stories',         fn:"openDinoStories('K')",   color:'#1a472a'},
+      {icon:'📚', label:'Busy Book',            fn:"openBusyBook('K')",      color:'#0369A1'},
     ],
     1: [
-      {icon:'🌱', label:"Bloom's Reading Path", fn:"openReadingPath()", color:'#5ECDA0'},
-            {icon:'➕', label:'Math Practice',   fn:"openMathGame('1')",      color:'#22c55e'},
-      {icon:'🛒', label:'Shop Math',       fn:"openShopMath('1')",      color:'#F59E0B'},
-      {icon:'✏️', label:'Word Builder',    fn:"openLangGame('1')",      color:'#EC4899'},
-      {icon:'🔬', label:'Science Sort',    fn:"openScienceGame('1')",   color:'#0EA5E9'},
-      {icon:'📚', label:'Busy Book',       fn:"openBusyBook('1')",      color:'#0369A1'},
-      {icon:'🌍', label:'Social Studies',  fn:"openSSGame('1')",        color:'#8B5CF6'},
-      {icon:'🃏', label:'Memory Match',   fn:"openMemoryMatch('1')",   color:'#7C3AED'},
-      {icon:'🔗', label:'Number Bonds',   fn:"openNumberBonds('1')",   color:'#059669'},
-      {icon:'🔊', label:'Sound Play',      fn:"openPhonicsGame('1')",   color:'#0EA5E9'},
-      {icon:'🦕', label:'Dino Stories',    fn:"openDinoStories('1')",   color:'#1a472a'},
+      // Language & Literacy
+      {icon:'🌱', label:"Bloom's Reading Path", fn:"openReadingPath()",      color:'#5ECDA0'},
+      {icon:'✏️', label:'Word Builder',         fn:"openLangGame('1')",      color:'#EC4899'},
+      {icon:'🔊', label:'Sound Play',           fn:"openPhonicsGame('1')",   color:'#0EA5E9'},
+      {icon:'🧠', label:'Memory Match',         fn:"openMemoryMatch('1')",   color:'#8B5CF6'},
+      // Math
+      {icon:'➕', label:'Math Practice',        fn:"openMathGame('1')",      color:'#22c55e'},
+      {icon:'🔗', label:'Number Bonds',         fn:"openNumberBonds('1')",   color:'#059669'},
+      {icon:'🛒', label:'Shop Math',            fn:"openShopMath('1')",      color:'#F59E0B'},
+      // Science & World
+      {icon:'🔬', label:'Science Sort',         fn:"openScienceGame('1')",   color:'#0EA5E9'},
+      {icon:'🌍', label:'Social Studies',       fn:"openSSGame('1')",        color:'#8B5CF6'},
+      // Stories
+      {icon:'🦕', label:'Dino Stories',         fn:"openDinoStories('1')",   color:'#1a472a'},
+      {icon:'📚', label:'Busy Book',            fn:"openBusyBook('1')",      color:'#0369A1'},
     ],
     2: [
-      {icon:'➕', label:'Add & Subtract',  fn:"openMathGame('2')",      color:'#22c55e'},
-      {icon:'½',  label:'Fractions',       fn:"openMathGame('2')",      color:'#6366F1'},
-      {icon:'✏️', label:'Word Builder',    fn:"openLangGame('2')",      color:'#EC4899'},
-      {icon:'🔬', label:'Science Sort',    fn:"openScienceGame('2')",   color:'#0EA5E9'},
-      {icon:'🌍', label:'Social Studies',  fn:"openSSGame('2')",        color:'#F59E0B'},
-      {icon:'🎨', label:'Shapes Sort',     fn:"openColorsGame('2')",    color:'#8B5CF6'},
-      {icon:'🛒', label:'Shop Math',       fn:"openShopMath('2')",      color:'#F59E0B'},
-      {icon:'📚', label:'Busy Book',       fn:"openBusyBook('2')",      color:'#0369A1'},
-      {icon:'📖', label:'Reading Corner',  fn:"openPassageReader('2')", color:'#1D4ED8'},
+      // Language & Literacy
+      {icon:'✏️', label:'Word Builder',         fn:"openLangGame('2')",      color:'#EC4899'},
+      {icon:'📖', label:'Reading Corner',       fn:"openPassageReader('2')", color:'#1D4ED8'},
+      {icon:'🧠', label:'Memory Match',         fn:"openMemoryMatch('2')",   color:'#8B5CF6'},
+      // Math
+      {icon:'➕', label:'Add & Subtract',       fn:"openMathGame('2')",      color:'#22c55e'},
+      {icon:'🛒', label:'Shop Math',            fn:"openShopMath('2')",      color:'#F59E0B'},
+      {icon:'🎨', label:'Shapes Sort',          fn:"openColorsGame('2')",    color:'#A855F7'},
+      // Science & World
+      {icon:'🔬', label:'Science Sort',         fn:"openScienceGame('2')",   color:'#0EA5E9'},
+      {icon:'🌍', label:'Social Studies',       fn:"openSSGame('2')",        color:'#F59E0B'},
+      // Activities
+      {icon:'📚', label:'Busy Book',            fn:"openBusyBook('2')",      color:'#0369A1'},
     ],
     3: [
-      {icon:'✖️', label:'Multiply Mania',  fn:"openMathGame('3')",      color:'#22c55e'},
-      {icon:'💧', label:'Water Cycle',     fn:"openScienceGame('3')",   color:'#0EA5E9'},
-      {icon:'📖', label:'Fact Finder',     fn:"openPassageReader('3')", color:'#1D4ED8'},
-      {icon:'✏️', label:'Grammar Grab',    fn:"openLangGame('3')",      color:'#EC4899'},
-      {icon:'🎱', label:'Math Bingo',      fn:"openMathGame('3')",      color:'#6366F1'},
-      {icon:'🗺️', label:'Map Mission',     fn:"openSSGame('3')",        color:'#F59E0B'},
-      {icon:'⚖️', label:'Fact or Opinion', fn:"openLangGame('3')",      color:'#8B5CF6'},
-      {icon:'🛒', label:'Shop Math',       fn:"openShopMath('3')",      color:'#D97706'},
-      {icon:'📚', label:'Busy Book',       fn:"openBusyBook('3')",      color:'#0369A1'},
+      // Language & Literacy
+      {icon:'✏️', label:'Grammar Grab',         fn:"openLangGame('3')",      color:'#EC4899'},
+      {icon:'📖', label:'Fact Finder',          fn:"openPassageReader('3')", color:'#1D4ED8'},
+      {icon:'⚖️', label:'Fact or Opinion',      fn:"openLangGame('3')",      color:'#8B5CF6'},
+      // Math
+      {icon:'✖️', label:'Multiply Mania',       fn:"openMathGame('3')",      color:'#22c55e'},
+      {icon:'🎱', label:'Math Bingo',           fn:"openMathGame('3')",      color:'#6366F1'},
+      {icon:'🛒', label:'Shop Math',            fn:"openShopMath('3')",      color:'#D97706'},
+      // Science & World
+      {icon:'💧', label:'Water Cycle',          fn:"openScienceGame('3')",   color:'#0EA5E9'},
+      {icon:'🗺️', label:'Map Mission',          fn:"openSSGame('3')",        color:'#F59E0B'},
+      // Activities
+      {icon:'📚', label:'Busy Book',            fn:"openBusyBook('3')",      color:'#0369A1'},
     ],
     4: [
-      {icon:'🍕', label:'Fraction Feast',  fn:"openMathGame('4')",      color:'#22c55e'},
-      {icon:'🌸', label:'Grammar Garden',  fn:"openLangGame('4')",      color:'#EC4899'},
-      {icon:'🔬', label:'Science Sort Lab',fn:"openScienceGame('4')",   color:'#0EA5E9'},
-      {icon:'📖', label:'Vocabulary Vault',fn:"openLangGame('4')",      color:'#6366F1'},
-      {icon:'✍️', label:'Story Relay',     fn:"openPassageReader('4')", color:'#F59E0B'},
-      {icon:'🌍', label:'Social Studies',  fn:"openSSGame('4')",        color:'#D97706'},
-      {icon:'📐', label:'Angles Sort',     fn:"openColorsGame('4')",    color:'#8B5CF6'},
-      {icon:'📖', label:'Reading Corner',  fn:"openPassageReader('4')", color:'#1D4ED8'},
+      // Language & Literacy
+      {icon:'🌸', label:'Grammar Garden',       fn:"openLangGame('4')",      color:'#EC4899'},
+      {icon:'📖', label:'Vocabulary Vault',     fn:"openLangGame('4')",      color:'#6366F1'},
+      {icon:'✍️', label:'Story Relay',          fn:"openPassageReader('4')", color:'#F59E0B'},
+      // Math
+      {icon:'🍕', label:'Fraction Feast',       fn:"openMathGame('4')",      color:'#22c55e'},
+      {icon:'📐', label:'Angles Sort',          fn:"openColorsGame('4')",    color:'#8B5CF6'},
+      // Science & World
+      {icon:'🔬', label:'Science Sort Lab',     fn:"openScienceGame('4')",   color:'#0EA5E9'},
+      {icon:'🌍', label:'Social Studies',       fn:"openSSGame('4')",        color:'#D97706'},
+      // Reading
+      {icon:'📖', label:'Reading Corner',       fn:"openPassageReader('4')", color:'#1D4ED8'},
     ],
     5: [
-      {icon:'📍', label:'Coordinate Chase',fn:"openCoordinateChase()",  color:'#22c55e'},
-      {icon:'🔎', label:'Evidence Explorer',fn:"openEvidenceExplorer()",color:'#1D4ED8'},
-      {icon:'🧮', label:'Problem Solver',  fn:"openProblemSolver()",     color:'#6366F1'},
-      {icon:'🏆', label:'Jeopardy',        fn:"openPassageReader('5')", color:'#F59E0B'},
-      {icon:'🗺️', label:'Treasure Hunt',   fn:"openTreasureHunt()",     color:'#D97706'},
-      {icon:'⚖️', label:'Argument Builder',fn:"openLangGame('5')",      color:'#EC4899'},
-      {icon:'🔬', label:'Research Race',   fn:"openScienceGame('5')",   color:'#0EA5E9'},
-      {icon:'⚗️', label:'Mixtures Sort',   fn:"openColorsGame('5')",    color:'#8B5CF6'},
-      {icon:'📖', label:'Reading Corner',  fn:"openPassageReader('5')", color:'#1D4ED8'},
+      // Language & Literacy
+      {icon:'🔎', label:'Evidence Explorer',    fn:"openEvidenceExplorer()", color:'#1D4ED8'},
+      {icon:'⚖️', label:'Argument Builder',     fn:"openLangGame('5')",      color:'#EC4899'},
+      {icon:'📖', label:'Reading Corner',       fn:"openPassageReader('5')", color:'#4338CA'},
+      // Math & Logic
+      {icon:'📍', label:'Coordinate Chase',     fn:"openCoordinateChase()",  color:'#22c55e'},
+      {icon:'🧮', label:'Problem Solver',       fn:"openProblemSolver()",    color:'#6366F1'},
+      // Science & World
+      {icon:'⚗️', label:'Mixtures Sort',        fn:"openScienceGame('5')",   color:'#8B5CF6'},
+      {icon:'🗺️', label:'Treasure Hunt',        fn:"openTreasureHunt()",     color:'#D97706'},
+      // Fun & Challenge
+      {icon:'🏆', label:'Jeopardy',             fn:"openJeopardy()",         color:'#F59E0B'},
+      {icon:'🔬', label:'Research Race',        fn:"openScienceGame('5')",   color:'#0EA5E9'},
     ],
-  };
+  };;
 
   var games = GRADE_GAMES[activeGrade] || GRADE_GAMES['2'];
   // v381: cache globally for openAllGames
@@ -4010,11 +4034,20 @@ function buildGradeGames() {
 
   // v377 — short subtitle per game (kid-readable)
   var SUBS = {
-    "Bloom's Reading Path":'Lessons','Count It!':'Numbers','Counting':'Numbers','Math Practice':'Numbers',
-    'ABC Time':'Letters','Word Builder':'Spelling','Patterns':'Shapes','Colors Sort':'Sort it',
-    'Colors & Shapes':'Sort it','Animal Sort':'Sort it','Science Sort':'Sort it','Busy Book':'Activities',
-    'Memory Match':'Find pairs','Sound Play':'Phonics','Dino Stories':'Stories','Shop Math':'Money',
-    'Social Studies':'World','Number Bonds':'Add up','Reading Corner':'Read'
+    "Bloom's Reading Path":'Lessons', 'Letter Tracing':'Trace letters', 'Number Tracing':'Trace numbers',
+    'Count It!':'Numbers', 'Counting':'Numbers', 'Math Practice':'Numbers', 'ABC Time':'Letters',
+    'Word Builder':'Spelling', 'Patterns':'Shapes', 'Colors Sort':'Sort it', 'Colors & Shapes':'Sort it',
+    'Animal Sort':'Sort it', 'Science Sort':'Sort it', 'Science Sort Lab':'Sort it',
+    'Busy Book':'Activities', 'Memory Match':'Find pairs', 'Sound Play':'Phonics',
+    'Dino Stories':'Stories', 'Shop Math':'Money', 'Social Studies':'World',
+    'Number Bonds':'Add up', 'Reading Corner':'Read', 'Add & Subtract':'Math',
+    'Multiply Mania':'Multiply', 'Math Bingo':'Bingo!', 'Fraction Feast':'Fractions',
+    'Angles Sort':'Geometry', 'Grammar Grab':'Grammar', 'Grammar Garden':'Grammar',
+    'Vocabulary Vault':'Words', 'Story Relay':'Writing', 'Fact Finder':'Reading',
+    'Fact or Opinion':'Think!', 'Map Mission':'Geography', 'Water Cycle':'Science',
+    'Argument Builder':'Debate', 'Evidence Explorer':'Reading', 'Coordinate Chase':'Math fun',
+    'Problem Solver':'Word problems', 'Jeopardy':'Quiz show', 'Treasure Hunt':'Geography',
+    'Research Race':'Research', 'Mixtures Sort':'Chemistry',
   };
 
   function _makeTile(g) {
@@ -12142,6 +12175,6 @@ function openDinoStories(grade) {
 
 </script>
 <div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v413</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v411</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v412</div>
 </body>
 </html>
