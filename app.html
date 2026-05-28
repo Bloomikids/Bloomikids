@@ -2779,6 +2779,35 @@ async function handleLogout() {
 // v382: alias so parent board Sign Out button works
 function signOut() { handleLogout(); }
 window.signOut = signOut;
+
+// ══ Exit menu: Switch Child vs Full Sign Out ══
+window._showExitMenu = function() {
+  var ov = document.createElement("div");
+  ov.id = "exitMenuOv";
+  ov.style.cssText = "position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.5);display:flex;align-items:flex-end;justify-content:center;padding:20px;";
+  function closeMenu(){ var o=document.getElementById("exitMenuOv"); if(o) o.remove(); }
+  var sheet = document.createElement("div");
+  sheet.style.cssText = "background:white;border-radius:28px 28px 20px 20px;padding:24px;width:100%;max-width:400px;font-family:Nunito,sans-serif;";
+  var ttl = document.createElement("div");
+  ttl.style.cssText = "font-weight:800;font-size:1.05rem;color:#1A1A2E;margin-bottom:18px;text-align:center;";
+  ttl.textContent = "What would you like to do?";
+  var b1 = document.createElement("button");
+  b1.textContent = "👋 Switch Child";
+  b1.style.cssText = "width:100%;padding:15px;border-radius:16px;border:2px solid #F0EEFF;background:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;margin-bottom:10px;color:#2D1B3D;display:block;";
+  b1.onclick = function(){ closeMenu(); switchChild(); };
+  var b2 = document.createElement("button");
+  b2.textContent = "🔐 Sign Out Completely";
+  b2.style.cssText = "width:100%;padding:15px;border-radius:16px;border:none;background:linear-gradient(135deg,#FF6B6B,#FF8E53);font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;color:white;margin-bottom:10px;display:block;";
+  b2.onclick = function(){ closeMenu(); handleLogout(); };
+  var b3 = document.createElement("button");
+  b3.textContent = "Cancel";
+  b3.style.cssText = "width:100%;padding:12px;border-radius:16px;border:none;background:#F8F8FC;font-family:Nunito,sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;color:#888;display:block;";
+  b3.onclick = closeMenu;
+  sheet.appendChild(ttl); sheet.appendChild(b1); sheet.appendChild(b2); sheet.appendChild(b3);
+  ov.appendChild(sheet);
+  document.body.appendChild(ov);
+  ov.addEventListener("click", function(e){ if(e.target===ov) closeMenu(); });
+};
 let _authHandled = false;
 sb.auth.onAuthStateChange(async(event,session)=>{
   if (session?.user) {
@@ -4060,7 +4089,7 @@ function buildGradeGames() {
       +'box-shadow:0 6px 0 '+deeper+',inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);'
       +'position:relative;overflow:hidden;font-family:Nunito,sans-serif;color:'+textColor+';">'
       +'<div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>'
-      +'<div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">'+g.icon+'</div>'
+      +(function(){var s=getCardSVG(g.label,g.icon);return s?'<div style="width:46px;height:46px;margin:0 auto 8px;">'+s+'</div>':'<div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);">'+g.icon+'</div>';}())
       +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.9rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">'+g.label+'</div>'
       +'<div style="font-size:.66rem;font-weight:700;opacity:'+subOpacity+';position:relative;z-index:1;">'+sub+'</div>'
       +'</div>';
@@ -4111,7 +4140,7 @@ function openAllGames() {
         var subOpacity = lightBg ? '.7' : '.85';
         return '<div onclick="document.getElementById(\'allGamesOv\').remove();'+g.fn+'" style="background:'+g.color+';border-radius:20px;padding:16px 12px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 '+deeper+',inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;font-family:Nunito,sans-serif;color:'+textColor+';">'
           +'<div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>'
-          +'<div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">'+g.icon+'</div>'
+          +(function(){var s=getCardSVG(g.label,g.icon);return s?'<div style="width:46px;height:46px;margin:0 auto 8px;">'+s+'</div>':'<div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);">'+g.icon+'</div>';}())
           +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.9rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">'+g.label+'</div>'
           +'<div style="font-size:.66rem;font-weight:700;opacity:'+subOpacity+';position:relative;z-index:1;">'+sub+'</div>'
           +'</div>';
@@ -4123,13 +4152,18 @@ window.openAllGames = openAllGames;
 
 function buildSubjectCards() {
   const container = document.getElementById('subjectCards');
-  container.innerHTML = gradeContent.subjects.map(s=>`
-    <div class="card ${s.color}" onclick="startSubject('${s.title}')" title="Common Core Aligned">
-      <div class="card-icon">${s.icon}</div>
-      <div class="card-title">${s.title}</div>
-      <div class="card-desc">${s.desc}</div>
-      <div class="card-badge badge-${s.color==='mint'?'mint':s.color==='coral'?'coral':s.color==='lavender'?'lavender':'sun'}">${s.badge}</div>
-    </div>`).join('');
+  container.innerHTML = gradeContent.subjects.map(s=>{
+    var svgIcon = getCardSVG(s.title, s.icon);
+    var iconHtml = svgIcon
+      ? '<div class="card-icon" style="width:56px;height:56px;margin-bottom:10px;">' + svgIcon + '</div>'
+      : '<div class="card-icon">' + s.icon + '</div>';
+    return '<div class="card ' + s.color + '" onclick="startSubject(\'' + s.title + '\')" title="Common Core Aligned">'
+      + iconHtml
+      + '<div class="card-title">' + s.title + '</div>'
+      + '<div class="card-desc">' + s.desc + '</div>'
+      + '<div class="card-badge badge-' + (s.color==='mint'?'mint':s.color==='coral'?'coral':s.color==='lavender'?'lavender':'sun') + '">' + s.badge + '</div>'
+      + '</div>';
+  }).join('');
 }
 
 function buildProgressSection() {
@@ -4490,7 +4524,7 @@ function renderQuestion() {
   var rOpts = q.opts.map((o,i)=>({o:o,c:i===q.answer}));
   for(var ri=rOpts.length-1;ri>0;ri--){var rj=Math.floor(Math.random()*(ri+1));var rt=rOpts[ri];rOpts[ri]=rOpts[rj];rOpts[rj]=rt;}
   qoEl.innerHTML = rOpts.map((item)=>
-    `<button class="quiz-opt" style="transition:all .2s;" onclick="checkAnswer(this,${item.c})">${item.o}</button>`
+    `<button class="quiz-opt" data-correct="${item.c}" style="transition:all .2s;" onclick="checkAnswer(this,${item.c})">${item.o}</button>`
   ).join('');
 }
 
@@ -4521,11 +4555,13 @@ async function checkAnswer(btn, correct) {
     var opts = document.getElementById('quizOptions');
     if (opts) {
       var allBtns = opts.querySelectorAll('button');
-      var q = gradeContent.questions[qIdx%gradeContent.questions.length];
-      if (allBtns[q.answer]) {
-        allBtns[q.answer].style.background = 'linear-gradient(135deg,#5ECDA0,#4ECDC4)';
-        allBtns[q.answer].style.color = 'white';
-      }
+      // Find the correct button by data-correct attribute (buttons are shuffled so index is unreliable)
+      allBtns.forEach(function(b) {
+        if (b.getAttribute('data-correct') === 'true') {
+          b.style.background = 'linear-gradient(135deg,#5ECDA0,#4ECDC4)';
+          b.style.color = 'white';
+        }
+      });
     }
     bloomiReact('wrong');
     playSound('wrong');
@@ -11571,8 +11607,8 @@ function openPassageReader(grade) {
       var card = document.createElement('div');
       card.style.cssText = 'background:white;border-radius:20px;padding:20px;margin-bottom:14px;box-shadow:0 4px 16px rgba(29,78,216,.1);cursor:pointer;display:flex;align-items:center;gap:16px;transition:transform .15s;';
       var coverHtml = story.cover && story.cover.indexOf('stories/')===0
-        ? '<img src="/'+story.cover+'" style="width:64px;height:64px;object-fit:cover;border-radius:12px;flex-shrink:0;">'
-        : '<div style="font-size:3.5rem;flex-shrink:0;">'+story.cover+'</div>';
+        ? '<img src="/'+story.cover+'" style="width:64px;height:64px;object-fit:cover;border-radius:12px;flex-shrink:0;" onerror="this.style.display=\'none\';this.insertAdjacentHTML(\'afterend\',\'<div style=\'width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,#E8D5FF,#C9B0FF);display:flex;align-items:center;justify-content:center;font-size:2.5rem;flex-shrink:0;\'>'+(story.emoji||'📖')+'</div>\');">'
+        : '<div style="width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,#E8D5FF,#C9B0FF);display:flex;align-items:center;justify-content:center;font-size:2.5rem;flex-shrink:0;">'+(story.emoji||'📖')+'</div>';
       card.innerHTML = coverHtml
         + '<div style="flex:1;">'
         + '<div style="font-family:Baloo 2,cursive;font-size:1.05rem;font-weight:800;color:#1E3A5F;margin-bottom:4px;">'+story.title+'</div>'
@@ -11630,8 +11666,8 @@ function openPassageReader(grade) {
         var meta = document.createElement('div');
         meta.style.cssText = 'background:white;margin:12px 16px 0;border-radius:16px;padding:12px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,.06);flex-shrink:0;';
         var metaCover = story.cover && story.cover.indexOf('stories/')===0
-          ? '<img src="/'+story.cover+'" style="width:50px;height:50px;object-fit:cover;border-radius:10px;">'
-          : '<div style="font-size:2.5rem;">'+story.cover+'</div>';
+          ? '<img src="/'+story.cover+'" style="width:50px;height:50px;object-fit:cover;border-radius:10px;" onerror="this.style.display=\'none\';this.insertAdjacentHTML(\'afterend\',\'<div style=\'width:50px;height:50px;border-radius:10px;background:linear-gradient(135deg,#E8D5FF,#C9B0FF);display:flex;align-items:center;justify-content:center;font-size:1.8rem;\'>'+(story.emoji||'📖')+'</div>\');">'
+          : '<div style="width:50px;height:50px;border-radius:10px;background:linear-gradient(135deg,#E8D5FF,#C9B0FF);display:flex;align-items:center;justify-content:center;font-size:1.8rem;">'+(story.emoji||'📖')+'</div>';
         meta.innerHTML = metaCover
           + '<div><div style="font-family:Baloo 2,cursive;font-size:.95rem;font-weight:800;color:#1E3A5F;">'+story.title+'</div>'
           + '<div style="font-size:.75rem;color:#3B82F6;font-weight:700;">'+story.theme+' · '+story.lexile+'</div></div>';
@@ -12175,6 +12211,40 @@ function openDinoStories(grade) {
 
 </script>
 <div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v413</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v412</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v413</div>
 </body>
-</html>
+</html
+// ══ SVG ICON LIBRARY for subject + game cards ══
+var SVG_ICONS = {
+  // SUBJECTS
+  'Language Arts': '<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="56" height="56" rx="16" fill="#E8D5FF"/><rect x="12" y="10" width="22" height="30" rx="4" fill="#8B5CF6"/><rect x="14" y="14" width="18" height="3" rx="1.5" fill="white" opacity=".8"/><rect x="14" y="20" width="14" height="3" rx="1.5" fill="white" opacity=".6"/><rect x="14" y="26" width="16" height="3" rx="1.5" fill="white" opacity=".6"/><path d="M28 34l8 8H20l8-8z" fill="#C084FC"/><circle cx="38" cy="22" r="8" fill="#FFD700"/><text x="34" y="27" font-size="11" fill="#7C4F00" font-weight="bold" font-family="serif">A</text></svg>',
+  'Math': '<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="56" height="56" rx="16" fill="#D5F0FF"/><rect x="10" y="10" width="36" height="36" rx="8" fill="#0EA5E9" opacity=".15"/><text x="14" y="28" font-size="16" fill="#0369A1" font-weight="bold" font-family="monospace">÷</text><text x="28" y="22" font-size="14" fill="#0369A1" font-weight="bold" font-family="monospace">+</text><text x="30" y="38" font-size="13" fill="#0EA5E9" font-weight="bold" font-family="monospace">×</text><text x="13" y="42" font-size="13" fill="#0EA5E9" font-weight="bold" font-family="monospace">−</text><circle cx="40" cy="16" r="5" fill="#FFD700"/><text x="37" y="20" font-size="9" fill="#7C4F00" font-weight="bold" font-family="sans-serif">2</text></svg>',
+  'Science': '<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="56" height="56" rx="16" fill="#D5FFE8"/><path d="M22 14v14l-8 14h28L34 28V14H22z" fill="#5ECDA0" opacity=".3"/><path d="M22 14v14l-8 14h28L34 28V14" stroke="#059669" stroke-width="2.5" stroke-linejoin="round" fill="none"/><rect x="20" y="12" width="16" height="4" rx="2" fill="#059669"/><circle cx="24" cy="36" r="3" fill="#34D399"/><circle cx="32" cy="40" r="2" fill="#6EE7B7"/><circle cx="29" cy="34" r="1.5" fill="#A7F3D0"/></svg>',
+  'Social Studies': '<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="56" height="56" rx="16" fill="#FFF3D5"/><circle cx="28" cy="28" r="16" fill="#FCD34D" opacity=".3"/><circle cx="28" cy="28" r="16" stroke="#D97706" stroke-width="2" fill="none"/><ellipse cx="28" cy="28" rx="7" ry="16" stroke="#D97706" stroke-width="1.5" fill="none"/><line x1="12" y1="28" x2="44" y2="28" stroke="#D97706" stroke-width="1.5"/><line x1="14" y1="20" x2="42" y2="20" stroke="#D97706" stroke-width="1" opacity=".5"/><line x1="14" y1="36" x2="42" y2="36" stroke="#D97706" stroke-width="1" opacity=".5"/></svg>',
+  'Art': '<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="56" height="56" rx="16" fill="#FFE4F0"/><circle cx="28" cy="28" r="14" fill="white" stroke="#F9A8D4" stroke-width="1.5"/><circle cx="21" cy="22" r="4" fill="#FF6B6B"/><circle cx="35" cy="22" r="4" fill="#FFD700"/><circle cx="21" cy="35" r="4" fill="#5ECDA0"/><circle cx="35" cy="35" r="4" fill="#60B8D4"/><circle cx="28" cy="28" r="5" fill="#8B5CF6" opacity=".7"/><circle cx="28" cy="14" r="3" fill="#EC4899"/></svg>',
+  'Our World': '<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="56" height="56" rx="16" fill="#D5EEFF"/><circle cx="28" cy="28" r="16" fill="#60B8D4" opacity=".4"/><circle cx="28" cy="28" r="16" fill="none" stroke="#0EA5E9" stroke-width="2"/><path d="M18 22c2-2 6-1 8 1s5 3 8 1" stroke="#059669" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M16 30c3 2 8 4 12 2s8-1 10 2" stroke="#059669" stroke-width="2" stroke-linecap="round" fill="none"/></svg>',
+  // GAMES
+  'Memory Match': '<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="56" height="56" rx="16" fill="#EDE9FE"/><rect x="10" y="10" width="16" height="16" rx="4" fill="#8B5CF6"/><rect x="30" y="10" width="16" height="16" rx="4" fill="#C4B5FD"/><rect x="10" y="30" width="16" height="16" rx="4" fill="#C4B5FD"/><rect x="30" y="30" width="16" height="16" rx="4" fill="#8B5CF6"/><text x="15" y="23" font-size="10" fill="white">⭐</text><text x="35" y="23" font-size="10" fill="#7C3AED">?</text><text x="15" y="43" font-size="10" fill="#7C3AED">?</text><text x="35" y="43" font-size="10" fill="white">⭐</text></svg>',
+  'Word Builder': '<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="56" height="56" rx="16" fill="#FFF0D5"/><rect x="8" y="18" width="14" height="18" rx="4" fill="#F59E0B"/><rect x="25" y="18" width="14" height="18" rx="4" fill="#FBBF24"/><rect x="34" y="22" width="14" height="18" rx="4" fill="#FCD34D"/><text x="11" y="32" font-size="12" font-weight="bold" fill="white" font-family="monospace">C</text><text x="28" y="32" font-size="12" font-weight="bold" fill="white" font-family="monospace">A</text><text x="37" y="36" font-size="12" font-weight="bold" fill="#92400E" font-family="monospace">T</text></svg>',
+  "Bloom's Reading Path": '<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="56" height="56" rx="16" fill="#D5FFE8"/><path d="M12 40 Q18 20 28 18 Q38 20 44 40" stroke="#5ECDA0" stroke-width="2.5" stroke-dasharray="4 3" fill="none"/><circle cx="12" cy="40" r="4" fill="#5ECDA0"/><circle cx="28" cy="18" r="6" fill="#059669"/><text x="25" y="22" font-size="9" fill="white">🌱</text><circle cx="44" cy="40" r="4" fill="#FFD700"/></svg>',
+  'default_game': '<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="56" height="56" rx="16" fill="#E8D5FF"/><rect x="14" y="22" width="28" height="18" rx="6" fill="#8B5CF6" opacity=".2"/><rect x="14" y="22" width="28" height="18" rx="6" stroke="#8B5CF6" stroke-width="2" fill="none"/><circle cx="22" cy="31" r="3" fill="#8B5CF6"/><circle cx="34" cy="31" r="3" fill="#8B5CF6"/><rect x="25" y="14" width="6" height="8" rx="3" fill="#C084FC"/></svg>',
+};
+window.SVG_ICONS = SVG_ICONS;
+
+function getCardSVG(label, fallbackEmoji) {
+  // Try exact match, then partial match
+  if (SVG_ICONS[label]) return SVG_ICONS[label];
+  // Map game types to SVG
+  if (label.includes('Math') || label.includes('Fraction') || label.includes('Count') || label.includes('Number') || label.includes('Add') || label.includes('Multiply') || label.includes('Shop')) return SVG_ICONS['Math'];
+  if (label.includes('Read') || label.includes('Story') || label.includes('Book') || label.includes('Grammar') || label.includes('Word') || label.includes('Vocab') || label.includes('Fact') || label.includes('Evidence')) return SVG_ICONS['Language Arts'];
+  if (label.includes('Science') || label.includes('Water') || label.includes('Mix') || label.includes('Research')) return SVG_ICONS['Science'];
+  if (label.includes('World') || label.includes('Map') || label.includes('Social') || label.includes('Treasure') || label.includes('Geo')) return SVG_ICONS['Social Studies'];
+  if (label.includes('Art') || label.includes('Color') || label.includes('Draw') || label.includes('Create')) return SVG_ICONS['Art'];
+  if (label.includes('Memory')) return SVG_ICONS['Memory Match'];
+  if (label.includes('Builder') || label.includes('Bingo') || label.includes('Jeopardy') || label.includes('Chase') || label.includes('Solver')) return SVG_ICONS['default_game'];
+  if (label.includes('Path')) return SVG_ICONS["Bloom's Reading Path"];
+  // Fallback to emoji wrapped in styled div
+  return null;
+}
+window.getCardSVG = getCardSVG;
+>
