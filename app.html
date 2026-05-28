@@ -322,7 +322,7 @@ body.grade-1 .quiz-opt { padding:18px; font-size:1.1rem; }
 .next-btn.show { display:none !important; }
 
 /* -- PROGRESS ------------------------------------------ */
-.progress-section { background:white; border-radius:24px; padding:24px; box-shadow:var(--shadow); margin-bottom:28px; }
+.progress-section { background:transparent; padding:0; margin-bottom:16px; }
 .progress-item { margin-bottom:18px; }
 .progress-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
 .progress-label { font-weight:700; font-size:var(--font-body); }
@@ -4089,7 +4089,7 @@ function buildGradeGames() {
       +'box-shadow:0 6px 0 '+deeper+',inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);'
       +'position:relative;overflow:hidden;font-family:Nunito,sans-serif;color:'+textColor+';">'
       +'<div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>'
-      +(function(){var s=getCardSVG(g.label,g.icon);return s?'<div style="width:46px;height:46px;margin:0 auto 8px;">'+s+'</div>':'<div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);">'+g.icon+'</div>';}())
+      +'<div style="margin:0 auto 8px;">'+getCardTile(g.label,g.icon,46)+'</div>'
       +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.9rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">'+g.label+'</div>'
       +'<div style="font-size:.66rem;font-weight:700;opacity:'+subOpacity+';position:relative;z-index:1;">'+sub+'</div>'
       +'</div>';
@@ -4140,7 +4140,7 @@ function openAllGames() {
         var subOpacity = lightBg ? '.7' : '.85';
         return '<div onclick="document.getElementById(\'allGamesOv\').remove();'+g.fn+'" style="background:'+g.color+';border-radius:20px;padding:16px 12px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 '+deeper+',inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;font-family:Nunito,sans-serif;color:'+textColor+';">'
           +'<div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>'
-          +(function(){var s=getCardSVG(g.label,g.icon);return s?'<div style="width:46px;height:46px;margin:0 auto 8px;">'+s+'</div>':'<div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);">'+g.icon+'</div>';}())
+          +'<div style="margin:0 auto 8px;">'+getCardTile(g.label,g.icon,46)+'</div>'
           +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.9rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">'+g.label+'</div>'
           +'<div style="font-size:.66rem;font-weight:700;opacity:'+subOpacity+';position:relative;z-index:1;">'+sub+'</div>'
           +'</div>';
@@ -4153,10 +4153,7 @@ window.openAllGames = openAllGames;
 function buildSubjectCards() {
   const container = document.getElementById('subjectCards');
   container.innerHTML = gradeContent.subjects.map(s=>{
-    var svgIcon = getCardSVG(s.title, s.icon);
-    var iconHtml = svgIcon
-      ? '<div class="card-icon" style="width:56px;height:56px;margin-bottom:10px;">' + svgIcon + '</div>'
-      : '<div class="card-icon">' + s.icon + '</div>';
+    var iconHtml = '<div class="card-icon" style="margin-bottom:10px;">' + getCardTile(s.title, s.icon, 56) + '</div>';
     return '<div class="card ' + s.color + '" onclick="startSubject(\'' + s.title + '\')" title="Common Core Aligned">'
       + iconHtml
       + '<div class="card-title">' + s.title + '</div>'
@@ -12210,41 +12207,85 @@ function openDinoStories(grade) {
 }
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v413</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v413</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v413b</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v413b</div>
 </body>
 </html
-// ══ SVG ICON LIBRARY for subject + game cards ══
-var SVG_ICONS = {
-  // SUBJECTS
-  'Language Arts': '<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="56" height="56" rx="16" fill="#E8D5FF"/><rect x="12" y="10" width="22" height="30" rx="4" fill="#8B5CF6"/><rect x="14" y="14" width="18" height="3" rx="1.5" fill="white" opacity=".8"/><rect x="14" y="20" width="14" height="3" rx="1.5" fill="white" opacity=".6"/><rect x="14" y="26" width="16" height="3" rx="1.5" fill="white" opacity=".6"/><path d="M28 34l8 8H20l8-8z" fill="#C084FC"/><circle cx="38" cy="22" r="8" fill="#FFD700"/><text x="34" y="27" font-size="11" fill="#7C4F00" font-weight="bold" font-family="serif">A</text></svg>',
-  'Math': '<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="56" height="56" rx="16" fill="#D5F0FF"/><rect x="10" y="10" width="36" height="36" rx="8" fill="#0EA5E9" opacity=".15"/><text x="14" y="28" font-size="16" fill="#0369A1" font-weight="bold" font-family="monospace">÷</text><text x="28" y="22" font-size="14" fill="#0369A1" font-weight="bold" font-family="monospace">+</text><text x="30" y="38" font-size="13" fill="#0EA5E9" font-weight="bold" font-family="monospace">×</text><text x="13" y="42" font-size="13" fill="#0EA5E9" font-weight="bold" font-family="monospace">−</text><circle cx="40" cy="16" r="5" fill="#FFD700"/><text x="37" y="20" font-size="9" fill="#7C4F00" font-weight="bold" font-family="sans-serif">2</text></svg>',
-  'Science': '<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="56" height="56" rx="16" fill="#D5FFE8"/><path d="M22 14v14l-8 14h28L34 28V14H22z" fill="#5ECDA0" opacity=".3"/><path d="M22 14v14l-8 14h28L34 28V14" stroke="#059669" stroke-width="2.5" stroke-linejoin="round" fill="none"/><rect x="20" y="12" width="16" height="4" rx="2" fill="#059669"/><circle cx="24" cy="36" r="3" fill="#34D399"/><circle cx="32" cy="40" r="2" fill="#6EE7B7"/><circle cx="29" cy="34" r="1.5" fill="#A7F3D0"/></svg>',
-  'Social Studies': '<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="56" height="56" rx="16" fill="#FFF3D5"/><circle cx="28" cy="28" r="16" fill="#FCD34D" opacity=".3"/><circle cx="28" cy="28" r="16" stroke="#D97706" stroke-width="2" fill="none"/><ellipse cx="28" cy="28" rx="7" ry="16" stroke="#D97706" stroke-width="1.5" fill="none"/><line x1="12" y1="28" x2="44" y2="28" stroke="#D97706" stroke-width="1.5"/><line x1="14" y1="20" x2="42" y2="20" stroke="#D97706" stroke-width="1" opacity=".5"/><line x1="14" y1="36" x2="42" y2="36" stroke="#D97706" stroke-width="1" opacity=".5"/></svg>',
-  'Art': '<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="56" height="56" rx="16" fill="#FFE4F0"/><circle cx="28" cy="28" r="14" fill="white" stroke="#F9A8D4" stroke-width="1.5"/><circle cx="21" cy="22" r="4" fill="#FF6B6B"/><circle cx="35" cy="22" r="4" fill="#FFD700"/><circle cx="21" cy="35" r="4" fill="#5ECDA0"/><circle cx="35" cy="35" r="4" fill="#60B8D4"/><circle cx="28" cy="28" r="5" fill="#8B5CF6" opacity=".7"/><circle cx="28" cy="14" r="3" fill="#EC4899"/></svg>',
-  'Our World': '<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="56" height="56" rx="16" fill="#D5EEFF"/><circle cx="28" cy="28" r="16" fill="#60B8D4" opacity=".4"/><circle cx="28" cy="28" r="16" fill="none" stroke="#0EA5E9" stroke-width="2"/><path d="M18 22c2-2 6-1 8 1s5 3 8 1" stroke="#059669" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M16 30c3 2 8 4 12 2s8-1 10 2" stroke="#059669" stroke-width="2" stroke-linecap="round" fill="none"/></svg>',
-  // GAMES
-  'Memory Match': '<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="56" height="56" rx="16" fill="#EDE9FE"/><rect x="10" y="10" width="16" height="16" rx="4" fill="#8B5CF6"/><rect x="30" y="10" width="16" height="16" rx="4" fill="#C4B5FD"/><rect x="10" y="30" width="16" height="16" rx="4" fill="#C4B5FD"/><rect x="30" y="30" width="16" height="16" rx="4" fill="#8B5CF6"/><text x="15" y="23" font-size="10" fill="white">⭐</text><text x="35" y="23" font-size="10" fill="#7C3AED">?</text><text x="15" y="43" font-size="10" fill="#7C3AED">?</text><text x="35" y="43" font-size="10" fill="white">⭐</text></svg>',
-  'Word Builder': '<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="56" height="56" rx="16" fill="#FFF0D5"/><rect x="8" y="18" width="14" height="18" rx="4" fill="#F59E0B"/><rect x="25" y="18" width="14" height="18" rx="4" fill="#FBBF24"/><rect x="34" y="22" width="14" height="18" rx="4" fill="#FCD34D"/><text x="11" y="32" font-size="12" font-weight="bold" fill="white" font-family="monospace">C</text><text x="28" y="32" font-size="12" font-weight="bold" fill="white" font-family="monospace">A</text><text x="37" y="36" font-size="12" font-weight="bold" fill="#92400E" font-family="monospace">T</text></svg>',
-  "Bloom's Reading Path": '<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="56" height="56" rx="16" fill="#D5FFE8"/><path d="M12 40 Q18 20 28 18 Q38 20 44 40" stroke="#5ECDA0" stroke-width="2.5" stroke-dasharray="4 3" fill="none"/><circle cx="12" cy="40" r="4" fill="#5ECDA0"/><circle cx="28" cy="18" r="6" fill="#059669"/><text x="25" y="22" font-size="9" fill="white">🌱</text><circle cx="44" cy="40" r="4" fill="#FFD700"/></svg>',
-  'default_game': '<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="56" height="56" rx="16" fill="#E8D5FF"/><rect x="14" y="22" width="28" height="18" rx="6" fill="#8B5CF6" opacity=".2"/><rect x="14" y="22" width="28" height="18" rx="6" stroke="#8B5CF6" stroke-width="2" fill="none"/><circle cx="22" cy="31" r="3" fill="#8B5CF6"/><circle cx="34" cy="31" r="3" fill="#8B5CF6"/><rect x="25" y="14" width="6" height="8" rx="3" fill="#C084FC"/></svg>',
+// ══ CARD ICON SYSTEM — colored tiles with emoji (reliable cross-browser) ══
+var CARD_ICONS = {
+  // Subjects
+  'Language Arts':     {bg:'#E8D5FF', color:'#6B21A8', emoji:'📖'},
+  'Math':              {bg:'#DBEAFE', color:'#1D4ED8', emoji:'🔢'},
+  'Science':           {bg:'#D1FAE5', color:'#065F46', emoji:'🔬'},
+  'Social Studies':    {bg:'#FEF3C7', color:'#92400E', emoji:'🌍'},
+  'Art':               {bg:'#FFE4F0', color:'#9D174D', emoji:'🎨'},
+  'Our World':         {bg:'#DBEAFE', color:'#1E40AF', emoji:'🌍'},
+  'Create':            {bg:'#FFE4F0', color:'#9D174D', emoji:'✏️'},
+  'Reading':           {bg:'#E8D5FF', color:'#6B21A8', emoji:'📚'},
+  // Games
+  "Bloom's Reading Path": {bg:'#D1FAE5', color:'#065F46', emoji:'🌱'},
+  'Letter Tracing':    {bg:'#FEF3C7', color:'#92400E', emoji:'✏️'},
+  'Number Tracing':    {bg:'#DBEAFE', color:'#1D4ED8', emoji:'🔢'},
+  'Memory Match':      {bg:'#EDE9FE', color:'#5B21B6', emoji:'🃏'},
+  'Word Builder':      {bg:'#FEF3C7', color:'#92400E', emoji:'🔤'},
+  'Sound Play':        {bg:'#D1FAE5', color:'#065F46', emoji:'🔊'},
+  'ABC Time':          {bg:'#E8D5FF', color:'#6B21A8', emoji:'🔡'},
+  'Count It!':         {bg:'#DBEAFE', color:'#1D4ED8', emoji:'🔢'},
+  'Counting':          {bg:'#DBEAFE', color:'#1D4ED8', emoji:'🔢'},
+  'Patterns':          {bg:'#EDE9FE', color:'#5B21B6', emoji:'🎵'},
+  'Colors Sort':       {bg:'#FFE4F0', color:'#9D174D', emoji:'🎨'},
+  'Colors & Shapes':   {bg:'#FFE4F0', color:'#9D174D', emoji:'🔷'},
+  'Animal Sort':       {bg:'#D1FAE5', color:'#065F46', emoji:'🐾'},
+  'Science Sort':      {bg:'#D1FAE5', color:'#065F46', emoji:'🧪'},
+  'Science Sort Lab':  {bg:'#D1FAE5', color:'#065F46', emoji:'⚗️'},
+  'Busy Book':         {bg:'#FEF3C7', color:'#92400E', emoji:'📚'},
+  'Dino Stories':      {bg:'#D1FAE5', color:'#1a472a', emoji:'🦕'},
+  'Math Practice':     {bg:'#DBEAFE', color:'#1D4ED8', emoji:'➕'},
+  'Number Bonds':      {bg:'#DBEAFE', color:'#1D4ED8', emoji:'🔗'},
+  'Shop Math':         {bg:'#FEF3C7', color:'#92400E', emoji:'🛒'},
+  'Social Studies':    {bg:'#FEF3C7', color:'#92400E', emoji:'🌍'},
+  'Reading Corner':    {bg:'#E8D5FF', color:'#6B21A8', emoji:'📖'},
+  'Add & Subtract':    {bg:'#DBEAFE', color:'#1D4ED8', emoji:'➕'},
+  'Multiply Mania':    {bg:'#DBEAFE', color:'#1E40AF', emoji:'✖️'},
+  'Math Bingo':        {bg:'#EDE9FE', color:'#5B21B6', emoji:'🎱'},
+  'Fraction Feast':    {bg:'#DBEAFE', color:'#1D4ED8', emoji:'🍕'},
+  'Angles Sort':       {bg:'#EDE9FE', color:'#5B21B6', emoji:'📐'},
+  'Grammar Grab':      {bg:'#E8D5FF', color:'#6B21A8', emoji:'📝'},
+  'Grammar Garden':    {bg:'#D1FAE5', color:'#065F46', emoji:'🌸'},
+  'Vocabulary Vault':  {bg:'#E8D5FF', color:'#6B21A8', emoji:'💬'},
+  'Story Relay':       {bg:'#FEF3C7', color:'#92400E', emoji:'✍️'},
+  'Fact Finder':       {bg:'#E8D5FF', color:'#6B21A8', emoji:'🔎'},
+  'Fact or Opinion':   {bg:'#FEF3C7', color:'#92400E', emoji:'⚖️'},
+  'Water Cycle':       {bg:'#DBEAFE', color:'#1D4ED8', emoji:'💧'},
+  'Map Mission':       {bg:'#FEF3C7', color:'#92400E', emoji:'🗺️'},
+  'Evidence Explorer': {bg:'#DBEAFE', color:'#1E40AF', emoji:'🔎'},
+  'Argument Builder':  {bg:'#E8D5FF', color:'#6B21A8', emoji:'⚖️'},
+  'Coordinate Chase':  {bg:'#D1FAE5', color:'#065F46', emoji:'📍'},
+  'Problem Solver':    {bg:'#EDE9FE', color:'#5B21B6', emoji:'🧮'},
+  'Jeopardy':          {bg:'#FEF3C7', color:'#92400E', emoji:'🏆'},
+  'Treasure Hunt':     {bg:'#FEF3C7', color:'#B45309', emoji:'🗺️'},
+  'Research Race':     {bg:'#DBEAFE', color:'#1D4ED8', emoji:'🔬'},
+  'Mixtures Sort':     {bg:'#D1FAE5', color:'#065F46', emoji:'⚗️'},
+  'Shapes Sort':       {bg:'#EDE9FE', color:'#5B21B6', emoji:'🔷'},
 };
-window.SVG_ICONS = SVG_ICONS;
+window.CARD_ICONS = CARD_ICONS;
 
-function getCardSVG(label, fallbackEmoji) {
-  // Try exact match, then partial match
-  if (SVG_ICONS[label]) return SVG_ICONS[label];
-  // Map game types to SVG
-  if (label.includes('Math') || label.includes('Fraction') || label.includes('Count') || label.includes('Number') || label.includes('Add') || label.includes('Multiply') || label.includes('Shop')) return SVG_ICONS['Math'];
-  if (label.includes('Read') || label.includes('Story') || label.includes('Book') || label.includes('Grammar') || label.includes('Word') || label.includes('Vocab') || label.includes('Fact') || label.includes('Evidence')) return SVG_ICONS['Language Arts'];
-  if (label.includes('Science') || label.includes('Water') || label.includes('Mix') || label.includes('Research')) return SVG_ICONS['Science'];
-  if (label.includes('World') || label.includes('Map') || label.includes('Social') || label.includes('Treasure') || label.includes('Geo')) return SVG_ICONS['Social Studies'];
-  if (label.includes('Art') || label.includes('Color') || label.includes('Draw') || label.includes('Create')) return SVG_ICONS['Art'];
-  if (label.includes('Memory')) return SVG_ICONS['Memory Match'];
-  if (label.includes('Builder') || label.includes('Bingo') || label.includes('Jeopardy') || label.includes('Chase') || label.includes('Solver')) return SVG_ICONS['default_game'];
-  if (label.includes('Path')) return SVG_ICONS["Bloom's Reading Path"];
-  // Fallback to emoji wrapped in styled div
-  return null;
+function getCardTile(label, fallbackEmoji, size) {
+  size = size || 46;
+  var cfg = CARD_ICONS[label];
+  if (!cfg) {
+    // Fuzzy match
+    var lbl = label.toLowerCase();
+    if (lbl.includes('math') || lbl.includes('fraction') || lbl.includes('count') || lbl.includes('number') || lbl.includes('add') || lbl.includes('multiply')) cfg = {bg:'#DBEAFE',color:'#1D4ED8',emoji:'🔢'};
+    else if (lbl.includes('read') || lbl.includes('grammar') || lbl.includes('word') || lbl.includes('vocab') || lbl.includes('story') || lbl.includes('book') || lbl.includes('fact') || lbl.includes('evidence')) cfg = {bg:'#E8D5FF',color:'#6B21A8',emoji:'📖'};
+    else if (lbl.includes('science') || lbl.includes('water') || lbl.includes('mix') || lbl.includes('research')) cfg = {bg:'#D1FAE5',color:'#065F46',emoji:'🔬'};
+    else if (lbl.includes('world') || lbl.includes('map') || lbl.includes('social') || lbl.includes('treasure') || lbl.includes('geo')) cfg = {bg:'#FEF3C7',color:'#92400E',emoji:'🌍'};
+    else if (lbl.includes('art') || lbl.includes('color') || lbl.includes('draw') || lbl.includes('create')) cfg = {bg:'#FFE4F0',color:'#9D174D',emoji:'🎨'};
+    else cfg = {bg:'#EDE9FE', color:'#5B21B6', emoji: fallbackEmoji || '⭐'};
+  }
+  var fontSize = Math.round(size * 0.48);
+  return '<div style="width:'+size+'px;height:'+size+'px;border-radius:'+(size*0.3)+'px;background:'+cfg.bg+';display:flex;align-items:center;justify-content:center;font-size:'+fontSize+'px;flex-shrink:0;">'+cfg.emoji+'</div>';
 }
-window.getCardSVG = getCardSVG;
+window.getCardTile = getCardTile;
+
 >
