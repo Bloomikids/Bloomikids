@@ -742,7 +742,7 @@ input::placeholder { color:#aaa !important; }
 .plant-star { font-size:1.1rem; transition:transform .3s; }
 .plant-star.earned { animation:starPop .4s ease; }
 @keyframes starPop { 0%{transform:scale(0)} 60%{transform:scale(1.4)} 100%{transform:scale(1)} }
-.plant-progress-subjects { width:100%; margin-top:12px; }
+.plant-progress-subjects { width:100%; margin-top:0; }
 .plant-subj-row { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
 .plant-subj-icon { font-size:1.4rem; flex-shrink:0; }
 .plant-subj-info { flex:1; }
@@ -3599,7 +3599,7 @@ function showComprehensionCheck(onComplete) {
   navBar.style.cssText = 'position:absolute;top:14px;left:14px;display:flex;gap:10px;z-index:10;';
   navBar.innerHTML =
     '<button onclick="document.getElementById(\'comprehensionOv\').remove()" title="Back" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.9);border:none;cursor:pointer;font-size:18px;color:#2D1B3D;box-shadow:0 3px 0 rgba(0,0,0,.3);">←</button>'
-    +'<button onclick="goHomeFromOverlay()" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.2);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;">✕</button>';
+    +'';
   ov.appendChild(navBar);
 
   var card = document.createElement('div');
@@ -5302,7 +5302,7 @@ function setupDrawCanvas() {
       }
 
       var fillRgb = hexToRgb(fillColor);
-      var tolerance = 40;
+      var tolerance = 25;
 
       function colorsMatch(i) {
         return Math.abs(data[i]-targetR) < tolerance &&
@@ -7452,11 +7452,8 @@ function gameOverlay(id, bgColor) {
 function gameHeader(title, emoji, colorA, colorB, ovId) {
   return '<div style="background:linear-gradient(135deg,'+colorA+','+colorB+');padding:14px 20px;color:white;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;box-shadow:0 4px 16px rgba(0,0,0,.15);">'
     +'<div style="font-size:1.4rem;">'+emoji+'</div>'
-    +'<div style="font-family:Baloo 2,cursive;font-size:1.05rem;font-weight:800;letter-spacing:.3px;">'+title+'</div>'
-    +'<div style="display:flex;gap:6px;">'
-      +'<button onclick="goHomeFromOverlay()" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;font-size:.9rem;">✕</button>'
-      +'<button data-closeov="'+ovId+'" title="Back" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;font-size:1rem;line-height:1;">✕</button>'
-    +'</div>'
+    +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.05rem;font-weight:800;letter-spacing:.3px;">'+title+'</div>'
+    +'<button data-closeov="'+ovId+'" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:36px;height:36px;cursor:pointer;font-weight:800;font-size:1.1rem;flex-shrink:0;">✕</button>'
     +'</div>';
 }
 
@@ -7507,10 +7504,7 @@ function gameHeader(title, emoji, colorA, colorB, ovId) {
   return '<div style="background:linear-gradient(135deg,'+colorA+','+colorB+');padding:14px 20px;color:white;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;box-shadow:0 4px 16px rgba(0,0,0,.15);">'
     +'<div style="font-size:1.4rem;">'+emoji+'</div>'
     +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.05rem;font-weight:800;letter-spacing:.3px;">'+title+'</div>'
-    +'<div style="display:flex;gap:6px;">'
-      +'<button onclick="goHomeFromOverlay()" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;font-size:.9rem;">✕</button>'
-      +'<button onclick="document.getElementById(\''+ovId+'\').remove();" title="Back" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;font-size:1rem;line-height:1;">✕</button>'
-    +'</div>'
+    +'<button data-closeov="'+ovId+'" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:36px;height:36px;cursor:pointer;font-weight:800;font-size:1.1rem;flex-shrink:0;">✕</button>'
     +'</div>';
 }
 function gameScoreBar(score, total, colorA, colorB) {
@@ -9013,7 +9007,7 @@ function openMindfulStories() {
     '<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 14px 8px;">'
       +'<div style="display:flex;gap:10px;">'
         +'<button onclick="closeMindfulStories()" title="Back" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;font-size:18px;color:white;box-shadow:0 3px 0 rgba(0,0,0,.4),inset 0 -2px 0 rgba(0,0,0,.06);">←</button>'
-        +'<button onclick="goHomeFromOverlay()" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.2);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;">✕</button>'
+        +''
       +'</div>'
       +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1.05rem;color:white;">🌙 Mindful Stories</div>'
       +'<button id="mindfulMuteBtn" onclick="toggleMindfulMute()" title="Mute/unmute narration" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;font-size:18px;color:white;box-shadow:0 3px 0 rgba(0,0,0,.4);">'+(muted?'🔇':'🔊')+'</button>'
@@ -9058,7 +9052,7 @@ function _playMindfulStory(id) {
     '<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 14px 8px;">'
       +'<div style="display:flex;gap:10px;">'
         +'<button onclick="openMindfulStories()" title="Back to stories" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;font-size:18px;color:white;box-shadow:0 3px 0 rgba(0,0,0,.4);">←</button>'
-        +'<button onclick="goHomeFromOverlay()" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.2);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;">✕</button>'
+        +''
       +'</div>'
       +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1.05rem;color:white;text-align:center;flex:1;padding:0 8px;">'+story.icon+' '+story.title+'</div>'
       +'<button onclick="toggleMindfulMute(true)" title="Mute/unmute" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;font-size:18px;color:white;box-shadow:0 3px 0 rgba(0,0,0,.4);" id="mindfulMuteBtn2">'+(muted?'🔇':'🔊')+'</button>'
@@ -9799,7 +9793,7 @@ function openPhonicsGame(grade) {
   navBar.style.cssText = 'position:absolute;top:14px;left:14px;display:flex;gap:10px;z-index:100;';
   navBar.innerHTML =
     '<button onclick="document.getElementById(\'phonicsOv\').remove()" title="Back" style="width:42px;height:42px;border-radius:50%;background:white;border:none;cursor:pointer;font-size:18px;color:#2D1B3D;box-shadow:0 3px 0 rgba(0,0,0,.15);">←</button>'
-    +'<button onclick="goHomeFromOverlay()" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.2);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;">✕</button>';
+    +'';
   ov.appendChild(navBar);
 
   var WORDS = {
@@ -9965,7 +9959,7 @@ function openNumberTracing() {
   navBar.style.cssText = 'position:absolute;top:14px;left:14px;display:flex;gap:10px;z-index:100;';
   navBar.innerHTML =
     '<button onclick="document.getElementById(\'numTraceOv\').remove()" title="Back" style="width:42px;height:42px;border-radius:50%;background:white;border:none;cursor:pointer;font-size:18px;color:#2D1B3D;box-shadow:0 3px 0 rgba(0,0,0,.15);">←</button>'
-    +'<button onclick="goHomeFromOverlay()" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.2);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;">✕</button>';
+    +'';
   ov.appendChild(navBar);
 
   var nums = ['1','2','3','4','5','6','7','8','9','0'];
@@ -11342,7 +11336,7 @@ function openPassageReader(grade) {
   navBar.style.cssText = 'position:absolute;top:14px;left:14px;display:flex;gap:10px;z-index:100;';
   navBar.innerHTML =
     '<button onclick="document.getElementById(\'passageOv\').remove()" title="Back" style="width:42px;height:42px;border-radius:50%;background:white;border:none;cursor:pointer;font-size:18px;color:#2D1B3D;box-shadow:0 3px 0 rgba(0,0,0,.15);">←</button>'
-    +'<button onclick="goHomeFromOverlay()" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.2);border:none;cursor:pointer;font-size:1.1rem;color:white;font-weight:800;">✕</button>';
+    +'';
   ov.appendChild(navBar);
 
   // ── STORY DATA ──────────────────────────────────────────────────
@@ -12309,8 +12303,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v415</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v415</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v416</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v416</div>
 
 </body>
 </html
