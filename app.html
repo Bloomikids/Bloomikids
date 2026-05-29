@@ -4175,13 +4175,24 @@ window.openAllGames = openAllGames;
 
 function buildSubjectCards() {
   const container = document.getElementById('subjectCards');
+  var SUBJ_COLORS = {
+    'Language Arts': {bg:'linear-gradient(135deg,#5B2D9E,#7C3AED)', badge:'#E8D5FF', badgeText:'#4C1D95'},
+    'Reading':       {bg:'linear-gradient(135deg,#5B2D9E,#7C3AED)', badge:'#E8D5FF', badgeText:'#4C1D95'},
+    'Math':          {bg:'linear-gradient(135deg,#0369A1,#0EA5E9)', badge:'#DBEAFE', badgeText:'#1D4ED8'},
+    'Science':       {bg:'linear-gradient(135deg,#065F46,#5ECDA0)', badge:'#D1FAE5', badgeText:'#065F46'},
+    'Social Studies':{bg:'linear-gradient(135deg,#92400E,#F59E0B)', badge:'#FEF3C7', badgeText:'#92400E'},
+    'Art':           {bg:'linear-gradient(135deg,#9D174D,#EC4899)', badge:'#FFE4F0', badgeText:'#9D174D'},
+    'Our World':     {bg:'linear-gradient(135deg,#0369A1,#5ECDA0)', badge:'#DBEAFE', badgeText:'#1E40AF'},
+    'Create':        {bg:'linear-gradient(135deg,#9D174D,#F97316)', badge:'#FFE4F0', badgeText:'#9D174D'},
+  };
   container.innerHTML = gradeContent.subjects.map(s=>{
-    var iconHtml = '<div class="card-icon" style="margin-bottom:10px;">' + getCardTile(s.title, s.icon, 56) + '</div>';
-    return '<div class="card ' + s.color + '" onclick="startSubject(\'' + s.title + '\')" title="Common Core Aligned">'
+    var sc = SUBJ_COLORS[s.title] || {bg:'linear-gradient(135deg,#5B2D9E,#7C3AED)',badge:'#E8D5FF',badgeText:'#4C1D95'};
+    var iconHtml = '<div style="margin-bottom:10px;">' + getCardTile(s.title, s.icon, 52) + '</div>';
+    return '<div class="card" style="background:' + sc.bg + ';border:none;" onclick="startSubject(\'' + s.title + '\')" title="Common Core Aligned">'
       + iconHtml
-      + '<div class="card-title">' + s.title + '</div>'
-      + '<div class="card-desc">' + s.desc + '</div>'
-      + '<div class="card-badge badge-' + (s.color==='mint'?'mint':s.color==='coral'?'coral':s.color==='lavender'?'lavender':'sun') + '">' + s.badge + '</div>'
+      + '<div class="card-title" style="color:white;">' + s.title + '</div>'
+      + '<div class="card-desc" style="color:rgba(255,255,255,.75);">' + s.desc + '</div>'
+      + '<div class="card-badge" style="background:' + sc.badge + ';color:' + sc.badgeText + ';">' + s.badge + '</div>'
       + '</div>';
   }).join('');
 }
@@ -4316,7 +4327,8 @@ function buildProgressSection() {
   html += '<div style="background:white;border-radius:18px;padding:14px 16px;'
     + 'box-shadow:0 4px 16px rgba(0,0,0,.08);border:1.5px solid #F0EEFF;">';
   html += '<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.85rem;'
-    + 'color:#2D1B3D;margin-bottom:12px;">🍃 Growing Leaves</div>';
+    + 'color:#2D1B3D;margin-bottom:10px;display:flex;align-items:center;gap:6px;">'
+    + '<span>🍃</span><span>Growing Leaves</span></div>';
 
   subjects.forEach(function(subj, i) {
     var myLeaves = Math.min(5, Math.max(0, leavesTotal - i * 2));
@@ -5342,6 +5354,11 @@ function setupDrawCanvas() {
         }
       }
       fillCtx.putImageData(outData, 0, 0);
+      // Redraw image outline on top so lines stay crisp
+      fillCtx.globalAlpha = 1.0;
+      fillCtx.globalCompositeOperation = 'multiply';
+      fillCtx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      fillCtx.globalCompositeOperation = 'source-over';
     }
 
     function doFill(e) {
@@ -12227,60 +12244,63 @@ function openDinoStories(grade) {
 
 // ══ CARD ICON SYSTEM — colored tiles with emoji (reliable cross-browser) ══
 var CARD_ICONS = {
-  // Subjects
-  'Language Arts':     {bg:'#E8D5FF', color:'#6B21A8', emoji:'📖'},
+  // Subjects - meaning colors
+  'Language Arts':     {bg:'#EDE9FE', color:'#5B2D9E', emoji:'📖'},
   'Math':              {bg:'#DBEAFE', color:'#1D4ED8', emoji:'🔢'},
   'Science':           {bg:'#D1FAE5', color:'#065F46', emoji:'🔬'},
   'Social Studies':    {bg:'#FEF3C7', color:'#92400E', emoji:'🌍'},
   'Art':               {bg:'#FFE4F0', color:'#9D174D', emoji:'🎨'},
   'Our World':         {bg:'#DBEAFE', color:'#1E40AF', emoji:'🌍'},
   'Create':            {bg:'#FFE4F0', color:'#9D174D', emoji:'✏️'},
-  'Reading':           {bg:'#E8D5FF', color:'#6B21A8', emoji:'📚'},
-  // Games
-  "Bloom's Reading Path": {bg:'#D1FAE5', color:'#065F46', emoji:'🌱'},
-  'Letter Tracing':    {bg:'#FEF3C7', color:'#92400E', emoji:'✏️'},
+  'Reading':           {bg:'#EDE9FE', color:'#5B2D9E', emoji:'📚'},
+  // Reading/Language - Purple
+  "Bloom's Reading Path": {bg:'#EDE9FE', color:'#5B2D9E', emoji:'🌱'},
+  'Letter Tracing':    {bg:'#EDE9FE', color:'#5B2D9E', emoji:'✏️'},
+  'Word Builder':      {bg:'#EDE9FE', color:'#5B2D9E', emoji:'🔤'},
+  'Sound Play':        {bg:'#EDE9FE', color:'#5B2D9E', emoji:'🔊'},
+  'ABC Time':          {bg:'#EDE9FE', color:'#5B2D9E', emoji:'🔡'},
+  'Reading Corner':    {bg:'#EDE9FE', color:'#5B2D9E', emoji:'📖'},
+  'Grammar Grab':      {bg:'#EDE9FE', color:'#5B2D9E', emoji:'📝'},
+  'Grammar Garden':    {bg:'#D1FAE5', color:'#065F46', emoji:'🌸'},
+  'Vocabulary Vault':  {bg:'#EDE9FE', color:'#5B2D9E', emoji:'💬'},
+  'Story Relay':       {bg:'#FEF3C7', color:'#92400E', emoji:'✍️'},
+  'Fact Finder':       {bg:'#EDE9FE', color:'#5B2D9E', emoji:'🔎'},
+  'Fact or Opinion':   {bg:'#FEF3C7', color:'#92400E', emoji:'⚖️'},
+  'Evidence Explorer': {bg:'#EDE9FE', color:'#5B2D9E', emoji:'🔎'},
+  'Argument Builder':  {bg:'#EDE9FE', color:'#5B2D9E', emoji:'⚖️'},
+  'Dino Stories':      {bg:'#D1FAE5', color:'#065F46', emoji:'🦕'},
+  'Busy Book':         {bg:'#EDE9FE', color:'#5B2D9E', emoji:'📚'},
+  // Math - Blue
   'Number Tracing':    {bg:'#DBEAFE', color:'#1D4ED8', emoji:'🔢'},
-  'Memory Match':      {bg:'#EDE9FE', color:'#5B21B6', emoji:'🃏'},
-  'Word Builder':      {bg:'#FEF3C7', color:'#92400E', emoji:'🔤'},
-  'Sound Play':        {bg:'#D1FAE5', color:'#065F46', emoji:'🔊'},
-  'ABC Time':          {bg:'#E8D5FF', color:'#6B21A8', emoji:'🔡'},
   'Count It!':         {bg:'#DBEAFE', color:'#1D4ED8', emoji:'🔢'},
   'Counting':          {bg:'#DBEAFE', color:'#1D4ED8', emoji:'🔢'},
-  'Patterns':          {bg:'#EDE9FE', color:'#5B21B6', emoji:'🎵'},
-  'Colors Sort':       {bg:'#FFE4F0', color:'#9D174D', emoji:'🎨'},
-  'Colors & Shapes':   {bg:'#FFE4F0', color:'#9D174D', emoji:'🔷'},
-  'Animal Sort':       {bg:'#D1FAE5', color:'#065F46', emoji:'🐾'},
-  'Science Sort':      {bg:'#D1FAE5', color:'#065F46', emoji:'🧪'},
-  'Science Sort Lab':  {bg:'#D1FAE5', color:'#065F46', emoji:'⚗️'},
-  'Busy Book':         {bg:'#FEF3C7', color:'#92400E', emoji:'📚'},
-  'Dino Stories':      {bg:'#D1FAE5', color:'#1a472a', emoji:'🦕'},
   'Math Practice':     {bg:'#DBEAFE', color:'#1D4ED8', emoji:'➕'},
   'Number Bonds':      {bg:'#DBEAFE', color:'#1D4ED8', emoji:'🔗'},
-  'Shop Math':         {bg:'#FEF3C7', color:'#92400E', emoji:'🛒'},
-  'Social Studies':    {bg:'#FEF3C7', color:'#92400E', emoji:'🌍'},
-  'Reading Corner':    {bg:'#E8D5FF', color:'#6B21A8', emoji:'📖'},
+  'Shop Math':         {bg:'#DBEAFE', color:'#1D4ED8', emoji:'🛒'},
   'Add & Subtract':    {bg:'#DBEAFE', color:'#1D4ED8', emoji:'➕'},
-  'Multiply Mania':    {bg:'#DBEAFE', color:'#1E40AF', emoji:'✖️'},
-  'Math Bingo':        {bg:'#EDE9FE', color:'#5B21B6', emoji:'🎱'},
+  'Multiply Mania':    {bg:'#DBEAFE', color:'#1D4ED8', emoji:'✖️'},
+  'Math Bingo':        {bg:'#DBEAFE', color:'#1D4ED8', emoji:'🎱'},
   'Fraction Feast':    {bg:'#DBEAFE', color:'#1D4ED8', emoji:'🍕'},
-  'Angles Sort':       {bg:'#EDE9FE', color:'#5B21B6', emoji:'📐'},
-  'Grammar Grab':      {bg:'#E8D5FF', color:'#6B21A8', emoji:'📝'},
-  'Grammar Garden':    {bg:'#D1FAE5', color:'#065F46', emoji:'🌸'},
-  'Vocabulary Vault':  {bg:'#E8D5FF', color:'#6B21A8', emoji:'💬'},
-  'Story Relay':       {bg:'#FEF3C7', color:'#92400E', emoji:'✍️'},
-  'Fact Finder':       {bg:'#E8D5FF', color:'#6B21A8', emoji:'🔎'},
-  'Fact or Opinion':   {bg:'#FEF3C7', color:'#92400E', emoji:'⚖️'},
-  'Water Cycle':       {bg:'#DBEAFE', color:'#1D4ED8', emoji:'💧'},
+  'Angles Sort':       {bg:'#DBEAFE', color:'#1D4ED8', emoji:'📐'},
+  'Coordinate Chase':  {bg:'#DBEAFE', color:'#1D4ED8', emoji:'📍'},
+  'Problem Solver':    {bg:'#DBEAFE', color:'#1D4ED8', emoji:'🧮'},
+  // Science/World - Teal
+  'Science Sort':      {bg:'#D1FAE5', color:'#065F46', emoji:'🧪'},
+  'Science Sort Lab':  {bg:'#D1FAE5', color:'#065F46', emoji:'⚗️'},
+  'Water Cycle':       {bg:'#D1FAE5', color:'#065F46', emoji:'💧'},
   'Map Mission':       {bg:'#FEF3C7', color:'#92400E', emoji:'🗺️'},
-  'Evidence Explorer': {bg:'#DBEAFE', color:'#1E40AF', emoji:'🔎'},
-  'Argument Builder':  {bg:'#E8D5FF', color:'#6B21A8', emoji:'⚖️'},
-  'Coordinate Chase':  {bg:'#D1FAE5', color:'#065F46', emoji:'📍'},
-  'Problem Solver':    {bg:'#EDE9FE', color:'#5B21B6', emoji:'🧮'},
-  'Jeopardy':          {bg:'#FEF3C7', color:'#92400E', emoji:'🏆'},
+  'Social Studies':    {bg:'#FEF3C7', color:'#92400E', emoji:'🌍'},
   'Treasure Hunt':     {bg:'#FEF3C7', color:'#B45309', emoji:'🗺️'},
-  'Research Race':     {bg:'#DBEAFE', color:'#1D4ED8', emoji:'🔬'},
+  'Research Race':     {bg:'#D1FAE5', color:'#065F46', emoji:'🔬'},
   'Mixtures Sort':     {bg:'#D1FAE5', color:'#065F46', emoji:'⚗️'},
-  'Shapes Sort':       {bg:'#EDE9FE', color:'#5B21B6', emoji:'🔷'},
+  // Games/Play - Coral  
+  'Memory Match':      {bg:'#FFE4E4', color:'#9D174D', emoji:'🃏'},
+  'Patterns':          {bg:'#FFE4F0', color:'#9D174D', emoji:'🎵'},
+  'Colors Sort':       {bg:'#FFE4F0', color:'#9D174D', emoji:'🎨'},
+  'Colors & Shapes':   {bg:'#FFE4F0', color:'#9D174D', emoji:'🔷'},
+  'Shapes Sort':       {bg:'#FFE4F0', color:'#9D174D', emoji:'🔷'},
+  'Animal Sort':       {bg:'#D1FAE5', color:'#065F46', emoji:'🐾'},
+  'Jeopardy':          {bg:'#FEF3C7', color:'#92400E', emoji:'🏆'},
 };
 window.CARD_ICONS = CARD_ICONS;
 
@@ -12303,8 +12323,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v416</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v416</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v417</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v417</div>
 
 </body>
 </html
