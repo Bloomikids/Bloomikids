@@ -1010,7 +1010,7 @@ input::placeholder { color:#aaa !important; }
   <!-- ACADEMICS panel: continue card + games section header + dynamic grade tiles -->
   <div class="panel active" id="panel-academics">
     <!-- Continue where you left off -->
-    <div id="continueCard" style="display:none;" class="continue-card" onclick="resumeLastActivity()">
+    <div id="continueCard" style="display:none !important;" class="continue-card" onclick="resumeLastActivity()">
       <div class="continue-card-icon" id="continueIcon">📖</div>
       <div class="continue-card-text">
         <div class="continue-card-title" id="continueTitle">Keep going!</div>
@@ -1101,10 +1101,12 @@ input::placeholder { color:#aaa !important; }
     </div>
 
     <div class="section-title" id="subjectsTitle" style="display:none;">📖 Today's Subjects</div>
-    <div class="cards-grid" id="subjectCards" style=""></div>
+    <div class="cards-grid" id="subjectCards" style="display:none;"></div>
     <div id="gradeGamesSection" style="margin:0 0 14px;"></div>
 
-    <!-- Subjects row (inline with games, no separate header) -->
+    <!-- Subjects row hidden - games grid IS the subjects now -->
+    <div style="display:none;">
+<!-- Subjects row (inline with games, no separate header) -->
     <div style="display:none;"><!-- subjects header removed --></div>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:18px;">
       <div onclick="v3OpenReadingSubject()" style="background:#5B2D9E;border-radius:20px;padding:16px 8px 12px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #2FA29A,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
@@ -1129,7 +1131,8 @@ input::placeholder { color:#aaa !important; }
       </div>
     </div>
 
-    <!-- _OLD MARKERS_ kept hidden for selector compatibility -->
+    </div>
+<!-- _OLD MARKERS_ kept hidden for selector compatibility -->
     <div style="display:none;" id="oldGamesAndSubjectsAnchors">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;">
       <div onclick="v3OpenReadingSubject()" style="background:#5B2D9E;border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #2FA29A,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
@@ -4321,11 +4324,11 @@ function buildProgressSection() {
   html += '</div>'; // end top card
 
   // SUBJECT LEAVES SECTION
-  html += '<div style="background:white;border-radius:18px;padding:14px 16px;'
-    + 'box-shadow:0 4px 16px rgba(0,0,0,.08);border:1.5px solid #F0EEFF;">';
-  html += '<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.85rem;'
-    + 'color:#2D1B3D;margin-bottom:10px;display:flex;align-items:center;gap:6px;">'
-    + '<span>🍃</span><span>Growing Leaves</span></div>';
+  html += '<div style="background:linear-gradient(135deg,#F0FFF4,#ECFDF5);border-radius:18px;padding:16px;'
+    + 'border:1.5px solid #D1FAE5;">';
+  html += '<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.9rem;'
+    + 'color:#065F46;margin-bottom:12px;display:flex;align-items:center;gap:6px;">'
+    + '<span style=\"font-size:1.1rem;\">🌿</span><span>Growing Leaves</span></div>';
 
   subjects.forEach(function(subj, i) {
     var myLeaves = Math.min(5, Math.max(0, leavesTotal - i * 2));
@@ -5219,7 +5222,11 @@ function buildColoringBook(container) {
 
   container.innerHTML = `
     <div class="coloring-section" style="width:100%;grid-column:1/-1;">
-      <div style="font-family:'Baloo 2',cursive;font-size:1.1rem;font-weight:800;margin-bottom:10px;text-align:center;">🎨 Pick a picture to color!</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <button onclick="switchTab('academics')" style="background:rgba(91,45,158,.1);border:none;border-radius:20px;padding:7px 14px;font-weight:700;font-size:.85rem;color:#5B2D9E;cursor:pointer;">← Back</button>
+        <div style="font-family:'Baloo 2',cursive;font-size:1.1rem;font-weight:800;">🎨 Pick a picture to color!</div>
+        <div style="width:80px;"></div>
+      </div>
       <div class="coloring-picker" id="coloringPicker">
         ${scenes.map((s,i)=>`
           <button class="coloring-scene-btn ${i===0?'active':''}" onclick="switchColoringScene(${i})" id="sceneBtn_${i}">
@@ -5341,22 +5348,27 @@ function setupDrawCanvas() {
       var fillCtx = canvas.getContext('2d');
       var outData = fillCtx.getImageData(0, 0, canvas.width, canvas.height);
       var out = outData.data;
+      var imgData2 = data; // original image pixel data from offscreen canvas
       var fr = fillRgb[0], fg = fillRgb[1], fb = fillRgb[2];
       for (var i = 0; i < visited.length; i++) {
+        var p = i * 4;
         if (visited[i]) {
-          var p = i * 4;
-          out[p]   = fr;
-          out[p+1] = fg;
-          out[p+2] = fb;
-          out[p+3] = 180; // semi-transparent so outlines show through
+          // Check if original pixel is a dark outline - if so, skip it (preserve outline)
+          var origBr = (imgData2[p]*299 + imgData2[p+1]*587 + imgData2[p+2]*114) / 1000;
+          if (origBr < 80) {
+            // Dark outline pixel - clear it so image shows through
+            out[p+3] = 0;
+          } else {
+            // Fillable region
+            out[p]   = fr;
+            out[p+1] = fg;
+            out[p+2] = fb;
+            out[p+3] = 200;
+          }
         }
       }
       fillCtx.putImageData(outData, 0, 0);
-      // Redraw image outline on top so lines stay crisp
-      fillCtx.globalAlpha = 1.0;
-      fillCtx.globalCompositeOperation = 'multiply';
-      fillCtx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      fillCtx.globalCompositeOperation = 'source-over';
+      // NO multiply redraw - canvas is transparent over dark lines so image shows through naturally
     }
 
     function doFill(e) {
@@ -8539,10 +8551,11 @@ function openScienceGame(grade) {
       }).join('')
       +'</div>'
       +'<div id="sciCheckWrap" style="text-align:center;margin-top:16px;">'
-      +'<button onclick="window._sciCheck('+JSON.stringify(items)+')" style="padding:14px 36px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(14,165,233,.4);">✅ Check Answers!</button>'
+      +'<button onclick="window._sciCheck(window._sciCurrentItems)" style="padding:14px 36px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(14,165,233,.4);">✅ Check Answers!</button>'
       +'</div>'
       +'</div>';
 
+    window._sciCurrentItems = items; // store for Check Answers
     var sorted={};
     // TTS for early grades
     if(['PreK','K','1'].indexOf(grade)>=0 && 'speechSynthesis' in window){
@@ -8665,25 +8678,25 @@ function openSocialStudiesGame(grade) {
       { q:'What are the three branches of US government?', emoji:'🏛️', opts:['City, state, country','Legislative, executive, judicial','Police, army, navy','President, mayor, governor'], answer:1 },
     ],
     3: [
-      { q:'What was the purpose of the Transcontinental Railroad?', emoji:'🚂', opts:['To go to war','To connect the East and West coasts','To import goods','To drain the Great Lakes'], answer:1 },
-      { q:'What is a primary source?', emoji:'📜', opts:['A summary of events','A firsthand account or original artifact','An encyclopedia article','A textbook summary'], answer:1 },
-      { q:'What is supply and demand?', emoji:'📊', opts:['A type of law','How prices are determined by availability and need','A government program','A type of tax'], answer:1 },
-      { q:'What was the main cause of the Civil War?', emoji:'⚔️', opts:['Territory disputes only','Slavery and states rights','Economic inequality only','Foreign invasion'], answer:1 },
-      { q:'What is a trade route?', emoji:'🗺️', opts:['A type of road','A path used to exchange goods between regions','A railway line','A military road'], answer:1 },
+      { q:'Which continent is the Sahara Desert in?', emoji:'🌍', opts:['Asia','Africa','Europe','Australia'], answer:1 },
+      { q:'What ocean is between North America and Europe?', emoji:'🌊', opts:['Pacific','Indian','Arctic','Atlantic'], answer:3 },
+      { q:'Which country has the most people in the world?', emoji:'👥', opts:['USA','India','China','Brazil'], answer:2 },
+      { q:'What is the longest river in the world?', emoji:'🌊', opts:['Amazon','Nile','Mississippi','Yangtze'], answer:1 },
+      { q:'On which continent is Brazil?', emoji:'🌎', opts:['Africa','Europe','Asia','South America'], answer:3 },
     ],
     4: [
-      { q:'What is manifest destiny?', emoji:'🌎', opts:['Protection of Native lands','The belief that the US should expand across the continent','A type of law','A foreign policy'], answer:1 },
-      { q:'What is a checks and balances system?', emoji:'⚖️', opts:['A banking system','How each branch of government limits the others','A type of tax','A voting system'], answer:1 },
-      { q:'What caused the Great Depression?', emoji:'📉', opts:['A world war','Stock market crash and bank failures','A natural disaster','A drought only'], answer:1 },
-      { q:'What is the Bill of Rights?', emoji:'📜', opts:['A tax document','The first 10 amendments protecting citizens rights','A trade agreement','A list of laws'], answer:1 },
-      { q:'What is globalization?', emoji:'🌐', opts:['Local trade only','The increasing interconnection of world economies and cultures','A type of government','Isolationism'], answer:1 },
+      { q:'Which mountain is the tallest in the world?', emoji:'🏔️', opts:['K2','Kilimanjaro','Mount Everest','Denali'], answer:2 },
+      { q:'What continent is Australia on?', emoji:'🦘', opts:['Asia','Antarctica','Australia/Oceania','Africa'], answer:2 },
+      { q:'Which country is known for the Great Wall?', emoji:'🧱', opts:['Japan','India','China','Korea'], answer:2 },
+      { q:'The Amazon Rainforest is mostly in which country?', emoji:'🌿', opts:['Colombia','Peru','Brazil','Venezuela'], answer:2 },
+      { q:'Which continent has the most countries?', emoji:'🌍', opts:['Asia','Europe','Africa','South America'], answer:2 },
     ],
     5: [
-      { q:'What is the significance of the Emancipation Proclamation?', emoji:'🗽', opts:['Ended WWI','Declared freedom for enslaved people in Confederate states','Created the Constitution','Ended the Mexican War'], answer:1 },
-      { q:'What is a filibuster in government?', emoji:'🏛️', opts:['A type of vote','A tactic to delay legislation through prolonged debate','A presidential veto','A court ruling'], answer:1 },
-      { q:'What does GDP measure?', emoji:'📊', opts:['Population size','Total value of goods and services produced in a country','Government spending only','Trade deficit'], answer:1 },
-      { q:'What was the purpose of the Marshall Plan?', emoji:'🌍', opts:['To rebuild Europe after WWII','To expand US territory','To fight communism directly','To establish the UN'], answer:0 },
-      { q:'What is the electoral college?', emoji:'🗳️', opts:['A school for politicians','A system where electors chosen by states vote for the president','A popular vote system','A congressional committee'], answer:1 },
+      { q:'What are the seven continents?', emoji:'🌍', opts:['5 continents','6 continents','7 continents','8 continents'], answer:2 },
+      { q:'Which country produces the most tea?', emoji:'🍵', opts:['India','UK','China','Japan'], answer:2 },
+      { q:'What is the currency of Japan?', emoji:'💴', opts:['Won','Yuan','Yen','Peso'], answer:2 },
+      { q:'Where are the ancient Pyramids located?', emoji:'🏛️', opts:['Iraq','Egypt','Libya','Sudan'], answer:1 },
+      { q:'What language is most spoken in South America?', emoji:'🌎', opts:['English','Spanish','Portuguese','French'], answer:1 },
     ],
   };
 
@@ -9445,7 +9458,6 @@ window._showAppMenu = function() {
     btn.onclick = function(){ ov.remove(); action(); };
     return btn;
   }
-  ov.appendChild(menuItem('👋', "I'm Done!", iAmDone));
   ov.appendChild(menuItem('📊', 'Parent Dashboard', openParentDashboard));
   ov.appendChild(menuItem('🔄', 'Switch Child', switchChild));
   var divider = document.createElement('div');
@@ -11882,7 +11894,7 @@ function openPassageReader(grade) {
       var body=document.createElement('div');
       body.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;';
       body.innerHTML='<div style="font-size:4.5rem;margin-bottom:8px;">'+(pct>=80?'🏆':pct>=60?'⭐':'💪')+'</div>'
-        +'<div style="font-size:1.8rem;margin-bottom:4px;">'+story.cover+'</div>'
+        +'<div style="font-size:1.8rem;margin-bottom:4px;font-weight:800;color:#1A1033;">'+story.title+'</div>'
         +'<div style="font-family:Baloo 2,cursive;font-size:1.6rem;font-weight:800;color:'+CA+';">'+score+'/'+total+'</div>'
         +'<div style="color:#555;font-size:.95rem;margin:8px 0 8px;">'+(pct>=80?'Excellent comprehension! 🌟':pct>=60?'Good reading! Keep it up!':'Try reading the story again — you\'ll get it!')+'</div>'
         +'<div style="background:#DBEAFE;border-radius:12px;padding:10px 16px;margin-bottom:20px;font-size:.82rem;color:#1D4ED8;font-weight:700;">Theme: '+story.theme+'</div>'
@@ -12252,7 +12264,7 @@ function openDinoStories(grade) {
       body.style.cssText = 'flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;';
       var pct = Math.round(score/story.quiz.length*100);
       body.innerHTML = '<div style="font-size:4.5rem;margin-bottom:8px;">'+(pct>=80?'🏆':pct>=50?'⭐':'💪')+'</div>'
-        +'<img src="/'+story.cover+'" style="width:120px;height:80px;object-fit:cover;border-radius:12px;margin-bottom:12px;">'
+        +'<div style="font-size:1.6rem;font-weight:800;color:#1A1033;margin-bottom:8px;">'+story.title+'</div>'
         +'<div style="font-family:Baloo 2,cursive;font-size:1.6rem;font-weight:800;color:#1a472a;">'+score+'/'+story.quiz.length+'</div>'
         +'<div style="color:#555;margin:8px 0 24px;">'+(pct>=80?'Amazing reading! 🌟':pct>=50?'Good job! Keep reading!':'Try again — keep going!')+'</div>'
         +'<div style="display:flex;gap:12px;flex-wrap:wrap;">'
@@ -12353,8 +12365,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v420</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v420</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v421</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v421</div>
 
 </body>
 </html
