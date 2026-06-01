@@ -1101,11 +1101,10 @@ input::placeholder { color:#aaa !important; }
     </div>
 
     <div class="section-title" id="subjectsTitle" style="display:none;">📖 Today's Subjects</div>
-    <div class="cards-grid" id="subjectCards" style="display:none;"></div>
+    <div class="cards-grid" id="subjectCards"></div>
     <div id="gradeGamesSection" style="margin:0 0 14px;"></div>
 
-    <!-- Subjects row hidden - games grid IS the subjects now -->
-    <div style="display:none;">
+    <!-- Subjects row -->
 <!-- Subjects row (inline with games, no separate header) -->
     <div style="display:none;"><!-- subjects header removed --></div>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:18px;">
@@ -1127,7 +1126,7 @@ input::placeholder { color:#aaa !important; }
       <div onclick="switchTab('art')" style="background:#FF6B6B;border-radius:20px;padding:16px 8px 12px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #E04848,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
         <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
         <div style="width:42px;height:42px;margin:0 auto 6px;border-radius:13px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">🎨</div>
-        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.78rem;position:relative;z-index:1;">Create</div>
+        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.78rem;position:relative;z-index:1;">Make It!</div>
       </div>
     </div>
 
@@ -4185,6 +4184,8 @@ function buildSubjectCards() {
     'Our World':      {bg:'linear-gradient(135deg,#0369A1,#5ECDA0)', badge:'#DBEAFE', badgeText:'#1E40AF'},
     'Create':         {bg:'linear-gradient(135deg,#9D174D,#F97316)', badge:'#FFE4F0', badgeText:'#9D174D'},
   };
+  if (!container || !gradeContent || !gradeContent.subjects) return;
+  container.style.display = 'grid';
   container.innerHTML = gradeContent.subjects.map(s=>{
     var sc = SUBJ_COLORS[s.title] || {bg:'linear-gradient(135deg,#5B2D9E,#7C3AED)',badge:'#E8D5FF',badgeText:'#4C1D95'};
     var iconHtml = '<div style="margin-bottom:10px;">' + getCardTile(s.title, s.icon, 52) + '</div>';
@@ -12365,8 +12366,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v421</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v421</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v422</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v422</div>
 
 </body>
 </html
