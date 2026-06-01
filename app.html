@@ -45,9 +45,9 @@ body.grade-4    { --font-body:1rem; --font-heading:1.5rem; --font-big:2.4rem; }
 body.grade-5    { --font-body:1rem; --font-heading:1.5rem; --font-big:2.4rem; }
 
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Nunito',sans-serif; background:linear-gradient(160deg,#2D1B69 0%,#4C1D95 40%,#7C3AED 100%); background-attachment:fixed; color:var(--text); min-height:100vh; overflow-x:hidden; font-size:var(--font-body); }
+body { font-family:'Nunito',sans-serif; background:#FFF8F0; background-attachment:fixed; color:var(--text); min-height:100vh; overflow-x:hidden; font-size:var(--font-body); }
 
-body::before { content:''; position:fixed; width:700px; height:700px; background:radial-gradient(circle,#C9B8FF22 0%,#FFD16618 50%,transparent 70%); top:-250px; right:-200px; pointer-events:none; z-index:0; }
+/* body::before removed — cream bg */
 body::after  { content:''; position:fixed; width:600px; height:600px; background:radial-gradient(circle,#5ECDA028 0%,#4ECDC418 50%,transparent 70%); bottom:-180px; left:-180px; pointer-events:none; z-index:0; }
 
 /* -- OFFLINE / TOAST ----------------------------------- */
@@ -181,7 +181,7 @@ input:-webkit-autofill:focus {
 
 /* -- MAIN APP ------------------------------------------- */
 .app { position:relative; z-index:1; max-width:1100px; margin:0 auto; padding:20px; padding-bottom:90px; min-height:100vh; }
-header { display:flex; align-items:center; justify-content:space-between; padding:20px 0 20px; flex-wrap:wrap; gap:10px; }
+header { display:flex; align-items:center; justify-content:space-between; padding:14px 20px 14px; flex-wrap:wrap; gap:10px; background:linear-gradient(135deg,#2D1B69,#5B2D9E); margin:-20px -20px 20px; border-radius:0 0 24px 24px; box-shadow:0 4px 20px rgba(91,45,158,.3); }
 .logo { font-family:'Baloo 2',cursive; font-size:2rem; font-weight:800; background:linear-gradient(135deg,var(--coral),var(--sunshine)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
 .logo svg { width:44px; height:44px; flex-shrink:0; }
 .auth-logo svg { width:140px; height:140px; }
@@ -259,12 +259,13 @@ header { display:flex; align-items:center; justify-content:space-between; paddin
 .section-title { font-family:'Baloo 2',cursive; font-size:var(--font-heading); font-weight:800; margin-bottom:18px; display:flex; align-items:center; gap:10px; }
 
 .cards-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-bottom:28px; }
-.card { background:white; border-radius:28px; padding:20px 12px; box-shadow:0 4px 20px rgba(45,45,78,.10); cursor:pointer; transition:all .3s; position:relative; overflow:hidden; min-height:150px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.card { border-radius:28px; padding:20px 12px; box-shadow:0 6px 0 rgba(0,0,0,.2),0 8px 24px rgba(45,45,78,.2); cursor:pointer; transition:all .3s; position:relative; overflow:hidden; min-height:150px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.card::after { content:""; position:absolute; top:0; left:0; right:0; height:45%; background:linear-gradient(180deg,rgba(255,255,255,.3),rgba(255,255,255,0)); border-radius:28px 28px 50% 50%; pointer-events:none; }
 .card:hover { transform:translateY(-6px) scale(1.02); box-shadow:0 16px 40px rgba(45,45,78,.18); }
 .card::before { display:none; }
 .card.mint     { background:linear-gradient(155deg,#AAFCE0,#5ECDA0 60%,#3AB87A); box-shadow:0 8px 28px rgba(94,205,160,.35); }
 .card.coral    { background:linear-gradient(155deg,#FFCFC7,#FF7A6B 60%,#E55545); box-shadow:0 8px 28px rgba(255,122,107,.35); }
-.card.lavender { background:linear-gradient(155deg,#E0D8FF,#A78BFA 60%,#7C5CDB); box-shadow:0 8px 28px rgba(167,139,250,.40); }
+
 .card.sun      { background:linear-gradient(155deg,#FFE88A,#FFCC00 60%,#E5A800); box-shadow:0 8px 28px rgba(255,204,0,.40); }
 .card-icon  { position:relative; z-index:2; font-size:3.8rem; margin-bottom:10px; filter:drop-shadow(0 4px 8px rgba(0,0,0,.10)); }
 .card-title { font-family:'Baloo 2',cursive; font-size:1rem; font-weight:800; margin-bottom:0; text-align:center; color:rgba(255,255,255,.95); text-shadow:0 1px 4px rgba(0,0,0,.25); position:relative; z-index:2; padding:0 8px; line-height:1.3; }
@@ -436,12 +437,12 @@ body.grade-prek .pose-name, body.grade-k .pose-name, body.grade-1 .pose-name { f
 
 
 .breathing-area { text-align:center; padding:30px; background:white; border-radius:24px; box-shadow:var(--shadow); margin-bottom:28px; }
-.breath-circle { width:120px; height:120px; border-radius:50%; background:radial-gradient(circle,#E8D4FF,#C9B8FF); margin:0 auto 16px; display:flex; align-items:center; justify-content:center; font-size:2.8rem; animation:breathe 8s ease-in-out infinite; }
+.breath-circle { width:100px; height:100px; border-radius:50%; background:radial-gradient(circle,#E8D4FF,#C9B8FF); margin:0 auto 8px; display:flex; align-items:center; justify-content:center; font-size:2.4rem; animation:breathe 8s ease-in-out infinite; }
 @keyframes breathe { 0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(201,184,255,.4)} 50%{transform:scale(1.4);box-shadow:0 0 0 30px rgba(201,184,255,0)} }
 .breath-instruction { font-family:'Baloo 2',cursive; font-size:var(--font-heading); font-weight:800; margin-bottom:8px; }
 .breath-sub { color:var(--muted); font-size:var(--font-body); font-weight:600; }
 
-body.grade-prek .breath-circle, body.grade-k .breath-circle, body.grade-1 .breath-circle { width:150px; height:150px; font-size:3.5rem; }
+body.grade-prek .breath-circle, body.grade-k .breath-circle, body.grade-1 .breath-circle { width:120px; height:120px; font-size:3rem; }
 
 /* -- BOOKS --------------------------------------------- */
 .book-shelf { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:18px; margin-bottom:28px; }
@@ -920,21 +921,13 @@ input::placeholder { color:#aaa !important; }
     <div class="logo" style="display:flex;align-items:center;gap:10px;"><img src="logo.png" alt="BloomiKids" style="width:44px;height:44px;object-fit:cover;border-radius:50%;flex-shrink:0;">Bloomi<span>Kids</span></div>
     <div class="header-right">
       <div class="date-badge" id="dateBadge">📅 ...</div>
-      <button class="done-btn" onclick="iAmDone()" title="I'm done for today!">
-        👋 I'm Done!
-      </button>
-      <button class="logout-app-btn" onclick="window._showExitMenu()" title="Switch child or sign out" style="background:linear-gradient(135deg,#8B6FE8,#6B4FCC);border:none;color:white;border-radius:20px;padding:7px 14px;font-size:.82rem;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">
-        👋 Exit
-      </button>
-      <button class="logout-app-btn" onclick="openParentDashboard()" title="Parent Dashboard" style="background:linear-gradient(135deg,var(--lavender),var(--sky));color:white;border:none;">
-        📊 Parents
-      </button>
-      <button class="user-chip" onclick="showChildMenu()" title="Change avatar or switch child">
+      <button class="user-chip" onclick="showChildMenu()" title="Switch child">
         <span id="activeChildAvatar">🌟</span>
         <span id="activeChildName">--</span>
-        <span style="font-size:.65rem;opacity:.6;">▾</span>
+        <span style="font-size:.65rem;opacity:.5;">▾</span>
         <span class="sync-dot" id="syncDot"></span>
       </button>
+      <button onclick="window._showAppMenu()" style="background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.25);color:white;border-radius:50%;width:38px;height:38px;cursor:pointer;font-size:1.1rem;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;" title="Menu">⋯</button>
     </div>
   </header>
 
@@ -1062,7 +1055,7 @@ input::placeholder { color:#aaa !important; }
 
     <!-- v379 MINDFUL MOMENTS — moved to top of sections, Yoga+Music combined -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin:14px 0 10px;padding:0 4px;">
-      <h2 style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:white;margin:0;text-shadow:0 1px 4px rgba(0,0,0,.3);">🌿 Mindful Moments</h2>
+      <h2 style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:#3B1578;margin:0;">🌿 Mindful Moments</h2>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;">
       <!-- Yoga & Music (combined) -->
@@ -1101,35 +1094,33 @@ input::placeholder { color:#aaa !important; }
       </div>
     </div>
 
-    <!-- v3 SECTION HEADER: Games -->
+    <!-- UNIFIED Play & Learn section -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin:8px 0 10px;padding:0 4px;">
-      <h2 style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:white;margin:0;text-shadow:0 1px 4px rgba(0,0,0,.3);">🎮 Games</h2>
-      <span onclick="openAllGames()" style="font-size:.75rem;font-weight:800;color:white;cursor:pointer;padding:5px 12px;border-radius:20px;background:rgba(255,255,255,.22);border:1.5px solid rgba(255,255,255,.4);">See all →</span>
+      <h2 style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:#3B1578;margin:0;">🌟 Play &amp; Learn</h2>
+      <span onclick="openAllGames()" style="font-size:.75rem;font-weight:800;color:#5B2D9E;cursor:pointer;padding:5px 12px;border-radius:20px;background:rgba(91,45,158,.1);border:1.5px solid rgba(91,45,158,.25);">See all →</span>
     </div>
 
     <div class="section-title" id="subjectsTitle" style="display:none;">📖 Today's Subjects</div>
-    <div class="cards-grid" id="subjectCards" style="display:none;"></div>
-    <div id="gradeGamesSection" style="margin:0 0 18px;"></div>
+    <div class="cards-grid" id="subjectCards" style=""></div>
+    <div id="gradeGamesSection" style="margin:0 0 14px;"></div>
 
-    <!-- v379 SUBJECTS — Reading + Math + Social Studies -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin:8px 0 10px;padding:0 4px;">
-      <h2 style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:white;margin:0;text-shadow:0 1px 4px rgba(0,0,0,.3);">📚 Subjects</h2>
-    </div>
+    <!-- Subjects row (inline with games, no separate header) -->
+    <div style="display:none;"><!-- subjects header removed --></div>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:18px;">
-      <div onclick="v3OpenReadingSubject()" style="background:#4ECDC4;border-radius:20px;padding:16px 8px 12px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #2FA29A,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
+      <div onclick="v3OpenReadingSubject()" style="background:#5B2D9E;border-radius:20px;padding:16px 8px 12px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #2FA29A,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
         <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
         <div style="width:42px;height:42px;margin:0 auto 6px;border-radius:13px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">📖</div>
-        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.78rem;position:relative;z-index:1;">Reading</div>
+        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.78rem;position:relative;z-index:1;">Word Wizards</div>
       </div>
       <div onclick="v3OpenMathSubject()" style="background:#FF9F43;border-radius:20px;padding:16px 8px 12px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #D17715,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
         <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
         <div style="width:42px;height:42px;margin:0 auto 6px;border-radius:13px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">🔢</div>
-        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.78rem;position:relative;z-index:1;">Math</div>
+        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.78rem;position:relative;z-index:1;">Number Ninjas</div>
       </div>
       <div onclick="v3OpenSocialStudies()" style="background:#8B5CF6;border-radius:20px;padding:16px 8px 12px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #6B3DCF,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
         <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
         <div style="width:42px;height:42px;margin:0 auto 6px;border-radius:13px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">🌍</div>
-        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.78rem;position:relative;z-index:1;">Our World</div>
+        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.78rem;position:relative;z-index:1;">World Quest</div>
       </div>
       <div onclick="switchTab('art')" style="background:#FF6B6B;border-radius:20px;padding:16px 8px 12px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #E04848,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
         <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
@@ -1141,10 +1132,10 @@ input::placeholder { color:#aaa !important; }
     <!-- _OLD MARKERS_ kept hidden for selector compatibility -->
     <div style="display:none;" id="oldGamesAndSubjectsAnchors">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;">
-      <div onclick="v3OpenReadingSubject()" style="background:#4ECDC4;border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #2FA29A,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
+      <div onclick="v3OpenReadingSubject()" style="background:#5B2D9E;border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #2FA29A,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
         <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
         <div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">📖</div>
-        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;position:relative;z-index:1;">Reading</div>
+        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;position:relative;z-index:1;">Word Wizards</div>
       </div>
       <div onclick="v3OpenMathSubject()" style="background:#FF9F43;border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #D17715,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
         <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
@@ -1971,8 +1962,8 @@ const GRADE_DATA = {
       bookshelfTitle:'📖 My Books',
     },
     subjects:[
-      { icon:'🔢', title:'Math', desc:'Addition, subtraction and more!', badge:'Practice!', color:'mint' },
-      { icon:'📝', title:'Language Arts', desc:'Reading, writing and words!', badge:'Learn!', color:'coral' },
+      { icon:'🔢', title:'Number Ninjas', desc:'Addition, subtraction and more!', badge:'Practice!', color:'mint' },
+      { icon:'📝', title:'Word Wizards', desc:'Reading, writing and words!', badge:'Learn!', color:'coral' },
       { icon:'\u270F', title:'Writing', desc:'Sentences, grammar and more!', badge:'Write!', color:'lavender' },
     ],
     subjects_progress:['Math','Language Arts','Writing'],
@@ -2080,10 +2071,10 @@ const GRADE_DATA = {
       bookshelfTitle:'📚 My Bookshelf', timerTopLabel:'Hold this pose'
     },
     subjects:[
-      { icon:'🔢', title:'Math', desc:'Addition, subtraction, and number patterns!', badge:'3 activities', color:'mint' },
-      { icon:'🔬', title:'Science', desc:'Animals, plants, weather and experiments!', badge:'Explore!', color:'coral' },
+      { icon:'🔢', title:'Number Ninjas', desc:'Addition, subtraction, and number patterns!', badge:'3 activities', color:'mint' },
+      { icon:'🔬', title:'Wonder Lab', desc:'Animals, plants, weather and experiments!', badge:'Explore!', color:'coral' },
       { icon:'✏', title:'Writing', desc:'Write sentences with describing words!', badge:'1 assignment', color:'lavender' },
-      { icon:'🌍', title:'Social Studies', desc:'Maps, communities, and our world!', badge:'Explore!', color:'sun' },
+      { icon:'🌍', title:'World Quest', desc:'Maps, communities, and our world!', badge:'Explore!', color:'sun' },
     ],
     questions:[
       {q:'What is 9 x 4?',opts:['32','34','36','38'],answer:2,subject:'Math'},
@@ -2235,9 +2226,9 @@ const GRADE_DATA = {
     },
     subjects:[
       { icon:'🔢', title:'Mathematics', desc:'Multiplication, division, and fractions!', badge:'3 lessons left', color:'mint' },
-      { icon:'🔬', title:'Science', desc:'States of matter, ecosystems, and experiments!', badge:'✅ Completed!', color:'coral' },
-      { icon:'✍', title:'Language Arts', desc:'Paragraphs, punctuation, and vocabulary!', badge:'2 exercises left', color:'lavender' },
-      { icon:'🌍', title:'Social Studies', desc:'U.S. regions, maps, and communities!', badge:'New lesson!', color:'sun' },
+      { icon:'🔬', title:'Wonder Lab', desc:'States of matter, ecosystems, and experiments!', badge:'✅ Completed!', color:'coral' },
+      { icon:'✍', title:'Word Wizards', desc:'Paragraphs, punctuation, and vocabulary!', badge:'2 exercises left', color:'lavender' },
+      { icon:'🌍', title:'World Quest', desc:'U.S. regions, maps, and communities!', badge:'New lesson!', color:'sun' },
     ],
     questions:[
       {q:'What is 9 x 9?',opts:['72','78','81','84'],answer:2,subject:'Math'},
@@ -2390,9 +2381,9 @@ const GRADE_DATA = {
     },
     subjects:[
       { icon:'🔢', title:'Mathematics', desc:'Multi-digit multiplication, fractions, and decimals!', badge:'3 lessons left', color:'mint' },
-      { icon:'🔬', title:'Science', desc:'Energy, ecosystems, and the scientific method!', badge:'2 lessons left', color:'coral' },
-      { icon:'✍', title:'Language Arts', desc:'Essay writing, figurative language, and grammar!', badge:'1 assignment', color:'lavender' },
-      { icon:'🌍', title:'Social Studies', desc:'U.S. history, regions, and government basics!', badge:'New topic!', color:'sun' },
+      { icon:'🔬', title:'Wonder Lab', desc:'Energy, ecosystems, and the scientific method!', badge:'2 lessons left', color:'coral' },
+      { icon:'✍', title:'Word Wizards', desc:'Essay writing, figurative language, and grammar!', badge:'1 assignment', color:'lavender' },
+      { icon:'🌍', title:'World Quest', desc:'U.S. history, regions, and government basics!', badge:'New topic!', color:'sun' },
     ],
     questions:[
       {q:'What is 15 x 15?',opts:['205','215','225','235'],answer:2,subject:'Math'},
@@ -2533,9 +2524,9 @@ const GRADE_DATA = {
     },
     subjects:[
       { icon:'🔢', title:'Mathematics', desc:'Fractions, decimals, percentages, and geometry!', badge:'3 lessons left', color:'mint' },
-      { icon:'🔬', title:'Science', desc:'Earth systems, matter, and the scientific method!', badge:'✅ Completed!', color:'coral' },
-      { icon:'✍', title:'Language Arts', desc:'Research writing, literary analysis, and debate!', badge:'2 exercises left', color:'lavender' },
-      { icon:'🌍', title:'Social Studies', desc:'U.S. history, economics, and civics!', badge:'New lesson!', color:'sun' },
+      { icon:'🔬', title:'Wonder Lab', desc:'Earth systems, matter, and the scientific method!', badge:'✅ Completed!', color:'coral' },
+      { icon:'✍', title:'Word Wizards', desc:'Research writing, literary analysis, and debate!', badge:'2 exercises left', color:'lavender' },
+      { icon:'🌍', title:'World Quest', desc:'U.S. history, economics, and civics!', badge:'New lesson!', color:'sun' },
     ],
     questions:[
       {q:'What is 0.8 x 0.5?',opts:['0.3','0.4','0.5','0.6'],answer:1,subject:'Math'},
@@ -3134,10 +3125,10 @@ function updateBloomLevel(stars) {
 // ══════════════════════════════════════════════════════
 
 var BLOOM_LEVELS = [
-  { name:'Seedling',    emoji:'🌱', xpNeeded:50,  level:1, color:'#5ECDA0' },
-  { name:'Sprout',      emoji:'🌿', xpNeeded:150, level:2, color:'#22c55e' },
+  { name:'Seedling',    emoji:'🌱', xpNeeded:50,  level:1, color:'#FF6B6B' },
+  { name:'Sprout',      emoji:'🌿', xpNeeded:150, level:2, color:'#0369A1' },
   { name:'Bud',         emoji:'🌷', xpNeeded:300, level:3, color:'#FF6B9D' },
-  { name:'Bloomer',     emoji:'🌸', xpNeeded:500, level:4, color:'#A855F7' },
+  { name:'Bloomer',     emoji:'🌸', xpNeeded:500, level:4, color:'#EC4899' },
   { name:'Super Bloom', emoji:'🌺', xpNeeded:800, level:5, color:'#FF6B35' },
   { name:'Master',      emoji:'🌻', xpNeeded:9999,level:6, color:'#FFD700' },
 ];
@@ -3732,7 +3723,7 @@ setInterval(saveSessionToLocal,60000);
 function imgFallback(img,emoji){img.style.display='none';var s=document.createElement('span');s.textContent=emoji||'🖼️';s.style.cssText='font-size:3rem;display:block;text-align:center;padding:20px;';if(img.parentNode)img.parentNode.insertBefore(s,img);}
 
 
-var LEARNING_PATH={'PreK':[{icon:'🔤',title:'Letter Names',desc:'Recognize A-Z'},{icon:'🔢',title:'Count to 10',desc:'Numbers 1-10'},{icon:'🎨',title:'Colors & Shapes',desc:'Basic shapes'},{icon:'🌿',title:'My World',desc:'Animals & nature'},{icon:'🧘',title:'Move & Breathe',desc:'Yoga & calm'}],'K':[{icon:'🔤',title:'Letter Sounds',desc:'Phonics A-Z'},{icon:'🔢',title:'Numbers to 20',desc:'Count & compare'},{icon:'✍',title:'Writing',desc:'Trace & write'},{icon:'🌍',title:'Community',desc:'Family & helpers'},{icon:'🔬',title:'Senses',desc:'5 senses science'}],'1':[{icon:'📖',title:'Reading',desc:'CVC & sight words'},{icon:'➕',title:'Add & Subtract',desc:'Within 20'},{icon:'✍',title:'Sentences',desc:'Capitals & punctuation'},{icon:'🌱',title:'Living Things',desc:'Plants & animals'},{icon:'🗺',title:'My Community',desc:'Maps & helpers'}],'2':[{icon:'📚',title:'Fluency',desc:'Read with expression'},{icon:'✖',title:'Multiplication',desc:'Groups & arrays'},{icon:'✏',title:'Opinion Writing',desc:'Claim & reasons'},{icon:'💧',title:'Earth Science',desc:'Water cycle'},{icon:'🏛',title:'History',desc:'Holidays & heroes'}],'3':[{icon:'📖',title:'Chapter Books',desc:'Main idea & details'},{icon:'✖',title:'Multiply & Divide',desc:'Facts 1-10'},{icon:'✍',title:'Narratives',desc:'Story structure'},{icon:'⚡',title:'Forces',desc:'Push, pull, motion'},{icon:'🗺',title:'Geography',desc:'Maps & regions'}],'4':[{icon:'📚',title:'Informational Text',desc:'Text features'},{icon:'➗',title:'Fractions',desc:'Equivalent & compare'},{icon:'🖊',title:'Research Writing',desc:'Sources & notes'},{icon:'🌊',title:'Ecosystems',desc:'Food webs'},{icon:'🏛',title:'U.S. History',desc:'Colonial era'}],'5':[{icon:'📖',title:'Literature',desc:'Theme & craft'},{icon:'÷',title:'Decimals',desc:'Add, subtract, multiply'},{icon:'✍',title:'Argumentative',desc:'Evidence & claims'},{icon:'⚗',title:'Matter',desc:'Physical & chemical'},{icon:'🌎',title:'World Cultures',desc:'Regions & traditions'}]};
+var LEARNING_PATH={'PreK':[{icon:'🔤',title:'Letter Names',desc:'Recognize A-Z'},{icon:'🔢',title:'Count to 10',desc:'Numbers 1-10'},{icon:'🎨',title:'Colors & Shapes',desc:'Basic shapes'},{icon:'🌿',title:'My World',desc:'Animals & nature'},{icon:'🧘',title:'Move & Breathe',desc:'Yoga & calm'}],'K':[{icon:'🔤',title:'Letter Sounds',desc:'Phonics A-Z'},{icon:'🔢',title:'Numbers to 20',desc:'Count & compare'},{icon:'✍',title:'Writing',desc:'Trace & write'},{icon:'🌍',title:'Community',desc:'Family & helpers'},{icon:'🔬',title:'Senses',desc:'5 senses science'}],'1':[{icon:'📖',title:'Word Wizards',desc:'CVC & sight words'},{icon:'➕',title:'Add & Subtract',desc:'Within 20'},{icon:'✍',title:'Sentences',desc:'Capitals & punctuation'},{icon:'🌱',title:'Living Things',desc:'Plants & animals'},{icon:'🗺',title:'My Community',desc:'Maps & helpers'}],'2':[{icon:'📚',title:'Fluency',desc:'Read with expression'},{icon:'✖',title:'Multiplication',desc:'Groups & arrays'},{icon:'✏',title:'Opinion Writing',desc:'Claim & reasons'},{icon:'💧',title:'Earth Science',desc:'Water cycle'},{icon:'🏛',title:'History',desc:'Holidays & heroes'}],'3':[{icon:'📖',title:'Chapter Books',desc:'Main idea & details'},{icon:'✖',title:'Multiply & Divide',desc:'Facts 1-10'},{icon:'✍',title:'Narratives',desc:'Story structure'},{icon:'⚡',title:'Forces',desc:'Push, pull, motion'},{icon:'🗺',title:'Geography',desc:'Maps & regions'}],'4':[{icon:'📚',title:'Informational Text',desc:'Text features'},{icon:'➗',title:'Fractions',desc:'Equivalent & compare'},{icon:'🖊',title:'Research Writing',desc:'Sources & notes'},{icon:'🌊',title:'Ecosystems',desc:'Food webs'},{icon:'🏛',title:'U.S. History',desc:'Colonial era'}],'5':[{icon:'📖',title:'Literature',desc:'Theme & craft'},{icon:'÷',title:'Decimals',desc:'Add, subtract, multiply'},{icon:'✍',title:'Argumentative',desc:'Evidence & claims'},{icon:'⚗',title:'Matter',desc:'Physical & chemical'},{icon:'🌎',title:'World Cultures',desc:'Regions & traditions'}]};
 function showLearningPath(){var path=LEARNING_PATH[activeGrade]||LEARNING_PATH['K'];var ov=document.createElement('div');ov.id='lpOv';ov.style.cssText='position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#F4F1FF,#FFF0F8);overflow-y:auto;padding:20px;';var hdr=document.createElement('div');hdr.style.cssText='display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;';var ttl=document.createElement('div');ttl.style.cssText='font-family:Baloo 2,cursive;font-size:1.4rem;font-weight:800;color:#2D2D4E;';ttl.textContent='📚 '+activeGrade+' Learning Path';var cb=document.createElement('button');cb.textContent='×';cb.style.cssText='background:#8B6FE8;border:none;color:white;border-radius:50%;width:36px;height:36px;font-size:1.2rem;cursor:pointer;font-weight:800;flex-shrink:0;';cb.onclick=function(){ov.remove();};hdr.appendChild(ttl);hdr.appendChild(cb);ov.appendChild(hdr);path.forEach(function(item,i){var card=document.createElement('div');card.style.cssText='background:white;border-radius:18px;padding:18px;margin-bottom:12px;display:flex;align-items:center;gap:16px;box-shadow:0 4px 16px rgba(0,0,0,.08);';var ic=document.createElement('div');ic.style.cssText='font-size:2.2rem;flex-shrink:0;';ic.textContent=item.icon;var inf=document.createElement('div');inf.style.flex='1';var t=document.createElement('div');t.style.cssText='font-family:Baloo 2,cursive;font-weight:800;color:#2D2D4E;';t.textContent=item.title;var d=document.createElement('div');d.style.cssText='font-size:.82rem;color:#888;margin-top:2px;';d.textContent=item.desc;inf.appendChild(t);inf.appendChild(d);var b=document.createElement('div');b.style.cssText='background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:white;border-radius:20px;padding:4px 12px;font-size:.7rem;font-weight:800;white-space:nowrap;';b.textContent='Unit '+(i+1);card.appendChild(ic);card.appendChild(inf);card.appendChild(b);ov.appendChild(card);});var done=document.createElement('button');done.style.cssText='width:100%;margin-top:8px;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';done.textContent='Got it! ⭐';done.onclick=function(){ov.remove();};ov.appendChild(done);document.body.appendChild(ov);}
 
 function toggleSound(){
@@ -3961,33 +3952,33 @@ function buildGradeGames() {
     PreK: [
       // Language & Literacy
       {icon:'🌱', label:"Bloom's Reading Path", fn:"openReadingPath()",      color:'#5ECDA0'},
-      {icon:'✏️', label:'Letter Tracing',       fn:"showLetterTracing()",    color:'#A855F7'},
-      {icon:'🔤', label:'ABC Time',             fn:"openLangGame('PreK')",   color:'#EC4899'},
-      {icon:'🔊', label:'Sound Play',           fn:"openPhonicsGame('PreK')",color:'#0EA5E9'},
-      {icon:'🧠', label:'Memory Match',         fn:"openMemoryMatch()",      color:'#8B5CF6'},
+      {icon:'✏️', label:'Letter Tracing',       fn:"showLetterTracing()",    color:'#FF6B6B'},
+      {icon:'🔤', label:'ABC Time',             fn:"openLangGame('PreK')",   color:'#0369A1'},
+      {icon:'🔊', label:'Sound Play',           fn:"openPhonicsGame('PreK')",color:'#7C3AED'},
+      {icon:'🧠', label:'Memory Match',         fn:"openMemoryMatch()",      color:'#FF6B6B'},
       // Math
-      {icon:'🔢', label:'Number Tracing',       fn:"openNumberTracing()",    color:'#22c55e'},
-      {icon:'🔢', label:'Count It!',            fn:"openMathGame('PreK')",   color:'#059669'},
+      {icon:'🔢', label:'Number Tracing',       fn:"openNumberTracing()",    color:'#0369A1'},
+      {icon:'🔢', label:'Count It!',            fn:"openMathGame('PreK')",   color:'#0369A1'},
       {icon:'🎵', label:'Patterns',             fn:"openSequencer('PreK')",  color:'#7C3AED'},
       // Science & World
-      {icon:'🎨', label:'Colors Sort',          fn:"openColorsGame('PreK')", color:'#F59E0B'},
-      {icon:'🐾', label:'Animal Sort',          fn:"openScienceGame('PreK')",color:'#0EA5E9'},
+      {icon:'🎨', label:'Colors Sort',          fn:"openColorsGame('PreK')", color:'#5B2D9E'},
+      {icon:'🐾', label:'Animal Sort',          fn:"openScienceGame('PreK')",color:'#059669'},
       // Stories & Play
-      {icon:'🦕', label:'Dino Stories',         fn:"openDinoStories('PreK')",color:'#1a472a'},
-      {icon:'📚', label:'Busy Book',            fn:"openBusyBook('PreK')",   color:'#0369A1'},
+      {icon:'🦕', label:'Dino Stories',         fn:"openDinoStories('PreK')",color:'#7C3AED'},
+      {icon:'📚', label:'Busy Book',            fn:"openBusyBook('PreK')",   color:'#6B21A8'},
     ],
     K: [
       // Language & Literacy
       {icon:'🌱', label:"Bloom's Reading Path", fn:"openReadingPath()",      color:'#5ECDA0'},
-      {icon:'✏️', label:'Word Builder',         fn:"openLangGame('K')",      color:'#EC4899'},
-      {icon:'🔊', label:'Sound Play',           fn:"openPhonicsGame('K')",   color:'#0EA5E9'},
-      {icon:'🧠', label:'Memory Match',         fn:"openMemoryMatch('K')",   color:'#8B5CF6'},
+      {icon:'✏️', label:'Word Builder',         fn:"openLangGame('K')",      color:'#5B2D9E'},
+      {icon:'🔊', label:'Sound Play',           fn:"openPhonicsGame('K')",   color:'#065F46'},
+      {icon:'🧠', label:'Memory Match',         fn:"openMemoryMatch('K')",   color:'#0369A1'},
       // Math
-      {icon:'🔢', label:'Counting',             fn:"openMathGame('K')",      color:'#22c55e'},
+      {icon:'🔢', label:'Counting',             fn:"openMathGame('K')",      color:'#EC4899'},
       {icon:'🎵', label:'Patterns',             fn:"openSequencer('K')",     color:'#7C3AED'},
-      {icon:'🎨', label:'Colors & Shapes',      fn:"openColorsGame('K')",    color:'#F59E0B'},
+      {icon:'🎨', label:'Colors & Shapes',      fn:"openColorsGame('K')",    color:'#1D4ED8'},
       // Science
-      {icon:'🔬', label:'Science Sort',         fn:"openScienceGame('K')",   color:'#0EA5E9'},
+      {icon:'🔬', label:'Science Sort',         fn:"openScienceGame('K')",   color:'#059669'},
       // Stories & Play
       {icon:'🦕', label:'Dino Stories',         fn:"openDinoStories('K')",   color:'#1a472a'},
       {icon:'📚', label:'Busy Book',            fn:"openBusyBook('K')",      color:'#0369A1'},
@@ -3995,28 +3986,28 @@ function buildGradeGames() {
     1: [
       // Language & Literacy
       {icon:'🌱', label:"Bloom's Reading Path", fn:"openReadingPath()",      color:'#5ECDA0'},
-      {icon:'✏️', label:'Word Builder',         fn:"openLangGame('1')",      color:'#EC4899'},
+      {icon:'✏️', label:'Word Builder',         fn:"openLangGame('1')",      color:'#5B2D9E'},
       {icon:'🔊', label:'Sound Play',           fn:"openPhonicsGame('1')",   color:'#0EA5E9'},
-      {icon:'🧠', label:'Memory Match',         fn:"openMemoryMatch('1')",   color:'#8B5CF6'},
+      {icon:'🧠', label:'Memory Match',         fn:"openMemoryMatch('1')",   color:'#D97706'},
       // Math
-      {icon:'➕', label:'Math Practice',        fn:"openMathGame('1')",      color:'#22c55e'},
-      {icon:'🔗', label:'Number Bonds',         fn:"openNumberBonds('1')",   color:'#059669'},
-      {icon:'🛒', label:'Shop Math',            fn:"openShopMath('1')",      color:'#F59E0B'},
+      {icon:'➕', label:'Math Practice',        fn:"openMathGame('1')",      color:'#0369A1'},
+      {icon:'🔗', label:'Number Bonds',         fn:"openNumberBonds('1')",   color:'#0369A1'},
+      {icon:'🛒', label:'Shop Math',            fn:"openShopMath('1')",      color:'#059669'},
       // Science & World
       {icon:'🔬', label:'Science Sort',         fn:"openScienceGame('1')",   color:'#0EA5E9'},
-      {icon:'🌍', label:'Social Studies',       fn:"openSSGame('1')",        color:'#8B5CF6'},
+      {icon:'🌍', label:'Social Studies',       fn:"openSSGame('1')",        color:'#065F46'},
       // Stories
       {icon:'🦕', label:'Dino Stories',         fn:"openDinoStories('1')",   color:'#1a472a'},
       {icon:'📚', label:'Busy Book',            fn:"openBusyBook('1')",      color:'#0369A1'},
     ],
     2: [
       // Language & Literacy
-      {icon:'✏️', label:'Word Builder',         fn:"openLangGame('2')",      color:'#EC4899'},
-      {icon:'📖', label:'Reading Corner',       fn:"openPassageReader('2')", color:'#1D4ED8'},
+      {icon:'✏️', label:'Word Builder',         fn:"openLangGame('2')",      color:'#7C3AED'},
+      {icon:'📖', label:'Reading Corner',       fn:"openPassageReader('2')", color:'#4C1D95'},
       {icon:'🧠', label:'Memory Match',         fn:"openMemoryMatch('2')",   color:'#8B5CF6'},
       // Math
-      {icon:'➕', label:'Add & Subtract',       fn:"openMathGame('2')",      color:'#22c55e'},
-      {icon:'🛒', label:'Shop Math',            fn:"openShopMath('2')",      color:'#F59E0B'},
+      {icon:'➕', label:'Add & Subtract',       fn:"openMathGame('2')",      color:'#1D4ED8'},
+      {icon:'🛒', label:'Shop Math',            fn:"openShopMath('2')",      color:'#D97706'},
       {icon:'🎨', label:'Shapes Sort',          fn:"openColorsGame('2')",    color:'#A855F7'},
       // Science & World
       {icon:'🔬', label:'Science Sort',         fn:"openScienceGame('2')",   color:'#0EA5E9'},
@@ -4026,12 +4017,12 @@ function buildGradeGames() {
     ],
     3: [
       // Language & Literacy
-      {icon:'✏️', label:'Grammar Grab',         fn:"openLangGame('3')",      color:'#EC4899'},
-      {icon:'📖', label:'Fact Finder',          fn:"openPassageReader('3')", color:'#1D4ED8'},
+      {icon:'✏️', label:'Grammar Grab',         fn:"openLangGame('3')",      color:'#5B2D9E'},
+      {icon:'📖', label:'Fact Finder',          fn:"openPassageReader('3')", color:'#7C3AED'},
       {icon:'⚖️', label:'Fact or Opinion',      fn:"openLangGame('3')",      color:'#8B5CF6'},
       // Math
-      {icon:'✖️', label:'Multiply Mania',       fn:"openMathGame('3')",      color:'#22c55e'},
-      {icon:'🎱', label:'Math Bingo',           fn:"openMathGame('3')",      color:'#6366F1'},
+      {icon:'✖️', label:'Multiply Mania',       fn:"openMathGame('3')",      color:'#1D4ED8'},
+      {icon:'🎱', label:'Math Bingo',           fn:"openMathGame('3')",      color:'#6B21A8'},
       {icon:'🛒', label:'Shop Math',            fn:"openShopMath('3')",      color:'#D97706'},
       // Science & World
       {icon:'💧', label:'Water Cycle',          fn:"openScienceGame('3')",   color:'#0EA5E9'},
@@ -4042,16 +4033,16 @@ function buildGradeGames() {
     4: [
       // Language & Literacy
       {icon:'🌸', label:'Grammar Garden',       fn:"openLangGame('4')",      color:'#EC4899'},
-      {icon:'📖', label:'Vocabulary Vault',     fn:"openLangGame('4')",      color:'#6366F1'},
+      {icon:'📖', label:'Vocabulary Vault',     fn:"openLangGame('4')",      color:'#1D4ED8'},
       {icon:'✍️', label:'Story Relay',          fn:"openPassageReader('4')", color:'#F59E0B'},
       // Math
-      {icon:'🍕', label:'Fraction Feast',       fn:"openMathGame('4')",      color:'#22c55e'},
+      {icon:'🍕', label:'Fraction Feast',       fn:"openMathGame('4')",      color:'#0EA5E9'},
       {icon:'📐', label:'Angles Sort',          fn:"openColorsGame('4')",    color:'#8B5CF6'},
       // Science & World
       {icon:'🔬', label:'Science Sort Lab',     fn:"openScienceGame('4')",   color:'#0EA5E9'},
       {icon:'🌍', label:'Social Studies',       fn:"openSSGame('4')",        color:'#D97706'},
       // Reading
-      {icon:'📖', label:'Reading Corner',       fn:"openPassageReader('4')", color:'#1D4ED8'},
+      {icon:'📖', label:'Reading Corner',       fn:"openPassageReader('4')", color:'#4C1D95'},
     ],
     5: [
       // Language & Literacy
@@ -4068,7 +4059,7 @@ function buildGradeGames() {
       {icon:'🏆', label:'Jeopardy',             fn:"openJeopardy()",         color:'#F59E0B'},
       {icon:'🔬', label:'Research Race',        fn:"openScienceGame('5')",   color:'#0EA5E9'},
     ],
-  };;
+  };
 
   var games = GRADE_GAMES[activeGrade] || GRADE_GAMES['2'];
   // v381: cache globally for openAllGames
@@ -4176,14 +4167,20 @@ window.openAllGames = openAllGames;
 function buildSubjectCards() {
   const container = document.getElementById('subjectCards');
   var SUBJ_COLORS = {
-    'Language Arts': {bg:'linear-gradient(135deg,#5B2D9E,#7C3AED)', badge:'#E8D5FF', badgeText:'#4C1D95'},
-    'Reading':       {bg:'linear-gradient(135deg,#5B2D9E,#7C3AED)', badge:'#E8D5FF', badgeText:'#4C1D95'},
-    'Math':          {bg:'linear-gradient(135deg,#0369A1,#0EA5E9)', badge:'#DBEAFE', badgeText:'#1D4ED8'},
-    'Science':       {bg:'linear-gradient(135deg,#065F46,#5ECDA0)', badge:'#D1FAE5', badgeText:'#065F46'},
-    'Social Studies':{bg:'linear-gradient(135deg,#92400E,#F59E0B)', badge:'#FEF3C7', badgeText:'#92400E'},
-    'Art':           {bg:'linear-gradient(135deg,#9D174D,#EC4899)', badge:'#FFE4F0', badgeText:'#9D174D'},
-    'Our World':     {bg:'linear-gradient(135deg,#0369A1,#5ECDA0)', badge:'#DBEAFE', badgeText:'#1E40AF'},
-    'Create':        {bg:'linear-gradient(135deg,#9D174D,#F97316)', badge:'#FFE4F0', badgeText:'#9D174D'},
+    'Language Arts':  {bg:'linear-gradient(135deg,#5B2D9E,#7C3AED)', badge:'#E8D5FF', badgeText:'#4C1D95'},
+    'Word Wizards':   {bg:'linear-gradient(135deg,#5B2D9E,#7C3AED)', badge:'#E8D5FF', badgeText:'#4C1D95'},
+    'Reading':        {bg:'linear-gradient(135deg,#5B2D9E,#7C3AED)', badge:'#E8D5FF', badgeText:'#4C1D95'},
+    'Number Ninjas':  {bg:'linear-gradient(135deg,#0369A1,#0EA5E9)', badge:'#DBEAFE', badgeText:'#1D4ED8'},
+    'Math':           {bg:'linear-gradient(135deg,#0369A1,#0EA5E9)', badge:'#DBEAFE', badgeText:'#1D4ED8'},
+    'Wonder Lab':     {bg:'linear-gradient(135deg,#065F46,#5ECDA0)', badge:'#D1FAE5', badgeText:'#065F46'},
+    'Science':        {bg:'linear-gradient(135deg,#065F46,#5ECDA0)', badge:'#D1FAE5', badgeText:'#065F46'},
+    'World Quest':    {bg:'linear-gradient(135deg,#92400E,#F59E0B)', badge:'#FEF3C7', badgeText:'#92400E'},
+    'Social Studies': {bg:'linear-gradient(135deg,#92400E,#F59E0B)', badge:'#FEF3C7', badgeText:'#92400E'},
+    'Make It!':       {bg:'linear-gradient(135deg,#9D174D,#EC4899)', badge:'#FFE4F0', badgeText:'#9D174D'},
+    'Art':            {bg:'linear-gradient(135deg,#9D174D,#EC4899)', badge:'#FFE4F0', badgeText:'#9D174D'},
+    'Explorer Club':  {bg:'linear-gradient(135deg,#0369A1,#5ECDA0)', badge:'#DBEAFE', badgeText:'#1E40AF'},
+    'Our World':      {bg:'linear-gradient(135deg,#0369A1,#5ECDA0)', badge:'#DBEAFE', badgeText:'#1E40AF'},
+    'Create':         {bg:'linear-gradient(135deg,#9D174D,#F97316)', badge:'#FFE4F0', badgeText:'#9D174D'},
   };
   container.innerHTML = gradeContent.subjects.map(s=>{
     var sc = SUBJ_COLORS[s.title] || {bg:'linear-gradient(135deg,#5B2D9E,#7C3AED)',badge:'#E8D5FF',badgeText:'#4C1D95'};
@@ -5314,7 +5311,8 @@ function setupDrawCanvas() {
       }
 
       var fillRgb = hexToRgb(fillColor);
-      var tolerance = 25;
+      // Tighter tolerance for light areas (sky, clouds) to prevent bleed
+      var tolerance = brightness > 220 ? 12 : brightness > 150 ? 20 : 28;
 
       function colorsMatch(i) {
         return Math.abs(data[i]-targetR) < tolerance &&
@@ -7655,7 +7653,8 @@ function openMathGame(grade) {
     var r = function(min,max){ return Math.floor(Math.random()*(max-min+1))+min; };
     var sh = function(a){ return a.slice().sort(function(){return Math.random()-.5;}); };
     var EMOJIS = ['🍎','🐶','⭐','🌸','🍩','🦋','🐱','🌈','🍪','🚗','🎈','🐸'];
-    function em(n){ var e=EMOJIS[r(0,EMOJIS.length-1)]; var s=''; for(var i=0;i<n;i++)s+=e; return s; }
+    var _lastEmoji = EMOJIS[0];
+    function em(n){ _lastEmoji=EMOJIS[r(0,EMOJIS.length-1)]; var s=''; for(var i=0;i<n;i++)s+=_lastEmoji; return s; }
 
     if(gameId==='count'||gameId==='count100') {
       var max = (g==='PreK'||g==='K')?10:(g==='1')?20:30;
@@ -7663,7 +7662,7 @@ function openMathGame(grade) {
         var n=r(1,max); var wrong=[n+1,n-1<1?n+2:n-1,n+2,n+3].filter(function(x){return x>0&&x!==n;});
         qs.push({type:'visual',prompt:'How many?',visual:em(n),answer:String(n),
           choices:sh([String(n),String(wrong[0]),String(wrong[1]),String(wrong[2])].slice(0,4)),
-          hint:'Count each one carefully!',explain:'There are '+n+' '+EMOJIS[0]+'s.'});
+          hint:'Count each one carefully!',explain:'There are '+n+' '+_lastEmoji+'s.'});
       }
     }
     else if(gameId==='moreess') {
@@ -9429,6 +9428,37 @@ function openProblemSolver() {
 }
 window.openProblemSolver = openProblemSolver;
 
+
+// ══ App menu — replaces 4 header buttons ══
+window._showAppMenu = function() {
+  var existing = document.getElementById('appMenuOv');
+  if (existing) { existing.remove(); return; }
+  var ov = document.createElement('div');
+  ov.id = 'appMenuOv';
+  ov.style.cssText = 'position:fixed;top:70px;right:12px;z-index:9998;background:white;border-radius:20px;box-shadow:0 8px 32px rgba(0,0,0,.18);padding:8px;min-width:200px;border:1px solid rgba(0,0,0,.06);';
+  function menuItem(emoji, label, action, color) {
+    var btn = document.createElement('button');
+    btn.style.cssText = 'width:100%;padding:12px 16px;border:none;background:none;cursor:pointer;font-family:Nunito,sans-serif;font-weight:700;font-size:.95rem;color:'+(color||'#1A1033')+';display:flex;align-items:center;gap:10px;border-radius:14px;transition:background .15s;';
+    btn.innerHTML = '<span style="font-size:1.1rem;">'+emoji+'</span><span>'+label+'</span>';
+    btn.onmouseenter = function(){ btn.style.background='#F4F0FB'; };
+    btn.onmouseleave = function(){ btn.style.background='none'; };
+    btn.onclick = function(){ ov.remove(); action(); };
+    return btn;
+  }
+  ov.appendChild(menuItem('👋', "I'm Done!", iAmDone));
+  ov.appendChild(menuItem('📊', 'Parent Dashboard', openParentDashboard));
+  ov.appendChild(menuItem('🔄', 'Switch Child', switchChild));
+  var divider = document.createElement('div');
+  divider.style.cssText = 'height:1px;background:#F0EEFF;margin:6px 8px;';
+  ov.appendChild(divider);
+  ov.appendChild(menuItem('🚪', 'Sign Out', handleLogout, '#FF6B6B'));
+  document.body.appendChild(ov);
+  setTimeout(function(){
+    document.addEventListener('click', function dismiss(e){
+      if (!ov.contains(e.target)) { ov.remove(); document.removeEventListener('click', dismiss); }
+    });
+  }, 100);
+};
 function goHomeFromOverlay() {
   _mindfulStop();
   // Remove any open overlay
@@ -12323,8 +12353,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v417</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v417</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v420</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v420</div>
 
 </body>
 </html
