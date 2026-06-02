@@ -1363,10 +1363,10 @@ const GRADE_DATA = {
       bookshelfTitle:'📚 Story Time!', timerTopLabel:'Hold and breathe!'
     },
     subjects:[
-      { icon:'🔢', title:'Numbers Fun', desc:'Count 1 to 10 with friends!', badge:'Count with me!', color:'mint' },
-      { icon:'🔤', title:'ABC Time', desc:'Learn letters A B C D E!', badge:'ABCs!', color:'coral' },
-      { icon:'🎨', title:'Colors & Art', desc:'Paint, draw, and make things!', badge:'Create!', color:'lavender' },
-      { icon:'🐾', title:'Animals & Nature', desc:'Bugs, birds, dogs, and trees!', badge:'Explore!', color:'sun' },
+      { icon:'🔢', title:'Number Ninjas', desc:'Count 1 to 10 with friends!', badge:'Count with me!', color:'mint' },
+      { icon:'🔤', title:'Word Wizards', desc:'Learn letters A B C D E!', badge:'ABCs!', color:'coral' },
+      { icon:'🎨', title:'Make It!', desc:'Paint, draw, and make things!', badge:'Create!', color:'lavender' },
+      { icon:'🐾', title:'Wonder Lab', desc:'Bugs, birds, dogs, and trees!', badge:'Explore!', color:'sun' },
           { icon:'✏', title:'Letter Tracing', desc:'Trace every letter with your finger!', badge:'Trace!', color:'lavender' },
 
       { icon:'🔢', title:'Number Tracing', desc:'Trace numbers 0 to 9!', badge:'Trace!', color:'mint' },    ],
@@ -1681,8 +1681,8 @@ const GRADE_DATA = {
       bookshelfTitle:'📚 My Books!', timerTopLabel:'Hold this move!'
     },
     subjects:[
-      { icon:'🔢', title:'Counting', desc:'Count bears, apples, and toys!', badge:'Let\'s count!', color:'mint' },
-      { icon:'🔤', title:'Letters', desc:'Learn the ABCs and letter sounds!', badge:'ABC time!', color:'coral' },
+      { icon:'🔢', title:'Number Ninjas', desc:'Count bears, apples, and toys!', badge:'Let\'s count!', color:'mint' },
+      { icon:'🔤', title:'Word Wizards', desc:'Learn the ABCs and letter sounds!', badge:'ABC time!', color:'coral' },
       { icon:'🎨', title:'Colors & Shapes', desc:'Circles, squares, and all the colors!', badge:'So colorful!', color:'lavender' },
       { icon:'🌤', title:'My World', desc:'Weather, animals, and nature!', badge:'Explore!', color:'sun' },
           { icon:'✏', title:'Letter Tracing', desc:'Trace every letter A to Z!', badge:'Trace!', color:'coral' },
@@ -2227,7 +2227,7 @@ const GRADE_DATA = {
       bookshelfTitle:'📚 My Bookshelf', timerTopLabel:'Current Pose'
     },
     subjects:[
-      { icon:'🔢', title:'Mathematics', desc:'Multiplication, division, and fractions!', badge:'3 lessons left', color:'mint' },
+      { icon:'🔢', title:'Number Ninjas', desc:'Multiplication, division, and fractions!', badge:'3 lessons left', color:'mint' },
       { icon:'🔬', title:'Wonder Lab', desc:'States of matter, ecosystems, and experiments!', badge:'✅ Completed!', color:'coral' },
       { icon:'✍', title:'Word Wizards', desc:'Paragraphs, punctuation, and vocabulary!', badge:'2 exercises left', color:'lavender' },
       { icon:'🌍', title:'World Quest', desc:'U.S. regions, maps, and communities!', badge:'New lesson!', color:'sun' },
@@ -2382,7 +2382,7 @@ const GRADE_DATA = {
       bookshelfTitle:'📚 My Bookshelf', timerTopLabel:'Current Pose'
     },
     subjects:[
-      { icon:'🔢', title:'Mathematics', desc:'Multi-digit multiplication, fractions, and decimals!', badge:'3 lessons left', color:'mint' },
+      { icon:'🔢', title:'Number Ninjas', desc:'Multi-digit multiplication, fractions, and decimals!', badge:'3 lessons left', color:'mint' },
       { icon:'🔬', title:'Wonder Lab', desc:'Energy, ecosystems, and the scientific method!', badge:'2 lessons left', color:'coral' },
       { icon:'✍', title:'Word Wizards', desc:'Essay writing, figurative language, and grammar!', badge:'1 assignment', color:'lavender' },
       { icon:'🌍', title:'World Quest', desc:'U.S. history, regions, and government basics!', badge:'New topic!', color:'sun' },
@@ -2525,7 +2525,7 @@ const GRADE_DATA = {
       bookshelfTitle:'📚 My Bookshelf', timerTopLabel:'Current Pose Duration'
     },
     subjects:[
-      { icon:'🔢', title:'Mathematics', desc:'Fractions, decimals, percentages, and geometry!', badge:'3 lessons left', color:'mint' },
+      { icon:'🔢', title:'Number Ninjas', desc:'Fractions, decimals, percentages, and geometry!', badge:'3 lessons left', color:'mint' },
       { icon:'🔬', title:'Wonder Lab', desc:'Earth systems, matter, and the scientific method!', badge:'✅ Completed!', color:'coral' },
       { icon:'✍', title:'Word Wizards', desc:'Research writing, literary analysis, and debate!', badge:'2 exercises left', color:'lavender' },
       { icon:'🌍', title:'World Quest', desc:'U.S. history, economics, and civics!', badge:'New lesson!', color:'sun' },
@@ -4185,7 +4185,7 @@ function buildSubjectCards() {
     'Create':         {bg:'linear-gradient(135deg,#9D174D,#F97316)', badge:'#FFE4F0', badgeText:'#9D174D'},
   };
   if (!container || !gradeContent || !gradeContent.subjects) return;
-  container.style.display = 'grid';
+  container.style.display = 'none'; return; // v422: subject cards hidden, use 4-tile row instead
   container.innerHTML = gradeContent.subjects.map(s=>{
     var sc = SUBJ_COLORS[s.title] || {bg:'linear-gradient(135deg,#5B2D9E,#7C3AED)',badge:'#E8D5FF',badgeText:'#4C1D95'};
     var iconHtml = '<div style="margin-bottom:10px;">' + getCardTile(s.title, s.icon, 52) + '</div>';
@@ -4239,8 +4239,8 @@ function buildProgressSection() {
   var earnedBadges = BDGS.filter(function(b){return b.earned;});
 
   // ── Subject leaves ──
-  var subjects = ['Reading','Math','Science','Art'];
-  var subjIcons = ['📚','🔢','🔬','🎨'];
+  var subjects = ['Word Wizards','Number Ninjas','Wonder Lab','Make It!'];
+  var subjIcons = ['📖','🥷','🔬','🎨'];
   var leavesTotal = Math.min(40, Math.floor(stars / 3));
 
   // ── Plant image ──
@@ -4266,7 +4266,7 @@ function buildProgressSection() {
   // Name + level
   html += '<div style="flex:1;">';
   html += '<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1.05rem;'
-  html += '<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1.05rem;color:white;line-height:1.1;">' + name + '&#39;s Garden</div>';
+  html += '<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1.1rem;color:white;line-height:1.2;">' + name + '&#39;s Progress 🌱</div>';
   html += '<div style="font-size:.72rem;font-weight:700;color:#C9B8FF;margin-top:2px;">'
     + 'Level ' + currentLvl.level + ' · ' + currentLvl.name + '</div>';
   // Star count pill
@@ -4340,8 +4340,9 @@ function buildProgressSection() {
     html += '<div style="display:flex;gap:4px;">';
     for (var l = 0; l < 5; l++) {
       var on = l < myLeaves;
-      html += '<span style="font-size:1.05rem;opacity:' + (on ? '1' : '0.2') + ';'
-        + 'transition:opacity .3s;filter:' + (on ? 'none' : 'grayscale(1)') + ';">🍃</span>';
+      html += '<span style="display:inline-block;width:18px;height:18px;border-radius:0 50% 0 50%;'
+        + 'background:' + (on ? '#22c55e' : '#D1D5DB') + ';'
+        + 'margin-right:3px;transform:rotate(-45deg);transition:background .3s;"></span>';
     }
     html += '</div></div>';
     // Mini progress bar
@@ -11901,7 +11902,7 @@ function openPassageReader(grade) {
         +'<div style="background:#DBEAFE;border-radius:12px;padding:10px 16px;margin-bottom:20px;font-size:.82rem;color:#1D4ED8;font-weight:700;">Theme: '+story.theme+'</div>'
         +'<div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">'
         +'<button onclick="showLibrary()" style="padding:14px 22px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;">More Stories 📚</button>'
-        +'<button onclick="var o=document.getElementById(\'passageOv\');if(o)o.remove();" style="padding:10px 18px;border-radius:40px;border:none;background:rgba(255,255,255,.2);color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;font-size:1.1rem;">✕</button>'
+        +'<button onclick="var o=document.getElementById(\'passageOv\');if(o)o.remove();" style="margin-top:10px;padding:12px 28px;border-radius:40px;border:none;background:rgba(255,255,255,.2);color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;font-size:.9rem;">← Back to Games</button>'
         +'</div>';
       ov.appendChild(body);
       if(score>0){ logGameComplete(score*20, 1); toast('+'+score*20+' Stars! ⭐ Great reading!'); }
@@ -12366,8 +12367,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v422</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v422</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v423</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v423</div>
 
 </body>
 </html
