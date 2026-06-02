@@ -1088,7 +1088,6 @@ input::placeholder { color:#aaa !important; }
     <!-- UNIFIED Play & Learn section -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin:8px 0 10px;padding:0 4px;">
       <h2 style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:#3B1578;margin:0;">🌟 Play &amp; Learn</h2>
-      <span onclick="openAllGames()" style="font-size:.75rem;font-weight:800;color:#5B2D9E;cursor:pointer;padding:5px 12px;border-radius:20px;background:rgba(91,45,158,.1);border:1.5px solid rgba(91,45,158,.25);">See all →</span>
     </div>
 
     <div class="section-title" id="subjectsTitle" style="display:none;">📖 Today's Subjects</div>
@@ -3801,7 +3800,7 @@ async function selectChild(child) {
   setTimeout(function() { if (typeof switchTab === 'function') switchTab('academics'); }, 300);
   // v384: restore Bloomy's saved accessory for this child
   setTimeout(function() { if (typeof _applyAccessory === 'function' && typeof _wardrobeGet === 'function') _applyAccessory(_wardrobeGet()); }, 500);
-  setTimeout(showIntroVideo, 500);
+  setTimeout(showIntroVideo, 100);
   applyGradeUI();
   buildSubjectCards();
   setTimeout(function(){ buildProgressSection(); updateMissionUI(); }, 200);
@@ -4094,7 +4093,7 @@ function buildGradeGames() {
     var lightBg = (g.color.toUpperCase() === '#FFD166' || g.color.toUpperCase() === '#C9B8FF' || g.color.toUpperCase() === '#FBBF24');
     var textColor = lightBg ? '#2D1B3D' : 'white';
     var subOpacity = lightBg ? '.7' : '.85';
-    var missionFn = 'if(typeof completeMissionStep==="function")completeMissionStep("learn");' + g.fn;
+    var missionFn = "if(typeof completeMissionStep==='function')completeMissionStep('learn');" + g.fn;
     return '<div onclick="'+missionFn+'" style="background:'+g.color+';border-radius:20px;padding:16px 12px 14px;text-align:center;cursor:pointer;'
       +'box-shadow:0 6px 0 '+deeper+',inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);'
       +'position:relative;overflow:hidden;font-family:Nunito,sans-serif;color:'+textColor+';">'
@@ -4685,7 +4684,10 @@ function updateTimerDisplay() {
 function selectPose(el,name,secs) {
   document.querySelectorAll('.pose-card').forEach(p=>p.classList.remove('active-pose'));
   el.classList.add('active-pose');
-  timerSecs=secs; currentPoseName=name; updateTimerDisplay();
+  // Grade-appropriate hold times: 30s PreK-2, 60s grades 3-5
+  var isYoungGrade = ['PreK','K','1','2'].indexOf(String(activeGrade)) >= 0;
+  var holdSecs = isYoungGrade ? 30 : 60;
+  timerSecs = holdSecs; currentPoseName=name; updateTimerDisplay();
   document.getElementById('timerPose').textContent='🧘 '+name;
   const isYoung = activeGrade==='PreK'||activeGrade==='K'||activeGrade==='1';
   document.getElementById('timerBtn').textContent = isYoung ? '▶ Go!' : '▶ Start';
@@ -9167,13 +9169,38 @@ function openKindnessCorner(){
   var ov=document.createElement('div');ov.id='kindnessOv';
   ov.style.cssText='position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#FFF0F8,#FFF8E8);display:flex;flex-direction:column;overflow-y:auto;';
   document.body.appendChild(ov);
-  var scenarios=[
-    {emoji:'😢',scene:'Your friend falls down and is crying.',q:'What do you do?',opts:['Laugh at them','Help them up and ask if they are okay','Walk away','Run faster'],a:1,praise:'Helping a friend who is hurt is SO kind! 💛'},
+  var grade = String(activeGrade || 'K');
+  var isYoung = ['PreK','K','1'].indexOf(grade) >= 0;
+  var isMid = ['2','3'].indexOf(grade) >= 0;
+  var isOlder = ['4','5'].indexOf(grade) >= 0;
+
+  var youngScenarios = [
+    {emoji:'😢',scene:'Your friend falls down and is crying.',q:'What do you do?',opts:['Laugh at them','Help them up and ask if they\'re okay','Walk away','Run faster'],a:1,praise:'Helping a hurt friend is SO kind! 💛'},
     {emoji:'🎒',scene:'A new kid at school has no one to sit with at lunch.',q:'What would a kind person do?',opts:['Ignore them','Tell them to find another seat','Invite them to sit with you','Take their lunch'],a:2,praise:'Inviting someone to sit with you is one of the kindest things! 🌟'},
-    {emoji:'🖍️',scene:'You only have one red crayon and your friend wants red too.',q:'What is the kind thing to do?',opts:['Hide the crayon','Share and take turns','Say no','Use all the red yourself'],a:1,praise:'Sharing is caring! You are a wonderful friend! 💕'},
-    {emoji:'😤',scene:'You feel really angry because someone took your toy.',q:'What is the best thing to do with angry feelings?',opts:['Hit someone','Scream and cry','Take a deep breath and use your words','Break something'],a:2,praise:'Taking a deep breath and using your words is so brave! 🌈'},
-    {emoji:'🌧️',scene:'Your friend is sad because it is raining.',q:'What could you say to help them feel better?',opts:['Too bad!','We can play inside together!','Stop being sad.','I am glad!'],a:1,praise:'Saying kind words to cheer someone up is a superpower! ⭐'},
+    {emoji:'🖍️',scene:'You only have one red crayon and your friend wants it too.',q:'What is the kind thing to do?',opts:['Hide the crayon','Share and take turns','Say no','Use all of it yourself'],a:1,praise:'Sharing is caring! You are a wonderful friend! 💕'},
+    {emoji:'😤',scene:'You feel really angry because someone took your toy.',q:'What is the best thing to do?',opts:['Hit someone','Scream','Take a deep breath and use your words','Break something'],a:2,praise:'Taking a deep breath and using your words is so brave! 🌈'},
+    {emoji:'🌧️',scene:'Your friend is sad because it is raining and they cannot play outside.',q:'What could you say?',opts:['Too bad!','We can play inside together!','Stop being sad.','Walk away'],a:1,praise:'Saying kind words is a superpower! ⭐'},
+    {emoji:'🐛',scene:'Some kids are making fun of a bug a classmate found.',q:'What does a kind friend do?',opts:['Join in laughing','Walk away','Stand up for your classmate and say "That\'s mean!"','Ignore it'],a:2,praise:'Standing up for others takes real courage! You are a hero! 🦸'},
+    {emoji:'🍎',scene:'You have a snack and your friend forgot theirs.',q:'What is the caring thing to do?',opts:['Eat all of it','Offer to share half','Hide it','Trade for something better'],a:1,praise:'Sharing your snack shows a big, generous heart! 🍎💛'},
   ];
+
+  var midScenarios = [
+    {emoji:'🏫',scene:'A classmate is being left out of a group project.',q:'What is the right thing to do?',opts:['Ignore it','Tell the teacher to fix it','Invite them to join your group','Ask them to leave'],a:2,praise:'Including others makes your whole group stronger! 🌟'},
+    {emoji:'📱',scene:'You see a hurtful post about a classmate online.',q:'What should you do?',opts:['Share it','Ignore it','Tell a trusted adult and support your classmate','Add a mean comment'],a:2,praise:'Getting a trusted adult involved is exactly right. You are a true friend! 💛'},
+    {emoji:'🤝',scene:'Your friend made a mistake on a group project and feels embarrassed.',q:'What does a supportive teammate say?',opts:['"You always mess things up"','Nothing — just ignore it','"Mistakes happen, let\'s fix it together!"','"I\'ll do it all myself"'],a:2,praise:'Encouraging teammates when they make mistakes builds great friendships! 🌈'},
+    {emoji:'🎮',scene:'You won a game and your friend is upset about losing.',q:'What is gracious winning?',opts:['Rub it in their face','Say "I\'m the best!"','Say "Good game! You played well"','Walk away without speaking'],a:2,praise:'Being gracious in winning is a sign of true sportsmanship! ⭐'},
+    {emoji:'🌍',scene:'A classmate from another country does not speak English well yet.',q:'How can you show kindness?',opts:['Laugh at their accent','Ignore them','Speak slowly, use gestures, and smile to help them feel welcome','Tell them to learn English faster'],a:2,praise:'Welcoming someone from a different background makes our world better! 🌍💛'},
+  ];
+
+  var olderScenarios = [
+    {emoji:'🌐',scene:'You notice that someone at school is being cyberbullied.',q:'What is the responsible thing to do?',opts:['Watch and do nothing','Join in','Report it to an adult and support the person being bullied','Send it to others'],a:2,praise:'Taking action against bullying takes real moral courage. Well done! 🌟'},
+    {emoji:'♻️',scene:'You notice your friends throwing trash on the ground at the park.',q:'What do you do?',opts:['Join them — everyone does it','Say nothing and walk away','Speak up and say "Let\'s find a trash can — it matters for the environment"','Tell on them immediately'],a:2,praise:'Speaking up for the environment is an act of kindness to the whole planet! 🌍'},
+    {emoji:'🤔',scene:'A classmate shares an opinion you strongly disagree with.',q:'What does respectful disagreement look like?',opts:['"You\'re wrong and stupid"','Storm off','Listen, then calmly share your own view with evidence','Agree with everything to avoid conflict'],a:2,praise:'Disagreeing respectfully while listening shows real emotional maturity! 💛'},
+    {emoji:'🏃',scene:'Your friend is excluded from a sports team because of their skill level.',q:'What is the empathetic response?',opts:['Agree they are not good enough','Laugh','Speak up for inclusion or practice with them to help improve','Say nothing'],a:2,praise:'Advocating for others and helping them improve is incredible character! ⭐'},
+    {emoji:'💬',scene:'You overhear a rumor being spread about someone that is not true.',q:'What is the ethical thing to do?',opts:['Spread it further','Ignore it','Correct the rumor and refuse to spread it','Find out if it\'s true first before deciding'],a:2,praise:'Stopping false rumors protects people and shows strong integrity! 🌈'},
+  ];
+
+  var scenarios = isYoung ? youngScenarios : isMid ? midScenarios : olderScenarios;
   var idx=0,score=0;
   function render(){
     ov.innerHTML='';
@@ -9835,9 +9862,10 @@ function v3OpenMindful(which) {
   // After switching, scroll to the relevant subsection
   setTimeout(function() {
     if (which === 'yoga') {
-      // Scrolls to top of yoga panel — music + poses both visible from there
-      var panel = document.getElementById('panel-yoga');
-      if (panel) panel.scrollIntoView({behavior:'smooth', block:'start'});
+      // Scroll to pose timer section directly, skipping music player header
+      var poseSection = document.querySelector('#panel-yoga .yoga-grid') || document.getElementById('timerBox');
+      if (poseSection) poseSection.scrollIntoView({behavior:'smooth', block:'start'});
+      else { var panel = document.getElementById('panel-yoga'); if (panel) panel.scrollIntoView({behavior:'smooth', block:'start'}); }
     } else if (which === 'breathing') {
       var breath = document.querySelector('.breathing-area');
       if (breath) breath.scrollIntoView({behavior:'smooth', block:'center'});
@@ -12393,8 +12421,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v424</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v424</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v425</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v425</div>
 
 </body>
 </html
