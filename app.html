@@ -972,16 +972,7 @@ input::placeholder { color:#aaa !important; }
     </div>
   </div>
 
-  <!-- v377 PLAY TODAY CARD: ▶️ in circle on left, text on right -->
-  <button id="v3PlayBtn" onclick="v3StartTodaysActivity()" style="width:100%;background:linear-gradient(135deg,#FF6B6B,#FF8E53);border:none;border-radius:24px;padding:16px 18px;color:white;cursor:pointer;box-shadow:0 7px 0 #C73E3E,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);margin-bottom:18px;text-align:left;position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;font-family:'Nunito',sans-serif;">
-    <div style="position:absolute;top:0;left:0;right:0;height:50%;background:linear-gradient(180deg,rgba(255,255,255,.30),rgba(255,255,255,0));border-radius:24px 24px 50% 50%;pointer-events:none;"></div>
-    <div style="width:54px;height:54px;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;box-shadow:inset 0 -3px 0 rgba(0,0,0,.08),0 2px 0 rgba(0,0,0,.1);position:relative;z-index:1;">▶️</div>
-    <div style="flex:1;position:relative;z-index:1;">
-      <div style="font-family:'Baloo 2',cursive;font-size:1.35rem;font-weight:800;line-height:1.1;">Play Today!</div>
-      <div id="v3PlaySub" style="font-size:.78rem;font-weight:700;opacity:.92;margin-top:2px;">Bloom picked a game for you ⭐</div>
-    </div>
-  </button>
-
+  <!-- Play Today removed - Today's Mission handles this -->
   <!-- Top tabs restored v380 — Art/Move/Read must be accessible -->
   <!-- Tab bar hidden v381 — all sections accessible via home tiles -->
   <div class="tabs" style="display:none;">
@@ -1107,28 +1098,7 @@ input::placeholder { color:#aaa !important; }
     <!-- Subjects row -->
 <!-- Subjects row (inline with games, no separate header) -->
     <div style="display:none;"><!-- subjects header removed --></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:18px;">
-      <div onclick="v3OpenReadingSubject()" style="background:#5B2D9E;border-radius:20px;padding:16px 8px 12px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #2FA29A,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
-        <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
-        <div style="width:42px;height:42px;margin:0 auto 6px;border-radius:13px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">📖</div>
-        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.78rem;position:relative;z-index:1;">Word Wizards</div>
-      </div>
-      <div onclick="v3OpenMathSubject()" style="background:#FF9F43;border-radius:20px;padding:16px 8px 12px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #D17715,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
-        <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
-        <div style="width:42px;height:42px;margin:0 auto 6px;border-radius:13px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">🔢</div>
-        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.78rem;position:relative;z-index:1;">Number Ninjas</div>
-      </div>
-      <div onclick="v3OpenSocialStudies()" style="background:#8B5CF6;border-radius:20px;padding:16px 8px 12px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #6B3DCF,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
-        <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
-        <div style="width:42px;height:42px;margin:0 auto 6px;border-radius:13px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">🌍</div>
-        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.78rem;position:relative;z-index:1;">World Quest</div>
-      </div>
-      <div onclick="switchTab('art')" style="background:#FF6B6B;border-radius:20px;padding:16px 8px 12px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #E04848,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
-        <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
-        <div style="width:42px;height:42px;margin:0 auto 6px;border-radius:13px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">🎨</div>
-        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.78rem;position:relative;z-index:1;">Make It!</div>
-      </div>
-    </div>
+  <!-- 4-tile subject shortcuts removed - game grid handles this -->
 
     </div>
 <!-- _OLD MARKERS_ kept hidden for selector compatibility -->
@@ -1530,7 +1500,7 @@ const GRADE_DATA = {
       {q:'When does the sun shine?',pic:'☀️',opts:['At night','During the day','Never','Underground'],answer:1,subject:'Nature'},
       {q:'What falls from clouds?',pic:'🌧️',opts:['Stars','Rain','Birds','Leaves'],answer:1,subject:'Nature'},
       {q:'Which season has the most snow?',pic:'❄️',opts:['Summer','Spring','Fall','Winter'],answer:3,subject:'Nature'},
-      {q:'What do plants need to grow?',pic:'🌱',opts:['Candy','Water and sun','Toys','Music'],answer:1,subject:'Nature'},
+      {learn:'Plants need 4 things to grow: sunlight ☀️, water 💧, soil 🌱, and air! They make their own food using sunlight.', q:'What do plants need to grow?',pic:'🌱',opts:['Candy','Water and sun','Toys','Music'],answer:1,subject:'Nature'},
       {q:'Which season do flowers bloom?',pic:'🌸',opts:['Winter','Fall','Spring','Night'],answer:2,subject:'Nature'},
       {q:'What comes after rain?',pic:'🌈',opts:['Snow','Rainbow','Lightning','Tornado'],answer:1,subject:'Nature'},
       {q:'What is the hottest season?',pic:'🌞',opts:['Winter','Spring','Fall','Summer'],answer:3,subject:'Nature'},
@@ -1539,7 +1509,7 @@ const GRADE_DATA = {
       {q:'What causes thunder?',pic:'⛈️',opts:['Rain','Lightning','Wind','Clouds'],answer:1,subject:'Nature'},
       {q:'What color are leaves in fall?',pic:'🍂',opts:['Blue and purple','Red orange and yellow','Pink and white','Green and black'],answer:1,subject:'Nature'},
       {q:'What do seeds need to sprout?',pic:'🌱',opts:['Sunlight only','Water and warmth','Cold and darkness','Wind and rain'],answer:1,subject:'Nature'},
-      {q:'What is the water cycle?',pic:'💧',opts:['Water in rivers only','Water evaporating and falling as rain','Water freezing only','Drinking water'],answer:1,subject:'Nature'},
+      {learn:'Water evaporates from oceans, forms clouds, then falls as rain or snow! This cycle repeats forever. 💧☁️🌧️', q:'What is the water cycle?',pic:'💧',opts:['Water in rivers only','Water evaporating and falling as rain','Water freezing only','Drinking water'],answer:1,subject:'Nature'},
       {q:'What is a desert?',pic:'🏜️',opts:['A very wet place','A very dry place with little rain','A cold place','A forest'],answer:1,subject:'Nature'},
       {q:'What is the sky made of?',pic:'🌤️',opts:['Water','Air','Clouds only','Nothing'],answer:1,subject:'Nature'},
       {q:'Which season comes after winter?',pic:'🌸',opts:['Summer','Fall','Spring','Winter'],answer:2,subject:'Nature'},
@@ -1563,7 +1533,7 @@ const GRADE_DATA = {
       {q:'What does a thermometer measure?',pic:'🌡️',opts:['Wind','Rain','Temperature','Pressure'],answer:2,subject:'Science'},
       {q:'What is the job of the heart?',pic:'❤️',opts:['Help us think','Pump blood through the body','Help us breathe','Help us see'],answer:1,subject:'Science'},
       {q:'What is a magnet?',pic:'🧲',opts:['A type of battery','An object that attracts iron and steel','A type of light','A kind of motor'],answer:1,subject:'Science'},
-      {q:'What is the sun?',pic:'☀️',opts:['A planet','A moon','A star','An asteroid'],answer:2,subject:'Science'},
+      {learn:'The sun is a giant star made of hot gas! It is 93 million miles away but its light reaches us in 8 minutes. ⭐', q:'What is the sun?',pic:'☀️',opts:['A planet','A moon','A star','An asteroid'],answer:2,subject:'Science'},
       {q:'What is a shadow?',pic:'🌑',opts:['A reflection in water','Darkness formed when light is blocked','A type of cloud','Light bouncing off a mirror'],answer:1,subject:'Science'},
       {q:'What do plants give off that we breathe?',pic:'🌿',opts:['Carbon dioxide','Nitrogen','Oxygen','Hydrogen'],answer:2,subject:'Science'},
       {q:'What is gravity?',pic:'🍎',opts:['A type of magnet','A force that pulls objects toward Earth','A type of energy','A kind of weather'],answer:1,subject:'Science'},
@@ -1575,13 +1545,13 @@ const GRADE_DATA = {
       {q:'What is matter?',pic:'🔬',opts:['Anything you can see','Anything that has mass and takes up space','Only solid things','Only liquids'],answer:1,subject:'Science'},
       {q:'What kind of animal is a whale?',pic:'🐋',opts:['Fish','Reptile','Mammal','Amphibian'],answer:2,subject:'Science'},
       {q:'What is a food chain?',pic:'🌱',opts:['A grocery store','The order of who eats whom in nature','A type of plant','A kind of fish'],answer:1,subject:'Science'},
-      {q:'What is the water cycle?',pic:'💧',opts:['Water in rivers only','Continuous water movement through evaporation and rain','Water freezing only','Drinking water systems'],answer:1,subject:'Science'},
+      {learn:'Water evaporates from oceans, forms clouds, then falls as rain or snow! This cycle repeats forever. 💧☁️🌧️', q:'What is the water cycle?',pic:'💧',opts:['Water in rivers only','Continuous water movement through evaporation and rain','Water freezing only','Drinking water systems'],answer:1,subject:'Science'},
       {q:'What do earthworms do for soil?',pic:'🪱',opts:['Nothing helpful','Break down organic matter making soil richer','Eat plant roots','Take away nutrients'],answer:1,subject:'Science'},
       {q:'What is a fossil?',pic:'🦕',opts:['A very old rock','Preserved remains of ancient organisms','A type of mineral','A volcanic rock'],answer:1,subject:'Science'},
       {q:'What is the purpose of a flower?',pic:'🌸',opts:['To look pretty','To make food','To attract pollinators and produce seeds','To absorb water'],answer:2,subject:'Science'},
       {q:'Which is a renewable resource?',pic:'☀️',opts:['Coal','Oil','Natural gas','Sunlight'],answer:3,subject:'Science'},
       {q:'What is the job of the stem in a plant?',pic:'🌱',opts:['Make food','Absorb water','Carry water and nutrients to leaves','Make seeds'],answer:2,subject:'Science'},
-      {q:'What is a habitat?',pic:'🐾',opts:['A type of food','The natural home of an animal','A kind of plant','A weather pattern'],answer:1,subject:'Science'},
+      {learn:'A habitat is the natural home of an animal or plant — like how fish live in water and birds live in trees! 🌿', q:'What is a habitat?',pic:'🐾',opts:['A type of food','The natural home of an animal','A kind of plant','A weather pattern'],answer:1,subject:'Science'},
       {q:'What is the difference between living and non-living?',pic:'🌿',opts:['Living things eat only','Living things grow and respond - non-living do not','Non-living things move too','There is no difference'],answer:1,subject:'Science'},
       {q:'What is the purpose of leaves on a plant?',pic:'🍃',opts:['Absorb water','Make food using sunlight','Hold the plant up','Make seeds'],answer:1,subject:'Science'},
       {q:'What is air pollution?',pic:'🏭',opts:['Clean fresh air','Harmful substances in the air','Wind and rain','A type of weather'],answer:1,subject:'Science'},
@@ -1851,7 +1821,7 @@ const GRADE_DATA = {
       {q:'What is a rainbow?',pic:'🌈',opts:['A type of cloud','Light bent by water droplets creating colors','A type of storm','Colored lights in the sky'],answer:1,subject:'My World'},
       {q:'What is the sun made of?',pic:'☀️',opts:['Rock','Ice','Burning gas','Water'],answer:2,subject:'My World'},
       {q:'What gives plants their green color?',pic:'🌿',opts:['Water','Soil','Chlorophyll','Sunlight'],answer:2,subject:'Science'},
-      {q:'What is the sun?',pic:'☀️',opts:['A planet','A moon','A star','An asteroid'],answer:2,subject:'Science'},
+      {learn:'The sun is a giant star made of hot gas! It is 93 million miles away but its light reaches us in 8 minutes. ⭐', q:'What is the sun?',pic:'☀️',opts:['A planet','A moon','A star','An asteroid'],answer:2,subject:'Science'},
       {q:'What do animals need to survive?',pic:'🐾',opts:['Toys and games','Food water and shelter','TV and music','Books and pencils'],answer:1,subject:'Science'},
       {q:'What is a magnet?',pic:'🧲',opts:['A type of battery','An object that attracts iron and steel','A type of light','A kind of motor'],answer:1,subject:'Science'},
       {q:'What does a thermometer measure?',pic:'🌡️',opts:['Wind','Rain','Temperature','Pressure'],answer:2,subject:'Science'},
@@ -1874,7 +1844,7 @@ const GRADE_DATA = {
       {q:'Which is a renewable resource?',pic:'☀️',opts:['Coal','Oil','Natural gas','Sunlight'],answer:3,subject:'Science'},
       {q:'What is recycling?',pic:'♻️',opts:['Throwing everything away','Turning old materials into new ones','Buying more things','Using things once'],answer:1,subject:'Science'},
       {q:'What is the job of the stem in a plant?',pic:'🌱',opts:['Make food','Absorb water','Carry water and nutrients to leaves','Make seeds'],answer:2,subject:'Science'},
-      {q:'What is a habitat?',pic:'🐾',opts:['A type of food','The natural home of an animal','A kind of plant','A weather pattern'],answer:1,subject:'Science'},
+      {learn:'A habitat is the natural home of an animal or plant — like how fish live in water and birds live in trees! 🌿', q:'What is a habitat?',pic:'🐾',opts:['A type of food','The natural home of an animal','A kind of plant','A weather pattern'],answer:1,subject:'Science'},
       {q:'What is air pollution?',pic:'🏭',opts:['Clean fresh air','Harmful substances in the air','Wind and rain','A type of weather'],answer:1,subject:'Science'},
       {q:'What do plants absorb through their roots?',pic:'🌱',opts:['Air','Water and nutrients from soil','Sunlight','Carbon dioxide'],answer:1,subject:'Science'},
       {q:'What is a producer in a food chain?',pic:'🌱',opts:['An animal that hunts','A plant that makes its own food','A decomposer','An omnivore'],answer:1,subject:'Science'},
@@ -2126,7 +2096,7 @@ const GRADE_DATA = {
       {q:'What is a blizzard?',opts:['A heavy rainstorm','A violent snowstorm with strong winds','A type of hurricane','An ice storm'],answer:1,subject:'Science'},
       {q:'What is a flood?',opts:['Too little water','An overflow of water covering normally dry land','A type of drought','A cold snap'],answer:1,subject:'Science'},
       {q:'What is a liquid?',opts:['Has definite shape','Has definite volume but no definite shape','Has no definite shape or volume','Always flows upward'],answer:1,subject:'Science'},
-      {q:'What is the water cycle?',opts:['Water in rivers only','Continuous movement of water through evaporation condensation and precipitation','Water freezing only','Drinking water systems'],answer:1,subject:'Science'},
+      {learn:'Water evaporates from oceans, forms clouds, then falls as rain or snow! This cycle repeats forever. 💧☁️🌧️', q:'What is the water cycle?',opts:['Water in rivers only','Continuous movement of water through evaporation condensation and precipitation','Water freezing only','Drinking water systems'],answer:1,subject:'Science'},
       {q:'What is recycling?',opts:['Throwing everything away','Turning old materials into new ones','Buying more things','Using things once'],answer:1,subject:'Science'},
       {q:'What is erosion?',opts:['New rock forming','Wearing away of rock or soil by wind water or ice','Volcanoes erupting','Earthquakes happening'],answer:1,subject:'Science'},
       {q:'What is a prefix?',opts:['A word ending','Letters added to the beginning of a word','A root word','A type of noun'],answer:1,subject:'Language Arts'},
@@ -2282,7 +2252,7 @@ const GRADE_DATA = {
       {q:'What is condensation?',opts:['Water turning to steam','Water vapor turning to liquid water','Ice melting','Rain falling'],answer:1,subject:'Science'},
       {q:'What are igneous rocks?',opts:['Rocks formed from layers','Rocks formed from cooled lava or magma','Rocks changed by heat and pressure','Rocks from fossils'],answer:1,subject:'Science'},
       {q:'What is a drought?',opts:['Too much rain','A long period of very little rainfall','A type of storm','A cold spell'],answer:1,subject:'Science'},
-      {q:'What is the water cycle?',opts:['Water in rivers only','Continuous movement of water through evaporation condensation and precipitation','Water freezing only','Drinking water systems'],answer:1,subject:'Science'},
+      {learn:'Water evaporates from oceans, forms clouds, then falls as rain or snow! This cycle repeats forever. 💧☁️🌧️', q:'What is the water cycle?',opts:['Water in rivers only','Continuous movement of water through evaporation condensation and precipitation','Water freezing only','Drinking water systems'],answer:1,subject:'Science'},
       {q:'What is alliteration?',opts:['Rhyming words','Repetition of the same beginning consonant sound','A type of metaphor','Exaggeration'],answer:1,subject:'Language Arts'},
       {q:'What is onomatopoeia?',opts:['A type of noun','Words that imitate sounds like buzz or crash','A type of metaphor','A rhyming scheme'],answer:1,subject:'Language Arts'},
       {q:'What is the theme of a story?',opts:['The main character','Where the story takes place','The central message or lesson','The problem'],answer:2,subject:'Language Arts'},
@@ -2418,7 +2388,7 @@ const GRADE_DATA = {
       {q:'What is 2500 / 5?',opts:['450','475','500','525'],answer:2,subject:'Math'},
       {q:'What is 1/2 + 1/4?',opts:['1/2','2/4','3/4','1'],answer:2,subject:'Math'},
       {q:'What is 8 squared?',opts:['54','58','64','68'],answer:2,subject:'Math'},
-      {q:'What is photosynthesis?',opts:['Animals eating plants','Process where plants use sunlight water and CO2 to make food','How plants reproduce','How plants absorb nutrients'],answer:1,subject:'Science'},
+      {learn:'Photosynthesis is how plants make food! They use sunlight, water, and air to create energy and release oxygen. 🌿☀️', q:'What is photosynthesis?',opts:['Animals eating plants','Process where plants use sunlight water and CO2 to make food','How plants reproduce','How plants absorb nutrients'],answer:1,subject:'Science'},
       {q:'What is a cell?',opts:['A type of battery','The basic unit of life','A type of molecule','A kind of tissue'],answer:1,subject:'Science'},
       {q:'What is DNA?',opts:['A type of cell','The genetic material that carries instructions for life','A kind of protein','A type of RNA'],answer:1,subject:'Science'},
       {q:'What is the difference between a physical and chemical change?',opts:['They are the same','Physical changes keep same substance chemical changes make new substances','Chemical changes are reversible','Physical changes make new substances'],answer:1,subject:'Science'},
@@ -3239,6 +3209,18 @@ function showLevelUpOverlay(lvl) {
 }
 
 // Update mission steps UI
+
+// ══ Mission step completion from activity taps ══
+function completeMissionStep(step) {
+  try {
+    var missionData = JSON.parse(localStorage.getItem('bloomi_mission_' + today()) || '{"learn":false,"play":false,"move":false}');
+    missionData[step] = true;
+    localStorage.setItem('bloomi_mission_' + today(), JSON.stringify(missionData));
+    updateMissionUI();
+  } catch(e) {}
+}
+function today() { return new Date().toISOString().slice(0,10); }
+window.completeMissionStep = completeMissionStep;
 function updateMissionUI() {
   var done = sessionData ? (sessionData.tasks || 0) : 0;
   var icons = ['📖','🎮','🧘'];
@@ -3945,9 +3927,20 @@ function buildReadingButtons() {
   container.innerHTML = btns;
 }
 
+var CURATED_GAMES = {
+  'PreK': ["Bloom's Reading Path","Number Tracing","Letter Tracing","Count It!","Sound Play","Memory Match"],
+  'K':    ["Bloom's Reading Path","Word Builder","Number Tracing","Counting","Sound Play","Memory Match"],
+  '1':    ["Bloom's Reading Path","Word Builder","Math Practice","Number Bonds","Science Sort","Memory Match"],
+  '2':    ["Word Builder","Reading Corner","Add & Subtract","Shop Math","Science Sort","Memory Match"],
+  '3':    ["Fact Finder","Grammar Grab","Multiply Mania","Math Bingo","Water Cycle","Map Mission"],
+  '4':    ["Story Relay","Vocabulary Vault","Fraction Feast","Shop Math","Science Sort Lab","Coordinate Chase"],
+  '5':    ["Evidence Explorer","Argument Builder","Problem Solver","Coordinate Chase","Mixtures Sort","Jeopardy"]
+};
 function buildGradeGames() {
   var container = document.getElementById('gradeGamesSection');
   if (!container) return;
+  var _gradeKey = activeGrade !== undefined ? String(activeGrade) : 'PreK';
+  var _curated = CURATED_GAMES[_gradeKey] || CURATED_GAMES['PreK'];
 
   // Grade-appropriate game tiles
   var GRADE_GAMES = {
@@ -4101,7 +4094,8 @@ function buildGradeGames() {
     var lightBg = (g.color.toUpperCase() === '#FFD166' || g.color.toUpperCase() === '#C9B8FF' || g.color.toUpperCase() === '#FBBF24');
     var textColor = lightBg ? '#2D1B3D' : 'white';
     var subOpacity = lightBg ? '.7' : '.85';
-    return '<div onclick="'+g.fn+'" style="background:'+g.color+';border-radius:20px;padding:16px 12px 14px;text-align:center;cursor:pointer;'
+    var missionFn = 'if(typeof completeMissionStep==="function")completeMissionStep("learn");' + g.fn;
+    return '<div onclick="'+missionFn+'" style="background:'+g.color+';border-radius:20px;padding:16px 12px 14px;text-align:center;cursor:pointer;'
       +'box-shadow:0 6px 0 '+deeper+',inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);'
       +'position:relative;overflow:hidden;font-family:Nunito,sans-serif;color:'+textColor+';">'
       +'<div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>'
@@ -4111,11 +4105,31 @@ function buildGradeGames() {
       +'</div>';
   }
 
-  // v380: show first 4 tiles only; See all opens fullscreen grid
-  var first4 = games.slice(0,4);
-  container.innerHTML = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">'
-    + first4.map(_makeTile).join('')
-    + '</div>';
+  // Curated 6 tiles per grade + See More expansion
+  var curated = games.filter(function(g){ return _curated.indexOf(g.label) >= 0; });
+  // Maintain curated order
+  curated.sort(function(a,b){ return _curated.indexOf(a.label) - _curated.indexOf(b.label); });
+  // If fewer than 6 curated found, pad with first available games
+  if (curated.length < 4) { curated = games.slice(0, 6); }
+
+  var _showAll = false;
+  function renderTiles() {
+    var toShow = _showAll ? games : curated;
+    var grid = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">'
+      + toShow.map(_makeTile).join('')
+      + '</div>';
+    var seeMoreBtn = !_showAll
+      ? '<button id="seeMoreGamesBtn" onclick="document.getElementById(\'seeMoreGamesBtn\').closest(\'div\').previousSibling._showAllFn()" style="width:100%;margin-top:10px;padding:12px;border-radius:16px;border:1.5px solid rgba(91,45,158,.2);background:rgba(91,45,158,.06);color:#5B2D9E;font-family:Nunito,sans-serif;font-weight:800;font-size:.88rem;cursor:pointer;">See all ' + games.length + ' games ▾</button>'
+      : '';
+    container.innerHTML = grid + seeMoreBtn;
+
+    // Wire See More button
+    var btn = container.querySelector('#seeMoreGamesBtn');
+    if (btn) {
+      btn.onclick = function() { _showAll = true; renderTiles(); };
+    }
+  }
+  renderTiles();
 }
 
 // v380: fullscreen "See all Games" overlay
@@ -4537,6 +4551,18 @@ function renderQuestion() {
   if(!qqEl||!qoEl) return;
   qqEl.style.display='block'; qoEl.style.display='block';
   if(qfEl) { qfEl.style.display='none'; qfEl.className='quiz-feedback'; }
+  // ══ LEARN CARD: Show teach-first card before question ══
+  if (q.learn) {
+    var learnOv = document.createElement('div');
+    learnOv.style.cssText = 'position:absolute;inset:0;background:linear-gradient(135deg,#FFF8E7,#FFFBF0);border-radius:inherit;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;z-index:10;';
+    learnOv.innerHTML = '<div style="font-size:2.5rem;margin-bottom:12px;">' + (q.emoji||'💡') + '</div>'
+      + '<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.9rem;color:#92400E;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Did You Know?</div>'
+      + '<div style="font-family:Nunito,sans-serif;font-size:1.05rem;font-weight:700;color:#1A1033;line-height:1.5;margin-bottom:20px;">' + q.learn + '</div>'
+      + '<button onclick="this.parentElement.remove();" style="background:linear-gradient(135deg,#F59E0B,#F97316);color:white;border:none;border-radius:40px;padding:13px 32px;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 16px rgba(245,158,11,.4);">Got it! →</button>';
+    // Mount on quiz container
+    var qContainer = document.getElementById('quizContainer') || document.getElementById('quizBox') || qqEl.closest('.quiz-box');
+    if (qContainer) { qContainer.style.position='relative'; qContainer.appendChild(learnOv); }
+  }
   qqEl.textContent = q.q;
   // Auto-read question aloud for younger grades
   if (soundEnabled && ['PreK','K','1','2'].indexOf(activeGrade+'') >= 0) {
@@ -6755,7 +6781,7 @@ function openBusyBook(grade) {
       {emoji:'🌧️',title:'Rain',fact:'Rain comes from clouds. Water falls from the sky. Plants love rain!',funFact:'A raindrop falls at about 14 miles per hour.',q:'Where does rain come from?',opts:['Clouds','Mountains','The ground','The sun'],a:0},
       {emoji:'🌱',title:'Seeds',fact:'Seeds grow into plants. They need water, soil, and sunlight. Small seeds make big trees!',funFact:'The tiniest seed in the world is the size of a grain of dust!',q:'What do seeds need to grow?',opts:['Water, soil, sunlight','Ice and snow','Darkness','Wind only'],a:0},
       {emoji:'🐛',title:'Caterpillars',fact:'Caterpillars eat leaves all day. Then they make a cocoon and become butterflies!',funFact:'A caterpillar grows up to 100 times its size before becoming a butterfly.',q:'What does a caterpillar become?',opts:['A butterfly','A bee','A dragonfly','A moth'],a:0},
-      {emoji:'⭐',title:'Stars',fact:'Stars are giant balls of hot gas in space. The sun is a star! Stars twinkle at night.',funFact:'There are more stars in the universe than grains of sand on Earth.',q:'What is the sun?',opts:['A star','A planet','A moon','A cloud'],a:0},
+      {emoji:'⭐',title:'Stars',fact:'Stars are giant balls of hot gas in space. The sun is a star! Stars twinkle at night.',funFact:'There are more stars in the universe than grains of sand on Earth.',learn:'The sun is a giant star made of hot gas! It is 93 million miles away but its light reaches us in 8 minutes. ⭐', q:'What is the sun?',opts:['A star','A planet','A moon','A cloud'],a:0},
       {emoji:'🌊',title:'Oceans',fact:'Oceans are huge bodies of salt water. Fish and whales live there. Oceans cover most of Earth!',funFact:'The deepest part of the ocean is deeper than Mount Everest is tall.',q:'What kind of water is in the ocean?',opts:['Salt water','Fresh water','Rain water','Ice water'],a:0},
     ],
     K:[
@@ -8680,16 +8706,16 @@ function openSocialStudiesGame(grade) {
       { q:'What are the three branches of US government?', emoji:'🏛️', opts:['City, state, country','Legislative, executive, judicial','Police, army, navy','President, mayor, governor'], answer:1 },
     ],
     3: [
-      { q:'Which continent is the Sahara Desert in?', emoji:'🌍', opts:['Asia','Africa','Europe','Australia'], answer:1 },
-      { q:'What ocean is between North America and Europe?', emoji:'🌊', opts:['Pacific','Indian','Arctic','Atlantic'], answer:3 },
-      { q:'Which country has the most people in the world?', emoji:'👥', opts:['USA','India','China','Brazil'], answer:2 },
+      { learn:'The Sahara Desert is the largest hot desert in the world, located in northern Africa! 🌍', q:'Which continent is the Sahara Desert in?', emoji:'🌍', opts:['Asia','Africa','Europe','Australia'], answer:1 },
+      { learn:'The Atlantic Ocean separates North America from Europe. Ships and planes cross it every day! 🌊', q:'What ocean is between North America and Europe?', emoji:'🌊', opts:['Pacific','Indian','Arctic','Atlantic'], answer:3 },
+      { learn:'China has over 1.4 billion people — more than any other country on Earth! 🇨🇳', q:'Which country has the most people in the world?', emoji:'👥', opts:['USA','India','China','Brazil'], answer:2 },
       { q:'What is the longest river in the world?', emoji:'🌊', opts:['Amazon','Nile','Mississippi','Yangtze'], answer:1 },
       { q:'On which continent is Brazil?', emoji:'🌎', opts:['Africa','Europe','Asia','South America'], answer:3 },
     ],
     4: [
-      { q:'Which mountain is the tallest in the world?', emoji:'🏔️', opts:['K2','Kilimanjaro','Mount Everest','Denali'], answer:2 },
-      { q:'What continent is Australia on?', emoji:'🦘', opts:['Asia','Antarctica','Australia/Oceania','Africa'], answer:2 },
-      { q:'Which country is known for the Great Wall?', emoji:'🧱', opts:['Japan','India','China','Korea'], answer:2 },
+      { learn:'Mount Everest in the Himalayas is the tallest mountain on Earth at 29,032 feet! 🏔️', q:'Which mountain is the tallest in the world?', emoji:'🏔️', opts:['K2','Kilimanjaro','Mount Everest','Denali'], answer:2 },
+      { learn:'Australia is both a country AND a continent! It is the smallest continent on Earth. 🦘', q:'What continent is Australia on?', emoji:'🦘', opts:['Asia','Antarctica','Australia/Oceania','Africa'], answer:2 },
+      { learn:'The Great Wall of China stretches over 13,000 miles and was built to protect ancient China! 🧱', q:'Which country is known for the Great Wall?', emoji:'🧱', opts:['Japan','India','China','Korea'], answer:2 },
       { q:'The Amazon Rainforest is mostly in which country?', emoji:'🌿', opts:['Colombia','Peru','Brazil','Venezuela'], answer:2 },
       { q:'Which continent has the most countries?', emoji:'🌍', opts:['Asia','Europe','Africa','South America'], answer:2 },
     ],
@@ -8697,8 +8723,8 @@ function openSocialStudiesGame(grade) {
       { q:'What are the seven continents?', emoji:'🌍', opts:['5 continents','6 continents','7 continents','8 continents'], answer:2 },
       { q:'Which country produces the most tea?', emoji:'🍵', opts:['India','UK','China','Japan'], answer:2 },
       { q:'What is the currency of Japan?', emoji:'💴', opts:['Won','Yuan','Yen','Peso'], answer:2 },
-      { q:'Where are the ancient Pyramids located?', emoji:'🏛️', opts:['Iraq','Egypt','Libya','Sudan'], answer:1 },
-      { q:'What language is most spoken in South America?', emoji:'🌎', opts:['English','Spanish','Portuguese','French'], answer:1 },
+      { learn:'The Pyramids of Giza were built in ancient Egypt over 4,500 years ago as tombs for pharaohs! 🏛️', q:'Where are the ancient Pyramids located?', emoji:'🏛️', opts:['Iraq','Egypt','Libya','Sudan'], answer:1 },
+      { learn:'Spanish is spoken in most of South America! Brazil speaks Portuguese — it is the biggest country there. 🌎', q:'What language is most spoken in South America?', emoji:'🌎', opts:['English','Spanish','Portuguese','French'], answer:1 },
     ],
   };
 
@@ -12367,8 +12393,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v423</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v423</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v424</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v424</div>
 
 </body>
 </html
