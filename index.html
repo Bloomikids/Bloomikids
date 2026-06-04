@@ -66,7 +66,7 @@ nav.scrolled{box-shadow:0 2px 24px rgba(0,0,0,.07)}
 @media(max-width:768px){.sticky-bar{display:flex}}
 
 /* ── HERO ── */
-.hero{min-height:100vh;padding:120px 40px 80px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;position:relative;max-width:1200px;margin:0 auto}
+.hero{min-height:100vh;padding:120px 40px 80px;display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center;position:relative;max-width:1200px;margin:0 auto}
 .hero-bg{position:fixed;inset:0;z-index:-1;background:var(--cream)}
 .hero-bg::before{content:'';position:absolute;top:-300px;right:-200px;width:800px;height:800px;background:radial-gradient(circle,rgba(91,45,158,.08),transparent 65%);border-radius:50%}
 .hero-bg::after{content:'';position:absolute;bottom:-200px;left:-100px;width:600px;height:600px;background:radial-gradient(circle,rgba(94,205,160,.07),transparent 65%);border-radius:50%}
@@ -76,7 +76,7 @@ nav.scrolled{box-shadow:0 2px 24px rgba(0,0,0,.07)}
 h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(2.2rem,4vw,3.8rem);line-height:1.05;letter-spacing:-1.5px;margin-bottom:20px;animation:fadeUp .5s .08s ease both}
 h1 em{font-style:italic;color:var(--p)}
 h1 .strike{position:relative;display:inline-block}
-h1 .strike::after{content:'';position:absolute;bottom:4px;left:0;right:0;height:4px;background:var(--mint);border-radius:4px;opacity:.5;transform:scaleX(0);transform-origin:left;animation:grow 1s .9s cubic-bezier(.34,1.56,.64,1) forwards}
+h1 .strike::after{display:none}
 @keyframes grow{to{transform:scaleX(1)}}
 .hero-sub{font-size:1rem;line-height:1.7;color:var(--tm);max-width:440px;margin-bottom:30px;animation:fadeUp .5s .16s ease both}
 .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px;animation:fadeUp .5s .24s ease both}
@@ -89,7 +89,7 @@ h1 .strike::after{content:'';position:absolute;bottom:4px;left:0;right:0;height:
 
 /* Phone mockup */
 .hero-right{animation:fadeUp .7s .18s ease both;display:flex;justify-content:center;align-items:center}
-.phone-shell{width:272px;background:#150D35;border-radius:44px;padding:11px;box-shadow:0 40px 80px rgba(15,10,30,.4),0 0 0 1px rgba(255,255,255,.08),inset 0 0 0 1px rgba(255,255,255,.04);position:relative}
+.phone-shell{width:260px;background:#150D35;max-width:100%;border-radius:44px;padding:11px;box-shadow:0 40px 80px rgba(15,10,30,.4),0 0 0 1px rgba(255,255,255,.08),inset 0 0 0 1px rgba(255,255,255,.04);position:relative}
 .phone-notch{width:88px;height:25px;background:var(--dark);border-radius:0 0 18px 18px;margin:0 auto;position:relative;z-index:2}
 .phone-screen{height:500px;border-radius:33px;overflow:hidden;background:linear-gradient(160deg,#2D1B69 0%,#5B2D9E 55%,#7B45C8 100%);position:relative}
 .phone-inner{padding:8px 12px 12px;display:flex;flex-direction:column;gap:8px}
@@ -140,7 +140,7 @@ h2 em{font-style:italic;color:var(--p)}
 .how-bg h2{color:var(--td)}
 .how-bg .intro{color:var(--tm)}
 .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
-.pillar{background:white;border-radius:24px;padding:36px 28px;transition:transform .25s,box-shadow .25s;position:relative;border:1.5px solid rgba(91,45,158,.12);box-shadow:0 8px 32px rgba(91,45,158,.1)}
+.pillar{border-radius:24px;padding:36px 28px;transition:transform .25s,box-shadow .25s;position:relative;border:1.5px solid rgba(91,45,158,.08);box-shadow:0 8px 32px rgba(91,45,158,.08)}
 .pillar:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(91,45,158,.12)}
 .pillar-bar{position:absolute;top:0;left:0;right:0;height:3px}
 .pb1{background:linear-gradient(90deg,var(--pl),#C084FC)}
@@ -462,21 +462,21 @@ footer{background:#F5EEFF;border-top:1px solid rgba(91,45,158,.1);padding:44px 4
     <h2 style="color:white">Three pillars. <em>One amazing app.</em></h2>
     <p class="intro">BloomiKids builds the whole child — mind, body, and heart — in one daily routine.</p>
     <div class="pillars">
-      <div class="pillar reveal">
+      <div class="pillar reveal" style="background:linear-gradient(160deg,#F5EEFF,#FFFFFF);">
         <div class="pillar-bar pb1"></div>
         <span class="pillar-icon">📚</span>
         <h3>Learn</h3>
         <p>Curriculum-aligned lessons in Math, Reading, Science, Language Arts, and Social Studies — matched to every grade from PreK to 5th.</p>
         <div class="pillar-tags"><span class="ptag">Phonics</span><span class="ptag">Math Facts</span><span class="ptag">Science</span><span class="ptag">World Quest</span></div>
       </div>
-      <div class="pillar reveal">
+      <div class="pillar reveal" style="background:linear-gradient(160deg,#FFF5F0,#FFFFFF);">
         <div class="pillar-bar pb2"></div>
         <span class="pillar-icon">🧘</span>
         <h3>Reset</h3>
         <p>Yoga poses, guided breathing, and mindful movement keep kids regulated and ready to focus. No other academic app includes this — it's core to who we are.</p>
         <div class="pillar-tags"><span class="ptag">Yoga</span><span class="ptag">Breathing</span><span class="ptag">Kindness</span><span class="ptag">Calm Board</span></div>
       </div>
-      <div class="pillar reveal">
+      <div class="pillar reveal" style="background:linear-gradient(160deg,#F0FFF8,#FFFFFF);">
         <div class="pillar-bar pb3"></div>
         <span class="pillar-icon">📖</span>
         <h3>Read</h3>
