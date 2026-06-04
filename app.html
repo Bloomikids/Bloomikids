@@ -711,6 +711,19 @@ input::placeholder { color:#aaa !important; }
   80%  { opacity:.85; }
   100% { opacity:0; }
 }
+/* ══ BLOOMY REACTION BUBBLE ══ */
+#bloomyReaction {
+  position:fixed; bottom:80px; left:50%; transform:translateX(-50%) scale(0);
+  z-index:9997; pointer-events:none;
+  background:white; border-radius:20px; padding:12px 18px;
+  box-shadow:0 8px 32px rgba(0,0,0,.18); border:2px solid rgba(91,45,158,.12);
+  display:flex; align-items:center; gap:10px;
+  font-family:'Nunito',sans-serif; font-weight:800; font-size:.95rem; color:#1A1033;
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .3s;
+  opacity:0; max-width:300px; text-align:center; white-space:nowrap;
+}
+#bloomyReaction.show { transform:translateX(-50%) scale(1); opacity:1; }
+#bloomyReaction img { width:40px; height:40px; object-fit:contain; flex-shrink:0; }
 #celebOverlay {
   position:fixed; inset:0; z-index:9998;
   pointer-events:none !important;
@@ -847,6 +860,7 @@ input::placeholder { color:#aaa !important; }
 <div id="offlineBanner">📡 You're offline -- progress saves when you reconnect!</div>
 <div id="toast"></div>
 <div id="celebOverlay"></div>
+  <div id="bloomyReaction"><img src="bloomy_wave.png" alt="Bloomy" id="bloomyReactionImg"><span id="bloomyReactionText">Amazing! 🌟</span></div>
 <div id="birthdayOverlay" style="position:fixed;inset:0;z-index:9999;background:rgba(45,45,78,.88);display:none;align-items:center;justify-content:center;flex-direction:column;">
   <div class="birthday-card" id="birthdayCard" style="background:white;border-radius:36px;padding:48px 40px;text-align:center;max-width:380px;width:90%;box-shadow:0 24px 80px rgba(45,45,78,.4);position:relative;overflow:hidden;">
     <div style="font-size:3.5rem;margin-bottom:12px;animation:bounce 1s infinite;">🎂🎉🎈</div>
@@ -4048,6 +4062,7 @@ function buildGradeGames() {
       {icon:'🌍', label:'Social Studies',       fn:"openSSGame('4')",        color:'#D97706'},
       // Reading
       {icon:'📖', label:'Reading Corner',       fn:"openPassageReader('4')", color:'#4C1D95'},
+      {icon:'🎨', label:'Art Studio',           fn:"switchTab('art')",       color:'#EC4899'},
     ],
     5: [
       // Language & Literacy
@@ -4063,6 +4078,7 @@ function buildGradeGames() {
       // Fun & Challenge
       {icon:'🏆', label:'Jeopardy',             fn:"openJeopardy()",         color:'#F59E0B'},
       {icon:'🔬', label:'Research Race',        fn:"openScienceGame('5')",   color:'#0EA5E9'},
+      {icon:'🎨', label:'Art Studio',           fn:"switchTab('art')",       color:'#EC4899'},
     ],
   };
 
@@ -5904,7 +5920,26 @@ function switchTab(tab) {
 // ── Activity logging — called whenever a game completes ──────────
 
 // ── Correct answer celebration ──────────────────────────────────
+
+// ══ Bloomy reactions ══
+var _bloomyMsgs = {
+  correct: ["Amazing! 🌟","You got it! 🎉","Perfect! ⭐","Brilliant! 💫","Yes! 🙌","Superstar! 🌈","Wow! 🎊","Great work! 💪"],
+  wrong:   ["Almost! Try again 💪","Good try! 🤗","Keep going! 🌱","You can do it! 💛","So close! 🌸","Give it another shot! ⭐"]
+};
+function showBloomyReaction(correct) {
+  var el = document.getElementById('bloomyReaction');
+  var txt = document.getElementById('bloomyReactionText');
+  if (!el || !txt) return;
+  var msgs = correct ? _bloomyMsgs.correct : _bloomyMsgs.wrong;
+  txt.textContent = msgs[Math.floor(Math.random()*msgs.length)];
+  el.style.borderColor = correct ? 'rgba(34,197,94,.3)' : 'rgba(255,107,74,.25)';
+  el.classList.add('show');
+  clearTimeout(el._hideTimer);
+  el._hideTimer = setTimeout(function(){ el.classList.remove('show'); }, 1800);
+}
+window.showBloomyReaction = showBloomyReaction;
 function showCorrectCelebration() {
+  showBloomyReaction(true);
   var ov = document.getElementById('celebOverlay');
   if(!ov) return;
   // Reset any stuck state
@@ -8659,7 +8694,7 @@ function openSocialStudiesGame(grade) {
       var chosen_el=document.getElementById('ssOpt'+chosen);
       if(correct){ correct.style.background='#E8FBF3'; correct.style.borderColor='#22c55e'; correct.style.color='#22c55e'; }
       if(chosen!==ans && chosen_el){ chosen_el.style.background='#FFF0EE'; chosen_el.style.borderColor='#ef4444'; chosen_el.style.color='#ef4444'; }
-      if(chosen===ans){ score++; toast('Correct! 🌟'); } else { toast('The answer: '+q.opts[ans]); }
+      if(chosen===ans){ score++; showBloomyReaction(true); toast('Correct! 🌟'); } else { showBloomyReaction(false); toast('The answer: '+q.opts[ans]); }
       // Append next button to ssBody
       var body=document.getElementById('ssBody');
       if(!body) return;
@@ -12354,8 +12389,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v428</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v428</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v429</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v429</div>
 
 </body>
 </html
