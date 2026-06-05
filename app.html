@@ -711,19 +711,6 @@ input::placeholder { color:#aaa !important; }
   80%  { opacity:.85; }
   100% { opacity:0; }
 }
-/* ══ BLOOMY REACTION BUBBLE ══ */
-#bloomyReaction {
-  position:fixed; bottom:80px; left:50%; transform:translateX(-50%) scale(0);
-  z-index:9997; pointer-events:none;
-  background:white; border-radius:20px; padding:12px 18px;
-  box-shadow:0 8px 32px rgba(0,0,0,.18); border:2px solid rgba(91,45,158,.12);
-  display:flex; align-items:center; gap:10px;
-  font-family:'Nunito',sans-serif; font-weight:800; font-size:.95rem; color:#1A1033;
-  transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .3s;
-  opacity:0; max-width:300px; text-align:center; white-space:nowrap;
-}
-#bloomyReaction.show { transform:translateX(-50%) scale(1); opacity:1; }
-#bloomyReaction img { width:40px; height:40px; object-fit:contain; flex-shrink:0; }
 #celebOverlay {
   position:fixed; inset:0; z-index:9998;
   pointer-events:none !important;
@@ -860,7 +847,6 @@ input::placeholder { color:#aaa !important; }
 <div id="offlineBanner">📡 You're offline -- progress saves when you reconnect!</div>
 <div id="toast"></div>
 <div id="celebOverlay"></div>
-  <div id="bloomyReaction"><img src="bloomy_wave.png" alt="Bloomy" id="bloomyReactionImg"><span id="bloomyReactionText">Amazing! 🌟</span></div>
 <div id="birthdayOverlay" style="position:fixed;inset:0;z-index:9999;background:rgba(45,45,78,.88);display:none;align-items:center;justify-content:center;flex-direction:column;">
   <div class="birthday-card" id="birthdayCard" style="background:white;border-radius:36px;padding:48px 40px;text-align:center;max-width:380px;width:90%;box-shadow:0 24px 80px rgba(45,45,78,.4);position:relative;overflow:hidden;">
     <div style="font-size:3.5rem;margin-bottom:12px;animation:bounce 1s infinite;">🎂🎉🎈</div>
@@ -1102,7 +1088,6 @@ input::placeholder { color:#aaa !important; }
     <!-- UNIFIED Play & Learn section -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin:8px 0 10px;padding:0 4px;">
       <h2 style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:#3B1578;margin:0;">🌟 Play &amp; Learn</h2>
-      <a id="seeAllGamesLink" href="#" style="font-size:.78rem;font-weight:700;color:#5B2D9E;text-decoration:none;padding:5px 12px;border-radius:20px;background:rgba(91,45,158,.08);border:1px solid rgba(91,45,158,.15);">See all →</a>
     </div>
 
     <div class="section-title" id="subjectsTitle" style="display:none;">📖 Today's Subjects</div>
@@ -1140,7 +1125,7 @@ input::placeholder { color:#aaa !important; }
     <div id="quizFeedback" style="display:none"></div>
     <button id="nextBtn" class="next-btn" onclick="nextQuestion()" style="display:none;margin-top:16px;width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Next ➡</button>
 
-    <div id="myProgressHeader" style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1.05rem;color:#3B1578;margin:16px 0 10px;display:flex;align-items:center;gap:6px;">⭐ My Progress</div>
+    <div class="section-title">📈 My Progress</div>
     <div class="progress-section" id="progressSection"></div>
   </div>
 
@@ -3949,8 +3934,7 @@ var CURATED_GAMES = {
   '3':    ["Fact Finder","Grammar Grab","Multiply Mania","Math Bingo","Water Cycle","Art Studio"],
   '4':    ["Story Relay","Vocabulary Vault","Fraction Feast","Shop Math","Science Sort Lab","Art Studio"],
   '5':    ["Evidence Explorer","Argument Builder","Problem Solver","Coordinate Chase","Mixtures Sort","Art Studio"]
-};
-function buildGradeGames() {
+};function buildGradeGames() {
   var container = document.getElementById('gradeGamesSection');
   if (!container) return;
   var _gradeKey = activeGrade !== undefined ? String(activeGrade) : 'PreK';
@@ -3975,8 +3959,6 @@ function buildGradeGames() {
       // Stories & Play
       {icon:'🦕', label:'Dino Stories',         fn:"openDinoStories('PreK')",color:'#7C3AED'},
       {icon:'📚', label:'Busy Book',            fn:"openBusyBook('PreK')",   color:'#6B21A8'},
-    ,
-      {icon:'🎨', label:'Art Studio',            fn:"switchTab('art')",       color:'#EC4899'},
     ],
     K: [
       // Language & Literacy
@@ -3993,8 +3975,7 @@ function buildGradeGames() {
       // Stories & Play
       {icon:'🦕', label:'Dino Stories',         fn:"openDinoStories('K')",   color:'#1a472a'},
       {icon:'📚', label:'Busy Book',            fn:"openBusyBook('K')",      color:'#0369A1'},
-    ,
-      {icon:'🎨', label:'Art Studio',            fn:"switchTab('art')",       color:'#EC4899'},
+      {icon:'\U0001F3A8', label:'Art Studio', fn:"switchTab('art')", color:'#EC4899'},
     ],
     1: [
       // Language & Literacy
@@ -4012,8 +3993,7 @@ function buildGradeGames() {
       // Stories
       {icon:'🦕', label:'Dino Stories',         fn:"openDinoStories('1')",   color:'#1a472a'},
       {icon:'📚', label:'Busy Book',            fn:"openBusyBook('1')",      color:'#0369A1'},
-    ,
-      {icon:'🎨', label:'Art Studio',            fn:"switchTab('art')",       color:'#EC4899'},
+      {icon:'\U0001F3A8', label:'Art Studio', fn:"switchTab('art')", color:'#EC4899'},
     ],
     2: [
       // Language & Literacy
@@ -4029,8 +4009,7 @@ function buildGradeGames() {
       {icon:'🌍', label:'Social Studies',       fn:"openSSGame('2')",        color:'#F59E0B'},
       // Activities
       {icon:'📚', label:'Busy Book',            fn:"openBusyBook('2')",      color:'#0369A1'},
-    ,
-      {icon:'🎨', label:'Art Studio',            fn:"switchTab('art')",       color:'#EC4899'},
+      {icon:'\U0001F3A8', label:'Art Studio', fn:"switchTab('art')", color:'#EC4899'},
     ],
     3: [
       // Language & Literacy
@@ -4046,8 +4025,7 @@ function buildGradeGames() {
       {icon:'🗺️', label:'Map Mission',          fn:"openSSGame('3')",        color:'#F59E0B'},
       // Activities
       {icon:'📚', label:'Busy Book',            fn:"openBusyBook('3')",      color:'#0369A1'},
-    ,
-      {icon:'🎨', label:'Art Studio',            fn:"switchTab('art')",       color:'#EC4899'},
+      {icon:'\U0001F3A8', label:'Art Studio', fn:"switchTab('art')", color:'#EC4899'},
     ],
     4: [
       // Language & Literacy
@@ -4062,7 +4040,7 @@ function buildGradeGames() {
       {icon:'🌍', label:'Social Studies',       fn:"openSSGame('4')",        color:'#D97706'},
       // Reading
       {icon:'📖', label:'Reading Corner',       fn:"openPassageReader('4')", color:'#4C1D95'},
-      {icon:'🎨', label:'Art Studio',           fn:"switchTab('art')",       color:'#EC4899'},
+      {icon:'\U0001F3A8', label:'Art Studio', fn:"switchTab('art')", color:'#EC4899'},
     ],
     5: [
       // Language & Literacy
@@ -4078,7 +4056,7 @@ function buildGradeGames() {
       // Fun & Challenge
       {icon:'🏆', label:'Jeopardy',             fn:"openJeopardy()",         color:'#F59E0B'},
       {icon:'🔬', label:'Research Race',        fn:"openScienceGame('5')",   color:'#0EA5E9'},
-      {icon:'🎨', label:'Art Studio',           fn:"switchTab('art')",       color:'#EC4899'},
+      {icon:'\U0001F3A8', label:'Art Studio', fn:"switchTab('art')", color:'#EC4899'},
     ],
   };
 
@@ -4144,20 +4122,15 @@ function buildGradeGames() {
     var grid = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">'
       + toShow.map(_makeTile).join('')
       + '</div>';
-    container.innerHTML = grid;
-    // Update "See all" link in header
-    var seeAllLink = document.getElementById('seeAllGamesLink');
-    if (seeAllLink) {
-      if (_showAll) {
-        seeAllLink.textContent = 'Show less';
-      } else {
-        seeAllLink.textContent = 'See all ' + games.length + ' →';
-      }
-      seeAllLink.onclick = function(e) {
-        e.preventDefault();
-        _showAll = !_showAll;
-        renderTiles();
-      };
+    var seeMoreBtn = !_showAll
+      ? '<button id="seeMoreGamesBtn" onclick="document.getElementById(\'seeMoreGamesBtn\').closest(\'div\').previousSibling._showAllFn()" style="width:100%;margin-top:10px;padding:12px;border-radius:16px;border:1.5px solid rgba(91,45,158,.2);background:rgba(91,45,158,.06);color:#5B2D9E;font-family:Nunito,sans-serif;font-weight:800;font-size:.88rem;cursor:pointer;">See all ' + games.length + ' games ▾</button>'
+      : '';
+    container.innerHTML = grid + seeMoreBtn;
+
+    // Wire See More button
+    var btn = container.querySelector('#seeMoreGamesBtn');
+    if (btn) {
+      btn.onclick = function() { _showAll = true; renderTiles(); };
     }
   }
   renderTiles();
@@ -4254,7 +4227,7 @@ function buildProgressSection() {
   var levelNames = ['Seedling','Sprout','Bud','Bloomer','Super Bloom','Master'];
   var levelName  = levelNames[Math.min(level-1, levelNames.length-1)];
   var xpInLevel  = xp % 50;
-  var xpPct      = Math.max(4, Math.min(100, Math.round(xpInLevel / 50 * 100))); // min 4% so bar is always visible
+  var xpPct      = Math.max(4, Math.min(100, Math.round(xpInLevel / 50 * 100)));
   var name = (typeof activeChild !== 'undefined' && activeChild) ? activeChild.name : 'Explorer';
 
   var subjects = ['Word Wizards','Number Ninjas','Wonder Lab','Make It!'];
@@ -4305,7 +4278,7 @@ function buildProgressSection() {
     + '</div>'
     + '</div>'
     // Growing Leaves card
-    + '<div style="background:white;border-radius:20px;padding:16px 18px;box-shadow:0 4px 20px rgba(0,0,0,.06);border:1px solid rgba(91,45,158,.06);">'
+    + '<div style="background:white;border-radius:20px;padding:16px 18px;box-shadow:0 4px 20px rgba(0,0,0,.06);">'
     + '<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.9rem;color:#065F46;margin-bottom:4px;display:flex;align-items:center;gap:6px;"><span>🌿</span><span>Growing Leaves</span></div>'
     + '<div style="font-size:.75rem;color:#888;margin-bottom:10px;">Complete activities to grow your leaves!</div>'
     + leavesHTML
@@ -5920,26 +5893,8 @@ function switchTab(tab) {
 // ── Activity logging — called whenever a game completes ──────────
 
 // ── Correct answer celebration ──────────────────────────────────
-
-// ══ Bloomy reactions ══
-var _bloomyMsgs = {
-  correct: ["Amazing! 🌟","You got it! 🎉","Perfect! ⭐","Brilliant! 💫","Yes! 🙌","Superstar! 🌈","Wow! 🎊","Great work! 💪"],
-  wrong:   ["Almost! Try again 💪","Good try! 🤗","Keep going! 🌱","You can do it! 💛","So close! 🌸","Give it another shot! ⭐"]
-};
-function showBloomyReaction(correct) {
-  var el = document.getElementById('bloomyReaction');
-  var txt = document.getElementById('bloomyReactionText');
-  if (!el || !txt) return;
-  var msgs = correct ? _bloomyMsgs.correct : _bloomyMsgs.wrong;
-  txt.textContent = msgs[Math.floor(Math.random()*msgs.length)];
-  el.style.borderColor = correct ? 'rgba(34,197,94,.3)' : 'rgba(255,107,74,.25)';
-  el.classList.add('show');
-  clearTimeout(el._hideTimer);
-  el._hideTimer = setTimeout(function(){ el.classList.remove('show'); }, 1800);
-}
-window.showBloomyReaction = showBloomyReaction;
 function showCorrectCelebration() {
-  showBloomyReaction(true);
+  if(window.showBloomyReaction)showBloomyReaction(true);
   var ov = document.getElementById('celebOverlay');
   if(!ov) return;
   // Reset any stuck state
@@ -8308,14 +8263,6 @@ function openLangGame(grade) {
       });
       updateBuiltRow(d);
     };
-
-    window._backspaceLetter = function(){
-      if(built.length===0) return;
-      var last=built.pop();
-      var btn=document.getElementById('lbtn'+last.i);
-      if(btn){btn.style.opacity='1';btn.style.pointerEvents='auto';}
-      updateBuiltRow(d);
-    };
   }
 
   function updateBuiltRow(d){
@@ -8671,7 +8618,6 @@ function openSocialStudiesGame(grade) {
     ov.innerHTML = '';
     ov.innerHTML = gameHeader('Community & World','🌍',CA,CB,'ssGameOv')
       +'<div id="ssBody" style="flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;align-items:center;max-width:600px;margin:0 auto;width:100%;">'
-      +(q.learn ? '<div style="background:linear-gradient(135deg,#FFF8E7,#FFFBF0);border-radius:20px;padding:20px 22px;margin-bottom:16px;border:1.5px solid rgba(245,158,11,.2);width:100%;box-sizing:border-box;"><div style="font-size:.65rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#92400E;margin-bottom:8px;">💡 Did You Know?</div><div style="font-size:.95rem;font-weight:700;color:#1A1033;line-height:1.5;">'+q.learn+'</div></div>' : '')
       +'<div style="background:white;border-radius:20px;padding:24px;margin-bottom:20px;text-align:center;box-shadow:0 4px 16px rgba(245,158,11,.2);width:100%;">'
       +'<div style="font-size:3rem;margin-bottom:10px;">'+q.emoji+'</div>'
       +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.1rem;font-weight:800;color:#2D2D4E;line-height:1.5;">'+q.q+'</div>'
@@ -8694,7 +8640,7 @@ function openSocialStudiesGame(grade) {
       var chosen_el=document.getElementById('ssOpt'+chosen);
       if(correct){ correct.style.background='#E8FBF3'; correct.style.borderColor='#22c55e'; correct.style.color='#22c55e'; }
       if(chosen!==ans && chosen_el){ chosen_el.style.background='#FFF0EE'; chosen_el.style.borderColor='#ef4444'; chosen_el.style.color='#ef4444'; }
-      if(chosen===ans){ score++; showBloomyReaction(true); toast('Correct! 🌟'); } else { showBloomyReaction(false); toast('The answer: '+q.opts[ans]); }
+      if(chosen===ans){ score++; toast('Correct! 🌟'); } else { toast('The answer: '+q.opts[ans]); }
       // Append next button to ssBody
       var body=document.getElementById('ssBody');
       if(!body) return;
@@ -9155,13 +9101,7 @@ function openKindnessCorner(){
     body.appendChild(card);
     s.opts.forEach(function(opt,i){
       var btn=document.createElement('button');btn.textContent=opt;btn.style.cssText='width:100%;margin-bottom:12px;padding:16px;border-radius:18px;border:2px solid #FFB3D1;background:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;text-align:left;display:block;box-sizing:border-box;';
-      (function(chosen){btn.onclick=function(){body.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});if(chosen===s.a){score++;if(typeof playSound==='function')playSound('correct');toast(s.praise);}else{body.querySelectorAll('button')[s.a].style.background='#D1FAE5';body.querySelectorAll('button')[s.a].style.borderColor='#22c55e';if(typeof playSound==='function')playSound('wrong');toast('💡 The kind choice: '+s.opts[s.a]);}idx++;
-        // Show Next button instead of auto-advance
-        var nextBtn = document.createElement('button');
-        nextBtn.textContent = 'Next ➡';
-        nextBtn.style.cssText = 'margin-top:16px;width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#FF6B9D,#FF8E53);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 16px rgba(255,107,74,.35);';
-        nextBtn.onclick = function() { render(); };
-        body.appendChild(nextBtn);};})(i);
+      (function(chosen){btn.onclick=function(){body.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});if(chosen===s.a){score++;if(typeof playSound==='function')playSound('correct');toast(s.praise);}else{body.querySelectorAll('button')[s.a].style.background='#D1FAE5';body.querySelectorAll('button')[s.a].style.borderColor='#22c55e';if(typeof playSound==='function')playSound('wrong');toast('💡 The kind choice: '+s.opts[s.a]);}idx++;var nb=document.createElement('button');nb.textContent='Next';nb.style.cssText='margin-top:16px;width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#FF6B9D,#FF8E53);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';nb.onclick=function(){render();};body.appendChild(nb);};})(i);
       body.appendChild(btn);
     });
     ov.appendChild(body);
@@ -11923,8 +11863,8 @@ function openPassageReader(grade) {
         +'<div style="color:#555;font-size:.95rem;margin:8px 0 8px;">'+(pct>=80?'Excellent comprehension! 🌟':pct>=60?'Good reading! Keep it up!':'Try reading the story again — you\'ll get it!')+'</div>'
         +'<div style="background:#DBEAFE;border-radius:12px;padding:10px 16px;margin-bottom:20px;font-size:.82rem;color:#1D4ED8;font-weight:700;">Theme: '+story.theme+'</div>'
         +'<div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">'
-        +'<button onclick="showLibrary()" style="padding:12px 20px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;font-size:.88rem;">More Stories 📚</button>'
-        +'<button onclick="var o=document.getElementById(\'passageOv\');if(o)o.remove();switchTab(\'academics\');" style="padding:12px 20px;border-radius:40px;border:1.5px solid rgba(91,45,158,.2);background:white;color:#5B2D9E;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;font-size:.88rem;">🏠 Back to Home</button>'
+        +'<button onclick="showLibrary()" style="padding:14px 22px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;">More Stories 📚</button>'
+        +'<button onclick="var o=document.getElementById(\'passageOv\');if(o)o.remove();" style="margin-top:10px;padding:13px 28px;border-radius:40px;border:2px solid white;background:white;color:#1D4ED8;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;font-size:.95rem;display:block;width:80%;margin-left:auto;margin-right:auto;">← Back to Games</button>'
         +'</div>';
       ov.appendChild(body);
       if(score>0){ logGameComplete(score*20, 1); toast('+'+score*20+' Stars! ⭐ Great reading!'); }
@@ -12292,9 +12232,9 @@ function openDinoStories(grade) {
         +'<div style="font-family:Baloo 2,cursive;font-size:1.6rem;font-weight:800;color:#1a472a;">'+score+'/'+story.quiz.length+'</div>'
         +'<div style="color:#555;margin:8px 0 24px;">'+(pct>=80?'Amazing reading! 🌟':pct>=50?'Good job! Keep reading!':'Try again — keep going!')+'</div>'
         +'<div style="display:flex;gap:12px;flex-wrap:wrap;">'
-        +'<button onclick="showLibrary()" style="padding:12px 20px;border-radius:40px;border:none;background:linear-gradient(135deg,#1a472a,#2d8a4e);color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;font-size:.88rem;">More Stories 📚</button>'
-        +'<button onclick="var o=document.getElementById(\'dinoOv\');if(o)o.remove();" style="padding:12px 20px;border-radius:40px;border:1.5px solid rgba(26,71,42,.3);background:white;color:#1a472a;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;font-size:.88rem;">Read Again 🔄</button>'
-        +'<button onclick="var o=document.getElementById(\'dinoOv\');if(o)o.remove();switchTab(\'academics\');" style="padding:12px 20px;border-radius:40px;border:1.5px solid rgba(91,45,158,.2);background:white;color:#5B2D9E;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;font-size:.88rem;">🏠 Back to Home</button>'
+        +'<button onclick="var o=document.getElementById(\'dinoOv\');if(o)o.remove();" style="padding:10px 18px;border-radius:40px;border:none;background:rgba(255,255,255,.2);color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;font-size:1.1rem;">✕</button>'
+        +'<button onclick="showLibrary()" style="padding:14px 20px;border-radius:40px;border:none;background:linear-gradient(135deg,#1a472a,#2d8a4e);color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;">More Stories 📚</button>'
+        +'<button onclick="readStory('+JSON.stringify({title:story.title,cover:story.cover,pages:story.pages,quiz:story.quiz,skill:story.skill,badge:story.badge})+')" style="padding:14px 24px;border-radius:40px;border:none;background:#E8F5E9;color:#1a472a;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;">Read Again 🔄</button>'
         +'</div>';
       ov.appendChild(body);
       // Award stars
