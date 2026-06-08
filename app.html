@@ -1067,7 +1067,7 @@ input::placeholder { color:#aaa !important; }
         <div style="font-size:.66rem;font-weight:700;opacity:.85;position:relative;z-index:1;">Move &amp; flow</div>
       </div>
       <!-- Breathing -->
-      <div onclick="v3OpenMindful('breathing')" style="background:#C9B8FF;border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #9B85E0,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:#2D1B3D;font-family:Nunito,sans-serif;">
+      <div onclick="v3OpenMindful('breathing')" style="background:#9B7FE8;border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #7B5FC8,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
         <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
         <div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">🌬️</div>
         <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">Breathing</div>
@@ -1081,7 +1081,7 @@ input::placeholder { color:#aaa !important; }
         <div style="font-size:.66rem;font-weight:700;opacity:.85;position:relative;z-index:1;">Pause &amp; reset</div>
       </div>
       <!-- Mindful Stories (NEW full feature) -->
-      <div onclick="openMindfulStories()" style="background:#1A1A2E;border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #0A0A1A,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
+      <div onclick="openMindfulStories()" style="background:#6B5EA8;border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #0A0A1A,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
         <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.25),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
         <div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">📖</div>
         <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">Mindful Stories</div>
@@ -1098,7 +1098,7 @@ input::placeholder { color:#aaa !important; }
     <!-- UNIFIED Play & Learn section -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin:8px 0 10px;padding:0 4px;">
       <h2 style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:#3B1578;margin:0;">🌟 Play &amp; Learn</h2>
-      <a id="seeAllGamesLink" href="#" onclick="(function(){window._showAll=!window._showAll;if(window._rebuildTiles)window._rebuildTiles();var el=document.getElementById('seeAllGamesLink');if(el)el.textContent=window._showAll?'Show less':'See all \u2192';})()" style="font-size:.78rem;font-weight:700;color:#5B2D9E;text-decoration:none;padding:5px 12px;border-radius:20px;background:rgba(91,45,158,.08);border:1px solid rgba(91,45,158,.15);">See all \u2192</a>
+      <a id="seeAllGamesLink" href="#" onclick="(function(){window._showAll=!window._showAll;if(window._rebuildTiles)window._rebuildTiles();var el=document.getElementById('seeAllGamesLink');if(el)el.textContent=window._showAll?'Show less':'See all &rarr;';})()" style="font-size:.78rem;font-weight:700;color:#5B2D9E;text-decoration:none;padding:5px 12px;border-radius:20px;background:rgba(91,45,158,.08);border:1px solid rgba(91,45,158,.15);">See all &rarr;</a>
     </div>
 
     <div class="section-title" id="subjectsTitle" style="display:none;">📖 Today's Subjects</div>
@@ -10338,7 +10338,7 @@ function openInAppVideo(title, videoId) {
 
   // Header
   var hdr = document.createElement('div');
-  hdr.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#1A1A2E;flex-shrink:0;';
+  hdr.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#6B5EA8;flex-shrink:0;';
   hdr.innerHTML = '<div style="font-family:Baloo 2,cursive;font-size:.95rem;font-weight:800;color:white;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:75%;">📖 ' + title + '</div>';
   var closeBtn = document.createElement('button');
   closeBtn.textContent = '✕ Close';
@@ -10362,7 +10362,7 @@ function openInAppVideo(title, videoId) {
 
   // Footer
   var ftr = document.createElement('div');
-  ftr.style.cssText = 'display:flex;gap:8px;padding:10px 16px;background:#1A1A2E;flex-shrink:0;';
+  ftr.style.cssText = 'display:flex;gap:8px;padding:10px 16px;background:#6B5EA8;flex-shrink:0;';
   var doneBtn = document.createElement('button');
   doneBtn.textContent = '📖 I Read This! +10 Stars';
   doneBtn.style.cssText = 'flex:1;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;border:none;border-radius:40px;padding:12px;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;';
@@ -11922,6 +11922,10 @@ function openPassageReader(grade) {
       qCard.style.cssText='background:white;border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 4px 14px rgba(29,78,216,.1);';
       qCard.innerHTML='<div style="font-family:Baloo 2,cursive;font-size:1.05rem;font-weight:800;color:#1E3A5F;line-height:1.5;">'+q.q+'</div>';
       body.appendChild(qCard);
+      if(window.makeVisualAid){
+        var _va2=makeVisualAid(q.q||'',typeof activeGrade!=='undefined'?String(activeGrade):'0');
+        if(_va2){var _ve2=document.createElement('div');_ve2.innerHTML=_va2;body.appendChild(_ve2);}
+      }
 
       var answered=false;
       // Shuffle options so correct answer isn't always in same position
@@ -12298,6 +12302,11 @@ function openDinoStories(grade) {
       qCard.style.cssText = 'background:white;border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 4px 14px rgba(0,0,0,.1);text-align:center;';
       qCard.innerHTML = '<div style="font-family:Baloo 2,cursive;font-size:1.1rem;font-weight:800;color:#1a2a1a;line-height:1.4;">'+q.q+'</div>';
       body.appendChild(qCard);
+      // Visual learning aid - insert after question card
+      if(window.makeVisualAid){
+        var _va=makeVisualAid(q.q||'', typeof activeGrade!=='undefined'?String(activeGrade):'0');
+        if(_va){var _ve=document.createElement('div');_ve.innerHTML=_va;body.appendChild(_ve);}
+      }
 
       var answered = false;
       q.opts.forEach(function(opt, i) {
@@ -12440,8 +12449,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v430</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v430</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v431</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v431</div>
 
 </body>
 </html
