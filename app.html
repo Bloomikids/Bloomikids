@@ -1098,7 +1098,7 @@ input::placeholder { color:#aaa !important; }
     <!-- UNIFIED Play & Learn section -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin:8px 0 10px;padding:0 4px;">
       <h2 style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:#3B1578;margin:0;">🌟 Play &amp; Learn</h2>
-      <a id="seeAllGamesLink" href="#" onclick="(function(){window._showAll=!window._showAll;if(window._rebuildTiles)window._rebuildTiles();var el=document.getElementById('seeAllGamesLink');if(el)el.textContent=window._showAll?'Show less':'See all &rarr;';})()" style="font-size:.78rem;font-weight:700;color:#5B2D9E;text-decoration:none;padding:5px 12px;border-radius:20px;background:rgba(91,45,158,.08);border:1px solid rgba(91,45,158,.15);">See all &rarr;</a>
+      <a id="seeAllGamesLink" href="#" onclick="if(window._rebuildTiles){window._showAll=!window._showAll;window._rebuildTiles();var el=document.getElementById('seeAllGamesLink');if(el)el.textContent=window._showAll?'Show less \u2191':'See all \u2192';}" style="font-size:.78rem;font-weight:700;color:#5B2D9E;text-decoration:none;padding:5px 12px;border-radius:20px;background:rgba(91,45,158,.08);border:1px solid rgba(91,45,158,.15);">See all &rarr;</a>
     </div>
 
     <div class="section-title" id="subjectsTitle" style="display:none;">📖 Today's Subjects</div>
@@ -4144,6 +4144,9 @@ var CURATED_GAMES = {
     }
   }
   renderTiles();
+  // Expose for See All button
+  window._rebuildTiles = renderTiles;
+  window._showAll = false;
 }
 
 // v380: fullscreen "See all Games" overlay
@@ -12464,8 +12467,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v432</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v432</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v433</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v433</div>
 
 </body>
 </html
