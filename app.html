@@ -844,7 +844,7 @@ input::placeholder { color:#aaa !important; }
 .correct-bounce{animation:bounceIn .4s ease both!important;}
 .wrong-shake{animation:shakeIt .4s ease both!important;}
 
-#bloomyReaction{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) scale(0);z-index:9997;pointer-events:none;background:white;border-radius:20px;padding:12px 18px;box-shadow:0 8px 32px rgba(0,0,0,.18);display:flex;align-items:center;gap:10px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.95rem;color:#1A1033;transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .3s;opacity:0;max-width:320px;}
+#bloomyReaction{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) scale(0);z-index:99999;pointer-events:none;background:white;border-radius:20px;padding:12px 18px;box-shadow:0 8px 32px rgba(0,0,0,.18);display:flex;align-items:center;gap:10px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.95rem;color:#1A1033;transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .3s;opacity:0;max-width:320px;}
 #bloomyReaction.show{transform:translateX(-50%) scale(1);opacity:1;}
 #bloomyReaction img{width:38px;height:38px;object-fit:contain;}
 </style>
@@ -856,7 +856,7 @@ input::placeholder { color:#aaa !important; }
 <div id="offlineBanner">📡 You're offline -- progress saves when you reconnect!</div>
 <div id="toast"></div>
 <div id="celebOverlay"></div>
-  <div id="bloomyReaction"><img src="bloomy_wave.png" alt="" style="width:38px;height:38px;object-fit:contain;"><span id="bloomyReactionText">Amazing!</span></div>
+  <div id="bloomyReaction"><span style="font-size:1.8rem;line-height:1;">&#127807;</span><span id="bloomyReactionText">Amazing!</span></div>
 <div id="birthdayOverlay" style="position:fixed;inset:0;z-index:9999;background:rgba(45,45,78,.88);display:none;align-items:center;justify-content:center;flex-direction:column;">
   <div class="birthday-card" id="birthdayCard" style="background:white;border-radius:36px;padding:48px 40px;text-align:center;max-width:380px;width:90%;box-shadow:0 24px 80px rgba(45,45,78,.4);position:relative;overflow:hidden;">
     <div style="font-size:3.5rem;margin-bottom:12px;animation:bounce 1s infinite;">🎂🎉🎈</div>
@@ -3986,7 +3986,6 @@ var CURATED_GAMES = {
       // Stories & Play
       {icon:'🦕', label:'Dino Stories',         fn:"openDinoStories('K')",   color:'#1a472a'},
       {icon:'📚', label:'Busy Book',            fn:"openBusyBook('K')",      color:'#0369A1'},
-      {icon:'\U0001F3A8', label:'Art Studio', fn:"switchTab('art')", color:'#EC4899'},
     ],
     1: [
       // Language & Literacy
@@ -4004,7 +4003,6 @@ var CURATED_GAMES = {
       // Stories
       {icon:'🦕', label:'Dino Stories',         fn:"openDinoStories('1')",   color:'#1a472a'},
       {icon:'📚', label:'Busy Book',            fn:"openBusyBook('1')",      color:'#0369A1'},
-      {icon:'\U0001F3A8', label:'Art Studio', fn:"switchTab('art')", color:'#EC4899'},
     ],
     2: [
       // Language & Literacy
@@ -4020,7 +4018,6 @@ var CURATED_GAMES = {
       {icon:'🌍', label:'Social Studies',       fn:"openSSGame('2')",        color:'#F59E0B'},
       // Activities
       {icon:'📚', label:'Busy Book',            fn:"openBusyBook('2')",      color:'#0369A1'},
-      {icon:'\U0001F3A8', label:'Art Studio', fn:"switchTab('art')", color:'#EC4899'},
     ],
     3: [
       // Language & Literacy
@@ -4036,14 +4033,12 @@ var CURATED_GAMES = {
       {icon:'🗺️', label:'Map Mission',          fn:"openSSGame('3')",        color:'#F59E0B'},
       // Activities
       {icon:'📚', label:'Busy Book',            fn:"openBusyBook('3')",      color:'#0369A1'},
-      {icon:'\U0001F3A8', label:'Art Studio', fn:"switchTab('art')", color:'#EC4899'},
     ],
     4: [
       // Language & Literacy
       {icon:'🌸', label:'Grammar Garden',       fn:"openLangGame('4')",      color:'#EC4899'},
       {icon:'📖', label:'Vocabulary Vault',     fn:"openLangGame('4')",      color:'#1D4ED8'},
       {icon:'✍️', label:'Story Relay',          fn:"openPassageReader('4')", color:'#F59E0B'},
-      {icon:'&#127912;', label:'Art Studio', fn:"switchTab('art')", color:'#EC4899'},
       // Math
       {icon:'🍕', label:'Fraction Feast',       fn:"openMathGame('4')",      color:'#0EA5E9'},
       {icon:'📐', label:'Angles Sort',          fn:"openColorsGame('4')",    color:'#8B5CF6'},
@@ -4052,7 +4047,6 @@ var CURATED_GAMES = {
       {icon:'🌍', label:'Social Studies',       fn:"openSSGame('4')",        color:'#D97706'},
       // Reading
       {icon:'📖', label:'Reading Corner',       fn:"openPassageReader('4')", color:'#4C1D95'},
-      {icon:'\U0001F3A8', label:'Art Studio', fn:"switchTab('art')", color:'#EC4899'},
     ],
     5: [
       // Language & Literacy
@@ -4068,7 +4062,6 @@ var CURATED_GAMES = {
       // Fun & Challenge
       {icon:'🏆', label:'Jeopardy',             fn:"openJeopardy()",         color:'#F59E0B'},
       {icon:'🔬', label:'Research Race',        fn:"openScienceGame('5')",   color:'#0EA5E9'},
-      {icon:'\U0001F3A8', label:'Art Studio', fn:"switchTab('art')", color:'#EC4899'},
     ],
   };
 
@@ -4130,7 +4123,7 @@ var CURATED_GAMES = {
 
   var _showAll = false;
   function renderTiles() {
-    var toShow = _showAll ? games : curated;
+    var toShow = window._showAll ? games : curated;
     var grid = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">'
       + toShow.map(_makeTile).join('')
       + '</div>';
@@ -4140,7 +4133,7 @@ var CURATED_GAMES = {
     // Wire See More button
     var btn = container.querySelector('#seeMoreGamesBtn');
     if (btn) {
-      btn.onclick = function() { _showAll = true; renderTiles(); };
+      btn.onclick = function() { window._showAll = true; renderTiles(); };
     }
   }
   renderTiles();
@@ -5899,6 +5892,10 @@ function switchTab(tab) {
     newPanel.style.animation = 'none';
     newPanel.classList.add('active');
     requestAnimationFrame(function(){ newPanel.style.animation = ''; });
+    // Scroll to top of app when switching tabs
+    var appEl = document.getElementById('mainApp');
+    if(appEl) appEl.scrollTop = 0;
+    window.scrollTo(0,0);
   }
   // Hide My Progress section title when not on home/academics tab
   var progHeader = document.getElementById('myProgressHeader');
@@ -5934,15 +5931,30 @@ function makeVisualAid(question, grade) {
   var nums = q.match(/\d+\.?\d*/g) || [];
   var n1 = parseInt(nums[0]) || 0, n2 = parseInt(nums[1]) || 0;
   
-  // ADDITION: show counting objects for PreK-Grade 2
+  // ADDITION: ten-frame style counting for PreK-Grade 2
   if ((q.indexOf('+') > -1 || q.toLowerCase().indexOf('add') > -1) && g <= 2 && n1 > 0 && n1 <= 10 && n2 > 0 && n2 <= 10) {
-    var d1='', d2='';
-    for(var i=0;i<n1;i++) d1+='<span style="font-size:1.5rem;">&#127822;</span>';
-    for(var i=0;i<n2;i++) d2+='<span style="font-size:1.5rem;">&#128152;</span>';
-    return '<div style="background:#F0FFF4;border-radius:14px;padding:12px;margin:10px 0;text-align:center;border:1.5px solid rgba(34,197,94,.2);">'
-      +'<div style="font-size:.65rem;font-weight:800;color:#065F46;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:6px;">Count with Bloomy!</div>'
-      +'<div style="display:flex;flex-wrap:wrap;gap:3px;justify-content:center;align-items:center;">'+d1
-      +'<span style="font-size:1.6rem;font-weight:900;margin:0 6px;color:#5B2D9E;">+</span>'+d2+'</div></div>';
+    // Build rows of 5 (ten-frame style)
+    function makeDots(n, color) {
+      var rows = '';
+      for(var row=0; row<Math.ceil(n/5); row++) {
+        var rowDots = '';
+        for(var d=0; d<5; d++) {
+          var dotN = row*5+d;
+          rowDots += dotN < n
+            ? '<span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:'+color+';margin:2px;box-shadow:0 2px 4px rgba(0,0,0,.15);"></span>'
+            : '<span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.06);margin:2px;"></span>';
+        }
+        rows += '<div style="display:flex;gap:2px;">'+rowDots+'</div>';
+      }
+      return rows;
+    }
+    return '<div style="background:#F0FFF4;border-radius:14px;padding:12px 16px;margin:10px 0;text-align:center;border:1.5px solid rgba(34,197,94,.2);">'
+      +'<div style="font-size:.65rem;font-weight:800;color:#065F46;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px;">Count with Bloomy!</div>'
+      +'<div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;">'
+      +'<div style="text-align:center;"><div style="font-size:.7rem;font-weight:700;color:#065F46;margin-bottom:4px;">'+n1+'</div>'+makeDots(n1,'#22c55e')+'</div>'
+      +'<span style="font-size:2rem;font-weight:900;color:#5B2D9E;line-height:1;">+</span>'
+      +'<div style="text-align:center;"><div style="font-size:.7rem;font-weight:700;color:#1D4ED8;margin-bottom:4px;">'+n2+'</div>'+makeDots(n2,'#3B82F6')+'</div>'
+      +'</div></div>';
   }
   
   // SUBTRACTION: show crossed-out objects
@@ -6011,6 +6023,40 @@ function injectVisualAid(question, grade) {
 window.makeVisualAid = makeVisualAid;
 window.injectVisualAid = injectVisualAid;
 window.showHint = showHint;
+
+
+// ══ HOW TO PLAY intro cards ══
+var _GAME_INTROS = {
+  'math':        {emoji:'&#x1F913;', title:'Math Time!',       desc:'Read each question and tap the answer you think is correct. Take your time!'},
+  'wordbuilder': {emoji:'&#x1F9E9;', title:'Word Builder',     desc:'Tap the scrambled letters in the right order to spell the word. Use Back to remove the last letter.'},
+  'counting':    {emoji:'&#x1F449;', title:'Count It!',        desc:'Look at the picture and count the objects carefully. Then tap the number you counted.'},
+  'reading':     {emoji:'&#x1F4D6;', title:'Reading Time!',    desc:'Read the passage carefully, then answer the questions. Look for clues in the text!'},
+  'science':     {emoji:'&#x1F52C;', title:'Wonder Lab',       desc:'Sort the items into the right groups. Read each one and decide where it belongs.'},
+  'worldquest':  {emoji:'&#x1F30D;', title:'World Quest',      desc:'Read the Did You Know fact first, then answer the question. Every answer teaches something new!'},
+  'kindness':    {emoji:'&#x1F49B;', title:'Kindness Corner',  desc:'Read the situation and choose the kindest response. There is always a kind choice!'},
+  'numberline':  {emoji:'&#x1F4CA;', title:'Number Lines',     desc:'A number line shows numbers in order from small (left) to big (right). Find where your number fits between the others!'},
+  'shop':        {emoji:'&#x1F6D2;', title:'Shop Math',        desc:'You are shopping! Look at the price and figure out how much to pay or how much change you get back.'},
+  'fraction':    {emoji:'&#x1F355;', title:'Fraction Feast',   desc:'A fraction shows part of a whole. The bottom number is how many equal pieces total. The top is how many you have.'},
+};
+
+function showGameIntro(type, onStart) {
+  var intro = _GAME_INTROS[type];
+  if (!intro) { if(onStart) onStart(); return; }
+  var seenKey = 'intro_'+type;
+  if (sessionStorage.getItem(seenKey)) { if(onStart) onStart(); return; }
+  var ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:20px;';
+  var card = document.createElement('div');
+  card.style.cssText = 'background:white;border-radius:28px;padding:32px 28px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3);';
+  card.innerHTML = '<div style="font-size:3.5rem;margin-bottom:12px;">'+intro.emoji+'</div>'
+    +'<div style="font-family:Baloo 2,cursive;font-size:1.3rem;font-weight:800;color:#1A1033;margin-bottom:10px;">'+intro.title+'</div>'
+    +'<div style="font-size:.9rem;line-height:1.65;color:#6B5B8A;margin-bottom:24px;">'+intro.desc+'</div>'
+    +'<button onclick="sessionStorage.setItem(\''+seenKey+'\',\'1\');this.closest(\'div\').parentNode.remove();if(typeof _gameIntroCallback===\'function\'){_gameIntroCallback();_gameIntroCallback=null;}" style="width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#5B2D9E,#8B5CF6);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Got it! Let\'s go! &#127919;</button>';
+  ov.appendChild(card);
+  document.body.appendChild(ov);
+  window._gameIntroCallback = onStart;
+}
+window.showGameIntro = showGameIntro;
 
 function showCorrectCelebration() {
   if(window.showBloomyReaction)showBloomyReaction(true);
@@ -7596,6 +7642,7 @@ function gameWinScreen(score, total, colorA, colorB, ovId) {
 //  G4-5: place value, estimation, multiplication, division
 // ══════════════════════════════════════════════════════════════════════
 function openMathGame(grade) {
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_math')){window._gameIntroCallback=function(){openMathGame(grade);};showGameIntro('math',window._gameIntroCallback);return;}
   var earlyGradeOv = ['PreK','K','1'].indexOf(grade) >= 0;
   var CA = earlyGradeOv ? '#C0392B' : '#6C3FC5';
   var CB = earlyGradeOv ? '#E74C3C' : '#A78BFA';
@@ -8196,6 +8243,7 @@ function openMathGame(grade) {
 //  2. LANGUAGE ARTS — WORD BUILDER + FILL-IN-THE-BLANK STORIES
 // ══════════════════════════════════════════════════════════════════════
 function openLangGame(grade) {
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_wordbuilder')){window._gameIntroCallback=function(){openLangGame(grade);};showGameIntro('wordbuilder',window._gameIntroCallback);return;}
   var CA='#E55C6C', CB='#FF9A8B';
   var ov = gameOverlay('langGameOv','#FFF5F5');
   document.body.appendChild(ov);
@@ -12467,8 +12515,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v433</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v433</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v434</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v434</div>
 
 </body>
 </html
