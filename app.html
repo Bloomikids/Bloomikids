@@ -1081,7 +1081,7 @@ input::placeholder { color:#aaa !important; }
         <div style="font-size:.66rem;font-weight:700;opacity:.85;position:relative;z-index:1;">Pause &amp; reset</div>
       </div>
       <!-- Mindful Stories (NEW full feature) -->
-      <div onclick="openMindfulStories()" style="background:#6B5EA8;border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #0A0A1A,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
+      <div onclick="openMindfulStories()" style="background:#3B82F6;border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #2563EB,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
         <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.25),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
         <div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">📖</div>
         <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">Mindful Stories</div>
@@ -1136,7 +1136,7 @@ input::placeholder { color:#aaa !important; }
     <div id="quizFeedback" style="display:none"></div>
     <button id="nextBtn" class="next-btn" onclick="nextQuestion()" style="display:none;margin-top:16px;width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Next ➡</button>
 
-    <div class="section-title">📈 My Progress</div>
+    <div class="section-title" id="myProgressHeader">📈 My Progress</div>
     <div class="progress-section" id="progressSection"></div>
   </div>
 
@@ -1144,7 +1144,7 @@ input::placeholder { color:#aaa !important; }
   <div class="panel" id="panel-yoga">
     <!-- v383: Home button -->
     <div style="display:flex;align-items:center;gap:10px;padding:8px 0 4px;">
-      <button onclick="switchTab('academics')" style="display:none;">✕</button>
+      <button onclick="switchTab('academics')" style="background:rgba(91,45,158,.1);border:1.5px solid rgba(91,45,158,.2);border-radius:40px;padding:8px 18px;font-family:Nunito,sans-serif;font-weight:700;font-size:.85rem;color:#5B2D9E;cursor:pointer;">✕</button>
       <span style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1.05rem;color:#2D1B3D;">🧘 Mindful Moments</span>
     </div>
     <!-- -- MUSIC PLAYER -- -->
@@ -1201,7 +1201,7 @@ input::placeholder { color:#aaa !important; }
   <div class="panel" id="panel-art">
     <!-- v383: Home button for Art panel (not a fixed overlay so global injector doesn't reach it) -->
     <div style="display:flex;align-items:center;gap:10px;padding:8px 0 4px;">
-      <button onclick="switchTab('academics')" style="display:none;">✕</button>
+      <button onclick="switchTab('academics')" style="background:rgba(91,45,158,.1);border:1.5px solid rgba(91,45,158,.2);border-radius:40px;padding:8px 18px;font-family:Nunito,sans-serif;font-weight:700;font-size:.85rem;color:#5B2D9E;cursor:pointer;">✕</button>
       <span style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1.05rem;color:#2D1B3D;">🎨 Create</span>
     </div>
     <div class="art-hero" id="artHero">
@@ -1262,7 +1262,7 @@ input::placeholder { color:#aaa !important; }
   <div class="panel" id="panel-reading">
     <!-- v383: Home button -->
     <div style="display:flex;align-items:center;gap:10px;padding:8px 0 4px;">
-      <button onclick="switchTab('academics')" style="display:none;">✕</button>
+      <button onclick="switchTab('academics')" style="background:rgba(91,45,158,.1);border:1.5px solid rgba(91,45,158,.2);border-radius:40px;padding:8px 18px;font-family:Nunito,sans-serif;font-weight:700;font-size:.85rem;color:#5B2D9E;cursor:pointer;">✕</button>
       <span style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1.05rem;color:#2D1B3D;">📖 Stories</span>
     </div>
     <div class="stats-row">
@@ -5897,6 +5897,12 @@ function switchTab(tab) {
     newPanel.classList.add('active');
     requestAnimationFrame(function(){ newPanel.style.animation = ''; });
   }
+  // Hide My Progress section title when not on home/academics tab
+  var progHeader = document.getElementById('myProgressHeader');
+  var progSection = document.getElementById('progressSection');
+  var showProg = (tab === 'academics');
+  if (progHeader) progHeader.style.display = showProg ? '' : 'none';
+  if (progSection) progSection.style.display = showProg ? '' : 'none';
 }
 
 
@@ -9225,9 +9231,18 @@ window.openKindnessCorner=openKindnessCorner;
 function openEvidenceExplorer(){
   var CA='#1D4ED8',CB='#3B82F6';
   var PASSAGES=[
-    {text:'Penguins live in Antarctica. They cannot fly, but they are excellent swimmers. Their black and white feathers help them blend in the ocean. Emperor penguins are the tallest and can grow up to 4 feet tall!',q:'What helps penguins blend into the ocean?',opts:['Their black and white feathers','Their sharp claws','Their long beaks','Their size'],a:0,e:'The passage says their black and white feathers help them blend in the ocean.'},
-    {text:'The Amazon rainforest produces 20% of the world oxygen. It is home to over 3 million species. Scientists call it the lungs of the Earth because of all the oxygen it creates.',q:'Why do scientists call the Amazon the lungs of the Earth?',opts:['It breathes like humans','It creates large amounts of oxygen','It looks like lungs on a map','It has the most animals'],a:1,e:'The passage says scientists call it the lungs of the Earth because of all the oxygen it creates.'},
-    {text:'Marie Curie was the first woman to win a Nobel Prize and the only person to win it in two different sciences - Physics and Chemistry. She discovered the elements polonium and radium.',q:'What makes Marie Curie unique in Nobel Prize history?',opts:['She was the youngest winner','She won in two different sciences','She declined the prize','She won it three times'],a:1,e:'The passage says she is the only person to win it in two different sciences.'},
+    {text:'Penguins live in Antarctica. They cannot fly, but they are excellent swimmers. Their black and white feathers help them blend in the ocean. Emperor penguins are the tallest and can grow up to 4 feet tall!',q:'What helps penguins blend into the ocean?',opts:['Their sharp claws','Their long beaks','Their black and white feathers','Their size'],a:2,e:'The passage says their black and white feathers help them blend in the ocean.'},
+    {text:'The Amazon rainforest produces 20% of the world\'s oxygen. It is home to over 3 million species. Scientists call it the lungs of the Earth because of all the oxygen it creates. Deforestation threatens this vital ecosystem every year.',q:'Why do scientists call the Amazon the lungs of the Earth?',opts:['It looks like lungs on a map','It has the most animals','It breathes like humans','It creates large amounts of oxygen'],a:3,e:'The passage says scientists call it the lungs of the Earth because of all the oxygen it creates.'},
+    {text:'Marie Curie was the first woman to win a Nobel Prize and the only person to win it in two different sciences - Physics and Chemistry. She discovered the elements polonium and radium and conducted groundbreaking research on radioactivity.',q:'What makes Marie Curie unique in Nobel Prize history?',opts:['She declined the prize','She won it three times','She was the youngest winner','She won in two different sciences'],a:3,e:'The passage says she is the only person to win it in two different sciences.'},
+    {text:'Bees are essential pollinators. When bees visit flowers to collect nectar, pollen sticks to their bodies and gets carried to the next flower. Without bees, many plants could not reproduce and food crops would fail.',q:'According to the passage, what happens when bees visit flowers?',opts:['The flowers die faster','Bees make honey immediately','Pollen sticks to their bodies and gets carried to other flowers','The nectar disappears'],a:2,e:'The passage explains that pollen sticks to their bodies and gets carried to the next flower.'},
+    {text:'The Great Wall of China stretches over 13,000 miles. It was built over many centuries by different Chinese emperors to protect their kingdoms from invasions. Millions of workers, including soldiers and peasants, built the wall using stone, brick, and earth.',q:'According to the passage, why was the Great Wall of China built?',opts:['To show off Chinese wealth','To keep trade routes open','To protect kingdoms from invasions','To train soldiers'],a:2,e:'The passage states it was built to protect their kingdoms from invasions.'},
+    {text:'The water cycle is the continuous movement of water on Earth. Water evaporates from oceans and lakes, forms clouds, falls as rain or snow, and flows back to the ocean through rivers. This cycle has been repeating for billions of years.',q:'What is the first step of the water cycle described in the passage?',opts:['Water flows through rivers','Water forms clouds','Water falls as rain or snow','Water evaporates from oceans and lakes'],a:3,e:'The passage says the cycle begins with water evaporating from oceans and lakes.'},
+    {text:'Thomas Edison invented the practical light bulb in 1879 after more than 1,000 failed experiments. When a reporter asked how it felt to fail so many times, Edison replied that he had not failed but had found 1,000 ways that did not work.',q:'How did Edison describe his many failed experiments?',opts:['He said they were a waste of time','He said he had found 1,000 ways that did not work','He said he was going to give up soon','He said he had only failed a few times'],a:1,e:'Edison said he had not failed but had found 1,000 ways that did not work.'},
+    {text:'Coral reefs cover less than 1% of the ocean floor but support about 25% of all marine species. They are sometimes called the rainforests of the sea. Rising ocean temperatures caused by climate change are causing coral bleaching, which can kill entire reef systems.',q:'Why are coral reefs important according to the passage?',opts:['They cover most of the ocean floor','They support about 25% of all marine species','They produce most of the world\'s oxygen','They are the oldest structures on Earth'],a:1,e:'The passage states coral reefs support about 25% of all marine species.'},
+    {text:'In 1969, astronaut Neil Armstrong became the first human to walk on the moon. He described the surface as fine and powdery. The mission, called Apollo 11, carried three astronauts. Armstrong\'s famous words were: "That\'s one small step for man, one giant leap for mankind."',q:'What did Neil Armstrong say the moon surface felt like?',opts:['Hard and rocky','Slippery and wet','Cold and icy','Fine and powdery'],a:3,e:'Armstrong described the surface as fine and powdery.'},
+    {text:'Wolves play a critical role in their ecosystems. When wolves were reintroduced to Yellowstone National Park in 1995, they hunted deer and elk. This caused those animals to avoid certain areas, allowing riverside plants to grow back. The plants reduced erosion and changed the course of rivers.',q:'What unexpected result happened when wolves were reintroduced to Yellowstone?',opts:['The deer population doubled','The rivers changed course','The wolves left the park','The plants were destroyed'],a:1,e:'The passage explains the plants grew back, reduced erosion, and changed the course of rivers.'},
+    {text:'Plastic pollution is one of the greatest environmental challenges. Every year, 8 million metric tons of plastic enter the ocean. Plastic breaks into tiny pieces called microplastics that fish eat. Scientists have found microplastics in human blood, showing the problem affects people too.',q:'What evidence does the passage give that plastic pollution affects humans?',opts:['Humans eat fish with microplastics','Scientists found microplastics in human blood','Plastic washes up on beaches people visit','Drinking water contains plastic bottles'],a:1,e:'The passage states that scientists have found microplastics in human blood.'},
+    {text:'The Library of Alexandria in ancient Egypt was once the largest library in the world. It held hundreds of thousands of scrolls on science, poetry, and philosophy. Scholars traveled from around the world to study there. The library was gradually destroyed over several centuries.',q:'According to the passage, what was special about the Library of Alexandria?',opts:['It was the most expensive building ever built','It was the largest library in the world','It was built by a famous pharaoh','It only held science books'],a:1,e:'The passage describes it as once the largest library in the world.'},
   ];
   var idx=0,score=0;
   var ov=document.createElement('div');ov.id='evidenceOv';ov.style.cssText='position:fixed;inset:0;z-index:9999;background:#EFF6FF;display:flex;flex-direction:column;';document.body.appendChild(ov);
@@ -10338,7 +10353,7 @@ function openInAppVideo(title, videoId) {
 
   // Header
   var hdr = document.createElement('div');
-  hdr.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#6B5EA8;flex-shrink:0;';
+  hdr.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#3B82F6;flex-shrink:0;';
   hdr.innerHTML = '<div style="font-family:Baloo 2,cursive;font-size:.95rem;font-weight:800;color:white;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:75%;">📖 ' + title + '</div>';
   var closeBtn = document.createElement('button');
   closeBtn.textContent = '✕ Close';
@@ -10362,7 +10377,7 @@ function openInAppVideo(title, videoId) {
 
   // Footer
   var ftr = document.createElement('div');
-  ftr.style.cssText = 'display:flex;gap:8px;padding:10px 16px;background:#6B5EA8;flex-shrink:0;';
+  ftr.style.cssText = 'display:flex;gap:8px;padding:10px 16px;background:#3B82F6;flex-shrink:0;';
   var doneBtn = document.createElement('button');
   doneBtn.textContent = '📖 I Read This! +10 Stars';
   doneBtn.style.cssText = 'flex:1;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;border:none;border-radius:40px;padding:12px;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;';
@@ -12449,8 +12464,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v431</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v431</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v432</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v432</div>
 
 </body>
 </html
