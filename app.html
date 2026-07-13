@@ -1005,9 +1005,13 @@ input::placeholder { color:#aaa !important; }
   </div>
 
   <!-- ACADEMICS panel: continue card + games section header + dynamic grade tiles -->
-  <div class="panel active" id="panel-academics">
-    <!-- Botanical leaf decorations -->
-    <div style="position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;overflow:hidden;">
+  <div class="panel active" id="panel-academics" style="position:relative;">
+    <!-- Botanical leaf decorations (fixed 2025: was position:fixed, got trapped by the panel's
+         slideUp animation leaving transform:translateY(0) applied via fill-mode:both, which makes
+         this panel a containing block for fixed descendants. Switched to absolute + negative
+         z-index so it scrolls with the content and sits behind everything, and added more leaves
+         for fuller coverage down the page. ) -->
+    <div style="position:absolute;top:0;left:0;right:0;pointer-events:none;z-index:-1;">
       <svg style="position:absolute;top:-20px;right:-30px;opacity:.18;width:180px;" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M100 280 C100 280 20 200 20 120 C20 60 60 20 100 10 C140 20 180 60 180 120 C180 200 100 280 100 280Z" fill="#4A9A5A"/>
         <path d="M100 280 L100 10" stroke="#3A7A4A" stroke-width="3" opacity=".5"/>
@@ -1015,11 +1019,26 @@ input::placeholder { color:#aaa !important; }
         <path d="M100 140 C120 120 160 110 170 90" stroke="#3A7A4A" stroke-width="2" opacity=".4"/>
         <path d="M100 180 C80 165 50 160 40 140" stroke="#3A7A4A" stroke-width="2" opacity=".4"/>
       </svg>
-      <svg style="position:absolute;bottom:80px;left:-20px;opacity:.12;width:140px;transform:scaleX(-1)rotate(20deg);" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg style="position:absolute;top:270px;left:-25px;opacity:.13;width:130px;transform:rotate(-15deg);" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M100 280 C100 280 20 200 20 120 C20 60 60 20 100 10 C140 20 180 60 180 120 C180 200 100 280 100 280Z" fill="#5EAD6A"/>
         <path d="M100 280 L100 10" stroke="#4A8A5A" stroke-width="3" opacity=".5"/>
         <path d="M100 100 C80 80 40 70 30 50" stroke="#4A8A5A" stroke-width="2" opacity=".4"/>
         <path d="M100 160 C120 140 155 135 165 115" stroke="#4A8A5A" stroke-width="2" opacity=".4"/>
+      </svg>
+      <svg style="position:absolute;top:520px;right:-20px;opacity:.16;width:110px;transform:rotate(25deg);" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 280 C100 280 20 200 20 120 C20 60 60 20 100 10 C140 20 180 60 180 120 C180 200 100 280 100 280Z" fill="#4A9A5A"/>
+        <path d="M100 280 L100 10" stroke="#3A7A4A" stroke-width="3" opacity=".5"/>
+        <path d="M100 100 C80 80 40 70 30 50" stroke="#3A7A4A" stroke-width="2" opacity=".4"/>
+      </svg>
+      <svg style="position:absolute;top:760px;left:-30px;opacity:.13;width:150px;transform:scaleX(-1)rotate(10deg);" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 280 C100 280 20 200 20 120 C20 60 60 20 100 10 C140 20 180 60 180 120 C180 200 100 280 100 280Z" fill="#5EAD6A"/>
+        <path d="M100 280 L100 10" stroke="#4A8A5A" stroke-width="3" opacity=".5"/>
+        <path d="M100 140 C120 120 160 110 170 90" stroke="#4A8A5A" stroke-width="2" opacity=".4"/>
+      </svg>
+      <svg style="position:absolute;top:1020px;right:-25px;opacity:.15;width:120px;transform:rotate(-30deg);" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 280 C100 280 20 200 20 120 C20 60 60 20 100 10 C140 20 180 60 180 120 C180 200 100 280 100 280Z" fill="#4A9A5A"/>
+        <path d="M100 280 L100 10" stroke="#3A7A4A" stroke-width="3" opacity=".5"/>
+        <path d="M100 100 C80 80 40 70 30 50" stroke="#3A7A4A" stroke-width="2" opacity=".4"/>
       </svg>
     </div>
     <!-- Continue where you left off -->
@@ -1053,6 +1072,14 @@ input::placeholder { color:#aaa !important; }
     <!-- Daily Mission (compact - 1 line) -->
     <div class="bloomi-daily-mission" id="bloomiMission" style="background:linear-gradient(135deg,#E8856A,#D4735A);border-radius:20px;padding:16px 18px;margin:0 16px 14px;box-shadow:0 6px 0 #B85D45,0 8px 20px rgba(232,133,106,.3);">
       <div class="bloomi-mission-title" style="margin:0 0 10px;font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:white;text-align:center;">⭐ <span id="missionInline">Today's Mission · 0/3</span></div>
+      <div class="mission-steps" style="margin:2px 4px 8px;">
+        <div class="mission-step locked" id="mstep0">📖</div>
+        <div class="mission-connector" id="mconn0"></div>
+        <div class="mission-step locked" id="mstep1">🎮</div>
+        <div class="mission-connector" id="mconn1"></div>
+        <div class="mission-step locked" id="mstep2">🧘</div>
+      </div>
+      <div style="text-align:center;color:rgba(255,255,255,.85);font-size:.75rem;font-weight:700;margin-bottom:4px;" id="missionCountLabel">0/3 complete</div>
       <div class="bloomi-mission-item" id="mission-quiz" style="display:none;"><div class="bloomi-mission-check" id="mcheck-quiz"></div>Answer 3 questions</div>
       <div class="bloomi-mission-item" id="mission-yoga" style="display:none;"><div class="bloomi-mission-check" id="mcheck-yoga"></div>Try a yoga pose</div>
       <div class="bloomi-mission-item" id="mission-book" style="display:none;"><div class="bloomi-mission-check" id="mcheck-book"></div>Read a book</div>
@@ -3264,7 +3291,8 @@ function updateMissionUI() {
     }
   }
   var lbl = document.getElementById('missionCountLabel');
-  if (lbl) lbl.textContent = Math.min(done,3) + '/3 complete' + (done>=3?' ✓':'');
+  var growthIcons = ['🌰','🌱','🌿','🌸'];
+  if (lbl) lbl.textContent = growthIcons[Math.min(done,3)] + ' ' + Math.min(done,3) + '/3 complete' + (done>=3?' ✓':'');
   // Also update old inline mission
   var inline = document.getElementById('missionInline');
   if (inline) inline.textContent = "Today's Mission · " + Math.min(done,3) + "/3";
@@ -12530,8 +12558,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v435</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v435</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v436</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v436</div>
 
 </body>
 </html
