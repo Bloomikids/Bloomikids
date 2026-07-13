@@ -45,7 +45,7 @@ body.grade-4    { --font-body:1rem; --font-heading:1.5rem; --font-big:2.4rem; }
 body.grade-5    { --font-body:1rem; --font-heading:1.5rem; --font-big:2.4rem; }
 
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Nunito',sans-serif; background:#FFF8F0; background-attachment:fixed; color:var(--text); min-height:100vh; overflow-x:hidden; font-size:var(--font-body); }
+body { font-family:'Nunito',sans-serif; background:linear-gradient(160deg,#E8F5E1 0%,#F0FAF5 45%,#EBF5F0 100%); background-attachment:fixed; color:var(--text); min-height:100vh; overflow-x:hidden; font-size:var(--font-body); }
 
 /* body::before removed — cream bg */
 body::after  { content:''; position:fixed; width:600px; height:600px; background:radial-gradient(circle,#5ECDA028 0%,#4ECDC418 50%,transparent 70%); bottom:-180px; left:-180px; pointer-events:none; z-index:0; }
@@ -967,21 +967,17 @@ input::placeholder { color:#aaa !important; }
   </div>
 
   <!-- v3 HERO: Bloomy mascot + speech bubble greeting -->
-  <div id="v3Hero" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;margin:4px 0 16px;min-height:130px;text-align:center;">
-    <div style="width:130px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;">
-      <div style="position:relative;display:inline-block;">
-        <img id="v3HeroMascot" src="bloomy_wave.png" onclick="bloomiDance()" alt="Bloom" style="max-width:100%;max-height:130px;object-fit:contain;filter:drop-shadow(0 6px 4px rgba(0,0,0,.15));cursor:pointer;">
-        <div id="bloomyAccOverlay" style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:1.8rem;line-height:1;pointer-events:none;z-index:5;"></div>
-      </div>
-      <button onclick="openBloomyWardrobe()" style="background:#FFD166;border:none;border-radius:999px;padding:5px 12px;font-size:.72rem;font-weight:800;color:#5C3A00;cursor:pointer;box-shadow:0 3px 0 #D4A017;font-family:Nunito,sans-serif;">👗 Dress Up</button>
+  <div id="v3Hero" style="display:flex;align-items:flex-start;justify-content:space-between;margin:0 0 4px;min-height:160px;position:relative;padding:16px 16px 0;">
+    <div style="flex:1;padding-top:8px;">
+      <div style="font-family:'Baloo 2',cursive;font-size:.75rem;font-weight:700;color:#5A8A5A;letter-spacing:.5px;margin-bottom:4px;">BloomiKids</div>
+      <div style="font-family:'Baloo 2',cursive;font-size:1.5rem;font-weight:900;color:#3D6B3D;line-height:1.2;margin-bottom:6px;">Ready to bloom<br>today, <span id="v3HeroName">friend</span>?</div>
+      <div style="font-size:.82rem;font-weight:600;color:#6B8F6B;line-height:1.4;" id="v3HeroSub">I picked something fun for us today &#x2728;</div>
+      <button onclick="openBloomyWardrobe()" style="margin-top:10px;background:#FFD166;border:none;border-radius:999px;padding:6px 14px;font-size:.72rem;font-weight:800;color:#5C3A00;cursor:pointer;box-shadow:0 3px 0 #D4A017;font-family:Nunito,sans-serif;">&#x1F457; Dress Up</button>
     </div>
-    <div style="flex:1;background:white;border-radius:18px;padding:12px 14px;position:relative;margin-bottom:14px;box-shadow:0 3px 0 rgba(0,0,0,.06);">
-      <div style="position:absolute;left:-10px;top:18px;width:0;height:0;border-top:8px solid transparent;border-bottom:8px solid transparent;border-right:12px solid white;"></div>
-      <p style="font-family:'Baloo 2',cursive;font-size:1.15rem;font-weight:800;color:#2D1B3D;margin:0 0 2px;line-height:1.2;">Hi <span id="v3HeroName">friend</span>! 👋</p>
-      <p style="font-size:.85rem;font-weight:600;color:#6B5B73;margin:0;line-height:1.4;" id="v3HeroSub">I picked something fun for us today ✨</p>
+    <div style="flex-shrink:0;position:relative;">
+      <img id="v3HeroMascot" src="bloomy_wave.png" onclick="bloomiDance()" alt="Bloom" style="width:145px;height:155px;object-fit:contain;filter:drop-shadow(0 8px 6px rgba(0,0,0,.12));cursor:pointer;display:block;">
+      <div id="bloomyAccOverlay" style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:1.8rem;line-height:1;pointer-events:none;z-index:5;"></div>
     </div>
-  </div>
-
   <!-- Play Today removed - Today's Mission handles this -->
   <!-- Top tabs restored v380 — Art/Move/Read must be accessible -->
   <!-- Tab bar hidden v381 — all sections accessible via home tiles -->
@@ -1010,6 +1006,22 @@ input::placeholder { color:#aaa !important; }
 
   <!-- ACADEMICS panel: continue card + games section header + dynamic grade tiles -->
   <div class="panel active" id="panel-academics">
+    <!-- Botanical leaf decorations -->
+    <div style="position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;overflow:hidden;">
+      <svg style="position:absolute;top:-20px;right:-30px;opacity:.18;width:180px;" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 280 C100 280 20 200 20 120 C20 60 60 20 100 10 C140 20 180 60 180 120 C180 200 100 280 100 280Z" fill="#4A9A5A"/>
+        <path d="M100 280 L100 10" stroke="#3A7A4A" stroke-width="3" opacity=".5"/>
+        <path d="M100 100 C80 80 40 70 30 50" stroke="#3A7A4A" stroke-width="2" opacity=".4"/>
+        <path d="M100 140 C120 120 160 110 170 90" stroke="#3A7A4A" stroke-width="2" opacity=".4"/>
+        <path d="M100 180 C80 165 50 160 40 140" stroke="#3A7A4A" stroke-width="2" opacity=".4"/>
+      </svg>
+      <svg style="position:absolute;bottom:80px;left:-20px;opacity:.12;width:140px;transform:scaleX(-1)rotate(20deg);" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 280 C100 280 20 200 20 120 C20 60 60 20 100 10 C140 20 180 60 180 120 C180 200 100 280 100 280Z" fill="#5EAD6A"/>
+        <path d="M100 280 L100 10" stroke="#4A8A5A" stroke-width="3" opacity=".5"/>
+        <path d="M100 100 C80 80 40 70 30 50" stroke="#4A8A5A" stroke-width="2" opacity=".4"/>
+        <path d="M100 160 C120 140 155 135 165 115" stroke="#4A8A5A" stroke-width="2" opacity=".4"/>
+      </svg>
+    </div>
     <!-- Continue where you left off -->
     <div id="continueCard" style="display:none !important;" class="continue-card" onclick="resumeLastActivity()">
       <div class="continue-card-icon" id="continueIcon">📖</div>
@@ -1039,8 +1051,8 @@ input::placeholder { color:#aaa !important; }
     </div>
 
     <!-- Daily Mission (compact - 1 line) -->
-    <div class="bloomi-daily-mission" id="bloomiMission" style="padding:10px 16px;display:flex;align-items:center;gap:10px;margin-bottom:14px;">
-      <div class="bloomi-mission-title" style="margin:0;">⭐ <span id="missionInline">Today's Mission · 0/3</span></div>
+    <div class="bloomi-daily-mission" id="bloomiMission" style="background:linear-gradient(135deg,#E8856A,#D4735A);border-radius:20px;padding:16px 18px;margin:0 16px 14px;box-shadow:0 6px 0 #B85D45,0 8px 20px rgba(232,133,106,.3);">
+      <div class="bloomi-mission-title" style="margin:0 0 10px;font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:white;text-align:center;">⭐ <span id="missionInline">Today's Mission · 0/3</span></div>
       <div class="bloomi-mission-item" id="mission-quiz" style="display:none;"><div class="bloomi-mission-check" id="mcheck-quiz"></div>Answer 3 questions</div>
       <div class="bloomi-mission-item" id="mission-yoga" style="display:none;"><div class="bloomi-mission-check" id="mcheck-yoga"></div>Try a yoga pose</div>
       <div class="bloomi-mission-item" id="mission-book" style="display:none;"><div class="bloomi-mission-check" id="mcheck-book"></div>Read a book</div>
@@ -1060,34 +1072,34 @@ input::placeholder { color:#aaa !important; }
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;">
       <!-- Yoga & Music (combined) -->
-      <div onclick="v3OpenMindful('yoga')" style="background:#5ECDA0;border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #3FA77F,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
+      <div onclick="v3OpenMindful('yoga')" style="background:linear-gradient(135deg,#C8EDD8,#A8DDB8);border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 4px 0 #7FBD97,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
         <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
         <div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">🧘</div>
         <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">Yoga &amp; Music</div>
         <div style="font-size:.66rem;font-weight:700;opacity:.85;position:relative;z-index:1;">Move &amp; flow</div>
       </div>
       <!-- Breathing -->
-      <div onclick="v3OpenMindful('breathing')" style="background:#9B7FE8;border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #7B5FC8,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
+      <div onclick="v3OpenMindful('breathing')" style="background:linear-gradient(135deg,#DDD5F5,#C8B8F0);border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 4px 0 #A890D8,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
         <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
         <div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">🌬️</div>
         <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">Breathing</div>
         <div style="font-size:.66rem;font-weight:700;opacity:.7;position:relative;z-index:1;">In &amp; out</div>
       </div>
       <!-- Calm Board (separate) -->
-      <div onclick="v3OpenMindful('calmboard')" style="background:#2D7A6B;border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #1F5A4D,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
+      <div onclick="v3OpenMindful('calmboard')" style="background:linear-gradient(135deg,#B8E0D8,#9ACFC5);border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #1F5A4D,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
         <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
         <div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">🌙</div>
         <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">Calm Board</div>
         <div style="font-size:.66rem;font-weight:700;opacity:.85;position:relative;z-index:1;">Pause &amp; reset</div>
       </div>
       <!-- Mindful Stories (NEW full feature) -->
-      <div onclick="openMindfulStories()" style="background:#3B82F6;border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #2563EB,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
+      <div onclick="openMindfulStories()" style="background:linear-gradient(135deg,#BFD7F5,#A8C5F0);border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #2563EB,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
         <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.25),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
         <div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">📖</div>
         <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">Mindful Stories</div>
         <div style="font-size:.66rem;font-weight:700;opacity:.85;position:relative;z-index:1;">Listen &amp; relax</div>
       </div>
-      <div onclick="openKindnessCorner()" style="background:linear-gradient(135deg,#FF6B9D,#FF8E53);border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #E0456A,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
+      <div onclick="openKindnessCorner()" style="background:linear-gradient(135deg,#F5C5D5,#F0A8C0);border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #E0456A,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
         <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
         <div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:24px;position:relative;z-index:1;">💛</div>
         <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">Kindness Corner</div>
@@ -1134,7 +1146,7 @@ input::placeholder { color:#aaa !important; }
     <div id="quizQuestion" style="display:none"></div>
     <div id="quizOptions" style="display:none"></div>
     <div id="quizFeedback" style="display:none"></div>
-    <button id="nextBtn" class="next-btn" onclick="nextQuestion()" style="display:none;margin-top:16px;width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Next ➡</button>
+    <button id="nextBtn" class="next-btn" onclick="nextQuestion()" style="display:none;margin-top:16px;width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Next ➡</button>
 
     <div class="section-title" id="myProgressHeader">📈 My Progress</div>
     <div class="progress-section" id="progressSection"></div>
@@ -3718,7 +3730,7 @@ function imgFallback(img,emoji){img.style.display='none';var s=document.createEl
 
 
 var LEARNING_PATH={'PreK':[{icon:'🔤',title:'Letter Names',desc:'Recognize A-Z'},{icon:'🔢',title:'Count to 10',desc:'Numbers 1-10'},{icon:'🎨',title:'Colors & Shapes',desc:'Basic shapes'},{icon:'🌿',title:'My World',desc:'Animals & nature'},{icon:'🧘',title:'Move & Breathe',desc:'Yoga & calm'}],'K':[{icon:'🔤',title:'Letter Sounds',desc:'Phonics A-Z'},{icon:'🔢',title:'Numbers to 20',desc:'Count & compare'},{icon:'✍',title:'Writing',desc:'Trace & write'},{icon:'🌍',title:'Community',desc:'Family & helpers'},{icon:'🔬',title:'Senses',desc:'5 senses science'}],'1':[{icon:'📖',title:'Word Wizards',desc:'CVC & sight words'},{icon:'➕',title:'Math Adventures',desc:'Within 20'},{icon:'✍',title:'Sentences',desc:'Capitals & punctuation'},{icon:'🌱',title:'Living Things',desc:'Plants & animals'},{icon:'🗺',title:'My Community',desc:'Maps & helpers'}],'2':[{icon:'📚',title:'Fluency',desc:'Read with expression'},{icon:'✖',title:'Multiplication',desc:'Groups & arrays'},{icon:'✏',title:'Opinion Writing',desc:'Claim & reasons'},{icon:'💧',title:'Earth Science',desc:'Water cycle'},{icon:'🏛',title:'History',desc:'Holidays & heroes'}],'3':[{icon:'📖',title:'Chapter Books',desc:'Main idea & details'},{icon:'✖',title:'Multiply & Divide',desc:'Facts 1-10'},{icon:'✍',title:'Narratives',desc:'Story structure'},{icon:'⚡',title:'Forces',desc:'Push, pull, motion'},{icon:'🗺',title:'Geography',desc:'Maps & regions'}],'4':[{icon:'📚',title:'Informational Text',desc:'Text features'},{icon:'➗',title:'Fractions',desc:'Equivalent & compare'},{icon:'🖊',title:'Research Writing',desc:'Sources & notes'},{icon:'🌊',title:'Ecosystems',desc:'Food webs'},{icon:'🏛',title:'U.S. History',desc:'Colonial era'}],'5':[{icon:'📖',title:'Literature',desc:'Theme & craft'},{icon:'÷',title:'Decimals',desc:'Add, subtract, multiply'},{icon:'✍',title:'Argumentative',desc:'Evidence & claims'},{icon:'⚗',title:'Matter',desc:'Physical & chemical'},{icon:'🌎',title:'World Cultures',desc:'Regions & traditions'}]};
-function showLearningPath(){var path=LEARNING_PATH[activeGrade]||LEARNING_PATH['K'];var ov=document.createElement('div');ov.id='lpOv';ov.style.cssText='position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#F4F1FF,#FFF0F8);overflow-y:auto;padding:20px;';var hdr=document.createElement('div');hdr.style.cssText='display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;';var ttl=document.createElement('div');ttl.style.cssText='font-family:Baloo 2,cursive;font-size:1.4rem;font-weight:800;color:#2D2D4E;';ttl.textContent='📚 '+activeGrade+' Learning Path';var cb=document.createElement('button');cb.textContent='×';cb.style.cssText='background:#8B6FE8;border:none;color:white;border-radius:50%;width:36px;height:36px;font-size:1.2rem;cursor:pointer;font-weight:800;flex-shrink:0;';cb.onclick=function(){ov.remove();};hdr.appendChild(ttl);hdr.appendChild(cb);ov.appendChild(hdr);path.forEach(function(item,i){var card=document.createElement('div');card.style.cssText='background:white;border-radius:18px;padding:18px;margin-bottom:12px;display:flex;align-items:center;gap:16px;box-shadow:0 4px 16px rgba(0,0,0,.08);';var ic=document.createElement('div');ic.style.cssText='font-size:2.2rem;flex-shrink:0;';ic.textContent=item.icon;var inf=document.createElement('div');inf.style.flex='1';var t=document.createElement('div');t.style.cssText='font-family:Baloo 2,cursive;font-weight:800;color:#2D2D4E;';t.textContent=item.title;var d=document.createElement('div');d.style.cssText='font-size:.82rem;color:#888;margin-top:2px;';d.textContent=item.desc;inf.appendChild(t);inf.appendChild(d);var b=document.createElement('div');b.style.cssText='background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:white;border-radius:20px;padding:4px 12px;font-size:.7rem;font-weight:800;white-space:nowrap;';b.textContent='Unit '+(i+1);card.appendChild(ic);card.appendChild(inf);card.appendChild(b);ov.appendChild(card);});var done=document.createElement('button');done.style.cssText='width:100%;margin-top:8px;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';done.textContent='Got it! ⭐';done.onclick=function(){ov.remove();};ov.appendChild(done);document.body.appendChild(ov);}
+function showLearningPath(){var path=LEARNING_PATH[activeGrade]||LEARNING_PATH['K'];var ov=document.createElement('div');ov.id='lpOv';ov.style.cssText='position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#F4F1FF,#FFF0F8);overflow-y:auto;padding:20px;';var hdr=document.createElement('div');hdr.style.cssText='display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;';var ttl=document.createElement('div');ttl.style.cssText='font-family:Baloo 2,cursive;font-size:1.4rem;font-weight:800;color:#2D2D4E;';ttl.textContent='📚 '+activeGrade+' Learning Path';var cb=document.createElement('button');cb.textContent='×';cb.style.cssText='background:#8B6FE8;border:none;color:white;border-radius:50%;width:36px;height:36px;font-size:1.2rem;cursor:pointer;font-weight:800;flex-shrink:0;';cb.onclick=function(){ov.remove();};hdr.appendChild(ttl);hdr.appendChild(cb);ov.appendChild(hdr);path.forEach(function(item,i){var card=document.createElement('div');card.style.cssText='background:white;border-radius:18px;padding:18px;margin-bottom:12px;display:flex;align-items:center;gap:16px;box-shadow:0 4px 16px rgba(0,0,0,.08);';var ic=document.createElement('div');ic.style.cssText='font-size:2.2rem;flex-shrink:0;';ic.textContent=item.icon;var inf=document.createElement('div');inf.style.flex='1';var t=document.createElement('div');t.style.cssText='font-family:Baloo 2,cursive;font-weight:800;color:#2D2D4E;';t.textContent=item.title;var d=document.createElement('div');d.style.cssText='font-size:.82rem;color:#888;margin-top:2px;';d.textContent=item.desc;inf.appendChild(t);inf.appendChild(d);var b=document.createElement('div');b.style.cssText='background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:white;border-radius:20px;padding:4px 12px;font-size:.7rem;font-weight:800;white-space:nowrap;';b.textContent='Unit '+(i+1);card.appendChild(ic);card.appendChild(inf);card.appendChild(b);ov.appendChild(card);});var done=document.createElement('button');done.style.cssText='width:100%;margin-top:8px;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';done.textContent='Got it! ⭐';done.onclick=function(){ov.remove();};ov.appendChild(done);document.body.appendChild(ov);}
 
 function toggleSound(){
   soundEnabled=!soundEnabled;
@@ -3917,19 +3929,19 @@ function buildReadingButtons() {
   var btns = '';
 
   if (isEarly) {
-    btns += '<button onclick="openPhonicsGame(activeGrade)" style="width:100%;padding:16px;border-radius:20px;border:none;background:linear-gradient(135deg,#0EA5E9,#38BDF8);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(14,165,233,.35);margin-bottom:12px;">'
+    btns += '<button onclick="openPhonicsGame(activeGrade)" style="width:100%;padding:16px;border-radius:20px;border:none;background:linear-gradient(135deg,#0EA5E9,#38BDF8);color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(14,165,233,.35);margin-bottom:12px;">'
       + '<span style="font-size:1.3rem;">📖</span> Phonics &amp; Sight Words</button>';
-    btns += '<button onclick="openDinoStories(activeGrade)" style="width:100%;padding:16px;border-radius:20px;border:none;background:linear-gradient(135deg,#1a472a,#2d8a4e);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(0,0,0,.2);margin-bottom:12px;">'
+    btns += '<button onclick="openDinoStories(activeGrade)" style="width:100%;padding:16px;border-radius:20px;border:none;background:linear-gradient(135deg,#1a472a,#2d8a4e);color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(0,0,0,.2);margin-bottom:12px;">'
       + '<span style="font-size:1.5rem;">🦕</span><span>Dino Decodable Stories</span></button>';
   }
 
   if (isOlder) {
-    btns += '<button onclick="openPassageReader(activeGrade)" style="width:100%;padding:16px;border-radius:20px;border:none;background:linear-gradient(135deg,#1D4ED8,#3B82F6);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(29,78,216,.35);margin-bottom:12px;">'
+    btns += '<button onclick="openPassageReader(activeGrade)" style="width:100%;padding:16px;border-radius:20px;border:none;background:linear-gradient(135deg,#1D4ED8,#3B82F6);color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(29,78,216,.35);margin-bottom:12px;">'
       + '<span style="font-size:1.5rem;">📖</span><span>Reading Corner — Stories &amp; Comprehension</span></button>';
   }
 
   if (activeGrade === '2') {
-    btns += '<button onclick="openPassageReader(activeGrade)" style="width:100%;padding:16px;border-radius:20px;border:none;background:linear-gradient(135deg,#1D4ED8,#3B82F6);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(29,78,216,.35);margin-bottom:12px;">'
+    btns += '<button onclick="openPassageReader(activeGrade)" style="width:100%;padding:16px;border-radius:20px;border:none;background:linear-gradient(135deg,#1D4ED8,#3B82F6);color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px rgba(29,78,216,.35);margin-bottom:12px;">'
       + '<span style="font-size:1.5rem;">📖</span><span>Reading Corner</span></button>';
   }
 
@@ -4104,12 +4116,15 @@ var CURATED_GAMES = {
     var textColor = lightBg ? '#2D1B3D' : 'white';
     var subOpacity = lightBg ? '.7' : '.85';
     var missionFn = "if(typeof completeMissionStep==='function')completeMissionStep('learn');" + g.fn;
-    return '<div onclick="'+missionFn+'" style="background:'+g.color+';border-radius:20px;padding:16px 12px 14px;text-align:center;cursor:pointer;'
-      +'box-shadow:0 6px 0 '+deeper+',inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);'
-      +'position:relative;overflow:hidden;font-family:Nunito,sans-serif;color:'+textColor+';">'
-      +'<div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>'
+    // Use soft pastel bg with the color as text/accent
+    var pastelBg = g.color+'22'; // very light tint
+    var borderCol = g.color+'44';
+    return '<div onclick="'+missionFn+'" style="background:white;border-radius:20px;padding:16px 12px 14px;text-align:center;cursor:pointer;'
+      +'box-shadow:0 4px 0 '+borderCol+',0 6px 16px rgba(0,0,0,.08);'
+      +'border:1.5px solid '+borderCol+';position:relative;overflow:hidden;font-family:Nunito,sans-serif;color:#1A1033;">'
+      +'<div style="position:absolute;inset:0;background:'+pastelBg+';border-radius:20px;pointer-events:none;"></div>'
       +'<div style="margin:0 auto 8px;">'+getCardTile(g.label,g.icon,46)+'</div>'
-      +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.9rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">'+g.label+'</div>'
+      +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.88rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;color:'+g.color+';">'+g.label+'</div>'
       +'<div style="font-size:.66rem;font-weight:700;opacity:'+subOpacity+';position:relative;z-index:1;">'+sub+'</div>'
       +'</div>';
   }
@@ -4181,7 +4196,7 @@ function openAllGames() {
         return '<div onclick="document.getElementById(\'allGamesOv\').remove();'+g.fn+'" style="background:'+g.color+';border-radius:20px;padding:16px 12px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 '+deeper+',inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;font-family:Nunito,sans-serif;color:'+textColor+';">'
           +'<div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>'
           +'<div style="margin:0 auto 8px;">'+getCardTile(g.label,g.icon,46)+'</div>'
-          +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.9rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">'+g.label+'</div>'
+          +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.88rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;color:'+g.color+';">'+g.label+'</div>'
           +'<div style="font-size:.66rem;font-weight:700;opacity:'+subOpacity+';position:relative;z-index:1;">'+sub+'</div>'
           +'</div>';
       }).join('')
@@ -6051,7 +6066,7 @@ function showGameIntro(type, onStart) {
   card.innerHTML = '<div style="font-size:3.5rem;margin-bottom:12px;">'+intro.emoji+'</div>'
     +'<div style="font-family:Baloo 2,cursive;font-size:1.3rem;font-weight:800;color:#1A1033;margin-bottom:10px;">'+intro.title+'</div>'
     +'<div style="font-size:.9rem;line-height:1.65;color:#6B5B8A;margin-bottom:24px;">'+intro.desc+'</div>'
-    +'<button onclick="sessionStorage.setItem(\''+seenKey+'\',\'1\');this.closest(\'div\').parentNode.remove();if(typeof _gameIntroCallback===\'function\'){_gameIntroCallback();_gameIntroCallback=null;}" style="width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#5B2D9E,#8B5CF6);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Got it! Let\'s go! &#127919;</button>';
+    +'<button onclick="sessionStorage.setItem(\''+seenKey+'\',\'1\');this.closest(\'div\').parentNode.remove();if(typeof _gameIntroCallback===\'function\'){_gameIntroCallback();_gameIntroCallback=null;}" style="width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#5B2D9E,#8B5CF6);color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Got it! Let\'s go! &#127919;</button>';
   ov.appendChild(card);
   document.body.appendChild(ov);
   window._gameIntroCallback = onStart;
@@ -6317,7 +6332,7 @@ function openLetterQuiz() {
         // Next button
         var nextBtn = document.createElement('button');
         nextBtn.textContent = qIdx < pool.length-1 ? 'Next Letter →' : 'See My Stars! ⭐';
-        nextBtn.style.cssText = 'padding:14px 32px;border-radius:40px;border:none;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 16px rgba(139,111,232,.3);';
+        nextBtn.style.cssText = 'padding:14px 32px;border-radius:40px;border:none;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 16px rgba(139,111,232,.3);';
         nextBtn.onclick = function(){ qIdx++; buildQ(); };
         body.appendChild(nextBtn);
       };
@@ -6338,8 +6353,8 @@ function openLetterQuiz() {
       + '<div style="font-family:Baloo 2,cursive;font-size:1.8rem;font-weight:800;color:#2D2D4E;margin-bottom:8px;">' + score + ' of ' + pool.length + ' correct!</div>'
       + '<div style="font-family:Baloo 2,cursive;font-size:1.1rem;color:#8B6FE8;margin-bottom:8px;">+' + stars + ' Stars earned! 🌟</div>'
       + '<div style="font-size:1rem;color:#666;margin-bottom:32px;line-height:1.5;">' + msg + '</div>'
-      + '<button onclick="openLetterQuiz()" style="padding:14px 32px;border-radius:40px;border:none;background:linear-gradient(135deg,#FF6B6B,#FFD166);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;margin-bottom:12px;display:block;width:220px;">Play Again! 🔤</button>'
-      + '<button onclick="var e=document.getElementById(\'letterQuizOv\');if(e)e.remove();" style="padding:12px 32px;border-radius:40px;border:none;background:linear-gradient(135deg,#5ECDA0,#4ECDC4);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:block;width:220px;">All Done! 👋</button>'
+      + '<button onclick="openLetterQuiz()" style="padding:14px 32px;border-radius:40px;border:none;background:linear-gradient(135deg,#FF6B6B,#FFD166);color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;margin-bottom:12px;display:block;width:220px;">Play Again! 🔤</button>'
+      + '<button onclick="var e=document.getElementById(\'letterQuizOv\');if(e)e.remove();" style="padding:12px 32px;border-radius:40px;border:none;background:linear-gradient(135deg,#5ECDA0,#4ECDC4);color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:block;width:220px;">All Done! 👋</button>'
       + '</div>';
     // Save stars
     try {
@@ -6580,7 +6595,7 @@ function startSmartSession(title, icon, questions, onComplete) {
         // Show Next button
         var nextBtn = document.createElement('button');
         nextBtn.textContent = qIdx >= pool.length - 1 ? (wrongQueue.length > 0 ? 'Try the tricky ones! 💪' : 'Finish! 🎉') : 'Next ➡';
-        nextBtn.style.cssText = 'margin-top:20px;width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 16px rgba(139,111,232,.35);';
+        nextBtn.style.cssText = 'margin-top:20px;width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 16px rgba(139,111,232,.35);';
         nextBtn.onclick = function() {
           qIdx++;
           if (qIdx < pool.length) { showQ(); }
@@ -6608,8 +6623,8 @@ function startSmartSession(title, icon, questions, onComplete) {
       + '<div style="font-size:1.1rem;font-weight:700;color:#8B6FE8;margin-bottom:6px;">+' + stars + ' Stars! 🌟</div>'
       + '<div style="font-size:.95rem;color:#666;margin-bottom:28px;line-height:1.6;">' + msg + '</div>'
       + '<div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:280px;">'
-      + '<button onclick="document.getElementById(\'smartSessionOv\')&&document.getElementById(\'smartSessionOv\').remove();" style="padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#FF6B6B,#FFD166);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Play Again! 🔄</button>'
-      + '<button onclick="var e=document.getElementById(\'smartSessionOv\');if(e)e.remove();" style="padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#5ECDA0,#4ECDC4);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">All Done! 👋</button>'
+      + '<button onclick="document.getElementById(\'smartSessionOv\')&&document.getElementById(\'smartSessionOv\').remove();" style="padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#FF6B6B,#FFD166);color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Play Again! 🔄</button>'
+      + '<button onclick="var e=document.getElementById(\'smartSessionOv\');if(e)e.remove();" style="padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#5ECDA0,#4ECDC4);color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">All Done! 👋</button>'
       + '</div></div>';
 
     // Save stars + activity
@@ -6778,7 +6793,7 @@ function openShopMath(grade) {
         body.appendChild(expl);
         var nb=document.createElement('button');
         nb.textContent=round<ROUNDS?'Next Item ➡️':'See Results 🏆';
-        nb.style.cssText='width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';
+        nb.style.cssText='width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';
         nb.onclick=function(){makeRound();};
         body.appendChild(nb);
       };
@@ -7192,7 +7207,7 @@ function openSequencer(grade) {
         // Play button
         var nb=document.createElement('button');
         nb.textContent=round<ROUNDS?'Next Pattern ➡️':'See Results 🏆';
-        nb.style.cssText='width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';
+        nb.style.cssText='width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';
         nb.onclick=function(){makePattern();};
         body.appendChild(nb);
       };
@@ -7233,7 +7248,7 @@ function showWhatsNew() {
     +'<div style="background:#FFF7ED;border-radius:12px;padding:10px;">🌙 <strong>Calm Board</strong> — breathing + mood check</div>'
     +'<div style="background:#EFF6FF;border-radius:12px;padding:10px;">🃏 <strong>Memory Match + Number Bonds</strong> — new games!</div>'
     +'</div>'
-    +'<button id="wnClose" style="width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#5B2D8E,#8B5CF6);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Let\'s Go! 🚀</button>';
+    +'<button id="wnClose" style="width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#5B2D8E,#8B5CF6);color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Let\'s Go! 🚀</button>';
   ov.appendChild(card);
   document.body.appendChild(ov);
   document.getElementById('wnClose').onclick=function(){ ov.remove(); };
@@ -7343,7 +7358,7 @@ function openNumberBonds(grade) {
         expl.textContent=(correct?'✅ ':'❌ ')+String(part1)+' + '+String(part2)+' = '+String(total);
         body.appendChild(expl);
         var nb=document.createElement('button');nb.textContent=round<ROUNDS?'Next ➡️':'Results 🏆';
-        nb.style.cssText='width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';
+        nb.style.cssText='width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';
         nb.onclick=function(){makeRound();};body.appendChild(nb);
       };
       grid.appendChild(btn);
@@ -7432,7 +7447,7 @@ async function startSubject(name) {
         '<div style="font-family:Baloo 2,cursive;font-size:1.4rem;font-weight:800;">Quiz Done!</div>'+
         '<div style="opacity:.9;font-size:1rem;margin-top:6px;">'+score+' of '+questions.length+' correct</div></div>'+
         '<div style="padding:24px;text-align:center;">'+
-        '<button id="sqDoneBtn" style="width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Done!</button>'+
+        '<button id="sqDoneBtn" style="width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--mint),var(--sky));color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Done!</button>'+
         '</div>';
       ov.appendChild(card);
       document.getElementById('sqDoneBtn').onclick=closeSubjectQuiz;
@@ -8164,7 +8179,7 @@ function openMathGame(grade) {
             }
             var nextBtn=document.createElement('button');
             nextBtn.textContent=qIdx<total-1?'Next ➡️':'See Results 🏆';
-            nextBtn.style.cssText='width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 16px rgba(108,63,197,.35);';
+            nextBtn.style.cssText='width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 16px rgba(108,63,197,.35);';
             nextBtn.onclick=function(){qIdx++;showQ();};
             body.appendChild(nextBtn);
           };
@@ -8627,7 +8642,7 @@ function openScienceGame(grade) {
       }).join('')
       +'</div>'
       +'<div id="sciCheckWrap" style="text-align:center;margin-top:16px;">'
-      +'<button onclick="window._sciCheck(window._sciCurrentItems)" style="padding:14px 36px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(14,165,233,.4);">✅ Check Answers!</button>'
+      +'<button onclick="window._sciCheck(window._sciCurrentItems)" style="padding:14px 36px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(14,165,233,.4);">✅ Check Answers!</button>'
       +'</div>'
       +'</div>';
 
@@ -8706,7 +8721,7 @@ function openScienceGame(grade) {
       // Show next button - rIdx increments when user taps Next
       var cw=document.getElementById('sciCheckWrap');
       var isLast=(rIdx+1>=TOTAL_ROUNDS);
-      if(cw){ cw.innerHTML='<button onclick="window._sciNext()" style="padding:14px 36px;border-radius:40px;border:none;background:linear-gradient(135deg,#0EA5E9,#38BDF8);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(14,165,233,.4);">'+(isLast?'See Results 🏆':'Next Round ➡️')+'</button>'; cw.style.display='block'; }
+      if(cw){ cw.innerHTML='<button onclick="window._sciNext()" style="padding:14px 36px;border-radius:40px;border:none;background:linear-gradient(135deg,#0EA5E9,#38BDF8);color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(14,165,233,.4);">'+(isLast?'See Results 🏆':'Next Round ➡️')+'</button>'; cw.style.display='block'; }
       window._sciNext=function(){ rIdx++; renderRound(); };
     };
   }
@@ -8814,7 +8829,7 @@ function openSocialStudiesGame(grade) {
       if(!body) return;
       var nextBtn=document.createElement('button');
       nextBtn.textContent=qIdx+1<TOTAL?'Next ➡️':'See Results 🏆';
-      nextBtn.style.cssText='width:100%;margin-top:14px;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,#F59E0B,#FCD34D);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 16px rgba(245,158,11,.4);';
+      nextBtn.style.cssText='width:100%;margin-top:14px;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,#F59E0B,#FCD34D);color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 16px rgba(245,158,11,.4);';
       nextBtn.onclick=function(){qIdx++;renderQ();};
       body.appendChild(nextBtn);
     };
@@ -8896,7 +8911,7 @@ function openColorsGame(grade) {
       }).join('')
       +'</div>'
       +'<div id="csCheckWrap" style="text-align:center;margin-top:16px;">'
-      +'<button onclick="window._csCheck()" style="padding:14px 36px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(236,72,153,.4);">✅ Check!</button>'
+      +'<button onclick="window._csCheck()" style="padding:14px 36px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(236,72,153,.4);">✅ Check!</button>'
       +'</div>'
       +'</div>';
 
@@ -8940,7 +8955,7 @@ function openColorsGame(grade) {
       toast(correct+'/'+items.length+' correct!');
       var isLast=(rIdx+1>=TOTAL);
       var cw=document.getElementById('csCheckWrap');
-      if(cw){ cw.innerHTML='<button onclick="window._csNext()" style="padding:14px 36px;border-radius:40px;border:none;background:linear-gradient(135deg,#EC4899,#F472B6);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(236,72,153,.4);">'+(isLast?'See Results 🏆':'Next Round ➡️')+'</button>'; cw.style.display='block'; }
+      if(cw){ cw.innerHTML='<button onclick="window._csNext()" style="padding:14px 36px;border-radius:40px;border:none;background:linear-gradient(135deg,#EC4899,#F472B6);color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(236,72,153,.4);">'+(isLast?'See Results 🏆':'Next Round ➡️')+'</button>'; cw.style.display='block'; }
       window._csNext=function(){ rIdx++; renderRound(); };
     };
   }
@@ -9269,7 +9284,7 @@ function openKindnessCorner(){
     body.appendChild(card);
     s.opts.forEach(function(opt,i){
       var btn=document.createElement('button');btn.textContent=opt;btn.style.cssText='width:100%;margin-bottom:12px;padding:16px;border-radius:18px;border:2px solid #FFB3D1;background:white;font-family:Nunito,sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;text-align:left;display:block;box-sizing:border-box;';
-      (function(chosen){btn.onclick=function(){body.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});if(chosen===s.a){score++;if(typeof playSound==='function')playSound('correct');toast(s.praise);}else{body.querySelectorAll('button')[s.a].style.background='#D1FAE5';body.querySelectorAll('button')[s.a].style.borderColor='#22c55e';if(typeof playSound==='function')playSound('wrong');toast('💡 The kind choice: '+s.opts[s.a]);}idx++;var nb=document.createElement('button');nb.textContent='Next';nb.style.cssText='margin-top:16px;width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#FF6B9D,#FF8E53);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';nb.onclick=function(){render();};body.appendChild(nb);};})(i);
+      (function(chosen){btn.onclick=function(){body.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});if(chosen===s.a){score++;if(typeof playSound==='function')playSound('correct');toast(s.praise);}else{body.querySelectorAll('button')[s.a].style.background='#D1FAE5';body.querySelectorAll('button')[s.a].style.borderColor='#22c55e';if(typeof playSound==='function')playSound('wrong');toast('💡 The kind choice: '+s.opts[s.a]);}idx++;var nb=document.createElement('button');nb.textContent='Next';nb.style.cssText='margin-top:16px;width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#FF6B9D,#FF8E53);color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';nb.onclick=function(){render();};body.appendChild(nb);};})(i);
       body.appendChild(btn);
     });
     ov.appendChild(body);
@@ -10025,7 +10040,7 @@ function openPhonicsGame(grade) {
       +'</div></div>'
       +'<div id="blendWord" style="font-family:Baloo 2,cursive;font-size:2.5rem;font-weight:800;color:'+CA+';letter-spacing:4px;min-height:48px;"></div>'
       +'</div>'
-      +'<button onclick="window._nextBlend()" style="padding:14px 40px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(14,165,233,.4);">I can read it! ➡️</button>'
+      +'<button onclick="window._nextBlend()" style="padding:14px 40px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(14,165,233,.4);">I can read it! ➡️</button>'
       +'</div>';
 
     window._slideBlend = function(val, total) {
@@ -10174,7 +10189,7 @@ function openNumberTracing() {
       + PATHS[num]
       + '</svg>'
       + '</div>'
-      + '<button onclick="window._ntNext()" style="width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 16px rgba(139,111,232,.4);">Next Number ➡</button>'
+      + '<button onclick="window._ntNext()" style="width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 16px rgba(139,111,232,.4);">Next Number ➡</button>'
       + '</div>';
 
     window._ntNext = function() { idx++; render(); };
@@ -11122,7 +11137,7 @@ function openPremiumUpgrade() {
   price.textContent = '$9.99/month or $64.99/year';
   var startBtn = document.createElement('button');
   startBtn.textContent = 'Get Premium Now';
-  startBtn.style.cssText = 'width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,#FFD700,#FFA500);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;margin-bottom:10px;';
+  startBtn.style.cssText = 'width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,#FFD700,#FFA500);color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;margin-bottom:10px;';
   startBtn.onclick = function() {
     alert('Payment coming soon! Email bloomikids21@gmail.com for early bird pricing.');
   };
@@ -11357,7 +11372,7 @@ function showIOSInstallGuide(){
     +'</div>';
   var closeB=document.createElement('button');
   closeB.textContent='Got it!';
-  closeB.style.cssText='width:100%;margin-top:16px;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--coral),var(--sunshine));color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';
+  closeB.style.cssText='width:100%;margin-top:16px;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,var(--coral),var(--sunshine));color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;';
   closeB.onclick=function(){ov.remove();};
   card.appendChild(closeB);
   ov.appendChild(card);
@@ -11938,7 +11953,7 @@ function openPassageReader(grade) {
       back.onclick = function(){ if(pageIdx>0){window.speechSynthesis&&window.speechSynthesis.cancel();pageIdx--;showPage();} };
       var fwd = document.createElement('button');
       fwd.textContent = pageIdx===totalPages-1 ? '📝 Take the Quiz →' : 'Next →';
-      fwd.style.cssText = 'flex:1;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 14px rgba(29,78,216,.35);';
+      fwd.style.cssText = 'flex:1;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 14px rgba(29,78,216,.35);';
       fwd.onclick = function(){
         window.speechSynthesis&&window.speechSynthesis.cancel();
         if(pageIdx<totalPages-1){pageIdx++;showPage();}
@@ -12020,7 +12035,7 @@ function openPassageReader(grade) {
           body.appendChild(expl);
           var nb=document.createElement('button');
           nb.textContent=qIdx<total-1?'Next Question →':'See My Score 🏆';
-          nb.style.cssText='width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 14px rgba(29,78,216,.3);';
+          nb.style.cssText='width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 14px rgba(29,78,216,.3);';
           nb.onclick=function(){qIdx++;showQ();};
           body.appendChild(nb);
         };
@@ -12393,7 +12408,7 @@ function openDinoStories(grade) {
           // Next button
           var nextBtn = document.createElement('button');
           nextBtn.textContent = qIdx<story.quiz.length-1?'Next ➡️':'See Results 🏆';
-          nextBtn.style.cssText = 'width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,#1a472a,#2d8a4e);color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;margin-top:8px;';
+          nextBtn.style.cssText = 'width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,#1a472a,#2d8a4e);color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;margin-top:8px;';
           nextBtn.onclick = function(){qIdx++;showQ();};
           body.appendChild(nextBtn);
         };
@@ -12515,8 +12530,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v434</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v434</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v435</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v435</div>
 
 </body>
 </html
