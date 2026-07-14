@@ -762,7 +762,7 @@ input::placeholder { color:#aaa !important; }
 
 
 /* ═══ PROGRESSION SYSTEM ═══ */
-.journey-bar { background:linear-gradient(135deg,#1A0A3E 0%,#2D1B69 50%,#4C1D95 100%); border-radius:20px; padding:16px; margin-bottom:16px;
+.journey-bar { background:linear-gradient(135deg,#1E4A30 0%,#2F6B45 50%,#4A9A5A 100%); border-radius:20px; padding:16px; margin-bottom:16px;
   box-shadow:0 8px 32px rgba(0,0,0,.4); border:2px solid rgba(255,255,255,.15); }
 .journey-top { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
 .journey-avatar { width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg,#8B6FE8,#C9B8FF);
@@ -1092,12 +1092,12 @@ input::placeholder { color:#aaa !important; }
       <div class="bloomi-mission-title" style="margin:0 0 10px;font-family:'Baloo 2',cursive;font-size:1.05rem;font-weight:800;color:white;text-align:center;"><span style="color:#FFE36C;">✦</span> <span id="missionInline">Start Today's Mission</span> <span style="color:#FFE36C;">✦</span></div>
       <div style="background:rgba(255,255,255,.6);border-radius:18px;padding:12px 12px 10px;">
         <div id="growthStageRow" style="display:flex;justify-content:space-between;align-items:center;gap:4px;">
-          <span class="growth-stage" id="gstage0" style="font-size:1.5rem;transition:all .4s;">🌰</span>
-          <span class="growth-stage" id="gstage1" style="font-size:1.5rem;transition:all .4s;">🌱</span>
-          <span class="growth-stage" id="gstage2" style="font-size:1.5rem;transition:all .4s;">🌿</span>
-          <span class="growth-stage" id="gstage3" style="font-size:1.5rem;transition:all .4s;">🪴</span>
-          <span class="growth-stage" id="gstage4" style="font-size:1.5rem;transition:all .4s;">🌷</span>
-          <span class="growth-stage" id="gstage5" style="font-size:1.5rem;transition:all .4s;">🌸</span>
+          <span class="growth-stage" id="gstage0" style="width:42px;height:42px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3rem;box-shadow:0 3px 8px rgba(0,0,0,.14);transition:all .4s;flex-shrink:0;">🌰</span>
+          <span class="growth-stage" id="gstage1" style="width:42px;height:42px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3rem;box-shadow:0 3px 8px rgba(0,0,0,.14);transition:all .4s;flex-shrink:0;">🌱</span>
+          <span class="growth-stage" id="gstage2" style="width:42px;height:42px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3rem;box-shadow:0 3px 8px rgba(0,0,0,.14);transition:all .4s;flex-shrink:0;">🌿</span>
+          <span class="growth-stage" id="gstage3" style="width:42px;height:42px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3rem;box-shadow:0 3px 8px rgba(0,0,0,.14);transition:all .4s;flex-shrink:0;">🪴</span>
+          <span class="growth-stage" id="gstage4" style="width:42px;height:42px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3rem;box-shadow:0 3px 8px rgba(0,0,0,.14);transition:all .4s;flex-shrink:0;">🌷</span>
+          <span class="growth-stage" id="gstage5" style="width:42px;height:42px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3rem;box-shadow:0 3px 8px rgba(0,0,0,.14);transition:all .4s;flex-shrink:0;">🌸</span>
         </div>
         <div style="text-align:center;color:#4A5A4A;font-size:.78rem;font-weight:800;margin-top:6px;font-family:Nunito,sans-serif;" id="missionCountLabel">0 of 6 Growth Stages Earned</div>
       </div>
@@ -1116,42 +1116,52 @@ input::placeholder { color:#aaa !important; }
 
     <!-- v379 MINDFUL MOMENTS — moved to top of sections, Yoga+Music combined -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin:14px 0 10px;padding:0 4px;">
-      <h2 style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:#3B1578;margin:0;">🌿 Mindful Moments</h2>
+      <h2 style="font-family:'Baloo 2',cursive;font-size:1.05rem;font-weight:800;color:#1F6B45;margin:0;">My Bloom Progress</h2>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;">
       <!-- Yoga & Music (combined) -->
-      <div onclick="v3OpenMindful('yoga')" style="background:linear-gradient(135deg,#C8EDD8,#A8DDB8);border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 4px 0 #7FBD97,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
-        <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
-        <div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">🧘</div>
-        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">Yoga &amp; Music</div>
-        <div style="font-size:.66rem;font-weight:700;opacity:.85;position:relative;z-index:1;">Move &amp; flow</div>
+      <div onclick="v3OpenMindful('yoga')" style="background:linear-gradient(160deg,#A9E8BE,#7FD9A4);border-radius:20px;padding:16px 14px 14px;cursor:pointer;box-shadow:0 4px 0 #5CBD85,0 6px 14px rgba(56,83,66,.12);font-family:Nunito,sans-serif;">
+        <div style="display:flex;gap:8px;margin-bottom:10px;">
+          <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 2px 5px rgba(0,0,0,.08);">🧘</div>
+          <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 2px 5px rgba(0,0,0,.08);">🎵</div>
+        </div>
+        <div style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem;line-height:1.1;color:#1F4A2E;">Yoga &amp; Music</div>
+        <div style="font-size:.68rem;font-weight:700;color:#3D6B4D;margin-top:2px;">Move &amp; flow</div>
       </div>
       <!-- Breathing -->
-      <div onclick="v3OpenMindful('breathing')" style="background:linear-gradient(135deg,#DDD5F5,#C8B8F0);border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 4px 0 #A890D8,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
-        <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
-        <div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">🌬️</div>
-        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">Breathing</div>
-        <div style="font-size:.66rem;font-weight:700;opacity:.7;position:relative;z-index:1;">In &amp; out</div>
+      <div onclick="v3OpenMindful('breathing')" style="background:linear-gradient(160deg,#7FE8CC,#4FCFB0);border-radius:20px;padding:16px 14px 14px;cursor:pointer;box-shadow:0 4px 0 #35A98C,0 6px 14px rgba(56,83,66,.12);font-family:Nunito,sans-serif;">
+        <div style="display:flex;gap:8px;margin-bottom:10px;">
+          <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 2px 5px rgba(0,0,0,.08);">🫧</div>
+          <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 2px 5px rgba(0,0,0,.08);">🍃</div>
+        </div>
+        <div style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem;line-height:1.1;color:#0F4A3D;">Breathing</div>
+        <div style="font-size:.68rem;font-weight:700;color:#1C6552;margin-top:2px;">In &amp; out</div>
       </div>
       <!-- Calm Board (separate) -->
-      <div onclick="v3OpenMindful('calmboard')" style="background:linear-gradient(135deg,#B8E0D8,#9ACFC5);border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #1F5A4D,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
-        <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
-        <div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">🌙</div>
-        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">Calm Board</div>
-        <div style="font-size:.66rem;font-weight:700;opacity:.85;position:relative;z-index:1;">Pause &amp; reset</div>
+      <div onclick="v3OpenMindful('calmboard')" style="background:linear-gradient(160deg,#B9E2FC,#8FC9F5);border-radius:20px;padding:16px 14px 14px;cursor:pointer;box-shadow:0 4px 0 #5FA0DC,0 6px 14px rgba(56,83,66,.12);font-family:Nunito,sans-serif;">
+        <div style="display:flex;gap:8px;margin-bottom:10px;">
+          <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 2px 5px rgba(0,0,0,.08);">🎨</div>
+          <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 2px 5px rgba(0,0,0,.08);">🖼️</div>
+        </div>
+        <div style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem;line-height:1.1;color:#1E4A6B;">Calm Board</div>
+        <div style="font-size:.68rem;font-weight:700;color:#33608A;margin-top:2px;">Pause &amp; reset</div>
       </div>
       <!-- Mindful Stories (NEW full feature) -->
-      <div onclick="openMindfulStories()" style="background:linear-gradient(135deg,#BFD7F5,#A8C5F0);border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #2563EB,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
-        <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.25),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
-        <div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">📖</div>
-        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">Mindful Stories</div>
-        <div style="font-size:.66rem;font-weight:700;opacity:.85;position:relative;z-index:1;">Listen &amp; relax</div>
+      <div onclick="openMindfulStories()" style="background:linear-gradient(160deg,#D5C9FF,#B9A7F7);border-radius:20px;padding:16px 14px 14px;cursor:pointer;box-shadow:0 4px 0 #8F72D6,0 6px 14px rgba(56,83,66,.12);font-family:Nunito,sans-serif;">
+        <div style="display:flex;gap:8px;margin-bottom:10px;">
+          <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 2px 5px rgba(0,0,0,.08);">📘</div>
+          <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 2px 5px rgba(0,0,0,.08);">✨</div>
+        </div>
+        <div style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem;line-height:1.1;color:#3B2D6B;">Mindful Stories</div>
+        <div style="font-size:.68rem;font-weight:700;color:#55458A;margin-top:2px;">Listen &amp; relax</div>
       </div>
-      <div onclick="openKindnessCorner()" style="background:linear-gradient(135deg,#F5C5D5,#F0A8C0);border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #E0456A,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
-        <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
-        <div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:24px;position:relative;z-index:1;">💛</div>
-        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;">Kindness Corner</div>
-        <div style="font-size:.66rem;font-weight:700;opacity:.85;position:relative;z-index:1;">Be kind &amp; caring</div>
+      <div onclick="openKindnessCorner()" style="background:linear-gradient(160deg,#FFA68F,#F98470);border-radius:20px;padding:16px 14px 14px;cursor:pointer;box-shadow:0 4px 0 #D96A52,0 6px 14px rgba(56,83,66,.12);font-family:Nunito,sans-serif;">
+        <div style="display:flex;gap:8px;margin-bottom:10px;">
+          <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 2px 5px rgba(0,0,0,.08);">❤️</div>
+          <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 2px 5px rgba(0,0,0,.08);">🤝</div>
+        </div>
+        <div style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem;line-height:1.1;color:#6B2418;">Kindness Corner</div>
+        <div style="font-size:.68rem;font-weight:700;color:#8A4030;margin-top:2px;">Be kind &amp; caring</div>
       </div>
     </div>
 
@@ -4301,8 +4311,8 @@ function buildProgressSection() {
 
   var subjects = ['Word Wizards','Number Ninjas','Wonder Lab','Make It!'];
   var subjIcons = ['📖','🥷','🔬','🎨'];
-  var subjColors = ['#5B2D9E','#1D4ED8','#065F46','#9D174D'];
-  var subjBg    = ['#EDE9FE','#DBEAFE','#D1FAE5','#FFE4F0'];
+  var subjColors = ['#3D6B4D','#1C6552','#33608A','#B85D45'];
+  var subjBg    = ['#DFF2E4','#D3F0E8','#DCEBFA','#FFE4DA'];
 
   var leavesHTML = subjects.map(function(subj, si) {
     var myLeaves = Math.min(5, Math.floor(stars / 5));
@@ -4322,7 +4332,7 @@ function buildProgressSection() {
   }).join('');
 
   container.innerHTML =
-    '<div style="background:linear-gradient(135deg,#1A0A3E,#2D1B69,#5B2D9E);border-radius:24px;padding:20px;color:white;position:relative;overflow:hidden;margin-bottom:12px;">'
+    '<div style="background:linear-gradient(135deg,#1E4A30,#2F6B45,#4A9A5A);border-radius:24px;padding:20px;color:white;position:relative;overflow:hidden;margin-bottom:12px;">'
     + '<div style="position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:rgba(255,255,255,.05);border-radius:50%;"></div>'
     + '<div style="position:absolute;bottom:-20px;left:-20px;width:80px;height:80px;background:rgba(255,255,255,.04);border-radius:50%;"></div>'
     // Header row
@@ -4343,7 +4353,7 @@ function buildProgressSection() {
     + '<span>' + xpInLevel + ' / 50 XP</span>'
     + '</div>'
     + '<div style="height:10px;background:rgba(255,255,255,.15);border-radius:10px;overflow:hidden;">'
-    + '<div id="journeyXPFill" style="height:100%;width:' + xpPct + '%;background:linear-gradient(90deg,#FFD700,#F59E0B);border-radius:10px;transition:width .8s ease;box-shadow:0 0 8px rgba(255,215,0,.5);"></div>'
+    + '<div id="journeyXPFill" style="height:100%;width:' + xpPct + '%;background:linear-gradient(90deg,#FFE082,#F7C948);border-radius:10px;transition:width .8s ease;box-shadow:0 0 8px rgba(247,201,72,.45);"></div>'
     + '</div>'
     + '</div>'
     // Growing Leaves card
@@ -12578,8 +12588,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v437</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v437</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v439</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v439</div>
 
 </body>
 </html
