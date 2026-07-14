@@ -970,7 +970,7 @@ input::placeholder { color:#aaa !important; }
   <div id="v3Hero" style="display:flex;align-items:flex-start;justify-content:space-between;margin:0 0 4px;min-height:160px;position:relative;padding:16px 16px 0;">
     <div style="flex:1;padding-top:8px;">
       <div style="font-family:'Baloo 2',cursive;font-size:.75rem;font-weight:700;color:#5A8A5A;letter-spacing:.5px;margin-bottom:4px;">BloomiKids</div>
-      <div style="font-family:'Baloo 2',cursive;font-size:1.5rem;font-weight:900;color:#3D6B3D;line-height:1.2;margin-bottom:6px;">Ready to bloom<br>today, <span id="v3HeroName">friend</span>?</div>
+      <div style="font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:1.55rem;font-weight:700;color:#C99A3F;line-height:1.18;margin-bottom:6px;">Ready to bloom<br>today, <span id="v3HeroName">friend</span>?</div>
       <div style="font-size:.82rem;font-weight:600;color:#6B8F6B;line-height:1.4;" id="v3HeroSub">I picked something fun for us today &#x2728;</div>
       <button onclick="openBloomyWardrobe()" style="margin-top:10px;background:#FFD166;border:none;border-radius:999px;padding:6px 14px;font-size:.72rem;font-weight:800;color:#5C3A00;cursor:pointer;box-shadow:0 3px 0 #D4A017;font-family:Nunito,sans-serif;">&#x1F457; Dress Up</button>
     </div>
@@ -1012,6 +1012,24 @@ input::placeholder { color:#aaa !important; }
          z-index so it scrolls with the content and sits behind everything, and added more leaves
          for fuller coverage down the page. ) -->
     <div style="position:absolute;top:0;left:0;right:0;pointer-events:none;z-index:-1;">
+      <!-- v437: curvy vine tendrils (mockup style) -->
+      <svg style="position:absolute;top:-8px;left:-6px;width:70px;opacity:.5;" viewBox="0 0 60 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M-5,5 C35,-5 45,45 20,70 C2,90 28,120 12,150" stroke="#6FA87E" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <ellipse cx="30" cy="14" rx="11" ry="6" fill="#8FC49A" transform="rotate(30 30 14)"/>
+        <ellipse cx="26" cy="66" rx="10" ry="5" fill="#8FC49A" transform="rotate(-20 26 66)"/>
+        <ellipse cx="18" cy="122" rx="9" ry="5" fill="#8FC49A" transform="rotate(50 18 122)"/>
+      </svg>
+      <svg style="position:absolute;top:120px;right:-8px;width:64px;opacity:.42;" viewBox="0 0 60 170" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M65,5 C25,-8 18,42 42,66 C60,84 36,110 52,140" stroke="#6FA87E" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <ellipse cx="34" cy="12" rx="11" ry="6" fill="#8FC49A" transform="rotate(-30 34 12)"/>
+        <ellipse cx="40" cy="60" rx="10" ry="5" fill="#8FC49A" transform="rotate(20 40 60)"/>
+        <ellipse cx="48" cy="112" rx="9" ry="5" fill="#8FC49A" transform="rotate(-45 48 112)"/>
+      </svg>
+      <!-- v437: small scattered leaves -->
+      <svg style="position:absolute;top:420px;left:14px;width:22px;opacity:.35;transform:rotate(-24deg);" viewBox="0 0 20 30" xmlns="http://www.w3.org/2000/svg"><path d="M10,28 C3,20 1,10 10,2 C19,10 17,20 10,28Z" fill="#7CC48C"/></svg>
+      <svg style="position:absolute;top:640px;right:20px;width:20px;opacity:.32;transform:rotate(35deg);" viewBox="0 0 20 30" xmlns="http://www.w3.org/2000/svg"><path d="M10,28 C3,20 1,10 10,2 C19,10 17,20 10,28Z" fill="#6FB37E"/></svg>
+      <svg style="position:absolute;top:880px;left:30px;width:24px;opacity:.3;transform:rotate(14deg);" viewBox="0 0 20 30" xmlns="http://www.w3.org/2000/svg"><path d="M10,28 C3,20 1,10 10,2 C19,10 17,20 10,28Z" fill="#7CC48C"/></svg>
+      <svg style="position:absolute;top:1140px;right:34px;width:20px;opacity:.32;transform:rotate(-40deg);" viewBox="0 0 20 30" xmlns="http://www.w3.org/2000/svg"><path d="M10,28 C3,20 1,10 10,2 C19,10 17,20 10,28Z" fill="#6FB37E"/></svg>
       <svg style="position:absolute;top:-20px;right:-30px;opacity:.18;width:180px;" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M100 280 C100 280 20 200 20 120 C20 60 60 20 100 10 C140 20 180 60 180 120 C180 200 100 280 100 280Z" fill="#4A9A5A"/>
         <path d="M100 280 L100 10" stroke="#3A7A4A" stroke-width="3" opacity=".5"/>
@@ -1071,15 +1089,18 @@ input::placeholder { color:#aaa !important; }
 
     <!-- Daily Mission (compact - 1 line) -->
     <div class="bloomi-daily-mission" id="bloomiMission" style="background:linear-gradient(135deg,#E8856A,#D4735A);border-radius:20px;padding:16px 18px;margin:0 16px 14px;box-shadow:0 6px 0 #B85D45,0 8px 20px rgba(232,133,106,.3);">
-      <div class="bloomi-mission-title" style="margin:0 0 10px;font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:white;text-align:center;">⭐ <span id="missionInline">Today's Mission · 0/3</span></div>
-      <div class="mission-steps" style="margin:2px 4px 8px;">
-        <div class="mission-step locked" id="mstep0">📖</div>
-        <div class="mission-connector" id="mconn0"></div>
-        <div class="mission-step locked" id="mstep1">🎮</div>
-        <div class="mission-connector" id="mconn1"></div>
-        <div class="mission-step locked" id="mstep2">🧘</div>
+      <div class="bloomi-mission-title" style="margin:0 0 10px;font-family:'Baloo 2',cursive;font-size:1.05rem;font-weight:800;color:white;text-align:center;"><span style="color:#FFE36C;">✦</span> <span id="missionInline">Start Today's Mission</span> <span style="color:#FFE36C;">✦</span></div>
+      <div style="background:rgba(255,255,255,.6);border-radius:18px;padding:12px 12px 10px;">
+        <div id="growthStageRow" style="display:flex;justify-content:space-between;align-items:center;gap:4px;">
+          <span class="growth-stage" id="gstage0" style="font-size:1.5rem;transition:all .4s;">🌰</span>
+          <span class="growth-stage" id="gstage1" style="font-size:1.5rem;transition:all .4s;">🌱</span>
+          <span class="growth-stage" id="gstage2" style="font-size:1.5rem;transition:all .4s;">🌿</span>
+          <span class="growth-stage" id="gstage3" style="font-size:1.5rem;transition:all .4s;">🪴</span>
+          <span class="growth-stage" id="gstage4" style="font-size:1.5rem;transition:all .4s;">🌷</span>
+          <span class="growth-stage" id="gstage5" style="font-size:1.5rem;transition:all .4s;">🌸</span>
+        </div>
+        <div style="text-align:center;color:#4A5A4A;font-size:.78rem;font-weight:800;margin-top:6px;font-family:Nunito,sans-serif;" id="missionCountLabel">0 of 6 Growth Stages Earned</div>
       </div>
-      <div style="text-align:center;color:rgba(255,255,255,.85);font-size:.75rem;font-weight:700;margin-bottom:4px;" id="missionCountLabel">0/3 complete</div>
       <div class="bloomi-mission-item" id="mission-quiz" style="display:none;"><div class="bloomi-mission-check" id="mcheck-quiz"></div>Answer 3 questions</div>
       <div class="bloomi-mission-item" id="mission-yoga" style="display:none;"><div class="bloomi-mission-check" id="mcheck-yoga"></div>Try a yoga pose</div>
       <div class="bloomi-mission-item" id="mission-book" style="display:none;"><div class="bloomi-mission-check" id="mcheck-book"></div>Read a book</div>
@@ -3270,32 +3291,30 @@ function completeMissionStep(step) {
 }
 function today() { return new Date().toISOString().slice(0,10); }
 window.completeMissionStep = completeMissionStep;
-function updateMissionUI() {
-  var done = sessionData ? (sessionData.tasks || 0) : 0;
-  var icons = ['📖','🎮','🧘'];
-  var labels = ['Learn','Play','Move'];
-  for (var i = 0; i < 3; i++) {
-    var step = document.getElementById('mstep'+i);
-    var conn = document.getElementById('mconn'+i);
-    if (!step) continue;
-    if (i < done) {
-      step.className = 'mission-step done';
-      step.textContent = '✓';
-      if (conn) conn.className = 'mission-connector done';
-    } else if (i === done) {
-      step.className = 'mission-step active';
-      step.textContent = icons[i];
+// Shared: light up growth stages (3 tasks x 2 stages = 6)
+function setGrowthStages(done) {
+  var earned = Math.min(done, 3) * 2;
+  for (var i = 0; i < 6; i++) {
+    var st = document.getElementById('gstage'+i);
+    if (!st) continue;
+    if (i < earned) {
+      st.style.opacity = '1';
+      st.style.filter = 'none';
+      st.style.transform = 'scale(1.1)';
     } else {
-      step.className = 'mission-step locked';
-      step.textContent = icons[i];
+      st.style.opacity = '.35';
+      st.style.filter = 'grayscale(70%)';
+      st.style.transform = 'scale(1)';
     }
   }
   var lbl = document.getElementById('missionCountLabel');
-  var growthIcons = ['🌰','🌱','🌿','🌸'];
-  if (lbl) lbl.textContent = growthIcons[Math.min(done,3)] + ' ' + Math.min(done,3) + '/3 complete' + (done>=3?' ✓':'');
-  // Also update old inline mission
+  if (lbl) lbl.textContent = earned + ' of 6 Growth Stages Earned' + (earned>=6?' 🎉':'');
+}
+function updateMissionUI() {
+  var done = sessionData ? (sessionData.tasks || 0) : 0;
+  setGrowthStages(done);
   var inline = document.getElementById('missionInline');
-  if (inline) inline.textContent = "Today's Mission · " + Math.min(done,3) + "/3";
+  if (inline && done < 3) inline.textContent = "Start Today's Mission";
 }
 
 // Hook into completeMission
@@ -3346,8 +3365,9 @@ function updateDailyMission() {
 
   // v371: update compact inline counter
   var done = (mission.quiz?1:0) + (mission.yoga?1:0) + (mission.book?1:0);
+  if (typeof setGrowthStages === 'function') setGrowthStages(done);
   var inline = document.getElementById('missionInline');
-  if (inline) inline.textContent = "Today's Mission · " + done + "/3";
+  if (inline && done < 3) inline.textContent = "Start Today's Mission";
 
   // Check if all done
   if (mission.quiz && mission.yoga && mission.book) {
@@ -12558,8 +12578,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v436</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v436</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v437</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v437</div>
 
 </body>
 </html
