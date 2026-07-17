@@ -517,7 +517,7 @@ body.grade-prek .book-title, body.grade-k .book-title, body.grade-1 .book-title 
 .color-action-clear { background:#F0F0F8; color:var(--muted); }
 .color-action-done { background:linear-gradient(135deg,var(--mint),var(--sky)); color:white; box-shadow:0 4px 14px rgba(94,205,160,.35); }
 
-.art-hero { border-radius:24px; padding:28px; margin-bottom:24px; position:relative; overflow:hidden; text-align:center; }
+.art-hero { border-radius:20px; padding:14px 16px; margin-bottom:12px; position:relative; overflow:hidden; text-align:center; }
 .art-hero.prek-art { background:linear-gradient(135deg,#FFD166,#FF6B6B); }
 .art-hero.k-art    { background:linear-gradient(135deg,#FF6B6B,#C9B8FF); }
 .art-hero.g1-art   { background:linear-gradient(135deg,#5ECDA0,#FFD166); }
@@ -618,7 +618,7 @@ body.grade-prek .book-title, body.grade-k .book-title, body.grade-1 .book-title 
 .draw-new-btn:hover { transform:translateY(-2px); }
 
 /* Art progress */
-.art-progress-row { display:flex; gap:14px; margin-bottom:24px; flex-wrap:wrap; }
+.art-progress-row { display:flex; gap:10px; margin-bottom:12px; flex-wrap:wrap; }
 .art-stat { background:white; border-radius:18px; padding:16px 20px; flex:1; min-width:100px; text-align:center; box-shadow:var(--shadow); }
 .art-stat-num { font-family:'Baloo 2',cursive; font-size:2rem; font-weight:800; color:var(--coral); display:block; }
 .art-stat-lbl  { font-size:.75rem; color:var(--muted); font-weight:700; margin-top:2px; }
@@ -4102,10 +4102,9 @@ var CURATED_GAMES = {
       // Language & Literacy
       {icon:'✏️', label:'Grammar Grab',         fn:"openLangGame('3')",      color:'#5B2D9E'},
       {icon:'📖', label:'Fact Finder',          fn:"openPassageReader('3')", color:'#7C3AED'},
-      {icon:'⚖️', label:'Fact or Opinion',      fn:"openLangGame('3')",      color:'#8B5CF6'},
       // Math
-      {icon:'✖️', label:'Multiply Mania',       fn:"openMathGame('3')",      color:'#1D4ED8'},
-      {icon:'🎱', label:'Math Bingo',           fn:"openMathGame('3')",      color:'#6B21A8'},
+      {icon:'✖️', label:'Multiply Mania',       fn:"openMathGame('3','multi')", color:'#1D4ED8'},
+      {icon:'⏭️', label:'Number Patterns',      fn:"openMathGame('3','skipc3')", color:'#6B21A8'},
       {icon:'🛒', label:'Shop Math',            fn:"openShopMath('3')",      color:'#D97706'},
       // Science & World
       {icon:'💧', label:'Water Cycle',          fn:"openScienceGame('3')",   color:'#0EA5E9'},
@@ -4116,10 +4115,8 @@ var CURATED_GAMES = {
     4: [
       // Language & Literacy
       {icon:'🌸', label:'Grammar Garden',       fn:"openLangGame('4')",      color:'#EC4899'},
-      {icon:'📖', label:'Vocabulary Vault',     fn:"openLangGame('4')",      color:'#1D4ED8'},
-      {icon:'✍️', label:'Story Relay',          fn:"openPassageReader('4')", color:'#F59E0B'},
       // Math
-      {icon:'🍕', label:'Fraction Feast',       fn:"openMathGame('4')",      color:'#0EA5E9'},
+      {icon:'🍕', label:'Fraction Feast',       fn:"openMathGame('4','frac')", color:'#0EA5E9'},
       {icon:'📐', label:'Angles Sort',          fn:"openColorsGame('4')",    color:'#8B5CF6'},
       // Science & World
       {icon:'🔬', label:'Science Sort Lab',     fn:"openScienceGame('4')",   color:'#0EA5E9'},
@@ -4140,7 +4137,6 @@ var CURATED_GAMES = {
       {icon:'🗺️', label:'Treasure Hunt',        fn:"openTreasureHunt()",     color:'#D97706'},
       // Fun & Challenge
       {icon:'🏆', label:'Jeopardy',             fn:"openJeopardy()",         color:'#F59E0B'},
-      {icon:'🔬', label:'Research Race',        fn:"openScienceGame('5')",   color:'#0EA5E9'},
     ],
   };
 
@@ -6119,6 +6115,20 @@ var _GAME_INTROS = {
   'numberline':  {emoji:'&#x1F4CA;', title:'Number Lines',     desc:'A number line shows numbers in order from small (left) to big (right). Find where your number fits between the others!'},
   'shop':        {emoji:'&#x1F6D2;', title:'Shop Math',        desc:'You are shopping! Look at the price and figure out how much to pay or how much change you get back.'},
   'fraction':    {emoji:'&#x1F355;', title:'Fraction Feast',   desc:'A fraction shows part of a whole. The bottom number is how many equal pieces total. The top is how many you have.'},
+  'memory':      {emoji:'&#x1F0CF;', title:'Memory Match',     desc:'Flip two cards at a time to find matching pairs. Try to remember where each picture hides!'},
+  'patterns':    {emoji:'&#x1F3B5;', title:'Patterns',         desc:'Look at what repeats, then pick what comes next. Say the pattern out loud to help!'},
+  'sort':        {emoji:'&#x1F9E9;', title:'Sorting Time',     desc:'Look at each item and tap the group where it belongs. Think about what makes things alike!'},
+  'phonics':     {emoji:'&#x1F50A;', title:'Sound Play',       desc:'Letters make sounds! Listen carefully and match the sounds to the right letters and words.'},
+  'tracing':     {emoji:'&#x270F;&#xFE0F;', title:'Tracing Time', desc:'Use your finger to follow the dotted lines. Go slow and steady -- practice makes progress!'},
+  'bonds':       {emoji:'&#x1F517;', title:'Number Bonds',     desc:'Two small numbers join to make a bigger number. Find the missing piece of the bond!'},
+  'dino':        {emoji:'&#x1F995;', title:'Dino Stories',     desc:'Read the story with the dinos! Sound out each word, then answer fun questions at the end.'},
+  'evidence':    {emoji:'&#x1F50E;', title:'Evidence Explorer', desc:'Read like a detective! Find the clue in the passage that proves your answer is right.'},
+  'coordinate':  {emoji:'&#x1F4CD;', title:'Coordinate Chase', desc:'A grid uses two numbers: across first, then up. Find the spot where they meet!'},
+  'problem':     {emoji:'&#x1F9EE;', title:'Problem Solver',   desc:'Read the whole problem first. Ask: what is it really asking? Then solve it step by step.'},
+  'treasure':    {emoji:'&#x1F5FA;&#xFE0F;', title:'Treasure Hunt', desc:'Answer questions to follow the map. Each right answer brings you closer to the treasure!'},
+  'jeopardy':    {emoji:'&#x1F3C6;', title:'Jeopardy',         desc:'Pick a category and a point value. Harder questions are worth more points. Good luck!'},
+  'readingpath': {emoji:'&#x1F331;', title:'Reading Path',     desc:'Follow the path and stop at each lesson. Every step helps your reading grow!'},
+  'busybook':    {emoji:'&#x1F4DA;', title:'Busy Book',        desc:'Pick any page that looks fun and start playing. There is something new on every page!'},
 };
 
 function showGameIntro(type, onStart) {
@@ -6726,6 +6736,7 @@ function startSmartSession(title, icon, questions, onComplete) {
 //  1. SHOP MATH — Grade 1-3 money/real-life math
 // ════════════════════════════════════════════════════════════════════
 function openShopMath(grade) {
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_shop')){window._gameIntroCallback=function(){openShopMath(grade);};showGameIntro('shop',window._gameIntroCallback);return;}
   var CA='#F59E0B', CB='#FCD34D';
   var ov=document.createElement('div');
   ov.id='shopOv';
@@ -6897,6 +6908,7 @@ function openShopMath(grade) {
 //  2. BUSY BOOK — Interactive grade-level encyclopedia
 // ════════════════════════════════════════════════════════════════════
 function openBusyBook(grade) {
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_busybook')){window._gameIntroCallback=function(){openBusyBook(grade);};showGameIntro('busybook',window._gameIntroCallback);return;}
   var CA='#0EA5E9', CB='#38BDF8';
   var ov=document.createElement('div');
   ov.id='busyBookOv';
@@ -7190,6 +7202,7 @@ function openBusyBoard() {
 //  4. PATTERN SEQUENCER — PreK-K math patterns
 // ════════════════════════════════════════════════════════════════════
 function openSequencer(grade) {
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_patterns')){window._gameIntroCallback=function(){openSequencer(grade);};showGameIntro('patterns',window._gameIntroCallback);return;}
   var CA='#7C3AED', CB='#A78BFA';
   var ov=document.createElement('div');
   ov.id='seqOv';
@@ -7324,6 +7337,7 @@ function showWhatsNew() {
 function openMasterLessons(grade){ openPassageReader(grade); }
 
 function openMemoryMatch(grade) {
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_memory')){window._gameIntroCallback=function(){openMemoryMatch(grade);};showGameIntro('memory',window._gameIntroCallback);return;}
   var CA='#7C3AED', CB='#A78BFA';
   var ov=document.createElement('div'); ov.id='matchOv';
   ov.style.cssText='position:fixed;inset:0;z-index:9999;background:#F5F3FF;display:flex;flex-direction:column;';
@@ -7333,7 +7347,7 @@ function openMemoryMatch(grade) {
   var emojis=base.concat(base).sort(function(){return Math.random()-.5;});
   var flipped=[],matched=[],moves=0;
   function render(){
-    ov.innerHTML='<div style="background:linear-gradient(135deg,'+CA+','+CB+');padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;"><div style="font-family:Baloo 2,cursive;font-weight:800;color:white;">🃏 Memory Match</div><div style="display:flex;gap:8px;align-items:center;"><span style="color:rgba(255,255,255,.85);font-size:.85rem;">Moves: '+moves+'</span><button data-closeov="matchOv" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:34px;height:34px;cursor:pointer;font-weight:800;">✕</button></div></div>'
+    ov.innerHTML='<div style="background:linear-gradient(135deg,'+CA+','+CB+');padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;"><div style="font-family:Baloo 2,cursive;font-weight:800;color:white;">🃏 Memory Match</div><div style="display:flex;gap:8px;align-items:center;"><span style="color:rgba(255,255,255,.85);font-size:.85rem;">Moves: '+moves+'</span><button data-closeov="matchOv" style="background:rgba(0,0,0,.30);border:none;color:white;border-radius:50%;width:34px;height:34px;cursor:pointer;font-weight:800;box-shadow:0 2px 6px rgba(0,0,0,.2);">✕</button></div></div>'
       +'<div id="matchGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:20px;max-width:540px;width:100%;margin:20px auto;flex:1;align-content:start;"></div>';
     var grid=document.getElementById('matchGrid');
     emojis.forEach(function(emoji,i){
@@ -7372,6 +7386,7 @@ function openMemoryMatch(grade) {
 }
 
 function openNumberBonds(grade) {
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_bonds')){window._gameIntroCallback=function(){openNumberBonds(grade);};showGameIntro('bonds',window._gameIntroCallback);return;}
   var CA='#059669', CB='#34D399';
   var ov=document.createElement('div'); ov.id='bondsOv';
   ov.style.cssText='position:fixed;inset:0;z-index:9999;background:#F0FDF4;display:flex;flex-direction:column;font-family:Nunito,sans-serif;';
@@ -7391,7 +7406,7 @@ function openNumberBonds(grade) {
     ov.innerHTML='';
     var hdr=document.createElement('div');
     hdr.style.cssText='background:linear-gradient(135deg,'+CA+','+CB+');padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;';
-    hdr.innerHTML='<div style="font-family:Baloo 2,cursive;font-weight:800;color:white;">🔗 Number Bonds</div><div style="display:flex;gap:8px;align-items:center;"><span style="color:rgba(255,255,255,.8);font-size:.85rem;">'+round+'/'+ROUNDS+'</span><button data-closeov="bondsOv" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:34px;height:34px;cursor:pointer;font-weight:800;">✕</button></div>';
+    hdr.innerHTML='<div style="font-family:Baloo 2,cursive;font-weight:800;color:white;">🔗 Number Bonds</div><div style="display:flex;gap:8px;align-items:center;"><span style="color:rgba(255,255,255,.8);font-size:.85rem;">'+round+'/'+ROUNDS+'</span><button data-closeov="bondsOv" style="background:rgba(0,0,0,.30);border:none;color:white;border-radius:50%;width:34px;height:34px;cursor:pointer;font-weight:800;box-shadow:0 2px 6px rgba(0,0,0,.2);">✕</button></div>';
     ov.appendChild(hdr);
     var body=document.createElement('div');
     body.style.cssText='flex:1;overflow-y:auto;padding:20px;max-width:600px;margin:0 auto;width:100%;';
@@ -7723,8 +7738,8 @@ function gameWinScreen(score, total, colorA, colorB, ovId) {
 //  G3: place value, add/sub 3-5 digit, multiplication
 //  G4-5: place value, estimation, multiplication, division
 // ══════════════════════════════════════════════════════════════════════
-function openMathGame(grade) {
-  if(window.showGameIntro&&!sessionStorage.getItem('intro_math')){window._gameIntroCallback=function(){openMathGame(grade);};showGameIntro('math',window._gameIntroCallback);return;}
+function openMathGame(grade, targetGame) {
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_math')){window._gameIntroCallback=function(){openMathGame(grade, targetGame);};showGameIntro('math',window._gameIntroCallback);return;}
   var earlyGradeOv = ['PreK','K','1'].indexOf(grade) >= 0;
   var CA = earlyGradeOv ? '#C0392B' : '#6C3FC5';
   var CB = earlyGradeOv ? '#E74C3C' : '#A78BFA';
@@ -7814,6 +7829,11 @@ function openMathGame(grade) {
   function playGame(gameId) {
     var questions = buildQuestions(gameId, grade);
     if(!questions || !questions.length){ toast('Coming soon!'); showMenu(); return; }
+    var _subIntro = {count:'counting', count100:'counting', numline:'numberline', frac:'fraction'}[gameId];
+    if(_subIntro && window.showGameIntro && !sessionStorage.getItem('intro_'+_subIntro)){
+      showGameIntro(_subIntro, function(){ runQuiz(questions, gameId); });
+      return;
+    }
     runQuiz(questions, gameId);
   }
 
@@ -8316,7 +8336,7 @@ function openMathGame(grade) {
     showQ();
   }
 
-  showMenu();
+  if (targetGame) { playGame(targetGame); } else { showMenu(); }
 }
 
 
@@ -8582,6 +8602,7 @@ function openLangGame(grade) {
 //  3. SCIENCE SORT GAME
 // ══════════════════════════════════════════════════════════════════════
 function openScienceGame(grade) {
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_science')){window._gameIntroCallback=function(){openScienceGame(grade);};showGameIntro('science',window._gameIntroCallback);return;}
   var CA='#0EA5E9', CB='#38BDF8';
   var ov = gameOverlay('sciGameOv','#F0FAFF');
   document.body.appendChild(ov);
@@ -8802,6 +8823,7 @@ function openScienceGame(grade) {
 
 function openSSGame(grade){ openSocialStudiesGame(grade); }
 function openSocialStudiesGame(grade) {
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_worldquest')){window._gameIntroCallback=function(){openSocialStudiesGame(grade);};showGameIntro('worldquest',window._gameIntroCallback);return;}
   var CA='#F59E0B', CB='#FCD34D';
   var ov = gameOverlay('ssGameOv','#FFFBF0');
   document.body.appendChild(ov);
@@ -8909,6 +8931,7 @@ function openSocialStudiesGame(grade) {
 //  5. COLORS/SHAPES SORT + ANIMALS & NATURE — use science sort engine
 // ══════════════════════════════════════════════════════════════════════
 function openColorsGame(grade) {
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_sort')){window._gameIntroCallback=function(){openColorsGame(grade);};showGameIntro('sort',window._gameIntroCallback);return;}
   var CA='#EC4899', CB='#F472B6';
   var ov = gameOverlay('colorsGameOv','#FFF0F8');
   document.body.appendChild(ov);
@@ -9295,6 +9318,7 @@ function closeMindfulStories() {
 // v379: Universal "go home from overlay" — closes any open overlay & returns to home
 
 function openKindnessCorner(){
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_kindness')){window._gameIntroCallback=function(){openKindnessCorner();};showGameIntro('kindness',window._gameIntroCallback);return;}
   var ov=document.createElement('div');ov.id='kindnessOv';
   ov.style.cssText='position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#FFF0F8,#FFF8E8);display:flex;flex-direction:column;overflow-y:auto;';
   document.body.appendChild(ov);
@@ -9362,6 +9386,7 @@ window.openKindnessCorner=openKindnessCorner;
 
 
 function openEvidenceExplorer(){
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_evidence')){window._gameIntroCallback=function(){openEvidenceExplorer();};showGameIntro('evidence',window._gameIntroCallback);return;}
   var CA='#1D4ED8',CB='#3B82F6';
   var PASSAGES=[
     {text:'Penguins live in Antarctica. They cannot fly, but they are excellent swimmers. Their black and white feathers help them blend in the ocean. Emperor penguins are the tallest and can grow up to 4 feet tall!',q:'What helps penguins blend into the ocean?',opts:['Their sharp claws','Their long beaks','Their black and white feathers','Their size'],a:2,e:'The passage says their black and white feathers help them blend in the ocean.'},
@@ -9401,6 +9426,7 @@ window.openEvidenceExplorer=openEvidenceExplorer;
 
 
 function openTreasureHunt(){
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_treasure')){window._gameIntroCallback=function(){openTreasureHunt();};showGameIntro('treasure',window._gameIntroCallback);return;}
   var CA='#D97706',CB='#F59E0B';
   var clues=[
     {clue:'🌍 I am the largest continent on Earth. What continent am I?',a:'Asia',opts:['Asia','Africa','Europe','Australia']},
@@ -9431,6 +9457,7 @@ window.openTreasureHunt=openTreasureHunt;
 
 
 function openJeopardy(){
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_jeopardy')){window._gameIntroCallback=function(){openJeopardy();};showGameIntro('jeopardy',window._gameIntroCallback);return;}
   var categories=[
     {name:'Math',color:'#2563EB',qs:[{v:100,q:'What is 12 x 12?',a:'144'},{v:200,q:'What is 144 divided by 12?',a:'12'},{v:300,q:'What fraction equals 0.5?',a:'one half or 1/2'}]},
     {name:'Science',color:'#059669',qs:[{v:100,q:'What gas do plants absorb from the air?',a:'Carbon dioxide'},{v:200,q:'What planet is closest to the Sun?',a:'Mercury'},{v:300,q:'What is H2O?',a:'Water'}]},
@@ -9480,6 +9507,7 @@ window.openJeopardy=openJeopardy;
 
 // ══ COORDINATE CHASE - Hot/Cold treasure hunt on a 5x5 grid ══
 function openCoordinateChase() {
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_coordinate')){window._gameIntroCallback=function(){openCoordinateChase();};showGameIntro('coordinate',window._gameIntroCallback);return;}
   var SIZE = 5;
   var treasure = [Math.floor(Math.random()*SIZE), Math.floor(Math.random()*SIZE)];
   var guesses = 0;
@@ -9574,6 +9602,7 @@ window.openCoordinateChase = openCoordinateChase;
 
 // ══ PROBLEM SOLVER - Fun grade-5 word problems with multiple choice ══
 function openProblemSolver() {
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_problem')){window._gameIntroCallback=function(){openProblemSolver();};showGameIntro('problem',window._gameIntroCallback);return;}
   var problems = [
     {q:'A pizza has 8 slices. Three friends each ate 2 slices. How many are left?', opts:['2','3','4','6'], a:0, emoji:'🍕'},
     {q:'Maya biked 4.5 miles to school and 4.5 miles back every day for 5 days. How many miles total?', opts:['20','40 miles','45 miles','9 miles'], a:2, emoji:'🚴'},
@@ -9767,6 +9796,7 @@ window._wardrobeGet=_wardrobeGet;
 
 
 function openReadingPath() {
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_readingpath')){window._gameIntroCallback=function(){openReadingPath();};showGameIntro('readingpath',window._gameIntroCallback);return;}
   var state = _readingPathProgress();
   var nextId = 1;
   for (var i = 0; i < READING_LESSONS.length; i++) {
@@ -10035,6 +10065,7 @@ window._readingPathAnswer = _readingPathAnswer;
 //  PHONICS BLENDING + SIGHT WORDS GAME
 // ══════════════════════════════════════════════════════
 function openPhonicsGame(grade) {
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_phonics')){window._gameIntroCallback=function(){openPhonicsGame(grade);};showGameIntro('phonics',window._gameIntroCallback);return;}
   var CA='#0EA5E9', CB='#38BDF8';
   var ov = document.createElement('div');
   ov.id = 'phonicsOv';
@@ -10201,6 +10232,7 @@ function openPhonicsGame(grade) {
 //  NUMBER TRACING
 // ══════════════════════════════════════════════════════
 function openNumberTracing() {
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_tracing')){window._gameIntroCallback=function(){openNumberTracing();};showGameIntro('tracing',window._gameIntroCallback);return;}
   var NUMS = ['0','1','2','3','4','5','6','7','8','9'];
   var WORDS = {0:'Zero',1:'One',2:'Two',3:'Three',4:'Four',5:'Five',6:'Six',7:'Seven',8:'Eight',9:'Nine'};
   var EMOJI = {0:'🌕',1:'☝️',2:'✌️',3:'🥉',4:'🍀',5:'🖐️',6:'🎲',7:'7️⃣',8:'🎱',9:'🌟'};
@@ -10328,6 +10360,7 @@ function buildDrawingCanvas(container){
 //  LETTER TRACING
 // ══════════════════════════════════════════════════════
 function showLetterTracing(){
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_tracing')){window._gameIntroCallback=function(){showLetterTracing();};showGameIntro('tracing',window._gameIntroCallback);return;}
   var LETTERS='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
   var WORDS={A:'Apple',B:'Bear',C:'Cat',D:'Dog',E:'Egg',F:'Fish',G:'Goat',H:'Hat',I:'Igloo',J:'Jar',K:'Kite',L:'Lion',M:'Moon',N:'Nest',O:'Orange',P:'Pig',Q:'Queen',R:'Rain',S:'Sun',T:'Tree',U:'Umbrella',V:'Volcano',W:'Whale',X:'X-ray',Y:'Yarn',Z:'Zebra'};
   var EMOJI={A:'🍎',B:'🐻',C:'🐱',D:'🐶',E:'🥚',F:'🐟',G:'🐐',H:'🎩',I:'🏠',J:'🫙',K:'🪁',L:'🦁',M:'🌙',N:'🪺',O:'🍊',P:'🐷',Q:'👑',R:'🌧',S:'☀️',T:'🌳',U:'☂️',V:'🌋',W:'🐳',X:'🩻',Y:'🧶',Z:'🦓'};
@@ -11559,6 +11592,7 @@ function openStorylineSearch(title) {
 
 
 function openPassageReader(grade) {
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_reading')){window._gameIntroCallback=function(){openPassageReader(grade);};showGameIntro('reading',window._gameIntroCallback);return;}
   var CA='#1D4ED8', CB='#3B82F6';
   var ov=document.createElement('div');
   ov.id='passageOv';
@@ -12141,6 +12175,7 @@ function openPassageReader(grade) {
 
 
 function openDinoStories(grade) {
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_dino')){window._gameIntroCallback=function(){openDinoStories(grade);};showGameIntro('dino',window._gameIntroCallback);return;}
   var STORIES = {
     PreK: [
       { title:"Dino Makes a Friend", cover:"stories/story_dino_friend.png",
@@ -12597,8 +12632,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v440</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v440</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v441</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v441</div>
 
 </body>
 </html
