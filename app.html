@@ -978,6 +978,7 @@ input::placeholder { color:#aaa !important; }
       <img id="v3HeroMascot" src="bloomy_wave.png" onclick="bloomiDance()" alt="Bloom" style="width:145px;height:155px;object-fit:contain;filter:drop-shadow(0 8px 6px rgba(0,0,0,.12));cursor:pointer;display:block;">
       <div id="bloomyAccOverlay" style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:1.8rem;line-height:1;pointer-events:none;z-index:5;"></div>
     </div>
+  </div><!-- /v3Hero — close added v440: this tag was missing, which made every section after the hero a flex-row child (the phantom squished "columns" layout) -->
   <!-- Play Today removed - Today's Mission handles this -->
   <!-- Top tabs restored v380 — Art/Move/Read must be accessible -->
   <!-- Tab bar hidden v381 — all sections accessible via home tiles -->
@@ -1011,7 +1012,7 @@ input::placeholder { color:#aaa !important; }
          this panel a containing block for fixed descendants. Switched to absolute + negative
          z-index so it scrolls with the content and sits behind everything, and added more leaves
          for fuller coverage down the page. ) -->
-    <div style="position:absolute;top:0;left:0;right:0;pointer-events:none;z-index:-1;">
+    <div style="position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:-1;overflow:hidden;">
       <!-- v437: curvy vine tendrils (mockup style) -->
       <svg style="position:absolute;top:-8px;left:-6px;width:70px;opacity:.5;" viewBox="0 0 60 180" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M-5,5 C35,-5 45,45 20,70 C2,90 28,120 12,150" stroke="#6FA87E" stroke-width="3" stroke-linecap="round" fill="none"/>
@@ -1030,30 +1031,30 @@ input::placeholder { color:#aaa !important; }
       <svg style="position:absolute;top:640px;right:20px;width:20px;opacity:.32;transform:rotate(35deg);" viewBox="0 0 20 30" xmlns="http://www.w3.org/2000/svg"><path d="M10,28 C3,20 1,10 10,2 C19,10 17,20 10,28Z" fill="#6FB37E"/></svg>
       <svg style="position:absolute;top:880px;left:30px;width:24px;opacity:.3;transform:rotate(14deg);" viewBox="0 0 20 30" xmlns="http://www.w3.org/2000/svg"><path d="M10,28 C3,20 1,10 10,2 C19,10 17,20 10,28Z" fill="#7CC48C"/></svg>
       <svg style="position:absolute;top:1140px;right:34px;width:20px;opacity:.32;transform:rotate(-40deg);" viewBox="0 0 20 30" xmlns="http://www.w3.org/2000/svg"><path d="M10,28 C3,20 1,10 10,2 C19,10 17,20 10,28Z" fill="#6FB37E"/></svg>
-      <svg style="position:absolute;top:-20px;right:-30px;opacity:.18;width:180px;" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg style="position:absolute;top:-14px;right:-22px;opacity:.15;width:104px;" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M100 280 C100 280 20 200 20 120 C20 60 60 20 100 10 C140 20 180 60 180 120 C180 200 100 280 100 280Z" fill="#4A9A5A"/>
         <path d="M100 280 L100 10" stroke="#3A7A4A" stroke-width="3" opacity=".5"/>
         <path d="M100 100 C80 80 40 70 30 50" stroke="#3A7A4A" stroke-width="2" opacity=".4"/>
         <path d="M100 140 C120 120 160 110 170 90" stroke="#3A7A4A" stroke-width="2" opacity=".4"/>
         <path d="M100 180 C80 165 50 160 40 140" stroke="#3A7A4A" stroke-width="2" opacity=".4"/>
       </svg>
-      <svg style="position:absolute;top:270px;left:-25px;opacity:.13;width:130px;transform:rotate(-15deg);" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg style="position:absolute;top:270px;left:-18px;opacity:.11;width:84px;transform:rotate(-15deg);" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M100 280 C100 280 20 200 20 120 C20 60 60 20 100 10 C140 20 180 60 180 120 C180 200 100 280 100 280Z" fill="#5EAD6A"/>
         <path d="M100 280 L100 10" stroke="#4A8A5A" stroke-width="3" opacity=".5"/>
         <path d="M100 100 C80 80 40 70 30 50" stroke="#4A8A5A" stroke-width="2" opacity=".4"/>
         <path d="M100 160 C120 140 155 135 165 115" stroke="#4A8A5A" stroke-width="2" opacity=".4"/>
       </svg>
-      <svg style="position:absolute;top:520px;right:-20px;opacity:.16;width:110px;transform:rotate(25deg);" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg style="position:absolute;top:520px;right:-14px;opacity:.13;width:74px;transform:rotate(25deg);" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M100 280 C100 280 20 200 20 120 C20 60 60 20 100 10 C140 20 180 60 180 120 C180 200 100 280 100 280Z" fill="#4A9A5A"/>
         <path d="M100 280 L100 10" stroke="#3A7A4A" stroke-width="3" opacity=".5"/>
         <path d="M100 100 C80 80 40 70 30 50" stroke="#3A7A4A" stroke-width="2" opacity=".4"/>
       </svg>
-      <svg style="position:absolute;top:760px;left:-30px;opacity:.13;width:150px;transform:scaleX(-1)rotate(10deg);" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg style="position:absolute;top:760px;left:-20px;opacity:.11;width:92px;transform:scaleX(-1)rotate(10deg);" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M100 280 C100 280 20 200 20 120 C20 60 60 20 100 10 C140 20 180 60 180 120 C180 200 100 280 100 280Z" fill="#5EAD6A"/>
         <path d="M100 280 L100 10" stroke="#4A8A5A" stroke-width="3" opacity=".5"/>
         <path d="M100 140 C120 120 160 110 170 90" stroke="#4A8A5A" stroke-width="2" opacity=".4"/>
       </svg>
-      <svg style="position:absolute;top:1020px;right:-25px;opacity:.15;width:120px;transform:rotate(-30deg);" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg style="position:absolute;top:1020px;right:-16px;opacity:.12;width:78px;transform:rotate(-30deg);" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M100 280 C100 280 20 200 20 120 C20 60 60 20 100 10 C140 20 180 60 180 120 C180 200 100 280 100 280Z" fill="#4A9A5A"/>
         <path d="M100 280 L100 10" stroke="#3A7A4A" stroke-width="3" opacity=".5"/>
         <path d="M100 100 C80 80 40 70 30 50" stroke="#3A7A4A" stroke-width="2" opacity=".4"/>
@@ -1162,6 +1163,14 @@ input::placeholder { color:#aaa !important; }
         </div>
         <div style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem;line-height:1.1;color:#6B2418;">Kindness Corner</div>
         <div style="font-size:.68rem;font-weight:700;color:#8A4030;margin-top:2px;">Be kind &amp; caring</div>
+      </div>
+      <div onclick="switchTab('art')" style="background:linear-gradient(160deg,#FFE29A,#F7CE68);border-radius:20px;padding:16px 14px 14px;cursor:pointer;box-shadow:0 4px 0 #D9A93F,0 6px 14px rgba(56,83,66,.12);font-family:Nunito,sans-serif;">
+        <div style="display:flex;gap:8px;margin-bottom:10px;">
+          <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 2px 5px rgba(0,0,0,.08);">🎨</div>
+          <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 2px 5px rgba(0,0,0,.08);">🖌️</div>
+        </div>
+        <div style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem;line-height:1.1;color:#5C3A00;">Art Studio</div>
+        <div style="font-size:.68rem;font-weight:700;color:#7A5510;margin-top:2px;">Draw &amp; create</div>
       </div>
     </div>
 
@@ -12588,8 +12597,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v439</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v439</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v440</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v440</div>
 
 </body>
 </html
