@@ -6002,6 +6002,87 @@ function showBloomyReaction(ok){
 }
 window.showBloomyReaction=showBloomyReaction;
 
+// ══ BLOOMI DRAG ENGINE (Phase B) — reusable touch+mouse drag for any game ══
+// Usage: bloomiDraggable(el, function onDrop(el, zoneEl){...})
+// Drop zones are any elements with data-dropzone attribute.
+function bloomiDraggable(el, onDrop){
+  el.style.touchAction='none';
+  el.style.userSelect='none';
+  el.style.webkitUserSelect='none';
+  el.addEventListener('pointerdown', function(e){
+    if(el._dragLocked) return;
+    // ignore multi-touch extra pointers
+    if(el._dragging) return;
+    el._dragging = true;
+    e.preventDefault();
+    var r = el.getBoundingClientRect();
+    var offX = e.clientX - r.left, offY = e.clientY - r.top;
+    var moved = false;
+    // placeholder keeps the layout from jumping
+    var ph = document.createElement('div');
+    ph.style.cssText = 'width:'+r.width+'px;height:'+r.height+'px;border-radius:14px;border:2px dashed rgba(0,0,0,.15);opacity:.4;flex-shrink:0;';
+    var parent = el.parentNode, nextSib = el.nextSibling;
+    var curZone = null;
+    function startFloat(){
+      parent.insertBefore(ph, el);
+      document.body.appendChild(el);
+      el.style.position='fixed';
+      el.style.width=r.width+'px';
+      el.style.zIndex='100000';
+      el.style.pointerEvents='none';
+      el.style.transform='scale(1.08) rotate(2deg)';
+      el.style.transition='none';
+      el.style.boxShadow='0 12px 28px rgba(0,0,0,.25)';
+    }
+    function place(x,y){ el.style.left=(x-offX)+'px'; el.style.top=(y-offY)+'px'; }
+    function mv(ev){
+      if(!moved){
+        // small threshold so simple taps still work as taps
+        if(Math.abs(ev.clientX-e.clientX)<6 && Math.abs(ev.clientY-e.clientY)<6) return;
+        moved = true; startFloat();
+      }
+      place(ev.clientX, ev.clientY);
+      var t = document.elementFromPoint(ev.clientX, ev.clientY);
+      var z = t ? t.closest('[data-dropzone]') : null;
+      if(z !== curZone){
+        if(curZone){ curZone.style.outline=''; }
+        if(z){ z.style.outline='3px solid #5ECDA0'; }
+        curZone = z;
+      }
+    }
+    function up(ev){
+      document.removeEventListener('pointermove', mv);
+      document.removeEventListener('pointerup', up);
+      document.removeEventListener('pointercancel', up);
+      el._dragging = false;
+      if(curZone){ curZone.style.outline=''; }
+      if(!moved){ ph.remove(); return; } // was a tap — let click handlers run
+      var t = document.elementFromPoint(ev.clientX, ev.clientY);
+      var z = t ? t.closest('[data-dropzone]') : null;
+      // restore element styling
+      el.style.position=''; el.style.left=''; el.style.top=''; el.style.width='';
+      el.style.zIndex=''; el.style.pointerEvents=''; el.style.transition='all .2s';
+      el.style.boxShadow='';
+      if(z){
+        ph.remove();
+        el.style.transform='scale(1.15)';
+        setTimeout(function(){ el.style.transform='scale(1)'; }, 180);
+        onDrop(el, z);
+      } else {
+        // snap back to where it came from
+        el.style.transform='scale(1)';
+        if(ph.parentNode){ ph.parentNode.replaceChild(el, ph); }
+        else if(nextSib && nextSib.parentNode===parent){ parent.insertBefore(el, nextSib); }
+        else { parent.appendChild(el); }
+      }
+    }
+    document.addEventListener('pointermove', mv);
+    document.addEventListener('pointerup', up);
+    document.addEventListener('pointercancel', up);
+  });
+}
+window.bloomiDraggable = bloomiDraggable;
+
 // ══ VISUAL LEARNING AIDS ══
 function makeVisualAid(question, grade) {
   var q = question || '';
@@ -8712,7 +8793,7 @@ function openScienceGame(grade) {
       +'<div style="background:white;border-radius:18px;padding:14px 18px;margin-bottom:14px;text-align:left;box-shadow:0 4px 14px rgba(14,165,233,.15);">'
       +(['PreK','K','1'].indexOf(grade)>=0?'<img src="bloomy_wave.png" style="width:44px;height:44px;object-fit:contain;float:right;margin:0 0 4px 8px;" />':'')
       +'<div style="font-family:\'Baloo 2\',cursine;font-size:1.05rem;font-weight:800;color:#0EA5E9;">'+r.title+'</div>'
-      +'<div style="font-size:.85rem;color:#888;margin-top:2px;">Tap each item to sort it!</div>'
+      +'<div style="font-size:.85rem;color:#888;margin-top:2px;">Drag each item into its group — or tap it, then tap a group!</div>'
       +'</div>'
       +'<div id="itemBelt" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px;">'
       +items.map(function(item,i){
@@ -8722,7 +8803,7 @@ function openScienceGame(grade) {
       +'</div>'
       +'<div style="display:grid;grid-template-columns:'+Array(r.cats.length).fill('1fr').join(' ')+';gap:10px;">'
       +r.cats.map(function(cat,ci){
-        return '<div id="sciCat'+ci+'" onclick="window._sciPlaceIn('+ci+')" data-catidx="'+ci+'" '
+        return '<div id="sciCat'+ci+'" onclick="window._sciPlaceIn('+ci+')" data-catidx="'+ci+'" data-dropzone="1" '
           +'style="min-height:90px;border-radius:16px;background:rgba(14,165,233,.08);border:2px dashed rgba(14,165,233,.3);padding:10px;display:flex;flex-direction:column;gap:6px;cursor:pointer;">'
           +'<div style="font-weight:800;font-size:.85rem;color:#0EA5E9;text-align:center;margin-bottom:4px;">'+cat+'</div>'
           +'<div style="font-size:.7rem;color:#aaa;text-align:center;">Tap to place here</div>'
@@ -8793,6 +8874,17 @@ function openScienceGame(grade) {
       };
       _sciSelected=null;
     };
+
+    // Phase B: drag-and-drop via the shared engine (tap still works as fallback)
+    items.forEach(function(item,i){
+      var el=document.getElementById('sci'+i);
+      if(!el) return;
+      bloomiDraggable(el, function(dragged, zone){
+        var ci=parseInt(zone.dataset.catidx);
+        _sciSelected=dragged;
+        window._sciPlaceIn(ci);
+      });
+    });
 
     window._sciCheck=function(items){
       var correct=0;
@@ -8984,17 +9076,17 @@ function openColorsGame(grade) {
       +'<div style="flex:1;overflow-y:auto;padding:16px;max-width:500px;margin:0 auto;width:100%;">'
       +'<div style="background:white;border-radius:18px;padding:14px 18px;margin-bottom:14px;text-align:center;box-shadow:0 4px 14px rgba(236,72,153,.15);">'
       +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.05rem;font-weight:800;color:'+CA+';">'+r.title+'</div>'
-      +'<div style="font-size:.85rem;color:#888;margin-top:2px;">Tap to sort!</div>'
+      +'<div style="font-size:.85rem;color:#888;margin-top:2px;">Drag each item into its group — or tap it, then tap a group!</div>'
       +'</div>'
       +'<div id="csItems" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px;">'
       +items.map(function(item,i){
-        return '<div id="csi'+i+'" data-cat="'+item.cat+'" onclick="window._csTap(document.getElementById(\'cs\'+'+i+'))" '
+        return '<div id="csi'+i+'" data-cat="'+item.cat+'" onclick="window._csTap(this)" '
           +'style="padding:10px 14px;border-radius:14px;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-weight:700;font-size:.9rem;cursor:pointer;box-shadow:0 4px 12px rgba(236,72,153,.3);transition:all .2s;">'+item.label+'</div>';
       }).join('')
       +'</div>'
       +'<div style="display:grid;grid-template-columns:'+Array(r.cats.length).fill('1fr').join(' ')+';gap:10px;">'
       +r.cats.map(function(cat,ci){
-        return '<div id="csCat'+ci+'" data-catidx="'+ci+'" '
+        return '<div id="csCat'+ci+'" data-catidx="'+ci+'" data-dropzone="1" onclick="window._csPlaceIn('+ci+')" '
           +'style="min-height:80px;border-radius:16px;background:rgba(236,72,153,.07);border:2px dashed rgba(236,72,153,.3);padding:10px;display:flex;flex-direction:column;gap:6px;">'
           +'<div style="font-weight:800;font-size:.82rem;color:'+CA+';text-align:center;margin-bottom:2px;">'+cat+'</div>'
           +'</div>';
@@ -9030,6 +9122,17 @@ function openColorsGame(grade) {
       var belt=document.getElementById('csItems');
       if(belt&&belt.querySelectorAll('[data-cat]').length===0){ var cw=document.getElementById('csCheckWrap'); if(cw) cw.style.display='block'; }
     };
+
+    // Phase B: drag-and-drop via the shared engine (tap still works as fallback)
+    items.forEach(function(item,i){
+      var el=document.getElementById('csi'+i);
+      if(!el) return;
+      bloomiDraggable(el, function(dragged, zone){
+        var ci=parseInt(zone.dataset.catidx);
+        window._csTap(dragged);
+        window._csPlaceIn(ci);
+      });
+    });
 
     window._csCheck=function(){
       var items = window._csItems || [];
@@ -12632,8 +12735,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v441</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v441</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v442</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v442</div>
 
 </body>
 </html
