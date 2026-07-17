@@ -4103,8 +4103,8 @@ var CURATED_GAMES = {
       {icon:'✏️', label:'Grammar Grab',         fn:"openLangGame('3')",      color:'#5B2D9E'},
       {icon:'📖', label:'Fact Finder',          fn:"openPassageReader('3')", color:'#7C3AED'},
       // Math
-      {icon:'✖️', label:'Multiply Mania',       fn:"openMathGame('3','multi')", color:'#1D4ED8'},
-      {icon:'⏭️', label:'Number Patterns',      fn:"openMathGame('3','skipc3')", color:'#6B21A8'},
+      {icon:'✖️', label:'Multiply Mania',       fn:"openMultiplyMania('3')", color:'#1D4ED8'},
+      {icon:'🎱', label:'Math Bingo',           fn:"openMathBingo('3')",     color:'#6B21A8'},
       {icon:'🛒', label:'Shop Math',            fn:"openShopMath('3')",      color:'#D97706'},
       // Science & World
       {icon:'💧', label:'Water Cycle',          fn:"openScienceGame('3')",   color:'#0EA5E9'},
@@ -4118,6 +4118,7 @@ var CURATED_GAMES = {
       // Math
       {icon:'🍕', label:'Fraction Feast',       fn:"openMathGame('4','frac')", color:'#0EA5E9'},
       {icon:'📐', label:'Angles Sort',          fn:"openColorsGame('4')",    color:'#8B5CF6'},
+      {icon:'🎱', label:'Math Bingo',           fn:"openMathBingo('4')",     color:'#7C3AED'},
       // Science & World
       {icon:'🔬', label:'Science Sort Lab',     fn:"openScienceGame('4')",   color:'#0EA5E9'},
       {icon:'🌍', label:'Social Studies',       fn:"openSSGame('4')",        color:'#D97706'},
@@ -6210,6 +6211,8 @@ var _GAME_INTROS = {
   'jeopardy':    {emoji:'&#x1F3C6;', title:'Jeopardy',         desc:'Pick a category and a point value. Harder questions are worth more points. Good luck!'},
   'readingpath': {emoji:'&#x1F331;', title:'Reading Path',     desc:'Follow the path and stop at each lesson. Every step helps your reading grow!'},
   'busybook':    {emoji:'&#x1F4DA;', title:'Busy Book',        desc:'Pick any page that looks fun and start playing. There is something new on every page!'},
+  'bingo':       {emoji:'&#x1F3B1;', title:'Math Bingo',       desc:'Solve the problem at the top, then find and tap its answer on your bingo card. Get 4 in a row to win!'},
+  'multiplym':   {emoji:'&#x2716;&#xFE0F;', title:'Multiply Mania', desc:'First we learn a times table together with pictures. Then you practice it. Then comes the lightning challenge round!'},
 };
 
 function showGameIntro(type, onStart) {
@@ -7819,6 +7822,251 @@ function gameWinScreen(score, total, colorA, colorB, ovId) {
 //  G3: place value, add/sub 3-5 digit, multiplication
 //  G4-5: place value, estimation, multiplication, division
 // ══════════════════════════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════════════════════════
+//  MATH BINGO (Phase C) — a real bingo game with a 4x4 card
+// ══════════════════════════════════════════════════════════════════════
+function openMathBingo(grade){
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_bingo')){window._gameIntroCallback=function(){openMathBingo(grade);};showGameIntro('bingo',window._gameIntroCallback);return;}
+  var CA='#7C3AED', CB='#A78BFA';
+  var ov = gameOverlay('bingoOv','#F5F3FF');
+  document.body.appendChild(ov);
+
+  // build 16 question/answer pairs with unique answers, per grade
+  function buildPairs(){
+    var pairs=[], used={};
+    var guard=0;
+    while(pairs.length<16 && guard<400){
+      guard++;
+      var q,a;
+      if(grade==='3'){
+        var m=2+Math.floor(Math.random()*8), n=2+Math.floor(Math.random()*8);
+        q=m+' \u00d7 '+n; a=m*n;
+      } else if(grade==='4'){
+        if(Math.random()<0.5){ var m4=3+Math.floor(Math.random()*9), n4=3+Math.floor(Math.random()*9); q=m4+' \u00d7 '+n4; a=m4*n4; }
+        else { var d=2+Math.floor(Math.random()*8), r=2+Math.floor(Math.random()*9); q=(d*r)+' \u00f7 '+d; a=r; }
+      } else {
+        var pick=Math.random();
+        if(pick<0.4){ var m5=6+Math.floor(Math.random()*7), n5=6+Math.floor(Math.random()*7); q=m5+' \u00d7 '+n5; a=m5*n5; }
+        else if(pick<0.7){ var d5=3+Math.floor(Math.random()*9), r5=4+Math.floor(Math.random()*9); q=(d5*r5)+' \u00f7 '+d5; a=r5; }
+        else { var x=100+Math.floor(Math.random()*400), y=100+Math.floor(Math.random()*300); q=x+' + '+y; a=x+y; }
+      }
+      if(used[a]) continue;
+      used[a]=true;
+      pairs.push({q:q, a:a});
+    }
+    return pairs;
+  }
+
+  var pairs = buildPairs();
+  var cells = pairs.slice().sort(function(){return Math.random()-.5;});
+  var queue = pairs.slice().sort(function(){return Math.random()-.5;});
+  var marked = {};       // answer -> true
+  var qIdx = 0, wrongTries = 0, moves = 0;
+
+  var LINES = [];
+  for(var r0=0;r0<4;r0++){ LINES.push([r0*4, r0*4+1, r0*4+2, r0*4+3]); }
+  for(var c0=0;c0<4;c0++){ LINES.push([c0, c0+4, c0+8, c0+12]); }
+  LINES.push([0,5,10,15]); LINES.push([3,6,9,12]);
+
+  function hasBingo(){
+    for(var i=0;i<LINES.length;i++){
+      var ln=LINES[i], ok=true;
+      for(var j=0;j<4;j++){ if(!marked[cells[ln[j]].a]){ ok=false; break; } }
+      if(ok) return ln;
+    }
+    return null;
+  }
+
+  function render(){
+    var curQ = queue[qIdx];
+    ov.innerHTML = gameHeader('Math Bingo','\ud83c\udfb1',CA,CB,'bingoOv')
+      +'<div style="flex:1;overflow-y:auto;padding:16px;max-width:440px;margin:0 auto;width:100%;">'
+      +'<div style="background:white;border-radius:18px;padding:14px 18px;margin-bottom:14px;text-align:center;box-shadow:0 4px 14px rgba(124,58,237,.15);">'
+      +'<div style="font-size:.8rem;font-weight:700;color:#888;">Find the answer on your card!</div>'
+      +'<div id="bingoQ" style="font-family:\'Baloo 2\',cursive;font-size:1.7rem;font-weight:800;color:'+CA+';margin-top:2px;">'+ (curQ?curQ.q+' = ?':'') +'</div>'
+      +'</div>'
+      +'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">'
+      +cells.map(function(c,i){
+        var isM = !!marked[c.a];
+        return '<div id="bcell'+i+'" onclick="window._bingoTap('+i+')" style="aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:14px;cursor:pointer;'
+          +'font-family:\'Baloo 2\',cursive;font-weight:800;font-size:1.15rem;transition:all .25s;'
+          +(isM
+            ? 'background:linear-gradient(135deg,#5ECDA0,#8FE0BE);color:white;box-shadow:inset 0 2px 6px rgba(0,0,0,.12);'
+            : 'background:white;color:#4C1D95;box-shadow:0 4px 10px rgba(124,58,237,.15);')
+          +'">'+(isM?'\ud83c\udf38':c.a)+'</div>';
+      }).join('')
+      +'</div>'
+      +'<div style="text-align:center;margin-top:12px;font-size:.8rem;font-weight:700;color:#7C3AED;">Get 4 in a row \u2014 across, down, or diagonal!</div>'
+      +'</div>';
+  }
+
+  window._bingoTap = function(i){
+    var curQ = queue[qIdx];
+    if(!curQ) return;
+    var cell = cells[i];
+    if(marked[cell.a]) return;
+    moves++;
+    var el = document.getElementById('bcell'+i);
+    if(cell.a === curQ.a){
+      marked[cell.a] = true;
+      wrongTries = 0;
+      qIdx++;
+      if(typeof showBloomyReaction === 'function') showBloomyReaction(true);
+      var line = hasBingo();
+      if(line){
+        render();
+        // celebrate the line
+        line.forEach(function(idx){
+          var c=document.getElementById('bcell'+idx);
+          if(c){ c.style.transform='scale(1.12)'; c.style.boxShadow='0 0 0 3px #F7C948, 0 6px 18px rgba(247,201,72,.5)'; }
+        });
+        setTimeout(function(){
+          var ovEl=document.getElementById('bingoOv'); if(!ovEl) return;
+          ovEl.innerHTML = '<div style="position:absolute;inset:0;background:linear-gradient(135deg,'+CA+','+CB+');display:flex;flex-direction:column;align-items:center;justify-content:center;color:white;padding:32px;text-align:center;">'
+            +'<div style="font-size:4.5rem;animation:bounceIn .5s;">\ud83c\udfb1</div>'
+            +'<div style="font-family:\'Baloo 2\',cursive;font-size:2.4rem;font-weight:800;margin:6px 0;">B-I-N-G-O!</div>'
+            +'<div style="font-size:1.05rem;opacity:.9;margin-bottom:26px;">You solved '+Object.keys(marked).length+' problems to win!</div>'
+            +'<button onclick="document.getElementById(\'bingoOv\').remove();" style="padding:12px 30px;border-radius:40px;border:none;background:rgba(255,255,255,.25);color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;font-size:1.05rem;">Done \u2728</button>'
+            +'</div>';
+          logGameComplete(30, 1);
+          toast('+30 Stars! \u2b50');
+        }, 900);
+        return;
+      }
+      render();
+    } else {
+      wrongTries++;
+      if(el){
+        el.style.transform='translateX(-6px)';
+        setTimeout(function(){ el.style.transform='translateX(6px)'; }, 80);
+        setTimeout(function(){ el.style.transform='translateX(0)'; }, 160);
+      }
+      if(typeof showBloomyReaction === 'function') showBloomyReaction(false);
+      if(wrongTries>=2){
+        // gently pulse the correct cell
+        cells.forEach(function(c,ci){
+          if(c.a===curQ.a){
+            var hint=document.getElementById('bcell'+ci);
+            if(hint){ hint.style.boxShadow='0 0 0 3px #F7C948, 0 4px 12px rgba(247,201,72,.4)'; }
+          }
+        });
+      } else {
+        toast('Try again! Solve: '+curQ.q);
+      }
+    }
+  };
+
+  render();
+}
+window.openMathBingo = openMathBingo;
+
+// ══════════════════════════════════════════════════════════════════════
+//  MULTIPLY MANIA (Phase C) — teach the table, practice it, beat the challenge
+// ══════════════════════════════════════════════════════════════════════
+function openMultiplyMania(grade){
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_multiplym')){window._gameIntroCallback=function(){openMultiplyMania(grade);};showGameIntro('multiplym',window._gameIntroCallback);return;}
+  var CA='#1D4ED8', CB='#60A5FA';
+  var ov = gameOverlay('multiOv','#EFF6FF');
+  document.body.appendChild(ov);
+
+  var table = (grade==='4' || grade==='5')
+    ? 6+Math.floor(Math.random()*7)   // 6..12
+    : 2+Math.floor(Math.random()*8);  // 2..9
+  var score = 0;
+
+  function fruitRows(a, b){
+    var row = '';
+    for(var j=0;j<b;j++){ row += '\ud83c\udf4e'; }
+    var out = '';
+    for(var i=0;i<a;i++){ out += '<div style="letter-spacing:2px;font-size:1.05rem;">'+row+'</div>'; }
+    return out;
+  }
+
+  function teach(){
+    var exA = 3, exB = table;
+    ov.innerHTML = gameHeader('Multiply Mania','\u2716\ufe0f',CA,CB,'multiOv')
+      +'<div style="flex:1;overflow-y:auto;padding:16px;max-width:440px;margin:0 auto;width:100%;text-align:center;">'
+      +'<div style="background:white;border-radius:20px;padding:20px;box-shadow:0 4px 14px rgba(29,78,216,.12);">'
+      +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.3rem;font-weight:800;color:'+CA+';">Today: the '+table+'s table!</div>'
+      +'<div style="font-size:.9rem;color:#555;margin:10px 0 6px;">Multiplying means <b>equal groups</b>.</div>'
+      +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.2rem;font-weight:800;color:#333;margin:8px 0 4px;">'+exA+' \u00d7 '+table+' means '+exA+' groups of '+table+':</div>'
+      +'<div style="margin:8px 0;">'+fruitRows(exA, table)+'</div>'
+      +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.4rem;font-weight:800;color:#16A34A;">'+exA+' \u00d7 '+table+' = '+(exA*table)+'</div>'
+      +'<div style="font-size:.85rem;color:#777;margin-top:8px;">Count them if you like \u2014 then let\u2019s practice!</div>'
+      +'</div>'
+      +'<button onclick="window._mmStart()" style="margin-top:18px;padding:14px 40px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1.05rem;cursor:pointer;box-shadow:0 6px 18px rgba(29,78,216,.35);">Start Practice \ud83c\udf31</button>'
+      +'</div>';
+  }
+  window._mmStart = function(){ buildQuestionsMM(); };
+
+  var qs = [], qi = 0;
+  function buildQuestionsMM(){
+    qs = []; qi = 0; score = 0;
+    var bs = [];
+    while(bs.length<8){ var b=1+Math.floor(Math.random()*12); if(bs.indexOf(b)<0) bs.push(b); }
+    bs.forEach(function(b){ qs.push({a:table, b:b, challenge:false}); });
+    // challenge round: 4 mixed-table quickies
+    for(var i=0;i<4;i++){
+      var ca=2+Math.floor(Math.random()*8), cb=2+Math.floor(Math.random()*8);
+      qs.push({a:ca, b:cb, challenge:true});
+    }
+    showQ();
+  }
+
+  function showQ(){
+    if(qi>=qs.length){
+      gameWinScreen(score, qs.length, CA, CB, 'multiOv');
+      logGameComplete(score*5, 1);
+      return;
+    }
+    var q = qs[qi];
+    var ans = q.a*q.b;
+    var choices = [ans];
+    var guard=0;
+    while(choices.length<4 && guard<60){
+      guard++;
+      var offs=[ans+q.a, ans-q.a, ans+q.b, ans-q.b, ans+1, ans-1, ans+10, ans-10];
+      var pick=offs[Math.floor(Math.random()*offs.length)];
+      if(pick>0 && choices.indexOf(pick)<0) choices.push(pick);
+    }
+    choices.sort(function(){return Math.random()-.5;});
+    ov.innerHTML = gameHeader('Multiply Mania','\u2716\ufe0f',CA,CB,'multiOv')
+      +'<div style="flex:1;overflow-y:auto;padding:16px;max-width:440px;margin:0 auto;width:100%;text-align:center;">'
+      +(q.challenge
+        ? '<div style="display:inline-block;background:#F59E0B;color:white;font-weight:800;font-size:.75rem;border-radius:20px;padding:4px 14px;margin-bottom:8px;">\u26a1 CHALLENGE ROUND</div>'
+        : '<div style="font-size:.8rem;font-weight:700;color:#888;margin-bottom:8px;">Question '+(qi+1)+' of '+qs.length+'</div>')
+      +'<div style="background:white;border-radius:20px;padding:20px;box-shadow:0 4px 14px rgba(29,78,216,.12);">'
+      +'<div style="font-family:\'Baloo 2\',cursive;font-size:2rem;font-weight:800;color:'+CA+';">'+q.a+' \u00d7 '+q.b+' = ?</div>'
+      +(q.challenge ? '' : '<div style="margin:10px 0 2px;">'+fruitRows(q.a, q.b)+'</div>')
+      +'</div>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;">'
+      +choices.map(function(c){
+        return '<button onclick="window._mmAns('+c+','+ans+')" style="padding:16px;border-radius:16px;border:none;background:white;color:#1E3A8A;font-family:\'Baloo 2\',cursive;font-weight:800;font-size:1.3rem;cursor:pointer;box-shadow:0 4px 12px rgba(29,78,216,.15);transition:all .2s;">'+c+'</button>';
+      }).join('')
+      +'</div>'
+      +'<div id="mmFeed" style="margin-top:12px;font-weight:800;min-height:24px;"></div>'
+      +'</div>';
+  }
+
+  window._mmAns = function(picked, ans){
+    var feed=document.getElementById('mmFeed');
+    if(picked===ans){
+      score++;
+      if(feed){ feed.textContent='\u2705 Yes! '+qs[qi].a+' \u00d7 '+qs[qi].b+' = '+ans; feed.style.color='#16A34A'; }
+      if(typeof showBloomyReaction==='function') showBloomyReaction(true);
+      qi++;
+      setTimeout(showQ, 700);
+    } else {
+      if(feed){ feed.textContent='Not quite \u2014 count the groups and try again!'; feed.style.color='#DC2626'; }
+      if(typeof showBloomyReaction==='function') showBloomyReaction(false);
+    }
+  };
+
+  teach();
+}
+window.openMultiplyMania = openMultiplyMania;
+
 function openMathGame(grade, targetGame) {
   if(window.showGameIntro&&!sessionStorage.getItem('intro_math')){window._gameIntroCallback=function(){openMathGame(grade, targetGame);};showGameIntro('math',window._gameIntroCallback);return;}
   var earlyGradeOv = ['PreK','K','1'].indexOf(grade) >= 0;
@@ -12735,8 +12983,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v442</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v442</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v443</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v443</div>
 
 </body>
 </html
