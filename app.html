@@ -4100,7 +4100,7 @@ var CURATED_GAMES = {
     ],
     3: [
       // Language & Literacy
-      {icon:'✏️', label:'Grammar Grab',         fn:"openLangGame('3')",      color:'#5B2D9E'},
+      {icon:'✏️', label:'Grammar Grab',         fn:"openGrammarGrab('3')",   color:'#5B2D9E'},
       {icon:'📖', label:'Fact Finder',          fn:"openPassageReader('3')", color:'#7C3AED'},
       // Math
       {icon:'✖️', label:'Multiply Mania',       fn:"openMultiplyMania('3')", color:'#1D4ED8'},
@@ -4114,7 +4114,7 @@ var CURATED_GAMES = {
     ],
     4: [
       // Language & Literacy
-      {icon:'🌸', label:'Grammar Garden',       fn:"openLangGame('4')",      color:'#EC4899'},
+      {icon:'🌸', label:'Grammar Garden',       fn:"openGrammarGrab('4')",   color:'#EC4899'},
       // Math
       {icon:'🍕', label:'Fraction Feast',       fn:"openMathGame('4','frac')", color:'#0EA5E9'},
       {icon:'📐', label:'Angles Sort',          fn:"openColorsGame('4')",    color:'#8B5CF6'},
@@ -4128,7 +4128,7 @@ var CURATED_GAMES = {
     5: [
       // Language & Literacy
       {icon:'🔎', label:'Evidence Explorer',    fn:"openEvidenceExplorer()", color:'#1D4ED8'},
-      {icon:'⚖️', label:'Argument Builder',     fn:"openLangGame('5')",      color:'#EC4899'},
+      {icon:'⚖️', label:'Argument Builder',     fn:"openArgumentBuilder()",  color:'#EC4899'},
       {icon:'📖', label:'Reading Corner',       fn:"openPassageReader('5')", color:'#4338CA'},
       // Math & Logic
       {icon:'📍', label:'Coordinate Chase',     fn:"openCoordinateChase()",  color:'#22c55e'},
@@ -5982,6 +5982,10 @@ function switchTab(tab) {
   var showProg = (tab === 'academics');
   if (progHeader) progHeader.style.display = showProg ? '' : 'none';
   if (progSection) progSection.style.display = showProg ? '' : 'none';
+  // v444: hide the home hero (greeting + Bloomy) on other tabs — it was the
+  // "big empty space" above Art/Yoga/Stories that forced scrolling
+  var hero = document.getElementById('v3Hero');
+  if (hero) hero.style.display = showProg ? '' : 'none';
 }
 
 
@@ -6213,6 +6217,8 @@ var _GAME_INTROS = {
   'busybook':    {emoji:'&#x1F4DA;', title:'Busy Book',        desc:'Pick any page that looks fun and start playing. There is something new on every page!'},
   'bingo':       {emoji:'&#x1F3B1;', title:'Math Bingo',       desc:'Solve the problem at the top, then find and tap its answer on your bingo card. Get 4 in a row to win!'},
   'multiplym':   {emoji:'&#x2716;&#xFE0F;', title:'Multiply Mania', desc:'First we learn a times table together with pictures. Then you practice it. Then comes the lightning challenge round!'},
+  'grammar':     {emoji:'&#x270F;&#xFE0F;', title:'Grammar Grab',   desc:'Nouns are people, places, and things. Verbs are actions. Adjectives describe. Drag each word to its family!'},
+  'argument':    {emoji:'&#x2696;&#xFE0F;', title:'Argument Builder', desc:'Great debaters use strong reasons with facts, and they know what the other side will say. Ready to build an argument?'},
 };
 
 function showGameIntro(type, onStart) {
@@ -6227,10 +6233,30 @@ function showGameIntro(type, onStart) {
   card.innerHTML = '<div style="font-size:3.5rem;margin-bottom:12px;">'+intro.emoji+'</div>'
     +'<div style="font-family:Baloo 2,cursive;font-size:1.3rem;font-weight:800;color:#1A1033;margin-bottom:10px;">'+intro.title+'</div>'
     +'<div style="font-size:.9rem;line-height:1.65;color:#6B5B8A;margin-bottom:24px;">'+intro.desc+'</div>'
-    +'<button onclick="sessionStorage.setItem(\''+seenKey+'\',\'1\');this.closest(\'div\').parentNode.remove();if(typeof _gameIntroCallback===\'function\'){_gameIntroCallback();_gameIntroCallback=null;}" style="width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#5B2D9E,#8B5CF6);color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Got it! Let\'s go! &#127919;</button>';
+    +'<button onclick="try{speechSynthesis.cancel()}catch(e){};sessionStorage.setItem(\''+seenKey+'\',\'1\');this.closest(\'div\').parentNode.remove();if(typeof _gameIntroCallback===\'function\'){_gameIntroCallback();_gameIntroCallback=null;}" style="width:100%;padding:14px;border-radius:40px;border:none;background:linear-gradient(135deg,#5B2D9E,#8B5CF6);color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Got it! Let\'s go! &#127919;</button>';
   ov.appendChild(card);
   document.body.appendChild(ov);
   window._gameIntroCallback = onStart;
+
+  // Read-aloud (Phase C2): auto for pre-readers, button for everyone
+  window._introSpeak = function(){
+    try {
+      if(!('speechSynthesis' in window)) return;
+      speechSynthesis.cancel();
+      var tmp = document.createElement('div');
+      tmp.innerHTML = intro.title + '. ' + intro.desc;
+      var u = new SpeechSynthesisUtterance(tmp.textContent);
+      u.rate = 0.92; u.pitch = 1.1;
+      speechSynthesis.speak(u);
+    } catch(e) {}
+  };
+  var hearBtn = document.createElement('button');
+  hearBtn.innerHTML = '&#128266; Hear it';
+  hearBtn.style.cssText = 'margin:-12px 0 16px;padding:8px 20px;border-radius:30px;border:2px solid #8B5CF6;background:white;color:#5B2D9E;font-family:Nunito,sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;';
+  hearBtn.onclick = window._introSpeak;
+  card.insertBefore(hearBtn, card.lastElementChild);
+  var young = (typeof activeGrade!=='undefined') && (activeGrade==='PreK'||activeGrade==='K'||activeGrade==='1'||activeGrade==='2');
+  if (young) { setTimeout(window._introSpeak, 350); }
 }
 window.showGameIntro = showGameIntro;
 
@@ -7823,6 +7849,194 @@ function gameWinScreen(score, total, colorA, colorB, ovId) {
 //  G4-5: place value, estimation, multiplication, division
 // ══════════════════════════════════════════════════════════════════════
 
+
+// ══════════════════════════════════════════════════════════════════════
+//  GRAMMAR GRAB (Phase C2) — drag words into parts-of-speech bins
+// ══════════════════════════════════════════════════════════════════════
+function openGrammarGrab(grade){
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_grammar')){window._gameIntroCallback=function(){openGrammarGrab(grade);};showGameIntro('grammar',window._gameIntroCallback);return;}
+  var CA='#5B2D9E', CB='#8B5CF6';
+  var ov = gameOverlay('grammarOv','#F7F3FF');
+  document.body.appendChild(ov);
+
+  var ROUNDS = (grade==='4') ? [
+    { title:'Sort the words!', cats:['\ud83d\udc64 Noun','\ud83c\udfc3 Verb','\ud83c\udfa8 Adjective','\u26a1 Adverb'],
+      items:[{label:'garden',cat:0},{label:'whisper',cat:1},{label:'ancient',cat:2},{label:'quickly',cat:3},{label:'library',cat:0},{label:'explore',cat:1},{label:'brilliant',cat:2},{label:'carefully',cat:3}]},
+    { title:'Round 2 \u2014 trickier words!', cats:['\ud83d\udc64 Noun','\ud83c\udfc3 Verb','\ud83c\udfa8 Adjective','\u26a1 Adverb'],
+      items:[{label:'mountain',cat:0},{label:'imagine',cat:1},{label:'curious',cat:2},{label:'silently',cat:3},{label:'museum',cat:0},{label:'discover',cat:1},{label:'gentle',cat:2},{label:'bravely',cat:3}]},
+  ] : [
+    { title:'Sort the words!', cats:['\ud83d\udc64 Noun (person, place, thing)','\ud83c\udfc3 Verb (action)','\ud83c\udfa8 Adjective (describing)'],
+      items:[{label:'dog',cat:0},{label:'run',cat:1},{label:'happy',cat:2},{label:'teacher',cat:0},{label:'jump',cat:1},{label:'blue',cat:2},{label:'river',cat:0},{label:'sing',cat:1}]},
+    { title:'Round 2 \u2014 keep going!', cats:['\ud83d\udc64 Noun','\ud83c\udfc3 Verb','\ud83c\udfa8 Adjective'],
+      items:[{label:'school',cat:0},{label:'dance',cat:1},{label:'soft',cat:2},{label:'doctor',cat:0},{label:'swim',cat:1},{label:'tall',cat:2},{label:'pizza',cat:0},{label:'funny',cat:2}]},
+  ];
+
+  var rIdx=0, score=0, TOTAL=ROUNDS.length;
+
+  function renderRound(){
+    if(rIdx>=TOTAL){ gameWinScreen(score,TOTAL,CA,CB,'grammarOv'); logGameComplete(score*10,1); return; }
+    var r=ROUNDS[rIdx];
+    var items=r.items.slice().sort(function(){return Math.random()-.5;});
+    window._ggItems = items;
+
+    ov.innerHTML = gameHeader('Grammar Grab','\u270f\ufe0f',CA,CB,'grammarOv')
+      +'<div style="flex:1;overflow-y:auto;padding:16px;max-width:520px;margin:0 auto;width:100%;">'
+      +'<div style="background:white;border-radius:18px;padding:14px 18px;margin-bottom:14px;text-align:center;box-shadow:0 4px 14px rgba(91,45,158,.15);">'
+      +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.05rem;font-weight:800;color:'+CA+';">'+r.title+'</div>'
+      +'<div style="font-size:.85rem;color:#888;margin-top:2px;">Drag each word into its group \u2014 or tap it, then tap a group!</div>'
+      +'</div>'
+      +'<div id="ggBelt" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px;">'
+      +items.map(function(item,i){
+        return '<div id="ggi'+i+'" data-cat="'+item.cat+'" onclick="window._ggTap(this)" style="padding:10px 16px;border-radius:14px;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-weight:700;font-size:.95rem;cursor:pointer;box-shadow:0 4px 12px rgba(91,45,158,.3);transition:all .2s;">'+item.label+'</div>';
+      }).join('')
+      +'</div>'
+      +'<div style="display:grid;grid-template-columns:'+Array(r.cats.length).fill('1fr').join(' ')+';gap:8px;">'
+      +r.cats.map(function(cat,ci){
+        return '<div id="ggCat'+ci+'" data-catidx="'+ci+'" data-dropzone="1" onclick="window._ggPlaceIn('+ci+')" style="min-height:90px;border-radius:16px;background:rgba(91,45,158,.06);border:2px dashed rgba(91,45,158,.3);padding:8px;display:flex;flex-direction:column;gap:6px;align-items:center;">'
+          +'<div style="font-weight:800;font-size:.72rem;color:'+CA+';text-align:center;">'+cat+'</div>'
+          +'</div>';
+      }).join('')
+      +'</div>'
+      +'<div style="text-align:center;margin-top:16px;">'
+      +'<button onclick="window._ggCheck()" style="padding:14px 36px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(91,45,158,.4);">\u2705 Check!</button>'
+      +'</div>'
+      +'</div>';
+
+    var _sel=null;
+    window._ggTap=function(el){
+      if(!el||el.dataset.placed!==undefined&&el.dataset.placed!=='') {}
+      if(_sel===el){ el.style.transform='scale(1)'; _sel=null; return; }
+      if(_sel){ _sel.style.transform='scale(1)'; }
+      _sel=el; el.style.transform='scale(1.12)';
+    };
+    window._ggPlaceIn=function(ci){
+      if(!_sel) return;
+      var cat=document.getElementById('ggCat'+ci); if(!cat) return;
+      _sel.dataset.placed=ci;
+      _sel.style.transform='scale(1)'; _sel.style.background='white';
+      _sel.style.color=CA; _sel.style.border='2px solid '+CA;
+      _sel.style.boxShadow='0 2px 8px rgba(91,45,158,.2)';
+      cat.appendChild(_sel); _sel=null;
+    };
+    items.forEach(function(item,i){
+      var el=document.getElementById('ggi'+i);
+      if(!el) return;
+      bloomiDraggable(el, function(dragged, zone){
+        var ci=parseInt(zone.dataset.catidx);
+        _sel=dragged;
+        window._ggPlaceIn(ci);
+      });
+    });
+    window._ggCheck=function(){
+      var correct=0;
+      window._ggItems.forEach(function(item,i){
+        var el=document.getElementById('ggi'+i);
+        if(!el) return;
+        var placed=parseInt(el.dataset.placed||'-1');
+        if(placed===item.cat){ correct++; el.style.background='linear-gradient(135deg,#22c55e,#4ade80)'; el.style.color='white'; el.style.border='none'; }
+        else { el.style.background='linear-gradient(135deg,#ef4444,#f87171)'; el.style.color='white'; el.style.border='none'; }
+      });
+      if(correct===window._ggItems.length){ score++; if(typeof showBloomyReaction==='function') showBloomyReaction(true); }
+      toast(correct+'/'+window._ggItems.length+' correct!');
+      setTimeout(function(){ rIdx++; renderRound(); }, 1400);
+    };
+  }
+  renderRound();
+}
+window.openGrammarGrab = openGrammarGrab;
+
+// ══════════════════════════════════════════════════════════════════════
+//  ARGUMENT BUILDER (Phase C2) — pick strong evidence, expect the counter
+// ══════════════════════════════════════════════════════════════════════
+function openArgumentBuilder(){
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_argument')){window._gameIntroCallback=function(){openArgumentBuilder();};showGameIntro('argument',window._gameIntroCallback);return;}
+  var CA='#DB2777', CB='#F472B6';
+  var ov = gameOverlay('argOv','#FFF1F7');
+  document.body.appendChild(ov);
+
+  var TOPICS = [
+    { claim:'Schools should have longer recess.',
+      strong:'Studies show kids focus better in class after exercise and play.',
+      weak:['Recess is fun.','My friend likes recess.'],
+      counter:'More recess means less time for lessons, so learning could fall behind.',
+      fakeCounters:['Recess is outside.','Some playgrounds have swings.'] },
+    { claim:'Every classroom should have a pet.',
+      strong:'Caring for a pet teaches responsibility and teamwork every single day.',
+      weak:['Pets are cute.','I want a hamster.'],
+      counter:'Some students have allergies, and pets need care on weekends too.',
+      fakeCounters:['Hamsters are small.','Dogs bark sometimes.'] },
+    { claim:'Kids should help choose what the class studies.',
+      strong:'People work harder and remember more when they study topics they chose.',
+      weak:['Choosing is nice.','Teachers talk a lot.'],
+      counter:'Teachers know which skills students need for the next grade level.',
+      fakeCounters:['Classrooms have desks.','Books have pages.'] },
+    { claim:'Homework should be limited on weekends.',
+      strong:'Rest and family time help the brain remember what it learned all week.',
+      weak:['Homework is boring.','Weekends are for TV.'],
+      counter:'Practice over the weekend keeps skills fresh so Monday is not a restart.',
+      fakeCounters:['Saturday comes before Sunday.','Backpacks can be heavy.'] },
+    { claim:'Our school should plant a vegetable garden.',
+      strong:'A garden teaches science, patience, and healthy eating all at once.',
+      weak:['Vegetables are green.','Digging looks fun.'],
+      counter:'Gardens cost money and someone must water them over the summer.',
+      fakeCounters:['Carrots grow underground.','Rakes have handles.'] },
+    { claim:'Students should learn to code starting in elementary school.',
+      strong:'Coding builds problem-solving skills that help in math, science, and daily life.',
+      weak:['Computers are cool.','My cousin codes.'],
+      counter:'Young students first need strong reading and math before adding new subjects.',
+      fakeCounters:['Keyboards have letters.','Screens can be bright.'] },
+  ];
+
+  var topics = TOPICS.slice().sort(function(){return Math.random()-.5;}).slice(0,4);
+  var tIdx=0, step=0, score=0, TOTAL=topics.length*2;
+
+  function shuffle(arr){ return arr.slice().sort(function(){return Math.random()-.5;}); }
+
+  function render(){
+    if(tIdx>=topics.length){ gameWinScreen(score,TOTAL,CA,CB,'argOv'); logGameComplete(score*8,1); return; }
+    var t=topics[tIdx];
+    var isEvidence = (step===0);
+    var opts = isEvidence ? shuffle([{txt:t.strong,ok:true},{txt:t.weak[0],ok:false},{txt:t.weak[1],ok:false}])
+                          : shuffle([{txt:t.counter,ok:true},{txt:t.fakeCounters[0],ok:false},{txt:t.fakeCounters[1],ok:false}]);
+    window._argOpts = opts;
+    ov.innerHTML = gameHeader('Argument Builder','\u2696\ufe0f',CA,CB,'argOv')
+      +'<div style="flex:1;overflow-y:auto;padding:16px;max-width:480px;margin:0 auto;width:100%;">'
+      +'<div style="font-size:.78rem;font-weight:800;color:#888;text-align:center;margin-bottom:8px;">Topic '+(tIdx+1)+' of '+topics.length+'</div>'
+      +'<div style="background:white;border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 4px 14px rgba(219,39,119,.15);text-align:center;">'
+      +'<div style="font-size:.75rem;font-weight:800;color:'+CA+';letter-spacing:.5px;">THE CLAIM</div>'
+      +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.1rem;font-weight:800;color:#333;margin-top:4px;">'+t.claim+'</div>'
+      +'</div>'
+      +'<div style="text-align:center;font-weight:800;color:'+CA+';margin-bottom:10px;font-size:.95rem;">'
+      +(isEvidence ? '\ud83d\udcaa Which reason is the STRONGEST?' : '\ud83e\udd14 What would the OTHER side say?')
+      +'</div>'
+      +opts.map(function(o,i){
+        return '<button onclick="window._argPick('+i+')" style="display:block;width:100%;text-align:left;margin-bottom:10px;padding:14px 16px;border-radius:16px;border:2px solid rgba(219,39,119,.25);background:white;color:#444;font-family:Nunito,sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;transition:all .2s;line-height:1.4;">'+o.txt+'</button>';
+      }).join('')
+      +'<div id="argFeed" style="min-height:40px;text-align:center;font-weight:800;font-size:.88rem;margin-top:6px;"></div>'
+      +'</div>';
+  }
+
+  window._argPick=function(i){
+    var o=window._argOpts[i];
+    var feed=document.getElementById('argFeed');
+    if(o.ok){
+      score++;
+      if(feed){ feed.textContent = (step===0 ? '\u2705 Yes! Strong reasons use facts, not just feelings.' : '\u2705 Exactly! Good debaters know the other side\u2019s best point.'); feed.style.color='#16A34A'; }
+      if(typeof showBloomyReaction==='function') showBloomyReaction(true);
+      setTimeout(function(){
+        if(step===0){ step=1; } else { step=0; tIdx++; }
+        render();
+      }, 1400);
+    } else {
+      if(feed){ feed.textContent = (step===0 ? 'Hmm \u2014 is that a fact that supports the claim, or just a feeling?' : 'That\u2019s true, but does it argue AGAINST the claim?'); feed.style.color='#DC2626'; }
+      if(typeof showBloomyReaction==='function') showBloomyReaction(false);
+    }
+  };
+
+  render();
+}
+window.openArgumentBuilder = openArgumentBuilder;
+
 // ══════════════════════════════════════════════════════════════════════
 //  MATH BINGO (Phase C) — a real bingo game with a 4x4 card
 // ══════════════════════════════════════════════════════════════════════
@@ -9223,6 +9437,26 @@ function openSocialStudiesGame(grade) {
   var pool = (ROUNDS[grade]||ROUNDS['2']).slice().sort(function(){return Math.random()-.5;});
   var qIdx=0, score=0, TOTAL=pool.length;
 
+  // v444: teach-then-quiz — show the facts BEFORE asking about them
+  function renderLearn(){
+    ov.innerHTML = gameHeader('Community & World','\ud83c\udf0d',CA,CB,'ssGameOv')
+      +'<div style="flex:1;overflow-y:auto;padding:16px;max-width:480px;margin:0 auto;width:100%;">'
+      +'<div style="text-align:center;font-family:\'Baloo 2\',cursive;font-size:1.15rem;font-weight:800;color:'+CA+';margin-bottom:4px;">\ud83d\udcd6 Learn first!</div>'
+      +'<div style="text-align:center;font-size:.82rem;color:#888;margin-bottom:14px;">Read these \u2014 then the quiz will ask about them!</div>'
+      +pool.map(function(q){
+        var ansText = (q.opts && q.opts[q.answer]) ? String(q.opts[q.answer]) : '';
+        return '<div style="background:white;border-radius:14px;padding:12px 14px;margin-bottom:10px;box-shadow:0 3px 10px rgba(245,158,11,.12);">'
+          +'<div style="font-size:.82rem;color:#777;">'+(q.emoji?q.emoji+' ':'')+q.q+'</div>'
+          +'<div style="font-weight:800;color:#B45309;font-size:.95rem;margin-top:2px;">'+ansText+'</div>'
+          +'</div>';
+      }).join('')
+      +'<div style="text-align:center;margin-top:14px;">'
+      +'<button onclick="window._ssStartQuiz()" style="padding:14px 36px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(245,158,11,.4);">I\u2019m ready! Start the quiz \ud83c\udfaf</button>'
+      +'</div>'
+      +'</div>';
+  }
+  window._ssStartQuiz = function(){ renderQ(); };
+
   function renderQ(){
     if(qIdx>=TOTAL){ gameWinScreen(score,TOTAL,CA,CB,'ssGameOv'); return; }
     var q=pool[qIdx];
@@ -9264,7 +9498,7 @@ function openSocialStudiesGame(grade) {
     };
   }
 
-  renderQ();
+  renderLearn();
 }
 
 // ══════════════════════════════════════════════════════════════════════
@@ -12983,8 +13217,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v443</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v443</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v444</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v444</div>
 
 </body>
 </html
