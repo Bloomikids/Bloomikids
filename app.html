@@ -931,7 +931,7 @@ input::placeholder { color:#aaa !important; }
     <div class="logo" style="display:flex;align-items:center;gap:10px;"><img src="logo.png" alt="BloomiKids" style="width:44px;height:44px;object-fit:cover;border-radius:50%;flex-shrink:0;">Bloomi<span>Kids</span></div>
     <div class="header-right">
       <div class="date-badge" id="dateBadge">📅 ...</div>
-      <button class="user-chip" onclick="showChildMenu()" title="Switch child">
+      <button class="user-chip" onclick="openKidProfile()" title="My profile">
         <span id="activeChildAvatar">🌟</span>
         <span id="activeChildName">--</span>
         <span style="font-size:.65rem;opacity:.5;">▾</span>
@@ -1089,18 +1089,18 @@ input::placeholder { color:#aaa !important; }
     </div>
 
     <!-- Daily Mission (compact - 1 line) -->
-    <div class="bloomi-daily-mission" id="bloomiMission" style="background:linear-gradient(135deg,#E8856A,#D4735A);border-radius:20px;padding:16px 18px;margin:0 16px 14px;box-shadow:0 6px 0 #B85D45,0 8px 20px rgba(232,133,106,.3);">
-      <div class="bloomi-mission-title" style="margin:0 0 10px;font-family:'Baloo 2',cursive;font-size:1.05rem;font-weight:800;color:white;text-align:center;"><span style="color:#FFE36C;">✦</span> <span id="missionInline">Start Today's Mission</span> <span style="color:#FFE36C;">✦</span></div>
-      <div style="background:rgba(255,255,255,.6);border-radius:18px;padding:12px 12px 10px;">
+    <div class="bloomi-daily-mission" id="bloomiMission" style="background:white;border-radius:22px;padding:0 0 12px;margin:0 16px 14px;box-shadow:0 4px 14px rgba(45,74,56,.08);overflow:hidden;">
+      <div class="bloomi-mission-title" style="margin:0 0 12px;padding:12px 16px;background:linear-gradient(135deg,#E8A793,#DE8F7A);font-family:'Baloo 2',cursive;font-size:1.05rem;font-weight:800;color:white;text-align:center;"><span style="color:#FFE36C;">✦</span> <span id="missionInline">Start Today's Mission</span> <span style="color:#FFE36C;">✦</span></div>
+      <div style="background:white;border-radius:18px;padding:0 14px 4px;">
         <div id="growthStageRow" style="display:flex;justify-content:space-between;align-items:center;gap:4px;">
-          <span class="growth-stage" id="gstage0" style="width:42px;height:42px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3rem;box-shadow:0 3px 8px rgba(0,0,0,.14);transition:all .4s;flex-shrink:0;">🌰</span>
-          <span class="growth-stage" id="gstage1" style="width:42px;height:42px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3rem;box-shadow:0 3px 8px rgba(0,0,0,.14);transition:all .4s;flex-shrink:0;">🌱</span>
-          <span class="growth-stage" id="gstage2" style="width:42px;height:42px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3rem;box-shadow:0 3px 8px rgba(0,0,0,.14);transition:all .4s;flex-shrink:0;">🌿</span>
-          <span class="growth-stage" id="gstage3" style="width:42px;height:42px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3rem;box-shadow:0 3px 8px rgba(0,0,0,.14);transition:all .4s;flex-shrink:0;">🪴</span>
-          <span class="growth-stage" id="gstage4" style="width:42px;height:42px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3rem;box-shadow:0 3px 8px rgba(0,0,0,.14);transition:all .4s;flex-shrink:0;">🌷</span>
-          <span class="growth-stage" id="gstage5" style="width:42px;height:42px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3rem;box-shadow:0 3px 8px rgba(0,0,0,.14);transition:all .4s;flex-shrink:0;">🌸</span>
+          <span class="growth-stage" id="gstage0" style="width:42px;height:42px;border-radius:50%;background:#F2F8F4;border:2px solid #DCEBE0;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all .4s;flex-shrink:0;box-sizing:border-box;">🌰</span>
+          <span class="growth-stage" id="gstage1" style="width:42px;height:42px;border-radius:50%;background:#F2F8F4;border:2px solid #DCEBE0;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all .4s;flex-shrink:0;box-sizing:border-box;">🌱</span>
+          <span class="growth-stage" id="gstage2" style="width:42px;height:42px;border-radius:50%;background:#F2F8F4;border:2px solid #DCEBE0;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all .4s;flex-shrink:0;box-sizing:border-box;">🌿</span>
+          <span class="growth-stage" id="gstage3" style="width:42px;height:42px;border-radius:50%;background:#F2F8F4;border:2px solid #DCEBE0;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all .4s;flex-shrink:0;box-sizing:border-box;">🪴</span>
+          <span class="growth-stage" id="gstage4" style="width:42px;height:42px;border-radius:50%;background:#F2F8F4;border:2px solid #DCEBE0;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all .4s;flex-shrink:0;box-sizing:border-box;">🌷</span>
+          <span class="growth-stage" id="gstage5" style="width:42px;height:42px;border-radius:50%;background:#F2F8F4;border:2px solid #DCEBE0;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all .4s;flex-shrink:0;box-sizing:border-box;">🌸</span>
         </div>
-        <div style="text-align:center;color:#4A5A4A;font-size:.78rem;font-weight:800;margin-top:6px;font-family:Nunito,sans-serif;" id="missionCountLabel">0 of 6 Growth Stages Earned</div>
+        <div style="text-align:center;color:#5A8268;font-size:.78rem;font-weight:800;margin-top:8px;font-family:Nunito,sans-serif;" id="missionCountLabel">0 of 6 Growth Stages Earned</div>
       </div>
       <div class="bloomi-mission-item" id="mission-quiz" style="display:none;"><div class="bloomi-mission-check" id="mcheck-quiz"></div>Answer 3 questions</div>
       <div class="bloomi-mission-item" id="mission-yoga" style="display:none;"><div class="bloomi-mission-check" id="mcheck-yoga"></div>Try a yoga pose</div>
@@ -4139,6 +4139,8 @@ var CURATED_GAMES = {
       {icon:'⚡', label:'Lightning Round',      fn:"openLightningRound('3')", color:'#7E6BA8'},
       {icon:'🔍', label:'Word Hunt',            fn:"openWordHunt('3')",        color:'#4FAF7F'},
       {icon:'🏆', label:'Boss Challenge',       fn:"openBossChallenge('3')",   color:'#5F86B8'},
+      {icon:'🍕', label:'Fraction Frenzy',      fn:"openFractionFrenzy('3')", color:'#C77B96'},
+      {icon:'📏', label:'Estimation Station',   fn:"openEstimation('3')",     color:'#4FAF7F'},
     ],
     4: [
       // Language & Literacy
@@ -4146,6 +4148,9 @@ var CURATED_GAMES = {
       {icon:'⚡', label:'Lightning Round',      fn:"openLightningRound('4')", color:'#7E6BA8'},
       {icon:'🔍', label:'Word Hunt',            fn:"openWordHunt('4')",        color:'#4FAF7F'},
       {icon:'🏆', label:'Boss Challenge',       fn:"openBossChallenge('4')",   color:'#5F86B8'},
+      {icon:'🍕', label:'Fraction Frenzy',      fn:"openFractionFrenzy('4')", color:'#C77B96'},
+      {icon:'🕵️', label:'Code Breaker',         fn:"openCodeBreaker('4')",    color:'#5F86B8'},
+      {icon:'📏', label:'Estimation Station',   fn:"openEstimation('4')",     color:'#4FAF7F'},
       // Math
       {icon:'🍕', label:'Fraction Feast',       fn:"openMathGame('4','frac')", color:'#5B7B9B'},
       {icon:'📐', label:'Angles Sort',          fn:"openColorsGame('4')",    color:'#8B7B9B'},
@@ -4171,6 +4176,9 @@ var CURATED_GAMES = {
       {icon:'⚡', label:'Lightning Round',      fn:"openLightningRound('5')", color:'#7E6BA8'},
       {icon:'🔍', label:'Word Hunt',            fn:"openWordHunt('5')",        color:'#4FAF7F'},
       {icon:'🏆', label:'Boss Challenge',       fn:"openBossChallenge('5')",   color:'#5F86B8'},
+      {icon:'🍕', label:'Fraction Frenzy',      fn:"openFractionFrenzy('5')", color:'#C77B96'},
+      {icon:'🕵️', label:'Code Breaker',         fn:"openCodeBreaker('5')",    color:'#5F86B8'},
+      {icon:'📏', label:'Estimation Station',   fn:"openEstimation('5')",     color:'#4FAF7F'},
       {icon:'🗺️', label:'Treasure Hunt',        fn:"openTreasureHunt()",     color:'#8B7B6B'},
       // Fun & Challenge
       {icon:'🏆', label:'Jeopardy',             fn:"openJeopardy()",         color:'#9B8B7B'},
@@ -4361,7 +4369,7 @@ function buildProgressSection() {
     var leafRow = '';
     for (var l = 0; l < 5; l++) {
       var on = l < myLeaves;
-      leafRow += '<div style="width:16px;height:16px;border-radius:0 50% 0 50%;background:' + (on ? '#22c55e' : '#E5E7EB') + ';transform:rotate(-45deg);flex-shrink:0;transition:background .4s;"></div>';
+      leafRow += '<div style="width:16px;height:16px;border-radius:0 50% 0 50%;background:' + (on ? '#5CBD85' : '#E2EBE4') + ';transform:rotate(-45deg);flex-shrink:0;transition:background .4s;"></div>';
     }
     return '<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #F3F4F6;">'
       + '<div style="width:36px;height:36px;border-radius:10px;background:' + subjBg[si] + ';display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;">' + subjIcons[si] + '</div>'
@@ -4374,33 +4382,31 @@ function buildProgressSection() {
   }).join('');
 
   container.innerHTML =
-    '<div style="background:linear-gradient(135deg,#1E4A30,#2F6B45,#4A9A5A);border-radius:24px;padding:20px;color:white;position:relative;overflow:hidden;margin-bottom:12px;">'
-    + '<div style="position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:rgba(255,255,255,.05);border-radius:50%;"></div>'
-    + '<div style="position:absolute;bottom:-20px;left:-20px;width:80px;height:80px;background:rgba(255,255,255,.04);border-radius:50%;"></div>'
+    '<div style="background:white;border-radius:22px;padding:18px;position:relative;overflow:hidden;margin-bottom:12px;box-shadow:0 4px 14px rgba(45,74,56,.08);">'
     // Header row
     + '<div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;position:relative;">'
-    + '<div style="width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.15);border:2.5px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🌱</div>'
+    + '<div style="width:52px;height:52px;border-radius:50%;background:#DFF2E5;display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🌱</div>'
     + '<div style="flex:1;">'
-    + '<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1.1rem;">' + name + '&#39;s Journey</div>'
-    + '<div style="font-size:.8rem;opacity:.75;margin-top:1px;">Level ' + level + ' · ' + levelName + (streak > 0 ? ' · 🔥 ' + streak + ' day streak' : '') + '</div>'
+    + '<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1.1rem;color:#2D4A38;">' + name + '&#39;s Journey</div>'
+    + '<div style="font-size:.8rem;color:#5A8268;font-weight:700;margin-top:1px;">Level ' + level + ' · ' + levelName + (streak > 0 ? ' · 🔥 ' + streak + ' day streak' : '') + '</div>'
     + '</div>'
     + '<div style="text-align:center;">'
-    + '<div style="font-family:Baloo 2,cursive;font-size:1.3rem;font-weight:800;color:#FFD700;">⭐ ' + stars + '</div>'
-    + '<div style="font-size:.65rem;opacity:.6;">stars</div>'
+    + '<div style="font-family:Baloo 2,cursive;font-size:1.3rem;font-weight:800;color:#C9971B;">⭐ ' + stars + '</div>'
+    + '<div style="font-size:.65rem;color:#8AA893;font-weight:700;">stars</div>'
     + '</div>'
     + '</div>'
     // XP bar
-    + '<div style="margin-bottom:4px;display:flex;justify-content:space-between;font-size:.72rem;opacity:.7;">'
+    + '<div style="margin-bottom:4px;display:flex;justify-content:space-between;font-size:.72rem;color:#5A8268;font-weight:700;">'
     + '<span>Progress to ' + levelNames[Math.min(level, levelNames.length-1)] + '</span>'
     + '<span>' + xpInLevel + ' / 50 XP</span>'
     + '</div>'
-    + '<div style="height:10px;background:rgba(255,255,255,.15);border-radius:10px;overflow:hidden;">'
-    + '<div id="journeyXPFill" style="height:100%;width:' + xpPct + '%;background:linear-gradient(90deg,#FFE082,#F7C948);border-radius:10px;transition:width .8s ease;box-shadow:0 0 8px rgba(247,201,72,.45);"></div>'
+    + '<div style="height:10px;background:#EAF4ED;border-radius:10px;overflow:hidden;">'
+    + '<div id="journeyXPFill" style="height:100%;width:' + xpPct + '%;background:linear-gradient(90deg,#8FCBA3,#5CBD85);border-radius:10px;transition:width .8s ease;"></div>'
     + '</div>'
     + '</div>'
     // Growing Leaves card
-    + '<div style="background:white;border-radius:20px;padding:16px 18px;box-shadow:0 4px 20px rgba(0,0,0,.06);">'
-    + '<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.9rem;color:#065F46;margin-bottom:4px;display:flex;align-items:center;gap:6px;"><span>🌿</span><span>Growing Leaves</span></div>'
+    + '<div style="background:white;border-radius:22px;padding:16px 18px;box-shadow:0 4px 14px rgba(45,74,56,.08);">'
+    + '<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.95rem;color:#2D4A38;margin-bottom:4px;display:flex;align-items:center;gap:6px;"><span>🍃</span><span>Growing Leaves</span></div>'
     + '<div style="font-size:.75rem;color:#888;margin-bottom:10px;">Complete activities to grow your leaves!</div>'
     + leavesHTML
     + '</div>';
@@ -6287,6 +6293,9 @@ window.showHint = showHint;
 
 // ══ HOW TO PLAY intro cards ══
 var _GAME_INTROS = {
+  'fraction':    {emoji:'&#x1F355;', title:'Fraction Frenzy', desc:'Look at the shaded bar and pick the matching fraction. Watch carefully — the parts tell the story!'},
+  'codebreaker': {emoji:'&#x1F575;', title:'Code Breaker', desc:'A secret message is hidden in code! Use the key to shift each letter back and spell the real word.'},
+  'estimation':  {emoji:'&#x1F4CF;', title:'Estimation Station', desc:'No counting allowed! Look at the group, trust your eyes, and slide to your best guess. Closer = more points!'},
   'lightning': {emoji:'&#x26A1;', title:'Lightning Round', desc:'You have 60 seconds! Answer as many as you can. Get 3 in a row for double points!'},
   'wordhunt':  {emoji:'&#x1F50D;', title:'Word Hunt', desc:'Words are hiding in the letter grid! Tap the letters of each word in order to find them all.'},
   'boss':      {emoji:'&#x1F3C6;', title:'Boss Challenge', desc:'Face the boss! Every right answer takes away boss HP. Three wrong answers and the boss wins. Good luck!'},
@@ -10652,6 +10661,334 @@ function _applyAccessory(id){
 }
 
 
+
+
+// ══ v456 GAME 4: FRACTION FRENZY — visual fraction bars ══
+function openFractionFrenzy(grade){
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_fraction')){window._gameIntroCallback=function(){openFractionFrenzy(grade);};showGameIntro('fraction',window._gameIntroCallback);return;}
+  var CA='#C77B96', CB='#D9A8BC';
+  var ex=document.getElementById('fracOv'); if(ex) ex.remove();
+  var ov=document.createElement('div');
+  ov.id='fracOv';
+  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#F7EEF2,#EFDDE6);display:flex;flex-direction:column;font-family:Nunito,sans-serif;overflow:hidden;';
+  document.body.appendChild(ov);
+
+  var score=0, idx=0, TOTAL=8, cur=null;
+
+  function fracBar(n,d,color){
+    var segs='';
+    for(var i=0;i<d;i++){
+      segs+='<div style="flex:1;height:100%;background:'+(i<n?color:'#F5EDF1')+';border-right:'+(i<d-1?'2px solid white':'none')+';"></div>';
+    }
+    return '<div style="display:flex;height:44px;border-radius:12px;overflow:hidden;border:2.5px solid '+color+';">'+segs+'</div>';
+  }
+
+  function genQ(){
+    if(grade==='3'){
+      var d=[2,3,4,6,8][Math.floor(Math.random()*5)];
+      var n=1+Math.floor(Math.random()*(d-1));
+      var opts=[n+'/'+d];
+      while(opts.length<4){ var wd=[2,3,4,6,8][Math.floor(Math.random()*5)]; var wn=1+Math.floor(Math.random()*(wd-1)); var w=wn+'/'+wd; if(opts.indexOf(w)<0 && !(wn===n&&wd===d)) opts.push(w); }
+      opts.sort(function(){return Math.random()-.5;});
+      return {type:'identify', n:n, d:d, ans:n+'/'+d, opts:opts, prompt:'What fraction is shaded?'};
+    }
+    if(grade==='4'){
+      var pairs=[[1,2,2,4],[1,2,3,6],[1,3,2,6],[2,3,4,6],[1,4,2,8],[3,4,6,8],[1,2,4,8],[2,4,4,8]];
+      var p=pairs[Math.floor(Math.random()*pairs.length)];
+      var ans=p[2]+'/'+p[3];
+      var opts=[ans];
+      while(opts.length<4){ var wd=[4,6,8][Math.floor(Math.random()*3)]; var wn=1+Math.floor(Math.random()*(wd-1)); var w=wn+'/'+wd; if(opts.indexOf(w)<0) opts.push(w); }
+      opts.sort(function(){return Math.random()-.5;});
+      return {type:'equiv', n:p[0], d:p[1], ans:ans, opts:opts, prompt:'Which fraction is EQUAL to the shaded amount?'};
+    }
+    var trip=[[1,2,'50%'],[1,4,'25%'],[3,4,'75%'],[1,5,'20%'],[2,5,'40%'],[3,5,'60%'],[4,5,'80%'],[1,10,'10%'],[7,10,'70%'],[9,10,'90%']];
+    var t=trip[Math.floor(Math.random()*trip.length)];
+    var opts=[t[2]];
+    var all=['10%','20%','25%','40%','50%','60%','70%','75%','80%','90%'];
+    while(opts.length<4){ var w=all[Math.floor(Math.random()*all.length)]; if(opts.indexOf(w)<0) opts.push(w); }
+    opts.sort(function(){return Math.random()-.5;});
+    return {type:'percent', n:t[0], d:t[1], ans:t[2], opts:opts, prompt:'What PERCENT is shaded?'};
+  }
+
+  function render(){
+    if(idx>=TOTAL){ return finish(); }
+    cur=genQ();
+    ov.innerHTML='<div style="background:linear-gradient(135deg,'+CA+','+CB+');padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">'
+      +'<div style="font-family:\'Baloo 2\',cursive;font-weight:800;color:white;font-size:1.05rem;">🍕 Fraction Frenzy</div>'
+      +'<button data-closeov="fracOv" style="background:rgba(0,0,0,.25);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;">✕</button>'
+      +'</div>'
+      +'<div style="flex:1;overflow-y:auto;padding:18px;max-width:520px;margin:0 auto;width:100%;box-sizing:border-box;">'
+      +'<div style="font-weight:800;color:#8A4A63;font-size:.8rem;margin-bottom:10px;">Question '+(idx+1)+' of '+TOTAL+' &nbsp;·&nbsp; ⭐ '+score+'</div>'
+      +'<div style="background:white;border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 4px 14px rgba(199,123,150,.15);">'
+      +'<div style="font-weight:800;color:#6B3A4E;font-size:1rem;margin-bottom:14px;text-align:center;">'+cur.prompt+'</div>'
+      +fracBar(cur.n, cur.d, CA)
+      +'<div style="text-align:center;font-weight:800;color:#8A4A63;font-size:.85rem;margin-top:10px;">'+cur.n+' out of '+cur.d+' parts shaded</div>'
+      +'</div>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">'
+      +cur.opts.map(function(o){return '<button onclick="window._ffPick(\''+o+'\')" style="padding:18px;border-radius:16px;border:none;background:white;font-family:\'Baloo 2\',cursive;font-size:1.35rem;font-weight:800;color:#6B3A4E;cursor:pointer;box-shadow:0 3px 0 rgba(199,123,150,.3);">'+o+'</button>';}).join('')
+      +'</div></div>';
+  }
+
+  window._ffPick=function(o){
+    if(o===cur.ans){ score++; if(typeof showBloomyReaction==='function')showBloomyReaction(true); }
+    else { toast('It was '+cur.ans); if(typeof showBloomyReaction==='function')showBloomyReaction(false); }
+    idx++;
+    setTimeout(render, 900);
+  };
+
+  function finish(){
+    var starsEarned=Math.max(5, score*3);
+    if(typeof updateStars==='function') updateStars(starsEarned);
+    if(typeof gameWinScreen==='function'){ gameWinScreen(score, TOTAL, CA, CB, 'fracOv'); }
+  }
+  render();
+}
+window.openFractionFrenzy=openFractionFrenzy;
+
+// ══ v456 GAME 5: CODE BREAKER — decode secret messages, spell the answer ══
+function openCodeBreaker(grade){
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_codebreaker')){window._gameIntroCallback=function(){openCodeBreaker(grade);};showGameIntro('codebreaker',window._gameIntroCallback);return;}
+  var CA='#5F86B8', CB='#8FC0E8';
+  var WORDS = grade==='4'
+    ? ['TIGER','OCEAN','MAGIC','ROBOT','CLOUD','PLANT','STORM','LIGHT']
+    : ['JUNGLE','ROCKET','CASTLE','PLANET','WIZARD','SHADOW','THUNDER','MYSTERY'];
+  var AZ='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  var ex=document.getElementById('cbOv'); if(ex) ex.remove();
+  var ov=document.createElement('div');
+  ov.id='cbOv';
+  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#E7EEF7,#D3E1F2);display:flex;flex-direction:column;font-family:Nunito,sans-serif;overflow:hidden;';
+  document.body.appendChild(ov);
+
+  var pool=WORDS.slice().sort(function(){return Math.random()-.5;}).slice(0,5);
+  var score=0, idx=0, cur=null, built=[], bank=[];
+
+  function encode(w, shift){
+    return w.split('').map(function(ch){ return AZ[(AZ.indexOf(ch)+shift)%26]; }).join('');
+  }
+
+  function render(){
+    if(idx>=pool.length){ 
+      var starsEarned=Math.max(5, score*5);
+      if(typeof updateStars==='function') updateStars(starsEarned);
+      if(typeof gameWinScreen==='function'){ gameWinScreen(score, pool.length, CA, CB, 'cbOv'); }
+      return;
+    }
+    var word=pool[idx];
+    var shift=1+Math.floor(Math.random()*3);
+    cur={word:word, code:encode(word,shift), shift:shift};
+    built=[];
+    bank=word.split('');
+    var extra=['B','K','M','R','T','S'];
+    while(bank.length<word.length+3){ var e=extra[Math.floor(Math.random()*extra.length)]; bank.push(e); }
+    bank.sort(function(){return Math.random()-.5;});
+
+    var keyRow='';
+    for(var i=0;i<5;i++){
+      var from=AZ[(AZ.indexOf(word[0])+i-2+26)%26];
+      keyRow+='';
+    }
+    ov.innerHTML='<div style="background:linear-gradient(135deg,'+CA+','+CB+');padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">'
+      +'<div style="font-family:\'Baloo 2\',cursive;font-weight:800;color:white;font-size:1.05rem;">🕵️ Code Breaker</div>'
+      +'<button data-closeov="cbOv" style="background:rgba(0,0,0,.25);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;">✕</button>'
+      +'</div>'
+      +'<div style="flex:1;overflow-y:auto;padding:18px;max-width:520px;margin:0 auto;width:100%;box-sizing:border-box;">'
+      +'<div style="font-weight:800;color:#3B5B80;font-size:.8rem;margin-bottom:10px;">Message '+(idx+1)+' of '+pool.length+' &nbsp;·&nbsp; ⭐ '+score+'</div>'
+      +'<div style="background:white;border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:0 4px 14px rgba(95,134,184,.15);text-align:center;">'
+      +'<div style="font-size:.78rem;font-weight:800;color:#5F86B8;margin-bottom:8px;">🔐 SECRET MESSAGE</div>'
+      +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.9rem;font-weight:800;color:#2B4B70;letter-spacing:6px;">'+cur.code+'</div>'
+      +'<div style="background:#FEF3C7;border-radius:12px;padding:8px 12px;margin-top:12px;font-weight:800;color:#92400E;font-size:.82rem;">🗝️ KEY: each letter moved '+shift+' step'+(shift>1?'s':'')+' forward. Go '+shift+' BACK to decode! (Example: '+AZ[(0+shift)%26]+' → A)</div>'
+      +'</div>'
+      +'<div id="cbBuilt" style="display:flex;gap:8px;justify-content:center;min-height:54px;background:rgba(95,134,184,.08);border-radius:16px;padding:8px 12px;margin-bottom:14px;flex-wrap:wrap;"></div>'
+      +'<div id="cbBank" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:14px;">'
+      +bank.map(function(l,i){return '<button onclick="window._cbPick('+i+')" id="cbL'+i+'" style="width:46px;height:46px;border-radius:12px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:\'Baloo 2\',cursive;font-size:1.3rem;font-weight:800;cursor:pointer;box-shadow:0 3px 0 rgba(43,75,112,.3);">'+l+'</button>';}).join('')
+      +'</div>'
+      +'<div style="text-align:center;"><button onclick="window._cbBack()" style="padding:10px 22px;border-radius:24px;border:none;background:#FEF3C7;color:#92400E;font-weight:800;cursor:pointer;">← Delete One</button></div>'
+      +'</div>';
+    updateBuilt();
+  }
+
+  function updateBuilt(){
+    var row=document.getElementById('cbBuilt'); if(!row) return;
+    var h='';
+    for(var i=0;i<cur.word.length;i++){
+      h += built[i]
+        ? '<div style="width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:\'Baloo 2\',cursive;font-size:1.3rem;font-weight:800;display:flex;align-items:center;justify-content:center;">'+built[i].l+'</div>'
+        : '<div style="width:46px;height:46px;border-radius:12px;background:white;border:2px dashed #A9C4E0;display:flex;align-items:center;justify-content:center;color:#A9C4E0;font-weight:800;">_</div>';
+    }
+    row.innerHTML=h;
+    if(built.length===cur.word.length){
+      var guess=built.map(function(b){return b.l;}).join('');
+      setTimeout(function(){
+        if(guess===cur.word){ score++; toast('🔓 Decoded: '+cur.word+'!'); if(typeof showBloomyReaction==='function')showBloomyReaction(true); }
+        else { toast('The message was: '+cur.word); if(typeof showBloomyReaction==='function')showBloomyReaction(false); }
+        idx++;
+        setTimeout(render, 1000);
+      },300);
+    }
+  }
+
+  window._cbPick=function(i){
+    if(built.length>=cur.word.length) return;
+    built.push({l:bank[i], i:i});
+    var b=document.getElementById('cbL'+i);
+    if(b){ b.style.opacity='.3'; b.style.pointerEvents='none'; }
+    updateBuilt();
+  };
+  window._cbBack=function(){
+    if(!built.length) return;
+    var r=built.pop();
+    var b=document.getElementById('cbL'+r.i);
+    if(b){ b.style.opacity='1'; b.style.pointerEvents='auto'; }
+    updateBuilt();
+  };
+  render();
+}
+window.openCodeBreaker=openCodeBreaker;
+
+// ══ v456 GAME 6: ESTIMATION STATION — slider guessing, scored by closeness ══
+function openEstimation(grade){
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_estimation')){window._gameIntroCallback=function(){openEstimation(grade);};showGameIntro('estimation',window._gameIntroCallback);return;}
+  var CA='#4FAF7F', CB='#7FD9A4';
+  var EMOJIS=['🍎','⭐','🐟','🌸','🐞','🎈'];
+  var ex=document.getElementById('estOv'); if(ex) ex.remove();
+  var ov=document.createElement('div');
+  ov.id='estOv';
+  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#EAF7EE,#D5EFDD);display:flex;flex-direction:column;font-family:Nunito,sans-serif;overflow:hidden;';
+  document.body.appendChild(ov);
+
+  var TOTAL=6, idx=0, points=0, cur=null;
+  var maxN = grade==='3'?40 : grade==='4'?70 : 100;
+
+  function render(){
+    if(idx>=TOTAL){
+      var starsEarned=Math.max(5, Math.round(points/10));
+      if(typeof updateStars==='function') updateStars(starsEarned);
+      if(typeof sfx==='function') sfx('win');
+      try{ if('speechSynthesis' in window){ window.speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance('Great estimating! Your number sense is growing!'); u.pitch=1.15; window.speechSynthesis.speak(u);} }catch(e){}
+      ov.innerHTML='<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;">'
+        +'<div style="font-size:4rem;">📏</div>'
+        +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.5rem;font-weight:800;color:#1F4A33;">Station Complete!</div>'
+        +'<div style="font-weight:800;color:#3A6B4C;margin:8px 0;">Accuracy points: '+points+' &nbsp;·&nbsp; ⭐ +'+starsEarned+'</div>'
+        +'<div style="display:flex;gap:10px;margin-top:14px;">'
+        +'<button onclick="openEstimation(\''+grade+'\')" style="padding:14px 24px;border-radius:30px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-weight:800;cursor:pointer;">Play Again</button>'
+        +'<button data-closeov="estOv" style="padding:14px 24px;border-radius:30px;border:none;background:rgba(0,0,0,.15);color:#1F4A33;font-weight:800;cursor:pointer;">Done</button>'
+        +'</div></div>';
+      return;
+    }
+    var n=8+Math.floor(Math.random()*(maxN-8));
+    var em=EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
+    cur={n:n};
+    var cloud='';
+    for(var i=0;i<n;i++){
+      var sz=.85+Math.random()*.5;
+      cloud+='<span style="font-size:'+sz+'rem;display:inline-block;margin:1px;">'+em+'</span>';
+    }
+    ov.innerHTML='<div style="background:linear-gradient(135deg,'+CA+','+CB+');padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">'
+      +'<div style="font-family:\'Baloo 2\',cursive;font-weight:800;color:white;font-size:1.05rem;">📏 Estimation Station</div>'
+      +'<button data-closeov="estOv" style="background:rgba(0,0,0,.25);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;">✕</button>'
+      +'</div>'
+      +'<div style="flex:1;overflow-y:auto;padding:16px;max-width:520px;margin:0 auto;width:100%;box-sizing:border-box;">'
+      +'<div style="font-weight:800;color:#3A6B4C;font-size:.8rem;margin-bottom:8px;">Round '+(idx+1)+' of '+TOTAL+' &nbsp;·&nbsp; 🎯 '+points+' pts</div>'
+      +'<div style="font-weight:800;color:#1F4A33;text-align:center;margin-bottom:10px;">About how many? No counting — trust your eyes! 👀</div>'
+      +'<div style="background:white;border-radius:20px;padding:14px;margin-bottom:16px;box-shadow:0 4px 14px rgba(79,175,127,.15);text-align:center;line-height:1.1;max-height:210px;overflow:hidden;">'+cloud+'</div>'
+      +'<div style="background:white;border-radius:20px;padding:18px;box-shadow:0 4px 14px rgba(79,175,127,.12);">'
+      +'<div style="text-align:center;font-family:\'Baloo 2\',cursive;font-size:2rem;font-weight:800;color:#1F4A33;" id="estVal">'+Math.round(maxN/2)+'</div>'
+      +'<input type="range" min="1" max="'+maxN+'" value="'+Math.round(maxN/2)+'" id="estSlider" style="width:100%;accent-color:'+CA+';height:32px;" oninput="document.getElementById(\'estVal\').textContent=this.value;">'
+      +'<div style="display:flex;justify-content:space-between;font-size:.72rem;font-weight:800;color:#8AA893;"><span>1</span><span>'+maxN+'</span></div>'
+      +'<button onclick="window._estGuess()" style="width:100%;margin-top:12px;padding:14px;border-radius:18px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:\'Baloo 2\',cursive;font-weight:800;font-size:1.1rem;cursor:pointer;">Lock in my guess!</button>'
+      +'</div></div>';
+  }
+
+  window._estGuess=function(){
+    var sl=document.getElementById('estSlider'); if(!sl) return;
+    var guess=parseInt(sl.value,10);
+    var diff=Math.abs(guess-cur.n);
+    var pct=diff/cur.n;
+    var gained = pct<=0.1?20 : pct<=0.2?15 : pct<=0.35?10 : pct<=0.5?5 : 0;
+    points+=gained;
+    var msg = gained>=20?'🎯 Bullseye!':gained>=15?'🔥 So close!':gained>=10?'👍 Good eye!':gained>=5?'Not bad!':'Way off — but nice try!';
+    toast(msg+' It was '+cur.n+'. +'+gained+' pts');
+    if(typeof showBloomyReaction==='function') showBloomyReaction(gained>=10);
+    idx++;
+    setTimeout(render, 1200);
+  };
+  render();
+}
+window.openEstimation=openEstimation;
+
+// ══ v455: KID PROFILE PAGE (Moshi-style) ═══════════════════════════════
+function openKidProfile(){
+  var ex=document.getElementById('kidProfileOv'); if(ex) ex.remove();
+  var name=(activeChild&&activeChild.name)?activeChild.name:'friend';
+  var avatar=(activeChild&&activeChild.avatar)?activeChild.avatar:'🌟';
+  var gradeLbl=(typeof GRADE_DATA!=='undefined'&&GRADE_DATA[activeGrade]&&GRADE_DATA[activeGrade].label)?GRADE_DATA[activeGrade].label:activeGrade;
+
+  var ov=document.createElement('div');
+  ov.id='kidProfileOv';
+  ov.style.cssText='position:fixed;inset:0;z-index:9998;background:#EAF4ED;display:flex;flex-direction:column;font-family:Nunito,sans-serif;overflow:hidden;';
+  document.body.appendChild(ov);
+
+  var scroll=document.createElement('div');
+  scroll.style.cssText='flex:1;overflow-y:auto;';
+  ov.appendChild(scroll);
+
+  function card(icon,label,onclickJs){
+    return '<div onclick="'+onclickJs+'" style="background:white;border-radius:20px;padding:16px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;box-shadow:0 3px 12px rgba(45,74,56,.07);border:1.5px solid #DCEBE0;">'
+      +'<div style="width:44px;height:44px;border-radius:12px;background:#DFF2E5;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;">'+icon+'</div>'
+      +'<div style="flex:1;font-family:\'Baloo 2\',cursive;font-weight:800;color:#2D4A38;font-size:1.05rem;">'+label+'</div>'
+      +'<div style="color:#5CBD85;font-size:1.2rem;font-weight:800;">›</div>'
+      +'</div>';
+  }
+
+  scroll.innerHTML=
+    // ── Hero: jungle-ish sage gradient, Bloomy + speech bubble, fades into bg ──
+    '<div style="position:relative;background:linear-gradient(180deg,#8FCBA3 0%,#A9D8B8 60%,#EAF4ED 100%);padding:18px 18px 8px;min-height:200px;">'
+    +'<button data-closeov="kidProfileOv" style="position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,.28);border:none;color:white;cursor:pointer;font-weight:800;font-size:1rem;z-index:2;">✕</button>'
+    +'<svg style="position:absolute;top:0;left:0;width:100%;height:70%;opacity:.18;" viewBox="0 0 400 200" preserveAspectRatio="none"><path d="M0,40 Q60,10 120,50 T240,45 T400,55 L400,0 L0,0 Z" fill="#2D6B45"/><path d="M0,90 Q80,55 160,85 T320,80 T400,95 L400,0 L0,0 Z" fill="#3D7B55" opacity=".5"/></svg>'
+    +'<div style="display:flex;align-items:flex-end;gap:6px;position:relative;">'
+    +'<img src="bloomy_wave.png" alt="Bloomy" style="width:130px;height:140px;object-fit:contain;filter:drop-shadow(0 8px 8px rgba(0,0,0,.15));">'
+    +'<div style="background:white;border-radius:18px 18px 18px 4px;padding:10px 18px;margin-bottom:36px;box-shadow:0 4px 12px rgba(45,74,56,.15);font-family:\'Baloo 2\',cursive;font-size:1.15rem;color:#2D4A38;">Hey <b>'+name+'</b> '+avatar+'</div>'
+    +'</div>'
+    +'</div>'
+
+    // ── Card list ──
+    +'<div style="max-width:560px;margin:0 auto;padding:8px 18px 30px;width:100%;box-sizing:border-box;">'
+    +'<div style="font-family:\'Baloo 2\',cursive;font-weight:800;color:#2D4A38;font-size:1.25rem;margin:6px 0 12px;">'+name+'\'s Bloomi World</div>'
+    +'<div style="display:grid;gap:10px;margin-bottom:24px;">'
+    +card('🎨','Avatar, name & birthday','document.getElementById(\'kidProfileOv\').remove();showChildMenu();')
+    +card('🌱','My Garden','openBloomyGarden();')
+    +card('🎯',name+'\'s progress','document.getElementById(\'kidProfileOv\').remove();switchTab(\'academics\');var ps=document.getElementById(\'progressSection\');if(ps)ps.scrollIntoView({behavior:\'smooth\'});')
+    +card('⚙️','Settings','window._showAppMenu&&window._showAppMenu();')
+    +'</div>'
+
+    +'<div style="font-family:\'Baloo 2\',cursive;font-weight:800;color:#2D4A38;font-size:1.15rem;margin:0 0 12px;">Switch to another profile</div>'
+    +'<div id="kpSwitchGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px;">'
+    +'<div style="background:#CBE7D3;border-radius:20px;padding:22px 12px;text-align:center;cursor:pointer;" onclick="document.getElementById(\'kidProfileOv\').remove();switchChild();">'
+    +'<div style="width:44px;height:44px;border-radius:50%;background:#2D4A38;color:white;font-size:1.5rem;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;">+</div>'
+    +'<div style="font-family:\'Baloo 2\',cursive;font-weight:800;color:#2D4A38;font-size:.9rem;">Add or switch<br>profile</div>'
+    +'</div>'
+    +'</div>'
+    +'</div>';
+
+  // async: fill in sibling profiles for one-tap switching
+  try {
+    sb.from('children').select('*').eq('parent_id', currentUser.id).then(function(res){
+      if(!res || !res.data) return;
+      var grid=document.getElementById('kpSwitchGrid');
+      if(!grid) return;
+      res.data.filter(function(c){ return !activeChild || c.id!==activeChild.id; }).forEach(function(c){
+        var d=document.createElement('div');
+        d.style.cssText='background:white;border-radius:20px;padding:22px 12px;text-align:center;cursor:pointer;box-shadow:0 3px 12px rgba(45,74,56,.07);border:1.5px solid #DCEBE0;';
+        d.innerHTML='<div style="font-size:2.2rem;margin-bottom:8px;">'+(c.avatar||'🌟')+'</div>'
+          +'<div style="font-family:\'Baloo 2\',cursive;font-weight:800;color:#2D4A38;font-size:.95rem;">'+c.name+'</div>';
+        d.onclick=function(){ document.getElementById('kidProfileOv').remove(); selectChild(c); };
+        grid.insertBefore(d, grid.firstChild);
+      });
+    });
+  } catch(e){}
+}
+window.openKidProfile=openKidProfile;
+
 // ══ v453 GAME 1: LIGHTNING ROUND — 60s timed sprint, combo streaks ══
 function openLightningRound(grade){
   if(window.showGameIntro&&!sessionStorage.getItem('intro_lightning')){window._gameIntroCallback=function(){openLightningRound(grade);};showGameIntro('lightning',window._gameIntroCallback);return;}
@@ -13938,8 +14275,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v453</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v453</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v456</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v456</div>
 
 </body>
 </html
