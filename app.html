@@ -5292,8 +5292,12 @@ function setupDrawCanvas() {
   if(!canvas || !img) return;
 
   function init() {
-    canvas.width = img.naturalWidth || img.offsetWidth || 800;
-    canvas.height = img.naturalHeight || img.offsetHeight || 600;
+    var displayW = container.offsetWidth || 800;
+    var displayH = container.offsetHeight || 600;
+    canvas.width = img.naturalWidth || displayW || 800;
+    canvas.height = img.naturalHeight || displayH || 600;
+    container.style.width = displayW + 'px';
+    container.style.height = displayH + 'px';
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -7104,6 +7108,7 @@ function openBusyBook(grade) {
       {emoji:'🌿',title:'Plants & Photosynthesis',fact:'Plants make their own food using sunlight, water, and air. This process is called photosynthesis. The green color comes from a pigment called chlorophyll!',funFact:'A large tree can absorb 48 pounds of CO₂ per year.',q:'What process do plants use to make food?',opts:['Photosynthesis','Digestion','Evaporation','Migration'],a:0},
       {emoji:'🌙',title:'The Moon',fact:'The Moon orbits Earth. It takes about 29 days to go all the way around. The Moon has no air, water, or weather!',funFact:'Footprints left by astronauts on the Moon will last millions of years.',q:'How long does the Moon take to orbit Earth?',opts:['About 29 days','About 7 days','About 365 days','About 1 day'],a:0},
       {emoji:'🦴',title:'Bones',fact:'Your body has 206 bones! Bones protect your organs and help you move. Milk and calcium keep bones strong.',funFact:'Babies are born with about 300 bones — they fuse together as you grow.',q:'How many bones does an adult human body have?',opts:['206','100','300','52'],a:0},
+      {emoji:'🦴',title:'X-Ray Skeleton',fact:'X-rays let doctors see your bones without opening your skin! A skeleton is the frame that holds your whole body up.',funFact:'The smallest bone in your body is the stirrup bone in your ear!',q:'What is the smallest bone in your body?',opts:['Ear bone','Finger bone','Toe bone','Rib bone'],a:0},
     ],
     2:[
       {emoji:'💧',title:'Water Cycle',fact:'Water evaporates from oceans, forms clouds, then falls as rain or snow. This cycle repeats forever! It\'s called the water cycle.',funFact:'The same water that dinosaurs drank still exists today — it\'s recycled!',q:'What happens first in the water cycle?',opts:['Evaporation','Condensation','Precipitation','Runoff'],a:0},
@@ -9296,8 +9301,8 @@ function openLangGame(grade) {
       }).join('')
       +'</div>'
       +'<div style="display:flex;gap:10px;justify-content:center;">'
-      +'<button onclick="window._backspaceLetter&&window._backspaceLetter()" style="padding:10px 20px;border-radius:30px;border:none;background:linear-gradient(135deg,#FEF3C7,#FDE68A);color:#92400E;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">⌫ Back</button>'
-      +'<button onclick="window._clearWord()" style="padding:10px 20px;border-radius:30px;border:none;background:#F0F0F8;color:#888;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;">↩️ Clear</button>'
+      +'<button onclick="window._backspaceLetter&&window._backspaceLetter()" style="padding:10px 20px;border-radius:30px;border:none;background:linear-gradient(135deg,#FEF3C7,#FDE68A);color:#92400E;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">← Delete One</button>'
+      +'<button onclick="window._clearWord()" style="padding:10px 20px;border-radius:30px;border:none;background:#DC2626;color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;">✕ Clear All</button>'
       +'</div>'
       +'</div>';
 
@@ -9307,6 +9312,15 @@ function openLangGame(grade) {
       var btn=document.getElementById('lbtn'+i);
       if(btn){btn.style.opacity='0.3';btn.style.pointerEvents='none';}
       updateBuiltRow(d);
+    };
+
+    window._backspaceLetter = function(){
+      if(built.length > 0){
+        var removed = built.pop();
+        var btn = document.getElementById('lbtn'+removed.i);
+        if(btn){ btn.style.opacity='1'; btn.style.pointerEvents='auto'; }
+        updateBuiltRow(d);
+      }
     };
 
     window._clearWord = function(){
@@ -10593,7 +10607,7 @@ function openBloomyWardrobe(){
       +'</div>';
   }).join('');
   ov.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;padding:14px;position:sticky;top:0;background:rgba(26,15,46,.95);z-index:10;border-bottom:1px solid rgba(255,255,255,.1);">'
-    +'<button onclick="document.getElementById(\'wardrobeOv\').remove()" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;font-size:18px;color:white;">←</button>'
+    +'<button onclick="document.getElementById(\'wardrobeOv\').remove()" style="width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,.3);border:none;cursor:pointer;font-size:18px;color:white;font-weight:800;">✕</button>'
     +'<div style="font-family:\'Baloo 2\',cursive;font-weight:800;font-size:1.1rem;color:white;">👗 Bloomy\'s Wardrobe</div>'
     +'<div style="background:rgba(255,211,22,.15);border-radius:12px;padding:6px 12px;color:#FFD166;font-weight:800;">⭐ '+stars+'</div>'
     +'</div>'
@@ -13459,8 +13473,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v446</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v446</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v447</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v447</div>
 
 </body>
 </html
