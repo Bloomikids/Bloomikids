@@ -972,7 +972,7 @@ input::placeholder { color:#aaa !important; }
       <div style="font-family:'Baloo 2',cursive;font-size:.75rem;font-weight:700;color:#5A8A5A;letter-spacing:.5px;margin-bottom:4px;">BloomiKids</div>
       <div style="font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:1.55rem;font-weight:700;color:#C99A3F;line-height:1.18;margin-bottom:6px;">Ready to bloom<br>today, <span id="v3HeroName">friend</span>?</div>
       <div style="font-size:.82rem;font-weight:600;color:#6B8F6B;line-height:1.4;" id="v3HeroSub">I picked something fun for us today &#x2728;</div>
-      <!-- v450: Dress Up removed (broken, per Jen) -->
+      <button onclick="openBloomyGarden()" style="margin-top:10px;background:linear-gradient(160deg,#A9E8BE,#7FD9A4);border:none;border-radius:999px;padding:6px 14px;font-size:.72rem;font-weight:800;color:#1F4A33;cursor:pointer;box-shadow:0 3px 0 #5CBD85;font-family:Nunito,sans-serif;">🌱 My Garden</button>
     </div>
     <div style="flex-shrink:0;position:relative;">
       <img id="v3HeroMascot" src="bloomy_wave.png" onclick="bloomiDance()" alt="Bloom" style="width:145px;height:155px;object-fit:contain;filter:drop-shadow(0 8px 6px rgba(0,0,0,.12));cursor:pointer;display:block;">
@@ -3808,6 +3808,8 @@ function toggleSound(){
 }
 
 function playSound(type) {
+  if (type === 'correct' && typeof speakCheer === 'function') speakCheer(true);
+  if (type === 'wrong' && typeof speakCheer === 'function') speakCheer(false);
   if (!soundEnabled) return;
   try {
     var ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -4116,6 +4118,9 @@ var CURATED_GAMES = {
       {icon:'🌍', label:'Social Studies',       fn:"openSSGame('2')",        color:'#9B8B7B'},
       // Activities
       {icon:'📚', label:'Busy Book',            fn:"openBusyBook('2')",      color:'#0369A1'},
+      {icon:'⚡', label:'Lightning Round',      fn:"openLightningRound('2')", color:'#7E6BA8'},
+      {icon:'🔍', label:'Word Hunt',            fn:"openWordHunt('2')",        color:'#4FAF7F'},
+      {icon:'🏆', label:'Boss Challenge',       fn:"openBossChallenge('2')",   color:'#5F86B8'},
     ],
     3: [
       // Language & Literacy
@@ -4131,10 +4136,16 @@ var CURATED_GAMES = {
       {icon:'🗺️', label:'Map Mission',          fn:"openSSGame('3')",        color:'#9B8B7B'},
       // Activities
       {icon:'📚', label:'Busy Book',            fn:"openBusyBook('3')",      color:'#0369A1'},
+      {icon:'⚡', label:'Lightning Round',      fn:"openLightningRound('3')", color:'#7E6BA8'},
+      {icon:'🔍', label:'Word Hunt',            fn:"openWordHunt('3')",        color:'#4FAF7F'},
+      {icon:'🏆', label:'Boss Challenge',       fn:"openBossChallenge('3')",   color:'#5F86B8'},
     ],
     4: [
       // Language & Literacy
       {icon:'🌸', label:'Grammar Garden',       fn:"openGrammarGrab('4')",   color:'#EC4899'},
+      {icon:'⚡', label:'Lightning Round',      fn:"openLightningRound('4')", color:'#7E6BA8'},
+      {icon:'🔍', label:'Word Hunt',            fn:"openWordHunt('4')",        color:'#4FAF7F'},
+      {icon:'🏆', label:'Boss Challenge',       fn:"openBossChallenge('4')",   color:'#5F86B8'},
       // Math
       {icon:'🍕', label:'Fraction Feast',       fn:"openMathGame('4','frac')", color:'#5B7B9B'},
       {icon:'📐', label:'Angles Sort',          fn:"openColorsGame('4')",    color:'#8B7B9B'},
@@ -4157,6 +4168,9 @@ var CURATED_GAMES = {
       {icon:'🧮', label:'Problem Solver',       fn:"openProblemSolver()",    color:'#6366F1'},
       // Science & World
       {icon:'⚗️', label:'Mixtures Sort',        fn:"openScienceGame('5')",   color:'#8B7B9B'},
+      {icon:'⚡', label:'Lightning Round',      fn:"openLightningRound('5')", color:'#7E6BA8'},
+      {icon:'🔍', label:'Word Hunt',            fn:"openWordHunt('5')",        color:'#4FAF7F'},
+      {icon:'🏆', label:'Boss Challenge',       fn:"openBossChallenge('5')",   color:'#5F86B8'},
       {icon:'🗺️', label:'Treasure Hunt',        fn:"openTreasureHunt()",     color:'#8B7B6B'},
       // Fun & Challenge
       {icon:'🏆', label:'Jeopardy',             fn:"openJeopardy()",         color:'#9B8B7B'},
@@ -6026,9 +6040,13 @@ var _bMsgs={correct:['Amazing!','You got it!','Yes!','Superstar!','Perfect!'],wr
 // v450: spoken voice feedback in every game
 var _cheerCorrect = ['Great job!','You got it!','Awesome!','Way to go!','Correct!','Amazing!','You did it!'];
 var _cheerWrong = ['Try again!','Almost! Try again!','Not quite. You can do it!','Give it another try!'];
+var _lastCheerAt = 0;
 function speakCheer(ok){
   try {
     if(!('speechSynthesis' in window)) return;
+    var now = Date.now();
+    if (now - _lastCheerAt < 400) return; // debounce: never double-speak
+    _lastCheerAt = now;
     var msgs = ok ? _cheerCorrect : _cheerWrong;
     var msg = msgs[Math.floor(Math.random()*msgs.length)];
     window.speechSynthesis.cancel();
@@ -6269,6 +6287,9 @@ window.showHint = showHint;
 
 // ══ HOW TO PLAY intro cards ══
 var _GAME_INTROS = {
+  'lightning': {emoji:'&#x26A1;', title:'Lightning Round', desc:'You have 60 seconds! Answer as many as you can. Get 3 in a row for double points!'},
+  'wordhunt':  {emoji:'&#x1F50D;', title:'Word Hunt', desc:'Words are hiding in the letter grid! Tap the letters of each word in order to find them all.'},
+  'boss':      {emoji:'&#x1F3C6;', title:'Boss Challenge', desc:'Face the boss! Every right answer takes away boss HP. Three wrong answers and the boss wins. Good luck!'},
   'math':        {emoji:'&#x1F913;', title:'Math Time!',       desc:'Read each question and tap the answer you think is correct. Take your time!'},
   'wordbuilder': {emoji:'&#x1F9E9;', title:'Word Builder',     desc:'Tap the scrambled letters in the right order to spell the word. Use Back to remove the last letter.'},
   'counting':    {emoji:'&#x1F449;', title:'Count It!',        desc:'Look at the picture and count the objects carefully. Then tap the number you counted.'},
@@ -6929,7 +6950,7 @@ function startSmartSession(title, icon, questions, onComplete) {
 // ════════════════════════════════════════════════════════════════════
 function openShopMath(grade) {
   if(window.showGameIntro&&!sessionStorage.getItem('intro_shop')){window._gameIntroCallback=function(){openShopMath(grade);};showGameIntro('shop',window._gameIntroCallback);return;}
-  var CA='#9B8B7B', CB='#FCD34D';
+  var CA='#9B8B7B', CB='#D4B87A';
   var ov=document.createElement('div');
   ov.id='shopOv';
   ov.style.cssText='position:fixed;inset:0;z-index:9999;background:#FFFBEB;display:flex;flex-direction:column;font-family:Nunito,sans-serif;';
@@ -7221,7 +7242,7 @@ function openBusyBook(grade) {
           b.style.pointerEvents='none';
           if(bi===card.a){b.style.background='#E8FBF3';b.style.borderColor='#22c55e';b.style.color='#166534';b.classList.add('correct-bounce');}
         });
-        if(oi!==card.a){btn.style.background='#FFF0EE';btn.style.borderColor='#ef4444';btn.style.color='#991b1b';}
+        if(oi!==card.a){btn.style.background='#FFF0EE';btn.style.borderColor='#ef4444';btn.style.color='#991b1b';if(typeof showBloomyReaction==='function')showBloomyReaction(false);}else{if(typeof showBloomyReaction==='function')showBloomyReaction(true);}
         if(oi===card.a){if(typeof updateStars==='function'){updateStars(5);}else{toast('🌟 Correct! +5 stars');if(typeof sessionData!=='undefined'){sessionData.stars=(sessionData.stars||0)+5;var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;}}}
       };
       quizCard.appendChild(btn);
@@ -7398,7 +7419,7 @@ function openBusyBoard() {
 // ════════════════════════════════════════════════════════════════════
 function openSequencer(grade) {
   if(window.showGameIntro&&!sessionStorage.getItem('intro_patterns')){window._gameIntroCallback=function(){openSequencer(grade);};showGameIntro('patterns',window._gameIntroCallback);return;}
-  var CA='#7C3AED', CB='#A78BFA';
+  var CA='#7E6BA8', CB='#9D8BC0';
   var ov=document.createElement('div');
   ov.id='seqOv';
   ov.style.cssText='position:fixed;inset:0;z-index:9999;background:#F5F3FF;display:flex;flex-direction:column;font-family:Nunito,sans-serif;';
@@ -7533,7 +7554,7 @@ function openMasterLessons(grade){ openPassageReader(grade); }
 
 function openMemoryMatch(grade) {
   if(window.showGameIntro&&!sessionStorage.getItem('intro_memory')){window._gameIntroCallback=function(){openMemoryMatch(grade);};showGameIntro('memory',window._gameIntroCallback);return;}
-  var CA='#7C3AED', CB='#A78BFA';
+  var CA='#7E6BA8', CB='#9D8BC0';
   var ov=document.createElement('div'); ov.id='matchOv';
   ov.style.cssText='position:fixed;inset:0;z-index:9999;background:#F5F3FF;display:flex;flex-direction:column;';
   document.body.appendChild(ov);
@@ -7582,7 +7603,7 @@ function openMemoryMatch(grade) {
 
 function openNumberBonds(grade) {
   if(window.showGameIntro&&!sessionStorage.getItem('intro_bonds')){window._gameIntroCallback=function(){openNumberBonds(grade);};showGameIntro('bonds',window._gameIntroCallback);return;}
-  var CA='#059669', CB='#34D399';
+  var CA='#4FAF7F', CB='#7FD9A4';
   var ov=document.createElement('div'); ov.id='bondsOv';
   ov.style.cssText='position:fixed;inset:0;z-index:9999;background:#F0FDF4;display:flex;flex-direction:column;font-family:Nunito,sans-serif;';
   document.body.appendChild(ov);
@@ -8139,7 +8160,7 @@ window.openArgumentBuilder = openArgumentBuilder;
 // ══════════════════════════════════════════════════════════════════════
 function openPairMatch(grade, mode){
   if(window.showGameIntro&&!sessionStorage.getItem('intro_pairmatch')){window._gameIntroCallback=function(){openPairMatch(grade, mode);};showGameIntro('pairmatch',window._gameIntroCallback);return;}
-  var CA='#8B7B6B', CB='#FBBF24';
+  var CA='#8B7B6B', CB='#C9A96B';
   var ov = gameOverlay('pairOv','#FFF9EC');
   document.body.appendChild(ov);
 
@@ -8244,7 +8265,7 @@ window.openPairMatch = openPairMatch;
 // ══════════════════════════════════════════════════════════════════════
 function openFeedBloomy(grade){
   if(window.showGameIntro&&!sessionStorage.getItem('intro_feedbloomy')){window._gameIntroCallback=function(){openFeedBloomy(grade);};showGameIntro('feedbloomy',window._gameIntroCallback);return;}
-  var CA='#E8856A', CB='#F5A889';
+  var CA='#D98A70', CB='#E8B09C';
   var ov = gameOverlay('feedOv','#FFF3EC');
   document.body.appendChild(ov);
 
@@ -8319,7 +8340,7 @@ window.openFeedBloomy = openFeedBloomy;
 // ══════════════════════════════════════════════════════════════════════
 function openMathBingo(grade){
   if(window.showGameIntro&&!sessionStorage.getItem('intro_bingo')){window._gameIntroCallback=function(){openMathBingo(grade);};showGameIntro('bingo',window._gameIntroCallback);return;}
-  var CA='#7C3AED', CB='#A78BFA';
+  var CA='#7E6BA8', CB='#9D8BC0';
   var ov = gameOverlay('bingoOv','#F5F3FF');
   document.body.appendChild(ov);
 
@@ -8457,7 +8478,7 @@ window.openMathBingo = openMathBingo;
 // ══════════════════════════════════════════════════════════════════════
 function openMultiplyMania(grade){
   if(window.showGameIntro&&!sessionStorage.getItem('intro_multiplym')){window._gameIntroCallback=function(){openMultiplyMania(grade);};showGameIntro('multiplym',window._gameIntroCallback);return;}
-  var CA='#1D4ED8', CB='#60A5FA';
+  var CA='#5F86B8', CB='#8FC0E8';
   var ov = gameOverlay('multiOv','#EFF6FF');
   document.body.appendChild(ov);
 
@@ -9166,7 +9187,7 @@ function openMathGame(grade, targetGame) {
 // ══════════════════════════════════════════════════════════════════════
 function openLangGame(grade) {
   if(window.showGameIntro&&!sessionStorage.getItem('intro_wordbuilder')){window._gameIntroCallback=function(){openLangGame(grade);};showGameIntro('wordbuilder',window._gameIntroCallback);return;}
-  var CA='#E55C6C', CB='#FF9A8B';
+  var CA='#D9738A', CB='#E8A0A8';
   var ov = gameOverlay('langGameOv','#FFF5F5');
   document.body.appendChild(ov);
 
@@ -9398,6 +9419,7 @@ function openLangGame(grade) {
   }
 
   function flashBuilt(correct, d){
+    if (typeof showBloomyReaction === 'function') showBloomyReaction(correct);
     var row=document.getElementById('builtRow');
     if(!row) return;
     var bg=correct?'linear-gradient(135deg,#22c55e,#4ade80)':'linear-gradient(135deg,#ef4444,#f87171)';
@@ -9429,8 +9451,8 @@ function openLangGame(grade) {
       document.querySelectorAll('[onclick^="window._storyAnswer"]').forEach(function(b){b.style.pointerEvents='none';});
       var btns=document.querySelectorAll('[onclick^="window._storyAnswer"]');
       btns[ans].style.background='#E8FBF3'; btns[ans].style.borderColor='#22c55e'; btns[ans].style.color='#22c55e';
-      if(chosen===ans){ score++; toast('Correct! 🌟'); btns[chosen].style.background='#E8FBF3'; }
-      else { btns[chosen].style.background='#FFF0EE'; btns[chosen].style.borderColor='#ef4444'; btns[chosen].style.color='#ef4444'; toast('The answer was: '+d.blanks[ans]); }
+      if(chosen===ans){ score++; toast('Correct! 🌟'); btns[chosen].style.background='#E8FBF3'; if(typeof showBloomyReaction==='function')showBloomyReaction(true); }
+      else { btns[chosen].style.background='#FFF0EE'; btns[chosen].style.borderColor='#ef4444'; btns[chosen].style.color='#ef4444'; toast('The answer was: '+d.blanks[ans]); if(typeof showBloomyReaction==='function')showBloomyReaction(false); }
       idx++;
       setTimeout(render, 1000);
     };
@@ -9676,7 +9698,7 @@ function openScienceGame(grade) {
 function openSSGame(grade){ openSocialStudiesGame(grade); }
 function openSocialStudiesGame(grade) {
   if(window.showGameIntro&&!sessionStorage.getItem('intro_worldquest')){window._gameIntroCallback=function(){openSocialStudiesGame(grade);};showGameIntro('worldquest',window._gameIntroCallback);return;}
-  var CA='#9B8B7B', CB='#FCD34D';
+  var CA='#9B8B7B', CB='#D4B87A';
   var ov = gameOverlay('ssGameOv','#FFFBF0');
   document.body.appendChild(ov);
 
@@ -9784,7 +9806,7 @@ function openSocialStudiesGame(grade) {
       var chosen_el=document.getElementById('ssOpt'+chosen);
       if(correct){ correct.style.background='#E8FBF3'; correct.style.borderColor='#22c55e'; correct.style.color='#22c55e'; }
       if(chosen!==ans && chosen_el){ chosen_el.style.background='#FFF0EE'; chosen_el.style.borderColor='#ef4444'; chosen_el.style.color='#ef4444'; }
-      if(chosen===ans){ score++; toast('Correct! 🌟'); } else { toast('The answer: '+q.opts[ans]); }
+      if(chosen===ans){ score++; toast('Correct! 🌟'); if(typeof showBloomyReaction==='function')showBloomyReaction(true); } else { toast('The answer: '+q.opts[ans]); if(typeof showBloomyReaction==='function')showBloomyReaction(false); }
       // Append next button to ssBody
       var body=document.getElementById('ssBody');
       if(!body) return;
@@ -9804,7 +9826,7 @@ function openSocialStudiesGame(grade) {
 // ══════════════════════════════════════════════════════════════════════
 function openColorsGame(grade) {
   if(window.showGameIntro&&!sessionStorage.getItem('intro_sort')){window._gameIntroCallback=function(){openColorsGame(grade);};showGameIntro('sort',window._gameIntroCallback);return;}
-  var CA='#EC4899', CB='#B89BB7';
+  var CA='#C77B96', CB='#D9A8BC';
   var ov = gameOverlay('colorsGameOv','#FFF0F8');
   document.body.appendChild(ov);
 
@@ -10270,7 +10292,7 @@ window.openKindnessCorner=openKindnessCorner;
 
 function openEvidenceExplorer(){
   if(window.showGameIntro&&!sessionStorage.getItem('intro_evidence')){window._gameIntroCallback=function(){openEvidenceExplorer();};showGameIntro('evidence',window._gameIntroCallback);return;}
-  var CA='#1D4ED8',CB='#3B82F6';
+  var CA='#5F86B8',CB='#7FA8D4';
   var PASSAGES=[
     {text:'Penguins live in Antarctica. They cannot fly, but they are excellent swimmers. Their black and white feathers help them blend in the ocean. Emperor penguins are the tallest and can grow up to 4 feet tall!',q:'What helps penguins blend into the ocean?',opts:['Their sharp claws','Their long beaks','Their black and white feathers','Their size'],a:2,e:'The passage says their black and white feathers help them blend in the ocean.'},
     {text:'The Amazon rainforest produces 20% of the world\'s oxygen. It is home to over 3 million species. Scientists call it the lungs of the Earth because of all the oxygen it creates. Deforestation threatens this vital ecosystem every year.',q:'Why do scientists call the Amazon the lungs of the Earth?',opts:['It looks like lungs on a map','It has the most animals','It breathes like humans','It creates large amounts of oxygen'],a:3,e:'The passage says scientists call it the lungs of the Earth because of all the oxygen it creates.'},
@@ -10628,6 +10650,406 @@ function _applyAccessory(id){
   }
   if(overlay) overlay.textContent=acc.emoji;
 }
+
+
+// ══ v453 GAME 1: LIGHTNING ROUND — 60s timed sprint, combo streaks ══
+function openLightningRound(grade){
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_lightning')){window._gameIntroCallback=function(){openLightningRound(grade);};showGameIntro('lightning',window._gameIntroCallback);return;}
+  var CA='#7E6BA8', CB='#9D8BC0';
+  var ex=document.getElementById('lightningOv'); if(ex) ex.remove();
+  var ov=document.createElement('div');
+  ov.id='lightningOv';
+  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#EFEAF7,#DDD3EE);display:flex;flex-direction:column;font-family:Nunito,sans-serif;overflow:hidden;';
+  document.body.appendChild(ov);
+
+  var score=0, combo=0, best=0, timeLeft=60, timer=null, cur=null;
+  var bestKey='lightningBest_'+grade+'_'+(activeChild&&activeChild.id?activeChild.id:'g');
+  try{ best=parseInt(localStorage.getItem(bestKey)||'0',10); }catch(e){}
+
+  function genQ(){
+    var a,b,q,ans,wrong;
+    if(grade==='2'){ a=2+Math.floor(Math.random()*18); b=2+Math.floor(Math.random()*18); if(Math.random()<0.5){q=a+' + '+b;ans=a+b;}else{var hi=Math.max(a,b),lo=Math.min(a,b);q=hi+' − '+lo;ans=hi-lo;} }
+    else if(grade==='3'){ a=2+Math.floor(Math.random()*10); b=2+Math.floor(Math.random()*10); q=a+' × '+b; ans=a*b; }
+    else if(grade==='4'){ if(Math.random()<0.5){a=2+Math.floor(Math.random()*11);b=2+Math.floor(Math.random()*11);q=a+' × '+b;ans=a*b;}else{b=2+Math.floor(Math.random()*9);ans=2+Math.floor(Math.random()*9);a=b*ans;q=a+' ÷ '+b;} }
+    else { var mode=Math.floor(Math.random()*3); if(mode===0){a=3+Math.floor(Math.random()*12);b=3+Math.floor(Math.random()*12);q=a+' × '+b;ans=a*b;} else if(mode===1){b=3+Math.floor(Math.random()*11);ans=3+Math.floor(Math.random()*11);a=b*ans;q=a+' ÷ '+b;} else {a=10+Math.floor(Math.random()*80);b=10+Math.floor(Math.random()*80);q=a+' + '+b;ans=a+b;} }
+    var opts=[ans];
+    while(opts.length<4){ var w=ans+(Math.floor(Math.random()*11)-5); if(w!==ans&&w>=0&&opts.indexOf(w)<0) opts.push(w); }
+    opts.sort(function(){return Math.random()-.5;});
+    return {q:q, ans:ans, opts:opts};
+  }
+
+  function render(){
+    cur=genQ();
+    var comboTxt = combo>=3 ? '<span style="color:#B8860B;">🔥 x'+combo+' streak!</span>' : '';
+    ov.innerHTML='<div style="background:linear-gradient(135deg,'+CA+','+CB+');padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">'
+      +'<div style="font-family:\'Baloo 2\',cursive;font-weight:800;color:white;font-size:1.05rem;">⚡ Lightning Round</div>'
+      +'<button data-closeov="lightningOv" style="background:rgba(0,0,0,.25);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;">✕</button>'
+      +'</div>'
+      +'<div style="flex:1;overflow-y:auto;padding:16px;max-width:520px;margin:0 auto;width:100%;box-sizing:border-box;display:flex;flex-direction:column;">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-weight:800;color:#4A3B6B;">'
+      +'<div>⭐ '+score+'</div><div id="lrTime" style="font-size:1.2rem;">⏱ '+timeLeft+'s</div><div>🏆 Best: '+best+'</div>'
+      +'</div>'
+      +'<div style="height:10px;background:rgba(126,107,168,.2);border-radius:5px;margin-bottom:18px;overflow:hidden;"><div id="lrBar" style="height:100%;width:'+(timeLeft/60*100)+'%;background:linear-gradient(90deg,'+CA+','+CB+');border-radius:5px;transition:width 1s linear;"></div></div>'
+      +'<div style="background:white;border-radius:22px;padding:26px;text-align:center;margin-bottom:16px;box-shadow:0 4px 16px rgba(126,107,168,.18);">'
+      +'<div style="font-family:\'Baloo 2\',cursive;font-size:2.4rem;font-weight:800;color:#4A3B6B;">'+cur.q+' = ?</div>'
+      +'<div style="min-height:22px;font-weight:800;margin-top:4px;">'+comboTxt+'</div>'
+      +'</div>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">'
+      +cur.opts.map(function(o){return '<button onclick="window._lrPick('+o+')" style="padding:20px;border-radius:18px;border:none;background:white;font-family:\'Baloo 2\',cursive;font-size:1.5rem;font-weight:800;color:#4A3B6B;cursor:pointer;box-shadow:0 3px 0 rgba(126,107,168,.25);">'+o+'</button>';}).join('')
+      +'</div></div>';
+  }
+
+  window._lrPick=function(v){
+    if(v===cur.ans){ combo++; var gain=combo>=3?2:1; score+=gain; if(typeof sfx==='function')sfx('correct'); }
+    else { combo=0; if(typeof sfx==='function')sfx('wrong'); }
+    render();
+  };
+
+  function finish(){
+    clearInterval(timer);
+    var isBest = score>best;
+    if(isBest){ best=score; try{localStorage.setItem(bestKey,String(best));}catch(e){} }
+    var starsEarned = Math.max(5, score);
+    if(typeof updateStars==='function') updateStars(starsEarned);
+    if(typeof sfx==='function') sfx('win');
+    try{ if('speechSynthesis' in window){ window.speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance(isBest?'New record! Amazing!':'Time is up! Great sprinting!'); u.pitch=1.15; window.speechSynthesis.speak(u);} }catch(e){}
+    ov.innerHTML='<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;">'
+      +'<div style="font-size:4rem;margin-bottom:8px;">'+(isBest?'🏆':'⚡')+'</div>'
+      +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.6rem;font-weight:800;color:#4A3B6B;">'+(isBest?'NEW RECORD!':'Time\'s Up!')+'</div>'
+      +'<div style="font-weight:800;color:#6B5B8B;font-size:1.1rem;margin:8px 0;">Score: '+score+' &nbsp;·&nbsp; ⭐ +'+starsEarned+'</div>'
+      +'<div style="display:flex;gap:10px;margin-top:14px;">'
+      +'<button onclick="openLightningRound(\''+grade+'\')" style="padding:14px 24px;border-radius:30px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-weight:800;cursor:pointer;font-size:1rem;">Play Again</button>'
+      +'<button data-closeov="lightningOv" style="padding:14px 24px;border-radius:30px;border:none;background:rgba(0,0,0,.15);color:#4A3B6B;font-weight:800;cursor:pointer;font-size:1rem;">Done</button>'
+      +'</div></div>';
+  }
+
+  timer=setInterval(function(){
+    timeLeft--;
+    var t=document.getElementById('lrTime'); if(t) t.textContent='⏱ '+timeLeft+'s';
+    var b=document.getElementById('lrBar'); if(b) b.style.width=(timeLeft/60*100)+'%';
+    if(timeLeft<=0) finish();
+  },1000);
+  render();
+}
+window.openLightningRound=openLightningRound;
+
+// ══ v453 GAME 2: WORD HUNT — find hidden words in a letter grid ══
+function openWordHunt(grade){
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_wordhunt')){window._gameIntroCallback=function(){openWordHunt(grade);};showGameIntro('wordhunt',window._gameIntroCallback);return;}
+  var CA='#4FAF7F', CB='#7FD9A4';
+  var WORDSETS={
+    '2':[['CAT','DOG','SUN','HAT'],['RUN','BIG','RED','TOP'],['MAP','PEN','CUP','BUS']],
+    '3':[['FROG','STAR','MOON','TREE'],['BIRD','FISH','CAKE','SNOW'],['RAIN','WIND','LEAF','SEED']],
+    '4':[['PLANET','ROCKET','BRIDGE','CASTLE'],['JUNGLE','FLOWER','SILVER','FROZEN']],
+    '5':[['HARVEST','JOURNEY','THUNDER','KINGDOM'],['CAPTAIN','SHELTER','MYSTERY','VOLCANO']]
+  };
+  var sets=WORDSETS[grade]||WORDSETS['3'];
+  var words=sets[Math.floor(Math.random()*sets.length)].slice();
+  var N = grade==='2'?7 : grade==='3'?8 : 10;
+  var grid=[], placed=[];
+  for(var r=0;r<N;r++){ grid.push(new Array(N).fill('')); }
+  var DIRS=[[0,1],[1,0],[1,1]];
+  words.forEach(function(w){
+    for(var attempt=0;attempt<200;attempt++){
+      var d=DIRS[Math.floor(Math.random()*DIRS.length)];
+      var maxR=N-(d[0]?w.length:1), maxC=N-(d[1]?w.length:1);
+      if(maxR<=0||maxC<=0) continue;
+      var r0=Math.floor(Math.random()*maxR), c0=Math.floor(Math.random()*maxC);
+      var ok=true;
+      for(var i=0;i<w.length;i++){ var cell=grid[r0+d[0]*i][c0+d[1]*i]; if(cell&&cell!==w[i]){ok=false;break;} }
+      if(!ok) continue;
+      var cells=[];
+      for(var i=0;i<w.length;i++){ grid[r0+d[0]*i][c0+d[1]*i]=w[i]; cells.push((r0+d[0]*i)+'_'+(c0+d[1]*i)); }
+      placed.push({word:w, cells:cells, found:false});
+      break;
+    }
+  });
+  var AZ='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  for(var r=0;r<N;r++)for(var c=0;c<N;c++){ if(!grid[r][c]) grid[r][c]=AZ[Math.floor(Math.random()*26)]; }
+
+  var ex=document.getElementById('wordHuntOv'); if(ex) ex.remove();
+  var ov=document.createElement('div');
+  ov.id='wordHuntOv';
+  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#EAF7EE,#D5EFDD);display:flex;flex-direction:column;font-family:Nunito,sans-serif;overflow:hidden;';
+  document.body.appendChild(ov);
+
+  var sel=[];
+  function render(){
+    var wordChips=placed.map(function(p){
+      return '<span style="padding:5px 12px;border-radius:14px;font-weight:800;font-size:.78rem;'+(p.found?'background:#7FD9A4;color:#1F4A33;text-decoration:line-through;':'background:white;color:#3A6B4C;')+'">'+p.word+'</span>';
+    }).join(' ');
+    var cellsHtml='';
+    for(var r=0;r<N;r++){
+      for(var c=0;c<N;c++){
+        var key=r+'_'+c;
+        var isSel=sel.indexOf(key)>=0;
+        var isFound=placed.some(function(p){return p.found&&p.cells.indexOf(key)>=0;});
+        var bg=isFound?'#7FD9A4':(isSel?'#FBD988':'white');
+        cellsHtml+='<button onclick="window._whTap(\''+key+'\')" style="aspect-ratio:1;border-radius:8px;border:none;background:'+bg+';font-family:\'Baloo 2\',cursive;font-weight:800;font-size:'+(N>=10?'0.85rem':'1.05rem')+';color:#1F4A33;cursor:pointer;padding:0;">'+grid[r][c]+'</button>';
+      }
+    }
+    ov.innerHTML='<div style="background:linear-gradient(135deg,'+CA+','+CB+');padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">'
+      +'<div style="font-family:\'Baloo 2\',cursive;font-weight:800;color:white;font-size:1.05rem;">🔍 Word Hunt</div>'
+      +'<button data-closeov="wordHuntOv" style="background:rgba(0,0,0,.25);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;">✕</button>'
+      +'</div>'
+      +'<div style="flex:1;overflow-y:auto;padding:14px;max-width:520px;margin:0 auto;width:100%;box-sizing:border-box;">'
+      +'<div style="text-align:center;margin-bottom:10px;display:flex;gap:6px;flex-wrap:wrap;justify-content:center;">'+wordChips+'</div>'
+      +'<div style="font-size:.75rem;font-weight:700;color:#4A7A5C;text-align:center;margin-bottom:10px;">Tap the letters of a word in order — across, down, or diagonal!</div>'
+      +'<div style="display:grid;grid-template-columns:repeat('+N+',1fr);gap:4px;background:rgba(79,175,127,.12);border-radius:16px;padding:8px;">'+cellsHtml+'</div>'
+      +'<div style="text-align:center;margin-top:10px;"><button onclick="window._whClear()" style="padding:8px 18px;border-radius:20px;border:none;background:rgba(0,0,0,.12);color:#1F4A33;font-weight:800;cursor:pointer;">Clear taps</button></div>'
+      +'</div>';
+  }
+
+  window._whTap=function(key){
+    if(sel.indexOf(key)>=0) return;
+    sel.push(key);
+    var seq=sel.map(function(k){var p=k.split('_');return grid[+p[0]][+p[1]];}).join('');
+    var hit=placed.find(function(p){ return !p.found && p.word===seq && p.cells.join('|')===sel.join('|'); });
+    // allow any-order cell taps matching the word's cell set in sequence
+    if(!hit){ hit=placed.find(function(p){ return !p.found && p.word.length===sel.length && p.cells.slice().sort().join('|')===sel.slice().sort().join('|'); }); }
+    if(hit){
+      hit.found=true; sel=[];
+      if(typeof showBloomyReaction==='function') showBloomyReaction(true);
+      if(placed.every(function(p){return p.found;})){
+        if(typeof updateStars==='function') updateStars(20);
+        setTimeout(function(){
+          if(typeof sfx==='function') sfx('win');
+          try{ if('speechSynthesis' in window){ window.speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance('You found every word! Incredible!'); u.pitch=1.15; window.speechSynthesis.speak(u);} }catch(e){}
+          ov.innerHTML='<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;">'
+            +'<div style="font-size:4rem;">🔍</div>'
+            +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.5rem;font-weight:800;color:#1F4A33;">All words found! ⭐ +20</div>'
+            +'<div style="display:flex;gap:10px;margin-top:16px;">'
+            +'<button onclick="openWordHunt(\''+grade+'\')" style="padding:14px 24px;border-radius:30px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-weight:800;cursor:pointer;">New Puzzle</button>'
+            +'<button data-closeov="wordHuntOv" style="padding:14px 24px;border-radius:30px;border:none;background:rgba(0,0,0,.15);color:#1F4A33;font-weight:800;cursor:pointer;">Done</button>'
+            +'</div></div>';
+        },600);
+        return;
+      }
+    } else if(sel.length>=12){ sel=[]; if(typeof sfx==='function') sfx('wrong'); }
+    render();
+  };
+  window._whClear=function(){ sel=[]; render(); };
+  render();
+}
+window.openWordHunt=openWordHunt;
+
+// ══ v453 GAME 3: BOSS CHALLENGE — mixed-subject gauntlet vs. a challenge character ══
+function openBossChallenge(grade){
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_boss')){window._gameIntroCallback=function(){openBossChallenge(grade);};showGameIntro('boss',window._gameIntroCallback);return;}
+  var CA='#5F86B8', CB='#7FA8D4';
+  var BOSSES=[{emoji:'🐉',name:'Puzzle Dragon'},{emoji:'🦉',name:'Professor Owl'},{emoji:'🤖',name:'Quiz-Bot 3000'},{emoji:'🧊',name:'Frosty the Thinker'}];
+  var boss=BOSSES[Math.floor(Math.random()*BOSSES.length)];
+  var QS={
+    '2':[
+      {q:'Which word is a noun?',opts:['jump','happy','dog','fast'],a:2},
+      {q:'15 + 8 = ?',opts:['22','23','24','21'],a:1},
+      {q:'Which is a liquid?',opts:['Rock','Milk','Ice cube','Wood'],a:1},
+      {q:'What do plants need to grow?',opts:['Candy','Sunlight','Toys','TV'],a:1},
+      {q:'20 − 7 = ?',opts:['12','14','13','11'],a:2},
+      {q:'Which word rhymes with CAKE?',opts:['Lake','Cat','Kite','Cook'],a:0},
+      {q:'How many sides does a triangle have?',opts:['2','3','4','5'],a:1},
+      {q:'Which is the OPPOSITE of hot?',opts:['Warm','Cold','Wet','Big'],a:1},
+    ],
+    '3':[
+      {q:'7 × 8 = ?',opts:['54','56','58','52'],a:1},
+      {q:'Which word is an adjective?',opts:['run','quickly','shiny','table'],a:2},
+      {q:'What gas do plants breathe in?',opts:['Oxygen','Carbon dioxide','Helium','Steam'],a:1},
+      {q:'Which is a fact (not opinion)?',opts:['Pizza is the best food','Dogs are cuter than cats','Water freezes at 0°C','Math is boring'],a:2},
+      {q:'36 ÷ 4 = ?',opts:['8','9','7','6'],a:1},
+      {q:'A group of wolves is called a...',opts:['Herd','Flock','Pack','School'],a:2},
+      {q:'Which continent is Egypt in?',opts:['Asia','Africa','Europe','South America'],a:1},
+      {q:'What is 1/2 of 18?',opts:['8','9','10','6'],a:1},
+    ],
+    '4':[
+      {q:'9 × 12 = ?',opts:['106','108','112','104'],a:1},
+      {q:'Which word is an adverb?',opts:['quietly','quiet','quietness','quieter'],a:0},
+      {q:'Water turning to vapor is called...',opts:['Freezing','Melting','Evaporation','Condensation'],a:2},
+      {q:'Which fraction is largest?',opts:['1/4','1/2','1/3','1/8'],a:1},
+      {q:'What is the main idea of a story called?',opts:['Setting','Theme','Character','Dialogue'],a:1},
+      {q:'144 ÷ 12 = ?',opts:['11','12','13','14'],a:1},
+      {q:'Which is a renewable resource?',opts:['Coal','Oil','Sunlight','Natural gas'],a:2},
+      {q:'A polygon with 5 sides is a...',opts:['Hexagon','Pentagon','Octagon','Heptagon'],a:1},
+    ],
+    '5':[
+      {q:'What is 25% of 80?',opts:['15','20','25','30'],a:1},
+      {q:'Which sentence uses a metaphor?',opts:['The sun is like gold','Time is a thief','She runs fast','It rained hard'],a:1},
+      {q:'The powerhouse of the cell is the...',opts:['Nucleus','Mitochondria','Membrane','Ribosome'],a:1},
+      {q:'Which is equivalent to 3/4?',opts:['70%','75%','80%','66%'],a:1},
+      {q:'A claim needs to be supported by...',opts:['Opinions','Evidence','Feelings','Guesses'],a:1},
+      {q:'13 × 13 = ?',opts:['169','159','166','172'],a:0},
+      {q:'The three branches of US government are legislative, judicial, and...',opts:['Presidential','Executive','Congressional','Federal'],a:1},
+      {q:'Which number is prime?',opts:['21','27','29','33'],a:2},
+    ]
+  };
+  var qs=(QS[grade]||QS['3']).slice().sort(function(){return Math.random()-.5;});
+  var bossHP=qs.length, myHearts=3, idx=0;
+
+  var ex=document.getElementById('bossOv'); if(ex) ex.remove();
+  var ov=document.createElement('div');
+  ov.id='bossOv';
+  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#E7EEF7,#D3E1F2);display:flex;flex-direction:column;font-family:Nunito,sans-serif;overflow:hidden;';
+  document.body.appendChild(ov);
+
+  function hearts(n){ var s=''; for(var i=0;i<3;i++) s+= i<n?'❤️':'🖤'; return s; }
+
+  function render(){
+    if(myHearts<=0){ return finish(false); }
+    if(bossHP<=0 || idx>=qs.length){ return finish(bossHP<=0); }
+    var q=qs[idx];
+    ov.innerHTML='<div style="background:linear-gradient(135deg,'+CA+','+CB+');padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">'
+      +'<div style="font-family:\'Baloo 2\',cursive;font-weight:800;color:white;font-size:1.05rem;">🏆 Boss Challenge</div>'
+      +'<button data-closeov="bossOv" style="background:rgba(0,0,0,.25);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-weight:800;">✕</button>'
+      +'</div>'
+      +'<div style="flex:1;overflow-y:auto;padding:16px;max-width:520px;margin:0 auto;width:100%;box-sizing:border-box;">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;background:white;border-radius:18px;padding:12px 16px;margin-bottom:14px;box-shadow:0 3px 12px rgba(95,134,184,.15);">'
+      +'<div style="text-align:center;"><div style="font-size:2.2rem;">'+boss.emoji+'</div><div style="font-size:.68rem;font-weight:800;color:#3B5B80;">'+boss.name+'</div><div style="font-size:.75rem;font-weight:800;color:#C77B96;">HP: '+bossHP+'</div></div>'
+      +'<div style="font-family:\'Baloo 2\',cursive;font-weight:800;color:#5F86B8;">VS</div>'
+      +'<div style="text-align:center;"><div style="font-size:2.2rem;">🌱</div><div style="font-size:.68rem;font-weight:800;color:#3B5B80;">You</div><div style="font-size:.85rem;">'+hearts(myHearts)+'</div></div>'
+      +'</div>'
+      +'<div style="background:white;border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:0 3px 12px rgba(95,134,184,.12);">'
+      +'<div style="font-weight:800;color:#2B4B70;font-size:1rem;line-height:1.5;">'+q.q+'</div>'
+      +'</div>'
+      +'<div style="display:grid;gap:10px;">'
+      +q.opts.map(function(o,i){return '<button onclick="window._bossPick('+i+')" style="padding:14px 16px;border-radius:16px;border:2px solid rgba(95,134,184,.25);background:white;font-weight:800;color:#2B4B70;cursor:pointer;text-align:left;font-size:.92rem;">'+o+'</button>';}).join('')
+      +'</div></div>';
+  }
+
+  window._bossPick=function(i){
+    var q=qs[idx];
+    if(i===q.a){ bossHP--; if(typeof showBloomyReaction==='function') showBloomyReaction(true); }
+    else { myHearts--; if(typeof showBloomyReaction==='function') showBloomyReaction(false); }
+    idx++;
+    setTimeout(render, 900);
+  };
+
+  function finish(won){
+    var starsEarned = won ? 40 : 10;
+    if(typeof updateStars==='function') updateStars(starsEarned);
+    if(typeof sfx==='function') sfx(won?'win':'wrong');
+    try{ if('speechSynthesis' in window){ window.speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance(won?'You defeated '+boss.name+'! You are the champion!':'Good try! Practice and challenge '+boss.name+' again!'); u.pitch=1.15; window.speechSynthesis.speak(u);} }catch(e){}
+    ov.innerHTML='<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;">'
+      +'<div style="font-size:4rem;">'+(won?'🏆':boss.emoji)+'</div>'
+      +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.5rem;font-weight:800;color:#2B4B70;">'+(won?'You beat '+boss.name+'!':boss.name+' wins this time!')+'</div>'
+      +'<div style="font-weight:800;color:#5F86B8;margin:8px 0;">⭐ +'+starsEarned+'</div>'
+      +'<div style="display:flex;gap:10px;margin-top:14px;">'
+      +'<button onclick="openBossChallenge(\''+grade+'\')" style="padding:14px 24px;border-radius:30px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-weight:800;cursor:pointer;">Rematch!</button>'
+      +'<button data-closeov="bossOv" style="padding:14px 24px;border-radius:30px;border:none;background:rgba(0,0,0,.15);color:#2B4B70;font-weight:800;cursor:pointer;">Done</button>'
+      +'</div></div>';
+  }
+  render();
+}
+window.openBossChallenge=openBossChallenge;
+
+// ══ BLOOMY'S GARDEN (v452) — stars buy seeds, seeds bloom over days of play ══
+var GARDEN_PLANTS = [
+  {id:'daisy',    name:'Daisy',          cost:25,  bloom:'🌼'},
+  {id:'tulip',    name:'Tulip',          cost:30,  bloom:'🌷'},
+  {id:'blossom',  name:'Blossom',        cost:35,  bloom:'🌸'},
+  {id:'hibiscus', name:'Hibiscus',       cost:40,  bloom:'🌺'},
+  {id:'sunflower',name:'Sunflower',      cost:50,  bloom:'🌻'},
+  {id:'rose',     name:'Rose',           cost:60,  bloom:'🌹'},
+  {id:'clover',   name:'Lucky Clover',   cost:75,  bloom:'🍀'},
+  {id:'cactus',   name:'Happy Cactus',   cost:100, bloom:'🌵'},
+  {id:'lotus',    name:'Lotus',          cost:150, bloom:'🪷'},
+  {id:'bonsai',   name:'Bonsai Tree',    cost:200, bloom:'🎋'},
+  {id:'palm',     name:'Island Palm',    cost:350, bloom:'🌴'},
+  {id:'rainbow',  name:'Rainbow Bloom',  cost:500, bloom:'🌈'},
+];
+var GROWTH_EMOJI = ['🌰','🌱','🌿','🪴'];  // stages 0-3; stage 4 = the plant's own bloom
+
+function _gardenKey(){ return 'bloomiGarden_' + (activeChild && activeChild.id ? activeChild.id : 'guest'); }
+function _gardenLoad(){ try { return JSON.parse(localStorage.getItem(_gardenKey())||'[]'); } catch(e){ return []; } }
+function _gardenSave(g){ try { localStorage.setItem(_gardenKey(), JSON.stringify(g)); } catch(e){} }
+function _plantStage(p){
+  var days = Math.floor((Date.now() - p.plantedAt) / 86400000);
+  return Math.min(4, days);  // one stage per day, bloom on day 4
+}
+
+function openBloomyGarden(){
+  var ex=document.getElementById('gardenOv'); if(ex) ex.remove();
+  var ov=document.createElement('div');
+  ov.id='gardenOv';
+  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#EAF7EE 0%,#D5EFDD 55%,#C2E5CC 100%);display:flex;flex-direction:column;font-family:Nunito,sans-serif;overflow:hidden;';
+  document.body.appendChild(ov);
+
+  var hdr=document.createElement('div');
+  hdr.style.cssText='padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;';
+  hdr.innerHTML='<div style="font-family:\'Baloo 2\',cursive;font-size:1.15rem;font-weight:800;color:#1F4A33;">🌱 Bloomy\'s Garden</div>'
+    +'<div style="display:flex;gap:10px;align-items:center;">'
+    +'<div style="background:white;border-radius:999px;padding:6px 14px;font-weight:800;color:#B8860B;box-shadow:0 2px 8px rgba(0,0,0,.08);">⭐ <span id="gardenStars">'+(sessionData.stars||0)+'</span></div>'
+    +'<button data-closeov="gardenOv" style="width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,.25);border:none;color:white;cursor:pointer;font-weight:800;font-size:1rem;">✕</button>'
+    +'</div>';
+  ov.appendChild(hdr);
+
+  var body=document.createElement('div');
+  body.style.cssText='flex:1;overflow-y:auto;padding:8px 18px 28px;max-width:640px;margin:0 auto;width:100%;box-sizing:border-box;';
+  ov.appendChild(body);
+
+  function render(){
+    var garden=_gardenLoad();
+    var html_='';
+
+    // ── the garden bed ──
+    html_+='<div style="background:linear-gradient(180deg,#BFE8CB,#A7DDB6);border-radius:24px;padding:18px;margin-bottom:16px;box-shadow:inset 0 2px 10px rgba(31,74,51,.12);">';
+    html_+='<div style="font-weight:800;color:#1F4A33;margin-bottom:10px;font-size:.9rem;">My plants — they grow every day you play! 💧</div>';
+    if(garden.length===0){
+      html_+='<div style="text-align:center;padding:22px 10px;color:#4A7A5C;font-weight:700;">No plants yet!<br>Use your stars to plant your first seed below 👇</div>';
+    } else {
+      html_+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:10px;">';
+      garden.forEach(function(p){
+        var plant=GARDEN_PLANTS.find(function(x){return x.id===p.id;})||GARDEN_PLANTS[0];
+        var st=_plantStage(p);
+        var emoji= st>=4 ? plant.bloom : GROWTH_EMOJI[st];
+        var label= st>=4 ? plant.name+'!' : (4-st)+' day'+((4-st)>1?'s':'')+' to bloom';
+        html_+='<div style="background:rgba(255,255,255,.75);border-radius:16px;padding:10px 6px;text-align:center;">'
+          +'<div style="font-size:2rem;">'+emoji+'</div>'
+          +'<div style="font-size:.6rem;font-weight:800;color:#3A6B4C;margin-top:2px;">'+label+'</div>'
+          +'</div>';
+      });
+      html_+='</div>';
+    }
+    html_+='</div>';
+
+    // ── the seed shop ──
+    var owned = garden.map(function(p){return p.id;});
+    html_+='<div style="font-family:\'Baloo 2\',cursive;font-weight:800;color:#1F4A33;font-size:1rem;margin:4px 0 10px;">🏪 Seed Shop</div>';
+    html_+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;">';
+    GARDEN_PLANTS.forEach(function(pl){
+      var have = owned.indexOf(pl.id)>=0;
+      var afford = (sessionData.stars||0) >= pl.cost;
+      html_+='<div style="background:white;border-radius:18px;padding:12px;text-align:center;box-shadow:0 3px 10px rgba(31,74,51,.08);'+(have?'opacity:.55;':'')+'">'
+        +'<div style="font-size:1.9rem;">'+pl.bloom+'</div>'
+        +'<div style="font-weight:800;color:#1F4A33;font-size:.82rem;">'+pl.name+'</div>'
+        +(have
+          ? '<div style="font-size:.68rem;font-weight:800;color:#5CBD85;margin-top:6px;">✓ Planted</div>'
+          : '<button onclick="buyGardenSeed(\''+pl.id+'\')" '+(afford?'':'disabled ')+'style="margin-top:6px;padding:6px 12px;border-radius:16px;border:none;font-weight:800;font-size:.72rem;cursor:'+(afford?'pointer':'default')+';background:'+(afford?'linear-gradient(160deg,#A9E8BE,#7FD9A4)':'#EEE')+';color:'+(afford?'#1F4A33':'#AAA')+';">⭐ '+pl.cost+'</button>')
+        +'</div>';
+    });
+    html_+='</div>';
+    body.innerHTML=html_;
+  }
+
+  window.buyGardenSeed=function(id){
+    var pl=GARDEN_PLANTS.find(function(x){return x.id===id;});
+    if(!pl) return;
+    if((sessionData.stars||0) < pl.cost){ toast('Keep playing to earn more stars!'); return; }
+    var garden=_gardenLoad();
+    if(garden.some(function(p){return p.id===id;})) return;
+    garden.push({id:id, plantedAt:Date.now()});
+    _gardenSave(garden);
+    sessionData.stars -= pl.cost;
+    var se=document.getElementById('statStars'); if(se) se.textContent=sessionData.stars;
+    var ge=document.getElementById('gardenStars'); if(ge) ge.textContent=sessionData.stars;
+    try { sb.rpc('add_stars',{p_child_id:activeChild.id,p_amount:-pl.cost}); } catch(e){}
+    if(typeof sfx==='function') sfx('win');
+    try { if('speechSynthesis' in window){ window.speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance('You planted a '+pl.name+'! Come back tomorrow to watch it grow!'); u.rate=1.0; u.pitch=1.15; window.speechSynthesis.speak(u); } } catch(e){}
+    render();
+  };
+
+  render();
+}
+window.openBloomyGarden=openBloomyGarden;
+
 function openBloomyWardrobe(){ return; // v450: wardrobe disabled
   var old=document.getElementById('wardrobeOv');if(old)old.remove();
   var ov=document.createElement('div');
@@ -11085,11 +11507,12 @@ function openPhonicsGame(grade) {
         b.style.pointerEvents='none';
         if(o===w){b.style.background='#E8FBF3';b.style.borderColor='#22c55e';b.style.color='#22c55e';}
       });
-      if(chosen===w){ score++; toast('You know it! ⭐'); }
+      if(chosen===w){ score++; toast('You know it! ⭐'); if(typeof showBloomyReaction==='function')showBloomyReaction(true); }
       else {
         var cb=document.getElementById('sightOpt'+chosenIdx);
         if(cb){cb.style.background='#FFF0EE';cb.style.borderColor='#ef4444';cb.style.color='#ef4444';}
         toast('It says: '+w);
+        if(typeof showBloomyReaction==='function')showBloomyReaction(false);
       }
       sIdx++;
       setTimeout(renderSight, 900);
@@ -12476,7 +12899,7 @@ function openStorylineSearch(title) {
 
 function openPassageReader(grade) {
   if(window.showGameIntro&&!sessionStorage.getItem('intro_reading')){window._gameIntroCallback=function(){openPassageReader(grade);};showGameIntro('reading',window._gameIntroCallback);return;}
-  var CA='#1D4ED8', CB='#3B82F6';
+  var CA='#5F86B8', CB='#7FA8D4';
   var ov=document.createElement('div');
   ov.id='passageOv';
   ov.style.cssText='position:fixed;inset:0;z-index:9999;background:#EFF6FF;display:flex;flex-direction:column;font-family:Nunito,sans-serif;';
@@ -13515,8 +13938,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v450</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v450</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v453</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v453</div>
 
 </body>
 </html
