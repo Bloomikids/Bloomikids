@@ -3893,7 +3893,7 @@ async function selectChild(child) {
   showScreen('app');
   // v383: force academics (home) tab on every login — prevents stuck-on-art after logout/login
   // Do it immediately AND with delay to cover any race conditions
-  document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); p.style.paddingTop=''; });
   var homePanel = document.getElementById('panel-academics');
   if (homePanel) homePanel.classList.add('active');
   document.querySelectorAll('.tab-btn').forEach(function(b){
@@ -4056,10 +4056,10 @@ var CURATED_GAMES = {
       {icon:'🔢', label:'Number Tracing',       fn:"openNumberTracing()",    color:'#0369A1'},
       {icon:'🔢', label:'Count It!',            fn:"openMathGame('PreK')",   color:'#0369A1'},
       {icon:'🍎', label:'Feed Bloomy',          fn:"openFeedBloomy('PreK')", color:'#E8856A'},
-      {icon:'🃏', label:'Letter Match',         fn:"openPairMatch('PreK','letters')", color:'#D97706'},
+      {icon:'🃏', label:'Letter Match',         fn:"openPairMatch('PreK','letters')", color:'#8B7B6B'},
       {icon:'🎵', label:'Patterns',             fn:"openSequencer('PreK')",  color:'#7C3AED'},
       // Science & World
-      {icon:'🎨', label:'Colors Sort',          fn:"openColorsGame('PreK')", color:'#5B2D9E'},
+      {icon:'🎨', label:'Colors Sort',          fn:"openColorsGame('PreK')", color:'#6B5B8B'},
       {icon:'🐾', label:'Animal Sort',          fn:"openScienceGame('PreK')",color:'#059669'},
       // Stories & Play
       {icon:'🦕', label:'Dino Stories',         fn:"openDinoStories('PreK')",color:'#7C3AED'},
@@ -4068,13 +4068,13 @@ var CURATED_GAMES = {
     K: [
       // Language & Literacy
       {icon:'🌱', label:"Bloom's Reading Path", fn:"openReadingPath()",      color:'#5ECDA0'},
-      {icon:'✏️', label:'Word Builder',         fn:"openLangGame('K')",      color:'#5B2D9E'},
+      {icon:'✏️', label:'Word Builder',         fn:"openLangGame('K')",      color:'#6B5B8B'},
       {icon:'🔊', label:'Sound Play',           fn:"openPhonicsGame('K')",   color:'#065F46'},
       {icon:'🧠', label:'Memory Match',         fn:"openMemoryMatch('K')",   color:'#0369A1'},
       // Math
       {icon:'🔢', label:'Counting',             fn:"openMathGame('K')",      color:'#EC4899'},
       {icon:'🍎', label:'Feed Bloomy',          fn:"openFeedBloomy('K')",    color:'#E8856A'},
-      {icon:'🃏', label:'Word Match',           fn:"openPairMatch('K','words')", color:'#D97706'},
+      {icon:'🃏', label:'Word Match',           fn:"openPairMatch('K','words')", color:'#8B7B6B'},
       {icon:'🎵', label:'Patterns',             fn:"openSequencer('K')",     color:'#7C3AED'},
       {icon:'🎨', label:'Colors & Shapes',      fn:"openColorsGame('K')",    color:'#1D4ED8'},
       // Science
@@ -4086,16 +4086,16 @@ var CURATED_GAMES = {
     1: [
       // Language & Literacy
       {icon:'🌱', label:"Bloom's Reading Path", fn:"openReadingPath()",      color:'#5ECDA0'},
-      {icon:'✏️', label:'Word Builder',         fn:"openLangGame('1')",      color:'#5B2D9E'},
-      {icon:'🔊', label:'Sound Play',           fn:"openPhonicsGame('1')",   color:'#0EA5E9'},
-      {icon:'🧠', label:'Memory Match',         fn:"openMemoryMatch('1')",   color:'#D97706'},
+      {icon:'✏️', label:'Word Builder',         fn:"openLangGame('1')",      color:'#6B5B8B'},
+      {icon:'🔊', label:'Sound Play',           fn:"openPhonicsGame('1')",   color:'#5B7B9B'},
+      {icon:'🧠', label:'Memory Match',         fn:"openMemoryMatch('1')",   color:'#8B7B6B'},
       {icon:'🃏', label:'Math Match',           fn:"openPairMatch('1','add')", color:'#B45309'},
       // Math
       {icon:'➕', label:'Math Practice',        fn:"openMathGame('1')",      color:'#0369A1'},
       {icon:'🔗', label:'Number Bonds',         fn:"openNumberBonds('1')",   color:'#0369A1'},
       {icon:'🛒', label:'Shop Math',            fn:"openShopMath('1')",      color:'#059669'},
       // Science & World
-      {icon:'🔬', label:'Science Sort',         fn:"openScienceGame('1')",   color:'#0EA5E9'},
+      {icon:'🔬', label:'Science Sort',         fn:"openScienceGame('1')",   color:'#5B7B9B'},
       {icon:'🌍', label:'Social Studies',       fn:"openSSGame('1')",        color:'#065F46'},
       // Stories
       {icon:'🦕', label:'Dino Stories',         fn:"openDinoStories('1')",   color:'#1a472a'},
@@ -4105,30 +4105,30 @@ var CURATED_GAMES = {
       // Language & Literacy
       {icon:'✏️', label:'Word Builder',         fn:"openLangGame('2')",      color:'#7C3AED'},
       {icon:'📖', label:'Reading Corner',       fn:"openPassageReader('2')", color:'#4C1D95'},
-      {icon:'🧠', label:'Memory Match',         fn:"openMemoryMatch('2')",   color:'#8B5CF6'},
+      {icon:'🧠', label:'Memory Match',         fn:"openMemoryMatch('2')",   color:'#8B7B9B'},
       {icon:'🃏', label:'Math Match',           fn:"openPairMatch('2','addsub')", color:'#B45309'},
       // Math
       {icon:'➕', label:'Math Adventures',       fn:"openMathGame('2')",      color:'#1D4ED8'},
-      {icon:'🛒', label:'Shop Math',            fn:"openShopMath('2')",      color:'#D97706'},
+      {icon:'🛒', label:'Shop Math',            fn:"openShopMath('2')",      color:'#8B7B6B'},
       {icon:'🎨', label:'Shapes Sort',          fn:"openColorsGame('2')",    color:'#A855F7'},
       // Science & World
-      {icon:'🔬', label:'Science Sort',         fn:"openScienceGame('2')",   color:'#0EA5E9'},
-      {icon:'🌍', label:'Social Studies',       fn:"openSSGame('2')",        color:'#F59E0B'},
+      {icon:'🔬', label:'Science Sort',         fn:"openScienceGame('2')",   color:'#5B7B9B'},
+      {icon:'🌍', label:'Social Studies',       fn:"openSSGame('2')",        color:'#9B8B7B'},
       // Activities
       {icon:'📚', label:'Busy Book',            fn:"openBusyBook('2')",      color:'#0369A1'},
     ],
     3: [
       // Language & Literacy
-      {icon:'✏️', label:'Grammar Grab',         fn:"openGrammarGrab('3')",   color:'#5B2D9E'},
+      {icon:'✏️', label:'Grammar Grab',         fn:"openGrammarGrab('3')",   color:'#6B5B8B'},
       {icon:'📖', label:'Fact Finder',          fn:"openPassageReader('3')", color:'#7C3AED'},
       // Math
       {icon:'✖️', label:'Multiply Mania',       fn:"openMultiplyMania('3')", color:'#1D4ED8'},
       {icon:'🎱', label:'Math Bingo',           fn:"openMathBingo('3')",     color:'#6B21A8'},
       {icon:'🃏', label:'Math Match',           fn:"openPairMatch('3','mult')", color:'#B45309'},
-      {icon:'🛒', label:'Shop Math',            fn:"openShopMath('3')",      color:'#D97706'},
+      {icon:'🛒', label:'Shop Math',            fn:"openShopMath('3')",      color:'#8B7B6B'},
       // Science & World
-      {icon:'💧', label:'Water Cycle',          fn:"openScienceGame('3')",   color:'#0EA5E9'},
-      {icon:'🗺️', label:'Map Mission',          fn:"openSSGame('3')",        color:'#F59E0B'},
+      {icon:'💧', label:'Water Cycle',          fn:"openScienceGame('3')",   color:'#5B7B9B'},
+      {icon:'🗺️', label:'Map Mission',          fn:"openSSGame('3')",        color:'#9B8B7B'},
       // Activities
       {icon:'📚', label:'Busy Book',            fn:"openBusyBook('3')",      color:'#0369A1'},
     ],
@@ -4136,13 +4136,13 @@ var CURATED_GAMES = {
       // Language & Literacy
       {icon:'🌸', label:'Grammar Garden',       fn:"openGrammarGrab('4')",   color:'#EC4899'},
       // Math
-      {icon:'🍕', label:'Fraction Feast',       fn:"openMathGame('4','frac')", color:'#0EA5E9'},
-      {icon:'📐', label:'Angles Sort',          fn:"openColorsGame('4')",    color:'#8B5CF6'},
+      {icon:'🍕', label:'Fraction Feast',       fn:"openMathGame('4','frac')", color:'#5B7B9B'},
+      {icon:'📐', label:'Angles Sort',          fn:"openColorsGame('4')",    color:'#8B7B9B'},
       {icon:'🎱', label:'Math Bingo',           fn:"openMathBingo('4')",     color:'#7C3AED'},
       {icon:'🃏', label:'Math Match',           fn:"openPairMatch('4','multdiv')", color:'#B45309'},
       // Science & World
-      {icon:'🔬', label:'Science Sort Lab',     fn:"openScienceGame('4')",   color:'#0EA5E9'},
-      {icon:'🌍', label:'Social Studies',       fn:"openSSGame('4')",        color:'#D97706'},
+      {icon:'🔬', label:'Science Sort Lab',     fn:"openScienceGame('4')",   color:'#5B7B9B'},
+      {icon:'🌍', label:'Social Studies',       fn:"openSSGame('4')",        color:'#8B7B6B'},
       // Reading
       {icon:'📖', label:'Reading Corner',       fn:"openPassageReader('4')", color:'#4C1D95'},
     ],
@@ -4156,10 +4156,10 @@ var CURATED_GAMES = {
       {icon:'📍', label:'Coordinate Chase',     fn:"openCoordinateChase()",  color:'#22c55e'},
       {icon:'🧮', label:'Problem Solver',       fn:"openProblemSolver()",    color:'#6366F1'},
       // Science & World
-      {icon:'⚗️', label:'Mixtures Sort',        fn:"openScienceGame('5')",   color:'#8B5CF6'},
-      {icon:'🗺️', label:'Treasure Hunt',        fn:"openTreasureHunt()",     color:'#D97706'},
+      {icon:'⚗️', label:'Mixtures Sort',        fn:"openScienceGame('5')",   color:'#8B7B9B'},
+      {icon:'🗺️', label:'Treasure Hunt',        fn:"openTreasureHunt()",     color:'#8B7B6B'},
       // Fun & Challenge
-      {icon:'🏆', label:'Jeopardy',             fn:"openJeopardy()",         color:'#F59E0B'},
+      {icon:'🏆', label:'Jeopardy',             fn:"openJeopardy()",         color:'#9B8B7B'},
     ],
   };
 
@@ -5292,12 +5292,8 @@ function setupDrawCanvas() {
   if(!canvas || !img) return;
 
   function init() {
-    var displayW = container.offsetWidth || 800;
-    var displayH = container.offsetHeight || 600;
-    canvas.width = img.naturalWidth || displayW || 800;
-    canvas.height = img.naturalHeight || displayH || 600;
-    container.style.width = displayW + 'px';
-    container.style.height = displayH + 'px';
+    canvas.width = img.naturalWidth || img.offsetWidth || 800;
+    canvas.height = img.naturalHeight || img.offsetHeight || 600;
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -5969,6 +5965,13 @@ function switchTab(tab) {
   var tabIcons = {learn:'🧠', yoga:'🧘', stories:'📚', art:'🎨'};
   var tabLabels = {learn:'Play & Learn', yoga:'Mindful Moments', stories:'Stories', art:'Make It!'};
   if (tabIcons[tab]) saveLastActivity(tab, tabLabels[tab], tabIcons[tab], tab);
+  
+  // v449: hide hero section on art/yoga/stories tabs
+  var hero = document.getElementById('v3Hero');
+  if (hero) {
+    hero.style.display = (tab === 'academics') ? '' : 'none';
+  }
+  
   // Pause music when leaving yoga tab
   if (tab !== 'yoga') {
     if (typeof stopBreathMusic === 'function') stopBreathMusic();
@@ -6212,7 +6215,7 @@ function makeVisualAid(question, grade) {
     for(var s=0;s<denom;s++){
       var a1=(s*angle-90)*Math.PI/180, a2=((s+1)*angle-90)*Math.PI/180;
       var x1=50+44*Math.cos(a1), y1=50+44*Math.sin(a1), x2=50+44*Math.cos(a2), y2=50+44*Math.sin(a2);
-      var fill = s < numer ? '#5B2D9E' : '#E9D5FF';
+      var fill = s < numer ? '#6B5B8B' : '#E9D5FF';
       slices+='<path d="M50,50 L'+x1.toFixed(1)+','+y1.toFixed(1)+' A44,44,0,0,1,'+x2.toFixed(1)+','+y2.toFixed(1)+' Z" fill="'+fill+'" stroke="white" stroke-width="2.5"/>';
     }
     return '<div style="background:#FAF5FF;border-radius:14px;padding:12px;margin:10px 0;text-align:center;border:1.5px solid rgba(139,92,246,.2);">'
@@ -6909,7 +6912,7 @@ function startSmartSession(title, icon, questions, onComplete) {
 // ════════════════════════════════════════════════════════════════════
 function openShopMath(grade) {
   if(window.showGameIntro&&!sessionStorage.getItem('intro_shop')){window._gameIntroCallback=function(){openShopMath(grade);};showGameIntro('shop',window._gameIntroCallback);return;}
-  var CA='#F59E0B', CB='#FCD34D';
+  var CA='#9B8B7B', CB='#FCD34D';
   var ov=document.createElement('div');
   ov.id='shopOv';
   ov.style.cssText='position:fixed;inset:0;z-index:9999;background:#FFFBEB;display:flex;flex-direction:column;font-family:Nunito,sans-serif;';
@@ -7081,7 +7084,7 @@ function openShopMath(grade) {
 // ════════════════════════════════════════════════════════════════════
 function openBusyBook(grade) {
   if(window.showGameIntro&&!sessionStorage.getItem('intro_busybook')){window._gameIntroCallback=function(){openBusyBook(grade);};showGameIntro('busybook',window._gameIntroCallback);return;}
-  var CA='#0EA5E9', CB='#38BDF8';
+  var CA='#5B7B9B', CB='#7B9BBB';
   var ov=document.createElement('div');
   ov.id='busyBookOv';
   ov.style.cssText='position:fixed;inset:0;z-index:9999;background:#F0F9FF;display:flex;flex-direction:column;font-family:Nunito,sans-serif;';
@@ -7109,6 +7112,8 @@ function openBusyBook(grade) {
       {emoji:'🌙',title:'The Moon',fact:'The Moon orbits Earth. It takes about 29 days to go all the way around. The Moon has no air, water, or weather!',funFact:'Footprints left by astronauts on the Moon will last millions of years.',q:'How long does the Moon take to orbit Earth?',opts:['About 29 days','About 7 days','About 365 days','About 1 day'],a:0},
       {emoji:'🦴',title:'Bones',fact:'Your body has 206 bones! Bones protect your organs and help you move. Milk and calcium keep bones strong.',funFact:'Babies are born with about 300 bones — they fuse together as you grow.',q:'How many bones does an adult human body have?',opts:['206','100','300','52'],a:0},
       {emoji:'🦴',title:'X-Ray Skeleton',fact:'X-rays let doctors see your bones without opening your skin! A skeleton is the frame that holds your whole body up.',funFact:'The smallest bone in your body is the stirrup bone in your ear!',q:'What is the smallest bone in your body?',opts:['Ear bone','Finger bone','Toe bone','Rib bone'],a:0},
+      {emoji:'💀',title:'Skull & Brain',fact:'Your skull is made of 22 bones that fit together like a puzzle. It protects your brain, which is very precious!',funFact:'Your skull does not have muscles — it just protects!',q:'How many bones make up your skull?',opts:['22','5','15','30'],a:0},
+      {emoji:'🏋️',title:'Strong Bones',fact:'Calcium and milk make bones strong. Exercise also keeps bones healthy. Running and playing build strong bones!',funFact:'Astronauts in space lose bone strength because there is no gravity!',q:'What helps make bones strong?',opts:['Milk and calcium','Sugar and candy','Water only','Rest only'],a:0},
     ],
     2:[
       {emoji:'💧',title:'Water Cycle',fact:'Water evaporates from oceans, forms clouds, then falls as rain or snow. This cycle repeats forever! It\'s called the water cycle.',funFact:'The same water that dinosaurs drank still exists today — it\'s recycled!',q:'What happens first in the water cycle?',opts:['Evaporation','Condensation','Precipitation','Runoff'],a:0},
@@ -7161,7 +7166,7 @@ function openBusyBook(grade) {
     ov.innerHTML='';
     var h=document.createElement('div');
     h.style.cssText='background:linear-gradient(135deg,'+CA+','+CB+');padding:12px 20px;display:flex;align-items:center;gap:10px;flex-shrink:0;';
-    h.innerHTML='<button onclick="showLibrary()" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:.9rem;flex-shrink:0;">←</button>'
+    h.innerHTML='<!-- v447: removed back button --><button style="display:none;" onclick="showLibrary()" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:.9rem;flex-shrink:0;">←</button>'
       +'<div style="font-family:Baloo 2,cursive;font-weight:800;color:white;font-size:1.05rem;flex:1;text-align:center;">'+card.emoji+' '+card.title+'</div>'
       +'<button data-closeov="busyBookOv" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:30px;height:30px;cursor:pointer;font-weight:800;flex-shrink:0;">✕</button>';
     ov.appendChild(h);
@@ -7309,7 +7314,7 @@ function openBusyBoard() {
     {emoji:'😴',label:'Sleepy',color:'#818CF8'},
     {emoji:'😤',label:'Frustrated',color:'#F87171'},
     {emoji:'😰',label:'Worried',color:'#6EE7B7'},
-    {emoji:'🥰',label:'Loved',color:'#F472B6'},
+    {emoji:'🥰',label:'Loved',color:'#B89BB7'},
     {emoji:'😐',label:'Calm',color:'#93C5FD'},
   ];
   var moodGrid=document.createElement('div');
@@ -7844,6 +7849,9 @@ function gameScoreBar(score, total, colorA, colorB) {
     +'</div>';
 }
 function gameWinScreen(score, total, colorA, colorB, ovId) {
+  // v447: soften colors to match palette
+  colorA = colorA || '#7B6B8B';
+  colorB = colorB || '#9B8B9B';
   if (typeof sfx === 'function') sfx('win');
   var pct = total > 0 ? Math.round(score/total*100) : 0;
   var trophy = pct >= 80 ? '🏆' : pct >= 50 ? '🌟' : '💪';
@@ -7886,6 +7894,9 @@ function gameScoreBar(score, total, colorA, colorB) {
     +'</div>';
 }
 function gameWinScreen(score, total, colorA, colorB, ovId) {
+  // v447: soften colors to match palette
+  colorA = colorA || '#7B6B8B';
+  colorB = colorB || '#9B8B9B';
   if (typeof sfx === 'function') sfx('win');
   var pct = total > 0 ? Math.round(score/total*100) : 0;
   var trophy = pct >= 80 ? '🏆' : pct >= 50 ? '🌟' : '💪';
@@ -7920,7 +7931,7 @@ function gameWinScreen(score, total, colorA, colorB, ovId) {
 // ══════════════════════════════════════════════════════════════════════
 function openGrammarGrab(grade){
   if(window.showGameIntro&&!sessionStorage.getItem('intro_grammar')){window._gameIntroCallback=function(){openGrammarGrab(grade);};showGameIntro('grammar',window._gameIntroCallback);return;}
-  var CA='#5B2D9E', CB='#8B5CF6';
+  var CA='#6B5B8B', CB='#8B7B9B';
   var ov = gameOverlay('grammarOv','#F7F3FF');
   document.body.appendChild(ov);
 
@@ -8015,7 +8026,7 @@ window.openGrammarGrab = openGrammarGrab;
 // ══════════════════════════════════════════════════════════════════════
 function openArgumentBuilder(){
   if(window.showGameIntro&&!sessionStorage.getItem('intro_argument')){window._gameIntroCallback=function(){openArgumentBuilder();};showGameIntro('argument',window._gameIntroCallback);return;}
-  var CA='#DB2777', CB='#F472B6';
+  var CA='#9B7BA3', CB='#B89BB7';
   var ov = gameOverlay('argOv','#FFF1F7');
   document.body.appendChild(ov);
 
@@ -8109,7 +8120,7 @@ window.openArgumentBuilder = openArgumentBuilder;
 // ══════════════════════════════════════════════════════════════════════
 function openPairMatch(grade, mode){
   if(window.showGameIntro&&!sessionStorage.getItem('intro_pairmatch')){window._gameIntroCallback=function(){openPairMatch(grade, mode);};showGameIntro('pairmatch',window._gameIntroCallback);return;}
-  var CA='#D97706', CB='#FBBF24';
+  var CA='#8B7B6B', CB='#FBBF24';
   var ov = gameOverlay('pairOv','#FFF9EC');
   document.body.appendChild(ov);
 
@@ -9402,7 +9413,7 @@ function openLangGame(grade) {
 // ══════════════════════════════════════════════════════════════════════
 function openScienceGame(grade) {
   if(window.showGameIntro&&!sessionStorage.getItem('intro_science')){window._gameIntroCallback=function(){openScienceGame(grade);};showGameIntro('science',window._gameIntroCallback);return;}
-  var CA='#0EA5E9', CB='#38BDF8';
+  var CA='#5B7B9B', CB='#7B9BBB';
   var ov = gameOverlay('sciGameOv','#F0FAFF');
   document.body.appendChild(ov);
 
@@ -9574,7 +9585,7 @@ function openScienceGame(grade) {
       _sciSelected.dataset.placed=colIdx;
       _sciSelected.style.transform='scale(1)';
       _sciSelected.style.background='white';
-      _sciSelected.style.color='#0EA5E9';
+      _sciSelected.style.color='#5B7B9B';
       _sciSelected.style.border='2px solid #0EA5E9';
       _sciSelected.style.boxShadow='0 2px 8px rgba(14,165,233,.2)';
       catEl.appendChild(_sciSelected);
@@ -9634,7 +9645,7 @@ function openScienceGame(grade) {
 function openSSGame(grade){ openSocialStudiesGame(grade); }
 function openSocialStudiesGame(grade) {
   if(window.showGameIntro&&!sessionStorage.getItem('intro_worldquest')){window._gameIntroCallback=function(){openSocialStudiesGame(grade);};showGameIntro('worldquest',window._gameIntroCallback);return;}
-  var CA='#F59E0B', CB='#FCD34D';
+  var CA='#9B8B7B', CB='#FCD34D';
   var ov = gameOverlay('ssGameOv','#FFFBF0');
   document.body.appendChild(ov);
 
@@ -9762,7 +9773,7 @@ function openSocialStudiesGame(grade) {
 // ══════════════════════════════════════════════════════════════════════
 function openColorsGame(grade) {
   if(window.showGameIntro&&!sessionStorage.getItem('intro_sort')){window._gameIntroCallback=function(){openColorsGame(grade);};showGameIntro('sort',window._gameIntroCallback);return;}
-  var CA='#EC4899', CB='#F472B6';
+  var CA='#EC4899', CB='#B89BB7';
   var ov = gameOverlay('colorsGameOv','#FFF0F8');
   document.body.appendChild(ov);
 
@@ -10268,7 +10279,7 @@ window.openEvidenceExplorer=openEvidenceExplorer;
 
 function openTreasureHunt(){
   if(window.showGameIntro&&!sessionStorage.getItem('intro_treasure')){window._gameIntroCallback=function(){openTreasureHunt();};showGameIntro('treasure',window._gameIntroCallback);return;}
-  var CA='#D97706',CB='#F59E0B';
+  var CA='#8B7B6B',CB='#9B8B7B';
   var clues=[
     {clue:'🌍 I am the largest continent on Earth. What continent am I?',a:'Asia',opts:['Asia','Africa','Europe','Australia']},
     {clue:'🗺️ I run east and west on a map. Ships use me to find their position. I am lines of...?',a:'Latitude',opts:['Latitude','Longitude','Altitude','Equator']},
@@ -10907,7 +10918,7 @@ window._readingPathAnswer = _readingPathAnswer;
 // ══════════════════════════════════════════════════════
 function openPhonicsGame(grade) {
   if(window.showGameIntro&&!sessionStorage.getItem('intro_phonics')){window._gameIntroCallback=function(){openPhonicsGame(grade);};showGameIntro('phonics',window._gameIntroCallback);return;}
-  var CA='#0EA5E9', CB='#38BDF8';
+  var CA='#5B7B9B', CB='#7B9BBB';
   var ov = document.createElement('div');
   ov.id = 'phonicsOv';
   ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#F0FAFF;display:flex;flex-direction:column;';
@@ -12125,10 +12136,10 @@ function openActualDashboard() {
   var mins   = (typeof sessionData!=='undefined') ? (sessionData.minutes||0) : 0;
   var TILES = [
     {icon:'SS', label:'Progress',  color:'#6366F1', shadow:'#4338CA', fn:'showParentProgress()'},
-    {icon:'ST', label:'Stars',     color:'#F59E0B', shadow:'#D97706', fn:'showStarsHistory()'},
+    {icon:'ST', label:'Stars',     color:'#9B8B7B', shadow:'#8B7B6B', fn:'showStarsHistory()'},
     {icon:'CA', label:'Schedule',  color:'#10B981', shadow:'#059669', fn:'showSchedule()'},
-    {icon:'BA', label:'Children',  color:'#EC4899', shadow:'#DB2777', fn:'manageChildren()'},
-    {icon:'BE', label:'Reminders', color:'#8B5CF6', shadow:'#7C3AED', fn:'showReminders()'},
+    {icon:'BA', label:'Children',  color:'#EC4899', shadow:'#9B7BA3', fn:'manageChildren()'},
+    {icon:'BE', label:'Reminders', color:'#8B7B9B', shadow:'#7C3AED', fn:'showReminders()'},
     {icon:'GE', label:'Settings',  color:'#64748B', shadow:'#475569', fn:'showParentSettings()'},
   ];
   var ICONS = {'SS':'SS','ST':'ST','CA':'CA','BA':'BA','BE':'BE','GE':'GE'};
@@ -12822,7 +12833,7 @@ function openPassageReader(grade) {
       for(var i=0;i<totalPages;i++) {
         stars += '<div style="width:28px;height:6px;border-radius:3px;background:'+(i<=pageIdx?'rgba(255,255,255,.9)':'rgba(255,255,255,.3')+');transition:background .3s;"></div>';
       }
-      hdr.innerHTML = '<button onclick="showLibrary()" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:.9rem;flex-shrink:0;">✕</button>'
+      hdr.innerHTML = '<!-- v447: removed back button --><button style="display:none;" onclick="showLibrary()" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:.9rem;flex-shrink:0;">✕</button>'
         + '<div style="display:flex;gap:3px;flex:1;justify-content:center;">'+stars+'</div>'
         + '<div style="font-size:.75rem;color:rgba(255,255,255,.8);flex-shrink:0;">'+(pageIdx+1)+'/'+totalPages+'</div>';
       ov.appendChild(hdr);
@@ -13241,7 +13252,7 @@ function openDinoStories(grade) {
       // Stars progress like Duolingo
       var stars = '';
       for(var i=0;i<totalPages;i++) stars += '<span style="font-size:1.1rem;opacity:'+(i<pageIdx?1:.35)+';transition:opacity .3s;">⭐</span>';
-      hdr.innerHTML = '<button onclick="showLibrary()" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:.9rem;flex-shrink:0;">✕</button>'
+      hdr.innerHTML = '<!-- v447: removed back button --><button style="display:none;" onclick="showLibrary()" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:.9rem;flex-shrink:0;">✕</button>'
         +'<div style="display:flex;gap:4px;flex:1;justify-content:center;">'+stars+'</div>'
         +'<div style="font-size:.8rem;color:rgba(255,255,255,.8);flex-shrink:0;">'+(pageIdx+1)+'/'+totalPages+'</div>';
       ov.appendChild(hdr);
@@ -13395,31 +13406,31 @@ function openDinoStories(grade) {
 // ══ CARD ICON SYSTEM — colored tiles with emoji (reliable cross-browser) ══
 var CARD_ICONS = {
   // Subjects - meaning colors
-  'Language Arts':     {bg:'#EDE9FE', color:'#5B2D9E', emoji:'📖'},
+  'Language Arts':     {bg:'#EDE9FE', color:'#6B5B8B', emoji:'📖'},
   'Math':              {bg:'#DBEAFE', color:'#1D4ED8', emoji:'🔢'},
   'Science':           {bg:'#D1FAE5', color:'#065F46', emoji:'🔬'},
   'Social Studies':    {bg:'#FEF3C7', color:'#92400E', emoji:'🌍'},
   'Art':               {bg:'#FFE4F0', color:'#9D174D', emoji:'🎨'},
   'Our World':         {bg:'#DBEAFE', color:'#1E40AF', emoji:'🌍'},
   'Create':            {bg:'#FFE4F0', color:'#9D174D', emoji:'✏️'},
-  'Reading':           {bg:'#EDE9FE', color:'#5B2D9E', emoji:'📚'},
+  'Reading':           {bg:'#EDE9FE', color:'#6B5B8B', emoji:'📚'},
   // Reading/Language - Purple
-  "Bloom's Reading Path": {bg:'#EDE9FE', color:'#5B2D9E', emoji:'🌱'},
-  'Letter Tracing':    {bg:'#EDE9FE', color:'#5B2D9E', emoji:'✏️'},
-  'Word Builder':      {bg:'#EDE9FE', color:'#5B2D9E', emoji:'🔤'},
-  'Sound Play':        {bg:'#EDE9FE', color:'#5B2D9E', emoji:'🔊'},
-  'ABC Time':          {bg:'#EDE9FE', color:'#5B2D9E', emoji:'🔡'},
-  'Reading Corner':    {bg:'#EDE9FE', color:'#5B2D9E', emoji:'📖'},
-  'Grammar Grab':      {bg:'#EDE9FE', color:'#5B2D9E', emoji:'📝'},
+  "Bloom's Reading Path": {bg:'#EDE9FE', color:'#6B5B8B', emoji:'🌱'},
+  'Letter Tracing':    {bg:'#EDE9FE', color:'#6B5B8B', emoji:'✏️'},
+  'Word Builder':      {bg:'#EDE9FE', color:'#6B5B8B', emoji:'🔤'},
+  'Sound Play':        {bg:'#EDE9FE', color:'#6B5B8B', emoji:'🔊'},
+  'ABC Time':          {bg:'#EDE9FE', color:'#6B5B8B', emoji:'🔡'},
+  'Reading Corner':    {bg:'#EDE9FE', color:'#6B5B8B', emoji:'📖'},
+  'Grammar Grab':      {bg:'#EDE9FE', color:'#6B5B8B', emoji:'📝'},
   'Grammar Garden':    {bg:'#D1FAE5', color:'#065F46', emoji:'🌸'},
-  'Vocabulary Vault':  {bg:'#EDE9FE', color:'#5B2D9E', emoji:'💬'},
+  'Vocabulary Vault':  {bg:'#EDE9FE', color:'#6B5B8B', emoji:'💬'},
   'Story Relay':       {bg:'#FEF3C7', color:'#92400E', emoji:'✍️'},
-  'Fact Finder':       {bg:'#EDE9FE', color:'#5B2D9E', emoji:'🔎'},
+  'Fact Finder':       {bg:'#EDE9FE', color:'#6B5B8B', emoji:'🔎'},
   'Fact or Opinion':   {bg:'#FEF3C7', color:'#92400E', emoji:'⚖️'},
-  'Evidence Explorer': {bg:'#EDE9FE', color:'#5B2D9E', emoji:'🔎'},
-  'Argument Builder':  {bg:'#EDE9FE', color:'#5B2D9E', emoji:'⚖️'},
+  'Evidence Explorer': {bg:'#EDE9FE', color:'#6B5B8B', emoji:'🔎'},
+  'Argument Builder':  {bg:'#EDE9FE', color:'#6B5B8B', emoji:'⚖️'},
   'Dino Stories':      {bg:'#D1FAE5', color:'#065F46', emoji:'🦕'},
-  'Busy Book':         {bg:'#EDE9FE', color:'#5B2D9E', emoji:'📚'},
+  'Busy Book':         {bg:'#EDE9FE', color:'#6B5B8B', emoji:'📚'},
   // Math - Blue
   'Number Tracing':    {bg:'#DBEAFE', color:'#1D4ED8', emoji:'🔢'},
   'Count It!':         {bg:'#DBEAFE', color:'#1D4ED8', emoji:'🔢'},
@@ -13473,8 +13484,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v447</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v447</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v449</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v449</div>
 
 </body>
 </html
