@@ -3871,6 +3871,19 @@ function showStarBurst(targetEl) {
 async function selectChild(child) {
   activeChild  = child;
   activeGrade  = child.grade || 'K';
+  // v446: restore lifetime star balance — was resetting to 0 every load,
+  // which silently broke the entire wardrobe unlock economy
+  sessionData.stars = 0;
+  if (typeof sb !== 'undefined' && child && child.id) {
+    sb.from('stars').select('total_stars').eq('child_id', child.id).maybeSingle()
+      .then(function(res){
+        if (res && res.data && typeof res.data.total_stars === 'number') {
+          sessionData.stars = res.data.total_stars;
+          var se = document.getElementById('statStars');
+          if (se) se.textContent = sessionData.stars;
+        }
+      }).catch(function(){});
+  }
   gradeContent = GRADE_DATA[activeGrade] || GRADE_DATA['K'];
   artTabBuilt  = false;  // v383: always rebuild art tab for the new child/grade
 
@@ -4042,6 +4055,8 @@ var CURATED_GAMES = {
       // Math
       {icon:'🔢', label:'Number Tracing',       fn:"openNumberTracing()",    color:'#0369A1'},
       {icon:'🔢', label:'Count It!',            fn:"openMathGame('PreK')",   color:'#0369A1'},
+      {icon:'🍎', label:'Feed Bloomy',          fn:"openFeedBloomy('PreK')", color:'#E8856A'},
+      {icon:'🃏', label:'Letter Match',         fn:"openPairMatch('PreK','letters')", color:'#D97706'},
       {icon:'🎵', label:'Patterns',             fn:"openSequencer('PreK')",  color:'#7C3AED'},
       // Science & World
       {icon:'🎨', label:'Colors Sort',          fn:"openColorsGame('PreK')", color:'#5B2D9E'},
@@ -4058,6 +4073,8 @@ var CURATED_GAMES = {
       {icon:'🧠', label:'Memory Match',         fn:"openMemoryMatch('K')",   color:'#0369A1'},
       // Math
       {icon:'🔢', label:'Counting',             fn:"openMathGame('K')",      color:'#EC4899'},
+      {icon:'🍎', label:'Feed Bloomy',          fn:"openFeedBloomy('K')",    color:'#E8856A'},
+      {icon:'🃏', label:'Word Match',           fn:"openPairMatch('K','words')", color:'#D97706'},
       {icon:'🎵', label:'Patterns',             fn:"openSequencer('K')",     color:'#7C3AED'},
       {icon:'🎨', label:'Colors & Shapes',      fn:"openColorsGame('K')",    color:'#1D4ED8'},
       // Science
@@ -4072,6 +4089,7 @@ var CURATED_GAMES = {
       {icon:'✏️', label:'Word Builder',         fn:"openLangGame('1')",      color:'#5B2D9E'},
       {icon:'🔊', label:'Sound Play',           fn:"openPhonicsGame('1')",   color:'#0EA5E9'},
       {icon:'🧠', label:'Memory Match',         fn:"openMemoryMatch('1')",   color:'#D97706'},
+      {icon:'🃏', label:'Math Match',           fn:"openPairMatch('1','add')", color:'#B45309'},
       // Math
       {icon:'➕', label:'Math Practice',        fn:"openMathGame('1')",      color:'#0369A1'},
       {icon:'🔗', label:'Number Bonds',         fn:"openNumberBonds('1')",   color:'#0369A1'},
@@ -4088,6 +4106,7 @@ var CURATED_GAMES = {
       {icon:'✏️', label:'Word Builder',         fn:"openLangGame('2')",      color:'#7C3AED'},
       {icon:'📖', label:'Reading Corner',       fn:"openPassageReader('2')", color:'#4C1D95'},
       {icon:'🧠', label:'Memory Match',         fn:"openMemoryMatch('2')",   color:'#8B5CF6'},
+      {icon:'🃏', label:'Math Match',           fn:"openPairMatch('2','addsub')", color:'#B45309'},
       // Math
       {icon:'➕', label:'Math Adventures',       fn:"openMathGame('2')",      color:'#1D4ED8'},
       {icon:'🛒', label:'Shop Math',            fn:"openShopMath('2')",      color:'#D97706'},
@@ -4105,6 +4124,7 @@ var CURATED_GAMES = {
       // Math
       {icon:'✖️', label:'Multiply Mania',       fn:"openMultiplyMania('3')", color:'#1D4ED8'},
       {icon:'🎱', label:'Math Bingo',           fn:"openMathBingo('3')",     color:'#6B21A8'},
+      {icon:'🃏', label:'Math Match',           fn:"openPairMatch('3','mult')", color:'#B45309'},
       {icon:'🛒', label:'Shop Math',            fn:"openShopMath('3')",      color:'#D97706'},
       // Science & World
       {icon:'💧', label:'Water Cycle',          fn:"openScienceGame('3')",   color:'#0EA5E9'},
@@ -4119,6 +4139,7 @@ var CURATED_GAMES = {
       {icon:'🍕', label:'Fraction Feast',       fn:"openMathGame('4','frac')", color:'#0EA5E9'},
       {icon:'📐', label:'Angles Sort',          fn:"openColorsGame('4')",    color:'#8B5CF6'},
       {icon:'🎱', label:'Math Bingo',           fn:"openMathBingo('4')",     color:'#7C3AED'},
+      {icon:'🃏', label:'Math Match',           fn:"openPairMatch('4','multdiv')", color:'#B45309'},
       // Science & World
       {icon:'🔬', label:'Science Sort Lab',     fn:"openScienceGame('4')",   color:'#0EA5E9'},
       {icon:'🌍', label:'Social Studies',       fn:"openSSGame('4')",        color:'#D97706'},
@@ -4129,6 +4150,7 @@ var CURATED_GAMES = {
       // Language & Literacy
       {icon:'🔎', label:'Evidence Explorer',    fn:"openEvidenceExplorer()", color:'#1D4ED8'},
       {icon:'⚖️', label:'Argument Builder',     fn:"openArgumentBuilder()",  color:'#EC4899'},
+      {icon:'🃏', label:'Equivalents Match',    fn:"openPairMatch('5','equiv')", color:'#B45309'},
       {icon:'📖', label:'Reading Corner',       fn:"openPassageReader('5')", color:'#4338CA'},
       // Math & Logic
       {icon:'📍', label:'Coordinate Chase',     fn:"openCoordinateChase()",  color:'#22c55e'},
@@ -5995,6 +6017,7 @@ function switchTab(tab) {
 
 var _bMsgs={correct:['Amazing!','You got it!','Yes!','Superstar!','Perfect!'],wrong:['Almost!','Good try!','Keep going!','You can do it!']};
 function showBloomyReaction(ok){
+  if (typeof sfx === 'function') sfx(ok ? 'correct' : 'wrong');
   var el=document.getElementById('bloomyReaction');
   var tx=document.getElementById('bloomyReactionText');
   if(!el||!tx)return;
@@ -6006,6 +6029,36 @@ function showBloomyReaction(ok){
   el._t=setTimeout(function(){el.classList.remove('show');},1800);
 }
 window.showBloomyReaction=showBloomyReaction;
+
+// ══ BLOOMI SFX (v446) — tiny WebAudio synth, no files needed ══
+var _sfxCtx = null;
+function _sfxGetCtx(){
+  try {
+    if(!_sfxCtx){ _sfxCtx = new (window.AudioContext||window.webkitAudioContext)(); }
+    if(_sfxCtx.state==='suspended'){ _sfxCtx.resume(); }
+    return _sfxCtx;
+  } catch(e){ return null; }
+}
+function _sfxTone(ctx, freq, start, dur, type, vol){
+  var o=ctx.createOscillator(), g=ctx.createGain();
+  o.type=type||'sine'; o.frequency.value=freq;
+  g.gain.setValueAtTime(0.0001, ctx.currentTime+start);
+  g.gain.exponentialRampToValueAtTime(vol||0.18, ctx.currentTime+start+0.015);
+  g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime+start+dur);
+  o.connect(g); g.connect(ctx.destination);
+  o.start(ctx.currentTime+start); o.stop(ctx.currentTime+start+dur+0.05);
+}
+function sfx(kind){
+  var ctx=_sfxGetCtx(); if(!ctx) return;
+  try {
+    if(kind==='correct'){ _sfxTone(ctx,523,0,.12,'sine',.15); _sfxTone(ctx,784,.09,.18,'sine',.15); }
+    else if(kind==='wrong'){ _sfxTone(ctx,220,0,.2,'triangle',.10); }
+    else if(kind==='pop'){ _sfxTone(ctx,880,0,.07,'sine',.12); }
+    else if(kind==='tap'){ _sfxTone(ctx,660,0,.05,'sine',.07); }
+    else if(kind==='win'){ _sfxTone(ctx,523,0,.15,'sine',.16); _sfxTone(ctx,659,.12,.15,'sine',.16); _sfxTone(ctx,784,.24,.15,'sine',.16); _sfxTone(ctx,1047,.36,.3,'sine',.18); }
+  } catch(e){}
+}
+window.sfx = sfx;
 
 // ══ BLOOMI DRAG ENGINE (Phase B) — reusable touch+mouse drag for any game ══
 // Usage: bloomiDraggable(el, function onDrop(el, zoneEl){...})
@@ -6069,6 +6122,7 @@ function bloomiDraggable(el, onDrop){
       el.style.zIndex=''; el.style.pointerEvents=''; el.style.transition='all .2s';
       el.style.boxShadow='';
       if(z){
+        if (typeof sfx === 'function') sfx('pop');
         ph.remove();
         el.style.transform='scale(1.15)';
         setTimeout(function(){ el.style.transform='scale(1)'; }, 180);
@@ -6219,6 +6273,8 @@ var _GAME_INTROS = {
   'multiplym':   {emoji:'&#x2716;&#xFE0F;', title:'Multiply Mania', desc:'First we learn a times table together with pictures. Then you practice it. Then comes the lightning challenge round!'},
   'grammar':     {emoji:'&#x270F;&#xFE0F;', title:'Grammar Grab',   desc:'Nouns are people, places, and things. Verbs are actions. Adjectives describe. Drag each word to its family!'},
   'argument':    {emoji:'&#x2696;&#xFE0F;', title:'Argument Builder', desc:'Great debaters use strong reasons with facts, and they know what the other side will say. Ready to build an argument?'},
+  'pairmatch':   {emoji:'&#x1F0CF;', title:'Match Pairs',      desc:'Flip two cards to find pairs that go together. Remember where each card hides!'},
+  'feedbloomy':  {emoji:'&#x1F34E;', title:'Feed Bloomy',      desc:'Bloomy is hungry! Drag exactly the right number of snacks — count each one as Bloomy munches!'},
 };
 
 function showGameIntro(type, onStart) {
@@ -6321,6 +6377,8 @@ function logGameComplete(starsEarned, tasksCount) {
         minutes_academic: 2,
         stars_earned: starsEarned
       }).catch(function(e){ console.warn('logGameComplete Supabase error:', e); });
+      // v446: also grow the lifetime total the wardrobe reads from
+      sb.rpc('add_stars', {p_child_id: activeChild.id, p_amount: starsEarned}).catch(function(){});
     }
   } catch(e) { console.warn('logGameComplete error:', e); }
 }
@@ -7137,7 +7195,7 @@ function openBusyBook(grade) {
           if(bi===card.a){b.style.background='#E8FBF3';b.style.borderColor='#22c55e';b.style.color='#166534';b.classList.add('correct-bounce');}
         });
         if(oi!==card.a){btn.style.background='#FFF0EE';btn.style.borderColor='#ef4444';btn.style.color='#991b1b';}
-        if(oi===card.a){toast('🌟 Correct! +5 stars');if(typeof sessionData!=='undefined'){sessionData.stars=(sessionData.stars||0)+5;var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;}}
+        if(oi===card.a){if(typeof updateStars==='function'){updateStars(5);}else{toast('🌟 Correct! +5 stars');if(typeof sessionData!=='undefined'){sessionData.stars=(sessionData.stars||0)+5;var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;}}}
       };
       quizCard.appendChild(btn);
     });
@@ -7418,7 +7476,7 @@ function openSequencer(grade) {
       +'<button onclick="score=0;round=0;makePattern();" style="padding:14px 24px;border-radius:40px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;">Play Again 🔄</button>'
       +'<button onclick="var o=document.getElementById(\'seqOv\');if(o)o.remove();" style="padding:10px 18px;border-radius:40px;border:none;background:rgba(255,255,255,.2);color:white;font-family:Nunito,sans-serif;font-weight:800;cursor:pointer;font-size:1.1rem;">✕</button>'
       +'</div>';
-    if(typeof sessionData!=='undefined'&&score>0){sessionData.stars=(sessionData.stars||0)+score*10;var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;toast('+'+score*10+' Stars! ⭐');}
+    if(score>0){if(typeof updateStars==='function'){updateStars(score*10);}else if(typeof sessionData!=='undefined'){sessionData.stars=(sessionData.stars||0)+score*10;var el=document.getElementById('statStars');if(el)el.textContent=sessionData.stars;toast('+'+score*10+' Stars! ⭐');}}
   }
 
   makePattern();
@@ -7781,6 +7839,7 @@ function gameScoreBar(score, total, colorA, colorB) {
     +'</div>';
 }
 function gameWinScreen(score, total, colorA, colorB, ovId) {
+  if (typeof sfx === 'function') sfx('win');
   var pct = total > 0 ? Math.round(score/total*100) : 0;
   var trophy = pct >= 80 ? '🏆' : pct >= 50 ? '🌟' : '💪';
   var msg = pct >= 80 ? 'Amazing work!' : pct >= 50 ? 'Great job!' : 'Keep practicing!';
@@ -7822,6 +7881,7 @@ function gameScoreBar(score, total, colorA, colorB) {
     +'</div>';
 }
 function gameWinScreen(score, total, colorA, colorB, ovId) {
+  if (typeof sfx === 'function') sfx('win');
   var pct = total > 0 ? Math.round(score/total*100) : 0;
   var trophy = pct >= 80 ? '🏆' : pct >= 50 ? '🌟' : '💪';
   var msg = pct >= 80 ? 'Amazing work!' : pct >= 50 ? 'Great job!' : 'Keep practicing!';
@@ -8036,6 +8096,188 @@ function openArgumentBuilder(){
   render();
 }
 window.openArgumentBuilder = openArgumentBuilder;
+
+
+// ══════════════════════════════════════════════════════════════════════
+//  PAIR MATCH (v445) — the beloved memory-match mechanic, now teaching
+//  letters (PreK), words (K-1), and math facts (1-5)
+// ══════════════════════════════════════════════════════════════════════
+function openPairMatch(grade, mode){
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_pairmatch')){window._gameIntroCallback=function(){openPairMatch(grade, mode);};showGameIntro('pairmatch',window._gameIntroCallback);return;}
+  var CA='#D97706', CB='#FBBF24';
+  var ov = gameOverlay('pairOv','#FFF9EC');
+  document.body.appendChild(ov);
+
+  function buildPairs(){
+    var P=[];
+    function ri(n){ return Math.floor(Math.random()*n); }
+    if(mode==='letters'){
+      var L=[['A','\ud83c\udf4e'],['B','\ud83d\udc3b'],['C','\ud83d\udc31'],['D','\ud83d\udc36'],['F','\ud83d\udc38'],['S','\u2600\ufe0f'],['M','\ud83c\udf19'],['T','\ud83c\udf33']];
+      L.sort(function(){return Math.random()-.5;});
+      P = L.slice(0,6).map(function(x){ return {a:x[0], b:x[1]}; });
+    } else if(mode==='words'){
+      var W=[['dog','\ud83d\udc36'],['cat','\ud83d\udc31'],['sun','\u2600\ufe0f'],['fish','\ud83d\udc1f'],['tree','\ud83c\udf33'],['star','\u2b50'],['frog','\ud83d\udc38'],['bird','\ud83d\udc26']];
+      W.sort(function(){return Math.random()-.5;});
+      P = W.slice(0,6).map(function(x){ return {a:x[0], b:x[1]}; });
+    } else if(mode==='add'){
+      var used={};
+      while(P.length<6){ var a=1+ri(9), b=1+ri(9); if(used[a+b]) continue; used[a+b]=1; P.push({a:a+'+'+b, b:String(a+b)}); }
+    } else if(mode==='addsub'){
+      var used2={};
+      while(P.length<6){
+        if(Math.random()<0.5){ var a2=1+ri(12), b2=1+ri(12); if(used2[a2+b2]) continue; used2[a2+b2]=1; P.push({a:a2+'+'+b2, b:String(a2+b2)}); }
+        else { var s=5+ri(15), t=1+ri(Math.min(s,9)); if(used2[s-t]) continue; used2[s-t]=1; P.push({a:s+'\u2212'+t, b:String(s-t)}); }
+      }
+    } else if(mode==='mult'){
+      var used3={};
+      while(P.length<6){ var m=2+ri(8), n=2+ri(8); if(used3[m*n]) continue; used3[m*n]=1; P.push({a:m+'\u00d7'+n, b:String(m*n)}); }
+    } else if(mode==='multdiv'){
+      var used4={};
+      while(P.length<6){
+        if(Math.random()<0.5){ var m4=3+ri(9), n4=3+ri(9); if(used4['x'+(m4*n4)]) continue; used4['x'+(m4*n4)]=1; P.push({a:m4+'\u00d7'+n4, b:String(m4*n4)}); }
+        else { var d=2+ri(8), r=2+ri(9); if(used4['d'+r+'_'+d]) continue; used4['d'+r+'_'+d]=1; P.push({a:(d*r)+'\u00f7'+d, b:String(r)}); }
+      }
+    } else { // 'equiv' — grade 5 fraction/percent equivalents
+      var E=[['1/2','50%'],['1/4','25%'],['3/4','75%'],['1/5','20%'],['1/10','10%'],['2/5','40%'],['1/3','33%'],['4/5','80%']];
+      E.sort(function(){return Math.random()-.5;});
+      P = E.slice(0,6).map(function(x){ return {a:x[0], b:x[1]}; });
+    }
+    return P;
+  }
+
+  var pairs = buildPairs();
+  var cards = [];
+  pairs.forEach(function(p,i){ cards.push({v:p.a, pid:i}); cards.push({v:p.b, pid:i}); });
+  cards.sort(function(){return Math.random()-.5;});
+  var flipped=[], matched={}, tries=0, lock=false;
+
+  function render(){
+    ov.innerHTML = gameHeader('Match Pairs','\ud83c\udccf',CA,CB,'pairOv')
+      +'<div style="flex:1;overflow-y:auto;padding:16px;max-width:420px;margin:0 auto;width:100%;">'
+      +'<div style="text-align:center;font-weight:800;color:#92600A;font-size:.85rem;margin-bottom:12px;">Find the pairs that go together!</div>'
+      +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">'
+      +cards.map(function(c,i){
+        var isUp = matched[c.pid] || flipped.indexOf(i)>=0;
+        return '<div onclick="window._pmFlip('+i+')" style="aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:16px;cursor:pointer;transition:all .3s;'
+          +'font-family:\'Baloo 2\',cursive;font-weight:800;font-size:'+(String(c.v).length>3?'1rem':'1.4rem')+';'
+          +(matched[c.pid]
+            ? 'background:linear-gradient(135deg,#5ECDA0,#8FE0BE);color:white;transform:scale(.95);'
+            : isUp
+              ? 'background:white;color:#92600A;box-shadow:0 6px 14px rgba(217,119,6,.25);'
+              : 'background:linear-gradient(135deg,'+CA+','+CB+');color:transparent;box-shadow:0 4px 10px rgba(217,119,6,.3);')
+          +'">'+(isUp ? c.v : '\ud83c\udf3c')+'</div>';
+      }).join('')
+      +'</div>'
+      +'<div style="text-align:center;margin-top:12px;font-size:.8rem;font-weight:700;color:#B8860B;" id="pmStatus">'+Object.keys(matched).length+' of '+pairs.length+' pairs found</div>'
+      +'</div>';
+  }
+
+  window._pmFlip = function(i){
+    if(lock) return;
+    var c = cards[i];
+    if(matched[c.pid] || flipped.indexOf(i)>=0) return;
+    flipped.push(i);
+    render();
+    if(flipped.length===2){
+      lock=true; tries++;
+      var c0=cards[flipped[0]], c1=cards[flipped[1]];
+      if(c0.pid===c1.pid){
+        setTimeout(function(){
+          matched[c0.pid]=true; flipped=[]; lock=false;
+          if(typeof showBloomyReaction==='function') showBloomyReaction(true);
+          render();
+          if(Object.keys(matched).length===pairs.length){
+            var stars = tries<=pairs.length+2 ? 3 : (tries<=pairs.length+5 ? 2 : 1);
+            setTimeout(function(){
+              gameWinScreen(pairs.length, pairs.length, CA, CB, 'pairOv');
+              logGameComplete(stars*10, 1);
+            }, 500);
+          }
+        }, 450);
+      } else {
+        setTimeout(function(){ flipped=[]; lock=false; render(); }, 900);
+      }
+    }
+  };
+
+  render();
+}
+window.openPairMatch = openPairMatch;
+
+// ══════════════════════════════════════════════════════════════════════
+//  FEED BLOOMY (v445) — drag snacks to feed the mascot; counting for PreK/K
+// ══════════════════════════════════════════════════════════════════════
+function openFeedBloomy(grade){
+  if(window.showGameIntro&&!sessionStorage.getItem('intro_feedbloomy')){window._gameIntroCallback=function(){openFeedBloomy(grade);};showGameIntro('feedbloomy',window._gameIntroCallback);return;}
+  var CA='#E8856A', CB='#F5A889';
+  var ov = gameOverlay('feedOv','#FFF3EC');
+  document.body.appendChild(ov);
+
+  var SNACKS=['\ud83c\udf4e','\ud83c\udf53','\ud83e\udd55','\ud83c\udf4c','\ud83c\udf50'];
+  var round=0, TOTAL=6, score=0;
+
+  function render(){
+    if(round>=TOTAL){
+      gameWinScreen(score, TOTAL, CA, CB, 'feedOv');
+      logGameComplete(score*8, 1);
+      return;
+    }
+    var maxN = (grade==='K') ? 10 : 5;
+    var target = 1+Math.floor(Math.random()*maxN);
+    var snack = SNACKS[Math.floor(Math.random()*SNACKS.length)];
+    var supply = Math.min(target+2+Math.floor(Math.random()*3), 12);
+    var fed = 0;
+
+    ov.innerHTML = gameHeader('Feed Bloomy','\ud83c\udf4e',CA,CB,'feedOv')
+      +'<div style="flex:1;overflow-y:auto;padding:16px;max-width:420px;margin:0 auto;width:100%;text-align:center;">'
+      +'<div style="font-size:.8rem;font-weight:800;color:#9A5A40;">Round '+(round+1)+' of '+TOTAL+'</div>'
+      +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.3rem;font-weight:800;color:#B4553A;margin:6px 0 2px;">Bloomy is hungry for <span style="font-size:1.6rem;">'+target+'</span> '+snack+'!</div>'
+      +'<div style="font-size:.82rem;color:#9A5A40;font-weight:700;">Drag them to Bloomy \u2014 count as you go!</div>'
+      +'<div id="feedZone" data-dropzone="1" style="margin:14px auto;width:180px;height:190px;border-radius:24px;background:rgba(255,255,255,.6);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:8px;position:relative;">'
+      +'<img src="bloomy_wave.png" style="width:120px;height:130px;object-fit:contain;" alt="Bloomy">'
+      +'<div id="feedCount" style="position:absolute;top:8px;right:10px;background:'+CA+';color:white;font-family:\'Baloo 2\',cursive;font-weight:800;border-radius:20px;padding:3px 12px;font-size:1rem;">0</div>'
+      +'</div>'
+      +'<div id="feedBasket" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;background:rgba(232,133,106,.12);border-radius:20px;padding:14px;min-height:64px;">'
+      +Array(supply).fill(0).map(function(_,i){
+        return '<div class="feedSnack" id="fs'+i+'" style="font-size:2rem;cursor:grab;line-height:1;">'+snack+'</div>';
+      }).join('')
+      +'</div>'
+      +'<div id="feedMsg" style="min-height:30px;margin-top:10px;font-weight:800;font-size:.95rem;"></div>'
+      +'</div>';
+
+    var done=false;
+    for(var i=0;i<supply;i++){
+      (function(idx){
+        var el=document.getElementById('fs'+idx);
+        if(!el) return;
+        bloomiDraggable(el, function(dragged, zone){
+          if(done || zone.id!=='feedZone') return;
+          dragged.remove();
+          fed++;
+          var cnt=document.getElementById('feedCount');
+          if(cnt){ cnt.textContent=fed; cnt.style.transform='scale(1.3)'; setTimeout(function(){cnt.style.transform='scale(1)';},150); }
+          var msg=document.getElementById('feedMsg');
+          if(fed===target){
+            done=true; score++;
+            if(msg){ msg.textContent='\ud83c\udf89 Yum! Exactly '+target+'! Great counting!'; msg.style.color='#16A34A'; }
+            if(typeof showBloomyReaction==='function') showBloomyReaction(true);
+            setTimeout(function(){ round++; render(); }, 1300);
+          } else if(fed>target){
+            done=true;
+            if(msg){ msg.textContent='Oops \u2014 that\u2019s '+fed+', Bloomy only wanted '+target+'! Let\u2019s try another round.'; msg.style.color='#DC2626'; }
+            if(typeof showBloomyReaction==='function') showBloomyReaction(false);
+            setTimeout(function(){ round++; render(); }, 1600);
+          } else {
+            if(msg){ msg.textContent=fed+'... keep going!'; msg.style.color='#B4553A'; }
+          }
+        });
+      })(i);
+    }
+  }
+
+  render();
+}
+window.openFeedBloomy = openFeedBloomy;
 
 // ══════════════════════════════════════════════════════════════════════
 //  MATH BINGO (Phase C) — a real bingo game with a 4x4 card
@@ -13217,8 +13459,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v444</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v444</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v446</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v446</div>
 
 </body>
 </html
