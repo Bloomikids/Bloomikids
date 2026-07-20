@@ -967,16 +967,20 @@ input::placeholder { color:#aaa !important; }
   </div>
 
   <!-- v3 HERO: Bloomy mascot + speech bubble greeting -->
-  <div id="v3Hero" style="display:flex;align-items:flex-start;justify-content:space-between;margin:0 0 4px;min-height:160px;position:relative;padding:16px 16px 0;">
-    <div style="flex:1;padding-top:8px;">
-      <div style="font-family:'Baloo 2',cursive;font-size:.75rem;font-weight:700;color:#5A8A5A;letter-spacing:.5px;margin-bottom:4px;">BloomiKids</div>
-      <div style="font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:1.55rem;font-weight:700;color:#C99A3F;line-height:1.18;margin-bottom:6px;">Ready to bloom<br>today, <span id="v3HeroName">friend</span>?</div>
-      <div style="font-size:.82rem;font-weight:600;color:#6B8F6B;line-height:1.4;" id="v3HeroSub">I picked something fun for us today &#x2728;</div>
-      <button onclick="openBloomyGarden()" style="margin-top:10px;background:linear-gradient(160deg,#A9E8BE,#7FD9A4);border:none;border-radius:999px;padding:6px 14px;font-size:.72rem;font-weight:800;color:#1F4A33;cursor:pointer;box-shadow:0 3px 0 #5CBD85;font-family:Nunito,sans-serif;">🌱 My Garden</button>
-    </div>
-    <div style="flex-shrink:0;position:relative;">
-      <img id="v3HeroMascot" src="bloomy_wave.png" onclick="bloomiDance()" alt="Bloom" style="width:145px;height:155px;object-fit:contain;filter:drop-shadow(0 8px 6px rgba(0,0,0,.12));cursor:pointer;display:block;">
-      <div id="bloomyAccOverlay" style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:1.8rem;line-height:1;pointer-events:none;z-index:5;"></div>
+  <div id="v3Hero" style="position:relative;background:linear-gradient(180deg,#8FCBA3 0%,#A9D8B8 68%,rgba(169,216,184,0) 100%);margin:0 0 6px;padding:20px 16px 4px;overflow:hidden;">
+    <svg style="position:absolute;top:0;left:0;width:100%;height:65%;opacity:.16;pointer-events:none;" viewBox="0 0 400 160" preserveAspectRatio="none"><path d="M0,35 Q60,8 120,42 T240,38 T400,48 L400,0 L0,0 Z" fill="#2D6B45"/><path d="M0,78 Q80,48 160,74 T320,70 T400,84 L400,0 L0,0 Z" fill="#3D7B55" opacity=".55"/></svg>
+    <div style="display:flex;align-items:flex-end;gap:8px;max-width:600px;margin:0 auto;position:relative;">
+      <div style="flex-shrink:0;position:relative;">
+        <img id="v3HeroMascot" src="bloomy_wave.png" onclick="bloomiDance()" alt="Bloom" style="width:118px;height:128px;object-fit:contain;filter:drop-shadow(0 8px 8px rgba(0,0,0,.15));cursor:pointer;display:block;">
+        <div id="bloomyAccOverlay" style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:1.8rem;line-height:1;pointer-events:none;z-index:5;"></div>
+      </div>
+      <div style="flex:1;padding-bottom:10px;">
+        <div style="background:white;border-radius:18px 18px 18px 4px;padding:12px 16px;box-shadow:0 4px 12px rgba(45,74,56,.15);margin-bottom:10px;">
+          <div style="font-family:'Baloo 2',cursive;font-size:1.12rem;font-weight:800;color:#2D4A38;line-height:1.25;">Ready to bloom today, <span id="v3HeroName">friend</span>?</div>
+          <div style="font-size:.78rem;font-weight:700;color:#5A8268;line-height:1.4;margin-top:2px;" id="v3HeroSub">I picked something fun for us today &#x2728;</div>
+        </div>
+        <button onclick="openBloomyGarden()" style="background:white;border:none;border-radius:999px;padding:7px 16px;font-size:.75rem;font-weight:800;color:#1F4A33;cursor:pointer;box-shadow:0 3px 10px rgba(45,74,56,.18);font-family:Nunito,sans-serif;">🌱 My Garden</button>
+      </div>
     </div>
   </div><!-- /v3Hero — close added v440: this tag was missing, which made every section after the hero a flex-row child (the phantom squished "columns" layout) -->
   <!-- Play Today removed - Today's Mission handles this -->
@@ -1117,7 +1121,7 @@ input::placeholder { color:#aaa !important; }
 
     <!-- v379 MINDFUL MOMENTS — moved to top of sections, Yoga+Music combined -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin:14px 0 10px;padding:0 4px;">
-      <h2 style="font-family:'Baloo 2',cursive;font-size:1.05rem;font-weight:800;color:#1F6B45;margin:0;">My Bloom Progress</h2>
+      <h2 style="font-family:'Baloo 2',cursive;font-size:1.05rem;font-weight:800;color:#1F6B45;margin:0;">🧘 Mindful Moments</h2>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;">
       <!-- Yoga & Music (combined) -->
@@ -4217,23 +4221,26 @@ var CURATED_GAMES = {
     'Research Race':'Research', 'Mixtures Sort':'Chemistry',
   };
 
+  function _mixWhite(hex, amt) {
+    // amt 0..1 : how much white to blend in
+    var h = hex.replace('#','');
+    var r = parseInt(h.substr(0,2),16), g2 = parseInt(h.substr(2,2),16), b = parseInt(h.substr(4,2),16);
+    r = Math.round(r + (255-r)*amt); g2 = Math.round(g2 + (255-g2)*amt); b = Math.round(b + (255-b)*amt);
+    return '#' + ((1<<24) + (r<<16) + (g2<<8) + b).toString(16).slice(1).toUpperCase();
+  }
   function _makeTile(g) {
-    var deeper = _darken(g.color);
     var sub = SUBS[g.label] || 'Tap to play';
-    var lightBg = (g.color.toUpperCase() === '#FFD166' || g.color.toUpperCase() === '#C9B8FF' || g.color.toUpperCase() === '#FBBF24');
-    var textColor = lightBg ? '#2D1B3D' : 'white';
-    var subOpacity = lightBg ? '.7' : '.85';
     var missionFn = "if(typeof completeMissionStep==='function')completeMissionStep('learn');" + g.fn;
-    // Use soft pastel bg with the color as text/accent
-    var pastelBg = g.color+'22'; // very light tint
-    var borderCol = g.color+'44';
-    return '<div onclick="'+missionFn+'" style="background:white;border-radius:20px;padding:16px 12px 14px;text-align:center;cursor:pointer;'
-      +'box-shadow:0 4px 0 '+borderCol+',0 6px 16px rgba(0,0,0,.08);'
-      +'border:1.5px solid '+borderCol+';position:relative;overflow:hidden;font-family:Nunito,sans-serif;color:#1A1033;">'
-      +'<div style="position:absolute;inset:0;background:'+pastelBg+';border-radius:20px;pointer-events:none;"></div>'
+    // v457: wellness-style tile — saturated pastel gradient + 3D shadow edge (matches Breathing/Yoga tiles)
+    var top  = _mixWhite(g.color, .45);
+    var bot  = _mixWhite(g.color, .18);
+    var edge = _darken(g.color);
+    return '<div onclick="'+missionFn+'" style="background:linear-gradient(160deg,'+top+','+bot+');border-radius:20px;padding:16px 12px 14px;text-align:center;cursor:pointer;'
+      +'box-shadow:0 4px 0 '+edge+',0 6px 14px rgba(56,83,66,.12);'
+      +'font-family:Nunito,sans-serif;">'
       +'<div style="margin:0 auto 8px;">'+getCardTile(g.label,g.icon,46)+'</div>'
-      +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.88rem;line-height:1.1;margin-bottom:2px;position:relative;z-index:1;color:'+g.color+';">'+g.label+'</div>'
-      +'<div style="font-size:.66rem;font-weight:700;opacity:'+subOpacity+';position:relative;z-index:1;">'+sub+'</div>'
+      +'<div style="font-family:Baloo 2,cursive;font-weight:800;font-size:.88rem;line-height:1.1;margin-bottom:2px;color:#1F2937;">'+g.label+'</div>'
+      +'<div style="font-size:.66rem;font-weight:700;color:rgba(0,0,0,.55);">'+sub+'</div>'
       +'</div>';
   }
 
@@ -10726,15 +10733,26 @@ function openFractionFrenzy(grade){
       +'</div>'
       +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">'
       +cur.opts.map(function(o){return '<button onclick="window._ffPick(\''+o+'\')" style="padding:18px;border-radius:16px;border:none;background:white;font-family:\'Baloo 2\',cursive;font-size:1.35rem;font-weight:800;color:#6B3A4E;cursor:pointer;box-shadow:0 3px 0 rgba(199,123,150,.3);">'+o+'</button>';}).join('')
-      +'</div></div>';
+      +'</div>'
+      +'<button id="ffNext" onclick="window._ffNext()" style="display:none;width:100%;margin-top:14px;padding:15px;border-radius:18px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:\'Baloo 2\',cursive;font-weight:800;font-size:1.1rem;cursor:pointer;">Next ➡️</button>'
+      +'</div>';
   }
 
+  var _ffAnswered=false;
   window._ffPick=function(o){
-    if(o===cur.ans){ score++; if(typeof showBloomyReaction==='function')showBloomyReaction(true); }
-    else { toast('It was '+cur.ans); if(typeof showBloomyReaction==='function')showBloomyReaction(false); }
-    idx++;
-    setTimeout(render, 900);
+    if(_ffAnswered) return; _ffAnswered=true;
+    var right=(o===cur.ans);
+    if(right){ score++; if(typeof showBloomyReaction==='function')showBloomyReaction(true); }
+    else { if(typeof showBloomyReaction==='function')showBloomyReaction(false); }
+    // color the option buttons + show Next
+    document.querySelectorAll('#fracOv [onclick^="window._ffPick"]').forEach(function(b){
+      b.style.pointerEvents='none';
+      if(b.textContent===cur.ans){ b.style.background='#E8FBF3'; b.style.color='#166534'; b.style.boxShadow='0 3px 0 #22c55e'; }
+      else if(b.textContent===o && !right){ b.style.background='#FFF0EE'; b.style.color='#991b1b'; b.style.boxShadow='0 3px 0 #ef4444'; }
+    });
+    var nb=document.getElementById('ffNext'); if(nb) nb.style.display='block';
   };
+  window._ffNext=function(){ _ffAnswered=false; idx++; render(); };
 
   function finish(){
     var starsEarned=Math.max(5, score*3);
@@ -10819,10 +10837,21 @@ function openCodeBreaker(grade){
     if(built.length===cur.word.length){
       var guess=built.map(function(b){return b.l;}).join('');
       setTimeout(function(){
-        if(guess===cur.word){ score++; toast('🔓 Decoded: '+cur.word+'!'); if(typeof showBloomyReaction==='function')showBloomyReaction(true); }
-        else { toast('The message was: '+cur.word); if(typeof showBloomyReaction==='function')showBloomyReaction(false); }
-        idx++;
-        setTimeout(render, 1000);
+        var right=(guess===cur.word);
+        if(right){ score++; if(typeof showBloomyReaction==='function')showBloomyReaction(true); }
+        else { if(typeof showBloomyReaction==='function')showBloomyReaction(false); }
+        row.innerHTML='<div style="text-align:center;width:100%;">'
+          +'<div style="font-weight:800;color:'+(right?'#166534':'#991b1b')+';font-size:1rem;margin-bottom:4px;">'+(right?'🔓 Decoded!':'🔒 Not quite...')+'</div>'
+          +'<div style="font-family:\'Baloo 2\',cursive;font-size:1.5rem;font-weight:800;color:#2B4B70;letter-spacing:4px;">'+cur.word+'</div>'
+          +'</div>';
+        var body=row.parentElement;
+        if(body){
+          var nb=document.createElement('button');
+          nb.textContent='Next message ➡️';
+          nb.style.cssText='width:100%;margin-top:6px;padding:14px;border-radius:18px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:\'Baloo 2\',cursive;font-weight:800;font-size:1.05rem;cursor:pointer;';
+          nb.onclick=function(){ idx++; render(); };
+          body.insertBefore(nb, row.nextSibling);
+        } else { idx++; setTimeout(render,1000); }
       },300);
     }
   }
@@ -10907,10 +10936,22 @@ function openEstimation(grade){
     var gained = pct<=0.1?20 : pct<=0.2?15 : pct<=0.35?10 : pct<=0.5?5 : 0;
     points+=gained;
     var msg = gained>=20?'🎯 Bullseye!':gained>=15?'🔥 So close!':gained>=10?'👍 Good eye!':gained>=5?'Not bad!':'Way off — but nice try!';
-    toast(msg+' It was '+cur.n+'. +'+gained+' pts');
     if(typeof showBloomyReaction==='function') showBloomyReaction(gained>=10);
-    idx++;
-    setTimeout(render, 1200);
+    // replace the guess button with result + Next
+    var btn=document.querySelector('#estOv [onclick="window._estGuess()"]');
+    if(btn){
+      var wrap=btn.parentElement;
+      btn.remove();
+      var res=document.createElement('div');
+      res.style.cssText='text-align:center;font-weight:800;color:#1F4A33;margin-top:12px;font-size:1rem;';
+      res.innerHTML=msg+'<br>You guessed <b>'+guess+'</b> — it was <b>'+cur.n+'</b> &nbsp;·&nbsp; +'+gained+' pts';
+      wrap.appendChild(res);
+      var nb=document.createElement('button');
+      nb.textContent='Next ➡️';
+      nb.style.cssText='width:100%;margin-top:10px;padding:14px;border-radius:18px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:\'Baloo 2\',cursive;font-weight:800;font-size:1.1rem;cursor:pointer;';
+      nb.onclick=function(){ idx++; render(); };
+      wrap.appendChild(nb);
+    } else { idx++; setTimeout(render,1200); }
   };
   render();
 }
@@ -11251,12 +11292,27 @@ function openBossChallenge(grade){
       +'</div></div>';
   }
 
+  var _bossAnswered=false;
   window._bossPick=function(i){
+    if(_bossAnswered) return; _bossAnswered=true;
     var q=qs[idx];
-    if(i===q.a){ bossHP--; if(typeof showBloomyReaction==='function') showBloomyReaction(true); }
+    var right=(i===q.a);
+    if(right){ bossHP--; if(typeof showBloomyReaction==='function') showBloomyReaction(true); }
     else { myHearts--; if(typeof showBloomyReaction==='function') showBloomyReaction(false); }
-    idx++;
-    setTimeout(render, 900);
+    var btns=document.querySelectorAll('#bossOv [onclick^="window._bossPick"]');
+    btns.forEach(function(b,bi){
+      b.style.pointerEvents='none';
+      if(bi===q.a){ b.style.background='#E8FBF3'; b.style.borderColor='#22c55e'; b.style.color='#166534'; }
+      else if(bi===i && !right){ b.style.background='#FFF0EE'; b.style.borderColor='#ef4444'; b.style.color='#991b1b'; }
+    });
+    var host=document.querySelector('#bossOv > div:last-child');
+    if(host){
+      var nb=document.createElement('button');
+      nb.textContent = right ? '⚔️ Attack landed! Next' : '💔 Ouch! Next';
+      nb.style.cssText='width:100%;margin-top:14px;padding:15px;border-radius:18px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:\'Baloo 2\',cursive;font-weight:800;font-size:1.05rem;cursor:pointer;';
+      nb.onclick=function(){ _bossAnswered=false; idx++; render(); };
+      host.appendChild(nb);
+    } else { _bossAnswered=false; idx++; setTimeout(render,900); }
   };
 
   function finish(won){
@@ -14275,8 +14331,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v456</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v456</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v457</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v457</div>
 
 </body>
 </html
