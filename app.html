@@ -972,7 +972,7 @@ input::placeholder { color:#aaa !important; }
       <div style="font-family:'Baloo 2',cursive;font-size:.75rem;font-weight:700;color:#5A8A5A;letter-spacing:.5px;margin-bottom:4px;">BloomiKids</div>
       <div style="font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:1.55rem;font-weight:700;color:#C99A3F;line-height:1.18;margin-bottom:6px;">Ready to bloom<br>today, <span id="v3HeroName">friend</span>?</div>
       <div style="font-size:.82rem;font-weight:600;color:#6B8F6B;line-height:1.4;" id="v3HeroSub">I picked something fun for us today &#x2728;</div>
-      <button onclick="openBloomyWardrobe()" style="margin-top:10px;background:#FFD166;border:none;border-radius:999px;padding:6px 14px;font-size:.72rem;font-weight:800;color:#5C3A00;cursor:pointer;box-shadow:0 3px 0 #D4A017;font-family:Nunito,sans-serif;">&#x1F457; Dress Up</button>
+      <!-- v450: Dress Up removed (broken, per Jen) -->
     </div>
     <div style="flex-shrink:0;position:relative;">
       <img id="v3HeroMascot" src="bloomy_wave.png" onclick="bloomiDance()" alt="Bloom" style="width:145px;height:155px;object-fit:contain;filter:drop-shadow(0 8px 6px rgba(0,0,0,.12));cursor:pointer;display:block;">
@@ -6023,8 +6023,25 @@ function switchTab(tab) {
 // ── Correct answer celebration ──────────────────────────────────
 
 var _bMsgs={correct:['Amazing!','You got it!','Yes!','Superstar!','Perfect!'],wrong:['Almost!','Good try!','Keep going!','You can do it!']};
+// v450: spoken voice feedback in every game
+var _cheerCorrect = ['Great job!','You got it!','Awesome!','Way to go!','Correct!','Amazing!','You did it!'];
+var _cheerWrong = ['Try again!','Almost! Try again!','Not quite. You can do it!','Give it another try!'];
+function speakCheer(ok){
+  try {
+    if(!('speechSynthesis' in window)) return;
+    var msgs = ok ? _cheerCorrect : _cheerWrong;
+    var msg = msgs[Math.floor(Math.random()*msgs.length)];
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(msg);
+    u.rate = 1.0; u.pitch = 1.15;
+    window.speechSynthesis.speak(u);
+  } catch(e){}
+}
+window.speakCheer = speakCheer;
+
 function showBloomyReaction(ok){
   if (typeof sfx === 'function') sfx(ok ? 'correct' : 'wrong');
+  speakCheer(ok);
   var el=document.getElementById('bloomyReaction');
   var tx=document.getElementById('bloomyReactionText');
   if(!el||!tx)return;
@@ -7849,6 +7866,7 @@ function gameScoreBar(score, total, colorA, colorB) {
     +'</div>';
 }
 function gameWinScreen(score, total, colorA, colorB, ovId) {
+  try { if('speechSynthesis' in window){ window.speechSynthesis.cancel(); var _wu=new SpeechSynthesisUtterance('You did it! Amazing work!'); _wu.rate=1.0; _wu.pitch=1.15; window.speechSynthesis.speak(_wu);} } catch(e){}
   // v447: soften colors to match palette
   colorA = colorA || '#7B6B8B';
   colorB = colorB || '#9B8B9B';
@@ -7894,6 +7912,7 @@ function gameScoreBar(score, total, colorA, colorB) {
     +'</div>';
 }
 function gameWinScreen(score, total, colorA, colorB, ovId) {
+  try { if('speechSynthesis' in window){ window.speechSynthesis.cancel(); var _wu=new SpeechSynthesisUtterance('You did it! Amazing work!'); _wu.rate=1.0; _wu.pitch=1.15; window.speechSynthesis.speak(_wu);} } catch(e){}
   // v447: soften colors to match palette
   colorA = colorA || '#7B6B8B';
   colorB = colorB || '#9B8B9B';
@@ -9174,13 +9193,13 @@ function openLangGame(grade) {
     ],
     1: [
       {word:'PLANT',  hint:'🌱 Grows in dirt!',   letters:['P','L','A','N','T','B','S']},
-      {word:'BRAVE',  hint:'💪 Not scared!',       letters:['B','R','A','V','E','T','S']},
+      {word:'BRAVE',  hint:'🦸 A hero is not scared!', letters:['B','R','A','V','E','T','S']},
       {word:'CLOUD',  hint:'☁️ Floats in sky!',   letters:['C','L','O','U','D','P','N']},
-      {word:'SHAKE',  hint:'🤝 Wobbles!',          letters:['S','H','A','K','E','T','N']},
+      {word:'SHAKE',  hint:'🥤 Wiggle it fast!',      letters:['S','H','A','K','E','T','N']},
       {word:'TIGER',  hint:'🐯 Big stripy cat!',   letters:['T','I','G','E','R','S','N']},
       {word:'GLOBE',  hint:'🌍 Round world!',      letters:['G','L','O','B','E','S','T']},
       {word:'FLAME',  hint:'🔥 Hot and bright!',   letters:['F','L','A','M','E','T','B']},
-      {word:'CRISP',  hint:'🍂 Crunchy!',          letters:['C','R','I','S','P','T','N']},
+      {word:'CRISP',  hint:'🍂 Crunchy like a dry leaf!', letters:['C','R','I','S','P','T','N']},
     ],
     2: [
       {word:'BRIDGE',  hint:'🌉 Crosses water!',   letters:['B','R','I','D','G','E','T','S']},
@@ -9302,6 +9321,7 @@ function openLangGame(grade) {
       +'<div style="font-size:2.5rem;margin-bottom:6px;">'+d.hint+'</div>'
       +'<div style="font-family:\'Baloo 2\',cursive;font-size:1rem;font-weight:800;color:'+CA+';">Build the word!</div>'
       +'<div style="color:#888;font-size:.85rem;">'+d.word.length+' letters</div>'
+      +'<button onclick="window._speakWord&&window._speakWord()" style="margin-top:10px;padding:8px 18px;border-radius:20px;border:none;background:#E0F2FE;color:#0369A1;font-weight:800;font-family:Nunito,sans-serif;cursor:pointer;font-size:.9rem;">🔊 Hear the word</button>'
       +'</div>'
       +'<div id="builtRow" style="display:flex;gap:8px;justify-content:center;min-height:58px;background:rgba(229,92,108,.06);border-radius:16px;padding:10px 14px;margin-bottom:16px;width:100%;flex-wrap:wrap;">'
       +Array(d.word.length).fill('<div style="width:48px;height:48px;border-radius:12px;background:#F5F3FF;border:2px dashed #DDD;display:flex;align-items:center;justify-content:center;font-family:\'Baloo 2\',cursive;font-size:1.4rem;font-weight:800;color:#CCC;">_</div>').join('')
@@ -9316,6 +9336,17 @@ function openLangGame(grade) {
       +'<button onclick="window._clearWord()" style="padding:10px 20px;border-radius:30px;border:none;background:#DC2626;color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;">✕ Clear All</button>'
       +'</div>'
       +'</div>';
+
+    window._speakWord = function(){
+      try {
+        if(!('speechSynthesis' in window)) return;
+        window.speechSynthesis.cancel();
+        var u = new SpeechSynthesisUtterance('Build the word: ' + d.word.toLowerCase() + '. ' + d.hint.replace(/[^a-zA-Z !.,?']/g,'').trim());
+        u.rate = 0.85; u.pitch = 1.1;
+        window.speechSynthesis.speak(u);
+      } catch(e){}
+    };
+    setTimeout(function(){ window._speakWord(); }, 400);
 
     window._pickLetter = function(l, i){
       if(built.length>=d.word.length) return;
@@ -10597,7 +10628,7 @@ function _applyAccessory(id){
   }
   if(overlay) overlay.textContent=acc.emoji;
 }
-function openBloomyWardrobe(){
+function openBloomyWardrobe(){ return; // v450: wardrobe disabled
   var old=document.getElementById('wardrobeOv');if(old)old.remove();
   var ov=document.createElement('div');
   ov.id='wardrobeOv';
@@ -13484,8 +13515,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v449</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v449</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v450</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v450</div>
 
 </body>
 </html
