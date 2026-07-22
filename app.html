@@ -1218,6 +1218,234 @@ input::placeholder { color:#aaa !important; }
     <div id="quizOptions" style="display:none"></div>
     <div id="quizFeedback" style="display:none"></div>
     <button id="nextBtn" class="next-btn" onclick="nextQuestion()" style="display:none;margin-top:16px;width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Next ➡</button>
+    <button class="tab-btn" data-tab="art" onclick="switchTab('art')" onclick="openCommunityWorld()">🎨 <span id="tabArt">Make It!</span></button>
+  </div>
+
+  <!-- HIDDEN: old ad-hoc tile grid (these called undefined functions: openWordMatch, openFlashCards, openSpellingBee, openSoundMatch, openRhyming, openWordBuilder, openCountingGame, openReadingChallenge - all crash on click). Kept in DOM but hidden so we don't break anything. Real game tiles render dynamically into #gradeGamesSection below. -->
+  <div style="display:none;" id="oldAdHocTiles">
+
+      <div onclick="openWordMatch()"><div>🔤</div><div>Word Match</div></div>
+      <div onclick="openFlashCards()"><div>🃏</div><div>Flash Cards</div></div>
+      <div onclick="openMemoryMatch()"><div>🧠</div><div>Memory Match</div></div>
+      <div onclick="openSpellingBee()"><div>🐝</div><div>Spelling Bee</div></div>
+      <div onclick="openNumberBonds()"><div>🔢</div><div>Number Bonds</div></div>
+      <div onclick="openSoundMatch()"><div>🔊</div><div>Sound Match</div></div>
+      <div onclick="openRhyming()"><div>🎵</div><div>Rhyming</div></div>
+      <div onclick="openWordBuilder()"><div>🏗️</div><div>Word Builder</div></div>
+      <div onclick="openCountingGame()"><div>🍎</div><div>Counting</div></div>
+      <div onclick="openReadingChallenge()"><div>📖</div><div>Reading Challenge</div></div>
+
+  </div>
+
+  <!-- ACADEMICS panel: continue card + games section header + dynamic grade tiles -->
+  <div class="panel active" id="panel-academics" style="position:relative;">
+    <!-- Botanical leaf decorations (fixed 2025: was position:fixed, got trapped by the panel's
+         slideUp animation leaving transform:translateY(0) applied via fill-mode:both, which makes
+         this panel a containing block for fixed descendants. Switched to absolute + negative
+         z-index so it scrolls with the content and sits behind everything, and added more leaves
+         for fuller coverage down the page. ) -->
+    <div style="position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:-1;overflow:hidden;">
+      <!-- v437: curvy vine tendrils (mockup style) -->
+      <svg style="position:absolute;top:-8px;left:-6px;width:70px;opacity:.5;" viewBox="0 0 60 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M-5,5 C35,-5 45,45 20,70 C2,90 28,120 12,150" stroke="#6FA87E" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <ellipse cx="30" cy="14" rx="11" ry="6" fill="#8FC49A" transform="rotate(30 30 14)"/>
+        <ellipse cx="26" cy="66" rx="10" ry="5" fill="#8FC49A" transform="rotate(-20 26 66)"/>
+        <ellipse cx="18" cy="122" rx="9" ry="5" fill="#8FC49A" transform="rotate(50 18 122)"/>
+      </svg>
+      <svg style="position:absolute;top:120px;right:-8px;width:64px;opacity:.42;" viewBox="0 0 60 170" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M65,5 C25,-8 18,42 42,66 C60,84 36,110 52,140" stroke="#6FA87E" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <ellipse cx="34" cy="12" rx="11" ry="6" fill="#8FC49A" transform="rotate(-30 34 12)"/>
+        <ellipse cx="40" cy="60" rx="10" ry="5" fill="#8FC49A" transform="rotate(20 40 60)"/>
+        <ellipse cx="48" cy="112" rx="9" ry="5" fill="#8FC49A" transform="rotate(-45 48 112)"/>
+      </svg>
+      <!-- v437: small scattered leaves -->
+      <svg style="position:absolute;top:420px;left:14px;width:22px;opacity:.35;transform:rotate(-24deg);" viewBox="0 0 20 30" xmlns="http://www.w3.org/2000/svg"><path d="M10,28 C3,20 1,10 10,2 C19,10 17,20 10,28Z" fill="#7CC48C"/></svg>
+      <svg style="position:absolute;top:640px;right:20px;width:20px;opacity:.32;transform:rotate(35deg);" viewBox="0 0 20 30" xmlns="http://www.w3.org/2000/svg"><path d="M10,28 C3,20 1,10 10,2 C19,10 17,20 10,28Z" fill="#6FB37E"/></svg>
+      <svg style="position:absolute;top:880px;left:30px;width:24px;opacity:.3;transform:rotate(14deg);" viewBox="0 0 20 30" xmlns="http://www.w3.org/2000/svg"><path d="M10,28 C3,20 1,10 10,2 C19,10 17,20 10,28Z" fill="#7CC48C"/></svg>
+      <svg style="position:absolute;top:1140px;right:34px;width:20px;opacity:.32;transform:rotate(-40deg);" viewBox="0 0 20 30" xmlns="http://www.w3.org/2000/svg"><path d="M10,28 C3,20 1,10 10,2 C19,10 17,20 10,28Z" fill="#6FB37E"/></svg>
+      <svg style="position:absolute;top:-14px;right:-22px;opacity:.15;width:104px;" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 280 C100 280 20 200 20 120 C20 60 60 20 100 10 C140 20 180 60 180 120 C180 200 100 280 100 280Z" fill="#4A9A5A"/>
+        <path d="M100 280 L100 10" stroke="#3A7A4A" stroke-width="3" opacity=".5"/>
+        <path d="M100 100 C80 80 40 70 30 50" stroke="#3A7A4A" stroke-width="2" opacity=".4"/>
+        <path d="M100 140 C120 120 160 110 170 90" stroke="#3A7A4A" stroke-width="2" opacity=".4"/>
+        <path d="M100 180 C80 165 50 160 40 140" stroke="#3A7A4A" stroke-width="2" opacity=".4"/>
+      </svg>
+      <svg style="position:absolute;top:270px;left:-18px;opacity:.11;width:84px;transform:rotate(-15deg);" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 280 C100 280 20 200 20 120 C20 60 60 20 100 10 C140 20 180 60 180 120 C180 200 100 280 100 280Z" fill="#5EAD6A"/>
+        <path d="M100 280 L100 10" stroke="#4A8A5A" stroke-width="3" opacity=".5"/>
+        <path d="M100 100 C80 80 40 70 30 50" stroke="#4A8A5A" stroke-width="2" opacity=".4"/>
+        <path d="M100 160 C120 140 155 135 165 115" stroke="#4A8A5A" stroke-width="2" opacity=".4"/>
+      </svg>
+      <svg style="position:absolute;top:520px;right:-14px;opacity:.13;width:74px;transform:rotate(25deg);" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 280 C100 280 20 200 20 120 C20 60 60 20 100 10 C140 20 180 60 180 120 C180 200 100 280 100 280Z" fill="#4A9A5A"/>
+        <path d="M100 280 L100 10" stroke="#3A7A4A" stroke-width="3" opacity=".5"/>
+        <path d="M100 100 C80 80 40 70 30 50" stroke="#3A7A4A" stroke-width="2" opacity=".4"/>
+      </svg>
+      <svg style="position:absolute;top:760px;left:-20px;opacity:.11;width:92px;transform:scaleX(-1)rotate(10deg);" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 280 C100 280 20 200 20 120 C20 60 60 20 100 10 C140 20 180 60 180 120 C180 200 100 280 100 280Z" fill="#5EAD6A"/>
+        <path d="M100 280 L100 10" stroke="#4A8A5A" stroke-width="3" opacity=".5"/>
+        <path d="M100 140 C120 120 160 110 170 90" stroke="#4A8A5A" stroke-width="2" opacity=".4"/>
+      </svg>
+      <svg style="position:absolute;top:1020px;right:-16px;opacity:.12;width:78px;transform:rotate(-30deg);" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M100 280 C100 280 20 200 20 120 C20 60 60 20 100 10 C140 20 180 60 180 120 C180 200 100 280 100 280Z" fill="#4A9A5A"/>
+        <path d="M100 280 L100 10" stroke="#3A7A4A" stroke-width="3" opacity=".5"/>
+        <path d="M100 100 C80 80 40 70 30 50" stroke="#3A7A4A" stroke-width="2" opacity=".4"/>
+      </svg>
+    </div>
+    <!-- Continue where you left off -->
+    <div id="continueCard" style="display:none !important;" class="continue-card" onclick="resumeLastActivity()">
+      <div class="continue-card-icon" id="continueIcon">📖</div>
+      <div class="continue-card-text">
+        <div class="continue-card-title" id="continueTitle">Keep going!</div>
+        <div class="continue-card-sub" id="continueSub">Continue where you left off</div>
+      </div>
+      <div class="continue-card-arrow">→</div>
+    </div>
+
+    <!-- HIDDEN: old mascot+streak row (Bloomy now lives in v3 hero above) -->
+    <div class="bloomi-mascot-row" style="display:none;">
+      <img class="bloomi-mascot" id="bloomiMascot" src="bloomy_wave.png" onclick="bloomiDance()" title="Tap Bloom!" alt="Bloom">
+      <div class="bloomi-streak-card">
+        <div class="bloomi-streak-num"><span id="bloomiStreakNum">0</span> 🔥</div>
+        <div class="bloomi-streak-label" id="bloomiStreakLabel">Day streak — keep going!</div>
+      </div>
+    </div>
+
+    <!-- Bloom Level (hidden on home, shown in parent panel) -->
+    <div class="bloom-level" id="bloomLevel" style="display:none;">
+      <img class="bloom-level-sprite" id="bloomLevelSprite" src="bloom_level1.png" alt="Bloom level">
+      <div class="bloom-level-info">
+        <div class="bloom-level-name" id="bloomLevelName">Seedling</div>
+        <div class="bloom-level-bar"><div class="bloom-level-fill" id="bloomLevelBar" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- Daily Mission (compact - 1 line) -->
+    <div class="bloomi-daily-mission" id="bloomiMission" style="background:white;border-radius:22px;padding:0 0 12px;margin:0 16px 14px;box-shadow:0 4px 14px rgba(45,74,56,.08);overflow:hidden;">
+      <div class="bloomi-mission-title" style="margin:0 0 12px;padding:12px 16px;background:linear-gradient(135deg,#E8A793,#DE8F7A);font-family:'Baloo 2',cursive;font-size:1.05rem;font-weight:800;color:white;text-align:center;"><span style="color:#FFE36C;">✦</span> <span id="missionInline">Start Today's Mission</span> <span style="color:#FFE36C;">✦</span></div>
+      <div style="background:white;border-radius:18px;padding:0 14px 4px;">
+        <div id="growthStageRow" style="display:flex;justify-content:space-between;align-items:center;gap:4px;">
+          <span class="growth-stage" id="gstage0" style="width:42px;height:42px;border-radius:50%;background:#F2F8F4;border:2px solid #DCEBE0;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all .4s;flex-shrink:0;box-sizing:border-box;">🌰</span>
+          <span class="growth-stage" id="gstage1" style="width:42px;height:42px;border-radius:50%;background:#F2F8F4;border:2px solid #DCEBE0;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all .4s;flex-shrink:0;box-sizing:border-box;">🌱</span>
+          <span class="growth-stage" id="gstage2" style="width:42px;height:42px;border-radius:50%;background:#F2F8F4;border:2px solid #DCEBE0;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all .4s;flex-shrink:0;box-sizing:border-box;">🌿</span>
+          <span class="growth-stage" id="gstage3" style="width:42px;height:42px;border-radius:50%;background:#F2F8F4;border:2px solid #DCEBE0;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all .4s;flex-shrink:0;box-sizing:border-box;">🪴</span>
+          <span class="growth-stage" id="gstage4" style="width:42px;height:42px;border-radius:50%;background:#F2F8F4;border:2px solid #DCEBE0;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all .4s;flex-shrink:0;box-sizing:border-box;">🌷</span>
+          <span class="growth-stage" id="gstage5" style="width:42px;height:42px;border-radius:50%;background:#F2F8F4;border:2px solid #DCEBE0;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all .4s;flex-shrink:0;box-sizing:border-box;">🌸</span>
+        </div>
+        <div style="text-align:center;color:#5A8268;font-size:.78rem;font-weight:800;margin-top:8px;font-family:Nunito,sans-serif;" id="missionCountLabel">0 of 6 Growth Stages Earned</div>
+      </div>
+      <div class="bloomi-mission-item" id="mission-quiz" style="display:none;"><div class="bloomi-mission-check" id="mcheck-quiz"></div>Answer 3 questions</div>
+      <div class="bloomi-mission-item" id="mission-yoga" style="display:none;"><div class="bloomi-mission-check" id="mcheck-yoga"></div>Try a yoga pose</div>
+      <div class="bloomi-mission-item" id="mission-book" style="display:none;"><div class="bloomi-mission-check" id="mcheck-book"></div>Read a book</div>
+    </div>
+
+    <!-- Stats row (hidden on home, shown in parent panel) -->
+    <div class="stats-row" style="display:none;">
+      <div class="stat-chip"><div class="stat-num num-mint" id="statTasks">0</div><div class="stat-lbl" id="labelTasks">Done!</div></div>
+      <div class="stat-chip"><div class="stat-num num-coral" id="statAccuracy">--</div><div class="stat-lbl">💡 Correct!</div></div>
+      <div class="stat-chip"><div class="stat-num num-sun"  id="statMinutes">0</div><div class="stat-lbl">⏱ Minutes</div></div>
+      <div class="stat-chip"><div class="stat-num num-lav"  id="statStars">0</div><div class="stat-lbl">⭐ Stars</div></div>
+    </div>
+
+    <!-- v379 MINDFUL MOMENTS — moved to top of sections, Yoga+Music combined -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin:14px 0 10px;padding:0 4px;">
+      <h2 style="font-family:'Baloo 2',cursive;font-size:1.05rem;font-weight:800;color:#1F6B45;margin:0;">🧘 Mindful Moments</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;">
+      <!-- Yoga & Music (combined) -->
+      <div onclick="v3OpenMindful('yoga')" style="background:linear-gradient(160deg,#A9E8BE,#7FD9A4);border-radius:20px;padding:16px 14px 14px;cursor:pointer;box-shadow:0 4px 0 #5CBD85,0 6px 14px rgba(56,83,66,.12);font-family:Nunito,sans-serif;">
+        <div style="display:flex;gap:8px;margin-bottom:10px;">
+          <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 2px 5px rgba(0,0,0,.08);">🧘</div>
+          <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 2px 5px rgba(0,0,0,.08);">🎵</div>
+        </div>
+        <div style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem;line-height:1.1;color:#1F4A2E;">Yoga &amp; Music</div>
+        <div style="font-size:.68rem;font-weight:700;color:#3D6B4D;margin-top:2px;">Move &amp; flow</div>
+      </div>
+      <!-- Breathing -->
+      <div onclick="v3OpenMindful('breathing')" style="background:linear-gradient(160deg,#7FE8CC,#4FCFB0);border-radius:20px;padding:16px 14px 14px;cursor:pointer;box-shadow:0 4px 0 #35A98C,0 6px 14px rgba(56,83,66,.12);font-family:Nunito,sans-serif;">
+        <div style="display:flex;gap:8px;margin-bottom:10px;">
+          <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 2px 5px rgba(0,0,0,.08);">🫧</div>
+          <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 2px 5px rgba(0,0,0,.08);">🍃</div>
+        </div>
+        <div style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem;line-height:1.1;color:#0F4A3D;">Breathing</div>
+        <div style="font-size:.68rem;font-weight:700;color:#1C6552;margin-top:2px;">In &amp; out</div>
+      </div>
+      <!-- Calm Board (separate) -->
+      <div onclick="v3OpenMindful('calmboard')" style="background:linear-gradient(160deg,#B9E2FC,#8FC9F5);border-radius:20px;padding:16px 14px 14px;cursor:pointer;box-shadow:0 4px 0 #5FA0DC,0 6px 14px rgba(56,83,66,.12);font-family:Nunito,sans-serif;">
+        <div style="display:flex;gap:8px;margin-bottom:10px;">
+          <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 2px 5px rgba(0,0,0,.08);">🎨</div>
+          <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 2px 5px rgba(0,0,0,.08);">🖼️</div>
+        </div>
+        <div style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem;line-height:1.1;color:#1E4A6B;">Calm Board</div>
+        <div style="font-size:.68rem;font-weight:700;color:#33608A;margin-top:2px;">Pause &amp; reset</div>
+      </div>
+      <!-- Mindful Stories (NEW full feature) -->
+      <div onclick="openMindfulStories()" style="background:linear-gradient(160deg,#D5C9FF,#B9A7F7);border-radius:20px;padding:16px 14px 14px;cursor:pointer;box-shadow:0 4px 0 #8F72D6,0 6px 14px rgba(56,83,66,.12);font-family:Nunito,sans-serif;">
+        <div style="display:flex;gap:8px;margin-bottom:10px;">
+          <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 2px 5px rgba(0,0,0,.08);">📘</div>
+          <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 2px 5px rgba(0,0,0,.08);">✨</div>
+        </div>
+        <div style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem;line-height:1.1;color:#3B2D6B;">Mindful Stories</div>
+        <div style="font-size:.68rem;font-weight:700;color:#55458A;margin-top:2px;">Listen &amp; relax</div>
+      </div>
+      <div onclick="openKindnessCorner()" style="background:linear-gradient(160deg,#FFA68F,#F98470);border-radius:20px;padding:16px 14px 14px;cursor:pointer;box-shadow:0 4px 0 #D96A52,0 6px 14px rgba(56,83,66,.12);font-family:Nunito,sans-serif;">
+        <div style="display:flex;gap:8px;margin-bottom:10px;">
+          <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 2px 5px rgba(0,0,0,.08);">❤️</div>
+          <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 2px 5px rgba(0,0,0,.08);">🤝</div>
+        </div>
+        <div style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem;line-height:1.1;color:#6B2418;">Community & World</div>
+        <div style="font-size:.68rem;font-weight:700;color:#8A4030;margin-top:2px;">Be kind &amp; caring</div>
+      </div>
+      <div onclick="switchTab('art')" style="background:linear-gradient(160deg,#FFE29A,#F7CE68);border-radius:20px;padding:16px 14px 14px;cursor:pointer;box-shadow:0 4px 0 #D9A93F,0 6px 14px rgba(56,83,66,.12);font-family:Nunito,sans-serif;">
+        <div style="display:flex;gap:8px;margin-bottom:10px;">
+          <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 2px 5px rgba(0,0,0,.08);">🎨</div>
+          <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 2px 5px rgba(0,0,0,.08);">🖌️</div>
+        </div>
+        <div style="font-family:'Baloo 2',cursive;font-weight:800;font-size:1rem;line-height:1.1;color:#5C3A00;">Art Studio</div>
+        <div style="font-size:.68rem;font-weight:700;color:#7A5510;margin-top:2px;">Draw &amp; create</div>
+      </div>
+    </div>
+
+    <!-- UNIFIED Play & Learn section -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin:8px 0 10px;padding:0 4px;">
+      <h2 style="font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;color:#3B1578;margin:0;">🌟 Play &amp; Learn</h2>
+      <a id="seeAllGamesLink" href="#" onclick="if(window._rebuildTiles){window._showAll=!window._showAll;window._rebuildTiles();var el=document.getElementById('seeAllGamesLink');if(el)el.textContent=window._showAll?'Show less \u2191':'See all \u2192';}" style="font-size:.78rem;font-weight:700;color:#5B2D9E;text-decoration:none;padding:5px 12px;border-radius:20px;background:rgba(91,45,158,.08);border:1px solid rgba(91,45,158,.15);">See all &rarr;</a>
+    </div>
+
+    <div class="section-title" id="subjectsTitle" style="display:none;">📖 Today's Subjects</div>
+    <div class="cards-grid" id="subjectCards"></div>
+    <div id="gradeGamesSection" style="margin:0 0 14px;"></div>
+
+    <!-- Subjects row -->
+<!-- Subjects row (inline with games, no separate header) -->
+    <div style="display:none;"><!-- subjects header removed --></div>
+  <!-- 4-tile subject shortcuts removed - game grid handles this -->
+
+    </div>
+<!-- _OLD MARKERS_ kept hidden for selector compatibility -->
+    <div style="display:none;" id="oldGamesAndSubjectsAnchors">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;">
+      <div onclick="v3OpenReadingSubject()" style="background:#5B2D9E;border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #2FA29A,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
+        <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
+        <div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">📖</div>
+        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;position:relative;z-index:1;">Word Wizards</div>
+      </div>
+      <div onclick="v3OpenMathSubject()" style="background:#FF9F43;border-radius:20px;padding:18px 14px 14px;text-align:center;cursor:pointer;box-shadow:0 6px 0 #D17715,inset 0 -3px 0 rgba(0,0,0,.12),inset 0 2px 0 rgba(255,255,255,.25);position:relative;overflow:hidden;color:white;font-family:Nunito,sans-serif;">
+        <div style="position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));border-radius:20px 20px 50% 50%;pointer-events:none;"></div>
+        <div style="width:46px;height:46px;margin:0 auto 8px;border-radius:14px;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);position:relative;z-index:1;">🔢</div>
+        <div style="font-family:Baloo 2,cursive;font-weight:800;font-size:1rem;position:relative;z-index:1;">Math</div>
+      </div>
+    </div>
+    </div>
+    <!-- end oldGamesAndSubjectsAnchors -->
+
+
+    <!-- Quiz box hidden - subjects handle quizzes via smart session -->
+    <div id="quizTitle" style="display:none"></div>
+    <div id="quizQuestion" style="display:none"></div>
+    <div id="quizOptions" style="display:none"></div>
+    <div id="quizFeedback" style="display:none"></div>
+    <button id="nextBtn" class="next-btn" onclick="nextQuestion()" style="display:none;margin-top:16px;width:100%;padding:16px;border-radius:40px;border:none;background:linear-gradient(135deg,#8B6FE8,#C9B8FF);color:#2D5A3D;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">Next ➡</button>
 
     <div class="section-title" id="myProgressHeader">📈 My Progress</div>
     <div class="progress-section" id="progressSection"></div>
@@ -2908,7 +3136,78 @@ sb.auth.onAuthStateChange(async(event,session)=>{
 // ══════════════════════════════════════════════════════
 //  SCREEN MANAGEMENT
 // ══════════════════════════════════════════════════════
-function showScreen(s) {
+
+  function openCommunityWorld() {
+    ov.innerHTML = '';
+    var hdr = document.createElement('div');
+    hdr.style.cssText = 'background:linear-gradient(135deg,#8FCBA3,#A9D8B8);padding:14px 16px;display:flex;align-items:center;gap:12px;flex-shrink:0;';
+    hdr.innerHTML = '<button onclick="switchTab(\'academics\')" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:1.1rem;flex-shrink:0;">✕</button>'
+      + '<div style="flex:1;"><div style="font-weight:800;color:white;font-size:1.05rem;">🌍 Community & World</div>'
+      + '<div style="font-size:.75rem;color:rgba(255,255,255,.9);">Explore stories. Learn kindness.</div></div>';
+    ov.appendChild(hdr);
+    
+    var body = document.createElement('div');
+    body.style.cssText = 'flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;';
+    
+    // Location selector
+    for(var locKey in COMMUNITY_WORLD_LOCATIONS) {
+      var loc = COMMUNITY_WORLD_LOCATIONS[locKey];
+      var card = document.createElement('div');
+      card.style.cssText = 'background:linear-gradient(135deg,'+loc.color+','+_lighten(loc.color)+');border-radius:16px;padding:18px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.08);transition:transform .2s;'
+      card.onmouseover = function() { this.style.transform = 'translateY(-2px)'; }
+      card.onmouseout = function() { this.style.transform = 'translateY(0)'; }
+      card.onclick = (function(k) { return function() { openCommunityLocation(k); } })(locKey);
+      card.innerHTML = '<div style="font-size:1.8rem;margin-bottom:8px;">'+loc.emoji+'</div>'
+        + '<div style="font-weight:800;color:#1F2937;font-size:1.05rem;">'+loc.name+'</div>'
+        + '<div style="font-size:.85rem;color:#4B5563;margin-top:6px;line-height:1.4;">'+loc.desc+'</div>'
+        + '<div style="font-size:.75rem;color:#666;margin-top:10px;font-weight:700;">'+loc.stories.length+' Stories</div>';
+      body.appendChild(card);
+    }
+    
+    ov.appendChild(body);
+  }
+
+  function openCommunityLocation(locKey) {
+    var loc = COMMUNITY_WORLD_LOCATIONS[locKey];
+    ov.innerHTML = '';
+    var hdr = document.createElement('div');
+    hdr.style.cssText = 'background:linear-gradient(135deg,'+loc.color+','+_lighten(loc.color)+');padding:14px 16px;display:flex;align-items:center;gap:12px;flex-shrink:0;';
+    hdr.innerHTML = '<button onclick="openCommunityWorld()" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:1.1rem;flex-shrink:0;">←</button>'
+      + '<div style="flex:1;"><div style="font-weight:800;color:white;font-size:1.05rem;">'+loc.name+'</div>'
+      + '<div style="font-size:.75rem;color:rgba(255,255,255,.9);">Select a story mission</div></div>';
+    ov.appendChild(hdr);
+    
+    var body = document.createElement('div');
+    body.style.cssText = 'flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;';
+    
+    // Story mission cards
+    for(var i=0;i<loc.stories.length;i++) {
+      var storyKey = loc.stories[i];
+      var story = NEW_STORIES[storyKey];
+      if(!story) continue;
+      
+      var card = document.createElement('div');
+      card.style.cssText = 'background:white;border-radius:14px;padding:14px;cursor:pointer;border:2px solid '+_lighten(loc.color)+';transition:all .2s;';
+      card.onmouseover = function() { this.style.borderColor = loc.color; this.style.backgroundColor = 'rgba('+parseInt(loc.color.substring(1,3),16)+','+parseInt(loc.color.substring(3,5),16)+','+parseInt(loc.color.substring(5,7),16)+',.05)'; }
+      card.onmouseout = function() { this.style.borderColor = _lighten(loc.color); this.style.backgroundColor = 'white'; }
+      card.onclick = (function(k) { return function() { readStory(NEW_STORIES[k]); } })(storyKey);
+      card.innerHTML = '<div style="display:flex;gap:12px;align-items:flex-start;">'
+        + '<div style="font-size:2rem;">'+story.emoji+'</div>'
+        + '<div style="flex:1;">'
+        + '<div style="font-weight:800;color:#1F2937;">'+story.title+'</div>'
+        + '<div style="font-size:.8rem;color:#666;margin-top:4px;">'+story.theme+' · '+story.lexile+'</div>'
+        + '</div></div>';
+      body.appendChild(card);
+    }
+    
+    ov.appendChild(body);
+  }
+
+  // Color helpers
+  function _lighten(hex) { var r=parseInt(hex.substring(1,3),16); var g=parseInt(hex.substring(3,5),16); var b=parseInt(hex.substring(5,7),16); var avg=Math.round((r+g+b)/3); return '#'+avg.toString(16).padStart(2,'0').repeat(3); }
+
+
+  function showScreen(s) {
   document.getElementById('authScreen').classList.toggle('hidden', s!=='auth');
   document.getElementById('welcomeScreen').classList.toggle('hidden', s!=='welcome');
   document.getElementById('childPicker').classList.toggle('hidden',s!=='children');
@@ -5265,7 +5564,7 @@ function buildColoringBook(container) {
   container.innerHTML = `
     <div class="coloring-section" style="width:100%;grid-column:1/-1;">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-        <button onclick="switchTab('academics')" style="background:rgba(91,45,158,.1);border:none;border-radius:20px;padding:7px 14px;font-weight:700;font-size:.85rem;color:#5B2D9E;cursor:pointer;">← Back</button>
+        <button onclick="switchTab('academics')" style="background:rgba(91,45,158,.1);border:none;border-radius:20px;padding:7px 14px;font-weight:700;font-size:.85rem;color:#5B2D9E;cursor:pointer;">Home</button>
         <div style="font-family:'Baloo 2',cursive;font-size:1.1rem;font-weight:800;">🎨 Pick a picture to color!</div>
         <div style="width:80px;"></div>
       </div>
@@ -7146,7 +7445,14 @@ function openBusyBook(grade) {
 
   var BOOKS = {
     PreK:[
-      {emoji:'🐶',title:'Dogs',fact:'Dogs are pets. They wag their tails when happy. Dogs say WOOF!',funFact:'A dog\'s nose print is as unique as a fingerprint!',q:'What do dogs do when happy?',opts:['Wag their tails','Meow','Fly away','Sleep'],a:0},
+      {emoji:'🐶',title:'Dogs',fact:'Dogs are pets. They wag their tails when happy. Dogs say WOOF!',funFact:'A dog\'s nose print is as unique as a fingerprint!',questions:[
+        {q:'What do dogs do when happy?',opts:['Wag their tails','Meow','Fly away','Sleep'],a:0},
+        {q:'What sound do dogs make?',opts:['Woof','Meow','Chirp','Hiss'],a:0},
+        {q:'What is special about a dog\'s nose?',opts:['It is cold','The print is unique','It is big','It is pink'],a:1},
+        {q:'Dogs are also called...',opts:['Pets','Siblings','Friends','All of these'],a:3},
+        {q:'What do dogs wag when they are happy?',opts:['Ears','Legs','Tail','Paws'],a:2},
+        {q:'A dog\'s nose print is like a human\'s...',opts:['Face','Fingerprint','Hair','Voice'],a:1},
+      ]},
       {emoji:'🌧️',title:'Rain',fact:'Rain comes from clouds. Water falls from the sky. Plants love rain!',funFact:'A raindrop falls at about 14 miles per hour.',q:'Where does rain come from?',opts:['Clouds','Mountains','The ground','The sun'],a:0},
       {emoji:'🌱',title:'Seeds',fact:'Seeds grow into plants. They need water, soil, and sunlight. Small seeds make big trees!',funFact:'The tiniest seed in the world is the size of a grain of dust!',q:'What do seeds need to grow?',opts:['Water, soil, sunlight','Ice and snow','Darkness','Wind only'],a:0},
       {emoji:'🐛',title:'Caterpillars',fact:'Caterpillars eat leaves all day. Then they make a cocoon and become butterflies!',funFact:'A caterpillar grows up to 100 times its size before becoming a butterfly.',q:'What does a caterpillar become?',opts:['A butterfly','A bee','A dragonfly','A moth'],a:0},
@@ -7220,7 +7526,7 @@ function openBusyBook(grade) {
     ov.innerHTML='';
     var h=document.createElement('div');
     h.style.cssText='background:linear-gradient(135deg,'+CA+','+CB+');padding:12px 20px;display:flex;align-items:center;gap:10px;flex-shrink:0;';
-    h.innerHTML='<!-- v447: removed back button --><button style="display:none;" onclick="showLibrary()" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:.9rem;flex-shrink:0;">←</button>'
+    h.innerHTML='<!-- v447: removed back button --><button style="display:none;" onclick="showLibrary()" style="background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:.9rem;flex-shrink:0;">✕</button>'
       +'<div style="font-family:Baloo 2,cursive;font-weight:800;color:white;font-size:1.05rem;flex:1;text-align:center;">'+card.emoji+' '+card.title+'</div>'
       +'<button data-closeov="busyBookOv" style="background:rgba(255,255,255,.25);border:none;color:white;border-radius:50%;width:30px;height:30px;cursor:pointer;font-weight:800;flex-shrink:0;">✕</button>';
     ov.appendChild(h);
@@ -7228,7 +7534,7 @@ function openBusyBook(grade) {
     var body=document.createElement('div');
     body.style.cssText='flex:1;overflow-y:auto;padding:16px;max-width:600px;margin:0 auto;width:100%;';
 
-    // Main fact
+    // Main fact (shown once)
     var factCard=document.createElement('div');
     factCard.style.cssText='background:white;border-radius:20px;padding:20px;margin-bottom:12px;box-shadow:0 4px 14px rgba(14,165,233,.12);';
     factCard.innerHTML='<div style="font-size:4rem;text-align:center;margin-bottom:12px;">'+card.emoji+'</div>'
@@ -7236,6 +7542,42 @@ function openBusyBook(grade) {
       +'<div style="font-size:.95rem;color:#374151;line-height:1.7;">'+card.fact+'</div>'
       +'<button onclick="if(\'speechSynthesis\' in window){var u=new SpeechSynthesisUtterance(\''+card.fact.replace(/'/g,'')+'\');u.rate=0.85;window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}" style="margin-top:12px;padding:8px 16px;border-radius:20px;border:none;background:#E0F2FE;color:#0369A1;font-weight:700;cursor:pointer;">🔊 Read to me</button>';
     body.appendChild(factCard);
+
+    // Quiz questions (cycling)
+    var qArray = (card.questions && card.questions.length>0) ? card.questions : (card.q?[{q:card.q,opts:card.opts,a:card.a}]:[]);
+    var qIdx=0;
+    function showQ(){
+      if(qIdx>=qArray.length){ return; } // done
+      body.innerHTML=''; // clear body
+      var fCard=factCard.cloneNode(true); body.appendChild(fCard);
+      var q=qArray[qIdx];
+      var qCard=document.createElement('div');
+      qCard.style.cssText='background:#E0F2FE;border-radius:18px;padding:16px;margin:12px 0;';
+      qCard.innerHTML='<div style="font-weight:800;color:#0369A1;margin-bottom:2px;">Question '+(qIdx+1)+' of '+qArray.length+'</div>'
+        +'<div style="font-size:.95rem;color:#374151;margin-bottom:12px;">'+q.q+'</div>';
+      body.appendChild(qCard);
+      var opts=document.createElement('div');
+      opts.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;';
+      q.opts.forEach(function(opt,i){
+        var btn=document.createElement('button');
+        btn.style.cssText='padding:12px;border-radius:12px;border:2px solid #0369A1;background:white;color:#0369A1;font-weight:700;cursor:pointer;';
+        btn.textContent=opt;
+        btn.onclick=function(){
+          var correct=(i===q.a);
+          btn.style.background=correct?'#E8FBF3':'#FFF0EE';
+          btn.style.borderColor=correct?'#22c55e':'#ef4444';
+          btn.style.color=correct?'#166534':'#991b1b';
+          btn.style.pointerEvents='none';
+          setTimeout(function(){
+            qIdx++;
+            showQ();
+          },1000);
+        };
+        opts.appendChild(btn);
+      });
+      body.appendChild(opts);
+    }
+    showQ();
 
     // Fun fact
     var funCard=document.createElement('div');
@@ -9369,7 +9711,7 @@ function openLangGame(grade) {
       }).join('')
       +'</div>'
       +'<div style="display:flex;gap:10px;justify-content:center;">'
-      +'<button onclick="window._backspaceLetter&&window._backspaceLetter()" style="padding:10px 20px;border-radius:30px;border:none;background:linear-gradient(135deg,#FEF3C7,#FDE68A);color:#92400E;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">← Delete One</button>'
+      +'<button onclick="window._backspaceLetter&&window._backspaceLetter()" style="padding:10px 20px;border-radius:30px;border:none;background:linear-gradient(135deg,#FEF3C7,#FDE68A);color:#92400E;font-family:Nunito,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;">✕ Delete One</button>'
       +'<button onclick="window._clearWord()" style="padding:10px 20px;border-radius:30px;border:none;background:#DC2626;color:white;font-family:Nunito,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;">✕ Clear All</button>'
       +'</div>'
       +'</div>';
@@ -10820,7 +11162,7 @@ function openCodeBreaker(grade){
       +'<div id="cbBank" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:14px;">'
       +bank.map(function(l,i){return '<button onclick="window._cbPick('+i+')" id="cbL'+i+'" style="width:46px;height:46px;border-radius:12px;border:none;background:linear-gradient(135deg,'+CA+','+CB+');color:white;font-family:\'Baloo 2\',cursive;font-size:1.3rem;font-weight:800;cursor:pointer;box-shadow:0 3px 0 rgba(43,75,112,.3);">'+l+'</button>';}).join('')
       +'</div>'
-      +'<div style="text-align:center;"><button onclick="window._cbBack()" style="padding:10px 22px;border-radius:24px;border:none;background:#FEF3C7;color:#92400E;font-weight:800;cursor:pointer;">← Delete One</button></div>'
+      +'<div style="text-align:center;"><button onclick="window._cbBack()" style="padding:10px 22px;border-radius:24px;border:none;background:#FEF3C7;color:#92400E;font-weight:800;cursor:pointer;">✕ Delete One</button></div>'
       +'</div>';
     updateBuilt();
   }
@@ -14330,9 +14672,355 @@ function getCardTile(label, fallbackEmoji, size) {
 }
 window.getCardTile = getCardTile;
 
+
+// v460: 13 NEW STORIES — G3 (4) + G4 (4) + G5 (5)
+// Each story: title, theme, lexile, pages[], quizzes[], vocabulary
+const NEW_STORIES = {
+  // ══ GRADE 3 ══════════════════════════════════════════════════════
+  'g3_1': {
+    title: 'The Case of the Missing Moonlight',
+    theme: 'Patience & Problem-Solving',
+    emoji: '🌙',
+    grade: '3',
+    lexile: '560L',
+    pages: [
+      {text: 'One quiet evening, just as the sky turned deep blue and the first stars began to blink awake, something strange happened. The moon did not appear.\n\nLila the fox was brushing her tail and getting ready for bed when she looked up and gasped. "Where did the moon go?" she asked.\n\nOutside her burrow, the forest was usually soft and silver at night. But now it looked dim and a little unsure of itself.'},
+      {text: 'Lila could not sleep. She grabbed her little satchel, slipped on her boots, and set out to find the missing moonlight.\n\nAs she trotted down the forest path, she met her neighbor, a raccoon named Rollo, who loved building tiny machines out of pinecones, buttons, and twine.\n\n"Rollo," said Lila, "the moon is missing!"\n\nRollo adjusted his glasses and looked up. "That is highly unusual," he said. "The moon is very reliable. Unless... something is covering it."'},
+      {text: 'Together, they followed the path to the hill where the fireflies danced. The fireflies formed a glowing ring around Lila and Rollo, as if they knew something important.\n\nOne firefly buzzed in a tiny zigzag. Another blinked in a slow rhythm. Rollo nodded. "They\'re saying the clouds are gathering."\n\nThe friends hurried farther up the hill.'},
+      {text: 'There, beneath a giant pine tree, they found a sleepy turtle named Tessa sitting beside a puddle.\n\n"Tessa," said Lila, "have you seen the moon?"\n\nTessa smiled and pointed upward. "Not gone," she said slowly. "Just hidden."\n\nJust then, a cool breeze passed through the forest. The clouds drifted apart like curtains opening on a stage. Behind them, the moon slowly appeared, round and bright and glowing like a lantern in the sky.'},
+      {text: '"Oh!" said Lila.\n\nRollo grinned. "I was right. The moon was never lost."\n\nTessa nodded. "Sometimes the sky changes. Rain clouds come before the rain. The moon waits behind them."\n\nLila looked at the returning moon and felt a warm calm settle in her chest. She had thought something was wrong, but really, nature was simply moving through its own quiet rhythm.'}
+    ],
+    vocabulary: ['burrow','unusual','gathering','chrysalis'],
+    quizzes: [
+      {q: 'Why did Lila go outside?', opts: ['To play', 'The moon was missing', 'To find Rollo', 'To sleep'], a: 1},
+      {q: 'What did Rollo think was happening to the moon?', opts: ['It moved away', 'Something was covering it', 'It broke', 'It disappeared forever'], a: 1},
+      {q: 'What did the fireflies do?', opts: ['Sang a song', 'Blinked in patterns', 'Flew away', 'Ignored them'], a: 1},
+      {q: 'Who did Lila meet at the hill?', opts: ['A bird', 'A turtle named Tessa', 'A bear', 'A squirrel'], a: 1},
+      {q: 'What made the clouds move away?', opts: ['A strong wind', 'The sun', 'Lila pushed them', 'A rainstorm'], a: 0},
+      {q: 'What did Lila learn from Tessa?', opts: ['How to fly', 'Sometimes things are just hidden, not gone', 'Turtles are slow', 'Never go outside'], a: 1},
+      {q: 'How did Lila feel at the end?', opts: ['Sad', 'Scared', 'Calm and peaceful', 'Angry'], a: 2},
+    ]
+  },
+  'g3_2': {
+    title: 'The Backpack That Knew the Way',
+    theme: 'Self-Trust & Confidence',
+    emoji: '🎒',
+    grade: '3',
+    lexile: '580L',
+    pages: [
+      {text: 'Milo had a backpack that was old, faded, and patched on one side with blue thread. It had a bent zipper, a tiny tear near the bottom, and a pencil mark on the front from the first day he ever carried it to school.\n\nMost kids thought it looked ordinary. Milo thought so too, until the morning it began to act strangely.\n\nHe was running late for school and couldn\'t find his sneakers. His room looked like a storm had passed through it.'},
+      {text: '"Milo!" called his mom. "We have to go!"\n\nHe grabbed his backpack and slung it over his shoulder. Then, without thinking, he turned left instead of right and opened the hall closet.\n\nThere were his sneakers.\n\nMilo blinked. "Huh."\n\nAt school, the backpack did it again.'},
+      {text: 'He reached into it for his lunch and found it tucked behind his folder. When he felt nervous about a pop quiz, his hand brushed against the strap, and somehow he remembered the answer to the first question.\n\nLater, when he worried about sitting with a new group at recess, the backpack seemed to nudge him toward the picnic table near the oak tree. The kids there were laughing about a card game, and one of them waved. "Hey, want to play?" they asked.'},
+      {text: 'By Friday, Milo was certain of it. His backpack knew the way.\n\nThat afternoon, he asked his grandmother about it while she was sewing in her rocking chair. She smiled when she saw the old backpack. "Oh, that one," she said. "It belonged to your great-grandfather."\n\nMilo sat down. "Did it help him too?"'},
+      {text: 'Grandmother\'s eyes twinkled. "Not in the way you think. Your great-grandfather believed that people find their way by paying attention. He said that when you pause, look closely, and trust yourself, you often know more than you realize."\n\nMilo looked at the backpack. "So it wasn\'t magic?"\n\nHis grandmother tapped the patch gently. "Maybe not magic. But it did remind you to notice things. And sometimes that\'s even better."'}
+    ],
+    vocabulary: ['satchel','pause','confident','instinct'],
+    quizzes: [
+      {q: 'What was unusual about Milo\'s backpack?', opts: ['It was brand new', 'It seemed to know the way', 'It was colorful', 'It could fly'], a: 1},
+      {q: 'Where did the backpack help him find his sneakers?', opts: ['Under his bed', 'In the closet', 'By the door', 'On the shelf'], a: 1},
+      {q: 'How did the backpack help at school?', opts: ['Opened doors', 'Found his lunch', 'Did his homework', 'Made friends'], a: 1},
+      {q: 'Who did the backpack belong to?', opts: ['His mom', 'His great-grandfather', 'A wizard', 'His teacher'], a: 1},
+      {q: 'What did grandmother say about the backpack?', opts: ['It was cursed', 'It helped you trust yourself', 'It was broken', 'It had superpowers'], a: 1},
+      {q: 'What was the real magic about the backpack?', opts: ['It moved things', 'It reminded Milo to notice and trust himself', 'It talked to him', 'It disappeared'], a: 1},
+    ]
+  },
+  'g3_3': {
+    title: 'The Garden Under the Library',
+    theme: 'Stories & Imagination',
+    emoji: '🌿',
+    grade: '3',
+    lexile: '590L',
+    pages: [
+      {text: 'On rainy afternoons, the library was one of Nia and Noor\'s favorite places.\n\nThe girls loved the smell of paper, the tall shelves, and the cozy chairs by the window. One day, while exploring the back corner of the children\'s section, they noticed something unusual.\n\nA tiny staircase was hidden behind a shelf of old fairy tale books.\n\nNoor frowned. "Was that always there?"\n\nNia shook her head. "I don\'t think so."'},
+      {text: 'They glanced around to see if a librarian was watching, then slipped carefully behind the shelf and down the staircase. The steps were narrow and curved, and each one glowed faintly as if it had been brushed with moonlight.\n\nAt the bottom, they found a secret garden.\n\nIt was not a garden like the one outside their school. This garden was underground, inside a wide stone room with arching walls and a ceiling shaped like a dome.'},
+      {text: 'Vines curled around columns. Tiny glowing mushrooms grew near the path. Flowers with paper-thin petals opened beside little lanterns made from jars and string.\n\nMost surprising of all, every plant had something written on it.\n\nA leaf might hold a sentence from a mystery novel. A flower petal might carry a poem. A stem might be wrapped in a line from a biography, and the roots of a fern might hum a song from a chapter book.'},
+      {text: '"Stories grow here," Nia whispered.\n\nA gentle voice answered from behind them. "That\'s right."\n\nThe girls turned and saw an old gardener in a green coat, holding a watering can that sparkled like glass.\n\n"I\'m the keeper of the garden," the gardener said. "Every book in the library feeds the plants below."\n\nNoor looked around in wonder. "So the garden grows when people read?"'},
+      {text: '"Yes," said the gardener. "Not just with words, but with imagination, ideas, and feelings. Stories are living things."\n\nThe girls walked between the rows of plants, reading sentences out loud as they went. The more they read, the brighter the garden glowed.\n\nAt the far end of the room, they found a tall tree with bent branches and drooping leaves. Its trunk had a plaque that read: The Memory Tree.\n\n"What happened to it?" Noor asked.\n\nThe gardener sighed softly. "It has not been watered with enough stories lately."'}
+    ],
+    vocabulary: ['staircase','dome','biography','imagination'],
+    quizzes: [
+      {q: 'Where did Nia and Noor find the hidden staircase?', opts: ['In a closet', 'Behind a bookshelf', 'Under a desk', 'Outside'], a: 1},
+      {q: 'What was unusual about the garden plants?', opts: ['They glowed', 'They had stories written on them', 'They were huge', 'They talked'], a: 1},
+      {q: 'What did the gardener say fed the plants?', opts: ['Water and soil', 'Books in the library above', 'Sunlight', 'Magic'], a: 1},
+      {q: 'What was the Memory Tree?', opts: ['A real oak', 'A dying tree lacking stories', 'A painting', 'A statue'], a: 1},
+      {q: 'Why was the Memory Tree sad?', opts: ['No one visited', 'Not enough stories had watered it', 'It was old', 'The gardener forgot it'], a: 1},
+      {q: 'What did the girls learn?', opts: ['How to read', 'Stories are living things', 'How to garden', 'Magic is real'], a: 1},
+    ]
+  },
+  'g3_4': {
+    title: 'The Star That Needed a Partner',
+    theme: 'Kindness & Connection',
+    emoji: '⭐',
+    grade: '3',
+    lexile: '570L',
+    pages: [
+      {text: 'Far above the world, in a sky full of shining lights, there lived a small star named Pip.\n\nPip was not the biggest star. Pip was not the brightest star. Pip did not sparkle the loudest or leave the longest trail of light.\n\nPip mostly glowed a quiet, steady gold.\n\nEach night, Pip watched the other stars twinkle together in patterns that looked like ladders, animals, crowns, and secret maps. Pip wanted to join them, but every time it tried, it felt too small.'},
+      {text: '"I\'ll never be important enough," Pip whispered.\n\nDown on Earth, a girl named Amara was having a difficult week. She had lost her favorite notebook, spilled juice on her project, and felt left out at recess when a group of kids chose teams without her.\n\nThat night, Amara stood by her window and looked up.\n\n"I wish I could do something that mattered," she said.'},
+      {text: 'Pip heard her wish.\n\nIt had never happened before, but somehow the star and the girl noticed each other at the same time. A tiny spark of understanding moved between them, like a thread of light.\n\nPip twinkled twice.\n\nAmara blinked. "Hello?"\n\nPip glowed a little brighter.'},
+      {text: 'Amara smiled. "Are you talking to me?"\n\nOf course a star could not speak in words, but Pip found another way. It tilted its light just enough to shine directly on Amara\'s window, and suddenly the room felt warmer.\n\nAmara reached for her notebook and opened a fresh page.\n\n"If you\'re listening," she whispered, "I\'ll try again tomorrow."'},
+      {text: 'Pip shimmered.\n\nThe next day, Amara took a deep breath and sat beside a new student at lunch. The student smiled back. Later, when another kid dropped their pencils, Amara helped pick them up.\n\nFrom then on, Pip and Amara became partners in the quietest way. Whenever Amara needed courage, Pip shone a little brighter. Whenever Pip felt small, Amara looked up and smiled.\n\nTogether, they made the sky feel less lonely.'}
+    ],
+    vocabulary: ['whispered','sparkle','courage','partner'],
+    quizzes: [
+      {q: 'How did Pip feel about being a small star?', opts: ['Happy', 'Too small to matter', 'Angry', 'Curious'], a: 1},
+      {q: 'What was Amara wishing for?', opts: ['To win a game', 'To do something that mattered', 'To have a notebook', 'To sleep'], a: 1},
+      {q: 'How did Pip and Amara connect?', opts: ['Talked on phone', 'Both noticed each other at the same time', 'Met at school', 'Wrote letters'], a: 1},
+      {q: 'How did Pip communicate with Amara?', opts: ['With words', 'By shining light on her window', 'By singing', 'By email'], a: 1},
+      {q: 'What kind acts did Amara do?', opts: ['She played video games', 'She sat with someone new and helped pick up pencils', 'She told jokes', 'She danced'], a: 1},
+      {q: 'What did both Pip and Amara learn?', opts: ['How to count stars', 'Small acts of kindness matter and help others', 'How to fly', 'Magic tricks'], a: 1},
+    ]
+  },
+
+  // ══ GRADE 4 ══════════════════════════════════════════════════════
+  'g4_1': {
+    title: 'The Lantern in the Attic',
+    theme: 'Honesty & Emotional Courage',
+    emoji: '🏮',
+    grade: '4',
+    lexile: '720L',
+    pages: [
+      {text: 'Mae had always thought her grandmother\'s attic was the quietest place in the house.\n\nThe ceiling sloped low, the air smelled faintly like cedar and dust, and stacks of old books stood in uneven towers beside trunks tied with ribbon. On rainy Saturdays, Mae liked to climb the narrow stairs and search through forgotten things while her grandmother mended sweaters below.\n\nThat day, Mae was looking for wrapping paper when she spotted a small brass lantern tucked behind a crate of photo albums.\n\nIt was dented and old, with tiny vines carved into the metal handle. Inside the glass was a wick, but no flame.\n\nMae turned it in her hands. "Pretty," she whispered.'},
+      {text: 'The moment she said the word, the lantern gave a soft golden flicker.\n\nMae froze. The lantern blinked once, then went dark again.\n\nShe looked around, half expecting her grandmother to appear at the top of the stairs and explain everything, but the attic remained still.\n\nMae touched the lantern again. "Hello?"\n\nThis time, nothing happened. She carried it downstairs and showed it to her grandmother, who looked up from her sewing hoop and smiled in a way that made Mae think she already knew more than she was saying.'},
+      {text: '"Where did you find that?" Grandma asked.\n\n"In the attic."\n\n"Yes, I thought so."\n\nMae set the lantern on the table. "It lit up when I said it was pretty."\n\nGrandmother\'s eyes warmed. "Did it?"\n\nMae nodded.\n\n"Well," Grandmother said, "some objects like to respond to honesty."\n\nOver the next few days, Mae discovered that the lantern flickered whenever she spoke a true feeling out loud. It glowed when she admitted she was tired, or proud, or disappointed.'},
+      {text: 'But there was one feeling Mae had not yet said aloud.\n\nSince moving to a new town, she had been pretending she was fine. She smiled in class. She answered politely. She even told her parents she liked the new neighborhood, because she did not want to seem difficult or ungrateful.\n\nBut each night, when she got into bed, she felt the same lonely knot in her chest.\n\nOne Thursday, after school, Mae climbed to the attic with the lantern in her hands. Rain tapped against the roof.'},
+      {text: 'Mae took a breath. "I\'ve been lying," she said quietly.\n\nThe lantern gave a small flicker.\n\nMae swallowed. "Not about big things. Just… about how I feel."\n\nThe lantern brightened. "I don\'t actually feel settled here yet. I miss my friends. I miss my room at the old house."\n\nNow the lantern was glowing so warmly it lit up the dust in the air like sparks.\n\nA moment later, Mae heard footsteps on the attic stairs. Her grandmother appeared in the doorway, holding two mugs of cocoa.\n\n"I thought you might be up here," she said gently.'}
+    ],
+    vocabulary: ['attic','dented','ungrateful','respond'],
+    quizzes: [
+      {q: 'What did Mae find in the attic?', opts: ['A book', 'A brass lantern', 'A photograph', 'A doll'], a: 1},
+      {q: 'What made the lantern glow?', opts: ['Electricity', 'Honest feelings', 'A match', 'Magic words'], a: 1},
+      {q: 'Why was Mae pretending to be fine?', opts: ['She was shy', 'She didn\'t want to worry her family', 'She was playing a game', 'She forgot the truth'], a: 1},
+      {q: 'What true feeling did Mae finally admit?', opts: ['She was tired', 'She missed her old home and felt lonely', 'She was hungry', 'She was angry'], a: 1},
+      {q: 'What did grandmother mean by "honesty is a bridge"?', opts: ['Honesty helps connect people', 'Bridges are honest', 'You need truth to cross', 'Lanterns guide you'], a: 0},
+      {q: 'How did Mae feel after telling the truth?', opts: ['Worse', 'Relieved and less alone', 'Confused', 'Tired'], a: 1},
+      {q: 'What did the lantern represent?', opts: ['A real light', 'Truth and honest feelings', 'Magic', 'The grandmother'], a: 1},
+    ]
+  },
+  'g4_2': {
+    title: 'The River That Forgot Its Song',
+    theme: 'Community & Problem-Solving',
+    emoji: '🌊',
+    grade: '4',
+    lexile: '750L',
+    pages: [
+      {text: 'The river that ran through Maple Bend had always been noisy in the best way.\n\nIt burbled over rocks, splashed against roots, and curled around the old stone bridge with a cheerful rush that sounded like laughter. People in town often said the river was singing.\n\nBut one spring morning, the singing stopped.\n\nJordan noticed it first while walking with his cousin Lina on the path behind the bakery. He paused near the riverbank and frowned.\n\n"Do you hear that?"\n\nLina listened. "Hear what?"\n\n"The river. It\'s different."'},
+      {text: 'It was still there, glinting in the sun, but the water moved with a strange sluggishness. The usual rushing sound was gone.\n\nBy afternoon, the whole town had noticed. The baker said the silence made her feel sleepy. The mail carrier said it made the streets seem empty. Even the dogs walked more quietly than usual.\n\nJordan could not stop thinking about it. That evening, he and Lina went back to the river with flashlights, notebooks, and determination.\n\n"If a river forgets its song," Jordan said, "maybe it needs help remembering."\n\nThey started by following the water upstream.'},
+      {text: 'Near a bend in the path, they found a cluster of birds pecking at something caught between the rocks.\n\n"Clue one," said Lina, crouching down.\n\nJordan peered closer. The river was partially blocked by branches, leaves, and a rusted shopping cart wedged beneath the surface.\n\n"That can\'t be good," he muttered.\n\nThey moved farther up the stream and found a fisherman beneath a willow tree. He had a weathered hat and a face that looked like it had spent many years listening carefully.\n\n"Excuse me," said Lina. "Has the river always sounded like this?"'},
+      {text: 'The fisherman shook his head. "Not if it\'s healthy. Water likes to move. When it can\'t move well, everything gets quiet."\n\nJordan looked at the river, then at the cart, then at the tangled mess of branches.\n\n"So it\'s blocked?" he said.\n\n"Partly. And there may be more places."\n\nThey kept investigating downstream and found more debris. They told the adults what they\'d found. By the next day, neighbors came with gloves, nets, and rakes. The hardware store owner helped remove fence debris.'},
+      {text: 'The work took hours. Branches were lifted. Trash was collected. The shopping cart was carefully pulled out with ropes and teamwork.\n\nThen, slowly at first and then all at once, the river shifted.\n\nWater hurried over the freed stones. The sound returned as a soft rush, then a bright splash, then a full, lively song.\n\nJordan and Lina stood on the bridge grinning.\n\n"It\'s singing again," Lina said.\n\nThe townspeople listened to the river for a long time that evening. The baker said the sound made her feel awake. The dogs barked at the world again.'}
+    ],
+    vocabulary: ['burbled','sluggishness','investigation','debris'],
+    quizzes: [
+      {q: 'What changed about the river at the start?', opts: ['It stopped flowing', 'It stopped making its cheerful sound', 'It turned brown', 'It froze'], a: 1},
+      {q: 'What caused the river to lose its song?', opts: ['A drought', 'Blockages like branches and a shopping cart', 'A dam', 'Winter weather'], a: 1},
+      {q: 'Who helped explain what was wrong?', opts: ['A scientist', 'The baker', 'A fisherman', 'A librarian'], a: 2},
+      {q: 'What did the fisherman say about water?', opts: ['It\'s cold', 'It likes to move and when it can\'t, everything gets quiet', 'It\'s loud', 'It never changes'], a: 1},
+      {q: 'How did the town fix the problem?', opts: ['Called the city', 'Gave up', 'Worked together to remove the blockages', 'Built a new bridge'], a: 2},
+      {q: 'What happened after the debris was cleared?', opts: ['Nothing', 'The river\'s song returned', 'It ran faster forever', 'The town moved'], a: 1},
+      {q: 'What did Jordan learn about solving problems?', opts: ['Work alone', 'Pay attention, ask questions, work together', 'Don\'t bother trying', 'Always give up'], a: 1},
+    ]
+  },
+  'g4_3': {
+    title: 'The Chair by the Window',
+    theme: 'Memory & Inclusion',
+    emoji: '🪑',
+    grade: '4',
+    lexile: '730L',
+    pages: [
+      {text: 'Every afternoon, Theo noticed the chair by the window.\n\nIt sat in the back of Room 14, next to the tall bookshelf and the jar of pencils with chewed erasers. The chair was plain, wooden, and slightly scratched, but there was something about it that made Theo look at it every day.\n\nHe had no idea why.\n\nThe chair never moved. It never made a sound. It simply waited in the sunlight that poured through the window. By October, the chair had become part of the room the way a familiar song becomes part of a day. But Theo still could not shake the feeling that it mattered.'},
+      {text: 'One afternoon, when the class was packing up, Theo finally raised his hand.\n\n"Ms. Alvarez?"\n\n"Yes, Theo?"\n\n"Why is there an extra chair by the window?"\n\nThe room grew very quiet.\n\nMs. Alvarez looked toward the chair, then back at Theo. Her expression softened.\n\n"That chair belonged to a student named Nora," she said. "She was in this class last year, but her family moved before the school year ended."\n\nTheo glanced at the empty seat.'},
+      {text: '"We kept it here," Ms. Alvarez continued, "because Nora loved that spot. She used to say the light made the room feel less lonely."\n\nTheo looked at the window. The sunlight seemed warmer now.\n\n"Does she know we still have it?" he asked.\n\nMs. Alvarez smiled. "Her family visits sometimes. And when they do, we tell them stories about what\'s happening in Room 14."\n\nTheo thought about that all the way home. The next day, he brought a note and left it on the chair:\n\nDear Nora, We still remember you. Room 14 is full of stories. —Theo'},
+      {text: 'When Ms. Alvarez found the note, she read it carefully, then gave Theo a long, proud look.\n\n"That was thoughtful," she said.\n\nThe idea spread. Soon, other students began leaving notes too. Some were funny. Some were drawings. Some were about class projects and field day.\n\nThe chair by the window became more than a chair. It became a place where memory lived.'},
+      {text: 'One day, Ms. Alvarez suggested they make a "welcome notebook" to sit on the chair. Inside, students could leave messages for anyone who had once been part of their class.\n\nTheo helped decorate the cover with stars and the words "You Belong Here."\n\nThe notebook filled quickly. There were notes for Nora and for other students who had moved away. There were also messages for new classmates, substitutes, and the custodian who always fixed broken chairs.\n\nThe room began to feel different. Not busier. Not louder. Kinder.\n\nTheo still noticed the chair by the window every afternoon, but now he understood why it had mattered. It was empty, yes. But it was not forgotten.'}
+    ],
+    vocabulary: ['custodian','substitute','intentional','inclusive'],
+    quizzes: [
+      {q: 'Why did Theo keep noticing the chair?', opts: ['It was bright red', 'He didn\'t know why', 'He liked to sit in it', 'It moved around'], a: 1},
+      {q: 'Who did the chair belong to?', opts: ['Ms. Alvarez', 'Theo', 'A student named Nora', 'The janitor'], a: 2},
+      {q: 'Why was the chair kept in the classroom?', opts: ['It was broken', 'Nora loved that spot and it honored her memory', 'There was no room elsewhere', 'The teacher forgot to move it'], a: 1},
+      {q: 'What did Theo\'s note say?', opts: ['Sit here', 'We remember you', 'Chair is broken', 'I\'m lonely'], a: 1},
+      {q: 'What did the class create together?', opts: ['A new classroom', 'A welcome notebook for messages', 'A painting', 'A new chair'], a: 1},
+      {q: 'How did the room change over time?', opts: ['It got emptier', 'It felt kinder and more inclusive', 'It got louder', 'Nothing changed'], a: 1},
+      {q: 'What did Theo learn?', opts: ['How to write', 'That people matter and kindness keeps memories alive', 'About broken chairs', 'How to teach'], a: 1},
+    ]
+  },
+  'g4_4': {
+    title: 'The Map Made of Mondays',
+    theme: 'Growth & Self-Discovery',
+    emoji: '🗺️',
+    grade: '4',
+    lexile: '740L',
+    pages: [
+      {text: 'On Monday morning, Nina opened her sketchbook and found a map she did not remember drawing.\n\nIt was small, folded into the inside cover, and sketched in blue pencil. At the top was a title: MONDAY.\n\nUnderneath were three tiny drawings: the library steps, the creek behind the playground, and the art room door.\n\nNina stared at it for a full minute. Then she turned the page.\n\nTuesday had its own map. So did Wednesday. And Thursday.\n\nBy the end of the week, her sketchbook had maps leading to different places around school and town. None of them made sense at first. Some pointed to familiar places. Others showed spots Nina had barely noticed before.'},
+      {text: 'Nina brought the book to her older brother.\n\nHe squinted at the pages. "Looks like treasure maps."\n\n"Treasure maps don\'t have Mondays on them," Nina said.\n\n"Maybe they\'re not for treasure," he said. "Maybe they\'re for lessons."\n\nNina was not sure what that meant. But she decided to follow the first map.\n\nOn Monday, the map led her to the library steps, where she found her friend Keisha sitting alone, trying not to cry because her reading partner had been absent.\n\nNina sat beside her and helped her practice aloud.'},
+      {text: 'On Tuesday, the map led Nina to the creek, where she found a classmate trying to build a bridge from sticks for a science challenge. Nina remembered a trick from a nature video and helped them stabilize the design.\n\nOn Wednesday, the art room door led Nina to a paint-covered stool and a project she had nearly given up on finishing. She decided to keep going.\n\nOn Thursday, the map pointed to the science lab, where Nina realized she had the right idea for her experiment but was too nervous to test it. So she tested it.'},
+      {text: 'By Friday, Nina understood that the maps had not been leading her to places.\n\nThey had been leading her to choices. Each Monday starts with a place, but the real map is what happens after I get there.\n\nHer brother raised his fork at dinner. "So the treasure was growth."\n\nNina looked at the maps again. The pages no longer looked mysterious. They looked like proof that she was changing, one small decision at a time.\n\nThe next Monday, the sketchbook was blank.\n\nNina smiled, picked up her pencil, and drew a new map herself.'}
+    ],
+    vocabulary: ['sketchbook','stabilize','experiment','growth'],
+    quizzes: [
+      {q: 'What strange thing did Nina find in her sketchbook?', opts: ['A love letter', 'Maps she didn\'t draw', 'A secret message', 'A shopping list'], a: 1},
+      {q: 'What did each map lead to?', opts: ['Real treasure', 'A choice or moment to help someone', 'Food', 'A treasure chest'], a: 1},
+      {q: 'How did the maps help Nina during the week?', opts: ['They got her lost', 'Each led her to a moment where she made a good choice', 'They were wrong', 'They confused her'], a: 1},
+      {q: 'What did Nina realize by the end?', opts: ['Maps aren\'t real', 'Growth happens one choice at a time', 'School is boring', 'She hates drawing'], a: 1},
+      {q: 'Who or what drew the maps?', opts: ['Her teacher', 'It\'s suggested they came from herself, her subconscious', 'Her friend', 'A ghost'], a: 1},
+      {q: 'What did "the treasure" turn out to be?', opts: ['Gold', 'A map', 'Personal growth and positive choices', 'A secret'], a: 2},
+      {q: 'What did Nina do the next Monday?', opts: ['Waited for new maps', 'Drew a new map herself', 'Gave up', 'Lost her sketchbook'], a: 1},
+    ]
+  },
+
+  // ══ GRADE 5 ══════════════════════════════════════════════════════
+  'g5_1': {
+    title: 'The Clockmaker\'s Promise',
+    theme: 'Time, Responsibility & Trust',
+    emoji: '⏰',
+    grade: '5',
+    lexile: '820L',
+    pages: [
+      {text: 'Elise had grown up in her grandfather\'s workshop, where the walls ticked with clocks of every size and shape.\n\nThere were mantel clocks with polished wood frames, brass alarm clocks with bells that shone like tiny suns, and tall grandfather clocks whose pendulums swung with a calm, steady rhythm. Elise loved the workshop because every clock seemed to hold a different kind of story.\n\nThat summer, her grandfather gave her a small task each morning: clean one shelf, oil one gear, or sort one box of screws.\n\n"Learning to repair clocks," he told her, "means learning to notice what is hidden."\n\nOne afternoon, while reaching for a jar of springs on the top shelf, Elise found a dusty pocket watch tucked behind an old radio.'},
+      {text: 'It was silver, round, and heavier than it looked. A tiny crack ran across the glass cover. When she opened it, the hands had stopped at 3:17.\n\nInside the watch lid was a folded note.\n\nElise unfolded it carefully.\n\n*I promised to return for this. If it is still here, please know I have not forgotten.*\n\nThere was no name. Only a date from many years ago.\n\nElise carried the watch to her grandfather. He adjusted his glasses and turned it over in his hands.\n\n"Ah," he said softly. "That belonged to a customer named Mr. Bell."'},
+      {text: '"Did he ever come back?"\n\nGrandfather shook his head. "Not before we moved the shop."\n\nElise looked at the note again. "Why leave something here for so long?"\n\n"Because some people hold on to their promises," he said. "Even when time gets complicated."\n\nThat answer stayed with Elise all week.\n\nShe cleaned the watch carefully. She polished the glass, fixed the clasp, and wound the tiny mechanism with a thin silver key. To her surprise, the watch began to tick again.\n\nTick. Tock. Tick. Tock.\n\nIt was faint, but real. Elise felt as if she had woken something up.'},
+      {text: 'She decided to search for Mr. Bell. Her grandfather helped her look through old receipts and address books. Together they found a faded name linked to a nearby neighborhood. Elise wrote a letter, explaining that the watch had been found and was waiting to be returned.\n\nA week later, a man in a navy coat arrived at the workshop.\n\nHe stood at the door for a long moment, staring at the pocket watch in Elise\'s hand.\n\n"I never thought I\'d see that again," he said.'},
+      {text: 'Elise gave him the watch. "You left a note inside."\n\nThe man smiled sadly. "I promised I would return. Life changed, and then it changed again. I kept meaning to come back, but time got away from me."\n\nElise thought of all the clocks around her, all those hands moving forward no matter what anyone else did.\n\n"Did you mean to keep the promise?" she asked.\n\n"Every day," he said.\n\nGrandfather nodded. "Sometimes that\'s where responsibility begins. Not in perfection. In intention."\n\nMr. Bell took the watch gently, as if it were holding something fragile inside it.\n\nAs the man left, he turned and said, "Thank you for not throwing away something important."'}
+    ],
+    vocabulary: ['mechanism','responsibility','intention','pendulum'],
+    quizzes: [
+      {q: 'What did Elise find in the attic?', opts: ['A clock', 'A pocket watch with a note', 'A key', 'A letter'], a: 1},
+      {q: 'What was inside the watch?', opts: ['Money', 'A note saying the owner promised to return', 'Jewels', 'Pictures'], a: 1},
+      {q: 'Why had Mr. Bell not returned?', opts: ['He forgot', 'Life changed and time got complicated', 'He moved away', 'He died'], a: 1},
+      {q: 'What did the grandfather mean by "responsibility begins in intention"?', opts: ['Making promises', 'Keeping them perfectly', 'Truly trying, even if life gets in the way', 'Forgetting'], a: 2},
+      {q: 'What did Elise learn about the watch?', opts: ['It was worthless', 'It had been waiting for its owner because of a real promise', 'It was broken forever', 'It was stolen'], a: 1},
+      {q: 'How did Elise help return the watch?', opts: ['She gave up', 'She searched for Mr. Bell and wrote a letter', 'She sold it', 'She threw it away'], a: 1},
+      {q: 'What does the watch symbolize in the story?', opts: ['Time', 'Promises and the effort to keep them', 'Clocks', 'Old things'], a: 1},
+    ]
+  },
+  'g5_2': {
+    title: 'The Bridge Beneath the Market',
+    theme: 'History, Memory & Community',
+    emoji: '🌉',
+    grade: '5',
+    lexile: '850L',
+    pages: [
+      {text: 'The market in Samira\'s city was loud in the best way.\n\nVendors called out prices, fruit carts squeaked across stone paths, music drifted from a street performer near the fountain, and the smell of warm bread and spices floated through the air. Samira loved walking there with her grandmother on Saturdays.\n\nOne morning, while helping carry bags to a stall near the river, Samira noticed something strange in the pavement.\n\nA line of stone blocks disappeared beneath a modern sidewalk.\n\nShe crouched down and touched the edge of one block. It was old—much older than the market around it.\n\n"Grandma," she said, "what is this?"'},
+      {text: 'Her grandmother leaned over. "I\'ve never seen that before."\n\nThat same afternoon, Samira showed the stones to Mr. Dali, the elderly map painter who sold hand-drawn city maps from a folding table near the bakery.\n\nHe studied the blocks for a long time.\n\n"Interesting," he said. "Those stones may have belonged to an old bridge."\n\n"A bridge?" Samira asked.\n\n"Yes. Before this market expanded, there used to be a bridge here that crossed the river. It connected farms on one side with the school and town square on the other."\n\nSamira looked at the river. It flowed quietly beneath the noise of the market.\n\n"Why doesn\'t anyone talk about it?" she asked.'},
+      {text: '"Because cities change. Sometimes stories get covered over."\n\nSamira could not stop thinking about the hidden bridge. The next week, she and Mr. Dali visited the city archives. They found black-and-white photos, old route sketches, and newspaper clippings about the bridge\'s construction. There were pictures of wagons crossing it, children walking home from school, and families carrying baskets of vegetables to market.\n\nSamira felt as if she were holding a piece of the city\'s memory in her hands.\n\nAt school, she shared what she had learned during a social studies project. Her teacher was impressed and encouraged her to keep going.\n\nSo Samira and Mr. Dali asked the city council for permission to mark the bridge\'s location.'},
+      {text: 'They gathered neighbors, shop owners, and students. Together they painted a mural on a wall near the market. The mural showed the old bridge stretching over the river, with people from different times walking across it.\n\nAt the bottom, they wrote:\n\nA place can disappear from sight and still remain alive in memory.\n\nOn the day the mural was finished, Samira stood across the street and looked at the wall. The bridge was gone, but not forgotten.\n\nThe market kept buzzing around her. Bicycles rolled by. Bells chimed. A woman laughed near the fruit stand. But now, beneath all the movement, Samira felt the layered history of the city beneath her feet.'},
+      {text: 'She understood that places carry stories, and stories carry people. And if no one tells them, they can fade. But if someone listens closely enough, they can be brought back to life.\n\nFrom that day on, whenever Samira walked through the market, she felt connected to all the people who had crossed that bridge before her. The old stones remained hidden, but they were no longer forgotten.'}
+    ],
+    vocabulary: ['archive','expanded','preserve','layered'],
+    quizzes: [
+      {q: 'What did Samira notice under the market pavement?', opts: ['Gold', 'Old bridge stones', 'Treasure', 'Bones'], a: 1},
+      {q: 'Who helped her learn about the old bridge?', opts: ['A librarian', 'Mr. Dali, a map painter', 'A historian', 'Her teacher'], a: 1},
+      {q: 'What connected the old bridge?', opts: ['Two markets', 'Farms with the school and town square', 'Two rivers', 'Two cities'], a: 1},
+      {q: 'Why was the bridge\'s history forgotten?', opts: ['Everyone died', 'The city changed and stories got covered over', 'It never existed', 'It was destroyed'], a: 1},
+      {q: 'What did Samira and Mr. Dali create?', opts: ['A new bridge', 'A mural to remember the old bridge', 'A museum', 'A book'], a: 1},
+      {q: 'Why was the mural important?', opts: ['It was beautiful', 'It preserved the memory of the bridge and connected people to their history', 'It was colorful', 'It was big'], a: 1},
+      {q: 'What did Samira learn about history?', opts: ['It\'s boring', 'Places and stories can disappear unless someone preserves them', 'Only museums have history', 'Old things don\'t matter'], a: 1},
+    ]
+  },
+  'g5_3': {
+    title: 'The Almost-Perfect Note',
+    theme: 'Perfection, Courage & Resilience',
+    emoji: '🎹',
+    grade: '5',
+    lexile: '840L',
+    pages: [
+      {text: 'Jordan loved the piano.\n\nHe loved the weight of the keys under his fingers, the way a melody could begin as a few careful notes and grow into something full and bright, and the way music could fill a room even when everyone stayed quiet.\n\nBut Jordan had one problem: he hated making mistakes.\n\nWhenever a note came too early or too late, he cringed. If his hands slipped, he stopped and started over. If he missed a measure, he wanted to slam the piano cover shut and give up.\n\nHis recital was in two weeks, and the pressure was making everything worse.\n\n"I need this to be perfect," he told his teacher, Ms. Bell, after a difficult practice.'},
+      {text: 'Ms. Bell rested her hand on the side of the piano. "Why?"\n\nJordan shrugged. "Because people will hear it."\n\n"And if they hear a mistake?"\n\n"They\'ll know I\'m not good enough."\n\nMs. Bell was quiet for a moment. Then she said, "Jordan, a performance is not a test of whether you are flawless. It is a test of whether you can keep going."\n\nJordan frowned. "But the mistake will still be there."\n\n"Yes," she said. "So will you."\n\nThat sentence followed him home. The next day, Jordan practiced a difficult passage over and over. He stumbled twice, then three times.'},
+      {text: 'Each mistake made him tense up more. His shoulders crept toward his ears. His breathing got shallow. By the end of the lesson, he was nearly in tears.\n\nMs. Bell asked him to play the passage one more time—but this time she told him not to stop if he made a mistake.\n\nJordan stared at her. "That sounds awful."\n\n"It may feel awful," she said. "But it will teach you something important."\n\nHe tried. The first note came clean. The second did not.\n\nHe missed it. For a split second, Jordan wanted to stop. He felt the old frustration rise in his chest. But he kept his hands moving.'},
+      {text: 'The melody bent, not broken, and then continued.\n\nHe finished the passage breathless and surprised.\n\nMs. Bell smiled. "There. Did the song end?"\n\nJordan shook his head.\n\n"Did the audience vanish?"\n\n"No."\n\n"So what changed?"\n\nJordan thought about it. "I did not stop."\n\n"Exactly."\n\nRecital night arrived. The auditorium glowed with soft lights. Parents shifted in their seats. Jordan sat on the bench and looked at the polished black piano in front of him.\n\nHis turn came. He walked to the stage, bowed, and placed his hands on the keys.'},
+      {text: 'The first section sounded beautifully clear. The second section began with one note too early.\n\nJordan felt the mistake instantly. But this time, he did not freeze.\n\nHe kept going. A few measures later, he played the wrong chord—then recovered with the next phrase so smoothly that most of the audience hardly noticed. By the end, the melody filled the room with warmth and confidence.\n\nWhen he finished, the applause came like rain after heat.\n\nBackstage, Jordan turned to Ms. Bell. "I made mistakes."\n\n"Yes," she said.\n\n"And it still worked."\n\nShe nodded. "That is called courage."\n\nJordan smiled for the first time all week. He had wanted perfection. What he found instead was something better: trust in himself.'}
+    ],
+    vocabulary: ['flawless','resilience','cramped','perseverance'],
+    quizzes: [
+      {q: 'What was Jordan\'s main problem with piano?', opts: ['He didn\'t like music', 'He hated making mistakes', 'His piano was broken', 'His teacher was mean'], a: 1},
+      {q: 'What did Ms. Bell say about performance?', opts: ['It\'s a test of perfection', 'It\'s a test of whether you can keep going', 'It\'s just for fun', 'It\'s not important'], a: 1},
+      {q: 'What did Jordan learn when he didn\'t stop after mistakes?', opts: ['The song sounds bad', 'The song didn\'t end, and he could recover', 'He\'s not good enough', 'He should quit'], a: 1},
+      {q: 'What happened at the recital?', opts: ['He played perfectly', 'He made mistakes but kept going', 'He forgot everything', 'He didn\'t perform'], a: 1},
+      {q: 'Did the audience notice all his mistakes?', opts: ['Yes, they all booed', 'Most didn\'t notice', 'They all left', 'It doesn\'t matter'], a: 1},
+      {q: 'What did Jordan discover at the end?', opts: ['Perfection is easy', 'Courage and trust in yourself matter more than perfection', 'He\'ll never be good enough', 'Mistakes ruin everything'], a: 1},
+      {q: 'What did Jordan value more than perfection?', opts: ['Speed', 'Loudness', 'Trust in himself and the ability to keep going', 'Applause'], a: 2},
+    ]
+  },
+  'g5_4': {
+    title: 'The Day the Library Lost Its Labels',
+    theme: 'Organization, Collaboration & Logic',
+    emoji: '🏫',
+    grade: '5',
+    lexile: '860L',
+    pages: [
+      {text: 'The morning the labels fell off the library shelves, no one noticed at first.\n\nThe school library was quiet, as always. Sunlight slanted across the carpet. A class of fifth graders was sorting books for volunteer day. A librarian named Mrs. Chen was answering questions at the front desk.\n\nEverything seemed normal until the students turned the corner into the nonfiction section and stopped.\n\nThe labels were gone. Not just one or two. Every single shelf label had slipped off and landed in a scattered pile on the floor.\n\n"Uh-oh," said Priya.\n\nMrs. Chen came over and blinked. "Well. That is inconvenient."'},
+      {text: 'By noon, the whole library looked like a giant puzzle. Biography books were mixed with animal books. Science titles were beside atlases. Poetry had wandered into a history shelf. It was impossible to tell where anything belonged.\n\nAnd worse—visitors were coming the next morning.\n\nMrs. Chen called the student helpers together.\n\n"We can panic," she said, "or we can solve it."\n\nThe group looked at one another.\n\n"Solve it," said Malik.\n\nThey formed teams. One group sorted by subject. One group checked call numbers. Another compared cover art, chapter headings, and back-cover summaries. Priya made a chart. Malik built a system using colored sticky notes.'},
+      {text: 'At first, it was slow. They kept putting books in the wrong place. They disagreed about where a few titles belonged. They found that some books could be matched by repeating topic words, which made the job even trickier.\n\nBut each mistake taught them something. Priya noticed that books about weather and climate belonged in different areas because one focused on patterns and the other on causes. Malik learned that organization was not just about neatness—it was about helping people find what they needed quickly. Eva realized that titles with similar covers could still be very different inside.'},
+      {text: 'By the afternoon, the students had turned the mess into a working system.\n\nMrs. Chen watched them with a proud smile.\n\n"You know," she said, "this is why libraries matter. They are not just rooms full of books. They are maps for readers."\n\nThe students kept working until every shelf had a new label. They even made the signs brighter and easier to read.\n\nThe next morning, when the visitors arrived, the library looked calm again. Better than calm, really. It looked welcoming.\n\nA younger student found a book about volcanoes without needing help. A parent asked for a biography and went straight to the right shelf. A first grader picked out a picture book and grinned.'},
+      {text: 'Priya looked around the room and felt a small thrill of pride.\n\nThey had not just fixed labels. They had rebuilt order.\n\nAt the end of the day, Mrs. Chen thanked them.\n\n"Why was it such a big deal?" Ben asked.\n\n"Because," she said, "organization is a form of kindness. It saves people time. It saves them frustration. It helps them feel like they belong here."\n\nThe students nodded. The shelves were quiet again, but now that quiet felt intentional. Everything had a place. And because they had worked together, so did they.'}
+    ],
+    vocabulary: ['nonfiction','category','system','intentional'],
+    quizzes: [
+      {q: 'What happened to the library labels?', opts: ['The librarian removed them', 'They all fell off', 'They got wet', 'They were stolen'], a: 1},
+      {q: 'How did the students respond?', opts: ['They panicked', 'They decided to solve it', 'They left', 'They called their parents'], a: 1},
+      {q: 'What did each team focus on?', opts: ['Different organizing strategies', 'Playing games', 'Taking breaks', 'Complaining'], a: 0},
+      {q: 'Why was it tricky to sort some books?', opts: ['They were heavy', 'Some books fit more than one category', 'The students were lazy', 'It wasn\'t tricky'], a: 1},
+      {q: 'What did Mrs. Chen mean by "organization is kindness"?', opts: ['Being nice to books', 'It helps people find things and feel welcomed', 'Being organized is fun', 'Organization is hard'], a: 1},
+      {q: 'What did the students learn?', opts: ['Organizing is boring', 'Teamwork and good organization help people', 'Libraries are just rooms', 'Nothing matters'], a: 1},
+      {q: 'How did the library feel after they finished?', opts: ['Empty', 'Chaotic', 'Welcoming and organized', 'Scary'], a: 2},
+    ]
+  },
+  'g5_5': {
+    title: 'The Wind and the Unfinished Kite',
+    theme: 'Persistence, Adaptability & Learning',
+    emoji: '🪁',
+    grade: '5',
+    lexile: '870L',
+    pages: [
+      {text: 'Talia had been building her kite for three weeks.\n\nShe measured every strip of bamboo twice. She tied the frame carefully. She painted the paper sail with a red-orange pattern that looked like moving fire. At the bottom, she added a long tail of ribbon squares that fluttered beautifully in the breeze.\n\nIt was the best kite she had ever made. At least, it looked that way on her bedroom floor.\n\nAt the spring festival, Talia hurried to the field with her kite held high above her head. Other kids were already laughing and running across the grass, their kites wobbling and soaring and dipping in the sky.\n\nTalia ran too.\n\nThe kite rose. Then it tipped sideways. The wind tugged one corner, and the tail twisted.'},
+      {text: 'Talia pulled the string back in and tried again. This time the kite lifted even higher—for three seconds. Then it rolled, dipped, and came crashing into the grass.\n\nTalia stared at it in disbelief. She tried again. Same result. Again. Worse.\n\nBy the fourth attempt, she was angry enough to cry. The kite was supposed to fly beautifully. She had worked so hard. Why was it failing?\n\n"I\'m done," she muttered, gathering the tangled string.\n\nAn older neighbor named Mr. Harlan, who had been watching from a folding chair, walked over.\n\n"You built that yourself?" he asked.\n\nTalia nodded, sniffling. "And it still won\'t fly."'},
+      {text: 'Mr. Harlan turned the kite over, examining the frame. "It\'s good work," he said. "But the wind is changing."\n\nTalia frowned. "So?"\n\n"So the kite has to change too."\n\nShe looked at him as if he had suggested the impossible. "But it\'s already finished."\n\nMr. Harlan smiled. "Most things are only finished until they meet the real world."\n\nTalia glanced back at her kite. The frame was sturdy, but the tail was long enough to drag. The center of balance looked too heavy on one side. She had built it for the version of wind she imagined, not the one she actually had.\n\n"What should I do?" she asked.'},
+      {text: '"Test," he said. "Adjust. Test again."\n\nSo she did. She shortened the tail by half. She tightened one loose knot. She added a small crossbar to strengthen the frame.\n\nThen she ran again.\n\nThe kite lifted. This time it climbed steadily, shivering in the wind like a flag made of light. It tilted once, then settled. Talia held the string carefully, feeling the pull guide her hand upward.\n\nHigher and higher went the kite. Her laughter rose with it.\n\nMr. Harlan tipped his hat. "There you are."'},
+      {text: 'Talia watched the kite dance across the sky. It was not the same design she had imagined at the start. It was better. Because she had learned from it.\n\nThe festival continued around her with music, lemonade, and the smell of popcorn drifting over the grass. But Talia barely noticed.\n\nShe was thinking about the moment her kite fell, and the moment she chose to keep going. The unfinished parts of a project, she realized, were not failures.\n\nThey were instructions.\n\nTalia understood that true mastery comes not from perfection, but from the willingness to adapt, test, and learn. Every adjustment brought her closer to making something that could truly fly.'}
+    ],
+    vocabulary: ['perseverance','adapt','balance','resilience'],
+    quizzes: [
+      {q: 'Why did Talia\'s beautiful kite crash?', opts: ['It was broken', 'The wind had changed and the kite wasn\'t designed for real wind conditions', 'She didn\'t hold the string right', 'It was too heavy'], a: 1},
+      {q: 'What did Mr. Harlan tell her?', opts: ['Give up', 'The wind is changing. So the kite has to change too', 'It\'s a bad kite', 'Never build again'], a: 1},
+      {q: 'What changes did Talia make?', opts: ['She painted it', 'She shortened the tail, tightened knots, added a crossbar', 'She gave up', 'Nothing'], a: 1},
+      {q: 'What happened after she made adjustments?', opts: ['It crashed again', 'It flew beautifully', 'It disappeared', 'Nothing changed'], a: 1},
+      {q: 'What did Talia learn about failure?', opts: ['It\'s permanent', 'It provides instructions for improvement', 'It means you\'re not good enough', 'It\'s the end'], a: 1},
+      {q: 'How was the final kite different?', opts: ['Worse', 'Better because she learned from adjustments', 'The same', 'Smaller'], a: 1},
+      {q: 'What does the kite symbolize?', opts: ['Just a toy', 'How learning from failure leads to real success', 'Wind', 'A project'], a: 1},
+    ]
+  }
+};
+
+
+  // v462: Community & World — Story-Driven Quest Locations
+  const COMMUNITY_WORLD_LOCATIONS = {
+    'town_square': {
+      name: '🏘️ Town Square',
+      desc: 'Meet people. Learn kindness. Discover community.',
+      emoji: '🏘️',
+      color: '#A9D8B8',
+      stories: ['g3_3', 'g3_4', 'g4_3', 'g5_3', 'g5_4']  // 5 stories
+    },
+    'marketplace': {
+      name: '🏪 Marketplace',
+      desc: 'Explore cultures. Solve problems. Trust yourself.',
+      emoji: '🏪',
+      color: '#FFD4A3',
+      stories: ['g3_1', 'g3_2', 'g4_1', 'g5_1']  // 4 stories
+    },
+    'forest': {
+      name: '🌲 Forest Path',
+      desc: 'Imagine. Discover. Grow. Adapt.',
+      emoji: '🌲',
+      color: '#B9D4A8',
+      stories: ['g4_2', 'g4_4', 'g5_2', 'g5_5']  // 4 stories
+    }
+  };
+
+
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v457</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v457</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v462</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v462</div>
 
 </body>
 </html
