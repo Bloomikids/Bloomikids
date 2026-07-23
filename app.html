@@ -4429,7 +4429,7 @@ var CURATED_GAMES = {
   function _makeTile(g) {
     var sub = SUBS[g.label] || 'Tap to play';
     var missionFn = "if(typeof completeMissionStep==='function')completeMissionStep('learn');" + g.fn;
-    // v457: wellness-style tile — saturated pastel gradient + 3D shadow edge (matches Breathing/Yoga tiles)
+    // v465: wellness-style tile — saturated pastel gradient + 3D shadow edge (matches Breathing/Yoga tiles)
     var top  = _mixWhite(g.color, .45);
     var bot  = _mixWhite(g.color, .18);
     var edge = _darken(g.color);
@@ -15202,8 +15202,8 @@ function getCardTile(label, fallbackEmoji, size) {
 window.getCardTile = getCardTile;
 
 </script>
-<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v457</div>
-<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v457</div>
+<div style="position:fixed;bottom:4px;right:8px;font-size:.6rem;color:rgba(255,255,255,.4);z-index:9999;">v465</div>
+<div id="vbadge" style="position:fixed;bottom:4px;right:6px;font-size:.55rem;color:rgba(255,255,255,.25);z-index:1;pointer-events:none;">v465</div>
 
 </body>
 </html
