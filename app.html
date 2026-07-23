@@ -2754,6 +2754,204 @@ window.addEventListener('offline', () => document.getElementById('offlineBanner'
 window.addEventListener('online',  () => { document.getElementById('offlineBanner').style.display='none'; syncData(); });
 
 // -- Toast ---------------------------------------------
+
+function buildParentDashboard() {
+  if (!activeChild) {
+    document.getElementById('mainContent').innerHTML = '<div style="padding:20px; text-align:center; color:#666;">Please select a child first.</div>';
+    return;
+  }
+  
+  // Get metrics from Supabase/localStorage
+  const stats = {
+    totalStars: sessionData.stars || 0,
+    gamesPlayed: parseInt(localStorage.getItem('bk_games_played_' + activeChild.id) || '0'),
+    storiesRead: parseInt(localStorage.getItem('bk_stories_read_' + activeChild.id) || '0'),
+    timeSpent: parseInt(localStorage.getItem('bk_time_spent_' + activeChild.id) || '0'),
+    growthStage: parseInt(localStorage.getItem('bk_growth_' + activeChild.id) || '0'),
+  };
+  
+  const skillBreakdown = {
+    'Math': parseInt(localStorage.getItem('bk_skill_math_' + activeChild.id) || '0'),
+    'Reading': parseInt(localStorage.getItem('bk_skill_reading_' + activeChild.id) || '0'),
+    'Science': parseInt(localStorage.getItem('bk_skill_science_' + activeChild.id) || '0'),
+    'Writing': parseInt(localStorage.getItem('bk_skill_writing_' + activeChild.id) || '0'),
+    'Art': parseInt(localStorage.getItem('bk_skill_art_' + activeChild.id) || '0'),
+  };
+  
+  const cosmetics = JSON.parse(localStorage.getItem('bk_cosmetics_' + activeChild.id) || '[]');
+  
+  const growthEmoji = ['🌰', '🌱', '🌿', '🪴', '🌷', '🌸'];
+  
+  const html = `
+    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding:20px; color:white;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h1 style="margin:0; font-size:1.5rem;">📊 Progress Report</h1>
+        <button onclick="closeParentDash()" style="background:none; border:none; color:white; font-size:1.8rem; cursor:pointer;">✕</button>
+      </div>
+      <p style="margin:5px 0; opacity:0.9;">For: ${activeChild.name}</p>
+    </div>
+    
+    <div style="padding:20px; overflow-y:auto; max-height:calc(100vh - 120px);">
+      
+      <!-- KEY METRICS -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:20px;">
+        <div style="background:white; padding:15px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+          <div style="font-size:0.85rem; color:#888; margin-bottom:8px; text-transform:uppercase; font-weight:bold;">⭐ Total Stars</div>
+          <div style="font-size:2rem; font-weight:bold; color:#ffd700;">${stats.totalStars}</div>
+        </div>
+        
+        <div style="background:white; padding:15px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+          <div style="font-size:0.85rem; color:#888; margin-bottom:8px; text-transform:uppercase; font-weight:bold;">🎮 Games Played</div>
+          <div style="font-size:2rem; font-weight:bold; color:#667eea;">${stats.gamesPlayed}</div>
+        </div>
+        
+        <div style="background:white; padding:15px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+          <div style="font-size:0.85rem; color:#888; margin-bottom:8px; text-transform:uppercase; font-weight:bold;">📖 Stories Read</div>
+          <div style="font-size:2rem; font-weight:bold; color:#e74c3c;">${stats.storiesRead}</div>
+        </div>
+        
+        <div style="background:white; padding:15px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+          <div style="font-size:0.85rem; color:#888; margin-bottom:8px; text-transform:uppercase; font-weight:bold;">⏱ Time Spent</div>
+          <div style="font-size:2rem; font-weight:bold; color:#27ae60;">${Math.floor(stats.timeSpent / 60)} min</div>
+        </div>
+      </div>
+      
+      <!-- GROWTH STAGE -->
+      <div style="background:white; padding:20px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.1); margin-bottom:20px;">
+        <div style="font-size:0.9rem; color:#888; margin-bottom:12px; text-transform:uppercase; font-weight:bold;">🌱 Growth Stage</div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          ${growthEmoji.map((e, i) => `<div style="font-size:2rem; opacity:${i <= stats.growthStage ? '1' : '0.3'};">${e}</div>`).join('')}
+        </div>
+        <div style="margin-top:12px; font-size:0.9rem; color:#666;">Level ${stats.growthStage + 1} of 6</div>
+      </div>
+      
+      <!-- SKILL BREAKDOWN -->
+      <div style="background:white; padding:20px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.1); margin-bottom:20px;">
+        <div style="font-size:0.9rem; color:#888; margin-bottom:15px; text-transform:uppercase; font-weight:bold;">📚 Skill Breakdown by Subject</div>
+        ${Object.entries(skillBreakdown).map(([subject, correct]) => `
+          <div style="margin-bottom:15px;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+              <span style="font-weight:bold; color:#333;">${subject}</span>
+              <span style="color:#667eea; font-weight:bold;">${correct} correct</span>
+            </div>
+            <div style="background:#f0f0f0; height:8px; border-radius:4px; overflow:hidden;">
+              <div style="background:linear-gradient(90deg, #667eea 0%, #764ba2 100%); height:100%; width:${Math.min(correct * 10, 100)}%;"></div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      
+      <!-- COSMETICS UNLOCKED -->
+      <div style="background:white; padding:20px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+        <div style="font-size:0.9rem; color:#888; margin-bottom:15px; text-transform:uppercase; font-weight:bold;">🎨 Cosmetics Unlocked</div>
+        ${cosmetics.length > 0 ? `
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
+            ${cosmetics.map(c => `<div style="background:#f5f5f5; padding:10px; border-radius:6px; text-align:center; font-size:1.5rem;">${c}</div>`).join('')}
+          </div>
+        ` : `
+          <div style="color:#999; text-align:center; padding:20px;">No cosmetics unlocked yet. Keep playing!</div>
+        `}
+      </div>
+      
+      <!-- EMAIL DIGEST OPTION -->
+      <div style="background:#f0f7ff; padding:20px; border-radius:10px; margin-top:20px; border:2px solid #667eea;">
+        <div style="font-weight:bold; color:#333; margin-bottom:8px;">📧 Weekly Progress Digest</div>
+        <p style="margin:8px 0; color:#666; font-size:0.9rem;">Get a summary every Sunday showing this week's progress, achievements, and recommendations.</p>
+        <button onclick="enableWeeklyDigest()" style="background:#667eea; color:white; border:none; padding:10px 16px; border-radius:6px; cursor:pointer; font-weight:bold;">Enable Email Digest</button>
+      </div>
+      
+    </div>
+  `;
+  
+  document.getElementById('mainContent').innerHTML = html;
+}
+
+function closeParentDash() {
+  showScreen('app');
+}
+
+function enableWeeklyDigest() {
+  alert("Email digest enabled. Weekly summary coming soon!");
+  // TODO: Wire to Supabase for actual email sending
+}
+
+
+
+function openReadingCorner() {
+  const stories = NEW_STORIES;
+  const grade = activeGrade || '2';
+  
+  // Get stories for this grade
+  const gradeStories = Object.entries(stories).filter(([code, story]) => {
+    const g = code[1]; // 'g3_5' -> '3'
+    return g === grade.charAt(0);
+  });
+  
+  // Build HTML
+  let html = `
+    <div class="screen-header" style="background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%);">
+      <span style="font-size:1.5rem;">📚</span>
+      <h2 style="flex:1; margin:0; padding-left:10px;">Reading Corner — Grade ${grade}</h2>
+      <button class="close-btn" onclick="closeReadingCorner()" style="cursor:pointer; background:none; border:none; font-size:1.8rem; color:white;">✕</button>
+    </div>
+    <div style="padding: 15px 0; overflow-y: auto; max-height: calc(100vh - 120px);">
+  `;
+  
+  gradeStories.forEach(([code, story]) => {
+    html += `
+      <div style="background:white; border-radius:12px; padding:15px; margin:10px 15px; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,0.1);" onclick="openStory('${code}')">
+        <div style="display:flex; gap:12px;">
+          <div style="font-size:2rem; width:60px; text-align:center;">${story.emoji}</div>
+          <div style="flex:1;">
+            <div style="font-weight:bold; color:#333; font-size:1.1rem;">${story.title}</div>
+            <div style="font-size:0.85rem; color:#666; margin:4px 0;">${story.theme}</div>
+            <div style="display:flex; gap:8px; font-size:0.75rem;">
+              <span style="background:#e3f2fd; color:#1976d2; padding:3px 8px; border-radius:4px;">📖 ${story.text.split(' ').length} words</span>
+              <span style="background:#fff3e0; color:#f57c00; padding:3px 8px; border-radius:4px;">❓ ${story.quizzes ? story.quizzes.length : 5} questions</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  
+  html += '</div>';
+  
+  document.getElementById('mainContent').innerHTML = html;
+}
+
+function closeReadingCorner() {
+  showScreen('app');
+  switchTab('academics');
+}
+
+function openStory(storyCode) {
+  const story = NEW_STORIES[storyCode];
+  if (!story) return;
+  
+  let html = `
+    <div class="screen-header" style="background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%);">
+      <button class="close-btn" onclick="closeReadingCorner()" style="cursor:pointer; background:none; border:none; font-size:1.5rem; color:white; margin-right:10px;">← Back</button>
+      <h2 style="flex:1; margin:0; font-size:1.1rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${story.title}</h2>
+      <button class="close-btn" onclick="closeReadingCorner()" style="cursor:pointer; background:none; border:none; font-size:1.8rem; color:white;">✕</button>
+    </div>
+    <div style="padding:20px; overflow-y:auto; max-height:calc(100vh - 180px); line-height:1.6;">
+      <div style="background:#f5f5f5; padding:15px; border-radius:8px; margin-bottom:20px;">
+        <div style="font-size:2.5rem; margin-bottom:10px;">${story.emoji}</div>
+        <div style="font-size:1.3rem; font-weight:bold; color:#333; margin-bottom:5px;">${story.title}</div>
+        <div style="font-size:0.9rem; color:#666;">${story.theme}</div>
+      </div>
+      <div style="font-size:1rem; color:#333; margin-bottom:30px;">
+        ${story.text.split('\n').map(p => `<p style="margin-bottom:12px;">${p}</p>`).join('')}
+      </div>
+      <button onclick="startStoryQuiz('${storyCode}')" style="width:100%; padding:14px; background:linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%); color:white; border:none; border-radius:8px; font-weight:bold; font-size:1rem; cursor:pointer;">Start Quiz ➜</button>
+    </div>
+  `;
+  
+  document.getElementById('mainContent').innerHTML = html;
+}
+
+
 function toast(msg, dur=2500) {
   const el = document.getElementById('toast');
   el.textContent = msg; el.classList.add('show');
